@@ -1,0 +1,2 @@
+com.jlkj.common.log.service.AsyncLogService
+com.jlkj.common.log.aspect.LogAspect

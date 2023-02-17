@@ -1,0 +1,3 @@
+com.jlkj.common.swagger.config.SwaggerAutoConfiguration
+com.jlkj.common.swagger.config.SwaggerWebConfiguration
+com.jlkj.common.swagger.config.SwaggerBeanPostProcessor

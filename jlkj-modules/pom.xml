@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.jlkj</groupId>
+        <artifactId>jlkj</artifactId>
+        <version>3.6.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>jlkj-system</module>
+        <module>jlkj-gen</module>
+        <module>jlkj-job</module>
+        <module>jlkj-file</module>
+        <module>jlkj-equip</module>
+        <module>jlkj-energy</module>
+        <module>jlkj-human</module>
+        <module>jlkj-logistics</module>
+        <module>jlkj-material</module>
+        <module>jlkj-product</module>
+        <module>jlkj-quality</module>
+        <module>jlkj-safety</module>
+        <module>jlkj-sales</module>
+    </modules>
+
+    <artifactId>jlkj-modules</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        jlkj-modules业务模块
+    </description>
+
+</project>
