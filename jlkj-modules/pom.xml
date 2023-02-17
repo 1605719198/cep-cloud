@@ -22,6 +22,7 @@
         <module>jlkj-quality</module>
         <module>jlkj-safety</module>
         <module>jlkj-sales</module>
+        <module>jlkj-finance</module>
     </modules>
 
     <artifactId>jlkj-modules</artifactId>
