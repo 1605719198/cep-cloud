@@ -1,14 +1,16 @@
-package com.jlkj.equip.controller;
+package com.jlkj.equip.MG.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.equip.dto.EquipmentMgmc2AddDTO;
-import com.jlkj.equip.dto.EquipmentMgmc2QueryDTO;
-import com.jlkj.equip.entity.EquipmentMgmc2;
-import com.jlkj.equip.service.IEquipmentMgmc2Service;
+import com.jlkj.common.log.annotation.Log;
+import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.equip.MG.dto.EquipmentMgmc2AddDTO;
+import com.jlkj.equip.MG.dto.EquipmentMgmc2QueryDTO;
+import com.jlkj.equip.MG.entity.EquipmentMgmc2;
+import com.jlkj.equip.MG.service.IEquipmentMgmc2Service;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +44,7 @@ public class EquipmentMgmc2Controller {
      */
     @Operation(summary = "新增停机原因数据" )
     @PostMapping("/addMgmc2Data")
+    @Log(title = "停机原因新增", businessType = BusinessType.INSERT)
     public Object addMgmc2Data(@RequestBody EquipmentMgmc2AddDTO equipmentMgmc2AddDTO){
         QueryWrapper<EquipmentMgmc2> wrapper = new QueryWrapper<>();
         wrapper.eq(StringUtils.isNotNull(equipmentMgmc2AddDTO.getMgmc2no()),"mgmc2no",equipmentMgmc2AddDTO.getMgmc2no())
@@ -62,6 +65,7 @@ public class EquipmentMgmc2Controller {
      */
     @Operation(summary = "修改停机原因数据" )
     @PutMapping("/updateMgmc2Data")
+    @Log(title = "停机原因修改", businessType = BusinessType.UPDATE)
     public Object updateMgmc2Data(@RequestBody EquipmentMgmc2AddDTO equipmentMgmc2AddDTO){
         QueryWrapper<EquipmentMgmc2> wrapper = new QueryWrapper<>();
         wrapper.ne(StringUtils.isNotNull(equipmentMgmc2AddDTO.getId()),"id",equipmentMgmc2AddDTO.getId());
@@ -83,6 +87,7 @@ public class EquipmentMgmc2Controller {
      */
     @Operation(summary = "删除停机原因数据" )
     @DeleteMapping("/deleteMgmc2Data/{ids}")
+    @Log(title = "停机原因删除", businessType = BusinessType.DELETE)
     public Object deleteMgmc2Data(@PathVariable String[] ids){
         List<String> idList = Arrays.asList(ids);
         boolean delete = equipmentMgmc2Service.removeBatchByIds(idList);
@@ -93,6 +98,7 @@ public class EquipmentMgmc2Controller {
      */
     @Operation(summary = "分页查询、根据条件查询字典信息，名称" )
     @GetMapping("/queryDataByParams")
+    @Log(title = "停机原因分页查询", businessType = BusinessType.OTHER)
     public Object queryDictByParams(EquipmentMgmc2QueryDTO equipmentMgmc2QueryDTO) {
         Long current = equipmentMgmc2QueryDTO.getPage();
         Long limit = equipmentMgmc2QueryDTO.getLimit();
@@ -121,6 +127,7 @@ public class EquipmentMgmc2Controller {
      */
     @Operation(summary = "根据ID查询单笔数据" )
     @GetMapping("/getByDataId/{id}")
+    @Log(title = "停机原因根据ID查询", businessType = BusinessType.OTHER)
     public Object getByDataId(@PathVariable String id){
         EquipmentMgmc2 equipmentMgmc2 = equipmentMgmc2Service.getById(id);
         return AjaxResult.success(equipmentMgmc2);

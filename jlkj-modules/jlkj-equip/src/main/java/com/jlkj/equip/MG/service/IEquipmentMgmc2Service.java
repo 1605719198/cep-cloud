@@ -1,7 +1,7 @@
-package com.jlkj.equip.service;
+package com.jlkj.equip.MG.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.equip.entity.EquipmentMgmc2;
+import com.jlkj.equip.MG.entity.EquipmentMgmc2;
 
 /**
  * <p>

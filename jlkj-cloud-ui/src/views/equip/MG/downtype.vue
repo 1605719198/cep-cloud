@@ -227,8 +227,8 @@
 
 <script>
 
-import { getTreeNode } from '@/api/equip/parameter'
-import { addMgmc2Data, queryDataByParams, getData, updateMgmc2Data, deleteMgmc2Data } from '@/api/equip/downtype'
+import { getTreeNode } from '@/api/equip/MG/parameter'
+import { addMgmc2Data, queryDataByParams, getData, updateMgmc2Data, deleteMgmc2Data } from '@/api/equip/MG/downtype'
 export default {
   name: "analyze",
   components: {},

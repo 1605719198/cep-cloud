@@ -1,9 +1,9 @@
-package com.jlkj.equip.service.impl;
+package com.jlkj.equip.MG.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.equip.entity.EquipmentMgmc2;
-import com.jlkj.equip.mapper.EquipmentMgmc2Mapper;
-import com.jlkj.equip.service.IEquipmentMgmc2Service;
+import com.jlkj.equip.MG.entity.EquipmentMgmc2;
+import com.jlkj.equip.MG.mapper.EquipmentMgmc2Mapper;
+import com.jlkj.equip.MG.service.IEquipmentMgmc2Service;
 import org.springframework.stereotype.Service;
 
 /**

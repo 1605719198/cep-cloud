@@ -1,12 +1,12 @@
-package com.jlkj.equip.service.impl;
+package com.jlkj.equip.MG.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.equip.dto.EquipmentDownTypeTreeDTO;
-import com.jlkj.equip.entity.EquipmentDownTypeTree;
-import com.jlkj.equip.mapper.EquipmentDownTypeTreeMapper;
-import com.jlkj.equip.service.IEquipmentDownTypeTreeService;
+import com.jlkj.equip.MG.dto.EquipmentDownTypeTreeDTO;
+import com.jlkj.equip.MG.entity.EquipmentDownTypeTree;
+import com.jlkj.equip.MG.mapper.EquipmentDownTypeTreeMapper;
+import com.jlkj.equip.MG.service.IEquipmentDownTypeTreeService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

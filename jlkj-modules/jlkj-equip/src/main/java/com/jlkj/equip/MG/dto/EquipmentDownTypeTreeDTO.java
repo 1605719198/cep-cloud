@@ -1,4 +1,4 @@
-package com.jlkj.equip.dto;
+package com.jlkj.equip.MG.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 

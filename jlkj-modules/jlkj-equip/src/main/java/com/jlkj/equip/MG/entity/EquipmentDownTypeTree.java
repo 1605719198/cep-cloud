@@ -1,4 +1,4 @@
-package com.jlkj.equip.entity;
+package com.jlkj.equip.MG.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author xin
  * @since 2022-05-09
  */
-@TableName("t_equipment_down_type_tree")
+@TableName("equip_mg_down_type_tree")
 public class EquipmentDownTypeTree implements Serializable {
 
     private static final long serialVersionUID = 1L;

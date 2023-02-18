@@ -1,47 +1,29 @@
-package com.jlkj.equip.dto;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-
+package com.jlkj.equip.MG.dto;
 /**
- * <p>
- * 停机原因数据
- * </p>
- *
  * @author xin
- * @since 2022-05-09
  */
-@TableName("t_equipment_mgmc2")
-public class EquipmentMgmc2AddDTO {
+public class EquipmentAddTreeNodeDTO {
 
     /**
-     * 系统码
+     * id
      */
     private String id;
-
     /**
-     * 停机原因编号
+     * 父节点ID
      */
-    private String mgmc2no;
-
+    private String parentId;
     /**
-     * 停机原因名称
+     * 停机细类型代码
      */
-    private String mgmc2name;
-
+    private String treeCode;
     /**
-     * 停机原因群码
+     * 停机细类型名称
      */
-    private String groupcode;
-
+    private String treeName;
     /**
-     * 停机类型编号
+     * 停机细类型层级
      */
-    private String mgmc1no;
-
-    /**
-     * 备注
-     */
-    private String memo;
+    private String level;
     /**
      * 创建人
      */
@@ -54,11 +36,11 @@ public class EquipmentMgmc2AddDTO {
      * 修改人姓名
      */
     private String updateUserName;
+
     /**
      * 创建人姓名
      */
     private String createUserName;
-
 
     public String getId() {
         return id;
@@ -67,40 +49,37 @@ public class EquipmentMgmc2AddDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getMgmc2no() {
-        return mgmc2no;
+
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setMgmc2no(String mgmc2no) {
-        this.mgmc2no = mgmc2no;
-    }
-    public String getMgmc2name() {
-        return mgmc2name;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
-    public void setMgmc2name(String mgmc2name) {
-        this.mgmc2name = mgmc2name;
-    }
-    public String getGroupcode() {
-        return groupcode;
+    public String getTreeCode() {
+        return treeCode;
     }
 
-    public void setGroupcode(String groupcode) {
-        this.groupcode = groupcode;
-    }
-    public String getMgmc1no() {
-        return mgmc1no;
+    public void setTreeCode(String treeCode) {
+        this.treeCode = treeCode;
     }
 
-    public void setMgmc1no(String mgmc1no) {
-        this.mgmc1no = mgmc1no;
-    }
-    public String getMemo() {
-        return memo;
+    public String getTreeName() {
+        return treeName;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setTreeName(String treeName) {
+        this.treeName = treeName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getCreateUser() {
@@ -137,13 +116,12 @@ public class EquipmentMgmc2AddDTO {
 
     @Override
     public String toString() {
-        return "EquipmentMgmc2AddDTO{" +
+        return "EquipmentAddTreeNodeDTO{" +
                 "id='" + id + '\'' +
-                ", mgmc2no='" + mgmc2no + '\'' +
-                ", mgmc2name='" + mgmc2name + '\'' +
-                ", groupcode='" + groupcode + '\'' +
-                ", mgmc1no='" + mgmc1no + '\'' +
-                ", memo='" + memo + '\'' +
+                ", parentId='" + parentId + '\'' +
+                ", treeCode='" + treeCode + '\'' +
+                ", treeName='" + treeName + '\'' +
+                ", level='" + level + '\'' +
                 ", createUser='" + createUser + '\'' +
                 ", updateUser='" + updateUser + '\'' +
                 ", updateUserName='" + updateUserName + '\'' +

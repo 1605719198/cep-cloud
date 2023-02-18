@@ -16,4 +16,4 @@ redis</br>
 nacos</br>
 地址：10.32.157.51:8848/nacos</br>
 用户名：nacos</br>
-密码：yjx@2023</br>
+密码：nacos</br>
