@@ -9,7 +9,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.equip.MG.dto.EquipmentAddTreeNodeDTO;
 import com.jlkj.equip.MG.dto.EquipmentDownTypeTreeDTO;
-import com.jlkj.equip.MG.entity.EquipmentDownTypeTree;
+import com.jlkj.equip.MG.domain.EquipmentDownTypeTree;
 import com.jlkj.equip.MG.service.IEquipmentDownTypeTreeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

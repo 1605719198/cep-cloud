@@ -9,7 +9,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.equip.MG.dto.EquipmentMgmc2AddDTO;
 import com.jlkj.equip.MG.dto.EquipmentMgmc2QueryDTO;
-import com.jlkj.equip.MG.entity.EquipmentMgmc2;
+import com.jlkj.equip.MG.domain.EquipmentMgmc2;
 import com.jlkj.equip.MG.service.IEquipmentMgmc2Service;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;

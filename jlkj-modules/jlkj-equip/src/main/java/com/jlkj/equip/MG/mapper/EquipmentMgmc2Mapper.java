@@ -1,7 +1,7 @@
 package com.jlkj.equip.MG.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.equip.MG.entity.EquipmentMgmc2;
+import com.jlkj.equip.MG.domain.EquipmentMgmc2;
 
 /**
  * <p>

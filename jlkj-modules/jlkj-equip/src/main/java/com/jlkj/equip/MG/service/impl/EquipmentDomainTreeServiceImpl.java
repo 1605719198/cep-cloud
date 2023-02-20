@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.equip.MG.dto.EquipmentDomainTreeDTO;
-import com.jlkj.equip.MG.entity.EquipmentDomainTree;
+import com.jlkj.equip.MG.domain.EquipmentDomainTree;
 import com.jlkj.equip.MG.mapper.EquipmentDomainTreeMapper;
 import com.jlkj.equip.MG.service.IEquipmentDomainTreeService;
 import org.springframework.beans.BeanUtils;

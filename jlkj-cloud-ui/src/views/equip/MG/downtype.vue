@@ -1,175 +1,136 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="24"
-              style="padding:0 10px">
-        <!--       头部标题 -->
-
+  <div class="app-container">
+    <el-row :gutter="20">
+      <el-col :span="4" :xs="24">
         <!--       table主体 -->
-        <div class="plan_main">
-          <div class="avue-crud el-card__body"
-               style="width: 98%;border: 0">
-            <el-row :gutter="20">
-              <!--      树形结构数据-->
-              <el-col :span="4"
-                      :xs="24"
-                      style="border-right: 1px solid #eee">
-                <div class="head-container">
-                  <el-input placeholder="输入关键字进行过滤"
-                            v-model="filterText"
-                            style="margin-bottom: 20px">
-                  </el-input>
-                </div>
-                <div class="head-container">
-                  <el-tree class="filter-tree"
-                           :data="treeData"
-                           :props="defaultProps"
-                           default-expand-all
-                           :filter-node-method="filterNode"
-                           ref="tree"
-                           @node-click="handleNodeClick">
-                  </el-tree>
-                </div>
-              </el-col>
-              <!--      信息数据查询-->
-              <el-col :span="20"
-                      :xs="24">
-                <!--           条件搜索 -->
-                <el-row>
-                  <div class="avue-crud__search"
-                       style="border: 0">
-                    <el-form :model="queryParams"
-                             ref="queryForm">
-                      <el-row :gutter="20">
-                        <el-col :span="4">
-                          <div class="el-form-item el-form-item--small">
-                            <div class="el-form-item__content">
-                              <el-input v-model="queryParams.groupcode"
-                                        type="text"
-                                        clearable
-                                        placeholder="请输入停机原因群码" />
-                            </div>
-                          </div>
-                        </el-col>
-                        <el-col :span="16">
-                          <div class="el-form-item__content"
-                               style="margin-left: 0px;">
-                            <el-button
-                                       size="medium"
-                                       type="primary"
-                                       icon="el-icon-search"
-                                       @click="handleQuery">搜 索</el-button>
-                            <el-button size="medium"
-                                       type="default"
-                                       icon="el-icon-refresh-left"
-                                       @click="handleReset">重 置</el-button>
-                          </div>
-                        </el-col>
-                        <el-col :span="4">
-                          <div class="el-form-item__content"
-                               style="float: right">
-                            <el-button
-                                       size="medium"
-                                       type="primary"
-                                       icon="el-icon-plus"
-                                       @click="handleAdd">新 增</el-button>
-                            <el-button
-                                       type="danger"
-                                       icon="el-icon-delete"
-                                       size="medium"
-                                       @click="handleDelete">删 除</el-button>
-                            <!--                            <el-button size="medium" type="default" @click="handleExport">导 出</el-button>-->
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </el-form>
-                  </div>
-                </el-row>
-                <el-row>
-                  <el-col :span="8">
-                    <label class="el-form-item__label"
-                           style="width: 100%;line-height: 40px;font-weight: bold;font-size: 14px;text-align: left">
-                      停机细类型编号: {{this.groupcode}}
-                    </label>
-                  </el-col>
-                  <el-col :span="8">
-                    <label class="el-form-item__label"
-                           style="width: 100%;line-height: 40px;font-weight: bold;font-size: 14px;text-align: left">
-                      停机细类型名称: {{this.groupname}}
-                    </label>
-                  </el-col>
-                </el-row>
-                <!--                表单数据 -->
-                <el-row>
-                  <el-table v-loading="loading"
-                            height="61vh"
-                            size="small"
-                            :data="tableData"
-                            stripe
-                            width="100%"
-                            :default-sort="{prop: 'groupcode', order: 'descending'}"
-                            @selection-change="handleSelectionChange">
-                    <el-table-column type="selection"
-                                     width="60"
-                                     align="center" />
-                    <el-table-column type="index"
-                                     label="序号"
-                                     :index="indexMethod"
-                                     align="center" />
-                    <template v-for="column in columns">
-                      <el-table-column :key="column.prop"
-                                       :fixed="column.fixed"
-                                       :prop="column.prop"
-                                       :label="column.label"
-                                       :sortable="column.sortable"
-                                       :width="column.width"
-                                       :align="column.align">
-                      </el-table-column>
-                    </template>
-                    <el-table-column label="操作"
-                                     header-align="center"
-                                     align="center">
-                      <template slot-scope="scope">
-                        <el-button
-                                   size="mini"
-                                   plain
-                                   type="primary"
-                                   icon="el-icon-edit"
-                                   @click="handleUpdate(scope.row)">
-                          编辑
-                        </el-button>
-                        <el-button
-                                   size="mini"
-                                   plain
-                                   type="danger"
-                                   icon="el-icon-delete"
-                                   @click="handleDelete(scope.row)">
-                          删除
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                  <!--               分页 -->
-                  <div style="margin-top: 10px;right: 0"
-                       class="avue-crud__pagination">
-                    <el-pagination background
-                                   @size-change="handleSizeChange"
-                                   @current-change="handleCurrentChange"
-                                   :current-page="queryParams.page"
-                                   :page-sizes="[20, 50, 100, 200]"
-                                   :page-size="queryParams.limit"
-                                   layout="total, sizes, prev, pager, next, jumper"
-                                   :total="queryParams.total">
-                    </el-pagination>
-                  </div>
-                </el-row>
-              </el-col>
-            </el-row>
-          </div>
+        <div class="head-container">
+          <el-input placeholder="输入关键字进行过滤"
+                    v-model="filterText"
+                    clearable
+                    size="small"
+                    prefix-icon="el-icon-search"
+                    style="margin-bottom: 20px">
+          </el-input>
+        </div>
+        <div class="head-container">
+          <el-tree
+            class="filter-tree"
+            :data="treeData"
+            :props="defaultProps"
+            default-expand-all
+            :filter-node-method="filterNode"
+            ref="tree"
+            default-expand-all
+            highlight-current
+            @node-click="handleNodeClick"
+          />
         </div>
       </el-col>
-    </el-row>
+      <!--      信息数据查询-->
+      <el-col :span="20" :xs="24">
+        <!--           条件搜索 -->
+        <el-form :model="queryParams" v-show="showSearch" ref="queryForm" size="small" :inline="true">
+          <el-form-item label="停机原因群码" prop="groupcode" label-width="100px">
+            <el-input
+              v-model="queryParams.groupcode"
+              type="text"
+              clearable
+              placeholder="请输入停机原因群码"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button size="mini" type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+            <el-button size="mini" type="default" icon="el-icon-refresh-left" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              size="mini"
+              plain
+              type="primary"
+              icon="el-icon-plus"
+              @click="handleAdd">新增</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              plain
+              @click="handleDelete">删除</el-button>
+          </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <label class="el-form-item__label"
+                   style="width: 100%;line-height: 40px;font-weight: bold;font-size: 14px;text-align: left">
+              停机细类型编号: {{this.groupcode}}
+            </label>
+          </el-col>
+          <el-col :span="8">
+            <label class="el-form-item__label"
+                   style="width: 100%;line-height: 40px;font-weight: bold;font-size: 14px;text-align: left">
+              停机细类型名称: {{this.groupname}}
+            </label>
+          </el-col>
+        </el-row>
+        <el-table v-loading="loading"
+                  :data="tableData"
+                  stripe
+                  :default-sort="{prop: 'groupcode', order: 'descending'}"
+                  @selection-change="handleSelectionChange">
+          <el-table-column type="selection"
+                           width="60"
+                           align="center" />
+          <el-table-column type="index"
+                           label="序号"
+                           :index="indexMethod"
+                           align="center" />
+          <template v-for="column in columns">
+            <el-table-column :key="column.prop"
+                             :fixed="column.fixed"
+                             :prop="column.prop"
+                             :label="column.label"
+                             :sortable="column.sortable"
+                             :width="column.width"
+                             :align="column.align">
+            </el-table-column>
+          </template>
+          <el-table-column label="操作"
+                           header-align="center"
+                           align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                plain
+                type="text"
+                icon="el-icon-edit"
+                @click="handleUpdate(scope.row)">
+                修改
+              </el-button>
+              <el-button
+                size="mini"
+                plain
+                type="text"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.row)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.page"
+          :limit.sync="queryParams.limit"
+          @pagination="getList"
+        />
+      </el-col>
+    </el-row>
     <!--    添加或修改弹框-->
     <div v-if="open">
       <el-dialog :title="title"
@@ -234,6 +195,8 @@ export default {
   components: {},
   data () {
     return {
+      // 显示搜索条件
+      showSearch: true,
       // 遮罩层
       loading: true,
       // 树节点过滤
@@ -260,18 +223,18 @@ export default {
         children: 'children',
         label: 'label'
       },
+      // 总条数
+      total: 0,
       // 查询参数
       queryParams: {
         // 停机原因群码
         groupcode: '',
         //停机类型编码
         mgmc1no: '',
-        // 总条数
-        total: 0,
         // 当前页
         page: 1,
         // 每页记录数
-        limit: 20,
+        limit: 10,
       },
       // 表格字段
       columns: [
@@ -310,24 +273,9 @@ export default {
   },
   methods: {
     // 重置
-    handleReset () {
-      this.queryParams = {
-        //当前页
-        page: 1,
-        //每页记录数
-        limit: 20,
-      };
+    handleReset() {
+      this.resetForm("queryForm")
       this.handleQuery();
-    },
-    // 切换页面显示条数查询
-    handleSizeChange (val) {
-      this.queryParams.limit = val
-      this.getList()
-    },
-    // 切换当前页查询
-    handleCurrentChange (val) {
-      this.queryParams.page = val
-      this.getList(this.queryParams.page)
     },
     // 初始化树节点
     initTree () {
@@ -336,15 +284,14 @@ export default {
       })
     },
     //初始化数据
-    getList (page = 1) {
-      this.queryParams.page = page
+    getList () {
+      // this.queryParams.page = page
       this.loading = true
       queryDataByParams(this.queryParams).then(response => {
-        this.queryParams.total = response.data.total
+        this.total = response.data.total
         this.tableData = response.data.list
       })
       this.loading = false
-      console.log(this.$store.state)
     },
     // 树节点搜索过滤
     filterNode (value, data) {
@@ -371,10 +318,7 @@ export default {
     handleAdd () {
       this.reset()
       if (this.queryParams.mgmc1no == '' || this.queryParams.mgmc1no == null || this.queryParams.mgmc1no == undefined) {
-        this.$message({
-          type: 'warning',
-          message: '请先选择对应树节点'
-        })
+        this.$modal.msgWarning('请先选择对应树节点')
       } else {
         this.open = true
         this.title = '添加'
@@ -385,18 +329,12 @@ export default {
       this.reset()
       const typeId = row.id || this.ids
       if (this.ids.length > 1) {
-        this.$message({
-          type: 'warning',
-          message: '只能选择一笔数据进行修改操作'
-        })
+        this.$modal.msgWarning('只能选择一笔数据进行修改操作')
       } else if (this.ids.length < 1 && (typeId == null || typeId.length < 1)) {
-        this.$message({
-          type: 'warning',
-          message: '请选择一笔数据进行操作'
-        })
+        this.$modal.msgWarning('请选择一笔数据进行操作')
       } else {
         getData(typeId).then(response => {
-          this.form = response.data.data
+          this.form = response.data
           this.open = true
           this.title = '修改'
         })
@@ -412,11 +350,8 @@ export default {
           type: 'warning'
         }).then(() => {
           deleteMgmc2Data(ids).then(response => {
-            if (response.data.data) {
-              this.$message({
-                type: 'success',
-                message: '删除成功'
-              })
+            if (response.data) {
+              this.$modal.msgSuccess('删除成功')
             }
             this.getList()
           })
@@ -441,11 +376,8 @@ export default {
           if (this.form.id != undefined) {
             updateMgmc2Data(this.form).then(response => {
               this.states = false
-              if (response.data.data) {
-                this.$message({
-                  type: 'success',
-                  message: '修改成功'
-                })
+              if (response.data) {
+                this.$modal.msgSuccess('修改成功')
                 this.open = false;
                 this.getList(this.queryParams.page);
               }
@@ -454,11 +386,8 @@ export default {
             this.form.mgmc1no = this.queryParams.mgmc1no
             addMgmc2Data(this.form).then(response => {
               this.states = false
-              if (response.data.data) {
-                this.$message({
-                  type: 'success',
-                  message: '新增成功'
-                })
+              if (response.data) {
+                this.$modal.msgSuccess('新增成功')
                 this.open = false;
                 this.getList();
               }

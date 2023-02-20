@@ -7,7 +7,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.equip.MG.dto.EquipmentDomainTreeDTO;
-import com.jlkj.equip.MG.entity.EquipmentDomainTree;
+import com.jlkj.equip.MG.domain.EquipmentDomainTree;
 import com.jlkj.equip.MG.service.IEquipmentDomainTreeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;

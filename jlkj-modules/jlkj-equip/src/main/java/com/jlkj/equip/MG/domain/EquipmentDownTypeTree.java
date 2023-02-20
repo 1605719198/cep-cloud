@@ -1,4 +1,4 @@
-package com.jlkj.equip.MG.entity;
+package com.jlkj.equip.MG.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;

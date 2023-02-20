@@ -2,7 +2,7 @@ package com.jlkj.equip.MG.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.equip.MG.dto.EquipmentDownTypeTreeDTO;
-import com.jlkj.equip.MG.entity.EquipmentDownTypeTree;
+import com.jlkj.equip.MG.domain.EquipmentDownTypeTree;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.jlkj.equip.MG.entity;
+package com.jlkj.equip.MG.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -8,62 +8,42 @@ import java.util.Date;
 
 /**
  * <p>
- * 停机原因数据
+ * 设备域维护
  * </p>
  *
  * @author xin
- * @since 2022-05-09
+ * @since 2022-06-09
  */
-@TableName("t_equipment_mgmc2")
-public class EquipmentMgmc2 implements Serializable {
+@TableName("equip_mg_domain_tree")
+public class EquipmentDomainTree implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 系统码
+     * 系统码uuid
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 停机原因编号
+     * 上级域id（父id）
      */
-    private String mgmc2no;
+    private String parentId;
 
     /**
-     * 停机原因名称
+     * 域编码
      */
-    private String mgmc2name;
+    private String domainNo;
 
     /**
-     * 停机原因群码
+     * 域名称
      */
-    private String groupcode;
+    private String domainName;
 
     /**
-     * 停机类型编号
+     * 域描述
      */
-    private String mgmc1no;
-
-    /**
-     * 备注
-     */
-    private String memo;
-
-    /**
-     * 修改人员
-     */
-    private String modifyemp;
-
-    /**
-     * 修改日期
-     */
-    private String modifydate;
-
-    /**
-     * 修改时间
-     */
-    private String modifytime;
+    private String domainDescription;
 
     /**
      * 创建人
@@ -111,61 +91,33 @@ public class EquipmentMgmc2 implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getMgmc2no() {
-        return mgmc2no;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setMgmc2no(String mgmc2no) {
-        this.mgmc2no = mgmc2no;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
-    public String getMgmc2name() {
-        return mgmc2name;
-    }
-
-    public void setMgmc2name(String mgmc2name) {
-        this.mgmc2name = mgmc2name;
-    }
-    public String getGroupcode() {
-        return groupcode;
+    public String getDomainNo() {
+        return domainNo;
     }
 
-    public void setGroupcode(String groupcode) {
-        this.groupcode = groupcode;
+    public void setDomainNo(String domainNo) {
+        this.domainNo = domainNo;
     }
-    public String getMgmc1no() {
-        return mgmc1no;
-    }
-
-    public void setMgmc1no(String mgmc1no) {
-        this.mgmc1no = mgmc1no;
-    }
-    public String getMemo() {
-        return memo;
+    public String getDomainName() {
+        return domainName;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
     }
-    public String getModifyemp() {
-        return modifyemp;
-    }
-
-    public void setModifyemp(String modifyemp) {
-        this.modifyemp = modifyemp;
-    }
-    public String getModifydate() {
-        return modifydate;
+    public String getDomainDescription() {
+        return domainDescription;
     }
 
-    public void setModifydate(String modifydate) {
-        this.modifydate = modifydate;
-    }
-    public String getModifytime() {
-        return modifytime;
-    }
-
-    public void setModifytime(String modifytime) {
-        this.modifytime = modifytime;
+    public void setDomainDescription(String domainDescription) {
+        this.domainDescription = domainDescription;
     }
     public String getCreateUser() {
         return createUser;
@@ -219,16 +171,12 @@ public class EquipmentMgmc2 implements Serializable {
 
     @Override
     public String toString() {
-        return "EquipmentMgmc2{" +
+        return "EquipmentDomainTree{" +
             "id=" + id +
-            ", mgmc2no=" + mgmc2no +
-            ", mgmc2name=" + mgmc2name +
-            ", groupcode=" + groupcode +
-            ", mgmc1no=" + mgmc1no +
-            ", memo=" + memo +
-            ", modifyemp=" + modifyemp +
-            ", modifydate=" + modifydate +
-            ", modifytime=" + modifytime +
+            ", parentId=" + parentId +
+            ", domainNo=" + domainNo +
+            ", domainName=" + domainName +
+            ", domainDescription=" + domainDescription +
             ", createUser=" + createUser +
             ", createTime=" + createTime +
             ", updateUser=" + updateUser +
