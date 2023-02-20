@@ -87,7 +87,22 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
-  }
+  },
+  {
+    path: '/equip/achieve/responsibilitySharing',
+    component: Layout,
+    hidden: true,
+    // permissions: ['system:dict:list'],
+    children: [
+      {
+        breadcrumb: true,
+        path: 'index/:mgms1No(\\d+)',
+        component: () => import('@/views/equip/MG/responsibilitySharing'),
+        name: 'rs',
+        meta: { title: '责任分摊', activeMenu: '/equip/achieve/putonfile' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载
