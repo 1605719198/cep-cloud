@@ -17,6 +17,7 @@
         <module>jlkj-common-security</module>
         <module>jlkj-common-datascope</module>
         <module>jlkj-common-datasource</module>
+        <module>jlkj-common-entity</module>
     </modules>
 
     <artifactId>jlkj-common</artifactId>
