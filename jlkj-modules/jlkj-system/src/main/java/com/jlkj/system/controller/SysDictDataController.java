@@ -1,18 +1,6 @@
 package com.jlkj.system.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
@@ -25,6 +13,15 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.system.api.domain.SysDictData;
 import com.jlkj.system.service.ISysDictDataService;
 import com.jlkj.system.service.ISysDictTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据字典信息
@@ -118,5 +115,72 @@ public class SysDictDataController extends BaseController
     {
         dictDataService.deleteDictDataByIds(dictCodes);
         return success();
+    }
+
+    /**
+     * 根据字典类型、字典键值查询数据===财务模块用
+     * @param dictValue
+     * @param dictType
+     * @return
+     */
+    @GetMapping("/getLabelByDictValue")
+    public Map<String, Object> getLabelByDictValue(@RequestParam(defaultValue = "")String dictType,
+                                                   @RequestParam(defaultValue = "")String dictValue) {
+        QueryWrapper<SysDictData> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_type",dictType);
+        String sysDictDataAccount = "";
+        if(StringUtils.isNoneBlank(dictValue)){
+            wrapper.eq("dict_value",dictValue);
+            SysDictData sysDictData = dictDataService.getOne(wrapper);
+            String sysDictDataValue = sysDictData.getDictValue() ;
+            String sysDictDataLabel = sysDictData.getDictLabel();
+
+            sysDictDataAccount = sysDictDataValue+"_"+sysDictDataLabel;
+        }else {
+            sysDictDataAccount = "";
+        }
+
+        Map<String,Object> returnMap = new HashMap<>(32);
+        returnMap.put("sysDictDataAccount",sysDictDataAccount);
+
+        return returnMap;
+    }
+    /**
+     * 根据字典类型、字典键值查询数据===财务模块用
+     * @param dictValue
+     * @param dictType
+     * @return
+     */
+    @GetMapping("/getMainAreaIdValue")
+    public AjaxResult getMainAreaIdValue(@RequestParam(defaultValue = "")String dictType,
+                                     @RequestParam(defaultValue = "")String dictValue) {
+        QueryWrapper<SysDictData> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_type",dictType);
+        String field1 = "";
+        if(StringUtils.isNoneBlank(dictValue)){
+            wrapper.eq("dict_value",dictValue);
+            SysDictData sysDictData = dictDataService.getOne(wrapper);
+//            field1 = sysDictData.getField1();
+        }
+        return AjaxResult.success(field1);
+    }
+    /**
+     * 根据字典类型查询数据===财务模块调用公司别
+     * @param dictType
+     * @return
+     */
+    @GetMapping("/getMainCompIdValue")
+    public List<Map<String,Object>> getMainCompIdValue(@RequestParam(defaultValue = "")String dictType) {
+        QueryWrapper<SysDictData> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_type",dictType);
+        List<Map<String,Object>> returnList = new ArrayList<>();
+        List<SysDictData> list = dictDataService.list(wrapper);
+        list.forEach(item -> {
+            Map<String,Object> map = new HashMap<>(32);
+            map.put("value",item.getDictLabel());
+            returnList.add(map);
+        });
+        return returnList;
+
     }
 }

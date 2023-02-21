@@ -1,12 +1,14 @@
 package com.jlkj.system.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.security.utils.DictUtils;
 import com.jlkj.system.api.domain.SysDictData;
 import com.jlkj.system.mapper.SysDictDataMapper;
 import com.jlkj.system.service.ISysDictDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 字典 业务层处理
@@ -14,8 +16,7 @@ import com.jlkj.system.service.ISysDictDataService;
  * @author jlkj
  */
 @Service
-public class SysDictDataServiceImpl implements ISysDictDataService
-{
+public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements ISysDictDataService {
     @Autowired
     private SysDictDataMapper dictDataMapper;
 

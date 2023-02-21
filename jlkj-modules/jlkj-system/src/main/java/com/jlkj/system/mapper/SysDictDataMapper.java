@@ -1,10 +1,11 @@
 package com.jlkj.system.mapper;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.system.api.domain.SysDictData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import com.jlkj.system.api.domain.SysDictData;
+
+import java.util.List;
 
 /**
  * 字典表 数据层
@@ -12,8 +13,7 @@ import com.jlkj.system.api.domain.SysDictData;
  * @author jlkj
  */
 @Mapper
-public interface SysDictDataMapper
-{
+public interface SysDictDataMapper extends BaseMapper<SysDictData> {
     /**
      * 根据条件分页查询字典数据
      *

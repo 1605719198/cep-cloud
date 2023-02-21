@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.AA.mapper.FinanceAccountTreeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.AA.domain.FinanceAccountTree">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="accountCode" column="account_code" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+            <result property="parentAccountCode" column="parent_account_code" jdbcType="VARCHAR"/>
+            <result property="folderName" column="folder_name" jdbcType="VARCHAR"/>
+            <result property="isFolder" column="is_folder" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="SMALLINT"/>
+            <result property="accountName" column="account_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,account_code,
+        parent_id,parent_account_code,folder_name,
+        is_folder,create_user,create_time,
+        update_user,update_time,update_user_name,
+        create_user_name,del_flag,account_name
+    </sql>
+</mapper>
