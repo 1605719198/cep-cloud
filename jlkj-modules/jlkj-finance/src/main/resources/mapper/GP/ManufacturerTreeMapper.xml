@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.GP.mapper.ManufacturerTreeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.gp.domain.ManufacturerTree">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="parentid" column="parentId" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="nodeNo" column="node_no" jdbcType="VARCHAR"/>
+            <result property="nodeName" column="node_name" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="SMALLINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parentId,comp_id,
+        node_no,node_name,create_user,
+        create_time,update_user,update_time,
+        create_user_name,update_user_name,del_flag
+    </sql>
+
+</mapper>

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.IP.mapper.FinanceProductMillAttriMapper">
 
-    <resultMap id="BaseResultMap" type="com.jlkj.finance.IP.domain.FinanceProductMillAttri">
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.ip.domain.FinanceProductMillAttri">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
             <result property="millId" column="mill_id" jdbcType="VARCHAR"/>

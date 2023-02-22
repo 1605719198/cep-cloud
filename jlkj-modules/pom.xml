@@ -27,9 +27,9 @@
 
     <artifactId>jlkj-modules</artifactId>
     <packaging>pom</packaging>
-
     <description>
         jlkj-modules业务模块
+
     </description>
 
 </project>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.AC.mapper.FinanceCostSettingDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.ac.domain.FinanceCostSettingDetail">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="leafId" column="leaf_id" jdbcType="VARCHAR"/>
+            <result property="itemA" column="item_a" jdbcType="VARCHAR"/>
+            <result property="itemB" column="item_b" jdbcType="VARCHAR"/>
+            <result property="itemC" column="item_c" jdbcType="VARCHAR"/>
+            <result property="itemD" column="item_d" jdbcType="VARCHAR"/>
+            <result property="itemE" column="item_e" jdbcType="VARCHAR"/>
+            <result property="dataA" column="data_a" jdbcType="VARCHAR"/>
+            <result property="dataB" column="data_b" jdbcType="VARCHAR"/>
+            <result property="dataC" column="data_c" jdbcType="VARCHAR"/>
+            <result property="dataD" column="data_d" jdbcType="VARCHAR"/>
+            <result property="dataE" column="data_e" jdbcType="VARCHAR"/>
+            <result property="dataF" column="data_f" jdbcType="VARCHAR"/>
+            <result property="dataG" column="data_g" jdbcType="DECIMAL"/>
+            <result property="dataSeq" column="data_seq" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="SMALLINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,leaf_id,
+        item_a,item_b,item_c,
+        item_d,item_e,data_a,
+        data_b,data_c,data_d,
+        data_e,data_f,data_g,
+        data_seq,status,create_user,
+        create_date,update_user,update_date,
+        create_user_name,update_user_name,del_flag
+    </sql>
+</mapper>

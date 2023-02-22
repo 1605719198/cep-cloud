@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.AC.mapper.FinanceCostCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.ac.domain.FinanceCostCode">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="costCode" column="cost_code" jdbcType="VARCHAR"/>
+            <result property="costDesc" column="cost_desc" jdbcType="VARCHAR"/>
+            <result property="accountCode" column="account_code" jdbcType="VARCHAR"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="assignMark" column="assign_mark" jdbcType="VARCHAR"/>
+            <result property="expenseSource" column="expense_source" jdbcType="VARCHAR"/>
+            <result property="expenseProperty" column="expense_property" jdbcType="VARCHAR"/>
+            <result property="prodManaCostAttri" column="prod_mana_cost_attri" jdbcType="VARCHAR"/>
+            <result property="expenseType" column="expense_type" jdbcType="VARCHAR"/>
+            <result property="stusCode" column="stus_code" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="BaseResultDtoMap" type="com.jljl.financeprovider.dto.FinanceCostDownTypeTreeDTO">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+
+        <result property="costCode" column="cost_code" jdbcType="VARCHAR"/>
+        <result property="costDesc" column="cost_desc" jdbcType="VARCHAR"/>
+        <result property="accountCode" column="account_code" jdbcType="VARCHAR"/>
+        <result property="idTypeStus" column="id_type_stus" jdbcType="VARCHAR"/>
+        <result property="refTypeStus" column="ref_type_stus" jdbcType="VARCHAR"/>
+        <result property="costCodeLevelCode" column="cost_code_level_code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,comp_id,cost_code,
+        cost_desc,account_code,unit,
+        assign_mark,expense_source,expense_property,
+        prod_mana_cost_attri,expense_type,stus_code,
+        create_user,create_date,update_user,
+        update_date,create_time,update_time,
+        create_user_name,update_user_name
+    </sql>
+    <select id="getFinanceCostDownTypeTree"
+            resultType="com.jljl.financeprovider.dto.FinanceCostDownTypeTreeDTO">
+        SELECT
+            a.cost_code_level_code,
+            a.id,
+            a.parent_id,
+            a.level_name,
+            b.account_code,
+            b.cost_code,
+            b.cost_desc,
+            c.id_type_stus,
+            c.ref_type_stus
+        FROM
+            t_finance_cost_tree A
+                LEFT JOIN t_finance_cost_code B ON A.cost_code_level_code = SUBSTR( B.cost_code, 1, length( a.cost_code_level_code ) )
+                LEFT JOIN t_finance_account_code C ON ( c.account_code = b.account_code )
+        WHERE
+            a.node_type = 'DOC';
+    </select>
+</mapper>
