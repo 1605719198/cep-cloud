@@ -226,6 +226,13 @@
                 <version>${jlkj.version}</version>
             </dependency>
 
+            <!-- 公共实体类DTO -->
+            <dependency>
+                <groupId>com.jlkj</groupId>
+                <artifactId>jlkj-common-dto</artifactId>
+                <version>${jlkj.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -244,6 +251,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>3.0.3</version>
         </dependency>
     </dependencies>
 
@@ -252,6 +260,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>

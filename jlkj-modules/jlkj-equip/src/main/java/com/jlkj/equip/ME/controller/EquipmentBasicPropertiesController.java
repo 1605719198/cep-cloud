@@ -188,7 +188,7 @@ public class EquipmentBasicPropertiesController {
     @Log(title = "根据树节点ID查询，判断是设备域还是上级设备",businessType = BusinessType.OTHER)
     public Object getEquipmentBasicNumById(@RequestParam(defaultValue = "") String id) {
         EquipmentBasicProperties properties = equipmentBasicPropertiesService.getById(id);
-        Map<String,String> resultMap = new HashMap<>();
+        Map<String,String> resultMap = new HashMap<>(64);
         if (StringUtils.isNotNull(properties)) {
             resultMap.put("equipment_location",properties.getEquipmentLocation());
             resultMap.put("upper_level",id);
