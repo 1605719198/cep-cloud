@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.finance.IP.mapper.FinanceProductSettingDetailMapper">
+<mapper namespace="com.jlkj.finance.ip.mapper.FinanceProductSettingDetailMapper">
 
     <resultMap id="BaseResultMap" type="com.jlkj.finance.ip.domain.FinanceProductSettingDetail">
             <id property="id" column="id" jdbcType="VARCHAR"/>
