@@ -97,7 +97,7 @@ export const constantRoutes = [
       {
         breadcrumb: true,
         path: 'index/:mgms1No(\\d+)',
-        component: () => import('@/views/equip/MG/responsibilitySharing'),
+        component: () => import('@/views/equip/mg/responsibilitySharing'),
         name: 'rs',
         meta: { title: '责任分摊', activeMenu: '/equip/achieve/putonfile' }
       }
