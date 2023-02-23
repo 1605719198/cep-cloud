@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyCostOutputMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyCostOutput">
+            <id property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <id property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <id property="chargeCostCenter" column="charge_cost_center" jdbcType="VARCHAR"/>
+            <id property="activityDate" column="activity_date" jdbcType="VARCHAR"/>
+            <id property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <id property="activityId" column="activity_id" jdbcType="VARCHAR"/>
+            <id property="execJobFunc" column="exec_job_func" jdbcType="VARCHAR"/>
+            <id property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <id property="createTime" column="create_time" jdbcType="VARCHAR"/>
+            <result property="engyUnit" column="engy_unit" jdbcType="VARCHAR"/>
+            <result property="dataTypeIdx" column="data_type_idx" jdbcType="VARCHAR"/>
+            <result property="crntMill" column="crnt_mill" jdbcType="VARCHAR"/>
+            <result property="acctDate" column="acct_date" jdbcType="VARCHAR"/>
+            <result property="factoryId" column="factory_id" jdbcType="VARCHAR"/>
+            <result property="prodCode" column="prod_code" jdbcType="VARCHAR"/>
+            <result property="proConQty" column="pro_con_qty" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        comp_id,cost_center,charge_cost_center,
+        activity_date,engy_id,activity_id,
+        exec_job_func,create_date,create_time,
+        engy_unit,data_type_idx,crnt_mill,
+        acct_date,factory_id,prod_code,
+        pro_con_qty
+    </sql>
+</mapper>

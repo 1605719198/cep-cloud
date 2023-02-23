@@ -86,6 +86,11 @@
             <artifactId>mybatis-plus-join</artifactId>
             <version>1.2.4</version>
         </dependency>
+        <!-- JLKJ Common DTO -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-dto</artifactId>
+        </dependency>
 
     </dependencies>
 

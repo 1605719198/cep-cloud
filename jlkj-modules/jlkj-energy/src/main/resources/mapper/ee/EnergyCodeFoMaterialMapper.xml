@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyCodeFoMaterialMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyCodeFoMaterial">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <result property="engyName" column="engy_name" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="engyClass" column="engy_class" jdbcType="VARCHAR"/>
+            <result property="engySource" column="engy_source" jdbcType="VARCHAR"/>
+            <result property="engyCmp1No" column="engy_cmp1_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp2No" column="engy_cmp2_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp3No" column="engy_cmp3_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp4No" column="engy_cmp4_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp5No" column="engy_cmp5_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp6No" column="engy_cmp6_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp7No" column="engy_cmp7_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp8No" column="engy_cmp8_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp9No" column="engy_cmp9_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp10No" column="engy_cmp10_no" jdbcType="VARCHAR"/>
+            <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
+            <result property="createEmpNo" column="create_emp_no" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="updateEmpNo" column="update_emp_no" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,engy_id,
+        engy_name,cost_center,engy_class,
+        engy_source,engy_cmp1_no,engy_cmp2_no,
+        engy_cmp3_no,engy_cmp4_no,engy_cmp5_no,
+        engy_cmp6_no,engy_cmp7_no,engy_cmp8_no,
+        engy_cmp9_no,engy_cmp10_no,engy_type,
+        create_emp_no,create_date,update_emp_no,
+        update_date,create_user,update_user,
+        create_time,update_time
+    </sql>
+</mapper>

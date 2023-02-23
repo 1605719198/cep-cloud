@@ -82,7 +82,7 @@ export default {
       tableData: [],
       // 表格字段
       columns: [
-        { label: '二级编号/IP', prop: "mgmp3No", sortable: true, align: "center", fixed: false },
+        { label: '二级编号/ip', prop: "mgmp3No", sortable: true, align: "center", fixed: false },
         { label: '产线编号', prop: "mgma1No", sortable: true, align: "center", fixed: false },
         { label: '接收日期', prop: "receiveDate", sortable: true, align: "center", fixed: false },
       ],
@@ -96,7 +96,7 @@ export default {
         page: 1,
         // 每页记录数
         limit: 10,
-        // 二级编号/IP
+        // 二级编号/ip
         mgmp3No: undefined,
         // 产线编号
         mgma1No: undefined,

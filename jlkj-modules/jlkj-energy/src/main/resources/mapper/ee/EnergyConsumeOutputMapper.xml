@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyConsumeOutputMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyConsumeOutput">
+            <id property="timeSeqNo" column="time_seq_no" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="eCountDate" column="e_count_date" jdbcType="VARCHAR"/>
+            <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <result property="ioTypeId" column="io_type_id" jdbcType="VARCHAR"/>
+            <result property="execJobFunc" column="exec_job_func" jdbcType="VARCHAR"/>
+            <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
+            <result property="factoryId" column="factory_id" jdbcType="VARCHAR"/>
+            <result property="millId" column="mill_id" jdbcType="VARCHAR"/>
+            <result property="acctSys" column="acct_sys" jdbcType="VARCHAR"/>
+            <result property="chargeCostCenter" column="charge_cost_center" jdbcType="VARCHAR"/>
+            <result property="chargeFactoryId" column="charge_factory_id" jdbcType="VARCHAR"/>
+            <result property="proConQty" column="pro_con_qty" jdbcType="DECIMAL"/>
+            <result property="engyUnitF" column="engy_unit_f" jdbcType="VARCHAR"/>
+            <result property="engyUnit" column="engy_unit" jdbcType="VARCHAR"/>
+            <result property="calValue" column="cal_value" jdbcType="DECIMAL"/>
+            <result property="calUnit" column="cal_unit" jdbcType="VARCHAR"/>
+            <result property="engyValue" column="engy_value" jdbcType="DECIMAL"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="throwAm" column="throw_am" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        time_seq_no,comp_id,cost_center,
+        e_count_date,engy_id,io_type_id,
+        exec_job_func,engy_type,factory_id,
+        mill_id,acct_sys,charge_cost_center,
+        charge_factory_id,pro_con_qty,engy_unit_f,
+        engy_unit,cal_value,cal_unit,
+        engy_value,create_date,throw_am,
+        create_user,update_user,create_time,
+        update_time
+    </sql>
+</mapper>

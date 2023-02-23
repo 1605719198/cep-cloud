@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyInOutLimitMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyInOutLimit">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="costCenterNo" column="cost_center_no" jdbcType="VARCHAR"/>
+            <result property="costCenterName" column="cost_center_name" jdbcType="VARCHAR"/>
+            <result property="chargeCostCenterNo" column="charge_cost_center_no" jdbcType="VARCHAR"/>
+            <result property="chargeCostCenterName" column="charge_cost_center_name" jdbcType="VARCHAR"/>
+            <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <result property="inOutTypeId" column="in_out_type_id" jdbcType="VARCHAR"/>
+            <result property="upLimit" column="up_limit" jdbcType="DECIMAL"/>
+            <result property="downLimit" column="down_limit" jdbcType="DECIMAL"/>
+            <result property="isPercentTips" column="is_percent_tips" jdbcType="VARCHAR"/>
+            <result property="upLimitPercent" column="up_limit_percent" jdbcType="DECIMAL"/>
+            <result property="downLimitPercent" column="down_limit_percent" jdbcType="DECIMAL"/>
+            <result property="tipsColor" column="tips_color" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,cost_center_no,cost_center_name,
+        charge_cost_center_no,charge_cost_center_name,engy_id,
+        in_out_type_id,up_limit,down_limit,
+        is_percent_tips,up_limit_percent,down_limit_percent,
+        tips_color,create_user,create_time,
+        update_user,update_time,create_user_name,
+        update_user_name
+    </sql>
+    <select id="getEnergyInOutLimitPageData" resultType="com.jlkj.energy.ee.domain.EnergyInOutLimit">
+        select * from t_energy_in_out_limit
+    </select>
+</mapper>

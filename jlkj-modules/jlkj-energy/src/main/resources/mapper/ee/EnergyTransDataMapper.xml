@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyTransDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyTransData">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="transDate" column="trans_date" jdbcType="VARCHAR"/>
+            <result property="transTime" column="trans_time" jdbcType="VARCHAR"/>
+            <result property="seqNo" column="seq_no" jdbcType="INTEGER"/>
+            <result property="errType" column="err_type" jdbcType="VARCHAR"/>
+            <result property="formId" column="form_id" jdbcType="VARCHAR"/>
+            <result property="transData" column="trans_data" jdbcType="VARCHAR"/>
+            <result property="errMsg" column="err_msg" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,trans_date,
+        trans_time,seq_no,err_type,
+        form_id,trans_data,err_msg,
+        create_user,update_user,create_time,
+        update_time
+    </sql>
+</mapper>

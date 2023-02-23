@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergySolidLiquidDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergySolidLiquidData">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="engyClass" column="engy_class" jdbcType="VARCHAR"/>
+            <result property="engySource" column="engy_source" jdbcType="VARCHAR"/>
+            <result property="engyUnit" column="engy_unit" jdbcType="VARCHAR"/>
+            <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
+            <result property="engydate" column="engyDate" jdbcType="VARCHAR"/>
+            <result property="engyValue" column="engy_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp1No" column="engy_cmp1_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp1Name" column="engy_cmp1_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp1Value" column="engy_cmp1_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp2No" column="engy_cmp2_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp2Name" column="engy_cmp2_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp2Value" column="engy_cmp2_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp3No" column="engy_cmp3_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp3Name" column="engy_cmp3_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp3Value" column="engy_cmp3_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp4No" column="engy_cmp4_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp4Name" column="engy_cmp4_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp4Value" column="engy_cmp4_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp5No" column="engy_cmp5_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp5Name" column="engy_cmp5_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp5Value" column="engy_cmp5_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp6No" column="engy_cmp6_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp6Name" column="engy_cmp6_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp6Value" column="engy_cmp6_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp7No" column="engy_cmp7_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp7Name" column="engy_cmp7_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp7Value" column="engy_cmp7_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp8No" column="engy_cmp8_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp8Name" column="engy_cmp8_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp8Value" column="engy_cmp8_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp9No" column="engy_cmp9_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp9Name" column="engy_cmp9_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp9Value" column="engy_cmp9_value" jdbcType="DECIMAL"/>
+            <result property="engyCmp10No" column="engy_cmp10_no" jdbcType="VARCHAR"/>
+            <result property="engyCmp10Name" column="engy_cmp10_name" jdbcType="VARCHAR"/>
+            <result property="engyCmp10Value" column="engy_cmp10_value" jdbcType="DECIMAL"/>
+            <result property="updateEmpNo" column="update_emp_no" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,engy_id,
+        cost_center,engy_class,engy_source,
+        engy_unit,engy_type,engyDate,
+        engy_value,engy_cmp1_no,engy_cmp1_name,
+        engy_cmp1_value,engy_cmp2_no,engy_cmp2_name,
+        engy_cmp2_value,engy_cmp3_no,engy_cmp3_name,
+        engy_cmp3_value,engy_cmp4_no,engy_cmp4_name,
+        engy_cmp4_value,engy_cmp5_no,engy_cmp5_name,
+        engy_cmp5_value,engy_cmp6_no,engy_cmp6_name,
+        engy_cmp6_value,engy_cmp7_no,engy_cmp7_name,
+        engy_cmp7_value,engy_cmp8_no,engy_cmp8_name,
+        engy_cmp8_value,engy_cmp9_no,engy_cmp9_name,
+        engy_cmp9_value,engy_cmp10_no,engy_cmp10_name,
+        engy_cmp10_value,update_emp_no,update_time
+    </sql>
+</mapper>

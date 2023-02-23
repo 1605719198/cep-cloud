@@ -2,12 +2,12 @@ package com.jlkj.finance.gp.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.dto.dto.financeperdto.*;
 import com.jlkj.finance.gp.domain.*;
-import com.jlkj.common.entity.*;
 import com.jlkj.finance.gp.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-
 import java.util.List;
 
 

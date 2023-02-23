@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyMonthPlanConsumeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyMonthPlanConsume">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="energyName" column="energy_name" jdbcType="VARCHAR"/>
+            <result property="types" column="types" jdbcType="VARCHAR"/>
+            <result property="factoryName" column="factory_name" jdbcType="VARCHAR"/>
+            <result property="factoryArea" column="factory_area" jdbcType="VARCHAR"/>
+            <result property="planyearMonth" column="planyear_month" jdbcType="VARCHAR"/>
+            <result property="planValue" column="plan_value" jdbcType="DECIMAL"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="memo" column="memo" jdbcType="VARCHAR"/>
+            <result property="memoa" column="memoa" jdbcType="VARCHAR"/>
+            <result property="advancedValue" column="advanced_value" jdbcType="DECIMAL"/>
+            <result property="lawsValue" column="laws_value" jdbcType="DECIMAL"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="createEmpNo" column="create_emp_no" jdbcType="VARCHAR"/>
+            <result property="updateEmpNo" column="update_emp_no" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,energy_name,types,
+        factory_name,factory_area,planyear_month,
+        plan_value,unit,memo,
+        memoa,advanced_value,laws_value,
+        create_date,create_emp_no,update_emp_no,
+        update_date,create_user,update_user,
+        create_time,update_time
+    </sql>
+</mapper>

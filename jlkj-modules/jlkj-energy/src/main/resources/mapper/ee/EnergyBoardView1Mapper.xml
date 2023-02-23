@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyBoardView1Mapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyBoardView1">
+            <result property="energyCode" column="energy_code" jdbcType="VARCHAR"/>
+            <result property="energyCodeName" column="energy_code_name" jdbcType="VARCHAR"/>
+            <result property="energyType" column="energy_type" jdbcType="VARCHAR"/>
+            <result property="energyTypeName" column="energy_type_name" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
+            <result property="ioTypeId" column="io_type_id" jdbcType="VARCHAR"/>
+            <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
+            <result property="chargeCostCenter" column="charge_cost_center" jdbcType="VARCHAR"/>
+            <result property="qty" column="qty" jdbcType="DECIMAL"/>
+            <result property="eCountDate" column="e_count_date" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        energy_code,energy_code_name,energy_type,
+        energy_type_name,cost_center,engy_id,
+        io_type_id,engy_type,charge_cost_center,
+        qty,e_count_date
+    </sql>
+    <select id="getEngyTopAnalys" resultType="java.util.Map">
+        select *
+        from v_energy_board_view1
+        where e_count_date = DATE_FORMAT(date_add(CURDATE(), interval -1 day),'%Y%m%d')
+        order by energy_type_name asc
+    </select>
+    <select id="getEngyBottomAnalys" resultType="java.util.Map" parameterType="com.jlkj.energy.ee.dto.dashboardenergy.GetDashBoardEnergyDTO">
+        select *
+        from v_energy_board_view1
+        where DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ >= ]]> #{startTime}
+          and DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ <= ]]> #{endTime}
+          and energy_type_name = #{energyTypeName}
+        order by e_count_date asc
+    </select>
+
+</mapper>
