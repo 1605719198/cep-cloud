@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.ManufacturerFinanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.gp.domain.ManufacturerFinance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="manufacturerId" column="manufacturer_id" jdbcType="VARCHAR"/>
+            <result property="bankCode" column="bank_code" jdbcType="VARCHAR"/>
+            <result property="remitBank1" column="remit_bank1" jdbcType="VARCHAR"/>
+            <result property="remitAccount1" column="remit_account1" jdbcType="VARCHAR"/>
+            <result property="remitBank2" column="remit_bank2" jdbcType="VARCHAR"/>
+            <result property="remitAccount2" column="remit_account2" jdbcType="VARCHAR"/>
+            <result property="remitBank3" column="remit_bank3" jdbcType="VARCHAR"/>
+            <result property="remitAccount3" column="remit_account3" jdbcType="VARCHAR"/>
+            <result property="contact" column="contact" jdbcType="VARCHAR"/>
+            <result property="billAddress" column="bill_address" jdbcType="VARCHAR"/>
+            <result property="officeTelephoneNo" column="office_telephone_no" jdbcType="VARCHAR"/>
+            <result property="fax" column="fax" jdbcType="VARCHAR"/>
+            <result property="telex" column="telex" jdbcType="VARCHAR"/>
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="remitName1" column="remit_name1" jdbcType="VARCHAR"/>
+            <result property="remitName2" column="remit_name2" jdbcType="VARCHAR"/>
+            <result property="remitName3" column="remit_name3" jdbcType="VARCHAR"/>
+            <result property="payType" column="pay_type" jdbcType="VARCHAR"/>
+            <result property="billZipCode" column="bill_zip_code" jdbcType="VARCHAR"/>
+            <result property="billSendAddr" column="bill_send_addr" jdbcType="VARCHAR"/>
+            <result property="billSendZip" column="bill_send_zip" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="acceptRemitBank1" column="accept_remit_bank1" jdbcType="VARCHAR"/>
+            <result property="acceptRemitBank2" column="accept_remit_bank2" jdbcType="VARCHAR"/>
+            <result property="acceptRemitBank3" column="accept_remit_bank3" jdbcType="VARCHAR"/>
+            <result property="ville1" column="ville1" jdbcType="VARCHAR"/>
+            <result property="ville2" column="ville2" jdbcType="VARCHAR"/>
+            <result property="ville3" column="ville3" jdbcType="VARCHAR"/>
+            <result property="province1" column="province1" jdbcType="VARCHAR"/>
+            <result property="province2" column="province2" jdbcType="VARCHAR"/>
+            <result property="province3" column="province3" jdbcType="VARCHAR"/>
+            <result property="mainAreaId1" column="main_area_id1" jdbcType="VARCHAR"/>
+            <result property="mainAreaId2" column="main_area_id2" jdbcType="VARCHAR"/>
+            <result property="mainAreaId3" column="main_area_id3" jdbcType="VARCHAR"/>
+            <result property="bankNum1" column="bank_num1" jdbcType="VARCHAR"/>
+            <result property="bankNum2" column="bank_num2" jdbcType="VARCHAR"/>
+            <result property="bankNum3" column="bank_num3" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,manufacturer_id,
+        bank_code,remit_bank1,remit_account1,
+        remit_bank2,remit_account2,remit_bank3,
+        remit_account3,contact,bill_address,
+        office_telephone_no,fax,telex,
+        mobile,email,update_user,
+        update_time,remit_name1,remit_name2,
+        remit_name3,pay_type,bill_zip_code,
+        bill_send_addr,bill_send_zip,create_user,
+        create_time,accept_remit_bank1,accept_remit_bank2,
+        accept_remit_bank3,ville1,ville2,
+        ville3,province1,province2,
+        province3,main_area_id1,main_area_id2,
+        main_area_id3,bank_num1,bank_num2,
+        bank_num3
+    </sql>
+</mapper>

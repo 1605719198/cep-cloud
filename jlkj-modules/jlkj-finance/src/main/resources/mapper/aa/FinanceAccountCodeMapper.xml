@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAccountCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.aa.domain.FinanceAccountCode">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="accountCode" column="account_code" jdbcType="VARCHAR"/>
+            <result property="accountChineseName" column="account_chinese_name" jdbcType="VARCHAR"/>
+            <result property="accountEnglishName" column="account_english_name" jdbcType="VARCHAR"/>
+            <result property="isVoucher" column="is_voucher" jdbcType="VARCHAR"/>
+            <result property="isUnit" column="is_unit" jdbcType="VARCHAR"/>
+            <result property="idTypeStus" column="id_type_stus" jdbcType="VARCHAR"/>
+            <result property="refTypeStus" column="ref_type_stus" jdbcType="VARCHAR"/>
+            <result property="isDueDate" column="is_due_date" jdbcType="VARCHAR"/>
+            <result property="isLqdt" column="is_lqdt" jdbcType="VARCHAR"/>
+            <result property="isFrnCrcy" column="is_frn_crcy" jdbcType="VARCHAR"/>
+            <result property="isPrvlg" column="is_prvlg" jdbcType="VARCHAR"/>
+            <result property="isCash" column="is_cash" jdbcType="VARCHAR"/>
+            <result property="drOrCr" column="dr_or_cr" jdbcType="VARCHAR"/>
+            <result property="level" column="level" jdbcType="VARCHAR"/>
+            <result property="disabledCode" column="disabled_code" jdbcType="VARCHAR"/>
+            <result property="disabledDate" column="disabled_date" jdbcType="VARCHAR"/>
+            <result property="inputDate" column="input_date" jdbcType="VARCHAR"/>
+            <result property="inputUser" column="input_user" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="SMALLINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,account_code,
+        account_chinese_name,account_english_name,is_voucher,
+        is_unit,id_type_stus,ref_type_stus,
+        is_due_date,is_lqdt,is_frn_crcy,
+        is_prvlg,is_cash,dr_or_cr,
+        level,disabled_code,disabled_date,
+        input_date,input_user,update_date,
+        update_user,create_user,create_time,
+        update_time,update_user_name,create_user_name,
+        del_flag
+    </sql>
+</mapper>

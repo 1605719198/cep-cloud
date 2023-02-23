@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.ManufacturerPurchaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.gp.domain.ManufacturerPurchase">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="manufacturerId" column="manufacturer_id" jdbcType="VARCHAR"/>
+            <result property="payType" column="pay_type" jdbcType="VARCHAR"/>
+            <result property="tradeTerm" column="trade_term" jdbcType="VARCHAR"/>
+            <result property="credit" column="credit" jdbcType="VARCHAR"/>
+            <result property="bankCode" column="bank_code" jdbcType="VARCHAR"/>
+            <result property="remitBank1" column="remit_bank1" jdbcType="VARCHAR"/>
+            <result property="remitAccount1" column="remit_account1" jdbcType="VARCHAR"/>
+            <result property="remitBank2" column="remit_bank2" jdbcType="VARCHAR"/>
+            <result property="remitAccount2" column="remit_account2" jdbcType="VARCHAR"/>
+            <result property="remitBank3" column="remit_bank3" jdbcType="VARCHAR"/>
+            <result property="remitAccount3" column="remit_account3" jdbcType="VARCHAR"/>
+            <result property="vendorType" column="vendor_type" jdbcType="VARCHAR"/>
+            <result property="memo" column="memo" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="respDept" column="resp_dept" jdbcType="VARCHAR"/>
+            <result property="productType" column="product_type" jdbcType="VARCHAR"/>
+            <result property="productDescp" column="product_descp" jdbcType="VARCHAR"/>
+            <result property="badHistory" column="bad_history" jdbcType="VARCHAR"/>
+            <result property="corpGroup" column="corp_group" jdbcType="VARCHAR"/>
+            <result property="source" column="source" jdbcType="VARCHAR"/>
+            <result property="report" column="report" jdbcType="VARCHAR"/>
+            <result property="stamp" column="stamp" jdbcType="VARCHAR"/>
+            <result property="originName" column="origin_name" jdbcType="VARCHAR"/>
+            <result property="stopPeriodFrom" column="stop_period_from" jdbcType="VARCHAR"/>
+            <result property="stopPeriodTo" column="stop_period_to" jdbcType="VARCHAR"/>
+            <result property="profitRegis" column="profit_regis" jdbcType="VARCHAR"/>
+            <result property="factoryRegis" column="factory_regis" jdbcType="VARCHAR"/>
+            <result property="foundDate" column="found_date" jdbcType="VARCHAR"/>
+            <result property="orgType" column="org_type" jdbcType="VARCHAR"/>
+            <result property="emplAmout" column="empl_amout" jdbcType="VARCHAR"/>
+            <result property="factoryArea" column="factory_area" jdbcType="VARCHAR"/>
+            <result property="certification" column="certification" jdbcType="VARCHAR"/>
+            <result property="customer" column="customer" jdbcType="VARCHAR"/>
+            <result property="equipment" column="equipment" jdbcType="VARCHAR"/>
+            <result property="contact" column="contact" jdbcType="VARCHAR"/>
+            <result property="department" column="department" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="contactZip" column="contact_zip" jdbcType="VARCHAR"/>
+            <result property="contactAddr" column="contact_addr" jdbcType="VARCHAR"/>
+            <result property="billZipCode" column="bill_zip_code" jdbcType="VARCHAR"/>
+            <result property="billAddress" column="bill_address" jdbcType="VARCHAR"/>
+            <result property="officeTelephoneNo" column="office_telephone_no" jdbcType="VARCHAR"/>
+            <result property="fax" column="fax" jdbcType="VARCHAR"/>
+            <result property="telex" column="telex" jdbcType="VARCHAR"/>
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="web" column="web" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="VARCHAR"/>
+            <result property="contact2" column="contact2" jdbcType="VARCHAR"/>
+            <result property="contact3" column="contact3" jdbcType="VARCHAR"/>
+            <result property="department2" column="department2" jdbcType="VARCHAR"/>
+            <result property="department3" column="department3" jdbcType="VARCHAR"/>
+            <result property="title2" column="title2" jdbcType="VARCHAR"/>
+            <result property="title3" column="title3" jdbcType="VARCHAR"/>
+            <result property="officeTelephoneNo2" column="office_telephone_no2" jdbcType="VARCHAR"/>
+            <result property="officeTelephoneNo3" column="office_telephone_no3" jdbcType="VARCHAR"/>
+            <result property="mobile2" column="mobile2" jdbcType="VARCHAR"/>
+            <result property="mobile3" column="mobile3" jdbcType="VARCHAR"/>
+            <result property="email2" column="email2" jdbcType="VARCHAR"/>
+            <result property="email3" column="email3" jdbcType="VARCHAR"/>
+            <result property="lastOrderDate" column="last_order_date" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+            <result property="remitName1" column="remit_name1" jdbcType="VARCHAR"/>
+            <result property="remitName2" column="remit_name2" jdbcType="VARCHAR"/>
+            <result property="remitName3" column="remit_name3" jdbcType="VARCHAR"/>
+            <result property="remitBank4" column="remit_bank4" jdbcType="VARCHAR"/>
+            <result property="remitAccount4" column="remit_account4" jdbcType="VARCHAR"/>
+            <result property="remitName4" column="remit_name4" jdbcType="VARCHAR"/>
+            <result property="remitBank5" column="remit_bank5" jdbcType="VARCHAR"/>
+            <result property="remitAccount5" column="remit_account5" jdbcType="VARCHAR"/>
+            <result property="remitName5" column="remit_name5" jdbcType="VARCHAR"/>
+            <result property="specialCode" column="special_code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,manufacturer_id,
+        pay_type,trade_term,credit,
+        bank_code,remit_bank1,remit_account1,
+        remit_bank2,remit_account2,remit_bank3,
+        remit_account3,vendor_type,memo,
+        status,resp_dept,product_type,
+        product_descp,bad_history,corp_group,
+        source,report,stamp,
+        origin_name,stop_period_from,stop_period_to,
+        profit_regis,factory_regis,found_date,
+        org_type,empl_amout,factory_area,
+        certification,customer,equipment,
+        contact,department,title,
+        contact_zip,contact_addr,bill_zip_code,
+        bill_address,office_telephone_no,fax,
+        telex,mobile,email,
+        web,update_user,update_time,
+        contact2,contact3,department2,
+        department3,title2,title3,
+        office_telephone_no2,office_telephone_no3,mobile2,
+        mobile3,email2,email3,
+        last_order_date,create_user,create_time,
+        remit_name1,remit_name2,remit_name3,
+        remit_bank4,remit_account4,remit_name4,
+        remit_bank5,remit_account5,remit_name5,
+        special_code
+    </sql>
+</mapper>
