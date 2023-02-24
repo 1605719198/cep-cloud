@@ -1,8 +1,7 @@
 package com.jlkj.energy.ee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
+
  
 import com.jlkj.common.dto.dto.energyprovider.EnergyTreeDTO;
 import com.jlkj.common.dto.resp.Result;
@@ -36,7 +35,6 @@ public class EnergyTreeController {
     @Log(title = "新增能介资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增能介资料")
     @PostMapping("/ea03/xctl")
-    @RoleAndPermission(permission = "mediated_data_ea03_xctl")
     public Object addEnergyTree(@RequestBody EnergyTreeDTO energyTreeDTO) {
         try {
             EnergyTree energyTree = new EnergyTree();
@@ -60,7 +58,6 @@ public class EnergyTreeController {
     @Log(title = "修改能介资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改能介资料")
     @PostMapping("/update")
-    @RoleAndPermission(permission = "mediated_data_update")
     public Object updateEnergyTree(@RequestBody EnergyTreeDTO energyTreeDTO) {
         try {
             EnergyTree energyTree = new EnergyTree();
@@ -84,7 +81,6 @@ public class EnergyTreeController {
     @Log(title = "删除能介资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除能介资料")
     @DeleteMapping("/delete")
-    @RoleAndPermission(permission = "mediated_data_delete")
     public Object deleteEnergyTree(@RequestParam List<String> id) {
         try {
             boolean result = energyTreeService.removeBatchByIds(id);
@@ -104,7 +100,6 @@ public class EnergyTreeController {
     @Log(title = "下拉列表-能介资料", businessType = BusinessType.OTHER)
     @Operation(summary = "下拉列表-能介资料")
     @GetMapping("/select")
-    @RoleAndPermission(permission = "mediated_data_select")
     public Object selectEnergyTree() {
         List<Map<String, Object>> list = energyTreeService.listMaps(new LambdaQueryWrapper<EnergyTree>()
                 .eq(EnergyTree::getDelFlag, 0).orderByAsc(EnergyTree::getPid).orderByAsc(EnergyTree::getSerialNo));

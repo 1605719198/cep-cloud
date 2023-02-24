@@ -1,8 +1,6 @@
 package com.jlkj.energy.ee.controller;
 
 import com.jlkj.common.dto.annotation.ParamModel;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
- 
 import com.jlkj.common.dto.resp.PageResult;
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.dto.resp.ValidUtil;

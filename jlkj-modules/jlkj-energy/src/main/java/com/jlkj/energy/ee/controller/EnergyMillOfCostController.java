@@ -3,8 +3,7 @@ package com.jlkj.energy.ee.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
+
  
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
@@ -39,7 +38,6 @@ public class EnergyMillOfCostController {
     @Log(title = "新增产线代码对应成本中心资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增产线代码对应成本中心资料")
     @PostMapping("/add")
-    @RoleAndPermission(permission = "mill_cost_add")
     public Object addEnergyMillOfCost(@RequestBody EnergyMillOfCost energyMillOfCost) {
         try {
             LambdaQueryWrapper<EnergyMillOfCost> queryWrapper = new LambdaQueryWrapper<>();
@@ -79,7 +77,6 @@ public class EnergyMillOfCostController {
     @Log(title = "删除产线代码对应成本中心资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除产线代码对应成本中心资料")
     @DeleteMapping("/delete")
-    @RoleAndPermission(permission = "mill_cost_delete")
     public Object deleteEnergyMillOfCost(@RequestParam List<String> id) {
         try {
             boolean result = energyMillOfCostService.removeBatchByIds(id);
@@ -99,7 +96,6 @@ public class EnergyMillOfCostController {
     @Log(title = "能源信息配置查询", businessType = BusinessType.OTHER)
     @Operation(summary = "产线代码对应成本中心资料查询与列表")
     @GetMapping("/query")
-    @RoleAndPermission(permission = "mill_cost_query")
     public Object queryEnergyMillOfCost(EnergyMillOfCostDTO energyMillOfCostDTO) {
         try {
             String millIdCodeStart = energyMillOfCostDTO.getMillIdCodeStart();

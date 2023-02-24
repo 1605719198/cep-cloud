@@ -1,6 +1,5 @@
 package com.jlkj.energy.ee.controller;
 
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.energyconsumptionoutputaccounting.InsertEnergyConsumptionOutputAccountingDTO;
@@ -19,7 +18,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static com.jlkj.common.dto.aop.syslog.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
  * 控制器-能源耗用产出账务信息
@@ -52,7 +50,7 @@ public class EnergyConsumptionOutputAccountingController {
     @RequestMapping(value = "/insertEnergyConsumptionOutputAccounting", method = RequestMethod.POST, produces = "application/json")
     public Object insertEnergyConsumptionOutputAccountingData(@Valid @RequestBody InsertEnergyConsumptionOutputAccountingDTO insertEnergyConsumptionOutputAccountingDTO) {
         log.info("params => " + insertEnergyConsumptionOutputAccountingDTO);
-        httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertEnergyConsumptionOutputAccountingDTO);
+//        httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertEnergyConsumptionOutputAccountingDTO);
         return energyConsumptionOutputAccountingService.insertEnergyConsumptionOutputAccountingData(insertEnergyConsumptionOutputAccountingDTO);
     }
 }

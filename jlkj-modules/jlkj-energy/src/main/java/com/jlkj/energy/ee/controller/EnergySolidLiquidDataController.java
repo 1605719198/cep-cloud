@@ -3,8 +3,7 @@ package com.jlkj.energy.ee.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
+
  
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
@@ -41,7 +40,6 @@ public class EnergySolidLiquidDataController {
     @Log(title = "查询固液体能源量资料", businessType = BusinessType.OTHER)
     @Operation(summary = "查询固液体能源量资料")
     @GetMapping("/query")
-    @RoleAndPermission(permission = "solid_liquid_query")
     public Object queryEnergySolidLiquidData(EnergySolidLiquidDataDTO energySolidLiquidDataDTO) {
         try {
             String dateYm = energySolidLiquidDataDTO.getDateYm();

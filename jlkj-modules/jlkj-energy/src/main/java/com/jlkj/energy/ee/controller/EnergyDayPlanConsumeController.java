@@ -1,7 +1,6 @@
 package com.jlkj.energy.ee.controller;
 
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
+
 import com.jlkj.common.dto.dto.energyprovider.EnergyDayPlanConsumeDTO;
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
@@ -39,7 +38,6 @@ public class EnergyDayPlanConsumeController {
     @Log(title = "新增日计划能耗资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增日计划能耗资料")
     @PostMapping("/ea04/xctl")
-    @RoleAndPermission(permission = "day_plan_consume_ea04_xctl")
     public Object addEnergyDayPlanConsume(@RequestBody EnergyDayPlanConsumeDTO energyDayPlanConsumeDTO) {
         try {
                 EnergyDayPlanConsume energyDayPlanConsume = new EnergyDayPlanConsume();
@@ -62,7 +60,6 @@ public class EnergyDayPlanConsumeController {
     @Log(title = "修改日计划能耗资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改日计划能耗资料")
     @PostMapping("/update")
-    @RoleAndPermission(permission = "day_plan_consume_update")
     public Object updateEnergyDayPlanConsume(@RequestBody EnergyDayPlanConsumeDTO energyDayPlanConsumeDTO) {
         try {
             EnergyDayPlanConsume energyDayPlanConsume = new EnergyDayPlanConsume();
@@ -84,7 +81,6 @@ public class EnergyDayPlanConsumeController {
     @Log(title = "删除日计划能耗资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除日计划能耗资料")
     @DeleteMapping("/delete")
-    @RoleAndPermission(permission = "day_plan_consume_delete")
     public Object deleteEnergyDayPlanConsume(@RequestParam List<String> id) {
         try {
             boolean result = energyDayPlanConsumeService.removeBatchByIds(id);

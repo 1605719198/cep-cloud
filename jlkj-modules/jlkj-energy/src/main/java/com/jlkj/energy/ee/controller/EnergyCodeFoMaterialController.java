@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
 import com.jlkj.common.dto.dto.energyprovider.EnergyCodeFoMaterialDTO;
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
@@ -45,7 +43,6 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "新增固液体能源代码对应料号维护资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增固液体能源代码对应料号维护资料")
     @PostMapping("/add")
-    @RoleAndPermission(permission = "code_material_add")
     public Object addEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token) {
         try {
             EnergyCodeFoMaterial energyCodeFoMaterial = new EnergyCodeFoMaterial();
@@ -90,7 +87,6 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "修改固液体能源代码对应料号维护资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改固液体能源代码对应料号维护资料")
     @PostMapping("/update")
-    @RoleAndPermission(permission = "code_material_update")
     public Object updateEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token) {
         try {
             EnergyCodeFoMaterial energyCodeFoMaterial = new EnergyCodeFoMaterial();
@@ -148,7 +144,6 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "删除固液体能源代码对应料号维护资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除固液体能源代码对应料号维护资料")
     @DeleteMapping("/delete")
-    @RoleAndPermission(permission = "code_material_delete")
     public Object deleteEnergyCodeFoMaterial(@RequestParam List<String> id) {
         try {
             boolean result = energyCodeFoMaterialService.removeBatchByIds(id);
@@ -189,7 +184,6 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "固液体能源代码对应料号资料查询与列表", businessType = BusinessType.OTHER)
     @Operation(summary = "固液体能源代码对应料号资料查询与列表")
     @GetMapping("/query")
-    @RoleAndPermission(permission = "code_material_query")
     public Object queryEnergyCodeFoMaterial(EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO) {
         try {
             String engyIdStart = energyCodeFoMaterialDTO.getEngyIdStart();
@@ -228,7 +222,6 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "根据Id查询能源代码", businessType = BusinessType.OTHER)
     @Operation(summary = "根据Id查询能源代码")
     @GetMapping("/queryById")
-    @RoleAndPermission(permission = "code_material_queryById")
     public Object queryEnergyCodeFoMaterialById(@RequestParam String id) {
         try {
             List<EnergyCodeFoMaterial> list = energyCodeFoMaterialService.query().eq("id", id).list();

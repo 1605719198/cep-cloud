@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
 import com.jlkj.common.dto.dto.energyprovider.EnergyConsumeOutputDTO;
 import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
@@ -56,7 +54,6 @@ public class EnergyConsumeOutputController {
     @Log(title = "接收报文执行每日能源产耗资料(t_energy_consume_output)档的新增", businessType = BusinessType.INSERT)
     @Operation(summary = "新增每日能源产耗资料")
     @PostMapping("/eeozc1/xctl")
-    @RoleAndPermission(permission = "consume_output_eeozc1_xctl")
     public Object addEnergyConsumeOutput(@RequestBody EnergyConsumeOutputDTO energyConsumeOutputDTO) {
         try {
             EnergyConsumeOutput energyConsumeOutput = new EnergyConsumeOutput();
@@ -348,7 +345,6 @@ public class EnergyConsumeOutputController {
     @Log(title = "成本中心日能耗资料查询", businessType = BusinessType.OTHER)
     @Operation(summary = "查询成本中心日能耗资料")
     @GetMapping("/query")
-    @RoleAndPermission(permission = "consume_output_query")
     public Object queryEnergyConsumeOutput(EnergyConsumeOutputDTO energyConsumeOutputDTO) {
         try {
             String eCountDateStart = energyConsumeOutputDTO.getECountDateStart();

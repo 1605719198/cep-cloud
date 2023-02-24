@@ -1,7 +1,6 @@
 package com.jlkj.energy.ee.controller;
 
-import com.jlkj.common.dto.aop.permission.RoleAndPermission;
-import com.jlkj.common.dto.aop.syslog.SysLogTypeEnum;
+
  
 import com.jlkj.common.dto.dto.energyprovider.EnergyDayPlanOutputDTO;
 import com.jlkj.common.dto.resp.Result;
@@ -41,7 +40,6 @@ public class EnergyDayPlanOutputController {
     @Log(title = "新增月计划产量资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增月计划产量资料")
     @PostMapping("/ea05/xctl")
-    @RoleAndPermission(permission = "day_Plan_OutPut_ea05_xctl")
     public Object addEnergyDayPlanOutput(@RequestBody EnergyDayPlanOutputDTO energyDayPlanOutputDTO) {
         try {
                 EnergyDayPlanOutput energyDayPlanOutput = new EnergyDayPlanOutput();
@@ -63,7 +61,6 @@ public class EnergyDayPlanOutputController {
     @Log(title = "修改日计划产量资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改日计划产量资料")
     @PostMapping("/update")
-    @RoleAndPermission(permission = "day_Plan_OutPut_update")
     public Object updateEnergyDayPlanOutput(@RequestBody EnergyDayPlanOutputDTO energyDayPlanOutputDTO) {
         try {
             EnergyDayPlanOutput energyDayPlanOutput = new EnergyDayPlanOutput();
@@ -85,7 +82,6 @@ public class EnergyDayPlanOutputController {
     @Log(title = "删除日计划产量资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除日计划产量资料")
     @DeleteMapping("/delete")
-    @RoleAndPermission(permission = "day_Plan_OutPut_delete")
     public Object deleteEnergyDayPlanOutput(@RequestParam List<String> id) {
         try {
             boolean result = energyDayPlanOutputService.removeBatchByIds(id);
