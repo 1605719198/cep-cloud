@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.quality.ts.mapper.SampleBasicDataaMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.quality.ts.domain.SampleBasicDataA">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="sampleClass" column="sample_class" jdbcType="VARCHAR"/>
+            <result property="csResultCheck" column="cs_result_check" jdbcType="VARCHAR"/>
+            <result property="csEquipmentNumber" column="cs_equipment_number" jdbcType="VARCHAR"/>
+            <result property="celementIndex" column="celement_index" jdbcType="VARCHAR"/>
+            <result property="cequipmentMin" column="cequipment_min" jdbcType="VARCHAR"/>
+            <result property="cequipmentMax" column="cequipment_max" jdbcType="VARCHAR"/>
+            <result property="selementIndex" column="selement_index" jdbcType="VARCHAR"/>
+            <result property="sequipmentMin" column="sequipment_min" jdbcType="VARCHAR"/>
+            <result property="sequipmentMax" column="sequipment_max" jdbcType="VARCHAR"/>
+            <result property="noResultCheck" column="no_result_check" jdbcType="VARCHAR"/>
+            <result property="noEquipmentNumber" column="no_equipment_number" jdbcType="VARCHAR"/>
+            <result property="nelementIndex" column="nelement_index" jdbcType="VARCHAR"/>
+            <result property="nequipmentMin" column="nequipment_min" jdbcType="VARCHAR"/>
+            <result property="nequipmentMax" column="nequipment_max" jdbcType="VARCHAR"/>
+            <result property="oelementIndex" column="oelement_index" jdbcType="VARCHAR"/>
+            <result property="oequipmentMin" column="oequipment_min" jdbcType="VARCHAR"/>
+            <result property="oequipmentMax" column="oequipment_max" jdbcType="VARCHAR"/>
+            <result property="equipmenteAlloy" column="equipment_e_alloy" jdbcType="VARCHAR"/>
+            <result property="equipmentxGroup" column="equipment_x_group" jdbcType="VARCHAR"/>
+            <result property="staticNumber" column="static_number" jdbcType="DECIMAL"/>
+            <result property="defaultFormat" column="default_format" jdbcType="VARCHAR"/>
+            <result property="resultCheckType" column="result_check_type" jdbcType="VARCHAR"/>
+            <result property="allResultCheck" column="all_result_check" jdbcType="VARCHAR"/>
+            <result property="sampleFrom" column="sample_from" jdbcType="VARCHAR"/>
+            <result property="sampleCost" column="sample_cost" jdbcType="DECIMAL"/>
+            <result property="sampleDesc" column="sample_desc" jdbcType="VARCHAR"/>
+            <result property="methodPrepare" column="method_prepare" jdbcType="VARCHAR"/>
+            <result property="materialNo" column="material_no" jdbcType="VARCHAR"/>
+            <result property="rayCheck" column="ray_check" jdbcType="VARCHAR"/>
+            <result property="sampleDisplaySequence" column="sample_display_sequence" jdbcType="VARCHAR"/>
+            <result property="sampleClassification" column="sample_classification" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberA" column="equipment_e_number_a" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberB" column="equipment_e_number_b" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberC" column="equipment_e_number_c" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberD" column="equipment_e_number_d" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberE" column="equipment_e_number_e" jdbcType="VARCHAR"/>
+            <result property="equipmenteNumberF" column="equipment_e_number_f" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberA" column="equipment_x_number_a" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberB" column="equipment_x_number_b" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberC" column="equipment_x_number_c" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberD" column="equipment_x_number_d" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberE" column="equipment_x_number_e" jdbcType="VARCHAR"/>
+            <result property="equipmentxNumberF" column="equipment_x_number_f" jdbcType="VARCHAR"/>
+            <result property="modifyEmployNo" column="modify_employ_no" jdbcType="VARCHAR"/>
+            <result property="modifyDate" column="modify_date" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="VARCHAR"/>
+            <result property="createEmployNo" column="create_employ_no" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sample_class,c_s_result_check,
+        c_s_equipment_mumber,c_element_index,c_equipment_min,
+        c_equipment_max,s_element_index,s_equipment_min,
+        s_equipment_max,no_result_check,no_equipment_number,
+        n_element_index,n_equipment_min,n_equipment_max,
+        o_element_index,o_equipment_min,o_equipment_max,
+        equipment_e_alloy,equipment_x_group,static_number,
+        defaut_format,result_check_type,all_result_check,
+        sample_from,sample_cost,sample_desc,
+        method_prepare,material_no,ray_check,
+        sample_display_sequence,sample_classification,equipment_e_number_a,
+        equipment_e_number_b,equipment_e_number_c,equipment_e_number_d,
+        equipment_e_number_e,equipment_e_number_f,equipment_x_number_a,
+        equipment_x_number_b,equipment_x_number_c,equipment_x_number_d,
+        equipment_x_number_e,equipment_x_number_f,modify_employ_no,
+        modify_date,modify_time,creat_employ_no,
+        creat_date,creat_time,creat_user,
+        create_time,update_user,update_time,
+        update_user_name,create_user_name
+    </sql>
+</mapper>

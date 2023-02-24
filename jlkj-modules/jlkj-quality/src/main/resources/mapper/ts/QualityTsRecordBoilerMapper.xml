@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.quality.ts.mapper.QualityTsRecordBoilerMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.quality.ts.domain.QualityTsRecordBoiler">
+            <result property="shift" column="shift" jdbcType="VARCHAR"/>
+            <result property="sendTime" column="send_time" jdbcType="VARCHAR"/>
+            <result property="recordtype" column="recordType" jdbcType="VARCHAR"/>
+            <result property="coaltype" column="coalType" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="formatId" column="format_id" jdbcType="VARCHAR"/>
+            <result property="sampleId" column="sample_id" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+            <result property="ph" column="pH" jdbcType="VARCHAR"/>
+            <result property="电导率" column="电导率" jdbcType="VARCHAR"/>
+            <result property="二氧化硅" column="二氧化硅" jdbcType="VARCHAR"/>
+            <result property="总硬度" column="总硬度" jdbcType="VARCHAR"/>
+            <result property="正磷酸盐" column="正磷酸盐" jdbcType="VARCHAR"/>
+            <result property="氯离子" column="氯离子" jdbcType="VARCHAR"/>
+            <result property="钠离子" column="钠离子" jdbcType="VARCHAR"/>
+            <result property="二氧化碳" column="二氧化碳" jdbcType="VARCHAR"/>
+            <result property="一氧化碳" column="一氧化碳" jdbcType="VARCHAR"/>
+            <result property="氧气" column="氧气" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        shift,send_time,recordType,
+        coalType,code,format_id,
+        sample_id,parent_id,pH,
+        电导率,二氧化硅,总硬度,
+        正磷酸盐,氯离子,钠离子,
+        二氧化碳,一氧化碳,氧气
+    </sql>
+</mapper>

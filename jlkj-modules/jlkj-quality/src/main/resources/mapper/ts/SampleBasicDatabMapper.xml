@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.quality.ts.mapper.SampleBasicDatabMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.quality.ts.domain.SampleBasicDataB">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="sampleClass" column="sample_class" jdbcType="VARCHAR"/>
+            <result property="sendStation" column="send_station" jdbcType="VARCHAR"/>
+            <result property="sendFormat" column="send_format" jdbcType="VARCHAR"/>
+            <result property="modifyEmployNo" column="modify_employ_no" jdbcType="VARCHAR"/>
+            <result property="modifyDate" column="modify_date" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="VARCHAR"/>
+            <result property="createEmployNo" column="create_employ_no" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sample_class,send_station,
+        send_format,modify_employ_no,modify_date,
+        modify_time,creat_employ_no,creat_date,
+        creat_time,creat_user,create_time,
+        update_user,update_time,update_user_name,
+        create_user_name
+    </sql>
+</mapper>

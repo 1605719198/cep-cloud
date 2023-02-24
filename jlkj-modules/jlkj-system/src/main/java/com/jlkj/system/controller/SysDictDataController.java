@@ -1,6 +1,7 @@
 package com.jlkj.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
@@ -13,6 +14,7 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.system.api.domain.SysDictData;
 import com.jlkj.system.service.ISysDictDataService;
 import com.jlkj.system.service.ISysDictTypeService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +67,44 @@ public class SysDictDataController extends BaseController
     public AjaxResult getInfo(@PathVariable Long dictCode)
     {
         return success(dictDataService.selectDictDataById(dictCode));
+    }
+
+    /**
+     * 分页查询、根据条件查询信息
+     */
+    @Operation(summary = "分页查询、根据条件查询字典信息，名称", description = "")
+    @PostMapping("/queryDataByParams/{current}/{limit}")
+    public Object queryDictByParams(@PathVariable long current,@PathVariable long limit,@RequestBody SysDictData dict) {
+        //创建page对象
+        Page<SysDictData> pageData = new Page<>(current, limit);
+        //构造条件
+        QueryWrapper<SysDictData> wrapper = new QueryWrapper<>();
+        //条件组合查询
+        String dictLabel = dict.getDictLabel();
+        String dictType = dict.getDictType();
+        String dictStatus = dict.getStatus();
+
+        if (!StringUtils.isEmpty(dictLabel)){
+            wrapper.like("dict_label",dictLabel);
+        }
+        if (!StringUtils.isEmpty(dictType)){
+            wrapper.eq("dict_type",dictType);
+        }
+        if (!StringUtils.isEmpty(dictStatus)) {
+            wrapper.eq("status",dictStatus);
+        }
+        wrapper.orderByAsc("dict_code");
+
+        //实现分页查询
+        dictDataService.page(pageData,wrapper);
+        //总记录数
+        long total = pageData.getTotal();
+        //数据list集合
+        List<SysDictData> records = pageData.getRecords();
+        Map<String,Object> dataMap = new HashMap<>(32);
+        dataMap.put("total",total);
+        dataMap.put("list",records);
+        return AjaxResult.success(dataMap);
     }
 
     /**

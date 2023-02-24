@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.quality.ts.mapper.ElementTableDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.quality.ts.domain.ElementTableData">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="formatId" column="format_id" jdbcType="VARCHAR"/>
+            <result property="elementType" column="element_type" jdbcType="VARCHAR"/>
+            <result property="elementIndex" column="element_index" jdbcType="VARCHAR"/>
+            <result property="elementSeq" column="element_seq" jdbcType="INTEGER"/>
+            <result property="elementCount" column="element_count" jdbcType="INTEGER"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,format_id,element_type,
+        element_index,element_seq,element_conut,
+        create_user_id,modify_user_id,modify_time,
+        create_user,create_time,update_user,
+        update_time,update_user_name,create_user_name
+    </sql>
+</mapper>

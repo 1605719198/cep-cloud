@@ -8,6 +8,14 @@ export function listData(query) {
     params: query
   })
 }
+// 根据条件查询对应信息
+export function queryDataByParams(current,limit,data) {
+  return request({
+    url: `/api/neplatform/sysdev/dict/data/queryDataByParams/${current}/${limit}`,
+    method: 'post',
+    data: data
+  })
+}
 
 // 查询字典数据详细
 export function getData(dictCode) {

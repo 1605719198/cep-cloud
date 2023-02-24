@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.quality.ts.mapper.TestElementCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.quality.ts.domain.TestElementCode">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="elementType" column="element_type" jdbcType="VARCHAR"/>
+            <result property="elementIndex" column="element_index" jdbcType="VARCHAR"/>
+            <result property="elementName" column="element_name" jdbcType="VARCHAR"/>
+            <result property="elementUnit" column="element_unit" jdbcType="VARCHAR"/>
+            <result property="integerNo" column="integer_no" jdbcType="INTEGER"/>
+            <result property="pointerNo" column="pointer_no" jdbcType="INTEGER"/>
+            <result property="createEmployNo" column="create_employ_no" jdbcType="VARCHAR"/>
+            <result property="createDate" column="creat_date" jdbcType="VARCHAR"/>
+            <result property="modifyEmployNo" column="modify_employ_no" jdbcType="VARCHAR"/>
+            <result property="modifyDate" column="modify_date" jdbcType="VARCHAR"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,element_type,element_index,
+        element_name,element_unit,integer_no,
+        pointer_no,creat_employ_no,creat_date,
+        modify_employ_no,modify_date,creat_user,
+        create_time,update_user,update_time,
+        create_user_name,update_user_name
+    </sql>
+</mapper>
