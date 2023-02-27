@@ -3,7 +3,7 @@ import request from '@/utils/request';
 // 查询产副品资料
 export function listFinancetest(data) {
   return request({
-    url: '/finance/finance/product/code/queryAll',
+    url: '/finance/product/code/queryAll',
     method: 'get',
     params: data
   })
@@ -11,7 +11,7 @@ export function listFinancetest(data) {
 // 查询属性资料列表
 export function attributeQuery(productCode) {
   return request({
-    url: `/finance/finance/product/code/attributeQuery?productCode=${productCode}`,
+    url: `/finance/product/code/attributeQuery?productCode=${productCode}`,
     method: 'get',
 
   })
@@ -19,7 +19,7 @@ export function attributeQuery(productCode) {
 // 查询属性资料列表attributeQueryOne
 export function attributeQuery1() {
   return request({
-    url: '/finance/finance/product/code/attributeQuery',
+    url: '/finance/product/code/attributeQuery',
     method: 'get',
 
   })
@@ -27,14 +27,14 @@ export function attributeQuery1() {
 // 查询属性资料列表
 export function attributeQueryOne(attriName) {
   return request({
-    url: `/finance/finance/product/code/attributeQueryOne?attriName=${attriName}`,
+    url: `/finance/product/code/attributeQueryOne?attriName=${attriName}`,
     method: 'get'
   })
 }
 // 查询成本中心设定详细
 export function getFinancetest(productCode,id) {
   return request({
-    url: '/finance/finance/product/code/queryOne' ,
+    url: '/finance/product/code/queryOne' ,
     method: 'get',
     params:{
       productCode: productCode,
@@ -46,7 +46,7 @@ export function getFinancetest(productCode,id) {
 // 查询财务资料的科目名称
 export function getFinanceInformation(data) {
   return request({
-    url: '/finance/finance/product/code/queryAccount' ,
+    url: '/finance/product/code/queryAccount' ,
     method: 'get',
     params: data
   })
@@ -54,7 +54,7 @@ export function getFinanceInformation(data) {
 // 查询财务资料的详细资料
 export function getFinanceByproduct(data) {
   return request({
-    url: '/finance/finance/product/code/queryByproduct' ,
+    url: '/finance/product/code/queryByproduct' ,
     method: 'get',
     params: data
   })
@@ -63,7 +63,7 @@ export function getFinanceByproduct(data) {
 // 新增测试
 export function addFinancetest(data) {
   return request({
-    url: '/finance/finance/product/code/doAdd',
+    url: '/finance/product/code/doAdd',
     method: 'post',
     data: data
   })
@@ -71,7 +71,7 @@ export function addFinancetest(data) {
 // 属性新增测试
 export function addFinanceattri(data) {
   return request({
-    url: `//finance/finance/product/code/attriAdd`,
+    url: `/finance/product/code/attriAdd`,
     method: 'post',
     data: data
   })
@@ -79,7 +79,7 @@ export function addFinanceattri(data) {
 // 财务新增测试
 export function addFinanceAccount(data) {
   return request({
-    url: `/finance/finance/product/code/accountAdd`,
+    url: `/finance/product/code/accountAdd`,
     method: 'post',
     data: data
   })
@@ -88,7 +88,7 @@ export function addFinanceAccount(data) {
 // 修改产副品测试
 export function updateFinancetest(data) {
   return request({
-    url: '/finance/finance/product/code/doEdit',
+    url: '/finance/product/code/doEdit',
     method: 'post',
     data: data
   })
@@ -96,7 +96,7 @@ export function updateFinancetest(data) {
 // 属性修改测试
 export function updateFinanceattri(data) {
   return request({
-    url: `/finance/finance/product/code/doEditAttri`,
+    url: `/finance/product/code/doEditAttri`,
     method: 'post',
     data: data
   })
@@ -104,7 +104,7 @@ export function updateFinanceattri(data) {
 // 财务资料修改测试
 export function updateAccount(data) {
   return request({
-    url: `/finance/finance/product/code/doEditAccount`,
+    url: `/finance/product/code/doEditAccount`,
     method: 'post',
     data: data
   })
@@ -113,7 +113,7 @@ export function updateAccount(data) {
 // 删除测试delAttribute
 export function delFinancetest(id) {
   return request({
-    url: `/finance/finance/product/code/delete?id=${id}` ,
+    url: `/finance/product/code/delete?id=${id}` ,
     method: 'delete'
   })
 
@@ -121,7 +121,7 @@ export function delFinancetest(id) {
 // 删除测试delAttribute
 export function delAttribute(attriValue,value) {
   return request({
-    url: '/finance/finance/product/code/delAttribute' ,
+    url: '/finance/product/code/delAttribute' ,
     method: 'delete',
     params:{
       attriValue: attriValue,

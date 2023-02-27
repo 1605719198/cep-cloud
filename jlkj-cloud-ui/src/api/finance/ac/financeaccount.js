@@ -3,14 +3,14 @@ import request from '@/utils/request';
 // 获取全部树节点FinanceProduct
 export function getTreeNode() {
   return request({
-    url: '/finance/finance/cost/menu/generateTree',
+    url: '/finance/cost/menu/generateTree',
     method: 'get',
   })
 }
 // 分页查询科目树节点
 export function queryDataByParams(params) {
   return request({
-    url: '/finance/finance/cost/code/doQueryAll',
+    url: '/finance/cost/code/doQueryAll',
     method: 'get',
     params: params
   })
@@ -18,14 +18,14 @@ export function queryDataByParams(params) {
 //根据ID查询科目数据
 export function getData(typeId) {
   return request({
-    url: '/finance/finance/cost/code/doQueryOne/' + typeId,
+    url: '/finance/cost/code/doQueryOne/' + typeId,
     method: 'get'
   })
 }
 // 新增科目数据
 export function doAddCode(data) {
   return request({
-    url: '/finance/finance/cost/code/doAdd',
+    url: '/finance/cost/code/doAdd',
     method: 'post',
     data: data
   })
@@ -33,7 +33,7 @@ export function doAddCode(data) {
 // 成本科目索引修改
 export function updateMenuData(data) {
   return request({
-    url: '/finance/finance/cost/menu/doEdit',
+    url: '/finance/cost/menu/doEdit',
     method: 'put',
     data: data
   })
@@ -41,7 +41,7 @@ export function updateMenuData(data) {
 // 树删除
 export function deleteMenu(ids,upperCodex) {
   return request({
-    url: '/finance/finance/cost/menu/doDelete',
+    url: '/finance/cost/menu/doDelete',
     method: 'delete',
     params:{
       ids:ids,
@@ -52,7 +52,7 @@ export function deleteMenu(ids,upperCodex) {
 // 新增科目数据
 export function doAddMenu(data) {
   return request({
-    url: '/finance/finance/cost/menu/doAdd',
+    url: '/finance/cost/menu/doAdd',
     method: 'post',
     data: data
   })
@@ -60,7 +60,7 @@ export function doAddMenu(data) {
 //成本科目资料修改
 export function updateCodeData(data) {
   return request({
-    url: '/finance/finance/cost/code/doEdit',
+    url: '/finance/cost/code/doEdit',
     method: 'put',
     data: data
   })
@@ -68,14 +68,14 @@ export function updateCodeData(data) {
 // 成本科目删除
 export function deleteCodeData(ids) {
   return request({
-    url: '/finance/finance/cost/code/doDelete/'+ids,
+    url: '/finance/cost/code/doDelete/'+ids,
     method: 'delete',
   })
 }
   // 分页查询科目节点
   export function queryMenuList(params) {
     return request({
-      url: '/finance/finance/cost/menu/queryMenuList',
+      url: '/finance/cost/menu/queryMenuList',
       method: 'get',
       params: params
     })
@@ -83,7 +83,7 @@ export function deleteCodeData(ids) {
 // 分页查询科目节点
 export function queryMenu(params) {
   return request({
-    url: '/finance/finance/cost/menu/queryMenu',
+    url: '/finance/cost/menu/queryMenu',
     method: 'get',
     params: params
 
@@ -92,7 +92,7 @@ export function queryMenu(params) {
 //根据ID查询成本科目索引数据
 export function getMenuData(typeId) {
   return request({
-    url: '/finance/finance/cost/menu/queryOne/' + typeId,
+    url: '/finance/cost/menu/queryOne/' + typeId,
     method: 'get'
   })
 }
@@ -102,7 +102,7 @@ export function getMenuData(typeId) {
 // 获取全部树节点
 export function getTreeTestNode() {
   return request({
-    url: '/finance/finance/manufacturer/ManufacturerTreeList',
+    url: '/finance/manufacturer/ManufacturerTreeList',
     method: 'get',
   })
 }

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询产副品资料
 export function listFinancetest(data) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/queryAll',
+    url: '/finance/account/period/queryAll',
     method: 'get',
     params: data
   })
@@ -27,14 +27,14 @@ export function attributeQuery1() {
 // 查询属性资料列表
 export function attributeQueryOne(attriName) {
   return request({
-    url: `/api/neplatform/fin/finance/account/period/attributeQueryOne?attriName=${attriName}`,
+    url: `/finance/account/period/attributeQueryOne?attriName=${attriName}`,
     method: 'get'
   })
 }
 // 查询成本中心设定详细
 export function getFinancetest(productCode,id) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/queryOne' ,
+    url: '/finance/account/period/queryOne' ,
     method: 'get',
     params:{
       productCode: productCode,
@@ -46,7 +46,7 @@ export function getFinancetest(productCode,id) {
 // 查询财务资料的科目名称
 export function getFinanceInformation(data) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/queryAccount' ,
+    url: '/finance/account/period/queryAccount' ,
     method: 'get',
     params: data
   })
@@ -54,7 +54,7 @@ export function getFinanceInformation(data) {
 // 查询财务资料的详细资料
 export function getFinanceByproduct(data) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/queryByproduct' ,
+    url: '/finance/account/period/queryByproduct' ,
     method: 'get',
     params: data
   })
@@ -63,7 +63,7 @@ export function getFinanceByproduct(data) {
 // 新增测试
 export function addFinancetest(data) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/doAdd',
+    url: '/finance/account/period/doAdd',
     method: 'post',
     data: data
   })
@@ -71,7 +71,7 @@ export function addFinancetest(data) {
 // 属性新增测试
 export function addFinanceattri(data) {
   return request({
-    url: `/api/neplatform/fin/finance/account/period/attriAdd`,
+    url: `/finance/account/period/attriAdd`,
     method: 'post',
     data: data
   })
@@ -79,7 +79,7 @@ export function addFinanceattri(data) {
 // 财务新增测试
 export function addFinanceAccount(data) {
   return request({
-    url: `/api/neplatform/fin/finance/account/period/accountAdd`,
+    url: `/finance/account/period/accountAdd`,
     method: 'post',
     data: data
   })
@@ -89,7 +89,7 @@ export function addFinanceAccount(data) {
 // 属性修改测试
 export function updateFinanceattri(data) {
   return request({
-    url: `/api/neplatform/fin/finance/product/code/doEditAttri`,
+    url: `/finance/product/code/doEditAttri`,
     method: 'post',
     data: data
   })
@@ -97,7 +97,7 @@ export function updateFinanceattri(data) {
 // 财务资料修改测试
 export function updateAccount(data) {
   return request({
-    url: `/api/neplatform/fin/finance/account/period/doEditAccount`,
+    url: `/finance/account/period/doEditAccount`,
     method: 'post',
     data: data
   })
@@ -106,7 +106,7 @@ export function updateAccount(data) {
 // 状态修改
 export function updatecloseYn(isClosed,id) {
   return request({
-    url: `/api/neplatform/fin/finance/account/period/doEditYn`,
+    url: `/finance/account/period/doEditYn`,
     method: 'post',
     params:{
       isClosed: isClosed,
@@ -118,7 +118,7 @@ export function updatecloseYn(isClosed,id) {
 // 删除测试delAttribute
 export function delFinancetest(accountPeriodDelete,compId) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/delete',
+    url: '/finance/account/period/delete',
     method: 'delete',
     params:{
       accountPeriodDelete: accountPeriodDelete,
@@ -130,7 +130,7 @@ export function delFinancetest(accountPeriodDelete,compId) {
 // 删除测试delAttribute
 export function delAttribute(attriValue,value) {
   return request({
-    url: '/api/neplatform/fin/finance/account/period/delAttribute' ,
+    url: '/finance/account/period/delAttribute' ,
     method: 'delete',
     params:{
       attriValue: attriValue,

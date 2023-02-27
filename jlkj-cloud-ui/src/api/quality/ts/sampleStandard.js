@@ -1,9 +1,9 @@
-import request from '@/router/axios';
+import request from '@/utils/request'
 
 // 新增
 export function addInfo(data) {
   return request({
-    url: '/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/add',
+    url: '/quality/chemicalTest/highAndLowStandards/add',
     method: 'post',
     data: data
   })
@@ -12,7 +12,7 @@ export function addInfo(data) {
 // 修改
 export function updateInfo(data) {
   return request({
-    url: '/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/update',
+    url: '/quality/chemicalTest/highAndLowStandards/update',
     method: 'post',
     data: data
   })
@@ -21,7 +21,7 @@ export function updateInfo(data) {
 // 删除
 export function delInfo(sampleClass) {
   return request({
-    url: `/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/delete?sampleClass=${sampleClass}`,
+    url: `/quality/chemicalTest/highAndLowStandards/delete?sampleClass=${sampleClass}`,
     method: 'delete'
   })
 }
@@ -29,34 +29,34 @@ export function delInfo(sampleClass) {
 // 删除详细信息
 export function delInfoA(elementIndex, sampleClass) {
   return request({
-    url: `/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/deleteA?sampleClass=${sampleClass}&elementIndex=${elementIndex}`,
+    url: `/quality/chemicalTest/highAndLowStandards/deleteA?sampleClass=${sampleClass}&elementIndex=${elementIndex}`,
     method: 'delete'
   })
 }
 
 // 根据条件查询信息
 export const queryInfo = (data) => request({
-  url: '/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/queryList',
+  url: '/quality/chemicalTest/highAndLowStandards/queryList',
   method: 'post',
   data: data
 });
 
 // 根据条件查询信息
 export const queryInfoYS = (data) => request({
-  url: '/api/neplatform/quality/quality/chemicalTest/elementId/queryList',
+  url: '/quality/chemicalTest/elementId/queryList',
   method: 'post',
   data: data
 });
 
 // 根据条件查询信息
 export const queryInfoClass = (data) => request({
-  url: '/api/neplatform/quality/quality/chemicalTest/sampleBasicData/queryList',
+  url: '/quality/chemicalTest/sampleBasicData/queryList',
   method: 'post',
   data: data
 });
 
 // 根据条件查询信息
 export const query = (sampleClass) => request({
-  url: `/api/neplatform/quality/quality/chemicalTest/highAndLowStandards/query?sampleClass=${sampleClass}`,
+  url: `/quality/chemicalTest/highAndLowStandards/query?sampleClass=${sampleClass}`,
   method: 'get',
 });

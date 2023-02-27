@@ -35,11 +35,11 @@
 
 </template>
 <script>
-import sampleDataYP from "./sampleDataYP";
-import sampleDataFX from "./sampleDataFX";
-import sampleDataZD from "./sampleDataZD";
-import sampleDataTL from "./sampleDataTL";
-import sampleDataJG from "./sampleDataJG";
+import sampleDataYP from "./SampleDataYP";
+import sampleDataFX from "./SampleDataFX";
+import sampleDataZD from "./SampleDataZD";
+import sampleDataTL from "./SampleDataTL";
+import sampleDataJG from "./SampleDataJG";
 
 export default {
   name: "sampleDataAdd",
