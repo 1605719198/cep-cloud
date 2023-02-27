@@ -1,4 +1,4 @@
-package com.jlkj.common.dto.dto.financeperdto;
+package com.jlkj.common.dto.finance.aa;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
