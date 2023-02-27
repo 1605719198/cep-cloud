@@ -81,6 +81,17 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
+
+        <!-- JLKJ Common Swagger -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-dto</artifactId>
+        </dependency>
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

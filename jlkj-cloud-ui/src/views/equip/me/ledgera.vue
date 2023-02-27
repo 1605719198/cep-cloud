@@ -622,7 +622,7 @@ import {
   getEquipmentByLocationId,
   getEquipmentBasicNumById
 } from "@/api/equip/me/ledgera";
-import { getPersonnerlInfoList } from '@/api/human/HM/humanResourceTree'
+import { getPersonnerlInfoList } from '@/api/human/hm/humanResourceTree'
 import { isEmpty } from "element-ui/src/utils/util";
 export default {
   name: "ledgera",

@@ -503,7 +503,7 @@
 
 <script>
 import { queryInfo, addInfo, updateInfo, initSelect, queryEditForm, getChildrenMgmc1Name, getChildrenReasonNo, updateEditForm } from "@/api/equip/mg/putonfile";
-import { getOrganizationDeptTree } from "@/api/human/HM/humanResourceTree"
+import { getOrganizationDeptTree } from "@/api/human/hm/humanResourceTree"
 export default {
   name: "putonfile",
   dicts: ["equipment_record_source", "sys_classtype", "equipment_record_state"],

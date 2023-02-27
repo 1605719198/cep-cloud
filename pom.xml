@@ -37,6 +37,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <jedis.version>4.1.1</jedis.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -237,6 +238,13 @@
                 <groupId>com.jlkj</groupId>
                 <artifactId>jlkj-modules-rabbit</artifactId>
                 <version>${jlkj.version}</version>
+            </dependency>
+
+            <!-- Jedis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
             </dependency>
 
         </dependencies>

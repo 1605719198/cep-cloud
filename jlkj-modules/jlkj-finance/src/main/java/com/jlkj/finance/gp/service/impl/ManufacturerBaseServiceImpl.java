@@ -3,7 +3,7 @@ package com.jlkj.finance.gp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.dto.dto.financeperdto.ManufacturerBaseDTO;
+import com.jlkj.common.dto.finance.aa.ManufacturerBaseDTO;
 import com.jlkj.finance.gp.domain.ManufacturerBase;
 import com.jlkj.finance.gp.domain.ManufacturerTree;
 import com.jlkj.finance.gp.mapper.ManufacturerTreeMapper;

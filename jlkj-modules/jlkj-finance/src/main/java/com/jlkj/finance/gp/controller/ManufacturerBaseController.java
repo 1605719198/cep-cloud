@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.dto.dto.financeperdto.ManufacturerBaseInterfaceDTO;
+import com.jlkj.common.dto.finance.aa.ManufacturerBaseInterfaceDTO;
 import com.jlkj.finance.gp.domain.*;
 import com.jlkj.finance.gp.dto.ManufacturerBaseDTO;
 import com.jlkj.finance.feign.system.SysDictDataFeignService;

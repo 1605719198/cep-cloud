@@ -214,7 +214,7 @@ import {
   delInfo,
   queryInfoById
 } from "@/api/equip/me/flawstats";
-import { getHumanTree } from "@/api/human/HM/humanResourceTree";
+import { getHumanTree } from "@/api/human/hm/humanResourceTree";
 import HumanTree from '@/views/components/human/human-resource-tree/humanTree'
 export default {
   name: "flawstats",
