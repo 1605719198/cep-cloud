@@ -1,5 +1,5 @@
 package com.jlkj.finance.gp.service;
-import com.jlkj.common.dto.finance.aa.ManufacturerBaseDTO;
+import com.jlkj.common.dto.finance.gp.ManufacturerBaseDTO;
 import com.jlkj.finance.gp.domain.ManufacturerBase;
 import com.baomidou.mybatisplus.extension.service.IService;
 /**

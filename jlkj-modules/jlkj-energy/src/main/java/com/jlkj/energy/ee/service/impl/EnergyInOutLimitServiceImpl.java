@@ -5,9 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.uuid.UUID;
-import com.jlkj.common.dto.constant.CommonConstant;
-import com.jlkj.common.dto.resp.Result;
-import com.jlkj.common.dto.resp.ResultCode;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.energy.ee.constant.CommonConstant;
 import com.jlkj.energy.ee.dto.energyinoutlimit.DeleteEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.InsertEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.PageEnergyInOutLimitDTO;
@@ -46,7 +45,7 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return Result.failed(ResultCode.FAILED, "能源信息配置已存在");
+            return AjaxResult.error("能源信息配置已存在");
         }
         EnergyInOutLimit energyInOutLimit = new EnergyInOutLimit();
         energyInOutLimit.setId(UUID.randomUUID().toString());
@@ -69,7 +68,7 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
         energyInOutLimit.setUpdateUserName(insertEnergyInformationConfigurationDTO.getCreateUserName());
         energyInOutLimit.setUpdateTime(new Date());
         save(energyInOutLimit);
-        return Result.success("能源信息配置增加成功");
+        return AjaxResult.success("能源信息配置增加成功");
     }
 
     @Override
@@ -84,7 +83,7 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
                     .last(CommonConstant.LIMIT_ONE_ROW)
             );
             if (list.size() > 0) {
-                return Result.failed(ResultCode.FAILED, "能源信息配置已存在");
+                return AjaxResult.error( "能源信息配置已存在");
             }
             energyInOutLimit.setUpLimit(updateEnergyInformationConfigurationDTO.getUpLimit());
             energyInOutLimit.setDownLimit(updateEnergyInformationConfigurationDTO.getDownLimit());
@@ -102,10 +101,10 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
             energyInOutLimit.setUpdateUserName(updateEnergyInformationConfigurationDTO.getUpdateUserName());
             energyInOutLimit.setUpdateTime(new Date());
             updateById(energyInOutLimit);
-            return Result.success("能源信息配置修改成功");
+            return AjaxResult.success("能源信息配置修改成功");
         }
         else {
-            return Result.failed(ResultCode.FAILED, "能源信息配置不存在");
+            return AjaxResult.error( "能源信息配置不存在");
         }
     }
 
@@ -114,10 +113,10 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
         EnergyInOutLimit productionInformationConfiguration = getById(deleteEnergyInformationConfigurationDTO.getId());
         if (null != productionInformationConfiguration) {
             removeById(productionInformationConfiguration);
-            return Result.success("能源信息配置删除成功");
+            return AjaxResult.success("能源信息配置删除成功");
         }
         else {
-            return Result.failed(ResultCode.FAILED, "能源信息配置不存在或已被删除");
+            return AjaxResult.error( "能源信息配置不存在或已被删除");
         }
     }
 }

@@ -2,7 +2,7 @@ package com.jlkj.energy.ee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.uuid.UUID;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.energy.ee.dto.energyconsumptionoutputaccounting.InsertEnergyConsumptionOutputAccountingDTO;
 import com.jlkj.energy.ee.domain.EnergyConsumptionOutputAccounting;
 import com.jlkj.energy.ee.mapper.EnergyConsumptionOutputAccountingMapper;
@@ -37,7 +37,7 @@ public class EnergyConsumptionOutputAccountingServiceImpl extends ServiceImpl<En
         energyConsumptionOutputAccounting.setChargeCostCenter(insertEnergyConsumptionOutputAccountingDTO.getChargeCostCenter());
         energyConsumptionOutputAccounting.setChargeFactoryId(insertEnergyConsumptionOutputAccountingDTO.getChargeFactoryId());
         save(energyConsumptionOutputAccounting);
-        return Result.success("能源耗用产出账务信息增加成功");
+        return AjaxResult.success("能源耗用产出账务信息增加成功");
     }
 }
 

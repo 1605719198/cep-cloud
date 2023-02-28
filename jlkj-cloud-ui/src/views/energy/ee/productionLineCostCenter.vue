@@ -1,141 +1,121 @@
 <template>
-  <el-row>
-    <el-col :span="24"
-            style="padding:0 10px">
-      <div class="energy_main">
-        <div class="avue-crud el-card__body"
-             style="width: 98%;border: 0">
-          <div class="avue-crud__search"
-               style="border: 0">
-            <el-form>
-              <el-row :gutter="20">
-                <el-col :span="10">
-                  <div class="el-form-item el-form-item--small">
-                    <div class="el-form-item__content">
-                      <el-form-item label="">
-                        <el-select v-model="query.millIdCodeStart"
-                                   clearable
-                                   :popper-append-to-body="false"
-                                   placeholder="请选择工厂产线代码"
-                                   style="width: 185.84px!important;">
-                          <el-option v-for="item in optionsMillIdCodeStart"
-                                     :key="item.value"
-                                     :label="item.label"
-                                     :value="item.value">
-                          </el-option>
-                        </el-select>
-                        ~
-                        <el-select v-model="query.millIdCodeEnd"
-                                   clearable
-                                   :popper-append-to-body="false"
-                                   placeholder="请选择工厂产线代码"
-                                   style="width: 185.84px!important;padding-left: 0.5%">
-                          <el-option v-for="item in optionsMillIdCodeEnd"
-                                     :key="item.value"
-                                     :label="item.label"
-                                     :value="item.value">
-                          </el-option>
-                        </el-select>
-                        <el-button v-hasPermi="['mill_cost_query']"
-                                   type="primary"
-                                   size="mini"
-                                   icon="el-icon-search"
-                                   @click="handleQuery"
-                                   style="margin-left: 20px">搜 索</el-button>
-                        <el-button size="mini"
-                                   type="default"
-                                   icon="el-icon-refresh-left"
-                                   @click="handleEmpty">重 置</el-button>
-                      </el-form-item>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="10">
-                </el-col>
-                <el-col :span="4">
-                  <div class="el-form-item__content"
-                       style="float: right">
-                    <el-button v-hasPermi="['mill_cost_add']"
-                               type="primary"
-                               plain
-                               size="mini"
-                               icon="el-icon-plus"
-                               @click="handleAdd">新增</el-button>
-                    <el-button v-hasPermi="['mill_cost_delete']"
-                               type="danger"
-                               size="mini"
-                               icon="el-icon-delete"
-                               :disabled="openIsDisabled"
-                               @click="handleDelete">删除</el-button>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-          <div>
-            <el-form>
-              <el-table height="68.1vh"
-                        size="small"
-                        :data="tableData"
-                        stripe
-                        @selection-change="handleSelectionChange"
-                        :default-sort="{prop: 'createTime', order: 'descending'}">
-                <el-table-column type="selection"
-                                 width="55"
-                                 align="center" />
-                <template v-for="column in columns">
-                  <el-table-column :key="column.prop"
-                                   :prop="column.prop"
-                                   :label="column.label"
-                                   :sortable="column.sortable"
-                                   :width="column.width"
-                                   :min-width="column.minWidth" />
-                </template>
-                <el-table-column fixed="right"
-                                 label="操作"
-                                 width="180px">
-                  <template slot-scope="scope">
-                    <el-button v-hasPermi="['mill_cost_delete']"
-                               size="mini"
-                               plain
-                               icon="el-icon-delete"
-                               type="danger"
-                               @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <div style="margin-top: 10px;right: 0"
-                   class="avue-crud__pagination">
-                <el-pagination background
-                               @size-change="handleSizeChange"
-                               @current-change="handleCurrentChange"
-                               :current-page="page.currentPage"
-                               :page-sizes="[20, 50, 100, 200]"
-                               :page-size="page.pageSize"
-                               :layout="page.layout"
-                               :total="page.total">
-                </el-pagination>
-              </div>
-            </el-form>
-          </div>
-          <div v-if="addBox">
-            <el-dialog :title="(editBox?'编辑':'新建')+'产线代码对应成本中心资料'"
-                       :visible.sync="addBox"
-                       width="500px"
-                       class="customDialogStyle"
-                       append-to-body
-                       :destroy-on-close="true"
-                       :close-on-click-modal="false">
-              <productionLineAdd :dataEdit="dataEdit"
-                                 @submitAdd="submitAdd"
-                                 @close="addBox=false,editBox=false" />
-            </el-dialog>
-          </div>
-        </div>
-      </div>
-    </el-col>
-  </el-row>
+  <div class="app-container">
+    <el-form  :inline="true"  label-width="68px">
+      <el-form-item label="产线代码">
+        <el-select v-model="query.millIdCodeStart"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择工厂产线代码"
+                   style="width: 215px!important;">
+          <el-option v-for="item in optionsMillIdCodeStart"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+        ~
+        <el-select v-model="query.millIdCodeEnd"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择工厂产线代码"
+                   style="width: 215px!important;">
+          <el-option v-for="item in optionsMillIdCodeEnd"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-hasPermi="['mill_cost_query']"
+                   type="primary"
+                   size="mini"
+                   icon="el-icon-search"
+                   @click="handleQuery"
+                   style="margin-left: 20px">搜 索</el-button>
+        <el-button size="mini"
+                   type="default"
+                   icon="el-icon-refresh-left"
+                   @click="handleEmpty">重 置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button v-hasPermi="['mill_cost_add']"
+                   type="primary"
+                   plain
+                   size="mini"
+                   icon="el-icon-plus"
+                   @click="handleAdd">新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button v-hasPermi="['mill_cost_delete']"
+                   type="danger"
+                   size="mini"
+                   icon="el-icon-delete"
+                   :disabled="openIsDisabled"
+                   @click="handleDelete">删除</el-button>
+      </el-col>
+      <right-toolbar  @queryTable="getList"></right-toolbar>
+    </el-row>
+
+    <el-table size="small"
+              :data="tableData"
+              stripe
+              style="margin: 0 0px 0 10px;width: auto;"
+              @selection-change="handleSelectionChange"
+              :default-sort="{prop: 'createTime', order: 'descending'}">
+      <el-table-column type="selection"
+                       width="55"
+                       align="center" />
+      <template v-for="column in columns">
+        <el-table-column :key="column.prop"
+                         :prop="column.prop"
+                         :label="column.label"
+                         :sortable="column.sortable"
+                         :width="column.width"
+                         :min-width="column.minWidth" />
+      </template>
+      <el-table-column fixed="right"
+                       label="操作"
+                       width="180px">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['mill_cost_delete']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-delete"
+                     @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page.currentPage"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="page.pageSize"
+                :layout="page.layout"
+                :total="page.total">
+    </pagination>
+
+    <!-- 添加或修改产线代码对应成本中心资料 -->
+    <div v-if="addBox">
+      <el-dialog :title="(editBox?'编辑':'新建')+'产线代码对应成本中心资料'"
+                 :visible.sync="addBox"
+                 width="500px"
+                 class="customDialogStyle"
+                 append-to-body
+                 :destroy-on-close="true"
+                 :close-on-click-modal="false">
+        <productionLineAdd :dataEdit="dataEdit"
+                           @submitAdd="submitAdd"
+                           @close="addBox=false,editBox=false" />
+      </el-dialog>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -203,8 +183,8 @@ export default {
     handleQuery () {
       let query = this.query
       queryInfo(query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     // 清空
@@ -241,7 +221,7 @@ export default {
         delInfo(ids).then(response => {
           this.$message({
             type: 'success',
-            message: response.data.msg
+            message: response.msg
           });
           this.getList();
         })
@@ -262,8 +242,8 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     // 多选框选中数据
@@ -283,10 +263,10 @@ export default {
       this.addBox = false;
       this.editBox = false;
       addInfo(data).then(response => {
-        if (response.data.code == 0) {
+        if (response.code == 0) {
           this.$message({
             type: 'success',
-            message: response.data.msg
+            message: response.msg
           });
         }
         this.getList();
@@ -301,7 +281,9 @@ export default {
   height: 86vh;
   background-color: #fff;
 }
-
+::v-deep .el-form-item__content {
+  white-space: nowrap;
+}
 /*下拉框最后一个显示不完全*/
 ::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;

@@ -1,15 +1,16 @@
-package com.jlkj.common.dto.finance.aa;
+package com.jlkj.common.dto.finance.ip;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
+
 /**
  * @author wang'mai
  */
 @Data
-public class FinanceperMenuDTO {
+public class FinanceperCodeDTO {
     /**
      * 主键
      */
@@ -22,29 +23,54 @@ public class FinanceperMenuDTO {
     private String compId;
 
     /**
-     * 成本科目阶层编码
+     * 成本科目
      */
-    private String costCodeLevelCode;
+    private String costCode;
 
     /**
-     * 上层代码
+     * 成本科目中文说明
      */
-    private String upperCode;
+    private String costDesc;
 
     /**
-     * 阶层代码
+     * 会计科目
      */
-    private String levelCode;
+    private String accountCode;
 
     /**
-     * 阶层名称
+     * 计量单位
      */
-    private String levelName;
+    private String unit;
 
     /**
-     * 节点类别
+     * AA抛AC码
      */
-    private String nodeType;
+    private String assignMark;
+
+    /**
+     * 费用来源属性
+     */
+    private String expenseSource;
+
+    /**
+     * 费用性质属性
+     */
+    private String expenseProperty;
+
+    /**
+     * 生管费用科目属性
+     */
+    private String prodManaCostAttri;
+
+    /**
+     * 费用分类属性
+     */
+    private String expenseType;
+
+    /**
+     * 状态
+     */
+    private String stusCode;
 
     /**
      * 建立人
@@ -57,12 +83,12 @@ public class FinanceperMenuDTO {
     private String createDate;
 
     /**
-     * 最后异动人
+     * 修改人
      */
     private String updateUser;
 
     /**
-     * 最后异动日期
+     * 最后修改日期
      */
     private String updateDate;
 
@@ -85,15 +111,6 @@ public class FinanceperMenuDTO {
      * 修改人姓名
      */
     private String updateUserName;
-
-    /**
-     * 逻辑删除标识
-     */
-    private Integer delFlag;
-    /**
-     * 父键
-     */
-    private String parentId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

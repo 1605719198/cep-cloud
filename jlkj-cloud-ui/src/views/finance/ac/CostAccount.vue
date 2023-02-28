@@ -192,15 +192,13 @@
                                    @click="handleDetails(scope.row,scope.$index)">详情
                         </el-button>
                         <el-button size="mini"
-                                   plain
-                                   icon="el-icon-edit"
-                                   type="primary"
+                                   type="text"
+                                   icon="el-icon-info"
                                    @click="menuUpdate(scope.row,scope.$index)">修改
                         </el-button>
                         <el-button size="mini"
-                                   plain
+                                   type="text"
                                    icon="el-icon-delete"
-                                   type="danger"
                                    @click="menuDelete(scope.row)">删除
                         </el-button>
                       </template>

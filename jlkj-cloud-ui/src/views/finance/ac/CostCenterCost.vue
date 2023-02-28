@@ -179,17 +179,15 @@
                 <el-button v-if="UpdateVisible"
                            v-hasPermi="['costCenter_doEditAttri']"
                            size="mini"
-                           plain
-                           icon="el-icon-edit"
-                           type="primary"
+                           type="text"
+                           icon="el-icon-info"
                            @click="handleUpd(scope.row,scope.$index)">修改
                 </el-button>
                 <el-button v-if="UpdateVisible"
                            v-hasPermi="['costCenter_delAttribute']"
                            size="mini"
-                           plain
+                           type="text"
                            icon="el-icon-delete"
-                           type="danger"
                            @click="attributeDelete(scope.row,scope.$index)">删除
                 </el-button>
               </template>

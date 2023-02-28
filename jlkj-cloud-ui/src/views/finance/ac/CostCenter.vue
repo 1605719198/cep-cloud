@@ -1,154 +1,119 @@
-v-hasPermi="['manufacturer_queryOne']"<template>
-  <div>
-    <el-row>
-      <el-col :span="24"
-              style="padding:0 10px">
+<template>
+  <div class="app-container">
+    <el-form :model="queryParams"
+             ref="queryForm"
+             size="small"
+             :inline="true"
+             v-show="showSearch" label-width="102px">
+      <el-form-item label="成本数据年度" prop="fiscalYearDate">
+        <el-date-picker clearable size="small"
+                        value-format="yyyy"
+                        format="yyyy"
+                        v-model="queryParams.fiscalYearDate"
+                        @change="accountPeriodDateChange"
+                        type="year"
+                        placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
 
-        <!--        table主体-->
-        <div class="plan_main">
-          <div class="avue-crud el-card__body"
-               style="width: 98%;border: 0">
-            <!--           条件搜索 -->
-            <div class="avue-crud__search"
-                 style="border: 0">
-              <el-form :model="queryParams"
-                       ref="queryForm"
-                       size="small"
-                       :inline="true"
-                       v-show="showSearch"
-                       label-width="100px">
-                <el-row :gutter="20">
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-date-picker value-format="yyyy"
-                                        format="yyyy"
-                                        v-model="queryParams.fiscalYearDate"
-                                        @change="accountPeriodDateChange"
-                                        type="year"
-                                        placeholder="选择日期"></el-date-picker>
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.costCenter"
-                                  placeholder="请输入成本中心编码"
-                                  clearable />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.costCenterDesc"
-                                  placeholder="请输入成本中心名称"
-                                  clearable />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="10">
-                    <div class="el-form-item__content"
-                         style="margin-left: 0px;">
-                      <el-button v-hasPermi="['costCenter_queryAll']"
-                                 type="primary"
-                                 size="mini"
-                                 @click="handleQuery"
-                                 icon="el-icon-search">搜索</el-button>
-                      <el-button size="mini"
-                                 @click="resetQuery"
-                                 icon="el-icon-refresh-left">重置</el-button>
-                    </div>
-                  </el-col>
-                  <el-col :span="5">
-                    <div class="el-form-item__content"
-                         style="float: right">
-                      <el-button v-hasPermi="['costCenter_doAdd']"
-                                 type="primary"
-                                 plain
-                                 size="mini"
-                                 icon="el-icon-plus"
-                                 @click="AddleUpdate">新增</el-button>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form>
-            </div>
-            <!--            表单数据-->
-            <div>
-              <el-form>
-                <el-table height="67vh"
-                          size="small"
-                          stripe
-                          v-loading="loading"
-                          :data="financetestList"
-                          :header-cell-style="{background:'#FAFAFA'}">
-                  <el-table-column label="年度"
-                                   sortable
-                                   align="center"
-                                   prop="fiscalYear" />
-                  <el-table-column label="成本中心"
-                                   sortable
-                                   align="center"
-                                   prop="costCenter" />
-                  <el-table-column label="成本中心名称"
-                                   sortable
-                                   align="center"
-                                   prop="costCenterDesc" />
-                  <el-table-column label="成本中心形态属性"
-                                   sortable
-                                   align="center"
-                                   prop="ccType" />
-                  <el-table-column label="操作"
-                                   align="center"
-                                   class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                      <el-button v-hasPermi="['costCenter_queryOne']"
-                                 icon="el-icon-info"
-                                 type="text"
-                                 size="mini"
-                                 @click="handleDetails(scope.row)">详情</el-button>
-                      <el-button v-hasPermi="['costCenter_doEdit']"
-                                 size="mini"
-                                 icon="el-icon-edit"
-                                 type="text"
-                                 @click="handleUpdate(scope.row)">编辑</el-button>
-                      <el-button v-hasPermi="['costCenter_delete']"
-                                 size="mini"
-                                 type="text"
-                                 icon="el-icon-delete"
-                                 @click="handleDelete(scope.row)">删除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <!--                分页-->
-                <div style="margin-top: 10px;right: 0"
-                     class="avue-crud__pagination">
-                  <el-pagination background
-                                 :total="total"
-                                 :current-page="queryParams.pageNum"
-                                 :page-sizes="[20, 50, 100, 200]"
-                                 :page-size="queryParams.pageSize"
-                                 layout="total, sizes, prev, pager, next, jumper"
-                                 @size-change="handleSizeChange"
-                                 @current-change="handleCurrentChange"
-                                 style="float: right;">
-                  </el-pagination>
-                </div>
-              </el-form>
-            </div>
-          </div>
-        </div>
+      <el-form-item label="成本中心编码" prop="costCenter" >
+        <el-input
+          v-model="queryParams.costCenter"
+          placeholder="请输入成本中心编码"
+          clearable
+          size="small"
+        />
+      </el-form-item>
+
+      <el-form-item label="成本中心名称" prop="costCenterDesc">
+        <el-input
+          v-model="queryParams.costCenterDesc"
+          placeholder="请输入成本中心名称"
+          clearable
+          size="small"
+        />
+      </el-form-item>
+
+      <el-form-item>
+        <el-button v-hasPermi="['costCenter_queryAll']"
+                   type="primary"
+                   icon="el-icon-search"
+                   size="mini"
+                   @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh"
+                   size="mini"
+                   @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button v-hasPermi="['costCenter_doAdd']"
+                   type="primary"
+                   plain
+                   size="mini"
+                   icon="el-icon-plus"
+                   @click="AddleUpdate">新增</el-button>
       </el-col>
     </el-row>
+
+    <el-table v-loading="loading"
+              :data="financetestList"
+              stripe>
+      <el-table-column label="年度"
+                       sortable
+                       align="center"
+                       prop="fiscalYear" />
+      <el-table-column label="成本中心"
+                       sortable
+                       align="center"
+                       prop="costCenter" />
+      <el-table-column label="成本中心名称"
+                       sortable
+                       align="center"
+                       prop="costCenterDesc" />
+      <el-table-column label="成本中心形态属性"
+                       sortable
+                       align="center"
+                       prop="ccType" />
+      <el-table-column label="操作"
+                       align="center"
+                       class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['costCenter_queryOne']"
+                     icon="el-icon-info"
+                     type="text"
+                     size="mini"
+                     @click="handleDetails(scope.row)">详情</el-button>
+          <el-button v-hasPermi="['costCenter_doEdit']"
+                     size="mini"
+                     icon="el-icon-edit"
+                     type="text"
+                     @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-hasPermi="['costCenter_delete']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-delete"
+                     @click="handleDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination background
+                :total="total"
+                :current-page="queryParams.pageNum"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                style="float: right;">
+    </pagination>
     <!-- 添加或修改参数配置对话框 -->
     <CostCenterCost @getLists="getListHandle"
                     :visible.sync="CostCenterCostVisible"
                     v-if="CostCenterCostVisible"
                     ref="addOrUpdate"></CostCenterCost>
   </div>
-
 </template>
 
 <script>

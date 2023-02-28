@@ -1,154 +1,164 @@
 <template>
-  <el-row>
-    <el-col :span="24"
-            style="padding:0 10px">
-      <div class="energy_main">
-        <div class="avue-crud el-card__body"
-             style="width: 98%;border: 0">
-          <div class="avue-crud__search"
-               style="border: 0">
-            <el-form>
-              <el-row :gutter="20">
-                <el-col :span="10">
-                  <div class="el-form-item el-form-item--small">
-                    <div class="el-form-item__content">
-                      <el-form-item label="">
-                        <el-select v-model="query.engyIdStart"
-                                   clearable
-                                   :popper-append-to-body="false"
-                                   placeholder="请选择能源代码"
-                                   style="width: 185.84px!important;">
-                          <el-option v-for="item in optionsEngyIdStart"
-                                     :key="item.value"
-                                     :label="item.value"
-                                     :value="item.value">
-                          </el-option>
-                        </el-select>
-                        ~
-                        <el-select v-model="query.engyIdEnd"
-                                   clearable
-                                   :popper-append-to-body="false"
-                                   placeholder="请选择能源代码"
-                                   style="width: 185.84px!important;padding-left: 0.5%">
-                          <el-option v-for="item in optionsEngyIdEnd"
-                                     :key="item.value"
-                                     :label="item.value"
-                                     :value="item.value">
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="10">
-                  <div class="el-form-item__content"
-                       style="margin-left: -274px;">
-                    <el-button v-hasPermi="['code_querySolid']"
-                               type="primary"
-                               size="mini"
-                               icon="el-icon-search"
-                               @click="handleQuery">搜 索</el-button>
-                    <el-button size="mini"
-                               type="default"
-                               icon="el-icon-refresh-left"
-                               @click="handleEmpty">重 置</el-button>
-                  </div>
-                </el-col>
-                <el-col :span="4">
-                  <div class="el-form-item__content"
-                       style="float: right">
-                    <el-button v-hasPermi="['code_addSolid']"
-                               type="primary"
-                               plain
-                               size="mini"
-                               icon="el-icon-plus"
-                               @click="handleAdd">新增</el-button>
-                    <el-button v-hasPermi="['code_deleteSolid']"
-                               type="danger"
-                               size="mini"
-                               icon="el-icon-delete"
-                               :disabled="openIsDisabled"
-                               @click="handleDelete">删除</el-button>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-          <div>
-            <el-form>
-              <el-table height="68.1vh"
-                        size="small"
-                        :data="tableData"
-                        stripe
-                        @selection-change="handleSelectionChange"
-                        :default-sort="{prop: 'createTime', order: 'descending'}">
-                <el-table-column type="selection"
-                                 width="55"
-                                 align="center" />
-                <template v-for="column in columns">
-                  <el-table-column :key="column.prop"
-                                   :prop="column.prop"
-                                   :label="column.label"
-                                   :sortable="column.sortable"
-                                   :width="column.width"
-                                   :min-width="column.minWidth" />
-                </template>
-                <el-table-column fixed="right"
-                                 label="操作"
-                                 width="180px">
-                  <template slot-scope="scope">
-                    <el-button v-hasPermi="['code_updateSolid']"
-                               size="mini"
-                               plain
-                               icon="el-icon-edit"
-                               type="primary"
-                               @click="handleEdit(scope.$index, scope.row)">编辑
-                    </el-button>
-                    <el-button v-hasPermi="['code_deleteSolid']"
-                               size="mini"
-                               plain
-                               icon="el-icon-delete"
-                               type="danger"
-                               @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <div style="margin-top: 10px;right: 0"
-                   class="avue-crud__pagination">
-                <el-pagination background
-                               @size-change="handleSizeChange"
-                               @current-change="handleCurrentChange"
-                               :current-page="page.currentPage"
-                               :page-sizes="[20, 50, 100, 200]"
-                               :page-size="page.pageSize"
-                               :layout="page.layout"
-                               :total="page.total">
-                </el-pagination>
-              </div>
-            </el-form>
-          </div>
-          <div v-if="addBox">
-            <el-dialog :title="(editBox?'编辑':'新建')+'固液体能源代码'"
-                       :visible.sync="addBox"
-                       width="500px"
-                       class="customDialogStyle"
-                       append-to-body
-                       :destroy-on-close="true"
-                       :close-on-click-modal="false">
-              <solidLiquidEnergyAdd :dataEdit="dataEdit"
-                                    :addBox="addBox"
-                                    :editBox="editBox"
-                                    @submitAdd="submitAdd"
-                                    @close="addBox=false,editBox=false" />
-            </el-dialog>
-          </div>
-        </div>
-      </div>
-    </el-col>
-  </el-row>
-</template>
+  <div class="app-container">
+    <el-form style="text-align: left;":inline="true" label-width="68px">
+      <el-form-item label="能源代码">
+        <el-select v-model="query.engyIdStart"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择能源代码"
+                   style="width: 215px;">
+          <el-option v-for="item in optionsEngyIdStart"
+                     :key="item.value"
+                     :label="item.value"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+        ~
+        <el-select v-model="query.engyIdEnd"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择能源代码"
+                   style="width: 215px;">
+          <el-option v-for="item in optionsEngyIdEnd"
+                     :key="item.value"
+                     :label="item.value"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-hasPermi="['code_querySolid']" type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="handleEmpty">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['code_addSolid']"
+        >新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="openIsDisabled"
+          @click="handleDelete"
+          v-hasPermi="['code_deleteSolid']"
+        >删除</el-button>
+      </el-col>
+      <right-toolbar  @queryTable="getList"></right-toolbar>
+    </el-row>
 
+    <el-table stripe
+              :data="tableData"
+              tooltip-effect="dark"
+              @selection-change="handleSelectionChange"
+              style="margin: 0 13px 0 5px;width: auto;">
+      <!--                <el-table height="68.1vh"-->
+      <!--                          size="small"-->
+      <!--                          :data="tableData"-->
+      <!--                          stripe-->
+      <!--                          @selection-change="handleSelectionChange"-->
+      <!--                          :default-sort="{prop: 'createTime', order: 'descending'}">-->
+      <el-table-column type="selection"
+                       width="55"
+                       align="center" />
+      <el-table-column label="能源缩写"
+                       align="center"
+                       prop="engyAc" />
+      <el-table-column label="能源代码"
+                       align="center"
+                       prop="engyId" />
+      <el-table-column label="能源名称"
+                       align="center"
+                       prop="engyName" />
+      <el-table-column label="计量单位"
+                       align="center"
+                       prop="engyUnit" />
+      <el-table-column label="热值系数"
+                       align="center"
+                       prop="calValue" />
+      <el-table-column label="热值系数单位"
+                       align="center"
+                       prop="calUnit" />
+      <el-table-column label="来源方式" align="center" prop="srcType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_src_type" :value="scope.row.srcType" />
+        </template>
+      </el-table-column>
+      <el-table-column label="能源种类" align="center" prop="engyType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_solid_type" :value="scope.row.engyType" />
+        </template>
+      </el-table-column>
+      <el-table-column label="抛帐系统" align="center" prop="acctSys" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_acct_sys" :value="scope.row.acctSys" />
+        </template>
+      </el-table-column>
+      <el-table-column label="建立人员"
+                       align="center"
+                       prop="createEmpNo" />
+      <el-table-column label="建立日期"
+                       align="center"
+                       width="160"
+                       prop="createTime" />
+      <el-table-column align="center"
+                       label="操作"
+                       width="180px">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['code_updateSolid']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-edit"
+                     @click="handleEdit(scope.$index, scope.row)">修改
+          </el-button>
+          <el-button v-hasPermi="['code_deleteSolid']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-delete"
+                     @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+
+
+    <pagination background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page.currentPage"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="page.pageSize"
+                :layout="page.layout"
+                :total="page.total">
+    </pagination>
+    <div v-if="addBox">
+      <el-dialog :title="(editBox?'编辑':'新建')+'固液体能源代码'"
+                 :visible.sync="addBox"
+                 width="500px"
+                 class="customDialogStyle"
+                 append-to-body
+                 :destroy-on-close="true"
+                 :close-on-click-modal="false">
+        <solidLiquidEnergyAdd :dataEdit="dataEdit"
+                              :addBox="addBox"
+                              :editBox="editBox"
+                              @submitAdd="submitAdd"
+                              @close="addBox=false,editBox=false" />
+      </el-dialog>
+    </div>
+
+  </div>
+</template>
 <script>
 
 import solidLiquidEnergyAdd from "./solidLiquidEnergyAdd";
@@ -159,6 +169,7 @@ export default {
     solidLiquidEnergyAdd
   },
   name: "solidLiquidEnergyCodeMaintenance",
+  dicts: ['engy_engy_type','engy_acct_sys','engy_src_type','engy_solid_type'],
   data () {
     return {
       addBox: false,
@@ -180,19 +191,6 @@ export default {
       table: {
         border: true
       },
-      columns: [
-        { label: '能源缩写', prop: "engyAc", sortable: true, minWidth: '80px' },
-        { label: '能源代码', prop: "engyId", sortable: true, minWidth: '100px' },
-        { label: '能源名称', prop: "engyName", sortable: true, minWidth: '100px' },
-        { label: '计量单位', prop: "engyUnit", sortable: true, minWidth: '100px' },
-        { label: '热值系数', prop: "calValue", sortable: true, minWidth: '100px' },
-        { label: '热值系数单位', prop: "calUnit", sortable: true, minWidth: '100px' },
-        { label: '来源方式', prop: "srcType", sortable: true, minWidth: '100px' },
-        { label: '能源种类', prop: "engyType", sortable: true, minWidth: '80px' },
-        { label: '抛帐系统', prop: "acctSys", sortable: true, minWidth: '80px' },
-        { label: '建立人员', prop: "createEmpNo", sortable: true, minWidth: '80px' },
-        { label: '建立日期', prop: "createTime", sortable: true, minWidth: '80px' },
-      ],
       tableData: [],
       optionsEngyIdStart: [],
       optionsEngyIdEnd: [],
@@ -202,8 +200,8 @@ export default {
   created () {
     this.getList();
     queryEngyIds().then(response => {
-      this.optionsEngyIdStart = response.data.data;
-      this.optionsEngyIdEnd = response.data.data;
+      this.optionsEngyIdStart = response.data;
+      this.optionsEngyIdEnd = response.data;
       this.loading = false
     })
   },
@@ -212,8 +210,8 @@ export default {
     handleQuery () {
       let query = this.query
       queryInfo(query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     // 清空
@@ -252,10 +250,7 @@ export default {
       }).then(() => {
         //调用删除的方法
         delInfo(ids).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.data.msg
-          });
+          this.$modal.msgSuccess(response.msg)
           this.getList();
         })
       });
@@ -273,9 +268,9 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        if (response.data.data != null) {
-          this.tableData = response.data.data.list
-          this.page.total = response.data.data.total
+        if (response.data != null) {
+          this.tableData = response.data.list
+          this.page.total = response.data.total
         } else {
           this.tableData = [];
           this.page.total = 0;
@@ -300,19 +295,13 @@ export default {
       this.editBox = false;
       if (data.id != null) {
         updateInfo(data).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.data.msg
-          });
+          this.$modal.msgSuccess(response.msg)
           this.getList();
         });
       } else {
         addInfo(data).then(response => {
-          if (response.data.code == '0') {
-            this.$message({
-              type: 'success',
-              message: response.data.msg
-            });
+          if (response.code == '0') {
+            this.$modal.msgSuccess(response.msg)
           }
           this.getList();
         });

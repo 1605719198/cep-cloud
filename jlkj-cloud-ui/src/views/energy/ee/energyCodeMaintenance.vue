@@ -1,239 +1,238 @@
 <template>
-  <el-row style="padding:0 10px">
-    <div class="energy_main"
-         style="text-align: center;width: auto;">
-      <el-form :model="queryParams"
-               ref="queryForm"
-               :inline="true"
-               v-show="showSearch"
-               style="text-align: left;padding-top: 20px;margin: 0 13px 0 20px">
-        <el-form-item label="">
-          <el-select v-model="queryParams.engyIdStart"
-                     clearable
-                     :popper-append-to-body="false"
-                     placeholder="请选择能源代码"
-                     style="width: 185.84px;">
-            <el-option v-for="item in optionsEngyIdStart"
-                       :key="item"
-                       :label="item"
-                       :value="item">
-            </el-option>
-          </el-select>
-          ~
-          <el-select v-model="queryParams.engyIdEnd"
-                     clearable
-                     :popper-append-to-body="false"
-                     placeholder="请选择能源代码"
-                     style="width: 185.84px;padding-left: 0.5%;">
-            <el-option v-for="item in optionsEngyIdEnd"
-                       :key="item"
-                       :label="item"
-                       :value="item">
-            </el-option>
-          </el-select>
-          <el-button v-hasPermi="['code_query']"
-                     type="primary"
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="能源代码">
+        <el-select v-model="queryParams.engyIdStart"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择能源代码"
+                   style="width: 215px;">
+          <el-option v-for="item in optionsEngyIdStart"
+                     :key="item"
+                     :label="item"
+                     :value="item">
+          </el-option>
+        </el-select>
+        ~
+        <el-select v-model="queryParams.engyIdEnd"
+                   clearable
+                   :popper-append-to-body="false"
+                   placeholder="请选择能源代码"
+                   style="width: 215px;">
+          <el-option v-for="item in optionsEngyIdEnd"
+                     :key="item"
+                     :label="item"
+                     :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-hasPermi="['code_query']" type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="handleEmpty">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['code_add']"
+        >新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="openIsDisabled"
+          @click="handleDelete"
+          v-hasPermi="['code_delete']"
+        >删除</el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
+
+    <el-table v-loading="loading"
+              stripe
+              :data="tableData"
+              tooltip-effect="dark"
+              @selection-change="handleSelectionChange"
+              style="margin: 0 0px 0 10px;width: auto;">
+      <el-table-column type="selection"
+                       width="55"
+                       align="center" />
+      <el-table-column label="能源缩写"
+                       align="center"
+                       prop="engyAc" />
+      <el-table-column label="能源代码"
+                       align="center"
+                       prop="engyId" />
+      <el-table-column label="能源名称"
+                       align="center"
+                       prop="engyName" />
+      <el-table-column label="计量单位"
+                       align="center"
+                       prop="engyUnit" />
+      <el-table-column label="热值系数"
+                       align="center"
+                       prop="calValue" />
+      <el-table-column label="热值系数单位"
+                       align="center"
+                       prop="calUnit" />
+      <el-table-column label="来源方式" align="center" prop="srcType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_src_type" :value="scope.row.srcType" />
+        </template>
+      </el-table-column>
+      <el-table-column label="能源种类" align="center" prop="engyType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_engy_type" :value="scope.row.engyType" />
+        </template>
+      </el-table-column>
+      <el-table-column label="抛帐系统" align="center" prop="acctSys" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.engy_acct_sys" :value="scope.row.acctSys" />
+        </template>
+      </el-table-column>
+      <el-table-column label="建立人员"
+                       align="center"
+                       prop="createEmpNo" />
+      <el-table-column label="建立日期"
+                       align="center"
+                       width="160"
+                       prop="createTime" />
+      <el-table-column label="操作"
+                       align="center"
+                       class-name="small-padding fixed-width"
+                       width="200">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['code_update']"
                      size="mini"
-                     icon="el-icon-search"
-                     @click="handleQuery"
-                     style="margin-left: 20px">搜 索</el-button>
-          <el-button size="mini"
-                     type="default"
-                     icon="el-icon-refresh-left"
-                     @click="handleEmpty">重 置</el-button>
+                     type="text"
+                     icon="el-icon-edit"
+                     @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button v-hasPermi="['code_delete']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-delete"
+                     @click="handleDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+
+
+    <pagination background
+                :total="total"
+                :current-page="queryParams.pageNum"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange">
+    </pagination>
+
+    <!-- 添加或修改日报系统-出勤数据对话框 -->
+    <el-dialog :title="title"
+               v-if="open"
+               :visible.sync="open"
+               width="500px"
+               :close-on-click-modal="false"
+               class="customDialogStyle"
+               :destroy-on-close="true"
+               append-to-body>
+      <el-form ref="form"
+               :model="form"
+               status-icon
+               :rules="rules"
+               label-width="80px">
+        <el-form-item label="能源代码"
+                      prop="engyId">
+          <el-input v-model="form.engyId"
+                    :disabled="engyInput" />
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="计量单位"
+                      prop="engyUnit">
+          <el-input v-model="form.engyUnit"
+                    :disabled="engyInput" />
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="热值单位"
+                      prop="calUnit">
+          <el-input v-model="form.calUnit" />
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="能源种类"
+                      prop="engyType">
+          <el-select v-model="form.engyType"
+                     :popper-append-to-body="false"
+                     placeholder="请选择"
+                     :disabled="engyInput">
+            <el-option v-for="dict in dict.type.engy_engy_type"
+                       :key="dict.value"
+                       :label="dict.label"
+                       :value="dict.value">
+            </el-option>
+          </el-select>
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="来源方式"
+                      prop="srcType">
+          <el-radio-group v-model="form.srcType">
+            <el-radio v-for="dict in dict.type.engy_src_type"
+                      :key="dict.value"
+                      :label="dict.value">{{dict.label}}</el-radio>
+          </el-radio-group>
         </el-form-item>
 
-        <div class="el-form-item__content"
-             style="float: right">
-          <el-button v-hasPermi="['code_add']"
-                     type="primary"
-                     plain
-                     size="mini"
-                     icon="el-icon-plus"
-                     @click="handleAdd">新增</el-button>
-          <el-button v-hasPermi="['code_delete']"
-                     type="danger"
-                     size="mini"
-                     icon="el-icon-delete"
-                     :disabled="openIsDisabled"
-                     @click="handleDelete">删除</el-button>
-        </div>
+        <el-form-item label="能源缩写"
+                      prop="engyAc">
+          <el-input v-model="form.engyAc" />
+        </el-form-item>
+        <el-form-item label="热值系数"
+                      prop="calValue">
+          <el-input v-model="form.calValue" />
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="能源名称"
+                      prop="engyName">
+          <el-input v-model="form.engyName"
+                    :disabled="engyInput" />
+          <span class="el-text"> *</span>
+        </el-form-item>
+        <el-form-item label="抛帐系统"
+                      prop="acctSys">
+          <el-radio-group v-model="form.acctSys">
+            <el-radio v-for="dict in dict.type.engy_acct_sys"
+                      :key="dict.value"
+                      :label="dict.value">{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
-
-      <el-table v-loading="loading"
-                stripe
-                height="68.1vh"
-                :data="tableData"
-                tooltip-effect="dark"
-                @selection-change="handleSelectionChange"
-                style="margin: 0 13px 0 20px;width: auto;">
-        <el-table-column type="selection"
-                         width="55"
-                         align="center" />
-        <el-table-column label="能源缩写"
-                         align="center"
-                         prop="engyAc" />
-        <el-table-column label="能源代码"
-                         align="center"
-                         prop="engyId" />
-        <el-table-column label="能源名称"
-                         align="center"
-                         prop="engyName" />
-        <el-table-column label="计量单位"
-                         align="center"
-                         prop="engyUnit" />
-        <el-table-column label="热值系数"
-                         align="center"
-                         prop="calValue" />
-        <el-table-column label="热值系数单位"
-                         align="center"
-                         prop="calUnit" />
-        <el-table-column label="来源方式"
-                         align="center"
-                         prop="srcType" />
-        <el-table-column label="能源种类"
-                         align="center"
-                         prop="engyType" />
-        <el-table-column label="抛帐系统"
-                         align="center"
-                         prop="acctSys" />
-        <el-table-column label="建立人员"
-                         align="center"
-                         prop="createEmpNo" />
-        <el-table-column label="建立日期"
-                         align="center"
-                         prop="createTime" />
-        <el-table-column label="操作"
-                         align="center"
-                         class-name="small-padding fixed-width"
-                         width="200">
-          <template slot-scope="scope">
-            <el-button v-hasPermi="['code_update']"
-                       size="mini"
-                       plain
-                       icon="el-icon-edit"
-                       type="primary"
-                       @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button v-hasPermi="['code_delete']"
-                       size="mini"
-                       plain
-                       icon="el-icon-delete"
-                       type="danger"
-                       @click="handleDelete(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div style="margin: 8px 13px 15px 15px"
-           class="avue-crud__pagination">
-        <el-pagination background
-                       :total="total"
-                       :current-page="queryParams.pageNum"
-                       :page-sizes="[20, 50, 100, 200]"
-                       :page-size="queryParams.pageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange">
-        </el-pagination>
+      <div slot="footer"
+           class="el-dialog__footer">
+        <el-button @click="cancel('form')">取 消</el-button>
+        <el-button type="primary"
+                   @click="submitForm('form')"
+                   :loading="states">确 定</el-button>
       </div>
-
-      <!-- 添加或修改能源代码对话框 -->
-      <el-dialog :title="title"
-                 v-if="open"
-                 :visible.sync="open"
-                 width="500px"
-                 :close-on-click-modal="false"
-                 class="customDialogStyle"
-                 :destroy-on-close="true"
-                 append-to-body>
-        <el-form ref="form"
-                 :model="form"
-                 status-icon
-                 :rules="rules"
-                 label-width="80px">
-          <el-form-item label="能源代码"
-                        prop="engyId">
-            <el-input v-model="form.engyId"
-                      :disabled="engyInput" />
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="计量单位"
-                        prop="engyUnit">
-            <el-input v-model="form.engyUnit"
-                      :disabled="engyInput" />
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="热值单位"
-                        prop="calUnit">
-            <el-input v-model="form.calUnit" />
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="能源种类"
-                        prop="engyType">
-            <el-select v-model="form.engyType"
-                       :popper-append-to-body="false"
-                       placeholder="请选择"
-                       :disabled="engyInput">
-              <el-option v-for="dict in optionsEngyType"
-                         :key="dict.dictValue"
-                         :label="dict.dictLabel"
-                         :value="dict.dictValue">
-              </el-option>
-            </el-select>
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="来源方式"
-                        prop="srcType">
-            <el-radio-group v-model="form.srcType">
-              <el-radio v-for="dict in optionsSrcType"
-                        :key="dict.dictValue"
-                        :label="dict.dictValue">{{dict.dictLabel}}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="能源缩写"
-                        prop="engyAc">
-            <el-input v-model="form.engyAc" />
-          </el-form-item>
-          <el-form-item label="热值系数"
-                        prop="calValue">
-            <el-input v-model="form.calValue" />
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="能源名称"
-                        prop="engyName">
-            <el-input v-model="form.engyName"
-                      :disabled="engyInput" />
-            <span class="el-text"> *</span>
-          </el-form-item>
-          <el-form-item label="抛帐系统"
-                        prop="acctSys">
-            <el-radio-group v-model="form.acctSys">
-              <el-radio v-for="dict in optionsAcctSys"
-                        :key="dict.dictValue"
-                        :label="dict.dictLabel">{{dict.dictLabel}}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
-        <div slot="footer"
-             class="el-dialog__footer">
-          <el-button @click="cancel('form')">取 消</el-button>
-          <el-button type="primary"
-                     @click="submitForm('form')"
-                     :loading="states">确 定</el-button>
-        </div>
-      </el-dialog>
-    </div>
-  </el-row>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 
 import { addInfo, delInfo, updateInfo, queryInfo, getInfo, queryEngyIds } from "@/api/energy/ee/energyCodeMaintenance";
-import { mapGetters } from "vuex";
 
 
 export default {
   name: "energyCodeMaintenance",
+  dicts: ['engy_engy_type','engy_acct_sys','engy_src_type'],
   data () {
     var checkA = (rule, value, callback) => {
       if (!value) {
@@ -379,23 +378,11 @@ export default {
   },
   created () {
     this.getList();
-    this.getDicts("engy_engy_type").then(response => {
-      this.optionsEngyType = response.data.data;
-    })
-    this.getDicts("engy_acct_sys").then(response => {
-      this.optionsAcctSys = response.data.data;
-    })
-    this.getDicts("engy_src_type").then(response => {
-      this.optionsSrcType = response.data.data;
-    })
     queryEngyIds().then(response => {
-      this.optionsEngyIdStart = response.data.data;
-      this.optionsEngyIdEnd = response.data.data;
+      this.optionsEngyIdStart = response.data;
+      this.optionsEngyIdEnd = response.data;
       this.loading = false
     })
-  },
-  computed: {
-    ...mapGetters(["userInfo"])
   },
   methods: {
     // 分页数据
@@ -410,8 +397,8 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.queryParams).then(response => {
-        this.tableData = response.data.data.list
-        this.total = response.data.data.total
+        this.tableData = response.data.list
+        this.total = response.data.total
         this.loading = false
       })
     },
@@ -461,8 +448,8 @@ export default {
     handleQuery () {
       this.loading = true
       queryInfo(this.queryParams).then(response => {
-        this.tableData = response.data.data.list
-        this.total = response.data.data.total
+        this.tableData = response.data.list
+        this.total = response.data.total
         this.loading = false
       })
     },
@@ -482,7 +469,7 @@ export default {
       const id = row.id || this.ids
       this.engyInput = true;
       getInfo(id).then(response => {
-        this.form = response.data.data[0];
+        this.form = response.data[0];
         this.open = true;
         this.title = "修改能源代码";
       });
@@ -497,10 +484,7 @@ export default {
       }).then(() => {//点击确定，执行then方法
         //调用删除的方法
         delInfo(ids).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.data.msg
-          });
+          this.$modal.msgSuccess(response.msg)
           this.getList();
         })
       })
@@ -510,19 +494,17 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.states = true;
-          this.form.createEmpNo = this.userInfo.userName;
+          this.form.createEmpNo = '';
           if (this.form.id != null) {
             updateInfo(this.form).then(response => {
               this.states = false;
-              this.$message({
-                type: 'success',
-                message: response.data.msg
-              });
+              // this.$message.success(response.msg)
+              this.$modal.msgSuccess(response.msg)
               this.open = false;
               this.handleQuery();
               queryEngyIds().then(response => {
-                this.optionsEngyIdStart = response.data.data;
-                this.optionsEngyIdEnd = response.data.data;
+                this.optionsEngyIdStart = response.data;
+                this.optionsEngyIdEnd = response.data;
                 this.loading = false
               })
             }).catch(() => {
@@ -532,17 +514,14 @@ export default {
             addInfo(this.form).then(response => {
               this.states = false;
               console.log(response.data);
-              if (response.data.code == '0') {
-                this.$message({
-                  type: 'success',
-                  message: response.data.msg
-                });
+              if (response.code == '0') {
+                this.$modal.msgSuccess(response.msg)
               }
               this.open = false;
               this.handleQuery();
               queryEngyIds().then(response => {
-                this.optionsEngyIdStart = response.data.data;
-                this.optionsEngyIdEnd = response.data.data;
+                this.optionsEngyIdStart = response.data;
+                this.optionsEngyIdEnd = response.data;
                 this.loading = false
               })
             }).catch(() => {
@@ -557,54 +536,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.customDialogStyle ::v-deep .el-dialog__body {
-  padding: 15px 40px 0 40px;
-}
-
-.energy_main {
-  height: 86vh;
-  background-color: #fff;
-}
-::v-deep .el-tabs--border-card > .el-tabs__header {
-  background-color: #ffffff;
-}
-
-::v-deep .el-tabs--border-card > .el-tabs__header .el-tabs__item {
-  width: 45%;
-  text-align: center;
-}
-::v-deep .el-table th,
-.el-table tr {
-  background-color: #fafafa;
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 12px;
-}
-::v-deep .el-form-item__label {
-  white-space: nowrap;
-}
-::v-deep .el-tabs--border-card {
-  height: 825px;
-}
-::v-deep .el-form-item__content {
-  white-space: nowrap;
-}
-::v-deep .el-text {
-  color: red;
-}
-::v-deep .el-select {
-  width: 100%;
-}
-.mb8.el-row {
-  margin-right: 100px;
-}
-/*下拉框最后一个显示不完全*/
-::v-deep.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
-::v-deep.el-form-item--feedback {
-  width: 92%;
-}
-</style>
-

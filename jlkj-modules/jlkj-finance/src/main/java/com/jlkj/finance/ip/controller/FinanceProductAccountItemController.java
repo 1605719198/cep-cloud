@@ -128,7 +128,7 @@ public class FinanceProductAccountItemController {
                 } else if ("MCCRPTITEM".equals(accountItemAttriName) && StringUtils.isEmpty(accountItemAttriValue)) {
                     attr.setAccountItemAttriValue("");
                     resultList1.add(attr);
-                } else if (accountItemAttriName.equals("cost_IO_TYPE") || accountItemAttriName.equals("sys_yes_no") || accountItemAttriName.equals("cost_MCCITEMSIG")) {
+                } else if ("cost_IO_TYPE".equals(accountItemAttriName) || "sys_yes_no".equals(accountItemAttriName) || "cost_MCCITEMSIG".equals(accountItemAttriName)) {
                     Map<String, Object> labelByDictValue = sysDictDataFeignService.getLabelByDictValue(accountItemAttriName, accountItemAttriValue);
                     Set<String> set = labelByDictValue.keySet();
                     String idKindNoMap = "";

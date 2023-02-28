@@ -246,7 +246,7 @@ export default {
   },
   created() {
     getEngyTopAnalys().then(res=>{
-      this.engyTop = res.data.data.engyTop;
+      this.engyTop = res.data.engyTop;
     })
   },
   methods: {

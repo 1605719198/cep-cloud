@@ -36,6 +36,6 @@
         update_user_name
     </sql>
     <select id="getEnergyInOutLimitPageData" resultType="com.jlkj.energy.ee.domain.EnergyInOutLimit">
-        select * from t_energy_in_out_limit
+        select * from energy_ee_in_out_limit
     </select>
 </mapper>

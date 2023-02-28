@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
- 
-import com.jlkj.common.dto.resp.Result;
+
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.energysolidliquiddata.EnergySolidLiquidDataDTO;
@@ -79,12 +79,12 @@ public class EnergySolidLiquidDataController {
             dataMap.put("total",total);
             dataMap.put("list",records);
             if (records.isEmpty()){
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -100,6 +100,6 @@ public class EnergySolidLiquidDataController {
         for (EnergySolidLiquidData energySolidLiquidData : list) {
             list1.add(energySolidLiquidData.getEngyId());
         }
-        return Result.success(list1);
+        return AjaxResult.success(list1);
     }
 }

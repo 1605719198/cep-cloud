@@ -41,7 +41,7 @@ export const deleteEnergyInformationConfiguration = (params) => {
 // 查询成本中心设定列表
 export function listFinancetest(data) {
   return request({
-    url: '/api/neplatform/fin/finance/cost/costCenter/queryAllInterface',
+    url: '/finance/finance/cost/costCenter/queryAllInterface',
     method: 'get',
     params: data
   })

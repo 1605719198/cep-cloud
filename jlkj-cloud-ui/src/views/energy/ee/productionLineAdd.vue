@@ -86,15 +86,12 @@
     mounted() {
       this.addForm = {...this.dataEdit}
     },
-    computed: {
-      ...mapGetters(["userInfo"])
-    },
     methods: {
       handleChange(form) {
         this.states = true;
         this.$refs[form].validate((valid) => {
           if (valid) {
-            this.addForm.createEmpNo = this.userInfo.userName;
+            // this.addForm.createEmpNo = this.userInfo.userName;
             this.$emit('submitAdd', this.addForm)
           } else {
             this.states = false;
@@ -127,8 +124,8 @@
         let costCenter = [];
         this.queryParams.costCenter = this.addForm.costCenter
         listApplyLike(this.queryParams).then(response => {
-          if (response.data.data.length > 0) {
-            response.data.data.forEach((item) => {
+          if (response.data.length > 0) {
+            response.data.forEach((item) => {
               costCenter.push({
                 name: item.costCenter,
                 value: item.costCenterDesc

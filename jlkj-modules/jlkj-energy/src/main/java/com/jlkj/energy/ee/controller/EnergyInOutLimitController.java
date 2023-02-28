@@ -1,9 +1,8 @@
 package com.jlkj.energy.ee.controller;
 
-import com.jlkj.common.dto.annotation.ParamModel;
-import com.jlkj.common.dto.resp.PageResult;
-import com.jlkj.common.dto.resp.Result;
-import com.jlkj.common.dto.resp.ValidUtil;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.datascope.annotation.ParamModel;
+import com.jlkj.common.core.utils.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.energyinoutlimit.DeleteEnergyInOutLimitDTO;
@@ -43,9 +42,9 @@ public class EnergyInOutLimitController {
         log.info("params => " + pageEnergyInOutLimitDTO);
         String errorMsg = ValidUtil.checkValid(pageEnergyInOutLimitDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
-        return PageResult.success(energyInformationConfigurationService.getEnergyInformationConfigurationPageData(pageEnergyInOutLimitDTO));
+        return AjaxResult.success(energyInformationConfigurationService.getEnergyInformationConfigurationPageData(pageEnergyInOutLimitDTO));
     }
 
     @Log(title = "能源信息配置新增", businessType = BusinessType.INSERT)

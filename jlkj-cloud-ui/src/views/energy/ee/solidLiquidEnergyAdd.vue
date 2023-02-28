@@ -199,13 +199,13 @@
     },
     created() {
       this.getDicts("engy_solid_type").then(response =>{
-        this.optionsEngyType = response.data.data;
+        this.optionsEngyType = response.data;
       })
       this.getDicts("engy_acct_sys").then(response =>{
-        this.optionsAcctSys = response.data.data;
+        this.optionsAcctSys = response.data;
       })
       this.getDicts("engy_src_type").then(response =>{
-        this.optionsSrcType = response.data.data;
+        this.optionsSrcType = response.data;
       })
       if(this.addBox==true){
         this.engyInput = false;
@@ -217,15 +217,15 @@
     mounted() {
       this.addForm = {...this.dataEdit}
     },
-    computed: {
-      ...mapGetters(["userInfo"])
-    },
+    // computed: {
+    //   ...mapGetters(["userInfo"])
+    // },
     methods: {
       handleChange(form) {
         this.states1 = true;
         this.$refs[form].validate((valid) => {
           if (valid) {
-            this.addForm.createEmpNo = this.userInfo.userName;
+            // this.addForm.createEmpNo = this.userInfo.userName;
             this.$emit('submitAdd', this.addForm)
           } else {
             this.states1 = false;

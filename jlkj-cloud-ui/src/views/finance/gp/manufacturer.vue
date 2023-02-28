@@ -1,141 +1,97 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="24"
-              style="padding:0 10px">
-        <div class="plan_main">
-          <div class="avue-crud el-card__body"
-               style="width: 98%;border: 0">
-            <!--           条件搜索 -->
-            <div class="avue-crud__search"
-                 style="border: 0">
-              <el-form :model="queryParams"
-                       ref="queryForm">
-                <el-row :gutter="20">
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.manufacturerId"
-                                  placeholder="请输入厂商编码"
-                                  clearable
-                                  @keyup.enter.native="handleQuery" />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.manufacturerChineseName"
-                                  placeholder="请输入中文名称"
-                                  clearable
-                                  @keyup.enter.native="handleQuery" />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.taxNo"
-                                  placeholder="请输入统一编号"
-                                  clearable
-                                  @keyup.enter.native="handleQuery" />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="10">
-                    <div class="el-form-item__content"
-                         style="margin-left: 0px;">
-                      <el-button v-hasPermi="['manufacturer_queryAll']"
-                                 type="primary"
-                                 size="mini"
-                                 @click="handleQuery"
-                                 icon="el-icon-search">搜索</el-button>
-                      <el-button size="mini"
-                                 @click="resetQuery"
-                                 icon="el-icon-refresh-left">重置</el-button>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form>
-            </div>
-            <!--            表单数据-->
-            <div>
-              <el-form>
-                <el-table height="67vh"
-                          stripe
-                          v-loading="loading"
-                          :data="base1List"
-                          @selection-change="handleSelectionChange"
-                          :header-cell-style="{background:'#FAFAFA'}"
-                          :default-sort="{ prop: 'date', order: 'descending' }">
-                  <el-table-column type="selection"
-                                   width="55"
-                                   align="center" />
-                  <el-table-column label="厂商编码"
-                                   sortable
-                                   align="center"
-                                   prop="manufacturerId"
-                                   key="manufacturerId" />
-                  <el-table-column label="中文名称"
-                                   sortable
-                                   align="center"
-                                   prop="manufacturerChineseName"
-                                   key="manufacturerChineseName"
-                                   :show-overflow-tooltip='true' />
-                  <el-table-column label="厂商简称"
-                                   sortable
-                                   align="center"
-                                   prop="manufacturerShortName"
-                                   key="manufacturerShortName"
-                                   :show-overflow-tooltip='true' />
-                  <el-table-column label="统一编号"
-                                   sortable
-                                   align="center"
-                                   prop="taxNo"
-                                   key="taxNo" />
-                  <el-table-column label="英文名称"
-                                   sortable
-                                   align="center"
-                                   prop="manufacturerEnglishName"
-                                   key="manufacturerEnglishName" />
-                  <el-table-column label="操作"
-                                   align="center"
-                                   class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                      <el-button v-hasPermi="['manufacturer_queryOne']"
-                                 icon="el-icon-info"
-                                 type="text"
-                                 size="mini"
-                                 @click="handleUpdate(scope.row)">详情</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <!--                分页-->
-                <div style="margin-top: 10px;right: 0"
-                     class="avue-crud__pagination">
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" :inline="true"  label-width="68px">
 
-                  <el-pagination background
-                                 :total="total"
-                                 :current-page="queryParams.pageNum"
-                                 :page-sizes="[20, 50, 100, 200]"
-                                 :page-size="queryParams.pageSize"
-                                 layout="total, sizes, prev, pager, next, jumper"
-                                 @size-change="handleSizeChange"
-                                 @current-change="handleCurrentChange"
-                                 style="float: right;">
-                  </el-pagination>
-                </div>
-              </el-form>
-            </div>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+      <el-form-item label="厂商编码" prop="manufacturerId">
+        <el-input v-model="queryParams.manufacturerId"
+                  placeholder="请输入厂商编码"
+                  clearable
+                  @keyup.enter.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="中文名称" prop="manufacturerChineseName">
+        <el-input v-model="queryParams.manufacturerChineseName"
+                  placeholder="请输入中文名称"
+                  clearable
+                  @keyup.enter.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="统一编号" prop="taxNo">
+        <el-input v-model="queryParams.taxNo"
+                  placeholder="请输入统一编号"
+                  clearable
+                  @keyup.enter.native="handleQuery" />
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary"
+                   icon="el-icon-search"
+                   size="mini"
+                   v-hasPermi="['manufacturer_queryAll']"
+                   @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+
+    <el-table stripe v-loading="loading" :data="base1List" @selection-change="handleSelectionChange"
+              :default-sort="{ prop: 'date', order: 'descending' }">
+      <el-table-column type="selection"
+                       width="55"
+                       align="center" />
+      <el-table-column label="厂商编码"
+                       sortable
+                       align="center"
+                       prop="manufacturerId"
+                       key="manufacturerId" />
+      <el-table-column label="中文名称"
+                       sortable
+                       align="center"
+                       prop="manufacturerChineseName"
+                       key="manufacturerChineseName"
+                       :show-overflow-tooltip='true' />
+      <el-table-column label="厂商简称"
+                       sortable
+                       align="center"
+                       prop="manufacturerShortName"
+                       key="manufacturerShortName"
+                       :show-overflow-tooltip='true' />
+      <el-table-column label="统一编号"
+                       sortable
+                       align="center"
+                       prop="taxNo"
+                       key="taxNo" />
+      <el-table-column label="英文名称"
+                       sortable
+                       align="center"
+                       prop="manufacturerEnglishName"
+                       key="manufacturerEnglishName" />
+      <el-table-column label="操作"
+                       align="center"
+                       class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['manufacturer_queryOne']"
+                     icon="el-icon-info"
+                     type="text"
+                     size="mini"
+                     @click="handleUpdate(scope.row)">详情</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination background
+                :total="total"
+                :current-page="queryParams.pageNum"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                style="float: right;">
+    </pagination>
+
     <!-- 添加或修改参数配置对话框 -->
     <add-or-update v-if="addOrUpdateVisible"
                    ref="addOrUpdate"></add-or-update>
   </div>
-
 </template>
 
 <script>
@@ -202,14 +158,14 @@ export default {
     getList () {
       queryAll(this.queryParams).then(response => {
         this.loading = false;
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.base1List = []
           this.total = 0;
           this.costAccount = true
           this.loading = false;
         } else {
-          this.base1List = response.data.data.list;
-          this.total = response.data.data.total;
+          this.base1List = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         }
 

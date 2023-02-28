@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.dto.energyprovider.EnergyCodeFoMaterialDTO;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.dto.energy.ee.EnergyCodeFoMaterialDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.domain.EnergyCode;
@@ -55,7 +55,7 @@ public class EnergyCodeFoMaterialController {
                     .eq(EnergyCodeFoMaterial::getEngySource, energyCodeFoMaterial.getEngySource());
             List<EnergyCodeFoMaterial> list = energyCodeFoMaterialService.list(queryWrapper);
             if(list.size() >= 1){
-                return Result.failedOne("您输入的'能源代码、成本中心代号、能源量类型、来源系统'系统中已存在，请重新输入！");
+                return AjaxResult.error("您输入的'能源代码、成本中心代号、能源量类型、来源系统'系统中已存在，请重新输入！");
             }
             boolean result = energyCodeFoMaterialService.save(energyCodeFoMaterial);
             if(result){
@@ -72,12 +72,12 @@ public class EnergyCodeFoMaterialController {
                 resultMap.put("engyCmp4No", energyCodeFoMaterial.getEngyCmp4No());
                 List<Map<String, String>> resultList = new ArrayList<>();
                 resultList.add(resultMap);
-                return Result.successOne("新增成功", resultList);
+                return AjaxResult.success("新增成功", resultList);
             }else {
-                return Result.failedTwo("新增失败，请重新提交");
+                return AjaxResult.error("新增失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -107,7 +107,7 @@ public class EnergyCodeFoMaterialController {
                 Map<String, Object> map = energyCodeService.getMap(queryWrapper1);
                 energyCodeFoMaterial.setEngyName(String.valueOf(map.get("engy_name")));
                 energyCodeFoMaterialService.save(energyCodeFoMaterial);
-                return Result.success("能源代码为空,已为您新增了一笔数据");
+                return AjaxResult.success("能源代码为空,已为您新增了一笔数据");
             } else {
                 if(map1.get(engyId).equals(energyCodeFoMaterial.getEngyId())) {
                     boolean result = energyCodeFoMaterialService.update(energyCodeFoMaterial, updateWrapper);
@@ -125,16 +125,16 @@ public class EnergyCodeFoMaterialController {
                         resultMap.put("engyCmp4No", energyCodeFoMaterial.getEngyCmp4No());
                         List<Map<String, String>> resultList = new ArrayList<>();
                         resultList.add(resultMap);
-                        return Result.successOne("修改成功", resultList);
+                        return AjaxResult.success("修改成功", resultList);
                     } else {
-                        return Result.failedTwo("修改失败，请重新提交");
+                        return AjaxResult.error("修改失败，请重新提交");
                     }
                 } else {
-                    return Result.failedOne("'能源代码、成本中心代号、能源量类型、来源系统'，不允许修改");
+                    return AjaxResult.error("'能源代码、成本中心代号、能源量类型、来源系统'，不允许修改");
                 }
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -148,12 +148,12 @@ public class EnergyCodeFoMaterialController {
         try {
             boolean result = energyCodeFoMaterialService.removeBatchByIds(id);
             if (result) {
-                return Result.success("删除成功");
+                return AjaxResult.success("删除成功");
             } else {
-                return Result.failedTwo("删除失败，请重新提交");
+                return AjaxResult.error("删除失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -169,12 +169,12 @@ public class EnergyCodeFoMaterialController {
             queryWrapper.eq(EnergyCodeFoMaterial::getEngyId, engyId);
             boolean result = energyCodeFoMaterialService.remove(queryWrapper);
             if (result) {
-                return Result.success("删除成功");
+                return AjaxResult.success("删除成功");
             } else {
-                return Result.failedTwo("删除失败，请重新提交");
+                return AjaxResult.error("删除失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -207,12 +207,12 @@ public class EnergyCodeFoMaterialController {
             dataMap.put("total",total);
             dataMap.put("list",records);
             if (records.isEmpty()){
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -225,9 +225,9 @@ public class EnergyCodeFoMaterialController {
     public Object queryEnergyCodeFoMaterialById(@RequestParam String id) {
         try {
             List<EnergyCodeFoMaterial> list = energyCodeFoMaterialService.query().eq("id", id).list();
-            return Result.successOne("查询成功", list);
+            return AjaxResult.success("查询成功", list);
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -246,6 +246,6 @@ public class EnergyCodeFoMaterialController {
             resultMap.put("label", energyCodeFoMaterial.getEngyName());
             resultList.add(resultMap);
         }
-        return Result.successOne("查询成功", resultList);
+        return AjaxResult.success("查询成功", resultList);
     }
 }

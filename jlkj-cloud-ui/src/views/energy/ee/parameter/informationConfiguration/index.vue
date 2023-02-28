@@ -1,8 +1,6 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0;">
-    <div class="avue-crud__search" style="border: 0">
-      <el-row>
-        <el-col :span="20">
+    <div class="avue-crud__search" style="border: 0;">
           <!-- 表单筛选 -->
           <el-form :model="query" ref="query" :inline="true">
             <!-- 操作按钮 -->
@@ -16,14 +14,10 @@
                          size="medium">重 置</el-button>
             </el-form-item> -->
           </el-form>
-        </el-col>
-        <el-col :span="4">
-          <div style="text-align: right;margin:0 10px 20px 0;">
+          <div style="text-align: left;margin:0 10px 20px 0;">
             <el-button type="primary" size="mini" icon="el-icon-plus" plain @click="handleAdd('add')">新增
             </el-button>
           </div>
-        </el-col>
-      </el-row>
     </div>
     <div>
       <el-table height="73vh" size="small" v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort">
@@ -36,20 +30,24 @@
         <el-table-column label="下限" sortable minWidth="150" align="left" prop="down_limit" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" plain icon="el-icon-edit" type="success"
+            <el-button size="mini"
+                       type="text"
+                       icon="el-icon-edit"
               @click="handleEdit('edit', scope.$index, scope.row)">修改
             </el-button>
-            <el-button size="mini" plain icon="el-icon-delete" type="danger"
+            <el-button size="mini"
+                       type="text"
+                       icon="el-icon-delete"
               @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div style="margin-top: 10px;right: 0;padding: 0;" class="avue-crud__pagination">
-        <el-pagination v-show="page.total > 0" background @size-change="handleSizeChange"
+        <pagination v-show="page.total > 0" background @size-change="handleSizeChange"
           @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper"
           :current-page="page.current" :page-sizes="[20, 50, 100, 200]" :page-size="page.size" :total="page.total">
-        </el-pagination>
+        </pagination>
       </div>
     </div>
     <!-- 弹窗 -->
@@ -104,7 +102,7 @@ export default {
   },
   created() {
     this.getDicts("energy_in_out_type").then(response => {
-      this.optionsInEngyType = response.data.data;
+      this.optionsInEngyType = response.data;
     })
     this.onLoad();
   },
@@ -113,8 +111,9 @@ export default {
     onLoad() {
       this.table.loading = true;//加载状态
       getEnergyInformationConfigurationPage(this.page, this.query).then(res => {
+        console.log(res)
         this.table.loading = false;
-        let data = res.data.data;//表格相关数据
+        let data = res.data;//表格相关数据
         this.page.total = data.total;//数据总数
         this.tableData = data.records;//表格数据
       }, error => {
@@ -183,7 +182,7 @@ export default {
           delete_user_name: this.userInfo.userName,
         }).then(res => {
           this.onLoad();
-          this.$message({ type: 'success', message: res.data.msg });
+          this.$message({ type: 'success', message: res.msg });
         }, error => {
           window.console.log(error);
         });

@@ -1,4 +1,4 @@
-package com.jlkj.common.dto.finance.aa;
+package com.jlkj.common.dto.finance.gp;
 
 
 import com.baomidou.mybatisplus.annotation.TableField;

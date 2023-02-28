@@ -1,139 +1,112 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="24"
-              style="padding:0 10px">
-        <!--        table主体-->
-        <div class="plan_main">
-          <div class="avue-crud el-card__body"
-               style="width: 98%;border: 0">
-            <!--           条件搜索 -->
-            <div class="avue-crud__search"
-                 style="border: 0">
-              <el-form :model="queryParams"
-                       ref="queryForm">
-                <el-row :gutter="20">
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.productCode"
-                                  placeholder="请输入产副品代码"
-                                  clearable
-                                  @keyup.enter.native="handleQuery" />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-input v-model="queryParams.productCodeDesc"
-                                  placeholder="请输入产副品中文名称"
-                                  clearable
-                                  @keyup.enter.native="handleQuery" />
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="10">
-                    <div class="el-form-item__content"
-                         style="margin-left: 0px;">
-                      <el-button type="primary"
-                                 v-hasPermi="['product_code_queryAll']"
-                                 size="mini"
-                                 @click="handleQuery"
-                                 icon="el-icon-search">搜索</el-button>
-                      <el-button size="mini"
-                                 type="default"
-                                 @click="resetQuery"
-                                 icon="el-icon-refresh-left">重置</el-button>
-                    </div>
-                  </el-col>
-                  <el-col :span="8">
-                    <div class="el-form-item__content"
-                         style="float: right">
-                      <el-button v-hasPermi="['product_code_doAdd']"
-                                 type="primary"
-                                 plain
-                                 size="mini"
-                                 icon="el-icon-plus"
-                                 @click="AddleUpdate()">新增</el-button>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form>
-            </div>
-            <!--            表单数据-->
-            <div>
-              <el-form>
-                <el-table stripe
-                          height="67vh"
-                          v-loading="loading"
-                          :data="financetestList"
-                          :header-cell-style="{background:'#FAFAFA'}">
-                  <el-table-column label="产副品编码"
-                                   sortable
-                                   align="center"
-                                   prop="productCode" />
-                  <el-table-column label="产副品名称"
-                                   sortable
-                                   align="center"
-                                   prop="productCodeDesc" />
-                  <el-table-column label="产副品帐务分类"
-                                   sortable
-                                   align="center"
-                                   prop="productAccountAttri" />
-                  <el-table-column label="操作"
-                                   align="center"
-                                   class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                      <el-button v-hasPermi="['product_code_queryOne']"
-                                 plain
-                                 icon="el-icon-info"
-                                 type="info"
-                                 size="mini"
-                                 @click="handleDetails(scope.row)">详情</el-button>
-                      <el-button v-hasPermi="['product_code_doEdit']"
-                                 size="mini"
-                                 plain
-                                 icon="el-icon-edit"
-                                 type="primary"
-                                 @click="handleUpdate(scope.row)">编辑</el-button>
-                      <el-button v-hasPermi="['product_code_delete']"
-                                 size="mini"
-                                 plain
-                                 icon="el-icon-delete"
-                                 type="danger"
-                                 @click="handleDelete(scope.row)">删除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <!--                分页-->
-                <div style="margin-top: 10px;right: 0"
-                     class="avue-crud__pagination">
-                  <el-pagination background
-                                 :total="total"
-                                 :current-page="queryParams.pageNum"
-                                 :page-sizes="[20, 50, 100, 200]"
-                                 :page-size="queryParams.pageSize"
-                                 layout="total, sizes, prev, pager, next, jumper"
-                                 @size-change="handleSizeChange"
-                                 @current-change="handleCurrentChange"
-                                 style="float: right;">
-                  </el-pagination>
-                </div>
-              </el-form>
-            </div>
-          </div>
-        </div>
+  <div class="app-container">
+    <el-form :model="queryParams"
+             ref="queryForm"
+             size="small"
+             :inline="true"
+             v-show="showSearch" label-width="85px">
+
+      <el-form-item label="产副品代码" prop="productCode">
+        <el-input
+          v-model="queryParams.productCode"
+          placeholder="请输入产副品代码"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="中文名称" prop="productCodeDesc">
+        <el-input
+          v-model="queryParams.productCodeDesc"
+          placeholder="请输入产副品中文名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item>
+        <el-button v-hasPermi="['product_code_queryAll']"
+                   type="primary"
+                   icon="el-icon-search"
+                   size="mini"
+                   @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh"
+                   size="mini"
+                   @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button v-hasPermi="['product_code_doAdd']"
+                   type="primary"
+                   plain
+                   size="mini"
+                   icon="el-icon-plus"
+                   @click="AddleUpdate()">新增</el-button>
       </el-col>
     </el-row>
+
+    <el-table v-loading="loading"
+              :data="financetestList"
+              stripe>
+      <el-table-column label="产副品编码"
+                       sortable
+                       align="center"
+                       prop="productCode" />
+      <el-table-column label="产副品名称"
+                       sortable
+                       align="center"
+                       prop="productCodeDesc" />
+      <el-table-column label="产副品帐务分类"
+                       sortable
+                       align="center"
+                       prop="productAccountAttri" />
+      <el-table-column label="操作"
+                       align="center"
+                       class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button v-hasPermi="['product_code_queryOne']"
+                     plain
+                     icon="el-icon-info"
+                     type="info"
+                     size="mini"
+                     @click="handleDetails(scope.row)">详情</el-button>
+          <el-button v-hasPermi="['product_code_doEdit']"
+                     size="mini"
+                     plain
+                     icon="el-icon-edit"
+                     type="primary"
+                     @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-hasPermi="['product_code_delete']"
+                     size="mini"
+                     plain
+                     icon="el-icon-delete"
+                     type="danger"
+                     @click="handleDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination background
+                :total="total"
+                :current-page="queryParams.pageNum"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                style="float: right;">
+    </pagination>
     <!-- 添加或修改参数配置对话框 -->
     <FinanceProductCost @getLists="getListHandle"
                         :visible.sync="CostCenterCostVisible"
                         v-if="CostCenterCostVisible"
                         ref="CostCenterCostVisible"></FinanceProductCost>
   </div>
-
 </template>
+
 
 <script>
 import { listFinancetest, delFinancetest, addFinancetest } from "@/api/finance/ip/financeproduct";

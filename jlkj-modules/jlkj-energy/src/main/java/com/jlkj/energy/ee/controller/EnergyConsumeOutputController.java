@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jlkj.common.dto.dto.energyprovider.EnergyConsumeOutputDTO;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.dto.energy.ee.EnergyConsumeOutputDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.domain.EnergyCode;
@@ -103,13 +103,13 @@ public class EnergyConsumeOutputController {
                         energyConsumeOutputDTO.getMessageInfo().substring(0,2000);
                     }
                     sendMessage(energyConsumeOutputDTO, msg);
-                    return Result.failedOne(msg);
+                    return AjaxResult.error(msg);
                 }
                 boolean result = energyConsumeOutputService.save(energyConsumeOutput);
                 if(result){
-                    return Result.success("新增成功");
+                    return AjaxResult.success("新增成功");
                 }else {
-                    return Result.failedTwo("新增失败");
+                    return AjaxResult.error("新增失败");
                 }
             } else {
                 if (r.equals(energyConsumeOutput.getExecJobFunc())){
@@ -118,9 +118,9 @@ public class EnergyConsumeOutputController {
                     // 非重复资料才新增t_energy_consume_output，同时抛IP
                     boolean result = energyConsumeOutputService.save(energyConsumeOutput);
                     if(result){
-                        return Result.success("新增成功");
+                        return AjaxResult.success("新增成功");
                     }else {
-                        return Result.failedTwo("新增失败");
+                        return AjaxResult.error("新增失败");
                     }
                 }
                 // 若为冲销资料，在IP/AM已月关帐时，不可冲销IP/AM
@@ -146,7 +146,7 @@ public class EnergyConsumeOutputController {
                 energyConsumeOutputDTO.getMessageInfo().substring(0,2000);
             }
             sendMessage(energyConsumeOutputDTO, eMsg);
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -391,12 +391,12 @@ public class EnergyConsumeOutputController {
             dataMap.put("list",records);
             dataMap.put("sum", sum);
             if (records.isEmpty()){
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -412,6 +412,6 @@ public class EnergyConsumeOutputController {
         for (EnergyConsumeOutput energyConsumeOutput : list) {
             list1.add(energyConsumeOutput.getEngyId());
         }
-        return Result.success(list1);
+        return AjaxResult.success(list1);
     }
 }

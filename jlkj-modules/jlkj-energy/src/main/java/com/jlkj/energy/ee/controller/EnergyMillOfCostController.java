@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
- 
-import com.jlkj.common.dto.resp.Result;
+
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.energymillofcost.EnergyMillOfCostDTO;
@@ -47,7 +47,7 @@ public class EnergyMillOfCostController {
 
             List<EnergyMillOfCost> list = energyMillOfCostService.list(queryWrapper);
             if(list.size() >= 1){
-                return Result.failedOne("您输入的工场产线代号与成本中心系统中已存在，请重新输入！");
+                return AjaxResult.error("您输入的工场产线代号与成本中心系统中已存在，请重新输入！");
             }
             boolean result = energyMillOfCostService.save(energyMillOfCost);
             if(result){
@@ -62,12 +62,12 @@ public class EnergyMillOfCostController {
                 resultMap.put("updateDate", energyMillOfCost.getUpdateDate());
                 List<Map<String, String>> resultList = new ArrayList<>();
                 resultList.add(resultMap);
-                return Result.successOne("新增成功", resultList);
+                return AjaxResult.success("新增成功", resultList);
             }else {
-                return Result.failedTwo("新增失败，请重新提交");
+                return AjaxResult.error("新增失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -81,12 +81,12 @@ public class EnergyMillOfCostController {
         try {
             boolean result = energyMillOfCostService.removeBatchByIds(id);
             if (result) {
-                return Result.success("删除成功");
+                return AjaxResult.success("删除成功");
             } else {
-                return Result.failedTwo("删除失败，请重新提交");
+                return AjaxResult.error("删除失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -122,12 +122,12 @@ public class EnergyMillOfCostController {
             dataMap.put("total",total);
             dataMap.put("list",records);
             if (records.isEmpty()){
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 }

@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.dto.dto.energyprovider.EnergyCodeDTO;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.dto.energy.ee.EnergyCodeDTO;
 import com.jlkj.energy.ee.domain.EnergyCode;
 import com.jlkj.energy.ee.service.EnergyCodeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +44,7 @@ public class EnergyCodeController {
             BeanUtils.copyProperties(energyCodeDTO, energyCode);
             List<EnergyCode> list = energyCodeService.query().eq("engy_id", energyCode.getEngyId()).list();
             if(!list.isEmpty()){
-                return Result.failedOne("您输入的能源代码系统中已存在，请重新输入！");
+                return AjaxResult.error("您输入的能源代码系统中已存在，请重新输入！");
             }
             boolean result = energyCodeService.save(energyCode);
             if(result){
@@ -61,12 +61,12 @@ public class EnergyCodeController {
                 resultMap.put("acct_sys", energyCode.getAcctSys());
                 List<Map<String, String>> resultList = new ArrayList<>();
                 resultList.add(resultMap);
-                return Result.successOne("新增成功", resultList);
+                return AjaxResult.success("新增成功", resultList);
             }else {
-                return Result.failedTwo("新增失败，请重新提交");
+                return AjaxResult.error("新增失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -88,7 +88,7 @@ public class EnergyCodeController {
             EnergyCode code = energyCodeService.getOne(queryWrapper);
             if (code == null){
                 energyCodeService.save(energyCode);
-                return Result.success("能源代码为空,已为您新增了一笔数据");
+                return AjaxResult.success("能源代码为空,已为您新增了一笔数据");
             } else if(code.getEngyId().equals(energyCode.getEngyId())) {
                 boolean result = energyCodeService.update(energyCode, updateWrapper);
                 if (result){
@@ -106,15 +106,15 @@ public class EnergyCodeController {
                     resultMap.put("acct_sys", energyCode.getAcctSys());
                     List<Map<String, String>> resultList = new ArrayList<>();
                     resultList.add(resultMap);
-                    return Result.successOne("修改成功", resultList);
+                    return AjaxResult.success("修改成功", resultList);
                 } else {
-                    return Result.failedTwo("修改失败，请重新提交");
+                    return AjaxResult.error("修改失败，请重新提交");
                 }
             } else {
-                return Result.failedOne("能源代码，不允许修改");
+                return AjaxResult.error("能源代码，不允许修改");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -128,12 +128,12 @@ public class EnergyCodeController {
         try {
                 boolean result = energyCodeService.removeBatchByIds(id);
                 if (result) {
-                    return Result.success("删除成功");
+                    return AjaxResult.success("删除成功");
                 } else {
-                    return Result.failedTwo("删除失败，请重新提交");
+                    return AjaxResult.error("删除失败，请重新提交");
                 }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -149,12 +149,12 @@ public class EnergyCodeController {
             queryWrapper.eq(EnergyCode::getEngyId, engyId);
             boolean result = energyCodeService.remove(queryWrapper);
             if (result) {
-                return Result.success("删除成功");
+                return AjaxResult.success("删除成功");
             } else {
-                return Result.failedTwo("删除失败，请重新提交");
+                return AjaxResult.error("删除失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -190,12 +190,12 @@ public class EnergyCodeController {
             dataMap.put("total",total);
             dataMap.put("list",records);
             if (records.isEmpty()){
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -208,9 +208,9 @@ public class EnergyCodeController {
     public Object queryEnergyCodeById(@RequestParam String id) {
         try {
             List<EnergyCode> list = energyCodeService.query().eq("id", id).list();
-            return Result.successOne("查询成功", list);
+            return AjaxResult.success("查询成功", list);
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -230,7 +230,7 @@ public class EnergyCodeController {
         for (EnergyCode energyCode : list) {
             list1.add(energyCode.getEngyId());
         }
-        return Result.success(list1);
+        return AjaxResult.success(list1);
     }
 
     /**
@@ -252,7 +252,7 @@ public class EnergyCodeController {
             param.put("EngyName",energyCode.getEngyName());
             list1.add(param);
         }
-        return Result.success(list1);
+        return AjaxResult.success(list1);
     }
 
     /**
@@ -267,7 +267,7 @@ public class EnergyCodeController {
             BeanUtils.copyProperties(energyCodeDTO, energyCode);
             List<EnergyCode> list = energyCodeService.query().eq("engy_id", energyCode.getEngyId()).list();
             if(list.size() >= 1){
-                return Result.failedOne("您输入的固液体能源代码系统中已存在，请重新输入！");
+                return AjaxResult.error("您输入的固液体能源代码系统中已存在，请重新输入！");
             }
             boolean result = energyCodeService.save(energyCode);
             if(result){
@@ -284,12 +284,12 @@ public class EnergyCodeController {
                 resultMap.put("acct_sys", energyCode.getAcctSys());
                 List<Map<String, String>> resultList = new ArrayList<>();
                 resultList.add(resultMap);
-                return Result.successOne("新增成功", resultList);
+                return AjaxResult.success("新增成功", resultList);
             }else {
-                return Result.failedTwo("新增失败，请重新提交");
+                return AjaxResult.error("新增失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -324,15 +324,15 @@ public class EnergyCodeController {
                     resultMap.put("acct_sys", energyCode.getAcctSys());
                     List<Map<String, String>> resultList = new ArrayList<>();
                     resultList.add(resultMap);
-                    return Result.successOne("修改成功", resultList);
+                    return AjaxResult.success("修改成功", resultList);
                 } else {
-                    return Result.failedTwo("修改失败，请重新提交");
+                    return AjaxResult.error("修改失败，请重新提交");
                 }
             } else {
-                return Result.failedOne("能源代码，不允许修改");
+                return AjaxResult.error("能源代码，不允许修改");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -346,12 +346,12 @@ public class EnergyCodeController {
         try {
                 boolean result = energyCodeService.removeBatchByIds(id);
                 if (result) {
-                    return Result.success("删除成功");
+                    return AjaxResult.success("删除成功");
                 } else {
-                    return Result.failedTwo("删除失败，请重新提交");
+                    return AjaxResult.error("删除失败，请重新提交");
                 }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -386,12 +386,12 @@ public class EnergyCodeController {
             dataMap.put("total",total);
             dataMap.put("list",records);
             if (page.getRecords().isEmpty()){
-                return Result.failedOne("查无资料");
+                return AjaxResult.error("查无资料");
             } else {
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -414,6 +414,6 @@ public class EnergyCodeController {
             resultMap.put("label", energyCode.getEngyName());
             resultList.add(resultMap);
         }
-        return Result.successOne("查询成功", resultList);
+        return AjaxResult.success("查询成功", resultList);
     }
 }

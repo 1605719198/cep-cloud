@@ -2,8 +2,8 @@ package com.jlkj.energy.ee.controller;
 
 
  
-import com.jlkj.common.dto.dto.energyprovider.EnergyDayPlanOutputDTO;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.dto.energy.ee.EnergyDayPlanOutputDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.domain.EnergyDayPlanOutput;
@@ -46,12 +46,12 @@ public class EnergyDayPlanOutputController {
                 BeanUtils.copyProperties(energyDayPlanOutputDTO, energyDayPlanOutput);
                 boolean result = energyDayPlanOutputService.save(energyDayPlanOutput);
                 if (result) {
-                    return Result.success("新增成功");
+                    return AjaxResult.success("新增成功");
                 } else {
-                    return Result.failedTwo("新增失败");
+                    return AjaxResult.error("新增失败");
                 }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -67,12 +67,12 @@ public class EnergyDayPlanOutputController {
             BeanUtils.copyProperties(energyDayPlanOutputDTO, energyDayPlanOutput);
             boolean result = energyDayPlanOutputService.updateById(energyDayPlanOutput);
             if (result) {
-                return Result.success("修改成功");
+                return AjaxResult.success("修改成功");
             } else {
-                return Result.failedTwo("修改失败，请重新提交");
+                return AjaxResult.error("修改失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -86,12 +86,12 @@ public class EnergyDayPlanOutputController {
         try {
             boolean result = energyDayPlanOutputService.removeBatchByIds(id);
             if (result) {
-                return Result.success("删除成功");
+                return AjaxResult.success("删除成功");
             } else {
-                return Result.failedTwo("删除失败，请重新提交");
+                return AjaxResult.error("删除失败，请重新提交");
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.jlkj.finance.ac.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jlkj.common.dto.finance.aa.FinanceperCodeDTO;
+import com.jlkj.common.dto.finance.ip.FinanceperCodeDTO;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
