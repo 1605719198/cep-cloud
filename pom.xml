@@ -38,6 +38,7 @@
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <jedis.version>4.1.1</jedis.version>
+        <redisson.version>3.16.8</redisson.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -245,6 +246,12 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+            <!-- redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
 
         </dependencies>

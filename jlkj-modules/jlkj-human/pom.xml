@@ -87,11 +87,7 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-dto</artifactId>
         </dependency>
-        <!-- jedis -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
+
     </dependencies>
 
 </project>
