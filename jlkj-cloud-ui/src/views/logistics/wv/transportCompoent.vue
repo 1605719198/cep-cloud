@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { queryTransportActual } from "@/api/logistics/temporary.js";
+import { queryTransportActual } from "@/api/logistics/wv/temporary.js";
 export default {
   name: "transportCompoent",
   components: {},

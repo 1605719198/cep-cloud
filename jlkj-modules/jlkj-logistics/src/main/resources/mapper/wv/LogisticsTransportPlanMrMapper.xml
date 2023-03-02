@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.logistics.wv.mapper.LogisticsTransportPlanMrMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.logistics.wv.domain.LogisticsTransportPlanMr">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="formId" column="form_id" jdbcType="VARCHAR"/>
+            <result property="inputCode" column="input_code" jdbcType="VARCHAR"/>
+            <result property="planlistNo" column="planlist_No" jdbcType="VARCHAR"/>
+            <result property="issueType" column="issue_type" jdbcType="VARCHAR"/>
+            <result property="carrierType" column="carrier_type" jdbcType="VARCHAR"/>
+            <result property="kind" column="kind" jdbcType="VARCHAR"/>
+            <result property="mtrla" column="mtrla" jdbcType="VARCHAR"/>
+            <result property="mtrlaDesc" column="mtrla_desc" jdbcType="VARCHAR"/>
+            <result property="mtrlb" column="mtrlb" jdbcType="VARCHAR"/>
+            <result property="mtrlbDesc" column="mtrlb_desc" jdbcType="VARCHAR"/>
+            <result property="stgnoa" column="stgnoa" jdbcType="VARCHAR"/>
+            <result property="stgnoaDesc" column="stgnoa_desc" jdbcType="VARCHAR"/>
+            <result property="stgnob" column="stgnob" jdbcType="VARCHAR"/>
+            <result property="stgnobDesc" column="stgnob_desc" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="costCenterDesc" column="cost_center_desc" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,form_id,input_code,
+        planlist_No,issue_type,carrier_type,
+        kind,mtrla,mtrla_desc,
+        mtrlb,mtrlb_desc,stgnoa,
+        stgnoa_desc,stgnob,stgnob_desc,
+        cost_center,cost_center_desc,update_time,
+        create_time,create_user,update_user,
+        update_user_name,create_user_name
+    </sql>
+</mapper>

@@ -81,6 +81,12 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
+
+        <!-- JLKJ Common dto -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-dto</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.logistics.wv.mapper.LogisticsTransActualMapper">
+
+    <!-- 查询月倒出焦炭比   -->
+    <select id="getOutCokeScale" resultType="com.jlkj.logistics.wv.domain.LogisticsTransActual">
+        SELECT SUM(complete_pound_num) AS complete_pound_num,goods_name FROM t_logistics_trans_actual WHERE 1=1
+            AND address_from_no IN ( SELECT addr_code FROM v_logistics_view1 WHERE ascription_type = 'L001')
+            AND pound_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY goods_name
+        ORDER BY goods_name
+    </select>
+
+    <!-- 查询月焦炭倒出量(按收货地点)   -->
+    <select id="getOutCokeLocation" resultType="com.jlkj.logistics.wv.domain.LogisticsTransActual">
+        SELECT SUM(complete_pound_num) AS complete_pound_num,goods_name,address_to_name FROM t_logistics_trans_actual WHERE 1=1
+            AND address_from_no IN ( SELECT addr_code FROM v_logistics_view1 WHERE ascription_type = 'L001')
+            AND pound_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY address_to_name,goods_name
+        ORDER BY address_to_name,goods_name
+    </select>
+
+    <!-- 查询月焦炭倒出量实际   -->
+    <select id="getOutCokeAmountReal" resultType="com.jlkj.logistics.wv.domain.LogisticsTransActual">
+        SELECT pound_date,SUM(complete_pound_num) AS complete_pound_num FROM t_logistics_trans_actual WHERE 1=1
+            AND address_from_no IN ( SELECT addr_code FROM v_logistics_view1 WHERE ascription_type = 'L001')
+            AND pound_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY pound_date
+        ORDER BY pound_date
+    </select>
+
+    <!-- 查询月焦炭倒出量计划   -->
+    <select id="getOutCokeAmountPlan" resultType="com.jlkj.logistics.wv.domain.LogisticsPlanDay">
+        SELECT plan_day,SUM(plan_pound_num) AS plan_pound_num FROM t_logistics_plan_day WHERE 1=1
+            AND address_from_no IN ( SELECT addr_code FROM v_logistics_view1 WHERE ascription_type = 'L001')
+            AND plan_day BETWEEN #{startDate} AND #{endDate}
+        GROUP BY plan_day
+        ORDER BY plan_day
+    </select>
+
+    <!-- 查询月焦炭倒入量   -->
+    <select id="getInCokeAmount" resultType="com.jlkj.logistics.wv.domain.LogisticsTransActual">
+        SELECT pound_date,SUM(complete_pound_num) AS complete_pound_num,goods_name FROM t_logistics_trans_actual WHERE 1=1
+               AND address_to_no IN ( SELECT addr_code FROM v_logistics_view1 WHERE ascription_type = 'L001')
+               AND pound_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY pound_date,goods_name
+        ORDER BY pound_date,goods_name
+    </select>
+
+</mapper>
