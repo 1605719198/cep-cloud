@@ -25,7 +25,7 @@ import java.util.Map;
  * @date 2022/5/11 - 10:43
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/elementId")
+@RequestMapping("/chemicalTest/elementId")
 public class TestElementCodeController {
 
     @Autowired

@@ -25,11 +25,11 @@
                   <div class="el-form-item__content"
                        style="margin-left: 0px;">
                     <el-button v-hasPermi="['elementId_queryList']"
-                               size="medium"
+                               size="mini"
                                type="primary"
                                icon="el-icon-search"
                                @click="handleQuery">搜 索</el-button>
-                    <el-button size="medium"
+                    <el-button size="mini"
                                type="default"
                                icon="el-icon-refresh-left"
                                @click="handleEmpty">重 置</el-button>
@@ -40,7 +40,8 @@
                        style="float: right">
                     <el-button v-hasPermi="['elementId_add']"
                                type="primary"
-                               size="medium"
+                               plain
+                               size="mini"
                                icon="el-icon-plus"
                                @click="handleAdd">新增</el-button>
                   </div>
@@ -69,16 +70,14 @@
                   <template slot-scope="scope">
                     <el-button v-hasPermi="['elementId_update']"
                                size="mini"
-                               plain
                                icon="el-icon-edit"
-                               type="primary"
+                               type="text"
                                @click="handleEdit(scope.$index, scope.row)">编辑
                     </el-button>
                     <el-button v-hasPermi="['elementId_delete']"
                                size="mini"
-                               plain
                                icon="el-icon-delete"
-                               type="danger"
+                               type="text"
                                @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
                   </template>
@@ -176,8 +175,8 @@ export default {
             message: response.data.msg
           })
         }
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     // 清空
@@ -190,8 +189,8 @@ export default {
         pageNum: 1,
       },
         queryInfo(this.query).then(response => {
-          this.tableData = response.data.data.list
-          this.page.total = response.data.data.total
+          this.tableData = response.data.list
+          this.page.total = response.data.total
         })
     },
     // 新增
@@ -239,8 +238,8 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     //提供给子类调用父类的方法

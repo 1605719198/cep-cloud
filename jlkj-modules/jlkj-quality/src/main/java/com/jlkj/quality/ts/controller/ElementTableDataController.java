@@ -32,7 +32,7 @@ import java.util.UUID;
  * @date 2022/5/17 - 11:51
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/elementTable")
+@RequestMapping("/chemicalTest/elementTable")
 public class ElementTableDataController {
 
     @Autowired

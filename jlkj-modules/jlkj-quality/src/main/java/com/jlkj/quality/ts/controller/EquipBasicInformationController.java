@@ -25,7 +25,7 @@ import java.util.Map;
  * @date 2022/5/9 - 14:10
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/instrumentBasicData")
+@RequestMapping("/chemicalTest/instrumentBasicData")
 public class EquipBasicInformationController {
 
     @Autowired

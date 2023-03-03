@@ -32,11 +32,11 @@
                   <div class="el-form-item__content"
                        style="margin-left: 0px;">
                     <el-button v-hasPermi="['highAndLowStandards_queryList']"
-                               size="medium"
+                               size="mini"
                                type="primary"
                                icon="el-icon-search"
                                @click="handleQuery">搜 索</el-button>
-                    <el-button size="medium"
+                    <el-button size="mini"
                                type="default"
                                icon="el-icon-refresh-left"
                                @click="handleEmpty">重 置</el-button>
@@ -48,16 +48,19 @@
                        style="float: right">
                     <el-button v-hasPermi="['highAndLowStandards_add']"
                                type="primary"
-                               size="medium"
+                               plain
+                               size="mini"
                                icon="el-icon-plus"
                                @click="handleAdd">新增</el-button>
                     <el-button v-hasPermi="['highAndLowStandards_update']"
-                               size="medium"
+                               size="mini"
+                               plain
                                icon="el-icon-edit"
                                type="success"
                                @click="handleEdit">修改</el-button>
                     <el-button v-hasPermi="['highAndLowStandards_delete']"
-                               size="medium"
+                               size="mini"
+                               plain
                                icon="el-icon-delete"
                                type="danger"
                                @click="handleDelete">删除</el-button>
@@ -267,11 +270,11 @@ export default {
         this.$message.error("请先进行查询！");
       } else {
         queryInfo(query).then(response => {
-          this.tableData = response.data.data.list
-          this.page.total = response.data.data.total
+          this.tableData = response.data.list
+          this.page.total = response.data.total
         })
         queryInfoClass(query).then(response => {
-          this.$set(this.dataEditSampleDesc, 'sampleDesc', response.data.data.list[0].sampleDesc);
+          this.$set(this.dataEditSampleDesc, 'sampleDesc', response.data.list[0].sampleDesc);
         })
       }
     },
@@ -279,8 +282,8 @@ export default {
     handleQueryBtn () {
       this.query.pageNum = 1
       queryInfoClass(this.query).then(response => {
-        this.tableDataPlus = response.data.data.list
-        this.pagePlus.total = response.data.data.total
+        this.tableDataPlus = response.data.list
+        this.pagePlus.total = response.data.total
       })
     },
     /** "+"按钮操作 */
@@ -293,8 +296,8 @@ export default {
         this.openPlus = true;
       this.title = "样品类别查询";
       queryInfoClass(this.query).then(response => {
-        this.tableDataPlus = response.data.data.list
-        this.pagePlus.total = response.data.data.total
+        this.tableDataPlus = response.data.list
+        this.pagePlus.total = response.data.total
       })
     },
     // 清空
@@ -370,15 +373,15 @@ export default {
     //获取数据刷新页面
     getList2 () {
       queryInfoClass(this.query).then(response => {
-        this.tableDataPlus = response.data.data.list
-        this.pagePlus.total = response.data.data.total
+        this.tableDataPlus = response.data.list
+        this.pagePlus.total = response.data.total
       })
     },
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     submitFormPlus () {

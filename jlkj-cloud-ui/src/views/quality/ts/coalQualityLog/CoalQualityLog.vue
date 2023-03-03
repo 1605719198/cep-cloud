@@ -9,8 +9,8 @@
           <el-col :span="10">
             <div style="text-align: center ; min-width: 500px">
               <el-radio-group v-model="tabPosition">
-                <el-radio-button label="tabA">入炉煤质量记录</el-radio-button>
-                <el-radio-button label="tabB">装车煤质量记录</el-radio-button>
+                <el-radio-button label="tabA">配合煤质量记录</el-radio-button>
+                <el-radio-button label="tabB">入炉煤质量记录</el-radio-button>
               </el-radio-group>
             </div>
           </el-col>

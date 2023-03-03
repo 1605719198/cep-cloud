@@ -32,7 +32,7 @@ import java.util.UUID;
  * @date 2022/5/16 - 16:03
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/highAndLowStandards")
+@RequestMapping("/chemicalTest/highAndLowStandards")
 public class ElementHighLowStandardController {
 
     @Autowired

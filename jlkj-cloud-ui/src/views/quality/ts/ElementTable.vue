@@ -32,11 +32,11 @@
                   <div class="el-form-item__content"
                        style="margin-left: 0px;">
                     <el-button v-hasPermi="['elementTable_queryList']"
-                               size="medium"
+                               size="mini"
                                type="primary"
                                icon="el-icon-search"
                                @click="handleQuery">搜 索</el-button>
-                    <el-button size="medium"
+                    <el-button size="mini"
                                type="default"
                                icon="el-icon-refresh-left"
                                @click="handleEmpty">重 置</el-button>
@@ -48,16 +48,19 @@
                        style="float: right">
                     <el-button v-hasPermi="['elementTable_add']"
                                type="primary"
-                               size="medium"
+                               plain
+                               size="mini"
                                icon="el-icon-plus"
                                @click="handleAdd">新增</el-button>
                     <el-button v-hasPermi="['elementTable_update']"
-                               size="medium"
+                               size="mini"
+                               plain
                                icon="el-icon-edit"
                                type="success"
                                @click="handleEdit">修改</el-button>
                     <el-button v-hasPermi="['elementTable_delete']"
-                               size="medium"
+                               size="mini"
+                               plain
                                icon="el-icon-delete"
                                type="danger"
                                @click="handleDelete">删除</el-button>
@@ -268,8 +271,8 @@ export default {
         this.$message.error("请先进行查询！");
       } else {
         queryInfo(this.query).then(response => {
-          this.tableData = response.data.data.list
-          this.page.total = response.data.data.total
+          this.tableData = response.data.list
+          this.page.total = response.data.total
         })
       }
     },
@@ -370,16 +373,16 @@ export default {
     },
     getList2 () {
       query(this.query).then(response => {
-        this.tableDataPlus = response.data.data.descriptionList
-        this.pagePlus.total = response.data.data.total1
+        this.tableDataPlus = response.data.descriptionList
+        this.pagePlus.total = response.data.total1
       })
     },
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        if (response.data.data != null) {
-          this.tableData = response.data.data.list
-          this.page.total = response.data.data.total
+        if (response.data != null) {
+          this.tableData = response.data.list
+          this.page.total = response.data.total
         }
       })
     },

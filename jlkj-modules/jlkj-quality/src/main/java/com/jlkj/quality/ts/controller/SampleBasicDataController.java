@@ -31,7 +31,7 @@ import java.util.*;
  * @date 2022/5/21 - 8:31
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/sampleBasicData")
+@RequestMapping("/chemicalTest/sampleBasicData")
 public class SampleBasicDataController {
 
     @Autowired

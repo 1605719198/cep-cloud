@@ -34,7 +34,7 @@ import java.util.Map;
  * @date 2022/09/13/8:29
  */
 @RestController
-@RequestMapping("/quality/chemicalTest/experimentRecord")
+@RequestMapping("/chemicalTest/experimentRecord")
 public class ExperimentRecordController {
     @Autowired
     ExperimentRecordService experimentRecordService;
@@ -154,35 +154,35 @@ public class ExperimentRecordController {
                     m10List.add(item.getM10());
                     criList.add(item.getCri());
                     csrList.add(item.getCsr());
-                    if (item.getMt() != null && !item.getMt().equals(new BigDecimal(0))) {
+                    if (item.getMt() != null) {
                         waterValue = waterValue.add(new BigDecimal(1));
                         waterSum = waterSum.add(item.getMt());
                     }
-                    if (item.getAd() != null && !item.getAd().equals(new BigDecimal(0))) {
+                    if (item.getAd() != null) {
                         crozzleValue = crozzleValue.add(new BigDecimal(1));
                         crozzleSum = crozzleSum.add(item.getAd());
                     }
-                    if (item.getVdaf() != null && !item.getVdaf().equals(new BigDecimal(0))) {
+                    if (item.getVdaf() != null) {
                         volatileFluxValue = volatileFluxValue.add(new BigDecimal(1));
                         volatileFluxSum = volatileFluxSum.add(item.getVdaf());
                     }
-                    if (item.getStad() != null && !item.getStad().equals(new BigDecimal(0))) {
+                    if (item.getStad() != null) {
                         sulfurationValue = sulfurationValue.add(new BigDecimal(1));
                         sulfurationSum = sulfurationSum.add(item.getStad());
                     }
-                    if (item.getM40() != null && !item.getM40().equals(new BigDecimal(0))) {
+                    if (item.getM40() != null) {
                         m40Value = m40Value.add(new BigDecimal(1));
                         m40Sum = m40Sum.add(item.getM40());
                     }
-                    if (item.getM10() != null && !item.getM10().equals(new BigDecimal(0))) {
+                    if (item.getM10() != null) {
                         m10Value = m10Value.add(new BigDecimal(1));
                         m10Sum = m10Sum.add(item.getM10());
                     }
-                    if (item.getCri() != null && !item.getCri().equals(new BigDecimal(0))) {
+                    if (item.getCri() != null) {
                         criValue = criValue.add(new BigDecimal(1));
                         criSum = criSum.add(item.getCri());
                     }
-                    if (item.getCsr() != null && !item.getCsr().equals(new BigDecimal(0))) {
+                    if (item.getCsr() != null) {
                         csrValue = csrValue.add(new BigDecimal(1));
                         csrSum = csrSum.add(item.getCsr());
                     }
@@ -390,35 +390,35 @@ public class ExperimentRecordController {
                     xHemList.add(item.getX());
                     yHemList.add(item.getY());
                     gHemList.add(item.getG());
-                    if (item.getMt() != null && !item.getMt().equals(new BigDecimal(0))) {
+                    if (item.getMt() != null) {
                         waterValue = waterValue.add(new BigDecimal(1));
                         waterSum = waterSum.add(item.getMt());
                     }
-                    if (item.getAd() != null && !item.getAd().equals(new BigDecimal(0))) {
+                    if (item.getAd() != null) {
                         crozzleValue = crozzleValue.add(new BigDecimal(1));
                         crozzleSum = crozzleSum.add(item.getAd());
                     }
-                    if (item.getVdaf() != null && !item.getVdaf().equals(new BigDecimal(0))) {
+                    if (item.getVdaf() != null) {
                         volatileFluxValue = volatileFluxValue.add(new BigDecimal(1));
                         volatileFluxSum = volatileFluxSum.add(item.getVdaf());
                     }
-                    if (item.getStad() != null && !item.getStad().equals(new BigDecimal(0))) {
+                    if (item.getStad() != null) {
                         sulfurationValue = sulfurationValue.add(new BigDecimal(1));
                         sulfurationSum = sulfurationSum.add(item.getStad());
                     }
-                    if (item.getXd() != null && !item.getXd().equals(new BigDecimal(0))) {
+                    if (item.getXd() != null) {
                         finenessValue = finenessValue.add(new BigDecimal(1));
                         finenessSum = finenessSum.add(item.getXd());
                     }
-                    if (item.getX() != null && !item.getX().equals(new BigDecimal(0))) {
+                    if (item.getX() != null) {
                         xHemValue =  xHemValue.add(new BigDecimal(1));
                         xHemSum = xHemSum.add(item.getX());
                     }
-                    if (item.getY() != null && !item.getY().equals(new BigDecimal(0))) {
+                    if (item.getY() != null) {
                         yHemValue = yHemValue.add(new BigDecimal(1));
                         yHemSum = yHemSum.add(item.getY());
                     }
-                    if (item.getG() != null && !item.getG().equals(new BigDecimal(0))) {
+                    if (item.getG() != null) {
                         gHemValue = gHemValue.add(new BigDecimal(1));
                         gHemSum = gHemSum.add(item.getG());
                     }
@@ -622,31 +622,31 @@ public class ExperimentRecordController {
                     cuList.add(item.getCu());
                     feList.add(item.getFe());
                     poList.add(item.get磷酸根离子());
-                    if (item.getPh() != null && !item.getPh().equals(new BigDecimal(0))) {
+                    if (item.getPh() != null) {
                         pHValue = pHValue.add(new BigDecimal(1));
                         pHSum = pHSum.add(item.getPh());
                     }
-                    if (item.get电导率() != null && !item.get电导率().equals(new BigDecimal(0))) {
+                    if (item.get电导率() != null) {
                         conductivityValue = conductivityValue.add(new BigDecimal(1));
                         conductivitySum = conductivitySum.add(item.get电导率());
                     }
-                    if (item.get二氧化硅锅炉() != null && !item.get二氧化硅锅炉().equals(new BigDecimal(0))) {
+                    if (item.get二氧化硅锅炉() != null) {
                         siliconDioxideValue = siliconDioxideValue.add(new BigDecimal(1));
                         siliconDioxideSum = siliconDioxideSum.add(item.get二氧化硅锅炉());
                     }
-                    if (item.get总硬度() != null && !item.get总硬度().equals(new BigDecimal(0))) {
+                    if (item.get总硬度() != null) {
                         totalHardnessValue = totalHardnessValue.add(new BigDecimal(1));
                         totalHardnessSum = totalHardnessSum.add(item.get总硬度());
                     }
-                    if (item.getCu() != null && !item.getCu().equals(new BigDecimal(0))) {
+                    if (item.getCu() != null) {
                         cuValue = cuValue.add(new BigDecimal(1));
                         cuSum = cuSum.add(item.getCu());
                     }
-                    if (item.getFe() != null && !item.getFe().equals(new BigDecimal(0))) {
+                    if (item.getFe() != null) {
                         feValue = feValue.add(new BigDecimal(1));
                         feSum = feSum.add(item.getFe());
                     }
-                    if (item.get磷酸根离子() != null && !item.get磷酸根离子().equals(new BigDecimal(0))) {
+                    if (item.get磷酸根离子() != null) {
                         poValue = poValue.add(new BigDecimal(1));
                         poSum = poSum.add(item.get磷酸根离子());
                     }
@@ -848,43 +848,43 @@ public class ExperimentRecordController {
                     carbonDioxideList.add(item.get二氧化碳());
                     oxygenList.add(item.get氧气());
                     carbonMonoxideList.add(item.get一氧化碳());
-                    if (item.getPh() != null && !item.getPh().equals(new BigDecimal(0))) {
+                    if (item.getPh() != null) {
                         pHValue = pHValue.add(new BigDecimal(1));
                         pHSum = pHSum.add(item.getPh());
                     }
-                    if (item.get电导率() != null && !item.get电导率().equals(new BigDecimal(0))) {
+                    if (item.get电导率() != null) {
                         conductivityValue = conductivityValue.add(new BigDecimal(1));
                         conductivitySum = conductivitySum.add(item.get电导率());
                     }
-                    if (item.get二氧化硅() != null && !item.get二氧化硅().equals(new BigDecimal(0))) {
+                    if (item.get二氧化硅() != null) {
                         siliconDioxideValue = siliconDioxideValue.add(new BigDecimal(1));
                         siliconDioxideSum = siliconDioxideSum.add(item.get二氧化硅());
                     }
-                    if (item.get总硬度() != null && !item.get总硬度().equals(new BigDecimal(0))) {
+                    if (item.get总硬度() != null) {
                         totalHardnessValue = totalHardnessValue.add(new BigDecimal(1));
                         totalHardnessSum = totalHardnessSum.add(item.get总硬度());
                     }
-                    if (item.get正磷酸盐() != null && !item.get正磷酸盐().equals(new BigDecimal(0))) {
+                    if (item.get正磷酸盐() != null) {
                         orthophosphateValue = orthophosphateValue.add(new BigDecimal(1));
                         orthophosphateSum = orthophosphateSum.add(item.get正磷酸盐());
                     }
-                    if (item.get氯离子() != null && !item.get氯离子().equals(new BigDecimal(0))) {
+                    if (item.get氯离子() != null) {
                         chlorideIonValue = chlorideIonValue.add(new BigDecimal(1));
                         chlorideIonSum = chlorideIonSum.add(item.get氯离子());
                     }
-                    if (item.get钠离子() != null && !item.get钠离子().equals(new BigDecimal(0))) {
+                    if (item.get钠离子() != null) {
                         sodiumIonValue = sodiumIonValue.add(new BigDecimal(1));
                         sodiumIonSum = sodiumIonSum.add(item.get钠离子());
                     }
-                    if (item.get二氧化碳() != null && !item.get二氧化碳().equals(new BigDecimal(0))) {
+                    if (item.get二氧化碳() != null) {
                         carbonDioxideValue = carbonDioxideValue.add(new BigDecimal(1));
                         carbonDioxideSum = carbonDioxideSum.add(item.get二氧化碳());
                     }
-                    if (item.get氧气() != null && !item.get氧气().equals(new BigDecimal(0))) {
+                    if (item.get氧气() != null) {
                         oxygenValue = oxygenValue.add(new BigDecimal(1));
                         oxygenSum = oxygenSum.add(item.get氧气());
                     }
-                    if (item.get一氧化碳() != null && !item.get一氧化碳().equals(new BigDecimal(0))) {
+                    if (item.get一氧化碳() != null) {
                         carbonMonoxideValue = carbonMonoxideValue.add(new BigDecimal(1));
                         carbonMonoxideSum = carbonMonoxideSum.add(item.get一氧化碳());
                     }

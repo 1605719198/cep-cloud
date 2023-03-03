@@ -1,5 +1,5 @@
 <!--
-  入炉煤质量记录
+  配合煤质量记录
 -->
 <template>
   <div class="avue-crud el-card__body"
@@ -56,11 +56,11 @@
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button v-hasPermi="['experimentRecordCoal_queryListA']"
-                         size="medium"
+                         size="mini"
                          type="primary"
                          icon="el-icon-search"
                          @click="handleQuery('query')">搜 索</el-button>
-              <el-button size="medium"
+              <el-button size="mini"
                          type="default"
                          icon="el-icon-refresh-left"
                          @click="handleEmpty">重 置</el-button>
@@ -205,7 +205,7 @@ export default {
   created () {
     this.getDataTime()
     this.getDicts("sys_classtype").then(response => {
-      this.classNameOptions = response.data.data;
+      this.classNameOptions = response.data;
     })
   },
   methods: {
@@ -226,11 +226,11 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
-        this.averageList = response.data.data.averageList
-        this.maxList = response.data.data.maxList
-        this.minList = response.data.data.minList
+        this.tableData = response.data.list
+        this.page.total = response.data.total
+        this.averageList = response.data.averageList
+        this.maxList = response.data.maxList
+        this.minList = response.data.minList
         this.loading = false
       })
     },
