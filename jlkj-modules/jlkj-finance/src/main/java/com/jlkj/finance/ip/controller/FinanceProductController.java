@@ -29,7 +29,7 @@ import java.util.*;
  * @author wang'mai
  */
 @RestController
-@RequestMapping("/finance/product/code")
+@RequestMapping("/product/code")
 public class FinanceProductController {
     @Autowired
     private FinanceProductBaseService financeProductBaseService;

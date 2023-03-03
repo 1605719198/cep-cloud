@@ -14,7 +14,7 @@
               <el-form :model="queryParams"
                        ref="queryForm">
                 <el-row :gutter="20">
-                  <el-col :span="3">
+                  <el-col :span="4">
                     <div class="el-form-item el-form-item--small">
                       <div class="el-form-item__content">
                         <el-input v-model="queryParams.accountItemCode"
@@ -24,7 +24,7 @@
                       </div>
                     </div>
                   </el-col>
-                  <el-col :span="3">
+                  <el-col :span="4">
                     <div class="el-form-item el-form-item--small">
                       <div class="el-form-item__content">
                         <el-input v-model="queryParams.accountItemName"
@@ -47,7 +47,7 @@
                                  icon="el-icon-refresh">重置</el-button>
                     </div>
                   </el-col>
-                  <el-col :span="8">
+                  <el-col :span="6">
                     <div class="el-form-item__content"
                          style="float: right">
                       <el-button v-hasPermi="['accountItemCode_doAdd']"
@@ -62,7 +62,7 @@
                 </el-row>
               </el-form>
             </div>
-            <!--            表单数据-->
+            <!-- 表单数据-->
             <div>
               <el-form>
                 <el-table height="67vh"
@@ -203,13 +203,13 @@ export default {
     getList () {
       this.loading = false;
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         }
       });
@@ -242,8 +242,8 @@ export default {
         leafid: '01010801'
       }
       listFinancetest(this.queryParams).then(response => {
-        this.financetestList = response.data.data.list;
-        this.total = response.data.data.total;
+        this.financetestList = response.data.list;
+        this.total = response.data.total;
         this.loading = false;
       });
 

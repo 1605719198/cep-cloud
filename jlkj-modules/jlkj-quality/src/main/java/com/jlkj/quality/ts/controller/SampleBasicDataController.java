@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.quality.ts.domain.ElementTableDescription;
@@ -403,6 +402,6 @@ public class SampleBasicDataController {
             list4.add(item.getEquipNo());
             dataMap.put("listD", list4);
         }
-        return Result.success(dataMap);
+        return AjaxResult.success(dataMap);
     }
 }

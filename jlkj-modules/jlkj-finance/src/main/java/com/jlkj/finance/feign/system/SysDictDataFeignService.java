@@ -1,5 +1,7 @@
 package com.jlkj.finance.feign.system;
 
+import com.jlkj.common.core.constant.ServiceNameConstants;
+import com.jlkj.system.api.factory.RemoteUserFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,7 @@ import java.util.Map;
  * @author wang'mai
  */
 @Component
-@FeignClient(value ="system-service-provider")
+@FeignClient(contextId = "sysDictDataFeignService", value = ServiceNameConstants.SYSTEM_SERVICE, fallbackFactory = RemoteUserFallbackFactory.class)
 public interface SysDictDataFeignService {
 
     /**
@@ -24,8 +26,8 @@ public interface SysDictDataFeignService {
      *                                             @RequestParam(defaultValue = "")String dictValue);
      */
     @GetMapping("/dict/data/getLabelByDictValue")
-       Map<String, Object> getLabelByDictValue(@RequestParam(defaultValue = "")String dictType,
-                                            @RequestParam(defaultValue = "")String dictValue);
+       Map<String, Object> getLabelByDictValue(@RequestParam("dictType")String dictType,
+                                            @RequestParam("dictValue")String dictValue);
 
     /**
      * 根据字典类型、字典键值查询数据===财务模块用
@@ -35,8 +37,8 @@ public interface SysDictDataFeignService {
      *                               @RequestParam(defaultValue = "")String dictValue);
      */
     @GetMapping("/dict/data/getMainAreaIdValue")
-    Object getMainAreaIdValue(@RequestParam(defaultValue = "")String dictType,
-                              @RequestParam(defaultValue = "")String dictValue);
+    Object getMainAreaIdValue(@RequestParam("dictType")String dictType,
+                              @RequestParam("dictValue")String dictValue);
     /**
      * 根据字典类型、字典键值查询数据===财务模块用
      * @param dictType 数据名称
@@ -44,7 +46,7 @@ public interface SysDictDataFeignService {
      *                               @RequestParam(defaultValue = "")String dictValue);
      */
     @GetMapping("/dict/data/getMainCompIdValue")
-    List<Map<String,Object>>  getMainCompIdValue(@RequestParam(defaultValue = "")String dictType);
+    List<Map<String,Object>>  getMainCompIdValue(@RequestParam("dictType")String dictType);
 }
 
 

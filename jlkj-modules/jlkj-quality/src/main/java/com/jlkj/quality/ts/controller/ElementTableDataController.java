@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.quality.ts.domain.ElementTableData;
@@ -97,7 +96,7 @@ public class ElementTableDataController {
             for (ElementTableData item : elementTable) {
                 List<ElementTableData> list = elementTableDataService.query().eq("format_id", item.getFormatId()).eq("element_index", item.getElementIndex()).list();
                 if(!list.isEmpty()){
-                    return Result.failed("您输入的" + item.getFormatId()+ "+" + item.getElementIndex() + "系统中已存在，请重新输入！");
+                    return AjaxResult.error("您输入的" + item.getFormatId()+ "+" + item.getElementIndex() + "系统中已存在，请重新输入！");
                 }
                 item.setId(UUID.randomUUID().toString());
                 item.setElementSeq(elementSeq += 10);
@@ -108,7 +107,7 @@ public class ElementTableDataController {
             queryWrapper.eq(ElementTableDescription::getFormatId, formatId);
             List<ElementTableDescription> list = elementTableDescriptionService.list(queryWrapper);
             if (!list.isEmpty()) {
-                return Result.failedOne("表格代号不允许重复！");
+                return AjaxResult.error("表格代号不允许重复！");
             }
             boolean result = elementTableDescriptionService.save(elementTableDescription);
             boolean result1 = elementTableDataService.saveBatch(elementTable);

@@ -1,8 +1,8 @@
 package com.jlkj.finance.ac.service;
 
-import com.jlkj.finance.ac.dto.FinanceCostDownTypeTreeDTO;
-import com.jlkj.finance.ac.domain.FinanceCostTree;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.finance.ac.domain.FinanceCostTree;
+import com.jlkj.finance.ip.dto.FinanceCostDownTypeTreeDTO;
 
 import java.util.List;
 

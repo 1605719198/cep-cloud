@@ -336,11 +336,11 @@ export default {
             // this.ruleForm.updateUserName = this.userInfo.userName
             this.lisetloading = false
             updateFinancetest(this.ruleForm).then(response => {
-              this.financeUpdate = response.data.data.length
+              this.financeUpdate = response.data.length
               this.pagedata.propertydata = this.financeattritestList;
-              this.pagedata.accountItemCode = response.data.data[0].accountItemCode
+              this.pagedata.accountItemCode = response.data[0].accountItemCode
               updateFinanceattri(this.pagedata).then(response => {
-                this.financeUpdatex = response.data.data.length
+                this.financeUpdatex = response.data.length
               })
               if (this.financeUpdate !== null && this.financeUpdatex !== null) {
                 this.$message({
@@ -357,7 +357,7 @@ export default {
             this.lisetloading = false
             addFinancetest(this.ruleForm).then(response => {
               this.pagedata.propertydata = this.financeattritestList;
-              this.pagedata.accountItemCode = response.data.data[0].accountItemCode;
+              this.pagedata.accountItemCode = response.data[0].accountItemCode;
               addFinanceattri(this.pagedata).then(response => {
                 this.statusText = response.statusText
               })
@@ -393,7 +393,7 @@ export default {
     handleUpdate () {
       this.open = true;
       attributeQuery().then(response => {
-        this.financeattritestList = response.data.data;
+        this.financeattritestList = response.data;
       })
     },
     //属性添加查询
@@ -424,7 +424,7 @@ export default {
         this.compIdMcc = "J00";
         this.leafIdMcc = "01010802";
         getFinanceMcc(this.compIdMcc, this.leafIdMcc).then(response => {
-          this.financeattriMccList = response.data.data.list
+          this.financeattriMccList = response.data.list
           let length = this.financeattriMccList.length;
           for (let a = 0; a < length; a++) {
             this.financeattriMccList[a].value = this.financeattriMccList[a].itemA
@@ -465,7 +465,7 @@ export default {
         this.compIdMcc = "J00";
         this.leafIdMcc = "01010802";
         getFinanceMcc(this.compIdMcc, this.leafIdMcc).then(response => {
-          this.financeattriMccList = response.data.data.list
+          this.financeattriMccList = response.data.list
           let length = this.financeattriMccList.length;
           for (let a = 0; a < length; a++) {
             this.financeattriMccList[a].value = this.financeattriMccList[a].itemA
@@ -502,11 +502,11 @@ export default {
       this.visible = true
       this.AddVisible = true
       getFinanceInformation(this.queryParams).then(response => {
-        this.financeattritestList = response.data.data.list;
+        this.financeattritestList = response.data.list;
         let j = this.financeattritestList.length
         for (let i = 0; i < j; i++) {
-          this.financeattritestList[i].accountItemAttriName = response.data.data.list[i].itemA
-          this.financeattritestList[i].label = response.data.data.list[i].dataA
+          this.financeattritestList[i].accountItemAttriName = response.data.list[i].itemA
+          this.financeattritestList[i].label = response.data.list[i].dataA
         }
       })
     },
@@ -514,17 +514,17 @@ export default {
       this.visible = true
       this.determine = false;
       getFinanceInformation(this.queryParams).then(response => {
-        this.financeattritestList = response.data.data.list;
+        this.financeattritestList = response.data.list;
         let j = this.financeattritestList.length
         for (let i = 0; i < j; i++) {
-          this.$set(this.financeattritestList[i], 'accountItemAttriName', response.data.data.list[i].itemA);
-          this.$set(this.financeattritestList[i], 'label', response.data.data.list[i].dataA);
+          this.$set(this.financeattritestList[i], 'accountItemAttriName', response.data.list[i].itemA);
+          this.$set(this.financeattritestList[i], 'label', response.data.list[i].dataA);
         }
         getFinancetest(accountItemCode, id).then(response => {
-          this.ruleForm = response.data.data.one
-          let length = response.data.data.resultList1.length;
+          this.ruleForm = response.data.one
+          let length = response.data.resultList1.length;
           for (let i = 0; i < length; i++) {
-            this.financeattritestList[i].accountItemAttriValue = response.data.data.resultList1[i].accountItemAttriValue;
+            this.financeattritestList[i].accountItemAttriValue = response.data.resultList1[i].accountItemAttriValue;
           }
           this.financeattritestListKey += 1;
           console.log(this.financeattritestList);
@@ -538,17 +538,17 @@ export default {
       this.UpdateVisible = true
       this.costCenterReadable = true
       getFinanceInformation(this.queryParams).then(response => {
-        this.financeattritestList = response.data.data.list;
+        this.financeattritestList = response.data.list;
         let j = this.financeattritestList.length
         for (let i = 0; i < j; i++) {
-          this.$set(this.financeattritestList[i], 'accountItemAttriName', response.data.data.list[i].itemA);
-          this.$set(this.financeattritestList[i], 'label', response.data.data.list[i].dataA);
+          this.$set(this.financeattritestList[i], 'accountItemAttriName', response.data.list[i].itemA);
+          this.$set(this.financeattritestList[i], 'label', response.data.list[i].dataA);
         }
         getFinancetest(accountItemCode, id).then(response => {
-          this.ruleForm = response.data.data.one
-          let length = response.data.data.resultList1.length;
+          this.ruleForm = response.data.one
+          let length = response.data.resultList1.length;
           for (let c = 0; c < length; c++) {
-            this.$set(this.financeattritestList[c], 'accountItemAttriValue', response.data.data.resultList1[c].accountItemAttriValue);
+            this.$set(this.financeattritestList[c], 'accountItemAttriValue', response.data.resultList1[c].accountItemAttriValue);
           }
           this.financeattritestListKey += 1;
         })

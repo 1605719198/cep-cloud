@@ -24,7 +24,7 @@ import java.util.Map;
  * @author wang'mai
  */
 @RestController
-@RequestMapping("/finance/acct/company")
+@RequestMapping("/acct/company")
 public class FinanceAccountingCompanyController {
     @Autowired
     private FinanceCompanyService financeCompanyService;

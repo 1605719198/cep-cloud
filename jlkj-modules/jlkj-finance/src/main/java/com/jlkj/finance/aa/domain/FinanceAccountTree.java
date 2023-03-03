@@ -12,7 +12,7 @@ import java.util.Date;
  * @author wang'mai
  * @TableName t_finance_account_tree
  */
-@TableName(value ="t_finance_account_tree")
+@TableName(value ="finance_aa_account_tree")
 @Data
 public class FinanceAccountTree implements Serializable {
     /**

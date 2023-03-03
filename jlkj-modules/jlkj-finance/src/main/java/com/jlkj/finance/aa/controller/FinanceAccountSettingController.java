@@ -25,7 +25,7 @@ import java.util.Map;
  * @author wang'mai
  */
 @RestController
-@RequestMapping("/finance/accountCode")
+@RequestMapping("/accountCode")
 public class FinanceAccountSettingController {
     @Autowired
     private FinanceAccountTreeService financeAccountTreeService;

@@ -26,7 +26,7 @@ import java.util.Map;
  * @date 2022/5/31 - 15:36
  */
 @RestController
-@RequestMapping("/finance/product/mill")
+@RequestMapping("/product/mill")
 public class FinanceProductMillController {
 
     @Autowired

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.dto.qualityprovider.TsEquipBasicInformationDTO;
+import com.jlkj.common.dto.quality.TsEquipBasicInformationDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.quality.ts.domain.EquipBasicInformation;

@@ -25,13 +25,12 @@
                   <div class="el-form-item__content"
                        style="margin-left: 0px;">
                     <el-button v-hasPermi="['mill_doQueryAll']"
-                               size="medium"
+                               size="mini"
                                type="primary"
                                icon="el-icon-search"
                                @click="handleQuery">搜 索</el-button>
-                    <el-button size="medium"
-                               type="default"
-                               icon="el-icon-refresh-left"
+                    <el-button size="mini"
+                               icon="el-icon-refresh"
                                @click="handleEmpty">重 置</el-button>
                   </div>
                 </el-col>
@@ -40,7 +39,8 @@
                        style="float: right">
                     <el-button v-hasPermi="['mill_doAdd']"
                                type="primary"
-                               size="medium"
+                               plain
+                               size="mini"
                                icon="el-icon-plus"
                                @click="handleOpenWindow('add')">添加产线
                     </el-button>
@@ -83,23 +83,20 @@
                   <template slot-scope="scope">
                     <el-button v-hasPermi="['mill_doQueryOne']"
                                size="mini"
-                               plain
                                icon="el-icon-info"
-                               type="primary"
+                               type="text"
                                @click="handleOpenWindow('info',scope.$index, scope.row)"> 详情
                     </el-button>
                     <el-button v-hasPermi="['mill_doEdit']"
                                size="mini"
-                               plain
                                icon="el-icon-edit"
-                               type="primary"
+                               type="text"
                                @click="handleOpenWindow('edit',scope.$index, scope.row)"> 编辑
                     </el-button>
                     <el-button v-hasPermi="['mill_doDelete']"
                                size="mini"
-                               plain
                                icon="el-icon-delete"
-                               type="danger"
+                               type="text"
                                @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
                   </template>
@@ -214,8 +211,8 @@ export default {
             message: response.data.msg
           })
         }
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     // 清空
@@ -279,8 +276,8 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.query).then(response => {
-        this.tableData = response.data.data.list
-        this.page.total = response.data.data.total
+        this.tableData = response.data.list
+        this.page.total = response.data.total
       })
     },
     switchChange (row) {

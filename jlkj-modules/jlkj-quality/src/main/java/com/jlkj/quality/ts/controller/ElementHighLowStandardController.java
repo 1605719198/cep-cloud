@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.resp.Result;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.quality.ts.domain.ElementHighLowStandard;
@@ -92,7 +91,7 @@ public class ElementHighLowStandardController {
             for (ElementHighLowStandard item : elementHighLowStandard) {
                 List<ElementHighLowStandard> list = elementHighLowStandardService.query().eq("sample_class", item.getSampleClass()).eq("element_index", item.getElementIndex()).list();
                 if(!list.isEmpty()){
-                    return Result.failed("您输入的" + item.getSampleClass()+ "+" + item.getElementIndex() + "系统中已存在，请重新输入！");
+                    return AjaxResult.error("您输入的" + item.getSampleClass()+ "+" + item.getElementIndex() + "系统中已存在，请重新输入！");
                 }
                 item.setId(UUID.randomUUID().toString());
             }

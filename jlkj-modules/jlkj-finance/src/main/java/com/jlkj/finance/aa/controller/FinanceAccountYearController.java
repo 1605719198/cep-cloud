@@ -25,7 +25,7 @@ import java.util.*;
  * @author wang'mai
  */
 @RestController
-@RequestMapping("/finance/account/period")
+@RequestMapping("/account/period")
 public class FinanceAccountYearController {
     @Autowired
     private FinanceAccountYearPostService financeAccountYearPostService;

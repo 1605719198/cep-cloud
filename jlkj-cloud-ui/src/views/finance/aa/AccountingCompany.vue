@@ -13,7 +13,7 @@
               <el-form :model="queryParams"
                        ref="queryForm">
                 <el-row :gutter="20">
-                  <el-col :span="3">
+                  <el-col :span="4">
                     <div class="el-form-item el-form-item--small">
                       <div class="el-form-item__content">
                         <el-input v-model="queryParams.compId"
@@ -24,7 +24,7 @@
                     </div>
                   </el-col>
 
-                  <el-col :span="3">
+                  <el-col :span="4">
                     <div class="el-form-item el-form-item--small">
                       <div class="el-form-item__content">
                         <el-input v-model="queryParams.companyChineseName"
@@ -39,21 +39,22 @@
                          style="margin-left: 0px;">
                       <el-button type="primary"
                                  v-hasPermi="['company_queryAll']"
-                                 size="medium"
+                                 size="mini"
                                  @click="handleQuery"
                                  icon="el-icon-search">搜索</el-button>
-                      <el-button size="medium"
+                      <el-button size="mini"
                                  type="default"
                                  @click="resetQuery"
                                  icon="el-icon-refresh-left">重置</el-button>
                     </div>
                   </el-col>
-                  <el-col :span="8">
+                  <el-col :span="6">
                     <div class="el-form-item__content"
                          style="float: right">
                       <el-button v-hasPermi="['company_doAdd']"
                                  type="primary"
-                                 size="medium"
+                                 plain
+                                 size="mini"
                                  icon="el-icon-plus"
                                  @click="AddleUpdate">新增
                       </el-button>
@@ -85,22 +86,19 @@
                                    class-name="small-padding fixed-width">
                     <template slot-scope="scope">
                       <el-button v-hasPermi="['company_queryOne']"
-                                 plain
                                  icon="el-icon-info"
-                                 type="info"
+                                 type="text"
                                  size="mini"
                                  @click="handleDetails(scope.row)">详情</el-button>
                       <el-button v-hasPermi="['company_doEdit']"
                                  size="mini"
-                                 plain
                                  icon="el-icon-edit"
-                                 type="primary"
+                                 type="text"
                                  @click="handleUpdate(scope.row)">编辑</el-button>
                       <el-button v-hasPermi="['company_delete']"
                                  size="mini"
-                                 plain
                                  icon="el-icon-delete"
-                                 type="danger"
+                                 type="text"
                                  @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                   </el-table-column>
@@ -201,13 +199,13 @@ export default {
       console.log(1111)
       this.loading = false;
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         }
       });
@@ -238,8 +236,8 @@ export default {
         compId: ''
       }
       listFinancetest(this.queryParams).then(response => {
-        this.financetestList = response.data.data.list;
-        this.total = response.data.data.total;
+        this.financetestList = response.data.list;
+        this.total = response.data.total;
         this.loading = false;
       });
 

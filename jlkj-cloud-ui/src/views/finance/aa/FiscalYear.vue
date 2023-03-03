@@ -56,22 +56,22 @@
                          style="margin-left: 0px;">
                       <el-button v-hasPermi="['account_period_queryAll']"
                                  type="primary"
-                                 size="medium"
+                                 size="mini"
                                  @click="handleQuery"
                                  icon="el-icon-search">搜索</el-button>
-                      <el-button size="medium"
+                      <el-button size="mini"
                                  type="default"
                                  @click="resetQuery"
                                  icon="el-icon-refresh-left">重置
                       </el-button>
                       <el-button v-hasPermi="['account_period_delete']"
                                  type="danger"
-                                 size="medium"
+                                 size="mini"
                                  @click="handleDelete"
                                  icon="el-icon-delete">删除会计年度
                       </el-button>
                       <el-button v-hasPermi="['account_period_doEdit']"
-                                 size="medium"
+                                 size="mini"
                                  plain
                                  icon="el-icon-caret-left"
                                  type="primary"
@@ -85,7 +85,8 @@
                          style="float: right">
                       <el-button v-hasPermi="['account_period_doAdd']"
                                  type="primary"
-                                 size="medium"
+                                 size="mini"
+                                 plain
                                  icon="el-icon-plus"
                                  @click="AddleUpdate()">新增会计年度
                       </el-button>
@@ -247,13 +248,13 @@ export default {
       this.loading = false;
       console.log(this.queryParams);
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.queryParams.accountPeriodDate = new Date()
           this.total = 0;
         } else {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
           this.accountPeriodSub = this.financetestList[0].accountPeriod.substring(0, 4)
           this.queryParams.accountPeriodDate = new Date(this.financetestList[0].accountPeriod.substring(0, 4))
         }
@@ -264,12 +265,12 @@ export default {
     getList1 () {
       this.loading = false;
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.total = 0;
         } else {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
         }
         this.loading = false;
       });
@@ -297,15 +298,15 @@ export default {
         compId: 'J00',
       }
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.queryParams.accountPeriodDate = new Date()
           this.total = 0;
         } else {
-          this.financetestList = response.data.data.list;
+          this.financetestList = response.data.list;
           this.queryParams.accountPeriodDate = new Date(this.financetestList[0].accountPeriod.substring(0, 4))
           this.accountPeriodSub = this.financetestList[0].accountPeriod.substring(0, 4)
-          this.total = response.data.data.total;
+          this.total = response.data.total;
           this.loading = false;
 
         }

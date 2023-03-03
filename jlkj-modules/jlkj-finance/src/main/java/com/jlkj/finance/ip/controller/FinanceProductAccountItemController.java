@@ -8,13 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.finance.feign.system.SysDictDataFeignService;
 import com.jlkj.finance.ip.domain.FinanceProductAccountItem;
 import com.jlkj.finance.ip.domain.FinanceProductAccountItemAttri;
 import com.jlkj.finance.ip.domain.FinanceProductSettingDetail;
 import com.jlkj.finance.ip.dto.FinanceAccountDTO;
 import com.jlkj.finance.ip.dto.FinanceProductAccountItemAttriDTO;
 import com.jlkj.finance.ip.dto.FinanceProductAccountItemDTO;
-import com.jlkj.finance.ip.feign.SysDictDataFeignService;
 import com.jlkj.finance.ip.service.FinanceProductAccountItemAttriService;
 import com.jlkj.finance.ip.service.FinanceProductAccountItemService;
 import com.jlkj.finance.ip.service.FinanceProductSettingDetailService;
@@ -29,7 +29,7 @@ import java.util.*;
  * @author wang'mai
  */
 @RestController
-@RequestMapping("/finance/product/accountItemCode")
+@RequestMapping("/product/accountItemCode")
 public class FinanceProductAccountItemController {
     @Autowired
     private FinanceProductAccountItemAttriService financeProductAccountItemAttriService;

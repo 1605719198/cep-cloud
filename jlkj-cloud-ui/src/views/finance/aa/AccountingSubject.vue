@@ -46,7 +46,7 @@
                   <el-form :model="queryParams"
                            ref="queryForm">
                     <el-row :gutter="20">
-                      <el-col :span="4">
+                      <el-col :span="5">
                         <div class="el-form-item ">
                           <el-input v-model="queryParams.accountCodeX"
                                     type="text"
@@ -59,25 +59,26 @@
                         <div class="el-form-item__content"
                              style="margin-left: 0px;">
                           <el-button v-hasPermi="['accountCode_doQueryAll']"
-                                     size="medium"
+                                     size="mini"
                                      type="primary"
                                      @click="handleQuery"
                                      icon="el-icon-search">搜索
                           </el-button>
-                          <el-button size="medium"
+                          <el-button size="mini"
                                      type="default"
                                      @click="resetQuery"
                                      icon="el-icon-refresh-left">重置
                           </el-button>
                         </div>
                       </el-col>
-                      <el-col :span="15">
+                      <el-col :span="14">
                         <div class="el-form-item el-form-item--small"
                              style="float: right">
                           <el-button v-if="addAccount"
                                      v-hasPermi="['accountCode_doAdd']"
                                      type="primary"
-                                     size="medium"
+                                     plain
+                                     size="mini"
                                      icon="el-icon-plus"
                                      @click="handleAdd">添加科目
                           </el-button>
@@ -123,31 +124,27 @@
                                      class-name="small-padding fixed-width">
                       <template slot-scope="scope">
                         <el-button v-hasPermi="['accountCode_doQueryOne_id']"
-                                   plain
                                    icon="el-icon-info"
-                                   type="info"
+                                   type="text"
                                    size="mini"
                                    @click="handleDetailsAccount(scope.row)">详情
                         </el-button>
                         <el-button v-hasPermi="['accountCode_doEdit']"
                                    size="mini"
-                                   plain
                                    icon="el-icon-edit"
-                                   type="primary"
+                                   type="text"
                                    @click="handleUpdate(scope.row)">编辑
                         </el-button>
                         <el-button v-hasPermi="['accountCode_doEditState']"
                                    size="mini"
-                                   plain
                                    icon="el-icon-caret-left"
-                                   type="warning"
+                                   type="text"
                                    @click="handleUpdateDisable(scope.row)">禁用/启用
                         </el-button>
                         <el-button v-hasPermi="['accountCode_doDelete_ids']"
                                    size="mini"
-                                   plain
                                    icon="el-icon-delete"
-                                   type="danger"
+                                   type="text"
                                    @click="handleDelete(scope.row)">删除
                         </el-button>
                       </template>
@@ -527,7 +524,7 @@ export default {
             // this.formAccount.updateUserName = this.userInfo.userName
             this.lisetloading = true
             updateCodeData(this.formAccount).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '修改成功'
@@ -550,7 +547,7 @@ export default {
             this.formAccount.disabledCode = " "
             this.lisetloading = true
             doAddCode(this.formAccount).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '新增成功'
@@ -588,7 +585,7 @@ export default {
     // 初始化树节点
     initTree () {
       getTreeNode().then(response => {
-        this.treeData = response.data.data
+        this.treeData = response.data
         this.nodeKey.push(this.treeData[0].id)
       })
     },
@@ -596,16 +593,16 @@ export default {
     getListAccount () {
       this.loading = true
       queryDataByParams(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.tableData = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.queryParams.total = response.data.data.total
-          this.tableData = response.data.data.list
+          this.queryParams.total = response.data.total
+          this.tableData = response.data.list
           this.queryParams.accountCodeX = ""
           this.costAccount = true
-          response.data.data.list = this.tableData.map(item => {
+          response.data.list = this.tableData.map(item => {
             switch (item.isVoucher) {
               case "N":
                 item.isVoucher = "N-否";
@@ -625,9 +622,9 @@ export default {
       this.loading = true
       queryDataByParams(this.queryParam).then(response => {
         this.queryParams.accountCodeX = ''
-        this.queryParams.total = response.data.data.total
-        this.tableData = response.data.data.list
-        response.data.data.list = this.tableData.map(item => {
+        this.queryParams.total = response.data.total
+        this.tableData = response.data.list
+        response.data.list = this.tableData.map(item => {
           switch (item.isVoucher) {
             case "N":
               item.isVoucher = "N-否";
@@ -708,7 +705,7 @@ export default {
       this.codeCostCodeLevelCode = false
       const typeId = row.id
       getData(typeId).then(response => {
-        this.formAccount = response.data.data
+        this.formAccount = response.data
         this.open = true
         this.title = '查看科目'
       })
@@ -721,7 +718,7 @@ export default {
       this.editInput = true
       this.codeCostCodeLevelCode = false
       getData(typeId).then(response => {
-        this.formAccount = response.data.data
+        this.formAccount = response.data
         this.updateAccountCode = this.formAccount.accountCode
         this.open = true
         this.determine = true
@@ -733,12 +730,12 @@ export default {
       this.updateAccountCode = ""
       const typeId = row.id
       getData(typeId).then(response => {
-        this.formAccount = response.data.data
+        this.formAccount = response.data
         if (this.formAccount.disabledCode === 'D') {
           this.formAccount.disabledCode = ' '
           updateState(this.formAccount).then(response => {
 
-            if (response.data.data) {
+            if (response.data) {
               this.$message({
                 type: 'success',
                 message: '启用修改成功'
@@ -753,7 +750,7 @@ export default {
           this.formAccount.disabledCode = 'D'
           updateState(this.formAccount).then(response => {
 
-            if (response.data.data) {
+            if (response.data) {
               this.$message({
                 type: 'success',
                 message: '禁用修改成功'
@@ -777,7 +774,7 @@ export default {
           type: 'warning'
         }).then(() => {
           deleteCodeData(ids).then(response => {
-            if (response.data.data) {
+            if (response.data) {
               this.$message({
                 type: 'success',
                 message: '删除成功'

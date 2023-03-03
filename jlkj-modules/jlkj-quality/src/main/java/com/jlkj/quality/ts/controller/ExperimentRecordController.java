@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.dto.qualityprovider.TsExperimentRecordDTO;
-import com.jlkj.common.dto.resp.Result;
+import com.jlkj.common.dto.quality.TsExperimentRecordDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.quality.ts.domain.ExperimentRecord;
@@ -116,7 +115,7 @@ public class ExperimentRecordController {
                 Map<String,Object> dataMap = new HashMap<>(16);
                 dataMap.put("total",total);
                 dataMap.put("list",records);
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
                 //计算平均值、最大值、最小值
                 List<BigDecimal> averageList = new ArrayList<>();
@@ -308,10 +307,10 @@ public class ExperimentRecordController {
                 dataMap.put("averageList", averageList);
                 dataMap.put("maxList", maxList);
                 dataMap.put("minList", minList);
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -352,7 +351,7 @@ public class ExperimentRecordController {
                 Map<String,Object> dataMap = new HashMap<>(16);
                 dataMap.put("total",total);
                 dataMap.put("list",records);
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
                 //计算平均值、最大值、最小值
                 List<BigDecimal> averageList = new ArrayList<>();
@@ -544,10 +543,10 @@ public class ExperimentRecordController {
                 dataMap.put("averageList", averageList);
                 dataMap.put("maxList", maxList);
                 dataMap.put("minList", minList);
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -588,7 +587,7 @@ public class ExperimentRecordController {
                 Map<String,Object> dataMap = new HashMap<>(16);
                 dataMap.put("total",total);
                 dataMap.put("list",records);
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
                 //计算平均值、最大值、最小值
                 List<BigDecimal> averageList = new ArrayList<>();
@@ -758,10 +757,10 @@ public class ExperimentRecordController {
                 dataMap.put("averageList", averageList);
                 dataMap.put("maxList", maxList);
                 dataMap.put("minList", minList);
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 
@@ -802,7 +801,7 @@ public class ExperimentRecordController {
                 Map<String,Object> dataMap = new HashMap<>(16);
                 dataMap.put("total",total);
                 dataMap.put("list",records);
-                return Result.successOne("查无资料", dataMap);
+                return AjaxResult.success("查无资料", dataMap);
             } else {
                 //计算平均值、最大值、最小值
                 List<BigDecimal> averageList = new ArrayList<>();
@@ -1038,10 +1037,10 @@ public class ExperimentRecordController {
                 dataMap.put("averageList", averageList);
                 dataMap.put("maxList", maxList);
                 dataMap.put("minList", minList);
-                return Result.successOne("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", dataMap);
             }
         } catch (Exception e) {
-            return Result.failed();
+            return AjaxResult.error();
         }
     }
 }
