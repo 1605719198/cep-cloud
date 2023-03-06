@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import static com.jlkj.common.core.constant.CommonConstant.SYS_LOG_PARAM_KEY;
 
 
 /**
@@ -29,7 +30,6 @@ import javax.validation.Valid;
 @RequestMapping("/energyconsumptionoutputaccounting")
 @Slf4j
 public class EnergyConsumptionOutputAccountingController {
-
     @Resource
     private HttpServletRequest httpServletRequest;
 
@@ -50,7 +50,7 @@ public class EnergyConsumptionOutputAccountingController {
     @RequestMapping(value = "/insertEnergyConsumptionOutputAccounting", method = RequestMethod.POST, produces = "application/json")
     public Object insertEnergyConsumptionOutputAccountingData(@Valid @RequestBody InsertEnergyConsumptionOutputAccountingDTO insertEnergyConsumptionOutputAccountingDTO) {
         log.info("params => " + insertEnergyConsumptionOutputAccountingDTO);
-//        httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertEnergyConsumptionOutputAccountingDTO);
+        httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertEnergyConsumptionOutputAccountingDTO);
         return energyConsumptionOutputAccountingService.insertEnergyConsumptionOutputAccountingData(insertEnergyConsumptionOutputAccountingDTO);
     }
 }

@@ -195,8 +195,8 @@ export default {
       this.visible = true
       this.sttForm.manufacturerChineseName=manufacturerChineseName;
       querySt(manufacturerId).then(response => {
-        this.stForm = response.data.data
-        console.log(response.data.data);
+        this.stForm = response.data
+        console.log(response.data);
       });
 
     },

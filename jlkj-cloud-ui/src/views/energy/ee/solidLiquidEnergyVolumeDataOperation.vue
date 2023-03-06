@@ -57,6 +57,7 @@
     </el-row>
 
     <el-table v-loading="loading"
+              height="67vh"
               stripe
               :data="tableData"
               tooltip-effect="dark"
@@ -120,7 +121,7 @@
                           type="month"
                           placeholder="选择月">
           </el-date-picker>
-          <span class="el-text"> *</span>
+
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -150,13 +151,13 @@
                           type="date"
                           placeholder="选择日期">
           </el-date-picker>
-          <span class="el-text"> *</span>
+
           ~
           <el-date-picker v-model="formPlus.engyDateEnd"
                           type="date"
                           placeholder="选择日期">
           </el-date-picker>
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="能源代码">
           <el-select v-model="formPlus.engyIdStart"

@@ -38,7 +38,7 @@ public class EnergyCodeController {
     @Log(title = "新增能源代码资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增能源代码资料")
     @PostMapping("/add")
-    public Object addEnergyCode(@RequestBody EnergyCodeDTO energyCodeDTO, @RequestHeader("token") String token) {
+    public Object addEnergyCode(@RequestBody EnergyCodeDTO energyCodeDTO) {
         try {
             EnergyCode energyCode = new EnergyCode();
             BeanUtils.copyProperties(energyCodeDTO, energyCode);
@@ -76,7 +76,7 @@ public class EnergyCodeController {
     @Log(title = "修改能源代码资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改能源代码资料")
     @PostMapping("/update")
-    public Object updateEnergyCode(@RequestBody EnergyCodeDTO energyCodeDTO, @RequestHeader("token") String token) {
+    public Object updateEnergyCode(@RequestBody EnergyCodeDTO energyCodeDTO) {
         try {
             EnergyCode energyCode = new EnergyCode();
             BeanUtils.copyProperties(energyCodeDTO, energyCode);
@@ -136,32 +136,10 @@ public class EnergyCodeController {
             return AjaxResult.error();
         }
     }
-
-    /**
-     * 删除能源代码资料(mq)
-     */
-    @Log(title = "删除能源代码资料(mq)", businessType = BusinessType.DELETE)
-    @Operation(summary = "删除能源代码资料(mq)")
-    @DeleteMapping("/deleteErp")
-    public Object deleteEnergyCode(@RequestParam String engyId, @RequestHeader("token") String token) {
-        try {
-            LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(EnergyCode::getEngyId, engyId);
-            boolean result = energyCodeService.remove(queryWrapper);
-            if (result) {
-                return AjaxResult.success("删除成功");
-            } else {
-                return AjaxResult.error("删除失败，请重新提交");
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
-    }
-
     /**
      * 能源代码资料查询与列表
      */
-    @Log(title = "查询厂商基本资料", businessType = BusinessType.OTHER)
+    @Log(title = "能源代码资料查询与列表", businessType = BusinessType.OTHER)
     @Operation(summary = "能源代码资料查询与列表")
     @GetMapping("/query")
     public Object queryEnergyCode(EnergyCodeDTO energyCodeDTO) {
@@ -173,7 +151,7 @@ public class EnergyCodeController {
             String[] solidLiquid = {"G000", "Y000"};
             LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.notIn(EnergyCode::getEngyType, solidLiquid)
-                        .orderByAsc(EnergyCode::getEngyId);
+                    .orderByAsc(EnergyCode::getEngyId);
             if (StringUtils.isNotBlank(engyIdStart) && StringUtils.isNotBlank(engyIdEnd)) {
                 queryWrapper.between(EnergyCode::getEngyId, engyIdStart, engyIdEnd);
             } else if (StringUtils.isNotBlank(engyIdStart)) {
@@ -198,6 +176,28 @@ public class EnergyCodeController {
             return AjaxResult.error();
         }
     }
+
+    /**
+     * 删除能源代码资料(mq)
+     */
+    @Log(title = "删除能源代码资料(mq)", businessType = BusinessType.DELETE)
+    @Operation(summary = "删除能源代码资料(mq)")
+    @DeleteMapping("/deleteErp")
+    public Object deleteEnergyCode(@RequestParam String engyId) {
+        try {
+            LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(EnergyCode::getEngyId, engyId);
+            boolean result = energyCodeService.remove(queryWrapper);
+            if (result) {
+                return AjaxResult.success("删除成功");
+            } else {
+                return AjaxResult.error("删除失败，请重新提交");
+            }
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
+
 
     /**
      * 根据Id查询能源代码

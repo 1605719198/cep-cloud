@@ -10,7 +10,7 @@
             :value="item.label">
           </el-option>
         </el-select>
-        <span class="el-text"> *</span>
+
       </el-form-item>
       <el-form-item label="产线名称" prop="millIdName">
         <el-input v-model="addForm.millIdName" />
@@ -24,7 +24,7 @@
           @select="handleSelectCostCenter"
           style="width: 90%!important;"
         ></el-autocomplete>
-        <span class="el-text"> *</span>
+
       </el-form-item>
     </el-form>
     <div slot="footer" class="el-dialog__footer">
@@ -34,7 +34,6 @@
   </div>
 </template>
 <script>
-  import {mapGetters} from "vuex";
   import {listApplyLike} from "@/api/energy/ee/productionLineCostCenter"
 
   export default {

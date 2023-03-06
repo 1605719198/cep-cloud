@@ -57,6 +57,7 @@
     </el-row>
 
     <el-table v-loading="loading"
+              height="67vh"
               stripe
               :data="tableData"
               tooltip-effect="dark"
@@ -169,7 +170,7 @@
                            :value="{value:item.value,label:item.label}">
                 </el-option>
               </el-select>
-              <span class="el-text"> *</span>
+
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -190,7 +191,7 @@
                                placeholder="成本中心"
                                @select="handleSelectCostCenter"
                                style="width: 90%!important;"></el-autocomplete>
-              <span class="el-text"> *</span>
+
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -205,7 +206,7 @@
                            :value="dict.dictValue">
                 </el-option>
               </el-select>
-              <span class="el-text"> *</span>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -222,14 +223,14 @@
                            :value="dict.dictValue">
                 </el-option>
               </el-select>
-              <span class="el-text"> *</span>
+
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="料号1"
                           prop="engyCmp1No">
               <el-input v-model="form.engyCmp1No" />
-              <span class="el-text"> *</span>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -319,53 +320,6 @@ export default {
   name: "materialNumberMaintenance",
   dicts: ['engy_engy_class'],
   data () {
-    var checkA = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('能源代码栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        callback();
-      }, 500);
-    };
-    var checkC = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('能源量类型栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        callback();
-      }, 500);
-    };
-    var checkD = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('来源系统栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        callback();
-      }, 500);
-    };
-    var checkE = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('料号1栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value.length > 15) {
-          callback(new Error('料号栏位参数长度为 15 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkF = (rule, value, callback) => {
-      if (value != null) {
-        if (value.length > 15) {
-          callback(new Error('料号栏位参数长度为 15 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       // 弹出层标题
       title: "",
@@ -380,44 +334,17 @@ export default {
       // 表单校验
       rules: {
         engyId: [
-          { validator: checkA, trigger: 'blur' }
+          { required: true, message: "能源代码不能为空", trigger: "blur" }
         ],
         engyClass: [
-          { validator: checkC, trigger: 'blur' }
+          { required: true, message: "能源量类型不能为空", trigger: "blur" }
         ],
         engySource: [
-          { validator: checkD, trigger: 'blur' }
+          { required: true, message: "来源系统不能为空", trigger: "blur" }
         ],
         engyCmp1No: [
-          { validator: checkE, trigger: 'blur' }
+          { required: true, message: "料号1不能为空", trigger: "blur" }
         ],
-        engyCmp2No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp3No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp4No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp5No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp6No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp7No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp8No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp9No: [
-          { validator: checkF, trigger: 'blur' }
-        ],
-        engyCmp10No: [
-          { validator: checkF, trigger: 'blur' }
-        ]
       },
       optionsEngySource: [],
       optionsEngyClass: [],

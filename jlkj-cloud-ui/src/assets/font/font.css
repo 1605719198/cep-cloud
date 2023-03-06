@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'rezhizhenyan';
+  src: url("./ruizizhenyan.ttf");
+}
+
+@font-face {
+  font-family: 'pangmenzhengdao';
+  src: url("./pangmenzhengdao.ttf");
+}
+
+@font-face {
+  font-family: 'digital7';
+  src: url('digital7.ttf');
+  font-weight: normal;
+  font-style: normal;
+}

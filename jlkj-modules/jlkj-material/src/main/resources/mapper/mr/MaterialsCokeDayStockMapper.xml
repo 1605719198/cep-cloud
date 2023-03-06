@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCokeDayStockMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsCokeDayStock">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="categoryId" column="category_id" jdbcType="VARCHAR"/>
+            <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
+            <result property="materialsId" column="materials_id" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="inventory" column="inventory" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="clearName" column="clear_name" jdbcType="TIMESTAMP"/>
+            <result property="statDate" column="stat_date" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,category_id,category_name,
+        materials_id,materials_name,inventory,
+        create_time,clear_name,stat_date
+        
+    </sql>
+
+    <select id="getHomeCokeStockListData" parameterType="com.jlkj.material.mr.dto.materialscokedaystock.ListHomeCokeStockDTO" resultType="com.jlkj.material.mr.vo.materialscokedaystock.ListHomeCokeStockVO">
+        select stat_date, sum(inventory) as inventory, sum(material_weight) as material_weight
+        from (select DATE_FORMAT(a.stat_date, '%m-%d') as stat_date,
+                     SUM(inventory) inventory,
+                     0 as material_weight
+              from materials_mr_coke_day_stock a
+              where 1=1
+                and (#{startDate} = '' or a.stat_date &gt;= case when #{startDate} = '' then null else #{startDate} end)
+                and (#{endDate} = '' or a.stat_date &lt;= case when #{endDate} = '' then null else #{endDate} end)
+              GROUP BY DATE_FORMAT(a.stat_date, '%m-%d')
+              union all
+              select DATE_FORMAT(a.create_time, '%m-%d') as stat_date,
+                     0 as inventory,
+                     sum(yield) as material_weight
+              from t_production_coke_shed_output a
+              where 1=1
+                and (#{startDate} = '' or a.create_time &gt;= case when #{startDate} = '' then null else concat(#{startDate},' 00:00:00') end)
+                and (#{endDate} = '' or a.create_time &lt;= case when #{endDate} = '' then null else concat(#{endDate},' 23:59:59') end)
+              group by DATE_FORMAT(a.create_time, '%m-%d')
+             ) as a
+        group by stat_date
+        order by stat_date
+    </select>
+</mapper>
+

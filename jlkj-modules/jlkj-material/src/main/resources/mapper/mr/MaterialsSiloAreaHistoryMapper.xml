@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsSiloAreaHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsSiloAreaHistory">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="siloId" column="silo_id" jdbcType="VARCHAR"/>
+            <result property="storageSpacesId" column="storage_spaces_id" jdbcType="VARCHAR"/>
+            <result property="materialsId" column="materials_id" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,silo_id,storage_spaces_id,
+        materials_id,materials_name,start_time,
+        end_time
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.material.mr.dto.materialssiloareahistory.PageMaterialsSiloAreaHistoryDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.silo_id,
+            a.storage_spaces_id,
+            a.materials_id,
+            a.materials_name,
+            case when ISNULL(a.start_time) then '' else DATE_FORMAT(a.start_time,'%Y-%m-%d %H:%i:%s') end as start_time,
+            case when ISNULL(a.end_time) then '' else DATE_FORMAT(a.end_time,'%Y-%m-%d %H:%i:%s') end as end_time
+        from materials_mr_silo_area_history a
+        where 1=1
+        and (a.silo_id = #{condition.siloId})
+        and (a.storage_spaces_id = #{condition.storageSpacesId})
+        order by a.end_time
+    </select>
+</mapper>
+

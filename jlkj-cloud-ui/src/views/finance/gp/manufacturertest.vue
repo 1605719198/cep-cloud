@@ -256,7 +256,7 @@ export default {
       this.visible = true
       console.log(this.visible);
       queryRelations(id).then(response => {
-        this.relationsForm = response.data.data
+        this.relationsForm = response.data
         this.flagForm={}
         this.relationsForm.map(item => {
           if (item.relation === "FC") {
@@ -283,8 +283,8 @@ export default {
         })
       });
       getBase1(id).then(response => {
-        this.dataForm = response.data.data
-        console.log(response.data.data);
+        this.dataForm = response.data
+        console.log(response.data);
       });
     },
   }

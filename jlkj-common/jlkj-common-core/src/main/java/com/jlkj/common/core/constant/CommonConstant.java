@@ -1,4 +1,4 @@
-package com.jlkj.energy.ee.constant;
+package com.jlkj.common.core.constant;
 
 /**
  * @author sudeyou
@@ -6,7 +6,7 @@ package com.jlkj.energy.ee.constant;
  * @create 2022-04-11 10:44
  */
 public class CommonConstant {
-
+    public static final String SYS_LOG_PARAM_KEY = "doLogParam";
     public static final String TIME_BEGIN = "00:00:00";
     public static final String TIME_END = "23:59:59";
     public static final String DATEFORMAT_YYYY_MM_DD = "yyyy-MM-dd";

@@ -655,7 +655,6 @@ export default {
     this.initTree()
   },
   computed: {
-    ...mapGetters(["userInfo"])
   },
   watch: {
     filterText (val) {
@@ -702,7 +701,7 @@ export default {
     // 初始化树节点
     initTree () {
       getTreeNode().then(response => {
-        this.treeData = response.data.data
+        this.treeData = response.data
         if (this.treeData.length === 0) {
           this.addNode = true
         }
@@ -714,13 +713,13 @@ export default {
       this.costIndexes = true
       queryMenu(this.queryParams).then(response => {
         this.tableData = []
-        this.queryParams.total = response.data.data.total
-        this.tableDataNode = response.data.data.list
-        let t = response.data.data.list.length
+        this.queryParams.total = response.data.total
+        this.tableDataNode = response.data.list
+        let t = response.data.list.length
         for (let i = 0; i < t; i++) {
-          this.tableDataNode[i].upperCodex = response.data.data.list[i].costCodeLevelCode
-          this.tableDataNode[i].upperName = response.data.data.list[i].levelName
-          this.tableDataNode[i].levelCode = response.data.data.list[i].upperCode
+          this.tableDataNode[i].upperCodex = response.data.list[i].costCodeLevelCode
+          this.tableDataNode[i].upperName = response.data.list[i].levelName
+          this.tableDataNode[i].levelCode = response.data.list[i].upperCode
           this.tableDataNode[i].levelName = this.levelNameNode;
         }
       })
@@ -732,12 +731,12 @@ export default {
       this.costIndexes = false
 
       queryDataByParams(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.tableData = []
           this.total = 0;
         } else {
-          this.tableData = response.data.data.list;
-          this.total = response.data.data.total;
+          this.tableData = response.data.list;
+          this.total = response.data.total;
           this.tableData = this.tableData.map(item => {
             switch (item.expenseSource) {
               case 'R':
@@ -763,12 +762,12 @@ export default {
       this.costIndexes = false
       this.queryParams.costCode = ''
       queryDataByParams(this.queryParam).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.tableData = []
           this.total = 0;
         } else {
-          this.tableData = response.data.data.list;
-          this.total = response.data.data.total;
+          this.tableData = response.data.list;
+          this.total = response.data.total;
           this.tableData = this.tableData.map(item => {
             switch (item.expenseSource) {
               case 'R':
@@ -848,8 +847,8 @@ export default {
         this.loading = false,
         this.costIndexes = false
       queryDataByParams(this.queryParams).then(response => {
-        this.queryParams.total = response.data.data.total
-        this.tableData = response.data.data.list
+        this.queryParams.total = response.data.total
+        this.tableData = response.data.list
         this.tableData = this.tableData.map(item => {
           switch (item.expenseSource) {
             case 'R':
@@ -908,7 +907,7 @@ export default {
       this.codeCostCodeLevelCode = false
       const typeId = row.id
       getData(typeId).then(response => {
-        this.formAccount = response.data.data
+        this.formAccount = response.data
         this.openAccount = true
         this.title = '查看科目'
       })
@@ -921,7 +920,7 @@ export default {
       this.menuPopup = true
       const typeId = row.id
       getMenuData(typeId).then(response => {
-        this.form = response.data.data
+        this.form = response.data
         this.form.levelName = this.levelNameNode
         this.form.levelCode = this.tableDataNode[index].levelCode
         this.form.nodeType = this.tableDataNode[index].nodeType
@@ -936,7 +935,7 @@ export default {
       this.editInput = false
       this.codeCostCodeLevelCode = false
       getData(typeId).then(response => {
-        this.formAccount = response.data.data
+        this.formAccount = response.data
         this.openAccount = true
         this.determine = true
         this.title = '修改科目'
@@ -949,7 +948,7 @@ export default {
       this.menuPopup = false
       this.editInput = true
       getMenuData(typeId).then(response => {
-        this.form = response.data.data
+        this.form = response.data
         this.form.levelName = this.levelNameNode
         this.form.levelCode = this.tableDataNode[index].levelCode
         this.form.nodeType = this.tableDataNode[index].nodeType
@@ -968,7 +967,7 @@ export default {
           type: 'warning'
         }).then(() => {
           deleteCodeData(ids).then(response => {
-            if (response.data.data) {
+            if (response.data) {
               this.$message({
                 type: 'success',
                 message: '删除成功'
@@ -992,7 +991,7 @@ export default {
           type: 'warning'
         }).then(() => {
           deleteMenu(ids, row.upperCodex).then(response => {
-            if (response.data.data) {
+            if (response.data) {
               this.$message({
                 type: 'success',
                 message: '删除成功'
@@ -1010,11 +1009,11 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.formAccount.id !== undefined) {
-            this.formAccount.updateUser = this.userInfo.jobNumber
-            this.formAccount.updateUserName = this.userInfo.userName
+            this.formAccount.updateUser = '123456'
+            this.formAccount.updateUserName = '姓名'
             this.lisetloading = true
             updateCodeData(this.formAccount).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '科目修改成功'
@@ -1027,13 +1026,13 @@ export default {
               }
             });
           } else {
-            this.formAccount.createUser = this.userInfo.jobNumber
-            this.formAccount.createUserName = this.userInfo.userName
+            this.formAccount.createUser = '123456'
+            this.formAccount.createUserName = '姓名'
 
             this.formAccount.costCode = this.form.costCodeLevelCode + this.formAccount.costCode
             this.lisetloading = true
             doAddCode(this.formAccount).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '科目新增成功'
@@ -1064,11 +1063,11 @@ export default {
 
           if (this.form.parentId !== undefined) {
             debugger
-            this.form.updateUser = this.userInfo.jobNumber
-            this.form.updateUserName = this.userInfo.userName
+            this.form.updateUser = '123456'
+            this.form.updateUserName = '姓名'
             this.lisetloading = false
             updateMenuData(this.form).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '修改成功'
@@ -1080,12 +1079,12 @@ export default {
               }
             });
           } else {
-            this.form.createUser = this.userInfo.jobNumber
-            this.form.createUserName = this.userInfo.userName
+            this.form.createUser = '123456'
+            this.form.createUserName = '姓名'
             this.form.costCodeLevelCode = this.costCodeLevelCode + this.form.upperCodex
             this.lisetloading = false
             doAddMenu(this.form).then(response => {
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '新增成功'

@@ -57,6 +57,7 @@
     </el-row>
 
     <el-table stripe
+              height="67vh"
               :data="tableData"
               tooltip-effect="dark"
               @selection-change="handleSelectionChange"
@@ -145,7 +146,6 @@
       <el-dialog :title="(editBox?'编辑':'新建')+'固液体能源代码'"
                  :visible.sync="addBox"
                  width="500px"
-                 class="customDialogStyle"
                  append-to-body
                  :destroy-on-close="true"
                  :close-on-click-modal="false">

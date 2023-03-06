@@ -50,6 +50,7 @@
 
     <el-table v-loading="loading"
               :data="financetestList"
+              height="70vh"
               stripe>
       <el-table-column label="产副品编码"
                        sortable
@@ -180,13 +181,13 @@ export default {
     getList () {
       this.loading = false;
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.financetestList = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         }
       });
@@ -215,8 +216,8 @@ export default {
         compId: 'J00'
       },
         listFinancetest(this.queryParams).then(response => {
-          this.financetestList = response.data.data.list;
-          this.total = response.data.data.total;
+          this.financetestList = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         });
 
@@ -256,7 +257,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           addFinancetest(this.form).then(response => {
-            if (response.data.code === "0") {
+            if (response.code === "0") {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -276,7 +277,7 @@ export default {
       }).then(() => {//点击确定，执行then方法
         //调用删除的方法
         delFinancetest(id).then(response => {
-          if (response.data.code === "0") {
+          if (response.code === "0") {
             this.getList();
           }
         })

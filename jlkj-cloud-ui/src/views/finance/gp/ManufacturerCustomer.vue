@@ -240,7 +240,7 @@ export default {
       this.visible = true
       this.sooForm.manufacturerChineseName = manufacturerChineseName;
       querySo(manufacturerId).then(response => {
-        this.soForm = response.data.data
+        this.soForm = response.data
       });
 
     },
