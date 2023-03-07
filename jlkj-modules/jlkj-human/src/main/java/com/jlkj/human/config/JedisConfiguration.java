@@ -1,4 +1,4 @@
-package com.jlkj.common.redis.configure;
+package com.jlkj.human.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
