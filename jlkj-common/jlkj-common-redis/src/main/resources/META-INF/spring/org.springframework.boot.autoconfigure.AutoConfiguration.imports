@@ -1,2 +1,3 @@
 com.jlkj.common.redis.configure.RedisConfig
 com.jlkj.common.redis.service.RedisService
+com.jlkj.common.redis.configure.JedisConfiguration

@@ -5,6 +5,8 @@ import com.jlkj.common.security.annotation.EnableRyFeignClients;
 import com.jlkj.common.swagger.annotation.EnableCustomSwagger2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
  * @author xin
@@ -14,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableCustomSwagger2
 @EnableRyFeignClients
 @SpringBootApplication
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class HumanApplication {
 
     public static void main(String[] args) {

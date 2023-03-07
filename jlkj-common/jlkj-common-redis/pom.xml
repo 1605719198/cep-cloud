@@ -29,5 +29,17 @@
             <artifactId>jlkj-common-core</artifactId>
         </dependency>
 
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
