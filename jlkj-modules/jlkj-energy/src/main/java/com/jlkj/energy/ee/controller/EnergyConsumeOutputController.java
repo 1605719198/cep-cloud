@@ -253,7 +253,7 @@ public class EnergyConsumeOutputController {
                 createTBEE10(energyConsumeOutput, dataTypeIdxP, activityIdR);
                 //  抛送IP负项资料 --需抛买方产线
                 createTBEE10(energyConsumeOutput, dataTypeIdxC, activityIdC);
-                if (!energyConsumeOutput.getEngyId().equals("DZS201")) {
+                    if (!("DZS201").equals(energyConsumeOutput.getEngyId())) {
                     //  抛送IP正项资料--需抛卖方产线
                     createTBEE10(energyConsumeOutput, dataTypeIdxP, activityIdP);
                 }

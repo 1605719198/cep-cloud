@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCokeStockMapper">
+    <select id="getListPage" parameterType="com.jlkj.material.mr.dto.materialscokestock.PageMaterialsCokeStockDTO"
+            resultType="java.util.Map">
+        select * from materials_mr_coke_stock
+        <where>
+            <if test="condition.categoryId != null and condition.categoryId != ''">
+                and category_id = #{condition.categoryId}
+            </if>
+            <if test="condition.materialsId != null and condition.materialsId != ''">
+                and materials_id = #{condition.materialsId}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getCokeStock" parameterType="com.jlkj.material.mr.dto.materialscokestock.GetCokeStockDTO" resultType="java.util.Map">
+        select
+            materials_id,
+            materials_name,
+            SUM(inventory)/1000 inventory
+        from materials_mr_coke_day_stock a
+        <where>
+            <choose>
+                <when test="startDate != null and startDate != ''">
+                    stat_date = #{startDate}
+                </when>
+                <otherwise>
+                    stat_date = DATE_FORMAT(NOW(),'%Y-%m-%d')
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY materials_id,materials_name
+    </select>
+
+    <select id="getCokePutStorageList" parameterType="com.jlkj.material.mr.dto.materialscokestock.PageMaterialsCokeStockDTO" resultType="java.util.Map">
+        select * from (
+            SELECT compute_flag,vender_name,car_type_name,work_type_name,car_no,complete_pound_num,complete_machine_hour_num,DATE_FORMAT(pound_date, '%Y-%m-%d') pound_date,goods_name
+            FROM logistics_wv_trans_actual_coke WHERE compute_flag &gt; 0 and goods_no = #{condition.materialsId}
+            UNION ALL
+            SELECT compute_flag,vender_name,car_type_name,work_type_name,car_no,complete_pound_num,complete_machine_hour_num,DATE_FORMAT(pound_date, '%Y-%m-%d'),goods_name
+            FROM logistics_wv_trans_actual_nut WHERE compute_flag &gt; 0 and goods_no = #{condition.materialsId}
+            UNION ALL
+            SELECT compute_flag,vender_name,car_type_name,work_type_name,car_no,complete_pound_num,complete_machine_hour_num,DATE_FORMAT(pound_date, '%Y-%m-%d'),goods_name
+            FROM logistics_wv_trans_actual_fines WHERE compute_flag &gt; 0 and goods_no = #{condition.materialsId}
+        ) AS a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getCokeOutStorageList" parameterType="com.jlkj.material.mr.dto.materialscokestock.PageMaterialsCokeStockDTO" resultType="java.util.Map">
+        select * from (
+        select '外售' as type, a.client_name, a.materials_name, vehicle_number, DATE_FORMAT(loading_time, '%Y-%m-%d') AS loading_time, net_wgt
+        from t_production_coke_factory_performance a where a.material_code = #{condition.materialsId}
+        UNION ALL
+        SELECT '内耗' as type, vender_name,goods_name,car_no,DATE_FORMAT(pound_date, '%Y-%m-%d'),complete_pound_num
+        FROM logistics_wv_trans_actual_coke WHERE compute_flag &lt; 0 and goods_no = #{condition.materialsId}
+        UNION ALL
+        SELECT '内耗' as type, vender_name,goods_name,car_no,DATE_FORMAT(pound_date, '%Y-%m-%d'),complete_pound_num
+        FROM logistics_wv_trans_actual_nut WHERE compute_flag &lt; 0 and goods_no = #{condition.materialsId}
+        UNION ALL
+        SELECT '内耗' as type, vender_name,goods_name,car_no,DATE_FORMAT(pound_date, '%Y-%m-%d'),complete_pound_num
+        FROM logistics_wv_trans_actual_fines WHERE compute_flag &lt; 0 and goods_no = #{condition.materialsId}
+        ) AS a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+</mapper>

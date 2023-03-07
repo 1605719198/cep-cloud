@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCokeSaleDeliverPlanMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsCokeSaleDeliverPlan">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planListNo" column="plan_list_no" jdbcType="VARCHAR"/>
+            <result property="carrierType" column="carrier_type" jdbcType="VARCHAR"/>
+            <result property="carrierNo" column="carrier_no" jdbcType="VARCHAR"/>
+            <result property="mtrlNo" column="mtrl_no" jdbcType="VARCHAR"/>
+            <result property="fromCode" column="from_code" jdbcType="VARCHAR"/>
+            <result property="toCode" column="to_code" jdbcType="VARCHAR"/>
+            <result property="toDesc" column="to_desc" jdbcType="VARCHAR"/>
+            <result property="pchrNo" column="pchr_no" jdbcType="VARCHAR"/>
+            <result property="isLoad" column="is_load" jdbcType="VARCHAR"/>
+            <result property="loadStation" column="load_station" jdbcType="VARCHAR"/>
+            <result property="issueDept" column="issue_dept" jdbcType="VARCHAR"/>
+            <result property="issueDeptName" column="issue_dept_name" jdbcType="VARCHAR"/>
+            <result property="issueEmpNo" column="issue_emp_no" jdbcType="VARCHAR"/>
+            <result property="issueEmpName" column="issue_emp_name" jdbcType="VARCHAR"/>
+            <result property="issueDate" column="issue_date" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_list_no,carrier_type,
+        carrier_no,mtrl_no,from_code,
+        to_code,to_desc,pchr_no,
+        is_load,load_station,issue_dept,
+        issue_dept_name,issue_emp_no,issue_emp_name,
+        issue_date
+    </sql>
+
+    <select id="getListPage" parameterType="com.jlkj.material.mr.dto.materialscokesaledeliverplan.PageMaterialsCokeSaleDeliverPlanDTO" resultType="java.util.Map">
+        SELECT * FROM materials_mr_coke_sale_deliver_plan a
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and STR_TO_DATE(issue_date, '%Y%m%d') &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and STR_TO_DATE(issue_date, '%Y%m%d') &lt;= #{condition.endTime}
+            </if>
+            <if test="condition.carrierNo != null and condition.carrierNo != ''">
+                and carrier_no like concat('%',#{condition.carrierNo},'%')
+            </if>
+            <if test="condition.carrierType != null and condition.carrierType != ''">
+                and carrier_type = #{condition.carrierType}
+            </if>
+            <if test="condition.toDesc != null and condition.toDesc != ''">
+                and (
+                to_desc like concat('%',#{condition.toDesc},'%') or to_code like concat('%',#{condition.toDesc},'%')
+                )
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCoalStockMapper">
+    <select id="getListPage" parameterType="com.jlkj.material.mr.dto.materialscoalstock.PageMaterialsCoalStockDTO"
+            resultType="java.util.Map">
+        select
+            id,
+            category_id,
+            category_name,
+            materials_id,
+            materials_name,
+            storage_spaces_id,
+            storage_spaces_name,
+            inventory,
+            b.today_loading_weight,
+            c.today_unloaded_weight,
+            create_time,
+            clear_name
+        from materials_mr_coal_stock a
+        LEFT JOIN (
+        select material_code AS material_number,SUM(material_weight) AS today_loading_weight from t_production_configure_coal_species_performance_detail
+        WHERE DATE_FORMAT(coal_delivery_date, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') GROUP BY material_code
+        ) b on a.materials_id = b.material_number
+        LEFT JOIN (
+        select material_code,SUM(material_weight) AS today_unloaded_weight from t_production_material_unloading_performance
+        WHERE DATE_FORMAT(unloading_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') GROUP BY material_code
+        ) c on a.materials_id = c.material_code
+        <where>
+            <if test="condition.categoryId != null and condition.categoryId != ''">
+                and category_id = #{condition.categoryId}
+            </if>
+            <if test="condition.materialsId != null and condition.materialsId != ''">
+                and materials_id = #{condition.materialsId}
+            </if>
+            <if test="condition.storageSpacesId != null and condition.storageSpacesId != ''">
+                and storage_spaces_id = #{condition.storageSpacesId}
+            </if>
+            <if test="condition.createStartTime != null and condition.createStartTime != ''">
+                and create_time &gt;= concat(#{condition.createStartTime},' 00:00:00')
+            </if>
+            <if test="condition.createEndTime != null and condition.createEndTime != ''">
+                and create_time &lt;= concat(#{condition.createEndTime},' 23:59:59')
+            </if>
+            <if test="condition.clearStartTime != null and condition.clearStartTime != ''">
+                and clear_name &gt;= concat(#{condition.clearStartTime},' 00:00:00')
+            </if>
+            <if test="condition.clearEndTime != null and condition.clearEndTime != ''">
+                and clear_name &lt;= concat(#{condition.clearEndTime},' 23:59:59')
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getCoalStock"  parameterType="com.jlkj.material.mr.dto.materialscoalstock.GetCoalStockDTO" resultType="java.util.Map">
+        select
+            materials_id,
+            materials_name,
+            SUM(inventory)/1000 inventory
+        from materials_mr_coal_day_stock a
+        <where>
+            <choose>
+                <when test="startDate != null and startDate != ''">
+                    stat_date = #{startDate}
+                </when>
+                <otherwise>
+                    stat_date = DATE_FORMAT(NOW(),'%Y-%m-%d')
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY materials_id,materials_name
+    </select>
+
+    <select id="getHomeMaterialAnalysisList" resultType="com.jlkj.material.mr.vo.materialscoalstock.ListHomeMaterialAnalysisListVO">
+        select c.materials_name,a.inventory,a.turnover_rate,a.warehousing_volume from (
+            select a.sort,a.materials_id,a.inventory,
+            case when b.material_weight = 0 or b.material_weight is null then a.inventory else round(a.inventory / b.material_weight,1) end as turnover_rate,
+            case when c.warehousing_volume is null then 0 else c.warehousing_volume end as warehousing_volume from (
+            select 1 as sort,a.materials_id,sum(a.inventory) as inventory from materials_mr_coal_stock a
+            group by a.materials_id
+            ) as a
+            LEFT JOIN (
+                select a.material_number,a.material_weight from t_production_conveying_coal_performance a INNER JOIN (
+                select id,material_number,max(end_time) as end_time from t_production_conveying_coal_performance where end_time is not null group by id,material_number
+                ) b ON a.id=b.id
+            ) b ON a.materials_id = b.material_number
+            LEFT JOIN (
+                select b.id as materials_id,sum(a.net_wgt) as warehousing_volume from materials_mr_storage a INNER JOIN materials_mr_code b ON a.mtrl_no = b.materials_code
+                where TO_DAYS(a.create_time) = TO_DAYS(now()) group by b.id
+            ) as c ON a.materials_id = c.materials_id
+            union all
+            select a.sort,a.materials_id,a.inventory,0 as turnover_rate,
+            case when c.warehousing_volume is null then 0 else c.warehousing_volume end as warehousing_volume from (
+            select 2 as sort,a.materials_id,sum(a.inventory) as inventory from materials_mr_coke_stock a
+            group by a.materials_id
+            ) as a
+            LEFT JOIN (
+                select b.id as materials_id,sum(a.material_weight) as warehousing_volume from t_production_coke_records a INNER JOIN materials_mr_code b ON a.material_code = b.materials_code
+                where TO_DAYS(a.class_end_time) = TO_DAYS(now()) group by b.id
+            ) as c ON a.materials_id = c.materials_id
+        ) as a
+        INNER JOIN materials_mr_code c ON a.materials_id = c.id
+        order by a.sort
+    </select>
+
+
+
+
+
+    <select id="getConveyingCoalList" parameterType="com.jlkj.material.mr.dto.materialscoalstock.PageMaterialsCoalStockDTO" resultType="java.util.Map">
+        select a.*, b.category_id, c.category_name from t_production_configure_coal_species_performance_detail a
+        LEFT JOIN materials_mr_code b on a.material_code = b.materials_code
+        LEFT JOIN materials_mr_category c on b.category_id = c.id
+        <where>
+            <if test="condition.materialsName != null and condition.materialsName != ''">
+                and a.material_name = #{condition.materialsName}
+            </if>
+            <if test="condition.storageSpacesId != null and condition.storageSpacesId != ''">
+                and a.slot_number = #{condition.storageSpacesId}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+    <select id="getHCoalUnloadingList" parameterType="com.jlkj.material.mr.dto.materialscoalstock.PageMaterialsCoalStockDTO" resultType="java.util.Map">
+        select * from t_production_material_unloading_performance
+        <where>
+            ISNULL(unloading_time) = 0
+            <if test="condition.materialsId != null and condition.materialsId != ''">
+                and material_code = #{condition.materialsId}
+            </if>
+            <if test="condition.storageSpacesId != null and condition.storageSpacesId != ''">
+                and storage_maintain_id = #{condition.storageSpacesId}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

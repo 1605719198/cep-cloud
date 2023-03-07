@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsStorageSpacesMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsStorageSpaces">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="siloId" column="silo_id" jdbcType="VARCHAR"/>
+            <result property="storageSpacesName" column="storage_spaces_name" jdbcType="VARCHAR"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,silo_id,storage_spaces_name,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.material.mr.dto.materialsstoragespaces.PageMaterialsStorageSpacesDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.silo_id,
+            a.storage_spaces_name,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            b.silo_name,
+            a.material_category_id
+        from materials_mr_storage_spaces a
+        INNER JOIN materials_mr_silo b ON a.silo_id = b.id
+        where 1=1
+        and (#{condition.siloId} = '' or a.silo_id = #{condition.siloId})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getListData" parameterType="com.jlkj.material.mr.dto.materialsstoragespaces.ListMaterialsStorageSpacesDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.silo_id,
+            a.storage_spaces_name,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            b.silo_name,
+            a.material_category_id
+        from materials_mr_storage_spaces a
+        INNER JOIN materials_mr_silo b ON a.silo_id = b.id
+        where 1=1
+        and (#{siloId} = '' or a.silo_id = #{siloId})
+        order by a.create_time
+    </select>
+
+    <select id="getListDataBox" resultType="java.util.Map">
+        select
+            a.id,
+            a.storage_spaces_name
+        from materials_mr_storage_spaces a
+        order by a.create_time
+    </select>
+</mapper>
+

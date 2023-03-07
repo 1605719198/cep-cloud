@@ -57,11 +57,12 @@
     </el-row>
 
     <el-table v-loading="loading"
+              height="67vh"
               stripe
               :data="tableData"
               tooltip-effect="dark"
               @selection-change="handleSelectionChange"
-              style="margin: 0 0px 0 10px;width: auto;">
+              style="margin: 0 0px 0 00px;width: auto;">
       <el-table-column type="selection"
                        width="55"
                        align="center" />
@@ -136,36 +137,32 @@
                 @current-change="handleCurrentChange">
     </pagination>
 
-    <!-- 添加或修改日报系统-出勤数据对话框 -->
+    <!-- 添加或修改能源代码对话框 -->
     <el-dialog :title="title"
                v-if="open"
                :visible.sync="open"
                width="500px"
-               :close-on-click-modal="false"
-               class="customDialogStyle"
-               :destroy-on-close="true"
                append-to-body>
       <el-form ref="form"
                :model="form"
-               status-icon
                :rules="rules"
                label-width="80px">
         <el-form-item label="能源代码"
                       prop="engyId">
           <el-input v-model="form.engyId"
                     :disabled="engyInput" />
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="计量单位"
                       prop="engyUnit">
           <el-input v-model="form.engyUnit"
                     :disabled="engyInput" />
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="热值单位"
                       prop="calUnit">
           <el-input v-model="form.calUnit" />
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="能源种类"
                       prop="engyType">
@@ -179,7 +176,7 @@
                        :value="dict.value">
             </el-option>
           </el-select>
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="来源方式"
                       prop="srcType">
@@ -197,13 +194,13 @@
         <el-form-item label="热值系数"
                       prop="calValue">
           <el-input v-model="form.calValue" />
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="能源名称"
                       prop="engyName">
           <el-input v-model="form.engyName"
                     :disabled="engyInput" />
-          <span class="el-text"> *</span>
+
         </el-form-item>
         <el-form-item label="抛帐系统"
                       prop="acctSys">
@@ -222,6 +219,7 @@
                    :loading="states">确 定</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -234,92 +232,6 @@ export default {
   name: "energyCodeMaintenance",
   dicts: ['engy_engy_type','engy_acct_sys','engy_src_type'],
   data () {
-    var checkA = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('能源代码栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value.length > 8) {
-          callback(new Error('能源代码参数长度为 8 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkB = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('计量单位栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value.length > 8) {
-          callback(new Error('计量单位参数长度为 8 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkC = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('热值单位栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value.length > 6) {
-          callback(new Error('热值单位参数长度为 6 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkD = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('能源种类栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value == 'G000' || value == 'Y000') {
-          callback(new Error('能源种类应不包括（‘G000’，‘Y000’）'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkE = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('热值系数栏位为空，请重新输入！'));
-      } else {
-        if (isNaN(value)) {
-          callback(new Error('请输入数字值'));
-        } else {
-          if (value.length > 7) {
-            callback(new Error('热值系数参数长度为 7 ，请重新输入！'));
-          } else {
-            callback();
-          }
-        }
-      }
-    };
-    var checkF = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('能源名称栏位为空，请重新输入！'));
-      }
-      setTimeout(() => {
-        if (value.length > 30) {
-          callback(new Error('能源名称参数长度为 30 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      }, 500);
-    };
-    var checkG = (rule, value, callback) => {
-      if (value != null) {
-        if (value.length > 10) {
-          callback(new Error('能源缩写参数长度为 10 ，请重新输入！'));
-        } else {
-          callback();
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       // 显示搜索条件
       showSearch: true,
@@ -339,25 +251,25 @@ export default {
       // 表单校验
       rules: {
         engyId: [
-          { validator: checkA, trigger: 'blur' }
+          { required: true, message: "能源代码不能为空", trigger: "blur" }
         ],
         engyUnit: [
-          { validator: checkB, trigger: 'blur' }
+          { required: true, message: "计量单位不能为空", trigger: "blur" }
         ],
         calUnit: [
-          { validator: checkC, trigger: 'blur' }
+          { required: true, message: "热值单位不能为空", trigger: "blur" }
         ],
         engyType: [
-          { validator: checkD, trigger: 'blur' }
+          { required: true, message: "能源种类不能为空", trigger: "blur" }
         ],
         calValue: [
-          { validator: checkE, trigger: 'blur' }
+          { required: true, message: "热值系数不能为空", trigger: "blur" }
         ],
         engyName: [
-          { validator: checkF, trigger: 'blur' }
+          { required: true, message: "能源名称不能为空", trigger: "blur" }
         ],
         engyAc: [
-          { validator: checkG, trigger: 'blur' }
+          { required: true, message: "能源缩写不能为空", trigger: "blur" }
         ]
       },
       optionsEngyType: [],
@@ -494,7 +406,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.states = true;
-          this.form.createEmpNo = '';
+          this.form.createEmpNo = '姓名';
           if (this.form.id != null) {
             updateInfo(this.form).then(response => {
               this.states = false;

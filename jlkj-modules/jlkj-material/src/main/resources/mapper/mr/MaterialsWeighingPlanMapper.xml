@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsWeighingPlanMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsWeighingPlan">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planListNo" column="plan_list_no" jdbcType="VARCHAR"/>
+            <result property="transType" column="trans_type" jdbcType="VARCHAR"/>
+            <result property="carrierType" column="carrier_type" jdbcType="VARCHAR"/>
+            <result property="lotNo" column="lot_no" jdbcType="VARCHAR"/>
+            <result property="carrierNo" column="carrier_no" jdbcType="VARCHAR"/>
+            <result property="seqNo" column="seq_no" jdbcType="VARCHAR"/>
+            <result property="mtrlNo" column="mtrl_no" jdbcType="VARCHAR"/>
+            <result property="mtrlName" column="mtrl_name" jdbcType="VARCHAR"/>
+            <result property="fromCode" column="from_code" jdbcType="VARCHAR"/>
+            <result property="fromDesc" column="from_desc" jdbcType="VARCHAR"/>
+            <result property="toCode" column="to_code" jdbcType="VARCHAR"/>
+            <result property="toDesc" column="to_desc" jdbcType="VARCHAR"/>
+            <result property="pchrNo" column="pchr_no" jdbcType="VARCHAR"/>
+            <result property="isLoad" column="is_load" jdbcType="VARCHAR"/>
+            <result property="loadStation" column="load_station" jdbcType="VARCHAR"/>
+            <result property="issueDept" column="issue_dept" jdbcType="VARCHAR"/>
+            <result property="issueEmpNo" column="issue_emp_no" jdbcType="VARCHAR"/>
+            <result property="issueDate" column="issue_date" jdbcType="VARCHAR"/>
+            <result property="isBack" column="is_back" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_list_no,trans_type,
+        carrier_type,lot_no,carrier_no,
+        seq_no,mtrl_no,mtrl_name,
+        from_code,from_desc,to_code,
+        to_desc,pchr_no,is_load,
+        load_station,issue_dept,issue_emp_no,
+        issue_date,is_back
+    </sql>
+</mapper>

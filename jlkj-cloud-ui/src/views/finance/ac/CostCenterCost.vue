@@ -149,6 +149,7 @@
           <el-table stripe
                     v-loading="loading"
                     :data="financeattritestList"
+                    height="67vh"
                     :key="financeattritestListKey"
                     :header-cell-style="{background:'#DCDCDC'}">
             <el-table-column label="属性名称"
@@ -373,7 +374,6 @@ export default {
   created () {
   },
   computed: {
-    ...mapGetters(["userInfo"])
   },
   methods: {
     // 取消按钮
@@ -434,14 +434,14 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.ruleForm.id != null) {
-            this.ruleForm.updateUser = this.userInfo.jobNumber
-            this.ruleForm.updateUserName = this.userInfo.userName
+            this.ruleForm.updateUser = '123456'
+            this.ruleForm.updateUserName = '姓名'
             this.lisetloading = false
             updateFinancetest(this.ruleForm).then(response => {
               this.pagedata.propertydata = this.financeattritestList;
-              this.pagedata.parentId = response.data.data[0].id
+              this.pagedata.parentId = response.data[0].id
               updateFinanceattri(this.pagedata)
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '修改成功'
@@ -452,15 +452,15 @@ export default {
               this.reset();
             })
           } else {
-            this.ruleForm.createUser = this.userInfo.jobNumber
-            this.ruleForm.createUserName = this.userInfo.userName
+            this.ruleForm.createUser = '123456'
+            this.ruleForm.createUserName = '姓名'
             this.lisetloading = false
             console.log(this.ruleForm);
             addFinancetest(this.ruleForm).then(response => {
               this.pagedata.propertydata = this.financeattritestList;
-              this.pagedata.parentId = response.data.data[0].id;
+              this.pagedata.parentId = response.data[0].id;
               addFinanceattri(this.pagedata)
-              if (response.data.data) {
+              if (response.data) {
                 this.$message({
                   type: 'success',
                   message: '新增成功'
@@ -485,7 +485,7 @@ export default {
     handleUpdate () {
       this.open = true;
       attributeQuery().then(response => {
-        this.financeattritestList = response.data.data;
+        this.financeattritestList = response.data;
       })
     },
     //属性添加查询
@@ -553,7 +553,7 @@ export default {
       this.visible = true
       this.determine = false;
       getFinancetest(costCenter, id).then(response => {
-        this.ruleForm = response.data.data
+        this.ruleForm = response.data
       })
       this.financeattritestList = []
       this.financeattritestListDialog = []
@@ -564,7 +564,7 @@ export default {
         this.financeattritestListDialog.push(dictType[i])
       }
       attributeQuery(id).then(response => {
-        let tempList = response.data.data
+        let tempList = response.data
         this.financeattritestList = []
         this.financeattritestListDialog = []
         for (let x = 0; x < dictType.length; x++) {
@@ -588,7 +588,7 @@ export default {
       this.UpdateVisible = true
       this.costCenterReadable = true
       getFinancetest(costCenter, id).then(response => {
-        this.ruleForm = response.data.data
+        this.ruleForm = response.data
       })
       this.financeattritestList = []
       this.financeattritestListDialog = []
@@ -599,8 +599,8 @@ export default {
         this.financeattritestListDialog.push(dictType[i])
       }
       attributeQuery(id).then(response => {
-        let tempList = response.data.data
-        this.id = response.data.data.id
+        let tempList = response.data
+        this.id = response.data.id
         this.financeattritestList = []
         this.financeattritestListDialog = []
         for (let x = 0; x < dictType.length; x++) {

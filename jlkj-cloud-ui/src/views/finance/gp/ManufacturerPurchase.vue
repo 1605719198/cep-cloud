@@ -353,7 +353,7 @@ export default {
       this.mppForm.manufacturerChineseName=manufacturerChineseName;
       this.visible = true
       queryMp(manufacturerId).then(response => {
-        this.mpForm = response.data.data
+        this.mpForm = response.data
       });
 
     },

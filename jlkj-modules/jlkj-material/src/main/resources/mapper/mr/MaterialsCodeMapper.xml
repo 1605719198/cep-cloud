@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsCode">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="categoryId" column="category_id" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="materialsCode" column="materials_code" jdbcType="VARCHAR"/>
+            <result property="measurementUnit" column="measurement_unit" jdbcType="VARCHAR"/>
+            <result property="deleteFlag" column="delete_flag" jdbcType="SMALLINT"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,category_id,materials_name,
+        materials_code,measurement_unit,delete_flag,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.material.mr.dto.materialscode.PageMaterialsCodeDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.category_id,
+            a.materials_name,
+            a.materials_code,
+            a.measurement_unit,
+            a.mtrlType,
+            a.delete_flag,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            b.category_name
+        from materials_mr_code a
+        INNER JOIN materials_mr_category b ON a.category_id = b.id
+        where a.delete_flag = 0
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getListBoxData" resultType="java.util.Map">
+        select
+            a.id,
+            a.materials_code,
+            a.materials_name
+        from materials_mr_code a
+        where a.delete_flag = 0
+        order by a.create_time
+    </select>
+
+    <select id="getListBoxByCataIdData" parameterType="com.jlkj.material.mr.dto.materialscode.ListMaterialsCodeDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.materials_code,
+            a.materials_name
+        from materials_mr_code a
+        where a.delete_flag = 0
+          and a.category_id = #{categoryId}
+        order by a.create_time
+    </select>
+
+    <select id="getMaterialsCodeListByTypeData" parameterType="com.jlkj.material.mr.dto.materialscode.ListMaterialsCodeByTypeDTO" resultType="com.jlkj.material.mr.vo.materialscode.ListMaterialsCodeByTypeVO">
+        select
+            a.id,
+            a.materials_name,
+            a.materials_code
+        from materials_mr_code a
+        where 1=1
+          and (#{mtrlType} = '' or a.mtrlType = #{mtrlType})
+    </select>
+</mapper>
+

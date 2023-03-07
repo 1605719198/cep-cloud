@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCokeSaleWriteOffRealMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsCokeSaleWriteOffReal">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planListNo" column="plan_list_no" jdbcType="VARCHAR"/>
+            <result property="carrierType" column="carrier_type" jdbcType="VARCHAR"/>
+            <result property="carrierNo" column="carrier_no" jdbcType="VARCHAR"/>
+            <result property="mtrlNo" column="mtrl_no" jdbcType="VARCHAR"/>
+            <result property="fromCode" column="from_code" jdbcType="VARCHAR"/>
+            <result property="toCode" column="to_code" jdbcType="VARCHAR"/>
+            <result property="toDesc" column="to_desc" jdbcType="VARCHAR"/>
+            <result property="pchrNo" column="pchr_no" jdbcType="VARCHAR"/>
+            <result property="isLoad" column="is_load" jdbcType="VARCHAR"/>
+            <result property="loadStation" column="load_station" jdbcType="VARCHAR"/>
+            <result property="issueDept" column="issue_dept" jdbcType="VARCHAR"/>
+            <result property="issueDeptName" column="issue_dept_name" jdbcType="VARCHAR"/>
+            <result property="issueEmpNo" column="issue_emp_no" jdbcType="VARCHAR"/>
+            <result property="issueEmpName" column="issue_emp_name" jdbcType="VARCHAR"/>
+            <result property="issueDate" column="issue_date" jdbcType="VARCHAR"/>
+            <result property="wgtListNo" column="wgt_list_no" jdbcType="VARCHAR"/>
+            <result property="netWgt" column="net_wgt" jdbcType="VARCHAR"/>
+            <result property="closeTime" column="close_time" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_list_no,carrier_type,
+        carrier_no,mtrl_no,from_code,
+        to_code,to_desc,pchr_no,
+        is_load,load_station,issue_dept,
+        issue_dept_name,issue_emp_no,issue_emp_name,
+        issue_date,wgt_list_no,net_wgt,
+        close_time
+    </sql>
+    <select id="getListPage" parameterType="com.jlkj.material.mr.dto.materialscokesalewriteoffreal.PageMaterialsCokeSaleWriteOffRealDto" resultType="java.util.Map">
+        SELECT * FROM materials_mr_coke_sale_write_off_real a
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and STR_TO_DATE(issue_date, '%Y%m%d') &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and STR_TO_DATE(issue_date, '%Y%m%d') &lt;= #{condition.endTime}
+            </if>
+            <if test="condition.carrierNo != null and condition.carrierNo != ''">
+                and carrier_no like concat('%',#{condition.carrierNo},'%')
+            </if>
+            <if test="condition.carrierType != null and condition.carrierType != ''">
+                and carrier_type = #{condition.carrierType}
+            </if>
+            <if test="condition.toDesc != null and condition.toDesc != ''">
+                and (
+                to_desc like concat('%',#{condition.toDesc},'%') or to_code like concat('%',#{condition.toDesc},'%')
+                )
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getHomeCokeOut" parameterType="com.jlkj.material.mr.dto.materialscokesalewriteoffreal.ListHomeCokeSaleWriteOffRealDTO" resultType="java.util.Map">
+        SELECT
+               query_date,
+               SUM(complete_pound_num)/1000 AS complete_pound_num,
+               SUM(net_wgt)/1000 AS net_wgt
+        FROM (
+            SELECT
+                   DATE_FORMAT(pound_date, '%Y-%m-%d') AS query_date,
+                   complete_pound_num,
+                   0 AS net_wgt
+            FROM logistics_wv_trans_actual_coke
+            WHERE compute_flag = -1
+                <if test="startDate != null and startDate != ''">
+                    and pound_date &gt;= #{startDate}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    and pound_date &lt;= #{endDate}
+                </if>
+            UNION ALL
+            SELECT
+                   DATE_FORMAT(STR_TO_DATE(issue_date, '%Y%m%d'), '%Y-%m-%d') AS issue_date,
+                   0,
+                   net_wgt
+            FROM materials_mr_coke_sale_write_off_real
+                <where>
+                    <if test="startDate != null and startDate != ''">
+                        and STR_TO_DATE(issue_date, '%Y%m%d') &gt;= #{startDate}
+                    </if>
+                    <if test="endDate != null and endDate != ''">
+                        and STR_TO_DATE(issue_date, '%Y%m%d') &lt;= #{endDate}
+                    </if>
+                </where>
+        ) a
+        GROUP BY query_date
+        ORDER BY query_date
+    </select>
+</mapper>
+

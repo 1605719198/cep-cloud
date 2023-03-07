@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsStorageMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsStorage">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planListNo" column="plan_list_no" jdbcType="VARCHAR"/>
+            <result property="lotNo" column="lot_no" jdbcType="VARCHAR"/>
+            <result property="carrierNo" column="carrier_no" jdbcType="VARCHAR"/>
+            <result property="mtrlNo" column="mtrl_no" jdbcType="VARCHAR"/>
+            <result property="mtrlName" column="mtrl_name" jdbcType="VARCHAR"/>
+            <result property="stgNo" column="stg_no" jdbcType="VARCHAR"/>
+            <result property="stgName" column="stg_name" jdbcType="VARCHAR"/>
+            <result property="toCode" column="to_code" jdbcType="VARCHAR"/>
+            <result property="toDesc" column="to_desc" jdbcType="VARCHAR"/>
+            <result property="grossWgt" column="gross_wgt" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_list_no,lot_no,
+        carrier_no,mtrl_no,mtrl_name,
+        stg_no,stg_name,to_code,
+        to_desc,gross_wgt,create_time
+    </sql>
+</mapper>

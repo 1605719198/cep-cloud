@@ -58,6 +58,7 @@
 
     <el-table v-loading="loading"
               :data="financetestList"
+              height="67vh"
               stripe>
       <el-table-column label="年度"
                        sortable
@@ -197,14 +198,14 @@ export default {
       this.loading = false;
 
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.queryParams.fiscalYearDate = new Date()
           this.financetestList = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.financetestList = response.data.data.list;
-          this.queryParams.fiscalYearDate = new Date(response.data.data.list[0].fiscalYear.substring(0, 4))
+          this.financetestList = response.data.list;
+          this.queryParams.fiscalYearDate = new Date(response.data.list[0].fiscalYear.substring(0, 4))
 
           this.financetestList = this.financetestList.map(item => {
             switch (item.ccType) {
@@ -218,7 +219,7 @@ export default {
             }
             return item;
           })
-          this.total = response.data.data.total;
+          this.total = response.data.total;
           this.loading = false;
         }
       });
@@ -254,14 +255,14 @@ export default {
         compId: 'J00'
       }
       listFinancetest(this.queryParams).then(response => {
-        if (response.data.data == null) {
+        if (response.data == null) {
           this.queryParams.fiscalYearDate = new Date()
           this.financetestList = []
           this.total = 0;
           this.costAccount = true
         } else {
-          this.financetestList = response.data.data.list;
-          this.queryParams.fiscalYearDate = new Date(response.data.data.list[0].fiscalYear.substring(0, 4))
+          this.financetestList = response.data.list;
+          this.queryParams.fiscalYearDate = new Date(response.data.list[0].fiscalYear.substring(0, 4))
           this.financetestList = this.financetestList.map(item => {
             switch (item.ccType) {
               case 'A': item.ccType = 'A-生产管理性成本中心'; break;
@@ -273,7 +274,7 @@ export default {
             }
             return item;
           })
-          this.total = response.data.data.total;
+          this.total = response.data.total;
           this.loading = false;
         }
 
@@ -325,7 +326,7 @@ export default {
       }).then(() => {//点击确定，执行then方法
         //调用删除的方法
         delFinancetest(id).then(response => {
-          if (response.data.code === "0") {
+          if (response.code === "0") {
             this.getList();
           }
         })

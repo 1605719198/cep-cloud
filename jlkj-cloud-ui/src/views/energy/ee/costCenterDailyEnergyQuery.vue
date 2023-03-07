@@ -6,20 +6,20 @@
              :rules="rules"
              :inline="true"
              label-width="102px">
-      <el-form-item label="计量日期" prop="eCountDateStart">
-        <el-date-picker style="width: 215px!important;"
+      <el-form-item label="计量日期" prop="eCountDateStart" style="margin-left: -34px;">
+        <el-date-picker style="width: 200px!important;"
                         v-model="query.eCountDateStart"
                         type="date"
                         placeholder="选择能源计量日期">
         </el-date-picker>
-        <span class="el-text"> *</span>
+
         ~
-        <el-date-picker style="width: 215px!important;"
+        <el-date-picker style="width: 200px!important;"
                         v-model="query.eCountDateEnd"
                         type="date"
                         placeholder="选择能源计量日期">
         </el-date-picker>
-        <span class="el-text"> *</span>
+
       </el-form-item>
 
       <el-form-item>
@@ -63,7 +63,7 @@
                                         type="date"
                                         placeholder="选择日期">
                         </el-date-picker>
-                        <span class="el-text"> *</span>
+
                       </el-form-item>
                       <div style="display: flex;margin-left: -21px;">
                         <div>~</div>
@@ -75,7 +75,7 @@
                                           type="date"
                                           placeholder="选择日期">
                           </el-date-picker>
-                          <span class="el-text"> *</span>
+
                         </el-form-item>
                       </div>
                     </el-col>
@@ -145,7 +145,7 @@
                                :value="item.value">
                     </el-option>
                   </el-select>
-                  <span class="el-text"> *</span>
+
                 </el-form-item>
               </el-col>
             </el-row>
@@ -166,8 +166,9 @@
       </el-drawer>
     </el-form>
 
-    <el-form style="margin:0px 20px 0px 20px ;">
+    <el-form style="margin:0px 20px 0px 0px ;">
       <el-table size="small"
+                height="67vh"
                 :data="tableData"
                 stripe
                 :default-sort="{prop: 'proConQty', order: 'descending'}">
@@ -415,23 +416,5 @@ export default {
 </script>
 
 <style scoped>
-.energy_main {
-  height: 86vh;
-  background-color: #fff;
-}
 
-/deep/ .el-form-item__label {
-  width: 120px;
-  text-align: left;
-  padding-left: 23px;
-}
-
-.el-text {
-  color: red;
-}
-
-/*下拉框最后一个显示不完全*/
-/deep/ .el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
 </style>

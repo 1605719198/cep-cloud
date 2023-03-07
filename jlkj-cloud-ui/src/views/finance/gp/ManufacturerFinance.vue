@@ -267,7 +267,7 @@ export default {
       this.fctForm.manufacturerChineseName=manufacturerChineseName;
       this.visible = true
       queryFc(manufacturerId).then(response => {
-        this.fcForm = response.data.data
+        this.fcForm = response.data
       });
 
     },

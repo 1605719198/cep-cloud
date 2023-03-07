@@ -43,7 +43,7 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "新增固液体能源代码对应料号维护资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增固液体能源代码对应料号维护资料")
     @PostMapping("/add")
-    public Object addEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token) {
+    public Object addEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO) {
         try {
             EnergyCodeFoMaterial energyCodeFoMaterial = new EnergyCodeFoMaterial();
             BeanUtils.copyProperties(energyCodeFoMaterialDTO, energyCodeFoMaterial);
@@ -87,7 +87,7 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "修改固液体能源代码对应料号维护资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改固液体能源代码对应料号维护资料")
     @PostMapping("/update")
-    public Object updateEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token) {
+    public Object updateEnergyCodeFoMaterial(@RequestBody EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO) {
         try {
             EnergyCodeFoMaterial energyCodeFoMaterial = new EnergyCodeFoMaterial();
             BeanUtils.copyProperties(energyCodeFoMaterialDTO, energyCodeFoMaterial);
@@ -163,7 +163,7 @@ public class EnergyCodeFoMaterialController {
     @Log(title = "删除固液体能源代码对应料号维护资料(mq)", businessType = BusinessType.DELETE)
     @Operation(summary = "删除固液体能源代码对应料号维护资料(mq)")
     @DeleteMapping("/deleteErp")
-    public Object deleteEnergyCode(@RequestParam String engyId, @RequestHeader("token") String token) {
+    public Object deleteEnergyCode(@RequestParam String engyId) {
         try {
             LambdaQueryWrapper<EnergyCodeFoMaterial> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(EnergyCodeFoMaterial::getEngyId, engyId);

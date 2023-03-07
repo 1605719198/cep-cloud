@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.energy.ee.constant.CommonConstant;
+import com.jlkj.common.core.constant.CommonConstant;
 import com.jlkj.energy.ee.dto.energyinoutlimit.DeleteEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.InsertEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.PageEnergyInOutLimitDTO;

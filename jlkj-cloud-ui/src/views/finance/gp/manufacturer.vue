@@ -33,7 +33,7 @@
 
 
     <el-table stripe v-loading="loading" :data="base1List" @selection-change="handleSelectionChange"
-              :default-sort="{ prop: 'date', order: 'descending' }">
+              :default-sort="{ prop: 'date', order: 'descending' }" height="67vh">
       <el-table-column type="selection"
                        width="55"
                        align="center" />
@@ -158,14 +158,14 @@ export default {
     getList () {
       queryAll(this.queryParams).then(response => {
         this.loading = false;
-        if (response.data == null) {
+        if (response == null) {
           this.base1List = []
           this.total = 0;
           this.costAccount = true
           this.loading = false;
         } else {
-          this.base1List = response.data.list;
-          this.total = response.data.total;
+          this.base1List = response.list;
+          this.total = response.total;
           this.loading = false;
         }
 

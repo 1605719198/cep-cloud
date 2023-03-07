@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form  :inline="true"  label-width="68px">
+    <el-form  :inline="true"  label-width="68px" v-show="showSearch">
       <el-form-item label="产线代码">
         <el-select v-model="query.millIdCodeStart"
                    clearable
@@ -56,10 +56,11 @@
                    :disabled="openIsDisabled"
                    @click="handleDelete">删除</el-button>
       </el-col>
-      <right-toolbar  @queryTable="getList"></right-toolbar>
+      <right-toolbar :showSearch.sync="showSearch"  @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table size="small"
+              height="67vh"
               :data="tableData"
               stripe
               style="margin: 0 0px 0 10px;width: auto;"
@@ -130,6 +131,8 @@ export default {
   name: "productionLineCostCenter",
   data () {
     return {
+      // 显示搜索条件
+      showSearch: true,
       addBox: false,
       editBox: false,
       dataEdit: {},

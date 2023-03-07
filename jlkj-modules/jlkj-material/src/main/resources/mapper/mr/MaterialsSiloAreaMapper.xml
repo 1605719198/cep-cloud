@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsSiloAreaMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.material.mr.domain.MaterialsSiloArea">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="siloId" column="silo_id" jdbcType="VARCHAR"/>
+            <result property="storageSpacesId" column="storage_spaces_id" jdbcType="VARCHAR"/>
+            <result property="startLocation" column="start_location" jdbcType="INTEGER"/>
+            <result property="endLocation" column="end_location" jdbcType="INTEGER"/>
+            <result property="colorValue" column="color_value" jdbcType="VARCHAR"/>
+            <result property="storageQuantity" column="storage_quantity" jdbcType="DECIMAL"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,silo_id,storage_spaces_id,
+        start_location,end_location,color_value,
+        storage_quantity,create_user_id,create_user_name,
+        create_time,modify_user_id,modify_user_name,
+        modify_time
+    </sql>
+
+    <select id="getListData" parameterType="com.jlkj.material.mr.dto.materialssiloarea.ListMaterialsSiloAreaDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.silo_id,
+            a.storage_spaces_id,
+            a.start_location,
+            a.end_location,
+            a.materials_id,
+            a.materials_name,
+            a.color_value,
+            a.storage_quantity,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            b.storage_spaces_name,
+            b.material_category_id
+        from materials_mr_silo_area a
+        INNER JOIN materials_mr_storage_spaces b ON a.storage_spaces_id = b.id
+        where a.silo_id = #{siloId} and (#{showZero} = 1 or (#{showZero} = 0 and a.start_location != a.end_location))
+        order by a.start_location
+    </select>
+
+</mapper>
+
