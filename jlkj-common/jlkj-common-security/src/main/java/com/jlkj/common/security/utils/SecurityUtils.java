@@ -114,4 +114,12 @@ public class SecurityUtils
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
+    /**
+     * 获取用户昵称
+     **/
+    public static String getNickName()
+    {
+            return getLoginUser().getSysUser().getNickName();
+    }
 }
