@@ -133,6 +133,12 @@ public class HumanresourceBaseInfoController {
     @Log(title = "删除选单数据", businessType = BusinessType.DELETE)
     public Object deleteBaseInfo(@RequestParam String uuid) {
         try {
+            LambdaQueryWrapper<HumanresourceBaseinfo> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(HumanresourceBaseinfo::getParentId, uuid);
+            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(wrapper);
+            if (!list.isEmpty()) {
+                return AjaxResult.error("存在子类选单资料，不可删除资料");
+            }
             LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(HumanresourceBaseinfo::getUuid, uuid);
             boolean delete = humanresourceBaseinfoService.remove(queryWrapper);
