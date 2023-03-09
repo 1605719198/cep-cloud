@@ -8,14 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.domain.R;
@@ -77,6 +70,27 @@ public class SysUserController extends BaseController
         startPage();
         List<SysUser> list = userService.selectUserList(user);
         return getDataTable(list);
+    }
+    /**
+     * 获取用户列表
+     */
+    @InnerAuth
+    @PostMapping("/selectUserList")
+    public R<List<SysUser>> selectUserList(@RequestBody SysUser user)
+    {
+        List<SysUser> list = userService.selectUserList(user);
+        return R.ok(list);
+    }
+
+    /**
+     * 获取用户列表
+     */
+    @InnerAuth
+    @GetMapping("/selectUserById/{userId}")
+    public R<SysUser> selectUserById(@PathVariable("userId") Long userId)
+    {
+        SysUser user = userService.selectUserById(userId);
+        return R.ok(user);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)

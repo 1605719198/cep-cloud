@@ -2,16 +2,12 @@ package com.jlkj.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.common.core.domain.R;
+import com.jlkj.common.security.annotation.InnerAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
@@ -31,7 +27,7 @@ import com.jlkj.system.service.ISysUserService;
 
 /**
  * 角色信息
- * 
+ *
  * @author jlkj
  */
 @RestController
@@ -54,6 +50,30 @@ public class SysRoleController extends BaseController
         startPage();
         List<SysRole> list = roleService.selectRoleList(role);
         return getDataTable(list);
+    }
+
+    /**
+     * 获取角色列表
+     * @param role
+     * @return
+     */
+    @InnerAuth
+    @PostMapping("/selectRoleList")
+    public R<List<SysRole>> selectRoleList(@RequestBody  SysRole role) {
+        List<SysRole> list = roleService.selectRoleList(role);
+        return R.ok(list);
+    }
+
+    /**
+     * 根据角色id获取角色
+     * @param roleId
+     * @return
+     */
+    @InnerAuth
+    @GetMapping("/selectRoleById/{roleId}")
+    public R<SysRole> selectRoleById(@PathVariable("roleId") Long roleId) {
+        SysRole role = roleService.selectRoleById(roleId);
+        return R.ok(role);
     }
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)

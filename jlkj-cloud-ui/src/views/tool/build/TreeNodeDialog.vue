@@ -72,6 +72,9 @@
 </template>
 <script>
 import { isNumberStr } from '@/utils/index'
+import { getTreeNodeId, saveTreeNodeId } from '@/utils/db'
+
+const id = getTreeNodeId()
 
 export default {
   components: {},
@@ -118,6 +121,9 @@ export default {
     // eslint-disable-next-line func-names
     'formData.value': function (val) {
       this.dataType = isNumberStr(val) ? 'number' : 'string'
+    },
+    id(val) {
+      saveTreeNodeId(val)
     }
   },
   created() {},
