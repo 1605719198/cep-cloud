@@ -40,11 +40,19 @@
         <jedis.version>4.1.1</jedis.version>
         <redisson.version>3.16.8</redisson.version>
         <hutool.version>5.7.20</hutool.version>
+        <flowable.version>6.7.2</flowable.version>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+            <!-- flowable -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>

@@ -24,6 +24,7 @@
         <module>jlkj-sales</module>
         <module>jlkj-finance</module>
         <module>jlkj-rabbit</module>
+        <module>jlkj-flowable</module>
     </modules>
 
     <artifactId>jlkj-modules</artifactId>
