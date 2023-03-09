@@ -1,17 +1,15 @@
 package com.jlkj.system.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.ServiceNameConstants;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.factory.RemoteUserFallbackFactory;
 import com.jlkj.system.api.model.LoginUser;
+
+import java.util.List;
 
 /**
  * 用户服务
@@ -40,4 +38,22 @@ public interface RemoteUserService
      */
     @PostMapping("/user/register")
     public R<Boolean> registerUserInfo(@RequestBody SysUser sysUser, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 获取用户列表
+     * @param user
+     * @param source
+     * @return
+     */
+    @PostMapping("/user/selectUserList")
+    public R<List<SysUser>> selectUserList(@RequestBody SysUser user, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 根据用户id获取用户信息
+     * @param userId
+     * @param source
+     * @return
+     */
+    @GetMapping("/user/selectUserById/{userId}")
+    public R<SysUser> selectUserById(@PathVariable("userId") Long userId, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

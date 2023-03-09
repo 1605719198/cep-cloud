@@ -9,6 +9,8 @@ import com.jlkj.system.api.RemoteUserService;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 
+import java.util.List;
+
 /**
  * 用户服务降级处理
  *
@@ -35,6 +37,16 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
             public R<Boolean> registerUserInfo(SysUser sysUser, String source)
             {
                 return R.fail("注册用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<List<SysUser>> selectUserList(SysUser user, String source) {
+                return R.fail("获取用户失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<SysUser> selectUserById(Long userId, String source) {
+                return R.fail("根据id获取用户失败:" + throwable.getMessage());
             }
         };
     }

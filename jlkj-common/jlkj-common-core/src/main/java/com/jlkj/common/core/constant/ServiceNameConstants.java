@@ -21,4 +21,9 @@ public class ServiceNameConstants
      * 文件服务的serviceid
      */
     public static final String FILE_SERVICE = "jlkj-file";
+
+    /**
+     * 工作流服务的serviceid
+     */
+    public static final String FLOWABLE_SERVICE = "jlkj-flowable";
 }
