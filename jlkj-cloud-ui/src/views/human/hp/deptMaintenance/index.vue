@@ -66,16 +66,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -599,6 +589,7 @@ export default {
       this.form.versionNo=1;
       this.form.ifCompany = 0;
       this.form.isNew=1;
+      this.form.status="0";
       this.open = true;
       this.title = "添加部门资料维护";
     },

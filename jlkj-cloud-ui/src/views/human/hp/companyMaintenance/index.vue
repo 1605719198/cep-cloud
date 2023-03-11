@@ -66,16 +66,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -226,13 +216,14 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="生效日期" prop="effectDate">
-              <el-input maxlength="20" v-model="form.effectDate" placeholder="请输入生效日期" type="number" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row :gutter="20">-->
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="生效日期" prop="effectDate">-->
+<!--              <el-input maxlength="20" v-model="form.effectDate" placeholder="请输入生效日期" type="number" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+
+<!--        </el-row>-->
 
         <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
           <el-input maxlength="20" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
@@ -590,6 +581,8 @@ export default {
       this.form.versionNo=1;
       this.form.ifCompany = 1;
       this.form.isNew=1;
+      this.form.status="0";
+      this.form.ifDisplay="1";
       this.open = true;
       this.title = "添加公司资料维护";
     },
