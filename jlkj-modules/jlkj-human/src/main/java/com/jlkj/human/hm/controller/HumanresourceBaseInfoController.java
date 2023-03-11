@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.HumanresourceBaseinfo;
 import com.jlkj.human.hm.dto.HumanresourceBaseInfoDTO;
 import com.jlkj.human.hm.service.impl.HumanresourceBaseinfoServiceImpl;
@@ -85,6 +86,7 @@ public class HumanresourceBaseInfoController {
             String dicName = humanresourceBaseinfo.getDicName();
             String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             humanresourceBaseinfo.setUpdateDate(format);
+            humanresourceBaseinfo.setUpdateEmp(SecurityUtils.getNickName());
             LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(HumanresourceBaseinfo::getDicNo, dicNo)
                     .eq(HumanresourceBaseinfo::getDicName, dicName);

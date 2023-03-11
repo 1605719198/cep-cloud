@@ -185,6 +185,8 @@ export default {
         //调用删除的方法
         deleteBaseInfo(row.uuid).then(res => {
           this.onLoad();
+          this.getBaseInfoTree()
+          this.tableData = []
           this.$message({ type: 'success', message: res.msg });
         }, error => {
           window.console.log(error);
