@@ -38,7 +38,7 @@
                 <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp" />
                 <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
                 <el-table-column label="操作" align="center" min-width="160px">
-                  <template slot-scope="scope">
+                  <template v-slot="scope">
                     <el-button size="mini" type="primary" plain icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
                       修改
                     </el-button>
