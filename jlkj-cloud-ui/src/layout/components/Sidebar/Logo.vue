@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
+import logoImg from '@/assets/logo/jllogo.png'
 import variables from '@/assets/styles/variables.scss'
 
 export default {
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '管理系统',
+      title: '焦电集控平台',
       logo: logoImg
     }
   }
