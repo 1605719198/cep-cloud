@@ -49,7 +49,7 @@
 <script>
 import { updateMaterialUnloadingPerformance } from "@/api/material/mr/unloadCoal/index";
 import { listMaterialsStorageSpacesBox } from "@/api/material/mr/parameter/storeLocation"
-import { mapGetters } from "vuex";
+
 export default {
   props: {
     data: {

@@ -50,7 +50,7 @@
 import { saveStorageSpaces } from "@/api/material/mr/parameter/storeLocation";
 import { listSilosBox } from "@/api/material/mr/parameter/stockMaintain";
 import { listMaterialsBoxM } from "@/api/material/mr/parameter/materialCode";
-import { mapGetters } from "vuex";
+
 export default {
   data () {
     return {

@@ -106,7 +106,6 @@ public class MaterialsCategoryController {
     public Object getListBoxData() {
         return materialsCategoryService.getListBoxData();
     }
-
     @Operation(summary = "新增-物料类别维护",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")

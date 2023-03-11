@@ -259,7 +259,7 @@ export default {
 .el-card__body {
   padding: 10px 20px 20px 10px;
 }
-.el-pagination {
+.pagination {
   white-space: nowrap;
   padding: 25px 0px 20px 0px;
   color: #303133;

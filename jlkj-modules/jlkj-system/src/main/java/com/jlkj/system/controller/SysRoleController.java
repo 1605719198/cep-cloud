@@ -257,4 +257,17 @@ public class SysRoleController extends BaseController
         ajax.put("depts", deptService.selectDeptTreeList(new SysDept()));
         return ajax;
     }
+    /**
+     * 查询用户列表通用弹窗
+     */
+    /**
+     * 查询用户列表通用弹窗
+     */
+    @GetMapping("/authUser/getAllUserList")
+    public TableDataInfo getAllUserList(SysUser user)
+    {
+        startPage();
+        List<SysUser> list = userService.selectAllUserList(user);
+        return getDataTable(list);
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Date;
  * @author sudeyou
  * @since 2022-11-02 09:46:29
  */
-@TableName(value ="sys_dict_data2")
+@TableName(value ="sys_dict_data")
 @Data
 public class SysDictData implements Serializable {
     /**

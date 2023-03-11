@@ -71,7 +71,7 @@
 
 <script>
 import { adjust } from "@/api/material/mr/coalYardInventory/index";
-import { mapGetters } from "vuex";
+
 export default {
   props: {
     data: {

@@ -80,7 +80,8 @@
 
     <el-table v-loading="table.loading" :data="tableData" @sort-change="handleSort" height="67vh">
       <el-table-column label="序号"
-                       width="55"
+                       sortable
+                       width="65"
                        type="index"
                        align="left"/>
       <el-table-column label="检斤计划编号"
@@ -400,7 +401,7 @@
     padding: 10px 20px 20px 10px;
   }
 
-  .el-pagination {
+  .pagination {
     white-space: nowrap;
     padding: 25px 0px 20px 0px;
     color: #303133;

@@ -85,6 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${params.dataScope}
 	</select>
 
+	<select id="selectAvatorByUserName" parameterType="String" resultMap="SysUserResult">
+		select * from sys_user where 1=1
+								 and user_name = #{userName}
+								 and del_flag = '0'
+	</select>
+
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
 	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
 	    from sys_user u
@@ -115,6 +121,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="phonenumber != null and phonenumber != ''">
 			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<if test="nickName != null and nickName != ''">
+			AND u.nick_name like concat('%', #{nickName}, '%')
+		</if>
+		<if test="deptId != null and deptId != ''">
+			AND u.dept_id like concat('%', #{deptId}, '%')
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}

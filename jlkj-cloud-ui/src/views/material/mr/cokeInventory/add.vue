@@ -65,7 +65,7 @@
 
 <script>
 import { listMaterialsCategoryBox } from "@/api/material/mr/parameter/materialType";
-import { mapGetters } from "vuex";
+
 import { listMaterialsBoxJ } from "@/api/material/mr/parameter/materialCode"
 import { saveMaterials } from "@/api/material/mr/cokeInventory/index";
 export default {
@@ -115,14 +115,12 @@ export default {
                           this.options.push(i)
                       }
                   })
-                  // console.log(this.options)
               }, error => {
                   this.table.loading = false;
                   window.console.log(error);
               });
 
           listMaterialsBoxJ().then((res) => {
-          // console.log(res.data,"listMaterialsBoxJ")
               let options = []
               res.data.forEach(item => {
                   let i = {

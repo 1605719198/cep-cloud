@@ -54,7 +54,7 @@
 <script>
 import { saveMaterials } from "@/api/material/mr/parameter/materialCode";
 import { listMaterialsCategoryBox } from "@/api/material/mr/parameter/materialType";
-import { mapGetters } from "vuex";
+
 export default {
   data () {
     return {

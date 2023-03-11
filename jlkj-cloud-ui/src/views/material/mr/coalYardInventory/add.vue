@@ -94,7 +94,7 @@
 import { listMaterialsCategoryBox } from "@/api/material/mr/parameter/materialType";
 import { listMaterialsBoxM } from "@/api/material/mr/parameter/materialCode"
 import { addMaterialsCoalStock } from "@/api/material/mr/coalYardInventory/index";
-import { mapGetters } from "vuex";
+
 export default {
   props: ['storageSpacesOptions'],
   data () {

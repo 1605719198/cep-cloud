@@ -34,7 +34,6 @@ public class SysDeptController extends BaseController
 {
     @Autowired
     private ISysDeptService deptService;
-
     /**
      * 获取部门列表
      */
@@ -45,7 +44,6 @@ public class SysDeptController extends BaseController
         List<SysDept> depts = deptService.selectDeptList(dept);
         return success(depts);
     }
-
     /**
      * 查询部门列表（排除节点）
      */
@@ -57,7 +55,6 @@ public class SysDeptController extends BaseController
         depts.removeIf(d -> d.getDeptId().intValue() == deptId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
         return success(depts);
     }
-
     /**
      * 根据部门编号获取详细信息
      */
@@ -68,7 +65,6 @@ public class SysDeptController extends BaseController
         deptService.checkDeptDataScope(deptId);
         return success(deptService.selectDeptById(deptId));
     }
-
     /**
      * 新增部门
      */
@@ -129,5 +125,27 @@ public class SysDeptController extends BaseController
         }
         deptService.checkDeptDataScope(deptId);
         return toAjax(deptService.deleteDeptById(deptId));
+    }
+    /**
+     * 获取部门下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public AjaxResult treeselect(SysDept dept)
+    {
+        List<SysDept> depts = deptService.selectDeptList(dept);
+        return AjaxResult.success(deptService.buildDeptTreeSelect(depts));
+    }
+
+    /**
+     * 加载对应角色部门列表树
+     */
+    @GetMapping(value = "/roleDeptTreeselect/{roleId}")
+    public AjaxResult roleDeptTreeselect(@PathVariable("roleId") Long roleId)
+    {
+        List<SysDept> depts = deptService.selectDeptList(new SysDept());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
+        ajax.put("depts", deptService.buildDeptTreeSelect(depts));
+        return ajax;
     }
 }
