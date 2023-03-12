@@ -195,7 +195,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="电话" prop="phone">
-              <el-input maxlength="11" v-model="form.phone" placeholder="请输入电话" />
+              <el-input maxlength="11" v-model="form.phone" placeholder="请输入电话" type="number" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -626,12 +626,14 @@ export default {
                 this.$modal.msgSuccess("修改成功");
                 this.open = false;
                 this.getList();
+                this.getTreeselect();
               });
             } else {
               addDeptmaintenance(this.form).then(response => {
                 this.$modal.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();
+                this.getTreeselect();
               });
             }
         }
@@ -645,6 +647,7 @@ export default {
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
+        this.getTreeselect();
       }).catch(() => {});
     },
   }
