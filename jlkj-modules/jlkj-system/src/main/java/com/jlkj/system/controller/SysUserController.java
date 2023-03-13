@@ -205,6 +205,14 @@ public class SysUserController extends BaseController
         }
         return ajax;
     }
+    /**
+     * 根据用户工号查询数据
+     */
+    @GetMapping("/getAvatorByUserName/{userName}")
+    public AjaxResult getAvatorByUserName(@PathVariable String userName)
+    {
+        return AjaxResult.success(userService.getAvatorByUserName(userName));
+    }
 
     /**
      * 新增用户
@@ -333,6 +341,7 @@ public class SysUserController extends BaseController
         return success();
     }
 
+
     /**
      * 获取部门树列表
      */
@@ -343,3 +352,4 @@ public class SysUserController extends BaseController
         return success(deptService.selectDeptTreeList(dept));
     }
 }
+

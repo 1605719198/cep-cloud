@@ -108,7 +108,7 @@
       </el-table>
       <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
            class="avue-crud__pagination">
-        <el-pagination v-show="page.total > 0"
+        <pagination v-show="page.total > 0"
                        background
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
@@ -117,7 +117,7 @@
                        :page-sizes="[20, 50, 100, 200]"
                        :page-size="page.size"
                        :total="page.total">
-        </el-pagination>
+        </pagination>
       </div>
     </div>
     <div v-if="dialog.visible">
@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+
 import { listStorageSpaces, deleteSilos } from "@/api/material/mr/parameter/storeLocation";
 import { listSilosBox } from "@/api/material/mr/parameter/stockMaintain";
 import Add from "./add";

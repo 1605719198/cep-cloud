@@ -243,7 +243,7 @@ export default {
 ::v-deep.el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;
 }
-.el-pagination {
+.pagination {
   white-space: nowrap;
   padding: 25px 0px 20px 0px;
   color: #303133;

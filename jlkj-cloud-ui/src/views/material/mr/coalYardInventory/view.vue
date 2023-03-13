@@ -31,7 +31,7 @@
 
 <script>
 // import { updateMaterials } from "@/api/material/mr/parameter/materialCode";
-import { mapGetters } from "vuex";
+
 import OnCoal from "./onCoal"
 import Unload from "./unload"
 import Adjustment from "./adjustment"

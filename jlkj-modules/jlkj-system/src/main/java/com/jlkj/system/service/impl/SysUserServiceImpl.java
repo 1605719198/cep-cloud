@@ -75,6 +75,16 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 根据用户工号获取数据
+     * @param userName
+     * @return
+     */
+    @Override
+    public SysUser getAvatorByUserName(String userName) {
+        return userMapper.selectAvatorByUserName(userName);
+    }
+
+    /**
      * 根据条件分页查询已分配用户角色列表
      *
      * @param user 用户信息
@@ -192,6 +202,15 @@ public class SysUserServiceImpl implements ISysUserService
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
+    }
+    /**
+     * 查询用户列表通用弹窗
+     * @param user
+     * @return
+     */
+    @Override
+    public List<SysUser> selectAllUserList(SysUser user) {
+        return userMapper.selectUnallocatedList(user);
     }
 
     /**

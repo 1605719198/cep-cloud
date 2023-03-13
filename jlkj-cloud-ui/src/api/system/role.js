@@ -117,3 +117,12 @@ export function deptTreeSelect(roleId) {
     method: 'get'
   })
 }
+
+// 查询用户列表通用弹窗
+export function getAllUserList(query) {
+  return request({
+    url: '/system/role/authUser/getAllUserList',
+    method: 'get',
+    params: query
+  })
+}

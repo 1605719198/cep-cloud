@@ -20,6 +20,13 @@ public interface SysUserMapper
     public List<SysUser> selectUserList(SysUser sysUser);
 
     /**
+     * 根据用户姓名获取信息
+     * @param userName
+     * @return
+     */
+    SysUser selectAvatorByUserName(String userName);
+
+    /**
      * 根据条件分页查询已配用户角色列表
      *
      * @param user 用户信息

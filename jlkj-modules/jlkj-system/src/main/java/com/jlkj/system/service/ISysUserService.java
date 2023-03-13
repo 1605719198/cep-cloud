@@ -203,4 +203,19 @@ public interface ISysUserService
      * @return 结果
      */
     public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
+    /**
+     * 根据用户工号获取用户数据
+     * @param userName
+     * @return
+     */
+    SysUser getAvatorByUserName(String userName);
+
+    /**
+     * 查询用户列表通用弹窗
+     * @param user
+     * @return
+     */
+    List<SysUser> selectAllUserList(SysUser user);
+
+
 }

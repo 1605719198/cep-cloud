@@ -9,7 +9,13 @@ export function listUser(query) {
     params: query
   })
 }
-
+// 查询用户详细
+export function getAvatorByUserName(userName) {
+  return request({
+    url: '/system/user/getAvatorByUserName/' + userName,
+    method: 'get'
+  })
+}
 // 查询用户详细
 export function getUser(userId) {
   return request({

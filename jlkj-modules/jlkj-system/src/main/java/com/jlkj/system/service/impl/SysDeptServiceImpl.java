@@ -61,6 +61,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         return buildDeptTreeSelect(depts);
     }
 
+
     /**
      * 构建前端所需要树结构
      * 

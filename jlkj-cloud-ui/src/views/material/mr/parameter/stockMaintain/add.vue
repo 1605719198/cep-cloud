@@ -38,7 +38,7 @@
 
 <script>
 import { saveSilo } from "@/api/material/mr/parameter/stockMaintain";
-import { mapGetters } from "vuex";
+
 export default {
   data () {
     return {

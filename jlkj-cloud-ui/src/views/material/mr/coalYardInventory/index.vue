@@ -424,7 +424,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-pagination {
+.pagination {
   white-space: nowrap;
   padding: 25px 0px 20px 0px;
   color: #303133;

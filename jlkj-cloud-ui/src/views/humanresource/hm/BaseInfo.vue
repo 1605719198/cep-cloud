@@ -34,7 +34,11 @@
               <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
                 <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo" />
                 <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName" />
-                <el-table-column label="状态" minWidth="150" align="center" prop="status" />
+                <el-table-column label="状态" minWidth="150" align="center" prop="status">
+                  <template slot-scope="scope">
+                    <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+                  </template>
+                </el-table-column>
                 <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp" />
                 <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
                 <el-table-column label="操作" align="center" min-width="160px">
@@ -56,7 +60,7 @@
                                @current-change="handleCurrentChange"
                                layout="total, sizes, prev, pager, next, jumper"
                                :current-page="queryParams.pageNum"
-                               :page-sizes="[20, 50, 100, 200]"
+                               :page-sizes="[10, 20, 30, 50]"
                                :page-size="queryParams.pageSize"
                                :total="queryParams.total">
                 </el-pagination>
@@ -94,6 +98,7 @@ import { baseInfoTree,getChildrenList,deleteBaseInfo } from "@/api/human/hm/base
 import Update from "./Update.vue"
 export default {
   name: "BaseInfo",
+  dicts: ['sys_normal_disable'],
   components: {
     Update
   },
@@ -168,6 +173,7 @@ export default {
       this.dialog.type = type
       this.dialog.title = '新增选单资料'
       this.dialog.data = {};
+      this.dialog.data.status = "0";
       this.dialog.visible = true;
     },
     //修改
