@@ -41,5 +41,13 @@ export function deleteBaseInfo(uuid) {
     url: `/human/baseInfo/delete?uuid=${uuid}` ,
     method: 'delete'
   })
+}
 
+//获取用户管理专业下拉选单
+export function getLastDegreeMajor(data) {
+  return request({
+    url: '/human/baseInfo/getLastDegreeMajor',
+    method: 'get',
+    params: data
+  })
 }

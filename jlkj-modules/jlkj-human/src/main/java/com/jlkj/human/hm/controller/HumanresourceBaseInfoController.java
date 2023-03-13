@@ -149,4 +149,22 @@ public class HumanresourceBaseInfoController {
             return AjaxResult.error();
         }
     }
+
+    /**
+     * 获取专业下拉选单列表
+     */
+    @Log(title = "获取专业下拉选单列表",businessType = BusinessType.OTHER)
+    @Operation(summary = "获取专业下拉选单列表")
+    @GetMapping("/getLastDegreeMajor")
+    public Object getLastDegreeMajor(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+        try {
+            String uuid = humanresourceBaseInfoDTO.getUuid();
+            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(HumanresourceBaseinfo::getParentId, uuid);
+            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapper);
+            return AjaxResult.success("查询成功！", list);
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
 }
