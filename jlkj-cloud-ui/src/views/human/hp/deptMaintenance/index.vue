@@ -365,6 +365,10 @@ export default {
         pageSize: 100,
         deptId: null,
       },
+      queryParams3:{
+        compId: null,
+        ifCompany:0,
+      },
       currentNodeId: '',
       // 表单参数
       form: {},
@@ -411,12 +415,14 @@ export default {
       this.$refs.tree.filter(val);
       this.queryParams.compId = val;
       this.queryParams.deptId = null;
+      this.queryParams3.compId =val;
       if(val){
         this.treeandtable=true
       }else{
         this.treeandtable=false
       }
       this.getList();
+      this.getTreeselect();
     }
   },
   created() {
@@ -464,7 +470,7 @@ export default {
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
-      treeselect().then(response => {
+      treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
         this.expandedKeys.push(this.$store.state.user.deptId);
       });
@@ -489,9 +495,8 @@ export default {
     },
     // 筛选节点
     filterNode(value, data) {
-      if (!value) return true;
+      return true;
       // this.collapseAll(this.deptOptions)
-      return data.label2.indexOf(value) != -1;
     },
     //折叠节点
     collapseAll(data) {

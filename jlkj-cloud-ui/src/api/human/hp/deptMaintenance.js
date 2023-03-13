@@ -43,9 +43,11 @@ export function delDeptmaintenance(deptId) {
   })
 }
 //获取树形选择器
-export function treeselect() {
+export function treeselect(query) {
   return request({
     url: '/human/deptMaintenance/treeselect',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
+

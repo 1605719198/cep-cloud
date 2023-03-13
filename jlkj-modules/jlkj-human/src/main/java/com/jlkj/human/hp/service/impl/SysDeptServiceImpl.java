@@ -1,24 +1,21 @@
 package com.jlkj.human.hp.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.domain.vo.TreeSelect;
+import com.jlkj.human.hp.mapper.SysDeptMapper;
+import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
+import com.jlkj.human.hp.service.ISysDeptService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.alibaba.fastjson.JSON;
-import com.jlkj.common.core.constant.UserConstants;
-import com.jlkj.common.core.exception.ServiceException;
-import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.human.hp.domain.SysDeptVersion;
-import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.jlkj.human.hp.mapper.SysDeptMapper;
-import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.service.ISysDeptService;
-import com.jlkj.human.hp.domain.vo.TreeSelect;
 /**
  * 部门资料维护Service业务层处理
  *

@@ -1,7 +1,8 @@
 package com.jlkj.human.hp.mapper;
 
-import java.util.List;
 import com.jlkj.human.hp.domain.SysDept;
+
+import java.util.List;
 
 /**
  * 部门资料维护Mapper接口

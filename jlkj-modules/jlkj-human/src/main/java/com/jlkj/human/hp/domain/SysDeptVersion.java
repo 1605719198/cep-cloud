@@ -1,9 +1,8 @@
 package com.jlkj.human.hp.domain;
 
+import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
 
 /**
  * 部门资料变更版本对象 sys_dept_version

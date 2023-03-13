@@ -352,6 +352,9 @@ export default {
         pageSize: 100,
         deptId: null,
       },
+      queryParams3:{
+        ifCompany:1,
+      },
       currentNodeId: '',
       // 表单参数
       form: {},
@@ -447,7 +450,7 @@ export default {
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
-      treeselect().then(response => {
+      treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
         this.expandedKeys.push(this.$store.state.user.deptId);
       });

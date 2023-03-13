@@ -1,12 +1,13 @@
 package com.jlkj.human.hp.service.impl;
 
-import java.util.List;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
+import com.jlkj.human.hp.service.ISysDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
-import com.jlkj.human.hp.domain.SysDeptVersion;
-import com.jlkj.human.hp.service.ISysDeptVersionService;
+
+import java.util.List;
 
 /**
  * 部门资料变更版本Service业务层处理

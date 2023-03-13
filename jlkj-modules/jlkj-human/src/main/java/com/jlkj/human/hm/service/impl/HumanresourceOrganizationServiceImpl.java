@@ -44,7 +44,7 @@ public class HumanresourceOrganizationServiceImpl extends ServiceImpl<Humanresou
     private HumanresourceOrganizationMapper humanresourceOrganizationMapper;
     @Autowired
     private IHumanresourcePerorgTreeService humanresourcePerorgTreeService;
-    @Autowired
+    @Autowired (required = false)
     JedisPool jedisPool;
 
     /**
