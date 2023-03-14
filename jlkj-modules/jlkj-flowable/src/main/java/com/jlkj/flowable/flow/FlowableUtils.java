@@ -1,16 +1,17 @@
 package com.jlkj.flowable.flow;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.jlkj.common.core.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.bpmn.model.*;
 import org.flowable.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
 import org.flowable.engine.impl.bpmn.behavior.SequentialMultiInstanceBehavior;
-import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 
 import java.util.*;
 
 /**
- * @author xin
+ * @author XuanXuan
  * @date 2021-04-03 23:57
  */
 @Slf4j
@@ -129,7 +130,7 @@ public class FlowableUtils {
 
     /**
      * 根据正在运行的任务节点，迭代获取子级任务节点列表，向后找
-     * @param source 起始节点(退回节点)
+     * @param source 起始节点
      * @param runTaskKeyList 正在运行的任务 Key，用于校验任务节点是否是正在运行的节点
      * @param hasSequenceFlow 已经经过的连线的 ID，用于判断线路是否重复
      * @param userTaskList 需要撤回的用户任务列表
@@ -140,7 +141,7 @@ public class FlowableUtils {
         userTaskList = userTaskList == null ? new ArrayList<>() : userTaskList;
 
         // 如果该节点为开始节点，且存在上级子节点，则顺着上级子节点继续迭代
-        if (source instanceof EndEvent && source.getSubProcess() != null) {
+        if (source instanceof StartEvent && source.getSubProcess() != null) {
             userTaskList = iteratorFindChildUserTasks(source.getSubProcess(), runTaskKeyList, hasSequenceFlow, userTaskList);
         }
 
@@ -323,7 +324,7 @@ public class FlowableUtils {
      */
     public static Boolean dirtyTargetInChildProcess(FlowElement source, Set<String> hasSequenceFlow, List<String> targets, Boolean inChildProcess) {
         hasSequenceFlow = hasSequenceFlow == null ? new HashSet<>() : hasSequenceFlow;
-        inChildProcess = inChildProcess != null && inChildProcess;
+        inChildProcess = inChildProcess == null ? false : inChildProcess;
 
         // 根据类型，获取出口连线
         List<SequenceFlow> sequenceFlows = getElementOutgoingFlows(source);
@@ -363,7 +364,7 @@ public class FlowableUtils {
      * @return
      */
     public static Boolean iteratorCheckSequentialReferTarget(FlowElement source, String targetKsy, Set<String> hasSequenceFlow, Boolean isSequential) {
-        isSequential = isSequential == null || isSequential;
+        isSequential = isSequential == null ? true : isSequential;
         hasSequenceFlow = hasSequenceFlow == null ? new HashSet<>() : hasSequenceFlow;
 
         // 如果该节点为开始节点，且存在上级子节点，则顺着上级子节点继续迭代
@@ -384,7 +385,7 @@ public class FlowableUtils {
                 // 添加已经走过的连线
                 hasSequenceFlow.add(sequenceFlow.getId());
                 // 如果目标节点已被判断为并行，后面都不需要执行，直接返回
-                if (!isSequential) {
+                if (isSequential == false) {
                     break;
                 }
                 // 这条线路存在目标节点，这条线路完成，进入下个线路
@@ -464,7 +465,7 @@ public class FlowableUtils {
         });
         // 循环放入栈，栈 LIFO：后进先出
         Stack<HistoricTaskInstance> stack = new Stack<>();
-        historicTaskInstanceList.forEach(stack::push);
+        historicTaskInstanceList.forEach(item -> stack.push(item));
         // 清洗后的历史任务实例
         List<String> lastHistoricTaskInstanceList = new ArrayList<>();
         // 网关存在可能只走了部分分支情况，且还存在跳转废弃数据以及其他分支数据的干扰，因此需要对历史节点数据进行清洗
@@ -492,14 +493,14 @@ public class FlowableUtils {
             }
             // 删除原因不为空，说明从这条数据开始回跳或者回退的
             // MI_END：会签完成后，其他未签到节点的删除原因，不在处理范围内
-            if (stack.peek().getDeleteReason() != null && !"MI_END".equals(stack.peek().getDeleteReason())) {
+            if (stack.peek().getDeleteReason() != null && !stack.peek().getDeleteReason().equals("MI_END")) {
                 // 可以理解为脏线路起点
                 String dirtyPoint = "";
-                if (stack.peek().getDeleteReason().contains("Change activity to ")) {
+                if (stack.peek().getDeleteReason().indexOf("Change activity to ") >= 0) {
                     dirtyPoint = stack.peek().getDeleteReason().replace("Change activity to ", "");
                 }
                 // 会签回退删除原因有点不同
-                if (stack.peek().getDeleteReason().contains("Change parent activity to ")) {
+                if (stack.peek().getDeleteReason().indexOf("Change parent activity to ") >= 0) {
                     dirtyPoint = stack.peek().getDeleteReason().replace("Change parent activity to ", "");
                 }
                 FlowElement dirtyTask = null;
@@ -587,4 +588,117 @@ public class FlowableUtils {
         log.info("清洗后的历史节点数据：" + lastHistoricTaskInstanceList);
         return lastHistoricTaskInstanceList;
     }
+
+    /**
+     * 深搜递归获取流程未通过的节点
+     * @param bpmnModel 流程模型
+     * @param unfinishedTaskSet 未结束的任务节点
+     * @param finishedSequenceFlowSet 已经完成的连线
+     * @param finishedTaskSet 已完成的任务节点
+     * @return
+     */
+    public static Set<String> dfsFindRejects(BpmnModel bpmnModel, Set<String> unfinishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> finishedTaskSet) {
+        if (ObjectUtil.isNull(bpmnModel)) {
+            throw new ServiceException("流程模型不存在");
+        }
+        Collection<FlowElement> allElements = getAllElements(bpmnModel.getMainProcess().getFlowElements(), null);
+        Set<String> rejectedSet = new HashSet<>();
+        for (FlowElement flowElement : allElements) {
+            // 用户节点且未结束元素
+            if (flowElement instanceof UserTask && unfinishedTaskSet.contains(flowElement.getId())) {
+                List<String> hasSequenceFlow = iteratorFindFinishes(flowElement, null);
+                List<String> rejects = iteratorFindRejects(flowElement, finishedSequenceFlowSet, finishedTaskSet, hasSequenceFlow, null);
+                rejectedSet.addAll(rejects);
+            }
+        }
+        return rejectedSet;
+    }
+
+    /**
+     * 迭代获取父级节点列表，向前找
+     * @param source 起始节点
+     * @param hasSequenceFlow 已经经过的连线的ID，用于判断线路是否重复
+     * @return
+     */
+    public static List<String> iteratorFindFinishes(FlowElement source, List<String> hasSequenceFlow) {
+        hasSequenceFlow = hasSequenceFlow == null ? new ArrayList<>() : hasSequenceFlow;
+
+        // 根据类型，获取入口连线
+        List<SequenceFlow> sequenceFlows = getElementIncomingFlows(source);
+
+        if (sequenceFlows != null) {
+            // 循环找到目标元素
+            for (SequenceFlow sequenceFlow: sequenceFlows) {
+                // 如果发现连线重复，说明循环了，跳过这个循环
+                if (hasSequenceFlow.contains(sequenceFlow.getId())) {
+                    continue;
+                }
+                // 添加已经走过的连线
+                hasSequenceFlow.add(sequenceFlow.getId());
+                FlowElement finishedElement = sequenceFlow.getSourceFlowElement();
+                // 类型为子流程，则添加子流程开始节点出口处相连的节点
+                if (finishedElement instanceof SubProcess) {
+                    FlowElement firstElement = (StartEvent) ((SubProcess) finishedElement).getFlowElements().toArray()[0];
+                    // 获取子流程的连线
+                    hasSequenceFlow.addAll(iteratorFindFinishes(firstElement, null));
+                }
+                // 继续迭代
+                hasSequenceFlow = iteratorFindFinishes(finishedElement, hasSequenceFlow);
+            }
+        }
+        return hasSequenceFlow;
+    }
+
+    /**
+     * 根据正在运行的任务节点，迭代获取子级任务节点列表，向后找
+     * @param source 起始节点
+     * @param finishedSequenceFlowSet 已经完成的连线
+     * @param finishedTaskSet 已经完成的任务节点
+     * @param hasSequenceFlow 已经经过的连线的 ID，用于判断线路是否重复
+     * @param rejectedList 未通过的元素
+     * @return
+     */
+    public static List<String> iteratorFindRejects(FlowElement source, Set<String> finishedSequenceFlowSet, Set<String> finishedTaskSet
+        , List<String> hasSequenceFlow, List<String> rejectedList) {
+        hasSequenceFlow = hasSequenceFlow == null ? new ArrayList<>() : hasSequenceFlow;
+        rejectedList = rejectedList == null ? new ArrayList<>() : rejectedList;
+
+        // 根据类型，获取出口连线
+        List<SequenceFlow> sequenceFlows = getElementOutgoingFlows(source);
+
+        if (sequenceFlows != null) {
+            // 循环找到目标元素
+            for (SequenceFlow sequenceFlow: sequenceFlows) {
+                // 如果发现连线重复，说明循环了，跳过这个循环
+                if (hasSequenceFlow.contains(sequenceFlow.getId())) {
+                    continue;
+                }
+                // 添加已经走过的连线
+                hasSequenceFlow.add(sequenceFlow.getId());
+                FlowElement targetElement = sequenceFlow.getTargetFlowElement();
+                // 添加未完成的节点
+                if (finishedTaskSet.contains(targetElement.getId())) {
+                    rejectedList.add(targetElement.getId());
+                }
+                // 添加未完成的连线
+                if (finishedSequenceFlowSet.contains(sequenceFlow.getId())) {
+                    rejectedList.add(sequenceFlow.getId());
+                }
+                // 如果节点为子流程节点情况，则从节点中的第一个节点开始获取
+                if (targetElement instanceof SubProcess) {
+                    FlowElement firstElement = (FlowElement) (((SubProcess) targetElement).getFlowElements().toArray()[0]);
+                    List<String> childList = iteratorFindRejects(firstElement, finishedSequenceFlowSet, finishedTaskSet, hasSequenceFlow, null);
+                    // 如果找到节点，则说明该线路找到节点，不继续向下找，反之继续
+                    if (childList != null && childList.size() > 0) {
+                        rejectedList.addAll(childList);
+                        continue;
+                    }
+                }
+                // 继续迭代
+                rejectedList = iteratorFindRejects(targetElement, finishedSequenceFlowSet, finishedTaskSet, hasSequenceFlow, rejectedList);
+            }
+        }
+        return rejectedList;
+    }
+
 }

@@ -139,3 +139,11 @@ export function deptTreeSelect() {
     method: 'get'
   })
 }
+// 查询用户列表，用于流程里的用户选择
+export function selectUser(query) {
+  return request({
+    url: '/system/user/selectUser',
+    method: 'get',
+    params: query
+  })
+}

@@ -104,71 +104,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/flowable',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'definition/model/',
-        component: () => import('@/views/flowable/definition/model'),
-        name: 'Model',
-        meta: { title: '流程设计', icon: '' }
-      }
-    ]
-  },
-  {
-    path: '/flowable',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'task/finished/detail/index',
-        component: () => import('@/views/flowable/task/finished/detail/index'),
-        name: 'FinishedRecord',
-        meta: { title: '流程详情', icon: '' }
-      }
-    ]
-  },
-  {
-    path: '/flowable',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'task/myProcess/detail/index',
-        component: () => import('@/views/flowable/task/myProcess/detail/index'),
-        name: 'MyProcessRecord',
-        meta: { title: '流程详情', icon: '' }
-      }
-    ]
-  },
-  {
-    path: '/flowable',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'task/myProcess/send/index',
-        component: () => import('@/views/flowable/task/myProcess/send/index'),
-        name: 'SendRecord',
-        meta: { title: '流程发起', icon: '' }
-      }
-    ]
-  },
-  {
-    path: '/flowable',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'task/todo/detail/index',
-        component: () => import('@/views/flowable/task/todo/detail/index'),
-        name: 'TodoRecord',
-        meta: { title: '流程处理', icon: '' }
-      }
-    ]
-  },
-  {
     path: '/tool',
     component: Layout,
     hidden: true,
@@ -176,6 +111,19 @@ export const constantRoutes = [
       {
         path: 'build/index',
         component: () => import('@/views/tool/build/index'),
+        name: 'FormBuild',
+        meta: { title: '表单配置', icon: '' }
+      }
+    ]
+  },
+  {
+    path: '/toolflow',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'buildflow/index',
+        component: () => import('@/views/tool/buildflow/index'),
         name: 'FormBuild',
         meta: { title: '表单配置', icon: '' }
       }
@@ -254,7 +202,27 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
-  }
+  },
+  {
+    path: '/workflow/process',
+    component: Layout,
+    hidden: true,
+    permissions: ['workflow:process:query'],
+    children: [
+      {
+        path: 'start/:deployId([\\w|\\-]+)',
+        component: () => import('@/views/workflow/work/start'),
+        name: 'WorkStart',
+        meta: { title: '发起流程', icon: '' }
+      },
+      {
+        path: 'detail/:procInsId([\\w|\\-]+)',
+        component: () => import('@/views/workflow/work/detail'),
+        name: 'WorkDetail',
+        meta: { title: '流程详情', activeMenu: '/work/own' }
+      }
+    ]
+  },
 ]
 
 // 防止连续点击多次路由报错

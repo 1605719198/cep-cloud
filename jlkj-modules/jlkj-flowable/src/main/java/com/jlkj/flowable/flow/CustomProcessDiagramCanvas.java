@@ -20,7 +20,7 @@ import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
 /**
- * @author xin
+ * @author XuanXuan
  * @date 2021/4/4 23:58
  */
 public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
@@ -63,10 +63,10 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         }
 
         for (int i = 1; i < xPoints.length; ++i) {
-            Integer sourceX = xPoints[i - 1];
-            Integer sourceY = yPoints[i - 1];
-            Integer targetX = xPoints[i];
-            Integer targetY = yPoints[i];
+            int sourceX = xPoints[i - 1];
+            int sourceY = yPoints[i - 1];
+            int targetX = xPoints[i];
+            int targetY = yPoints[i];
             java.awt.geom.Line2D.Double line = new java.awt.geom.Line2D.Double((double) sourceX, (double) sourceY, (double) targetX, (double) targetY);
             this.g.draw(line);
         }

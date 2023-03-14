@@ -1,16 +1,16 @@
 package com.jlkj.flowable.flow;
 
 
-import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.*;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 
+import org.flowable.bpmn.model.Process;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author xin
+ * @author XuanXuan
  * @date 2021/4/5 0:31
  */
 public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerator {
@@ -260,7 +260,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             minY = 0.0D;
         }
 
-        return new CustomProcessDiagramCanvas((int) maxX + 10, (int) maxY + 10, (int) minX, (int) minY, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
+        return new com.jlkj.flowable.flow.CustomProcessDiagramCanvas((int) maxX + 10, (int) maxY + 10, (int) minX, (int) minY, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
     }
 
 
@@ -269,21 +269,21 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 
     }
 
-    private static void drawHighLightNow(CustomProcessDiagramCanvas processDiagramCanvas, GraphicInfo graphicInfo) {
+    private static void drawHighLightNow(com.jlkj.flowable.flow.CustomProcessDiagramCanvas processDiagramCanvas, GraphicInfo graphicInfo) {
         processDiagramCanvas.drawHighLightNow((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(), (int) graphicInfo.getHeight());
 
     }
 
-    private static void drawHighLightEnd(CustomProcessDiagramCanvas processDiagramCanvas, GraphicInfo graphicInfo) {
+    private static void drawHighLightEnd(com.jlkj.flowable.flow.CustomProcessDiagramCanvas processDiagramCanvas, GraphicInfo graphicInfo) {
         processDiagramCanvas.drawHighLightEnd((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(), (int) graphicInfo.getHeight());
 
     }
 
     @Override
     protected void drawActivity(DefaultProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel,
-                                FlowNode flowNode, java.util.List<String> highLightedActivities, java.util.List<String> highLightedFlows, double scaleFactor, Boolean drawSequenceFlowNameWithNoLabelDI) {
+                                FlowNode flowNode, List<String> highLightedActivities, List<String> highLightedFlows, double scaleFactor, Boolean drawSequenceFlowNameWithNoLabelDI) {
 
-        DefaultProcessDiagramGenerator.ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
+        ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
         if (drawInstruction != null) {
 
             drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
@@ -321,9 +321,9 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
                 if (highLightedActivities.get(highLightedActivities.size() - 1).equals(flowNode.getId())
                         && !"endenv".equals(flowNode.getId())) {
                     if ((flowNode.getId().contains("Event_"))) {
-                        drawHighLightEnd((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+                        drawHighLightEnd((com.jlkj.flowable.flow.CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
                     } else {
-                        drawHighLightNow((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+                        drawHighLightNow((com.jlkj.flowable.flow.CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
                     }
                 } else {
                     drawHighLight(processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
@@ -354,7 +354,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             String targetRef = sequenceFlow.getTargetRef();
             FlowElement sourceElement = bpmnModel.getFlowElement(sourceRef);
             FlowElement targetElement = bpmnModel.getFlowElement(targetRef);
-            java.util.List<GraphicInfo> graphicInfoList = bpmnModel.getFlowLocationGraphicInfo(sequenceFlow.getId());
+            List<GraphicInfo> graphicInfoList = bpmnModel.getFlowLocationGraphicInfo(sequenceFlow.getId());
             if (graphicInfoList != null && graphicInfoList.size() > 0) {
                 graphicInfoList = connectionPerfectionizer(processDiagramCanvas, bpmnModel, sourceElement, targetElement, graphicInfoList);
                 int xPoints[] = new int[graphicInfoList.size()];
