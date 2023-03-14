@@ -44,9 +44,18 @@ export function deleteBaseInfo(uuid) {
 }
 
 //获取用户管理专业下拉选单
-export function getLastDegreeMajor(data) {
+export function getBaseInfo(data) {
   return request({
-    url: '/human/baseInfo/getLastDegreeMajor',
+    url: '/human/baseInfo/getDegreeMajor',
+    method: 'get',
+    params: data
+  })
+}
+
+//获取专业细分下拉选单
+export function getDegreeMajorSpecialization(data) {
+  return request({
+    url: '/human/baseInfo/getDegreeMajorSpecialization',
     method: 'get',
     params: data
   })

@@ -11,7 +11,7 @@
             <result property="dicName" column="dic_name" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="VARCHAR"/>
             <result property="updateEmp" column="update_emp" jdbcType="VARCHAR"/>
-            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
     </resultMap>
 

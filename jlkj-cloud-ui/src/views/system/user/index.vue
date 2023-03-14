@@ -183,9 +183,9 @@
                 <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
-                    v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
+                                    v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
                   <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
-                    v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
+                                    v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -593,10 +593,10 @@ export default {
         inputPattern: /^.{5,20}$/,
         inputErrorMessage: "用户密码长度必须介于 5 和 20 之间"
       }).then(({ value }) => {
-          resetUserPwd(row.userId, value).then(response => {
-            this.$modal.msgSuccess("修改成功，新密码是：" + value);
-          });
-        }).catch(() => {});
+        resetUserPwd(row.userId, value).then(response => {
+          this.$modal.msgSuccess("修改成功，新密码是：" + value);
+        });
+      }).catch(() => {});
     },
     /** 分配角色操作 */
     handleAuthRole: function(row) {

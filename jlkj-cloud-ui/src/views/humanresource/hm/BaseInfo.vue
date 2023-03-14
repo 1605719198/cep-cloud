@@ -7,11 +7,12 @@
           <el-col :span="4" class="left_tree">
             <el-tree ref="tree"
                      class="filter-tree"
-                     node-key="id"
+                     node-key="uuid"
+                     style="height: 580px; overflow-y: scroll"
                      :props="defaultProps"
                      :data="menuData"
-                     default-expand-all
                      :expand-on-click-node="false"
+                     :default-expanded-keys="defaultShowNodes"
                      @node-click="handleNodeClick">
             </el-tree>
           </el-col>
@@ -127,6 +128,18 @@ export default {
         loading: false,
       },
       tableData: [],
+      defaultShowNodes: [], //默认显示id
+    }
+  },
+  watch: {
+    //监听数据 设置默认展示第一层数据
+    menuData: {
+      handler(val) {
+        val.forEach(item => {
+            this.defaultShowNodes.push(item.uuid);
+        })
+      },
+      deep: true,
     }
   },
   created() {
