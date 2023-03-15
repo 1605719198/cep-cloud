@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourcePerorgTree;
+import com.jlkj.human.hm.domain.PerorgTree;
 
 import java.util.List;
 
@@ -13,22 +13,22 @@ import java.util.List;
  * @author xin
  * @since 2022-05-17
  */
-public interface IHumanresourcePerorgTreeService extends IService<HumanresourcePerorgTree> {
+public interface IPerorgTreeService extends IService<PerorgTree> {
 
     /**
      * 获取人员信息树
      * @return
      */
-    List<HumanresourcePerorgTree> getOrganizationTreeList();
+    List<PerorgTree> getOrganizationTreeList();
 
     /**
      * 获取部门信息树
      * @return
      */
-    List<HumanresourcePerorgTree> getOrganizationDeptTreeList();
+    List<PerorgTree> getOrganizationDeptTreeList();
     /**
      * 获取机构及人员树结构资料(去除无人员部门树结构)
      * @return
      */
-    List<HumanresourcePerorgTree> getOrganizationDelTreeList();
+    List<PerorgTree> getOrganizationDelTreeList();
 }

@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourcePositionLevel;
+import com.jlkj.human.hm.domain.PositionLevel;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePositionLevel;
  * @author xin
  * @since 2022-05-19
  */
-public interface IHumanresourcePositionLevelService extends IService<HumanresourcePositionLevel> {
+public interface IPositionLevelService extends IService<PositionLevel> {
 
 }

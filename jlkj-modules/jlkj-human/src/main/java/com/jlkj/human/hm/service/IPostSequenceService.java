@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourcePostSequence;
+import com.jlkj.human.hm.domain.PostSequence;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePostSequence;
  * @author xin
  * @since 2022-05-19
  */
-public interface IHumanresourcePostSequenceService extends IService<HumanresourcePostSequence> {
+public interface IPostSequenceService extends IService<PostSequence> {
 
 }

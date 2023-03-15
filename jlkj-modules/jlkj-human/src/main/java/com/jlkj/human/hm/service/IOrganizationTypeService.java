@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourceOrganizationType;
+import com.jlkj.human.hm.domain.OrganizationType;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceOrganizationType;
  * @author xin
  * @since 2022-05-19
  */
-public interface IHumanresourceOrganizationTypeService extends IService<HumanresourceOrganizationType> {
+public interface IOrganizationTypeService extends IService<OrganizationType> {
 
 }

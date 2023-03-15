@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelScheduling;
+import com.jlkj.human.hm.domain.PersonnelScheduling;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePersonnelScheduling;
  * @author Xin
  * @since 2022-04-29
  */
-public interface IHumanresourcePersonnelSchedulingService extends IService<HumanresourcePersonnelScheduling> {
+public interface IPersonnelSchedulingService extends IService<PersonnelScheduling> {
 
 }

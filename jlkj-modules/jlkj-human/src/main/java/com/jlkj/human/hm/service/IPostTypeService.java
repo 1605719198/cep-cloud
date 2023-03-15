@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourcePostType;
+import com.jlkj.human.hm.domain.PostType;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePostType;
  * @author xin
  * @since 2022-05-19
  */
-public interface IHumanresourcePostTypeService extends IService<HumanresourcePostType> {
+public interface IPostTypeService extends IService<PostType> {
 
 }

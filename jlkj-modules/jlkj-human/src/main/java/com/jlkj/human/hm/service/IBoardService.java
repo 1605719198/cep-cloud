@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jlkj.human.hm.domain.HumanresourceBoard;
+import com.jlkj.human.hm.domain.Board;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceBoard;
  * @author Xin
  * @since 2022-04-28
  */
-public interface IHumanresourceBoardService extends IService<HumanresourceBoard> {
+public interface IBoardService extends IService<Board> {
 
 }
