@@ -57,7 +57,7 @@ public interface ISysDeptService
      * @param sysDept 部门资料维护
      * @return 结果
      */
-    public int insertSysDept(SysDept sysDept);
+    public int insertSysDept(SysDept sysDept)throws Exception;
 
     /**
      * 修改部门资料维护
@@ -65,7 +65,7 @@ public interface ISysDeptService
      * @param sysDept 部门资料维护
      * @return 结果
      */
-    public int updateSysDept(SysDept sysDept);
+    public int updateSysDept(SysDept sysDept) throws Exception;
 
     /**
      * 批量删除部门资料维护

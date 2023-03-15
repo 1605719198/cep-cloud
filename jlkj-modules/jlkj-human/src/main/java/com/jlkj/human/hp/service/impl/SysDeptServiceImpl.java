@@ -112,8 +112,12 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int insertSysDept(SysDept sysDept)
+    public int insertSysDept(SysDept sysDept) throws Exception
     {
+        SysDept oldsysdept = sysDeptMapper.selectSysDeptByDeptCode(sysDept.getDeptCode());
+        if(oldsysdept!=null){
+            throw new Exception("机构编码已存在，请重复输入");
+        }
         SysDeptVersion sysDeptVersion = new SysDeptVersion();
         sysDept.setCreateTime(DateUtils.getNowDate());
         sysDept.setUpdateTime(DateUtils.getNowDate());
@@ -155,7 +159,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int updateSysDept(SysDept sysDept)
+    public int updateSysDept(SysDept sysDept) throws Exception
     {
         SysDeptVersion sysDeptVersion = new SysDeptVersion();
         sysDept.setUpdateTime(DateUtils.getNowDate());

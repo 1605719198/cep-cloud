@@ -3,24 +3,23 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-            <el-select v-model="deptName" placeholder="请选择公司名称" clearable size="small">
-              <el-option
-                v-for="dict in dict.type.comp_id"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
-              />
-            </el-select>
+          <el-select v-model="compId" placeholder="请选择公司名称" clearable size="small">
+            <el-option
+              v-for="dict in dict.type.comp_id"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </div>
         <div class="head-container" style="height: 81vh;width: 100%;" v-show="treeandtable">
           <el-scrollbar style="height: 100%;">
             <el-tree
-              default-expand-all
               :data="deptOptions"
               :props="defaultProps"
+              :default-expand-all="false"
               :highlight-current="true"
               :expand-on-click-node="false"
-              :filter-node-method="filterNode"
               :default-expanded-keys="expandedKeys"
               node-key="id"
               ref="tree"
@@ -29,101 +28,100 @@
           </el-scrollbar>
         </div>
       </el-col>
-    <el-col :span="20" :xs="24">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="机构id值" prop="deptId">
-        <el-input maxlength="10"
-          v-model="queryParams.deptId"
-          type="number"
-          placeholder="请输入机构id"
+      <el-col :span="20" :xs="24">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+          <el-form-item label="机构id值" prop="deptId">
+            <el-input maxlength="10"
+                      v-model="queryParams.deptId"
+                      type="number"
+                      placeholder="请输入机构id"
+            />
+          </el-form-item>
+          <!--      <el-form-item label="机构层级" prop="compId">-->
+          <!--        <el-select v-model="form.compId" placeholder="请选择机构层级" clearable size="small">-->
+          <!--          <el-option-->
+          <!--            v-for="dict in dict.type.comp_id"-->
+          <!--            :key="dict.value"-->
+          <!--            :label="dict.label"-->
+          <!--            :value="dict.value"-->
+          <!--          />-->
+          <!--        </el-select>-->
+          <!--      </el-form-item>-->
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              icon="el-icon-plus"
+              size="mini"
+              @click="handleAdd"
+            >新增</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              :disabled="multiple"
+              @click="handleDelete"
+            >删除</el-button>
+          </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
+
+        <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
+          <el-table-column type="selection" width="55" align="center" />
+          <el-table-column label="机构id" align="center" prop="deptId" />
+          <el-table-column label="机构编码" align="center" prop="deptCode" />
+          <el-table-column label="机构名称" align="center" prop="deptName" />
+          <el-table-column label="排序序号" align="center" prop="orderNum" />
+          <el-table-column label="领导" align="center" prop="leader" />
+          <el-table-column label="创建人" align="center" prop="createBy" />
+          <el-table-column label="状态" align="center" prop="status">
+            <template v-slot:default="scope">
+              <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template v-slot:default="scope">
+              <!--          <el-button-->
+              <!--            size="mini"-->
+              <!--            type="text"-->
+              <!--            icon="el-icon-info"-->
+              <!--            @click="handleView(scope.row)"-->
+              <!--          >详情</el-button>-->
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-edit"
+                @click="handleUpdate(scope.row)"
+              >修改</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.row)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <pagination
+          v-show="(total>0)&&treeandtable"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
         />
-      </el-form-item>
-<!--      <el-form-item label="机构层级" prop="compId">-->
-<!--        <el-select v-model="form.compId" placeholder="请选择机构层级" clearable size="small">-->
-<!--          <el-option-->
-<!--            v-for="dict in dict.type.comp_id"-->
-<!--            :key="dict.value"-->
-<!--            :label="dict.label"-->
-<!--            :value="dict.value"-->
-<!--          />-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
-    <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="机构id" align="center" prop="deptId" />
-      <el-table-column label="机构编码" align="center" prop="deptCode" />
-      <el-table-column label="机构名称" align="center" prop="deptName" />
-      <el-table-column label="排序序号" align="center" prop="orderNum" />
-      <el-table-column label="领导" align="center" prop="leader" />
-      <el-table-column label="创建人" align="center" prop="createBy" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-info"-->
-<!--            @click="handleView(scope.row)"-->
-<!--          >详情</el-button>-->
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="(total>0)&&treeandtable"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :page-sizes="[20, 50, 100, 200]"
-      :page-size="queryParams.pageSize"
-      @pagination="getList"
-    />
-  </el-col>
-</el-row>
     <!-- 添加或修改部门资料维护对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
@@ -149,7 +147,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="上级机构" prop="parentId">
-              <treeselect v-model="form.parentId" :options="deptOptions" :show-count="true" placeholder="请选择上级机构" :normalizer="normalizer" @select="deptChange"/>
+              <treeselect v-model="form.parentId" :options="allDeptOptions" :show-count="true" placeholder="请选择上级机构" :normalizer="normalizer" @select="deptChange"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -221,13 +219,18 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="生效日期" prop="effectDate">
-              <el-input maxlength="22" v-model="form.effectDate" placeholder="请输入生效日期" type="number" />
+              <el-date-picker clearable size="small"
+                              style="width: 100%"
+                              v-model="form.effectDate"
+                              type="date"
+                              value-format="yyyy-MM-dd"
+                              placeholder="选择日期" >
+              </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="1000" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
         </el-form-item>
 
         <el-row :gutter="20" v-show="!ifupdate">
@@ -255,44 +258,44 @@
         </div>
 
         <el-table :data="deptversionlist"  ref="deptversion" v-show="ifupdate">
-          <el-table-column label="版本号" prop="versionNo" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="版本号" prop="versionNo" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.versionNo}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="机构编码" prop="deptCode" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="机构编码" prop="deptCode" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.deptCode}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="机构名称" prop="deptName" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="机构名称" prop="deptName" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.deptName}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="该机构上级" prop="parentName" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="该机构上级" prop="parentName" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.parentName}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="机构层级" prop="orgTierId" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="机构层级" prop="orgTierId" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <dict-tag :options="dict.type.org_tier" :value="scope.row.orgTierId"/>
             </template>
           </el-table-column>
-          <el-table-column label="变更原因" prop="changeReason" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.changeReason}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="变更人" prop="updateBy">
-            <template slot-scope="scope">
+          <el-table-column label="变更人" prop="updateBy" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.updateBy}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="变更日期" prop="updateTime">
-            <template slot-scope="scope">
-              <span>{{scope.row.updateTime}}</span>
+          <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
+            <template v-slot:default="scope">
+              <span v-text="scope.row.updateTime"   ></span>
             </template>
           </el-table-column>
         </el-table>
@@ -310,7 +313,7 @@
 <script>
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
-import {deptTreeSelect, getAvatorByUserName, getUser} from "@/api/system/user";
+import { getAvatorByUserName } from "@/api/system/user";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listDeptversion } from '@/api/human/hp/deptVersion'
 import selectUser from "@/views/human/hp/selectUser/selectUser";
@@ -322,15 +325,20 @@ export default {
     return {
       //登录人姓名
       nickName: undefined,
+      //登录人公司
+      logincompId:undefined,
       // 选择人员单笔或多笔
       isSingle: true,
       // 部门名称
-      deptName: undefined,
+      compId: undefined,
+      //默认展开指定节点
       expandedKeys: [],
       // 部门树选项
       deptOptions: undefined,
+      //所有部门树
+      allDeptOptions: undefined,
       //是否展示树和表
-      treeandtable:false,
+      treeandtable:true,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -354,7 +362,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         deptId: null,
         compId: null,
         ifCompany : 0,
@@ -403,6 +411,9 @@ export default {
         phone: [
           {required: true,message: "请输入领导电话", trigger: "blur"}
         ],
+        effectDate:[
+          { required: true, message: '生效日期不能为空', trigger: 'change' },
+        ]
         // changeReason: [
         //   {required: true,message: "请输入变更原因", trigger: "blur"}
         // ]
@@ -411,8 +422,8 @@ export default {
   },
   watch: {
     // 根据名称筛选部门树
-    deptName(val) {
-      this.$refs.tree.filter(val);
+    compId(val) {
+      // this.$refs.tree.filter(val);
       this.queryParams.compId = val;
       this.queryParams.deptId = null;
       this.queryParams3.compId =val;
@@ -431,10 +442,12 @@ export default {
     // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
-    // 获取当前登录用户名称
+    // 获取当前登录用户名称/信息
     getName(){
       getAvatorByUserName(this.$store.state.user.name).then( response => {
         this.nickName=response.data.nickName
+        this.logincompId=response.data.compId
+        this.compId=response.data.compId
       })
     },
     /** 点选获取人员信息 */
@@ -457,10 +470,11 @@ export default {
       var mm = String(today.getMinutes()).padStart(2, '0'); //获取当前分钟数(0-59)
       var ss = String(today.getSeconds()).padStart(2, '0'); //获取当前秒数(0-59)
       var time =yyyy + '-' + MM + '-' + DD+' '+hh+':'+mm+':'+ss;
+      var date = yyyy + '-' + MM + '-' + DD;
       if(e==0){
         return time;
       }else {
-        return yyyy+MM+DD
+        return date;
       }
     },
     /** 用户选单事件 */
@@ -473,6 +487,9 @@ export default {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
         this.expandedKeys.push(this.$store.state.user.deptId);
+      });
+      treeselect().then(response => {
+        this.allDeptOptions = response.data;
       });
     },
     /** 转换部门数据结构 */
@@ -572,8 +589,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.collapseAll(this.deptOptions)
-      this.deptName=''
+      this.compId=this.logincompId
       this.handleQuery();
     },
     // 多选框选中数据
@@ -626,21 +642,21 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-            if (this.form.deptId != null) {
-              updateDeptmaintenance(this.form).then(response => {
-                this.$modal.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-                this.getTreeselect();
-              });
-            } else {
-              addDeptmaintenance(this.form).then(response => {
-                this.$modal.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-                this.getTreeselect();
-              });
-            }
+          if (this.form.deptId != null) {
+            updateDeptmaintenance(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+              this.getTreeselect();
+            });
+          } else {
+            addDeptmaintenance(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+              this.getTreeselect();
+            });
+          }
         }
       });
     },
@@ -658,3 +674,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>

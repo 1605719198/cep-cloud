@@ -85,12 +85,12 @@
       <el-table-column label="领导" align="center" prop="leader" />
       <el-table-column label="创建人" align="center" prop="createBy" />
       <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
 <!--          <el-button-->
 <!--            size="mini"-->
 <!--            type="text"-->
@@ -117,8 +117,7 @@
       v-show="(total>0)&&treeandtable"
       :total="total"
       :page.sync="queryParams.pageNum"
-      :page-sizes="[20, 50, 100, 200]"
-      :page-size="queryParams.pageSize"
+      :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
   </el-col>
@@ -146,7 +145,14 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属板块类别" prop="boardId">
-              <treeselect v-model="form.boardId" :options="deptOptions" :show-count="true" placeholder="请选择板块类别" :normalizer="normalizer"/>
+              <el-select v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" style="width: 100%">
+                <el-option
+                  v-for="dict in dict.type.board_id"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -155,7 +161,7 @@
           <el-col :span="12">
             <el-form-item label="当前状态" prop="status">
               <el-radio-group v-model="form.status">
-                <el-radio
+                <el-radio  clique_id
                   v-for="dict in dict.type.sys_normal_disable"
                   :key="dict.value"
                   :label="dict.value"
@@ -216,25 +222,30 @@
           </el-col>
         </el-row>
 
-<!--        <el-row :gutter="20">-->
-<!--          <el-col :span="12">-->
-<!--            <el-form-item label="生效日期" prop="effectDate">-->
-<!--              <el-input maxlength="20" v-model="form.effectDate" placeholder="请输入生效日期" type="number" />-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
-
-<!--        </el-row>-->
-
         <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="20" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
         </el-form-item>
 
-        <el-row :gutter="20" v-show="!ifupdate">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="生效日期" prop="effectDate">
+              <el-date-picker clearable size="small"
+                              style="width: 100%"
+                              v-model="form.effectDate"
+                              type="date"
+                              value-format="yyyy-MM-dd"
+                              placeholder="选择日期" >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="创建人员" prop="createBy">
               <el-input maxlength="20" v-model="form.createBy"  placeholder="请输入内容" disabled/>
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建日期" prop="createTime">
               <el-date-picker clearable
@@ -253,34 +264,34 @@
         </div>
 
         <el-table :data="deptversionlist"  ref="deptversion" v-show="ifupdate">
-          <el-table-column label="版本号" prop="versionNo" align="center" width="60px">
-            <template slot-scope="scope">
+          <el-table-column label="版本号" prop="versionNo" align="center" width="60px" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.versionNo}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="公司名称" prop="deptName" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="公司名称" prop="deptName" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.deptName}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="该公司上级" prop="parentName" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="该公司上级" prop="parentName" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.parentName}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="变更人" prop="updateBy" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
+              <span>{{scope.row.changeReason}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.updateBy}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="变更日期" prop="updateTime" align="center">
-            <template slot-scope="scope">
+          <el-table-column label="变更日期" prop="updateTime" align="center" show-overflow-tooltip>
+            <template v-slot:default="scope">
               <span>{{scope.row.updateTime}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="变更原因" prop="changeReason" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.row.changeReason}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -298,23 +309,25 @@
 <script>
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
-import {deptTreeSelect, getAvatorByUserName, getUser} from "@/api/system/user";
+import { getAvatorByUserName } from "@/api/system/user";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listDeptversion } from '@/api/human/hp/deptVersion'
 import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
-  dicts: ['org_tier', 'sys_normal_disable', 'comp_id','dept_status','dept_if_display'],
+  dicts: ['org_tier', 'sys_normal_disable', 'comp_id','dept_status','dept_if_display','clique_id','board_id'],
   components: {Treeselect,selectUser},
   data() {
     return {
       //登录人姓名
       nickName: undefined,
       // 公司状态
-      treestatus: undefined,
+      treestatus: '2',
       expandedKeys: [],
       // 部门树选项
       deptOptions: undefined,
+      //全部门树
+      alldeptOptions:undefined,
       //是否展示树和表
       treeandtable:false,
       // 选择人员单笔或多笔
@@ -342,14 +355,12 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         deptId: null,
         compId: null,
         ifCompany : 1,
       },
       queryParams2: {
-        pageNum: 1,
-        pageSize: 100,
         deptId: null,
       },
       queryParams3:{
@@ -375,7 +386,7 @@ export default {
         ],
         parentId: [
           { required: true, message: '请选择该机构上级', trigger: 'blur' },
-          { pattern:/(?!100$)/, message: '不能选择集团为机构上级', trigger: 'blur'}
+          { pattern:/^100$/, message: '请选择集团为机构上级', trigger: 'blur'}
         ],
         orgTierId: [
           { required: true, message: '请选择机构层级', trigger: 'change' },
@@ -394,6 +405,9 @@ export default {
         ],
         boardId: [
           {required: true,message: "请选择板块类别", trigger: "change"}
+        ],
+        effectDate:[
+          {required: true,message: "生效日期不能为空", trigger: "change"}
         ]
         // changeReason: [
         //   {required: true,message: "请输入变更原因", trigger: "blur"}
@@ -418,6 +432,8 @@ export default {
   created() {
     this.getName()
     this.getTreeselect();
+    this.getList()
+    this.treeandtable=true
     // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
@@ -437,10 +453,11 @@ export default {
       var mm = String(today.getMinutes()).padStart(2, '0'); //获取当前分钟数(0-59)
       var ss = String(today.getSeconds()).padStart(2, '0'); //获取当前秒数(0-59)
       var time =yyyy + '-' + MM + '-' + DD+' '+hh+':'+mm+':'+ss;
+      var date = yyyy + '-' + MM + '-' + DD;
       if(e==0){
         return time;
       }else {
-        return yyyy+MM+DD
+        return date;
       }
     },
     /** 用户选单事件 */
@@ -562,8 +579,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.collapseAll(this.deptOptions)
-      this.deptName=''
+      this.treestatus='2'
       this.handleQuery();
     },
     // 多选框选中数据

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hp.mapper.SysPostMapper">
+    
+    <resultMap type="SysPost" id="SysPostResult">
+        <result property="postId"    column="post_id"    />
+        <result property="postCode"    column="post_code"    />
+        <result property="postName"    column="post_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="specialityTypeId"    column="speciality_type_id"    />
+        <result property="specialityId"    column="speciality_id"    />
+        <result property="postSequenceId"    column="post_sequence_id"    />
+        <result property="postTypeId"    column="post_type_id"    />
+        <result property="jobTitleId"    column="job_title_id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="shiftWorkId"    column="shift_work_id"    />
+        <result property="employmentNatureId"    column="employment_nature_id"    />
+        <result property="workAddressId"    column="work_address_id"    />
+        <result property="workAddress"    column="work_address"    />
+        <result property="overseasLocations"    column="overseas_locations"    />
+        <result property="ifSpeciallyAssignedPerson"    column="if_specially_assigned_person"    />
+        <result property="planCapacity"    column="plan_capacity"    />
+        <result property="nowCapacity"    column="now_capacity"    />
+        <result property="postSort"    column="post_sort"    />
+        <result property="capacityBasis"    column="capacity_basis"    />
+        <result property="costCenterId"    column="cost_center_id"    />
+        <result property="status"    column="status"    />
+        <result property="parentPostId"    column="parent_post_id"    />
+        <result property="parentPostName"    column="parent_post_name"    />
+        <result property="positionsClassId"    column="positions_class_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="orgFullName"    column="org_full_name"    />
+        <result property="positionExpenseCategory"    column="position_expense_category"    />
+        <result property="costCenterName"    column="cost_center_name"    />
+        <result property="changeReason"    column="change_reason"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="ifNew"    column="if_new"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="workDesc"    column="work_desc"    />
+        <result property="workCon"    column="work_con"    />
+        <result property="apprKpi"    column="appr_kpi"    />
+        <result property="reviewKpi"    column="review_kpi"    />
+        <result property="workSta"    column="work_sta"    />
+        <result property="workAut"    column="work_aut"    />
+        <result property="workEnv"    column="work_env"    />
+        <result property="opeEquHp"    column="ope_equ_hp"    />
+        <result property="toolUsed"    column="tool_used"    />
+        <result property="officeEqu"    column="office_equ"    />
+        <result property="labourSta"    column="labour_sta"    />
+        <result property="minAge"    column="min_age"    />
+        <result property="maxAge"    column="max_age"    />
+        <result property="gender"    column="gender"    />
+        <result property="recordId"    column="record_id"    />
+        <result property="speClaim"    column="spe_claim"    />
+        <result property="proQua"    column="pro_qua"    />
+        <result property="workExp"    column="work_exp"    />
+        <result property="otherClaim"    column="other_claim"    />
+        <result property="knowTec"    column="know_tec"    />
+        <result property="proAct"    column="pro_act"    />
+    </resultMap>
+
+    <sql id="selectSysPostVo">
+        select post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post
+    </sql>
+
+    <select id="selectSysPostList" parameterType="SysPost" resultMap="SysPostResult">
+        <include refid="selectSysPostVo"/>
+        <where>  
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orgId != null "> and org_id = #{orgId}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysPostByPostId" parameterType="Long" resultMap="SysPostResult">
+        <include refid="selectSysPostVo"/>
+        where post_id = #{postId}
+    </select>
+        
+    <insert id="insertSysPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
+        insert into sys_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postCode != null and postCode != ''">post_code,</if>
+            <if test="postName != null and postName != ''">post_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="specialityTypeId != null and specialityTypeId != ''">speciality_type_id,</if>
+            <if test="specialityId != null and specialityId != ''">speciality_id,</if>
+            <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id,</if>
+            <if test="postTypeId != null and postTypeId != ''">post_type_id,</if>
+            <if test="jobTitleId != null">job_title_id,</if>
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="shiftWorkId != null">shift_work_id,</if>
+            <if test="employmentNatureId != null">employment_nature_id,</if>
+            <if test="workAddressId != null">work_address_id,</if>
+            <if test="workAddress != null and workAddress != ''">work_address,</if>
+            <if test="overseasLocations != null and overseasLocations != ''">overseas_locations,</if>
+            <if test="ifSpeciallyAssignedPerson != null">if_specially_assigned_person,</if>
+            <if test="planCapacity != null">plan_capacity,</if>
+            <if test="nowCapacity != null">now_capacity,</if>
+            <if test="postSort != null">post_sort,</if>
+            <if test="capacityBasis != null">capacity_basis,</if>
+            <if test="costCenterId != null and costCenterId != ''">cost_center_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="parentPostId != null">parent_post_id,</if>
+            <if test="parentPostName != null and parentPostName != ''">parent_post_name,</if>
+            <if test="positionsClassId != null">positions_class_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="orgFullName != null">org_full_name,</if>
+            <if test="positionExpenseCategory != null">position_expense_category,</if>
+            <if test="costCenterName != null">cost_center_name,</if>
+            <if test="changeReason != null">change_reason,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="ifNew != null">if_new,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="workDesc != null">work_desc,</if>
+            <if test="workCon != null">work_con,</if>
+            <if test="apprKpi != null">appr_kpi,</if>
+            <if test="reviewKpi != null">review_kpi,</if>
+            <if test="workSta != null">work_sta,</if>
+            <if test="workAut != null">work_aut,</if>
+            <if test="workEnv != null">work_env,</if>
+            <if test="opeEquHp != null">ope_equ_hp,</if>
+            <if test="toolUsed != null">tool_used,</if>
+            <if test="officeEqu != null">office_equ,</if>
+            <if test="labourSta != null">labour_sta,</if>
+            <if test="minAge != null">min_age,</if>
+            <if test="maxAge != null">max_age,</if>
+            <if test="gender != null">gender,</if>
+            <if test="recordId != null">record_id,</if>
+            <if test="speClaim != null">spe_claim,</if>
+            <if test="proQua != null">pro_qua,</if>
+            <if test="workExp != null">work_exp,</if>
+            <if test="otherClaim != null">other_claim,</if>
+            <if test="knowTec != null">know_tec,</if>
+            <if test="proAct != null">pro_act,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postCode != null and postCode != ''">#{postCode},</if>
+            <if test="postName != null and postName != ''">#{postName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="specialityTypeId != null and specialityTypeId != ''">#{specialityTypeId},</if>
+            <if test="specialityId != null and specialityId != ''">#{specialityId},</if>
+            <if test="postSequenceId != null and postSequenceId != ''">#{postSequenceId},</if>
+            <if test="postTypeId != null and postTypeId != ''">#{postTypeId},</if>
+            <if test="jobTitleId != null">#{jobTitleId},</if>
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="shiftWorkId != null">#{shiftWorkId},</if>
+            <if test="employmentNatureId != null">#{employmentNatureId},</if>
+            <if test="workAddressId != null">#{workAddressId},</if>
+            <if test="workAddress != null and workAddress != ''">#{workAddress},</if>
+            <if test="overseasLocations != null and overseasLocations != ''">#{overseasLocations},</if>
+            <if test="ifSpeciallyAssignedPerson != null">#{ifSpeciallyAssignedPerson},</if>
+            <if test="planCapacity != null">#{planCapacity},</if>
+            <if test="nowCapacity != null">#{nowCapacity},</if>
+            <if test="postSort != null">#{postSort},</if>
+            <if test="capacityBasis != null">#{capacityBasis},</if>
+            <if test="costCenterId != null and costCenterId != ''">#{costCenterId},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="parentPostId != null">#{parentPostId},</if>
+            <if test="parentPostName != null and parentPostName != ''">#{parentPostName},</if>
+            <if test="positionsClassId != null">#{positionsClassId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="orgFullName != null">#{orgFullName},</if>
+            <if test="positionExpenseCategory != null">#{positionExpenseCategory},</if>
+            <if test="costCenterName != null">#{costCenterName},</if>
+            <if test="changeReason != null">#{changeReason},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="ifNew != null">#{ifNew},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="workDesc != null">#{workDesc},</if>
+            <if test="workCon != null">#{workCon},</if>
+            <if test="apprKpi != null">#{apprKpi},</if>
+            <if test="reviewKpi != null">#{reviewKpi},</if>
+            <if test="workSta != null">#{workSta},</if>
+            <if test="workAut != null">#{workAut},</if>
+            <if test="workEnv != null">#{workEnv},</if>
+            <if test="opeEquHp != null">#{opeEquHp},</if>
+            <if test="toolUsed != null">#{toolUsed},</if>
+            <if test="officeEqu != null">#{officeEqu},</if>
+            <if test="labourSta != null">#{labourSta},</if>
+            <if test="minAge != null">#{minAge},</if>
+            <if test="maxAge != null">#{maxAge},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="recordId != null">#{recordId},</if>
+            <if test="speClaim != null">#{speClaim},</if>
+            <if test="proQua != null">#{proQua},</if>
+            <if test="workExp != null">#{workExp},</if>
+            <if test="otherClaim != null">#{otherClaim},</if>
+            <if test="knowTec != null">#{knowTec},</if>
+            <if test="proAct != null">#{proAct},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPost" parameterType="SysPost">
+        update sys_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
+            <if test="postName != null and postName != ''">post_name = #{postName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="specialityTypeId != null and specialityTypeId != ''">speciality_type_id = #{specialityTypeId},</if>
+            <if test="specialityId != null and specialityId != ''">speciality_id = #{specialityId},</if>
+            <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id = #{postSequenceId},</if>
+            <if test="postTypeId != null and postTypeId != ''">post_type_id = #{postTypeId},</if>
+            <if test="jobTitleId != null">job_title_id = #{jobTitleId},</if>
+            <if test="serialNumber != null and serialNumber != ''">serial_number = #{serialNumber},</if>
+            <if test="shiftWorkId != null">shift_work_id = #{shiftWorkId},</if>
+            <if test="employmentNatureId != null">employment_nature_id = #{employmentNatureId},</if>
+            <if test="workAddressId != null">work_address_id = #{workAddressId},</if>
+            <if test="workAddress != null and workAddress != ''">work_address = #{workAddress},</if>
+            <if test="overseasLocations != null and overseasLocations != ''">overseas_locations = #{overseasLocations},</if>
+            <if test="ifSpeciallyAssignedPerson != null">if_specially_assigned_person = #{ifSpeciallyAssignedPerson},</if>
+            <if test="planCapacity != null">plan_capacity = #{planCapacity},</if>
+            <if test="nowCapacity != null">now_capacity = #{nowCapacity},</if>
+            <if test="postSort != null">post_sort = #{postSort},</if>
+            <if test="capacityBasis != null">capacity_basis = #{capacityBasis},</if>
+            <if test="costCenterId != null and costCenterId != ''">cost_center_id = #{costCenterId},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="parentPostId != null">parent_post_id = #{parentPostId},</if>
+            <if test="parentPostName != null and parentPostName != ''">parent_post_name = #{parentPostName},</if>
+            <if test="positionsClassId != null">positions_class_id = #{positionsClassId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="orgFullName != null">org_full_name = #{orgFullName},</if>
+            <if test="positionExpenseCategory != null">position_expense_category = #{positionExpenseCategory},</if>
+            <if test="costCenterName != null">cost_center_name = #{costCenterName},</if>
+            <if test="changeReason != null">change_reason = #{changeReason},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="ifNew != null">if_new = #{ifNew},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="workDesc != null">work_desc = #{workDesc},</if>
+            <if test="workCon != null">work_con = #{workCon},</if>
+            <if test="apprKpi != null">appr_kpi = #{apprKpi},</if>
+            <if test="reviewKpi != null">review_kpi = #{reviewKpi},</if>
+            <if test="workSta != null">work_sta = #{workSta},</if>
+            <if test="workAut != null">work_aut = #{workAut},</if>
+            <if test="workEnv != null">work_env = #{workEnv},</if>
+            <if test="opeEquHp != null">ope_equ_hp = #{opeEquHp},</if>
+            <if test="toolUsed != null">tool_used = #{toolUsed},</if>
+            <if test="officeEqu != null">office_equ = #{officeEqu},</if>
+            <if test="labourSta != null">labour_sta = #{labourSta},</if>
+            <if test="minAge != null">min_age = #{minAge},</if>
+            <if test="maxAge != null">max_age = #{maxAge},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="recordId != null">record_id = #{recordId},</if>
+            <if test="speClaim != null">spe_claim = #{speClaim},</if>
+            <if test="proQua != null">pro_qua = #{proQua},</if>
+            <if test="workExp != null">work_exp = #{workExp},</if>
+            <if test="otherClaim != null">other_claim = #{otherClaim},</if>
+            <if test="knowTec != null">know_tec = #{knowTec},</if>
+            <if test="proAct != null">pro_act = #{proAct},</if>
+        </trim>
+        where post_id = #{postId}
+    </update>
+
+    <delete id="deleteSysPostByPostId" parameterType="Long">
+        delete from sys_post where post_id = #{postId}
+    </delete>
+
+    <delete id="deleteSysPostByPostIds" parameterType="String">
+        delete from sys_post where post_id in 
+        <foreach item="postId" collection="array" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </delete>
+</mapper>

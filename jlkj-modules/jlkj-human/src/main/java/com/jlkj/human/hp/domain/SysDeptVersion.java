@@ -1,8 +1,12 @@
 package com.jlkj.human.hp.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 部门资料变更版本对象 sys_dept_version
@@ -69,7 +73,9 @@ public class SysDeptVersion extends BaseEntity
     private String changeReason;
 
     /** 生效日期 */
-    private Long effectDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "日期", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date effectDate;
 
     /** 版本号 */
     private String versionNo;
@@ -254,12 +260,12 @@ public class SysDeptVersion extends BaseEntity
     {
         return changeReason;
     }
-    public void setEffectDate(Long effectDate)
+    public void setEffectDate(Date effectDate)
     {
         this.effectDate = effectDate;
     }
 
-    public Long getEffectDate()
+    public Date getEffectDate()
     {
         return effectDate;
     }

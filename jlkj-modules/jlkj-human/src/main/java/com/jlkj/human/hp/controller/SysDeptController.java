@@ -64,7 +64,7 @@ public class SysDeptController extends BaseController
      */
     @Log(title = "部门资料维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysDept sysDept)
+    public AjaxResult add(@RequestBody SysDept sysDept)throws Exception
     {
         return toAjax(sysDeptService.insertSysDept(sysDept));
     }
@@ -74,7 +74,7 @@ public class SysDeptController extends BaseController
      */
     @Log(title = "部门资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysDept sysDept)
+    public AjaxResult edit(@RequestBody SysDept sysDept) throws Exception
     {
         return toAjax(sysDeptService.updateSysDept(sysDept));
     }

@@ -54,7 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysDeptVo"/>
         where dept_id = #{deptId}
     </select>
-        
+
+    <select id="selectSysDeptByDeptCode" parameterType="String" resultMap="SysDeptResult">
+        <include refid="selectSysDeptVo"/>
+        where dept_code = #{deptCode}
+    </select>
+
     <insert id="insertSysDept" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
