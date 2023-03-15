@@ -8,32 +8,29 @@ package com.jlkj.flowable.common.constant;
  */
 public class ProcessConstants {
 
+    public static final String SUFFIX = ".bpmn";
+
     /**
      * 动态数据
      */
-    public static final String DYNAMIC = "dynamic";
-
-    /**
-     * 固定任务接收
-     */
-    public static final String FIXED = "fixed";
+    public static final String DATA_TYPE = "dynamic";
 
     /**
      * 单个审批人
      */
-    public static final String ASSIGNEE = "assignee";
+    public static final String USER_TYPE_ASSIGNEE = "assignee";
 
 
     /**
      * 候选人
      */
-    public static final String CANDIDATE_USERS = "candidateUsers";
+    public static final String USER_TYPE_USERS = "candidateUsers";
 
 
     /**
      * 审批组
      */
-    public static final String CANDIDATE_GROUPS = "candidateGroups";
+    public static final String USER_TYPE_ROUPS = "candidateGroups";
 
     /**
      * 单个审批人
@@ -66,9 +63,9 @@ public class ProcessConstants {
     public static final String PROCESS_CUSTOM_USER_TYPE = "userType";
 
     /**
-     * 初始化人员
+     * 自定义属性 localScope
      */
-    public static final String PROCESS_INITIATOR = "INITIATOR";
+    public static final String PROCESS_FORM_LOCAL_SCOPE = "localScope";
 
 
     /**

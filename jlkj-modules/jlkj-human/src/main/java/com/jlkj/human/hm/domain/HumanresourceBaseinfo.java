@@ -1,12 +1,15 @@
 package com.jlkj.human.hm.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +54,9 @@ public class HumanresourceBaseinfo implements Serializable {
     /**
      * 更新日期
      */
-    private String updateDate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateDate;
 
     /**
      * 备注
@@ -70,7 +75,7 @@ public class HumanresourceBaseinfo implements Serializable {
     public HumanresourceBaseinfo() {
     }
 
-    public HumanresourceBaseinfo(String uuid, String parentId, String dicNo, String dicName, String status, String updateEmp, String updateDate, String remark, List<HumanresourceBaseinfo> children) {
+    public HumanresourceBaseinfo(String uuid, String parentId, String dicNo, String dicName, String status, String updateEmp, Date updateDate, String remark, List<HumanresourceBaseinfo> children) {
         this.uuid = uuid;
         this.parentId = parentId;
         this.dicNo = dicNo;

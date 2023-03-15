@@ -2,3 +2,4 @@ com.jlkj.system.api.factory.RemoteUserFallbackFactory
 com.jlkj.system.api.factory.RemoteLogFallbackFactory
 com.jlkj.system.api.factory.RemoteFileFallbackFactory
 com.jlkj.system.api.factory.RemoteRoleFallbackFactory
+com.jlkj.system.api.factory.RemoteDeptFallbackFactory

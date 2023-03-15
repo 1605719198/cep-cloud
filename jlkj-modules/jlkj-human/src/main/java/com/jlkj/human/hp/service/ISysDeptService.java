@@ -1,8 +1,9 @@
 package com.jlkj.human.hp.service;
 
-import java.util.List;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
+
+import java.util.List;
 
 /**
  * 部门资料维护Service接口

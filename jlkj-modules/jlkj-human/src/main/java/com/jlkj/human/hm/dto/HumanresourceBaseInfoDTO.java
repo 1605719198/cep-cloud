@@ -3,6 +3,8 @@ package com.jlkj.human.hm.dto;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 选单配置DTO
  * @author HuangBing
@@ -26,4 +28,9 @@ public class HumanresourceBaseInfoDTO {
      * 每页记录数
      */
     private Long pageSize;
+
+    /**
+     * 选单数据list
+     */
+    private List<String> baseInfoList;
 }

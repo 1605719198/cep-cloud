@@ -48,6 +48,16 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
             public R<SysUser> selectUserById(Long userId, String source) {
                 return R.fail("根据id获取用户失败:" + throwable.getMessage());
             }
+
+            @Override
+            public R<List<Long>> selectUserIdsByRoleId(Long roleId, String source) {
+                return R.fail("根据角色id获取用户id失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<List<Long>> selectList(List<String> groups, String source) {
+                return R.fail("根据部门id获取用户id失败:" + throwable.getMessage());
+            }
         };
     }
 }

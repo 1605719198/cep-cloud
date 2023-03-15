@@ -56,4 +56,22 @@ public interface RemoteUserService
      */
     @GetMapping("/user/selectUserById/{userId}")
     public R<SysUser> selectUserById(@PathVariable("userId") Long userId, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 根据角色id查询用户id
+     * @param roleId
+     * @param source
+     * @return
+     */
+    @GetMapping("/user/selectUserIdsByRoleId/{roleId}")
+    public R<List<Long>> selectUserIdsByRoleId(@PathVariable("roleId") Long roleId, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 根据部门id查询用户id
+     * @param groups
+     * @param source
+     * @return
+     */
+    @PostMapping("/user/selectList")
+    public R<List<Long>> selectList(@RequestBody List<String> groups, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }

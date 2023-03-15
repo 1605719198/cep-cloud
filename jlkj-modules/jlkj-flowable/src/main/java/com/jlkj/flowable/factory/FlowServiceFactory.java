@@ -17,26 +17,29 @@ import javax.annotation.Resource;
 @Getter
 public class FlowServiceFactory {
 
-    @Autowired
+    @Resource
     protected RepositoryService repositoryService;
 
-    @Autowired
+    @Resource
     protected RuntimeService runtimeService;
 
-    @Autowired
+    @Resource
     protected IdentityService identityService;
 
-    @Autowired
+    @Resource
     protected TaskService taskService;
 
     @Autowired
+    protected FormService formService;
+
+    @Resource
     protected HistoryService historyService;
 
-    @Autowired
+    @Resource
     protected ManagementService managementService;
 
     @Qualifier("processEngine")
-    @Autowired
+    @Resource
     protected ProcessEngine processEngine;
 
 }

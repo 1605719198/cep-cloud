@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hm.mapper.HumanresourcePersonnelFamilyMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hm.domain.HumanresourcePersonnelFamily">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="relationId" column="relation_id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="birthDate" column="birth_date" jdbcType="VARCHAR"/>
+            <result property="homeAddress" column="home_address" jdbcType="VARCHAR"/>
+            <result property="registerAddress" column="register_address" jdbcType="VARCHAR"/>
+            <result property="workComp" column="work_comp" jdbcType="VARCHAR"/>
+            <result property="tele" column="tele" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="alternateField1" column="alternate_field1" jdbcType="VARCHAR"/>
+            <result property="alternateField2" column="alternate_field2" jdbcType="VARCHAR"/>
+            <result property="alternateField3" column="alternate_field3" jdbcType="VARCHAR"/>
+            <result property="alternateField4" column="alternate_field4" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,emp_id,
+        relation_id,name,birth_date,
+        home_address,register_address,work_comp,
+        tele,creator,creator_id,
+        create_date,alternate_field1,alternate_field2,
+        alternate_field3,alternate_field4
+    </sql>
+</mapper>

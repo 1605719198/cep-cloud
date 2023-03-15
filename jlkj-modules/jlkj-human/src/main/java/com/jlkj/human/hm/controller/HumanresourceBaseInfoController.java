@@ -15,8 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +54,8 @@ public class HumanresourceBaseInfoController {
             Long pageNum = humanresourceBaseInfoDTO.getPageNum();
             Long pageSize = humanresourceBaseInfoDTO.getPageSize();
             LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(uuid), HumanresourceBaseinfo::getParentId, uuid);
+            queryWrapper.eq(StringUtils.isNotBlank(uuid), HumanresourceBaseinfo::getParentId, uuid)
+                        .orderByAsc(HumanresourceBaseinfo::getDicNo);
             Page<HumanresourceBaseinfo> page = humanresourceBaseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
             long total = page.getTotal();
             //数据list集合
@@ -84,8 +83,6 @@ public class HumanresourceBaseInfoController {
         try {
             String dicNo = humanresourceBaseinfo.getDicNo();
             String dicName = humanresourceBaseinfo.getDicName();
-            String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            humanresourceBaseinfo.setUpdateDate(format);
             humanresourceBaseinfo.setUpdateEmp(SecurityUtils.getNickName());
             LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(HumanresourceBaseinfo::getDicNo, dicNo)
@@ -145,6 +142,49 @@ public class HumanresourceBaseInfoController {
             queryWrapper.eq(HumanresourceBaseinfo::getUuid, uuid);
             boolean delete = humanresourceBaseinfoService.remove(queryWrapper);
             return AjaxResult.success(delete);
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
+
+    /**
+     * 获取专业下拉选单列表
+     */
+    @Log(title = "获取专业下拉选单列表",businessType = BusinessType.OTHER)
+    @Operation(summary = "获取专业下拉选单列表")
+    @GetMapping("/getDegreeMajor")
+    public Object getDegreeMajor(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+        try {
+            List<String> baseInfoList = humanresourceBaseInfoDTO.getBaseInfoList();
+            HashMap<String, List<HumanresourceBaseinfo>> map = new HashMap<>(16);
+            for (String item : baseInfoList) {
+                LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
+                LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapperA = new LambdaQueryWrapper<>();
+                queryWrapper.eq(HumanresourceBaseinfo::getDicNo, item);
+                HumanresourceBaseinfo baseInfo = humanresourceBaseinfoService.getOne(queryWrapper);
+                queryWrapperA.eq(HumanresourceBaseinfo::getParentId, baseInfo.getUuid());
+                List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapperA);
+                map.put(item, list);
+            }
+            return AjaxResult.success("查询成功！", map);
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
+
+    /**
+     * 获取专业细分下拉选单列表
+     */
+    @Log(title = "获取专业细分下拉选单列表",businessType = BusinessType.OTHER)
+    @Operation(summary = "获取专业细分下拉选单列表")
+    @GetMapping("/getDegreeMajorSpecialization")
+    public Object getDegreeMajorSpecialization(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+        try {
+            String uuid = humanresourceBaseInfoDTO.getUuid();
+            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(HumanresourceBaseinfo::getParentId, uuid);
+            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapper);
+            return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
         }

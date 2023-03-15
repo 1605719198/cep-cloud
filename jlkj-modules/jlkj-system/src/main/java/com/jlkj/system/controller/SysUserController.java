@@ -2,9 +2,13 @@ package com.jlkj.system.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.common.core.web.page.PageQuery;
+import com.jlkj.common.core.web.page.TableDataInfoPlus;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -81,7 +85,15 @@ public class SysUserController extends BaseController
         List<SysUser> list = userService.selectUserList(user);
         return R.ok(list);
     }
-
+    /**
+     * 查询用户列表，用于用户选择场景
+     */
+    @GetMapping("/selectUser")
+    public TableDataInfo selectUser(SysUser user) {
+        startPage();
+        List<SysUser> list = userService.selectUserList(user);
+        return getDataTable(list);
+    }
     /**
      * 获取用户列表
      */
@@ -91,6 +103,25 @@ public class SysUserController extends BaseController
     {
         SysUser user = userService.selectUserById(userId);
         return R.ok(user);
+    }
+    /**
+     * 根据角色id获取用户id
+     */
+    @InnerAuth
+    @GetMapping("/selectUserIdsByRoleId/{roleId}")
+    public R<List<Long>> selectUserIdsByRoleId(@PathVariable("roleId") Long roleId) {
+        return R.ok(userService.selectUserIdsByRoleId(roleId));
+    }
+
+    /**
+     * 根据条件获取userid
+     * @param groups
+     * @return
+     */
+    @InnerAuth
+    @PostMapping("/selectList")
+    public R<List<Long>> selectList(@RequestBody List<String> groups) {
+        return R.ok(userService.selectList(groups));
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)

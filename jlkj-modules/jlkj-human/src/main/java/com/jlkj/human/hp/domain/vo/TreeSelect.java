@@ -2,7 +2,6 @@ package com.jlkj.human.hp.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.domain.vo.SysMenu;
 
 import java.io.Serializable;
 import java.util.List;

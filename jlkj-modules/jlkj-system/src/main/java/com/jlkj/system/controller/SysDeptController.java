@@ -1,6 +1,8 @@
 package com.jlkj.system.controller;
 
 import java.util.List;
+
+import com.jlkj.common.security.annotation.InnerAuth;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -79,6 +81,17 @@ public class SysDeptController extends BaseController
         }
         dept.setCreateBy(SecurityUtils.getUsername());
         return toAjax(deptService.insertDept(dept));
+    }
+
+    /**
+     * 根据部门编号获取详细信息
+     */
+    @InnerAuth
+    @GetMapping(value = "/selectDeptById/{deptId}")
+    public AjaxResult selectDeptById(@PathVariable Long deptId)
+    {
+        deptService.checkDeptDataScope(deptId);
+        return success(deptService.selectDeptById(deptId));
     }
 
     /**

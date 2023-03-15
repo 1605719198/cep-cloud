@@ -218,4 +218,18 @@ public interface ISysUserService
     List<SysUser> selectAllUserList(SysUser user);
 
 
+
+    /**
+     * 根据角色id获取用户id
+     * @param roleId
+     * @return
+     */
+    List<Long> selectUserIdsByRoleId(Long roleId);
+
+    /**
+     * 根据条件获取userid
+     * @param groups
+     * @return
+     */
+    List<Long> selectList(List<String> groups);
 }

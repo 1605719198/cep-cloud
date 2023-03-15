@@ -131,4 +131,11 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    /**
+     * 条件查询userid
+     * @param groups
+     * @return
+     */
+    List<Long> selectList(List<String> groups);
 }

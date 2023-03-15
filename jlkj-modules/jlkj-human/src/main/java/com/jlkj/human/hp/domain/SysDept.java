@@ -1,14 +1,12 @@
 package com.jlkj.human.hp.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门资料维护对象 sys_dept
