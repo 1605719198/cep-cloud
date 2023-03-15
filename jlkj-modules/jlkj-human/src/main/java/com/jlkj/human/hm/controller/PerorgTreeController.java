@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.human.hm.domain.HumanresourcePerorgTree;
-import com.jlkj.human.hm.service.IHumanresourcePerorgTreeService;
+import com.jlkj.human.hm.domain.PerorgTree;
+import com.jlkj.human.hm.service.IPerorgTreeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/humanresource/perorg/tree")
-public class HumanresourcePerorgTreeController {
+public class PerorgTreeController {
     @Autowired
-    private IHumanresourcePerorgTreeService humanresourcePerorgTreeService;
+    private IPerorgTreeService humanresourcePerorgTreeService;
     /**
      * 获取机构及人员树结构资料
      */
@@ -39,7 +39,7 @@ public class HumanresourcePerorgTreeController {
     @GetMapping("/getOrganizationTreeList")
     @Log(title = "获取机构及人员树结构资料",businessType = BusinessType.OTHER)
     public AjaxResult getOrganizationTreeList(){
-        List<HumanresourcePerorgTree> list = humanresourcePerorgTreeService.getOrganizationTreeList();
+        List<PerorgTree> list = humanresourcePerorgTreeService.getOrganizationTreeList();
         return AjaxResult.success(list);
     }
     /**
@@ -49,7 +49,7 @@ public class HumanresourcePerorgTreeController {
     @GetMapping("/getOrganizationDelTreeList")
     @Log(title = "获取机构及人员树结构资料",businessType = BusinessType.OTHER)
     public AjaxResult getOrganizationDelTreeList(){
-        List<HumanresourcePerorgTree> list = humanresourcePerorgTreeService.getOrganizationDelTreeList();
+        List<PerorgTree> list = humanresourcePerorgTreeService.getOrganizationDelTreeList();
         return AjaxResult.success(list);
     }
     /**
@@ -59,7 +59,7 @@ public class HumanresourcePerorgTreeController {
     @GetMapping("/getOrganizationDeptTreeList")
     @Log(title = "获取机构树结构资料",businessType = BusinessType.OTHER)
     public AjaxResult getOrganizationDeptTreeList(){
-        List<HumanresourcePerorgTree> list = humanresourcePerorgTreeService.getOrganizationDeptTreeList();
+        List<PerorgTree> list = humanresourcePerorgTreeService.getOrganizationDeptTreeList();
         return AjaxResult.success(list);
     }
 
@@ -70,10 +70,10 @@ public class HumanresourcePerorgTreeController {
     @GetMapping("/getOrganizationUserList")
     @Log(title = "根据部门ID获取人员资料",businessType = BusinessType.OTHER)
     public AjaxResult getOrganizationUserList(@RequestParam(defaultValue = "") String id){
-        QueryWrapper<HumanresourcePerorgTree> wrapper = new QueryWrapper<>();
+        QueryWrapper<PerorgTree> wrapper = new QueryWrapper<>();
         wrapper.eq("flag","user")
                 .eq("parent_id",id);
-        List<HumanresourcePerorgTree> userList = humanresourcePerorgTreeService.list(wrapper);
+        List<PerorgTree> userList = humanresourcePerorgTreeService.list(wrapper);
         return AjaxResult.success(userList);
     }
     /**
@@ -83,7 +83,7 @@ public class HumanresourcePerorgTreeController {
     @GetMapping("/getPersonnerlInfoList")
     @Log(title = "根据部门ID获取人员资料",businessType = BusinessType.OTHER)
     public AjaxResult getPersonnerlInfoList() {
-        List<HumanresourcePerorgTree> list = humanresourcePerorgTreeService.list(new QueryWrapper<HumanresourcePerorgTree>().eq("flag", "user"));
+        List<PerorgTree> list = humanresourcePerorgTreeService.list(new QueryWrapper<PerorgTree>().eq("flag", "user"));
         List<Map<String, String>> collectList = list.stream().map(item -> {
             Map<String, String> map = new HashMap<>(2);
             map.put("value", item.getJobNumber());

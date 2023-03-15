@@ -5,7 +5,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.HumanresourcePersonnelEducation;
-import com.jlkj.human.hm.dto.HumanresourcePersonnelEducationDTO;
+import com.jlkj.human.hm.dto.PersonnelEducationDTO;
 import com.jlkj.human.hm.service.HumanresourcePersonnelEducationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personnel/education")
-public class HumanresourcePersonnelEducationController {
+public class PersonnelEducationController {
 
     @Autowired
     private HumanresourcePersonnelEducationService humanresourcePersonnelEducationService;
@@ -34,8 +34,8 @@ public class HumanresourcePersonnelEducationController {
     @Log(title = "新增教育经历信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增教育经历信息")
     @PostMapping("/addEducationExperienceData")
-    public Object addEducationExperienceData(@RequestBody HumanresourcePersonnelEducationDTO humanresourcePersonnelEducationDTO) {
-        List<HumanresourcePersonnelEducation> educationalExperienceList = humanresourcePersonnelEducationDTO.getEducationalExperienceList();
+    public Object addEducationExperienceData(@RequestBody PersonnelEducationDTO personnelEducationDTO) {
+        List<HumanresourcePersonnelEducation> educationalExperienceList = personnelEducationDTO.getEducationalExperienceList();
         for (HumanresourcePersonnelEducation item : educationalExperienceList) {
             item.setCreator(SecurityUtils.getNickName());
         }

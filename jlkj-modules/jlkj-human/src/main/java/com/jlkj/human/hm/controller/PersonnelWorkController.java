@@ -5,7 +5,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.HumanresourcePersonnelWork;
-import com.jlkj.human.hm.dto.HumanresourcePersonnelWorkDTO;
+import com.jlkj.human.hm.dto.PersonnelWorkDTO;
 import com.jlkj.human.hm.service.HumanresourcePersonnelWorkService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personnel/work")
-public class HumanresourcePersonnelWorkController {
+public class PersonnelWorkController {
 
     @Autowired
     private HumanresourcePersonnelWorkService humanresourcePersonnelWorkService;
@@ -35,8 +35,8 @@ public class HumanresourcePersonnelWorkController {
     @Log(title = "新增工作经历信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增工作经历信息")
     @PostMapping("/addWorkExperienceData")
-    public Object addWorkExperienceData(@RequestBody HumanresourcePersonnelWorkDTO humanresourcePersonnelWorkDTO) {
-        List<HumanresourcePersonnelWork> workExperienceList = humanresourcePersonnelWorkDTO.getWorkExperienceList();
+    public Object addWorkExperienceData(@RequestBody PersonnelWorkDTO personnelWorkDTO) {
+        List<HumanresourcePersonnelWork> workExperienceList = personnelWorkDTO.getWorkExperienceList();
         for (HumanresourcePersonnelWork item : workExperienceList) {
             item.setCreator(SecurityUtils.getNickName());
         }

@@ -5,7 +5,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.HumanresourcePersonnelOccupation;
-import com.jlkj.human.hm.dto.HumanresourcePersonnelOccupationDTO;
+import com.jlkj.human.hm.dto.PersonnelOccupationDTO;
 import com.jlkj.human.hm.service.HumanresourcePersonnelOccupationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personnel/occupation")
-public class HumanresourcePersonnelOccupationController {
+public class PersonnelOccupationController {
 
     @Autowired
     private HumanresourcePersonnelOccupationService humanresourcePersonnelOccupationService;
@@ -34,8 +34,8 @@ public class HumanresourcePersonnelOccupationController {
     @Log(title = "新增职业资格信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增职业资格信息")
     @PostMapping("/addOccupationData")
-    public Object addOccupationData(@RequestBody HumanresourcePersonnelOccupationDTO humanresourcePersonnelOccupationDTO) {
-        List<HumanresourcePersonnelOccupation> occupationList = humanresourcePersonnelOccupationDTO.getOccupationList();
+    public Object addOccupationData(@RequestBody PersonnelOccupationDTO personnelOccupationDTO) {
+        List<HumanresourcePersonnelOccupation> occupationList = personnelOccupationDTO.getOccupationList();
         for (HumanresourcePersonnelOccupation item : occupationList) {
             item.setCreator(SecurityUtils.getNickName());
         }

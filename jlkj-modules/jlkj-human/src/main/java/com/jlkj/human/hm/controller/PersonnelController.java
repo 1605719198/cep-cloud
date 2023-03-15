@@ -3,18 +3,19 @@ package com.jlkj.human.hm.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.human.hm.HumanresourcePersonnelDTO;
+import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.config.PinyinAPI;
-import com.jlkj.human.hm.domain.HumanresourcePersonnel;
-import com.jlkj.human.hm.service.IHumanresourcePersonnelService;
+import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 /**
  * <p>
@@ -26,46 +27,49 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personnel/base")
-public class HumanresourcePersonnelController {
+public class PersonnelController {
     @Autowired
-    private IHumanresourcePersonnelService humanresourcePersonnelService;
+    private IPersonnelService humanresourcePersonnelService;
+
     /**
      * Mq新增人员资料
      */
-    @Log(title = "新增人员资料",businessType = BusinessType.INSERT)
+    @Log(title = "新增人员资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员资料")
     @PostMapping("/addPersonnelData")
-    public void addPersonnelData(@RequestBody HumanresourcePersonnelDTO humanresourcePersonnelDTO, @RequestHeader("token") String token){
-        humanresourcePersonnelService.saveData(humanresourcePersonnelDTO);
+    public void addPersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
+        humanresourcePersonnelService.saveData(personnelDTO);
     }
+
     /**
      * Mq修改人员资料
      */
-    @Log(title = "修改人员资料",businessType = BusinessType.UPDATE)
+    @Log(title = "修改人员资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改人员资料")
     @PutMapping("/updatePersonnelData")
-    public void updatePersonnelData(@RequestBody HumanresourcePersonnelDTO humanresourcePersonnelDTO,@RequestHeader("token") String token){
-        humanresourcePersonnelService.updateData(humanresourcePersonnelDTO);
+    public void updatePersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
+        humanresourcePersonnelService.updateData(personnelDTO);
     }
+
     /**
      * Mq删除人员资料
      */
-    @Log(title = "删除人员资料",businessType = BusinessType.DELETE)
+    @Log(title = "删除人员资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除人员资料")
     @DeleteMapping("/deletePersonnelData")
-    public void deletePersonnelData(@RequestBody HumanresourcePersonnelDTO humanresourcePersonnelDTO,@RequestHeader("token") String token){
-        HumanresourcePersonnel humanresourcePersonnel = new HumanresourcePersonnel();
-        BeanUtils.copyProperties(humanresourcePersonnelDTO,humanresourcePersonnel);
-        humanresourcePersonnelService.removeData(humanresourcePersonnelDTO);
+    public void deletePersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
+        Personnel personnel = new Personnel();
+        BeanUtils.copyProperties(personnelDTO, personnel);
+        humanresourcePersonnelService.removeData(personnelDTO);
     }
 
     /**
      * 新增人员基本信息
      */
-    @Log(title = "新增人员基本信息",businessType = BusinessType.INSERT)
+    @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员基本信息")
     @PostMapping("/addPersonnelBasicInfo")
-    public Object addPersonnelBasicInfo(@RequestBody HumanresourcePersonnel humanresourcePersonnel) {
+    public Object addPersonnelBasicInfo(@RequestBody Personnel humanresourcePersonnel) {
         // 根据姓名 取得大写首字母
         humanresourcePersonnel.setFullNamePinyin(PinyinAPI.getPinYinHeadChar(humanresourcePersonnel.getFullName()));
         boolean result = humanresourcePersonnelService.saveOrUpdate(humanresourcePersonnel);
@@ -79,17 +83,16 @@ public class HumanresourcePersonnelController {
     /**
      * 获取人员基本信息查询列表
      */
-    @Log(title = "获取人员基本信息查询列表",businessType = BusinessType.OTHER)
+    @Log(title = "获取人员基本信息查询列表", businessType = BusinessType.OTHER)
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")
-    public Object getPersonnelBasicInfoList(HumanresourcePersonnel humanresourcePersonnel) {
+    public Object getPersonnelBasicInfoList(Personnel humanresourcePersonnel) {
         try {
             String compId = humanresourcePersonnel.getCompId();
             String empNo = humanresourcePersonnel.getEmpNo();
-            LambdaQueryWrapper<HumanresourcePersonnel> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(compId), HumanresourcePersonnel::getCompId, compId)
-                        .eq(HumanresourcePersonnel::getEmpNo, empNo);
-            List<HumanresourcePersonnel> list = humanresourcePersonnelService.list(queryWrapper);
+            LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId).eq(Personnel::getEmpNo, empNo);
+            List<Personnel> list = humanresourcePersonnelService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {

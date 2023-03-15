@@ -1,11 +1,11 @@
 package com.jlkj.human.hm.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.dto.human.hm.HumanresourceOrganizationDTO;
+import com.jlkj.common.dto.human.hm.OrganizationDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.human.hm.dto.HumanresourceOrganizationTreeDTO;
-import com.jlkj.human.hm.service.IHumanresourceOrganizationService;
+import com.jlkj.human.hm.dto.eOrganizationTreeDTO;
+import com.jlkj.human.hm.service.IOrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/humanresource/organization/base")
-public class HumanresourceOrganizationController {
+public class OrganizationController {
     @Autowired
-    private IHumanresourceOrganizationService humanresourceOrganizationService;
+    private IOrganizationService humanresourceOrganizationService;
 
     /**
      * 新增机构资料
@@ -32,8 +32,8 @@ public class HumanresourceOrganizationController {
     @Log(title = "新增机构资料",businessType = BusinessType.INSERT)
     @Operation(summary = "新增机构资料")
     @PostMapping("/addOrganizationData")
-    public void addOrganizationData(@RequestBody HumanresourceOrganizationDTO humanresourceOrganizationDTO,@RequestHeader("token") String token){
-        humanresourceOrganizationService.saveData(humanresourceOrganizationDTO);
+    public void addOrganizationData(@RequestBody OrganizationDTO organizationDTO, @RequestHeader("token") String token){
+        humanresourceOrganizationService.saveData(organizationDTO);
     }
     /**
      * 修改岗位资料
@@ -41,8 +41,8 @@ public class HumanresourceOrganizationController {
     @Log(title = "修改机构资料",businessType = BusinessType.UPDATE)
     @Operation(summary = "修改机构资料")
     @PutMapping("/updateOrganizationData")
-    public void updateOrganizationData(@RequestBody HumanresourceOrganizationDTO humanresourceOrganizationDTO,@RequestHeader("token") String token){
-        humanresourceOrganizationService.updateData(humanresourceOrganizationDTO);
+    public void updateOrganizationData(@RequestBody OrganizationDTO organizationDTO, @RequestHeader("token") String token){
+        humanresourceOrganizationService.updateData(organizationDTO);
     }
     /**
      * 删除机构资料
@@ -50,8 +50,8 @@ public class HumanresourceOrganizationController {
     @Log(title = "删除机构资料",businessType = BusinessType.DELETE)
     @Operation(summary = "删除机构资料")
     @DeleteMapping("/deleteOrganizationData")
-    public void deleteOrganizationData(@RequestBody HumanresourceOrganizationDTO humanresourceOrganizationDTO, @RequestHeader("token") String token){
-        humanresourceOrganizationService.removeData(humanresourceOrganizationDTO);
+    public void deleteOrganizationData(@RequestBody OrganizationDTO organizationDTO, @RequestHeader("token") String token){
+        humanresourceOrganizationService.removeData(organizationDTO);
     }
 
     /**
@@ -62,7 +62,7 @@ public class HumanresourceOrganizationController {
     @Operation(summary = "获取机构树结构资料")
     @GetMapping("/getOrganizationTreeList")
     public AjaxResult getOrganizationTreeList(){
-        List<HumanresourceOrganizationTreeDTO> list = humanresourceOrganizationService.getOrganizationTreeList();
+        List<eOrganizationTreeDTO> list = humanresourceOrganizationService.getOrganizationTreeList();
         return AjaxResult.success(list);
     }
 
