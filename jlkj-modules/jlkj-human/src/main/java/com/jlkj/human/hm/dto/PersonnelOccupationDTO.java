@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelTrain;
+import com.jlkj.human.hm.domain.PersonnelOccupation;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,12 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 人员培训经历表
- * @TableName human_hm_personnel_train
+ * 人员职业资格表
+ * @TableName human_hm_personnel_occupation
  */
-@TableName(value ="human_hm_personnel_train")
+@TableName(value ="human_hm_personnel_occupation")
 @Data
-public class HumanresourcePersonnelTrainDTO implements Serializable {
+public class PersonnelOccupationDTO implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -36,39 +36,34 @@ public class HumanresourcePersonnelTrainDTO implements Serializable {
     private String empId;
 
     /**
-     * 开始日期
+     * 职业证书编号
      */
-    private Date startDate;
+    private String vocCerNo;
 
     /**
-     * 结束日期
+     * 职业类别
      */
-    private Date endDate;
+    private String vocType;
 
     /**
-     * 授课单位
+     * 名称
      */
-    private String trainComp;
+    private String name;
 
     /**
-     * 类别（内容）
+     * 证书等级
      */
-    private String content;
+    private String cerTier;
 
     /**
-     * 项目
+     * 发证日期
      */
-    private String project;
+    private Date cerDate;
 
     /**
-     * 获得资格
+     * 发证机关
      */
-    private String qualification;
-
-    /**
-     * 获得证书
-     */
-    private String certificate;
+    private String cerComp;
 
     /**
      * 是否公司内
@@ -113,9 +108,9 @@ public class HumanresourcePersonnelTrainDTO implements Serializable {
     private String alternateField4;
 
     /**
-     * 培训经历List
+     * 职业资格信息List
      */
-    List<HumanresourcePersonnelTrain> cultivateExperienceList;
+    List<PersonnelOccupation> occupationList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

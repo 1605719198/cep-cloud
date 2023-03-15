@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelFamily;
+import com.jlkj.human.hm.domain.PersonnelWork;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,12 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 人员家属信息表
- * @TableName human_hm_personnel_family
+ * 人员工作经历表
+ * @TableName human_hm_personnel_work
  */
-@TableName(value ="human_hm_personnel_family")
+@TableName(value ="human_hm_personnel_work")
 @Data
-public class HumanresourcePersonnelFamilyDTO implements Serializable {
+public class PersonnelWorkDTO implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -31,44 +31,59 @@ public class HumanresourcePersonnelFamilyDTO implements Serializable {
     private String compId;
 
     /**
-     * 员工ID（人员基础信息表uuid）
+     * 员工ID
      */
     private String empId;
 
     /**
-     * 与本人关系
+     * 开始日期
      */
-    private String relationId;
+    private Date startDate;
 
     /**
-     * 姓名
+     * 截止日期
      */
-    private String name;
+    private Date endDate;
 
     /**
-     * 出生日期
+     * 单位
      */
-    private Date birthDate;
+    private String comp;
 
     /**
-     * 现居住地
+     * 部门
      */
-    private String homeAddress;
+    private String dept;
 
     /**
-     * 户口所在地
+     * 职务（岗位）
      */
-    private String registerAddress;
+    private String post;
 
     /**
-     * 工作单位
+     * 证明人
      */
-    private String workComp;
+    private String prover;
 
     /**
-     * 联系电话
+     * 证明人联系方式
      */
     private String tele;
+
+    /**
+     * 工作变动原因
+     */
+    private String changeReasonId;
+
+    /**
+     * 输入类型
+     */
+    private String inputType;
+
+    /**
+     * 是否公司内
+     */
+    private String ifInComp;
 
     /**
      * 更新人员
@@ -108,9 +123,9 @@ public class HumanresourcePersonnelFamilyDTO implements Serializable {
     private String alternateField4;
 
     /**
-     * 家属信息List
+     * 工作经历List
      */
-    List<HumanresourcePersonnelFamily> familyList;
+    List<PersonnelWork> workExperienceList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

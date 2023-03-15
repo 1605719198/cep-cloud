@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelEducation;
+import com.jlkj.human.hm.domain.PersonnelEducation;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 @TableName(value ="human_hm_personnel_education")
 @Data
-public class HumanresourcePersonnelEducationDTO implements Serializable {
+public class PersonnelEducationDTO implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -130,7 +130,7 @@ public class HumanresourcePersonnelEducationDTO implements Serializable {
     /**
      * 教育经历List
      */
-    List<HumanresourcePersonnelEducation> educationalExperienceList;
+    List<PersonnelEducation> educationalExperienceList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

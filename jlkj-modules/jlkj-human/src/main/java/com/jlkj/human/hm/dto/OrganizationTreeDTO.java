@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @since 2022-05-05
  */
 @TableName("human_hm_organization")
-public class HumanresourceOrganizationTreeDTO {
+public class OrganizationTreeDTO {
 
 
     /**
@@ -48,12 +48,12 @@ public class HumanresourceOrganizationTreeDTO {
     /**
      * 用来封装子节点数据
      */
-    private List<HumanresourceOrganizationTreeDTO> children;
+    private List<OrganizationTreeDTO> children;
 
-    public HumanresourceOrganizationTreeDTO() {
+    public OrganizationTreeDTO() {
     }
 
-    public HumanresourceOrganizationTreeDTO(String id, String label, String parentId, String parentName, String flag, String jobNumber, String icon, List<HumanresourceOrganizationTreeDTO> children) {
+    public OrganizationTreeDTO(String id, String label, String parentId, String parentName, String flag, String jobNumber, String icon, List<OrganizationTreeDTO> children) {
         this.id = id;
         this.label = label;
         this.parentId = parentId;
@@ -64,7 +64,7 @@ public class HumanresourceOrganizationTreeDTO {
         this.children = children;
     }
 
-    public HumanresourceOrganizationTreeDTO(HumanresourceOrganizationTreeDTO humanresourceOrganization) {
+    public OrganizationTreeDTO(OrganizationTreeDTO humanresourceOrganization) {
         this.id = humanresourceOrganization.getId();
         this.label = humanresourceOrganization.getLabel();
         this.parentId = humanresourceOrganization.getParentId();
@@ -72,7 +72,7 @@ public class HumanresourceOrganizationTreeDTO {
         this.flag = humanresourceOrganization.getFlag();
         this.jobNumber = humanresourceOrganization.getJobNumber();
         this.icon = humanresourceOrganization.getIcon();
-        this.children = humanresourceOrganization.getChildren().stream().map(HumanresourceOrganizationTreeDTO::new).collect(Collectors.toList());
+        this.children = humanresourceOrganization.getChildren().stream().map(OrganizationTreeDTO::new).collect(Collectors.toList());
     }
 
     public String getIcon() {
@@ -99,11 +99,11 @@ public class HumanresourceOrganizationTreeDTO {
         this.flag = flag;
     }
 
-    public List<HumanresourceOrganizationTreeDTO> getChildren() {
+    public List<OrganizationTreeDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<HumanresourceOrganizationTreeDTO> children) {
+    public void setChildren(List<OrganizationTreeDTO> children) {
         this.children = children;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @TableName(value ="human_hm_baseinfo")
 @Data
-public class HumanresourceBaseInfoDTO {
+public class BaseInfoDTO {
 
     /**
      * uuid 主键ID

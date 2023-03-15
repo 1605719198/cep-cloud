@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelOccupation;
+import com.jlkj.human.hm.domain.PersonnelTrain;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,12 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 人员职业资格表
- * @TableName human_hm_personnel_occupation
+ * 人员培训经历表
+ * @TableName human_hm_personnel_train
  */
-@TableName(value ="human_hm_personnel_occupation")
+@TableName(value ="human_hm_personnel_train")
 @Data
-public class HumanresourcePersonnelOccupationDTO implements Serializable {
+public class PersonnelTrainDTO implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -36,34 +36,39 @@ public class HumanresourcePersonnelOccupationDTO implements Serializable {
     private String empId;
 
     /**
-     * 职业证书编号
+     * 开始日期
      */
-    private String vocCerNo;
+    private Date startDate;
 
     /**
-     * 职业类别
+     * 结束日期
      */
-    private String vocType;
+    private Date endDate;
 
     /**
-     * 名称
+     * 授课单位
      */
-    private String name;
+    private String trainComp;
 
     /**
-     * 证书等级
+     * 类别（内容）
      */
-    private String cerTier;
+    private String content;
 
     /**
-     * 发证日期
+     * 项目
      */
-    private Date cerDate;
+    private String project;
 
     /**
-     * 发证机关
+     * 获得资格
      */
-    private String cerComp;
+    private String qualification;
+
+    /**
+     * 获得证书
+     */
+    private String certificate;
 
     /**
      * 是否公司内
@@ -108,9 +113,9 @@ public class HumanresourcePersonnelOccupationDTO implements Serializable {
     private String alternateField4;
 
     /**
-     * 职业资格信息List
+     * 培训经历List
      */
-    List<HumanresourcePersonnelOccupation> occupationList;
+    List<PersonnelTrain> cultivateExperienceList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

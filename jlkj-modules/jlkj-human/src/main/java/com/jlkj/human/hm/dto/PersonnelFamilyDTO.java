@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelProfessional;
+import com.jlkj.human.hm.domain.PersonnelFamily;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,12 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 人员职称信息表
- * @TableName human_hm_personnel_professional
+ * 人员家属信息表
+ * @TableName human_hm_personnel_family
  */
-@TableName(value ="human_hm_personnel_professional")
+@TableName(value ="human_hm_personnel_family")
 @Data
-public class HumanresourcePersonnelProfessionalDTO implements Serializable {
+public class PersonnelFamilyDTO implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -36,34 +36,39 @@ public class HumanresourcePersonnelProfessionalDTO implements Serializable {
     private String empId;
 
     /**
-     * 职称类别
+     * 与本人关系
      */
-    private String proTypeId;
+    private String relationId;
 
     /**
-     * 职称专业
+     * 姓名
      */
-    private String proSpecId;
+    private String name;
 
     /**
-     * 职称级别
+     * 出生日期
      */
-    private String proTierId;
+    private Date birthDate;
 
     /**
-     * 证书编号
+     * 现居住地
      */
-    private String cerNo;
+    private String homeAddress;
 
     /**
-     * 评定日期
+     * 户口所在地
      */
-    private Date cerDate;
+    private String registerAddress;
 
     /**
-     * 发证机关
+     * 工作单位
      */
-    private String cerComp;
+    private String workComp;
+
+    /**
+     * 联系电话
+     */
+    private String tele;
 
     /**
      * 更新人员
@@ -103,9 +108,9 @@ public class HumanresourcePersonnelProfessionalDTO implements Serializable {
     private String alternateField4;
 
     /**
-     * 职称信息List
+     * 家属信息List
      */
-    List<HumanresourcePersonnelProfessional> professionalList;
+    List<PersonnelFamily> familyList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
