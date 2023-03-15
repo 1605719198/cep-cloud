@@ -6,7 +6,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.human.config.PinyinAPI;
+import com.jlkj.human.config.PinYinApi;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +71,7 @@ public class PersonnelController {
     @PostMapping("/addPersonnelBasicInfo")
     public Object addPersonnelBasicInfo(@RequestBody Personnel humanresourcePersonnel) {
         // 根据姓名 取得大写首字母
-        humanresourcePersonnel.setFullNamePinyin(PinyinAPI.getPinYinHeadChar(humanresourcePersonnel.getFullName()));
+        humanresourcePersonnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(humanresourcePersonnel.getFullName()));
         boolean result = humanresourcePersonnelService.saveOrUpdate(humanresourcePersonnel);
         if (result) {
             return AjaxResult.success("保存成功");

@@ -4,9 +4,9 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelFamily;
+import com.jlkj.human.hm.domain.PersonnelFamily;
 import com.jlkj.human.hm.dto.PersonnelFamilyDTO;
-import com.jlkj.human.hm.service.HumanresourcePersonnelFamilyService;
+import com.jlkj.human.hm.service.IPersonnelFamilyService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PersonnelFamilyController {
 
     @Autowired
-    private HumanresourcePersonnelFamilyService humanresourcePersonnelFamilyService;
+    private IPersonnelFamilyService iPersonnelFamilyService;
 
     /**
      * 新增家属信息
@@ -35,11 +35,11 @@ public class PersonnelFamilyController {
     @Operation(summary = "新增家属信息")
     @PostMapping("/addFamilyData")
     public Object addFamilyData(@RequestBody PersonnelFamilyDTO personnelFamilyDTO) {
-        List<HumanresourcePersonnelFamily> familyList = personnelFamilyDTO.getFamilyList();
-        for (HumanresourcePersonnelFamily item : familyList) {
+        List<PersonnelFamily> familyList = personnelFamilyDTO.getFamilyList();
+        for (PersonnelFamily item : familyList) {
             item.setCreator(SecurityUtils.getNickName());
         }
-        boolean result = humanresourcePersonnelFamilyService.saveOrUpdateBatch(familyList);
+        boolean result = iPersonnelFamilyService.saveOrUpdateBatch(familyList);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {

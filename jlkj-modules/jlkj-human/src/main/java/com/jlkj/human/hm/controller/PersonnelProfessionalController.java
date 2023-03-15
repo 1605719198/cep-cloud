@@ -4,9 +4,9 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelProfessional;
+import com.jlkj.human.hm.domain.PersonnelProfessional;
 import com.jlkj.human.hm.dto.PersonnelProfessionalDTO;
-import com.jlkj.human.hm.service.HumanresourcePersonnelProfessionalService;
+import com.jlkj.human.hm.service.IPersonnelProfessionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PersonnelProfessionalController {
 
     @Autowired
-    private HumanresourcePersonnelProfessionalService humanresourcePersonnelProfessionalService;
+    private IPersonnelProfessionalService iPersonnelProfessionalService;
 
     /**
      * 新增职称信息
@@ -35,11 +35,11 @@ public class PersonnelProfessionalController {
     @Operation(summary = "新增职称信息")
     @PostMapping("/addProfessionalData")
     public Object addProfessionalData(@RequestBody PersonnelProfessionalDTO personnelProfessionalDTO) {
-        List<HumanresourcePersonnelProfessional> professionalList = personnelProfessionalDTO.getProfessionalList();
-        for (HumanresourcePersonnelProfessional item : professionalList) {
+        List<PersonnelProfessional> professionalList = personnelProfessionalDTO.getProfessionalList();
+        for (PersonnelProfessional item : professionalList) {
             item.setCreator(SecurityUtils.getNickName());
         }
-        boolean result = humanresourcePersonnelProfessionalService.saveOrUpdateBatch(professionalList);
+        boolean result = iPersonnelProfessionalService.saveOrUpdateBatch(professionalList);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {

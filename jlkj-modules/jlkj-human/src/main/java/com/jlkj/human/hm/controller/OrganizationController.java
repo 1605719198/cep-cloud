@@ -4,7 +4,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.OrganizationDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.human.hm.dto.eOrganizationTreeDTO;
+import com.jlkj.human.hm.dto.OrganizationTreeDTO;
 import com.jlkj.human.hm.service.IOrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class OrganizationController {
     @Operation(summary = "获取机构树结构资料")
     @GetMapping("/getOrganizationTreeList")
     public AjaxResult getOrganizationTreeList(){
-        List<eOrganizationTreeDTO> list = humanresourceOrganizationService.getOrganizationTreeList();
+        List<OrganizationTreeDTO> list = humanresourceOrganizationService.getOrganizationTreeList();
         return AjaxResult.success(list);
     }
 

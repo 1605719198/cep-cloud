@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hm.mapper.PersonnelEducationMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hm.domain.PersonnelEducation">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+            <result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+            <result property="school" column="school" jdbcType="VARCHAR"/>
+            <result property="specId" column="spec_id" jdbcType="VARCHAR"/>
+            <result property="psubSpecId" column="psub_spec_id" jdbcType="VARCHAR"/>
+            <result property="trainStypeId" column="train_stype_id" jdbcType="VARCHAR"/>
+            <result property="experId" column="exper_id" jdbcType="VARCHAR"/>
+            <result property="experNo" column="exper_no" jdbcType="VARCHAR"/>
+            <result property="degreeId" column="degree_id" jdbcType="VARCHAR"/>
+            <result property="degreeNo" column="degree_no" jdbcType="VARCHAR"/>
+            <result property="ifInComp" column="if_in_comp" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="alternateField1" column="alternate_field1" jdbcType="VARCHAR"/>
+            <result property="alternateField2" column="alternate_field2" jdbcType="VARCHAR"/>
+            <result property="alternateField3" column="alternate_field3" jdbcType="VARCHAR"/>
+            <result property="alternateField4" column="alternate_field4" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,emp_id,
+        start_date,end_date,school,
+        spec_id,psub_spec_id,train_stype_id,
+        exper_id,exper_no,degree_id,
+        degree_no,if_in_comp,creator,
+        creator_id,create_date,alternate_field1,
+        alternate_field2,alternate_field3,alternate_field4
+    </sql>
+</mapper>

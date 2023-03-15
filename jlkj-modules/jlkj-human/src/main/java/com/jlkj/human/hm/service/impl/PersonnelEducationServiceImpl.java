@@ -2,7 +2,7 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.PersonnelEducation;
-import com.jlkj.human.hm.service.HumanresourcePersonnelEducationService;
+import com.jlkj.human.hm.service.IPersonnelEducationService;
 import com.jlkj.human.hm.mapper.PersonnelEducationMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class PersonnelEducationServiceImpl extends ServiceImpl<PersonnelEducationMapper, PersonnelEducation>
-    implements HumanresourcePersonnelEducationService{
+    implements IPersonnelEducationService {
 
 }
 

@@ -5,9 +5,9 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelTrain;
+import com.jlkj.human.hm.domain.PersonnelTrain;
 import com.jlkj.human.hm.dto.PersonnelTrainDTO;
-import com.jlkj.human.hm.service.HumanresourcePersonnelTrainService;
+import com.jlkj.human.hm.service.IPersonnelTrainService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ import java.util.List;
 public class PersonnelTrainController {
 
     @Autowired
-    private HumanresourcePersonnelTrainService humanresourcePersonnelTrainService;
+    private IPersonnelTrainService iPersonnelTrainService;
 
     /**
      * 新增培训经历信息
@@ -36,11 +36,11 @@ public class PersonnelTrainController {
     @Operation(summary = "新增培训经历信息")
     @PostMapping("/addCultivateExperienceData")
     public Object addCultivateExperienceData(@RequestBody PersonnelTrainDTO personnelTrainDTO) {
-        List<HumanresourcePersonnelTrain> cultivateExperienceList = personnelTrainDTO.getCultivateExperienceList();
-        for (HumanresourcePersonnelTrain item : cultivateExperienceList) {
+        List<PersonnelTrain> cultivateExperienceList = personnelTrainDTO.getCultivateExperienceList();
+        for (PersonnelTrain item : cultivateExperienceList) {
             item.setCreator(SecurityUtils.getNickName());
         }
-        boolean result = humanresourcePersonnelTrainService.saveOrUpdateBatch(cultivateExperienceList);
+        boolean result = iPersonnelTrainService.saveOrUpdateBatch(cultivateExperienceList);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {

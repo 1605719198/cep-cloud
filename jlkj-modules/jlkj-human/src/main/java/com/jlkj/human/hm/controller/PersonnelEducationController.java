@@ -4,9 +4,9 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelEducation;
+import com.jlkj.human.hm.domain.PersonnelEducation;
 import com.jlkj.human.hm.dto.PersonnelEducationDTO;
-import com.jlkj.human.hm.service.HumanresourcePersonnelEducationService;
+import com.jlkj.human.hm.service.IPersonnelEducationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PersonnelEducationController {
 
     @Autowired
-    private HumanresourcePersonnelEducationService humanresourcePersonnelEducationService;
+    private IPersonnelEducationService iPersonnelEducationService;
 
     /**
      * 新增教育经历信息
@@ -35,11 +35,11 @@ public class PersonnelEducationController {
     @Operation(summary = "新增教育经历信息")
     @PostMapping("/addEducationExperienceData")
     public Object addEducationExperienceData(@RequestBody PersonnelEducationDTO personnelEducationDTO) {
-        List<HumanresourcePersonnelEducation> educationalExperienceList = personnelEducationDTO.getEducationalExperienceList();
-        for (HumanresourcePersonnelEducation item : educationalExperienceList) {
+        List<PersonnelEducation> educationalExperienceList = personnelEducationDTO.getEducationalExperienceList();
+        for (PersonnelEducation item : educationalExperienceList) {
             item.setCreator(SecurityUtils.getNickName());
         }
-        boolean result = humanresourcePersonnelEducationService.saveOrUpdateBatch(educationalExperienceList);
+        boolean result = iPersonnelEducationService.saveOrUpdateBatch(educationalExperienceList);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {

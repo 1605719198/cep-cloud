@@ -28,7 +28,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Autowired
     private SysDeptMapper sysDeptMapper;
     @Autowired
-    private SysDeptVersionMapper SysDeptVersionMapper;
+    private SysDeptVersionMapper sysDeptVersionMapper;
 
     /**
      * 查询部门资料维护
@@ -127,7 +127,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         int insertOk=sysDeptMapper.insertSysDept(sysDept);
         if(insertOk>=1){
             BeanUtils.copyProperties(sysDept,sysDeptVersion);
-            SysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
+            sysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
         }
         return insertOk;
     }
@@ -162,8 +162,8 @@ public class SysDeptServiceImpl implements ISysDeptService
         int updateOk=sysDeptMapper.updateSysDept(sysDept);
         if(updateOk==1){
             BeanUtils.copyProperties(sysDept,sysDeptVersion);
-            SysDeptVersionMapper.updateisNew(sysDeptVersion.getDeptId());
-            SysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
+            sysDeptVersionMapper.updateisNew(sysDeptVersion.getDeptId());
+            sysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
         }
         return updateOk;
     }

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 /**
  * 选单配置表
  * @TableName human_hm_baseinfo
+ * @author 111191
  */
 @TableName(value ="human_hm_baseinfo")
 @Data

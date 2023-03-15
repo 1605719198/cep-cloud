@@ -29,7 +29,7 @@ import java.util.Map;
 public class BaseInfoController {
 
     @Autowired
-    BaseinfoServiceImpl BaseinfoService;
+    BaseinfoServiceImpl baseinfoService;
 
     /**
      * 获取选单配置树
@@ -38,7 +38,7 @@ public class BaseInfoController {
     @Operation(summary = "选单配置树")
     @GetMapping("/tree")
     public Object getDepartmentTree() {
-        List<Baseinfo> list = BaseinfoService.getBaseInfoTreeList();
+        List<Baseinfo> list = baseinfoService.getBaseInfoTreeList();
         return AjaxResult.success(list);
     }
 
@@ -48,15 +48,15 @@ public class BaseInfoController {
     @Log(title = "获取子节点查询列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取子节点查询列表")
     @GetMapping("/list")
-    public Object getChildrenList(BaseInfoDTO BaseInfoDTO) {
+    public Object getChildrenList(BaseInfoDTO baseInfoDTO) {
         try {
-            String uuid = BaseInfoDTO.getUuid();
-            Long pageNum = BaseInfoDTO.getPageNum();
-            Long pageSize = BaseInfoDTO.getPageSize();
+            String uuid = baseInfoDTO.getUuid();
+            Long pageNum = baseInfoDTO.getPageNum();
+            Long pageSize = baseInfoDTO.getPageSize();
             LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getParentId, uuid)
                         .orderByAsc(Baseinfo::getDicNo);
-            Page<Baseinfo> page =BaseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
+            Page<Baseinfo> page =baseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
             long total = page.getTotal();
             //数据list集合
             List<Baseinfo> records = page.getRecords();
@@ -87,11 +87,11 @@ public class BaseInfoController {
             LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(Baseinfo::getDicNo, dicNo)
                     .eq(Baseinfo::getDicName, dicName);
-            List<Baseinfo> list = BaseinfoService.list(queryWrapper);
+            List<Baseinfo> list = baseinfoService.list(queryWrapper);
             if (!list.isEmpty()) {
                 return AjaxResult.error("数据已存在，不允许重复！！！");
             }
-            boolean result = BaseinfoService.save(baseinfo);
+            boolean result = baseinfoService.save(baseinfo);
             if (result) {
                 return AjaxResult.success("保存成功");
             } else {
@@ -113,7 +113,7 @@ public class BaseInfoController {
             String uuid = baseinfo.getUuid();
             LambdaUpdateWrapper<Baseinfo> updateWrapper = new LambdaUpdateWrapper<>();
             updateWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getUuid, uuid);
-            boolean result = BaseinfoService.update(baseinfo, updateWrapper);
+            boolean result = baseinfoService.update(baseinfo, updateWrapper);
             if (result) {
                 return AjaxResult.success("保存成功");
             } else {
@@ -134,13 +134,13 @@ public class BaseInfoController {
         try {
             LambdaQueryWrapper<Baseinfo> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Baseinfo::getParentId, uuid);
-            List<Baseinfo> list = BaseinfoService.list(wrapper);
+            List<Baseinfo> list = baseinfoService.list(wrapper);
             if (!list.isEmpty()) {
                 return AjaxResult.error("存在子类选单资料，不可删除资料");
             }
             LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(Baseinfo::getUuid, uuid);
-            boolean delete = BaseinfoService.remove(queryWrapper);
+            boolean delete = baseinfoService.remove(queryWrapper);
             return AjaxResult.success(delete);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -161,9 +161,9 @@ public class BaseInfoController {
                 LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
                 LambdaQueryWrapper<Baseinfo> queryWrapperA = new LambdaQueryWrapper<>();
                 queryWrapper.eq(Baseinfo::getDicNo, item);
-                Baseinfo baseInfo = BaseinfoService.getOne(queryWrapper);
+                Baseinfo baseInfo = baseinfoService.getOne(queryWrapper);
                 queryWrapperA.eq(Baseinfo::getParentId, baseInfo.getUuid());
-                List<Baseinfo> list = BaseinfoService.list(queryWrapperA);
+                List<Baseinfo> list = baseinfoService.list(queryWrapperA);
                 map.put(item, list);
             }
             return AjaxResult.success("查询成功！", map);
@@ -183,7 +183,7 @@ public class BaseInfoController {
             String uuid = baseInfoDTO.getUuid();
             LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(Baseinfo::getParentId, uuid);
-            List<Baseinfo> list = BaseinfoService.list(queryWrapper);
+            List<Baseinfo> list = baseinfoService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
