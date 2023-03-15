@@ -5,7 +5,7 @@ package com.jlkj.common.dto.human.hm;
  * @author: Xin
  * @time: 2022/4/28 16:40
  */
-public class HumanresourceBoardDTO {
+public class BoardDTO {
     /**
      * 主键ID
      */
@@ -39,10 +39,10 @@ public class HumanresourceBoardDTO {
      */
     private String usedTimes;
 
-    public HumanresourceBoardDTO() {
+    public BoardDTO() {
     }
 
-    public HumanresourceBoardDTO(String id, String boardTypeCode, String boardTypeName, String createDate, String creator, String creatorId, String status, String usedTimes) {
+    public BoardDTO(String id, String boardTypeCode, String boardTypeName, String createDate, String creator, String creatorId, String status, String usedTimes) {
         this.id = id;
         this.boardTypeCode = boardTypeCode;
         this.boardTypeName = boardTypeName;

@@ -14,7 +14,7 @@ import java.util.Date;
  * @since 2022-04-29
  */
 @TableName("t_humanresource_personnel")
-public class HumanresourcePersonnelDTO {
+public class PersonnelDTO {
 
     private static final long serialVersionUID = 1L;
 

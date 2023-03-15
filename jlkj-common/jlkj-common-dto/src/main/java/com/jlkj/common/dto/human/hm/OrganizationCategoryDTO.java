@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 职位等级数据
+ * 机构细类数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("t_humanresource_position_level")
-public class HumanresourcePositionLevelDTO {
+@TableName("t_humanresource_organization_category")
+public class OrganizationCategoryDTO {
 
     /**
      * 主键
@@ -21,14 +21,14 @@ public class HumanresourcePositionLevelDTO {
     private String id;
 
     /**
-     * 职位等级代号
+     * 机构细类代号
      */
-    private String positionLevelCode;
+    private String organizationCategoryCode;
 
     /**
-     * 职位等级名称
+     * 机构细类名称
      */
-    private String positionLevelName;
+    private String organizationCategoryName;
 
     /**
      * 状态
@@ -54,6 +54,11 @@ public class HumanresourcePositionLevelDTO {
      * 使用次数
      */
     private String usedTimes;
+
+    /**
+     * 所属机构类别
+     */
+    private String organizationTypeId;
 
     /**
      * 创建时间
@@ -82,19 +87,19 @@ public class HumanresourcePositionLevelDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getPositionLevelCode() {
-        return positionLevelCode;
+    public String getOrganizationCategoryCode() {
+        return organizationCategoryCode;
     }
 
-    public void setPositionLevelCode(String positionLevelCode) {
-        this.positionLevelCode = positionLevelCode;
+    public void setOrganizationCategoryCode(String organizationCategoryCode) {
+        this.organizationCategoryCode = organizationCategoryCode;
     }
-    public String getPositionLevelName() {
-        return positionLevelName;
+    public String getOrganizationCategoryName() {
+        return organizationCategoryName;
     }
 
-    public void setPositionLevelName(String positionLevelName) {
-        this.positionLevelName = positionLevelName;
+    public void setOrganizationCategoryName(String organizationCategoryName) {
+        this.organizationCategoryName = organizationCategoryName;
     }
     public String getStatus() {
         return status;
@@ -131,6 +136,13 @@ public class HumanresourcePositionLevelDTO {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getOrganizationTypeId() {
+        return organizationTypeId;
+    }
+
+    public void setOrganizationTypeId(String organizationTypeId) {
+        this.organizationTypeId = organizationTypeId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -162,15 +174,16 @@ public class HumanresourcePositionLevelDTO {
 
     @Override
     public String toString() {
-        return "HumanresourcePositionLevel{" +
+        return "HumanresourceOrganizationCategory{" +
             "id=" + id +
-            ", positionLevelCode=" + positionLevelCode +
-            ", positionLevelName=" + positionLevelName +
+            ", organizationCategoryCode=" + organizationCategoryCode +
+            ", organizationCategoryName=" + organizationCategoryName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", organizationTypeId=" + organizationTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

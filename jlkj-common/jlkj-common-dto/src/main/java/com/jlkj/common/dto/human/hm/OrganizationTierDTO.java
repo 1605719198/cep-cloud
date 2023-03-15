@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 职位名称数据
+ * 机构层级数据
  * </p>
  *
  * @author xin
- * @since 2022-05-20
+ * @since 2022-05-18
  */
-@TableName("t_humanresource_job_title")
-public class HumanresourceJobTitleDTO {
+@TableName("t_humanresource_organization_tier")
+public class OrganizationTierDTO {
 
     /**
      * 主键
@@ -21,14 +21,14 @@ public class HumanresourceJobTitleDTO {
     private String id;
 
     /**
-     * 职位名称代号
+     * 机构层级代号
      */
-    private String jobTitleCode;
+    private String organizationTierCode;
 
     /**
-     * 职位名称
+     * 机构层级名称
      */
-    private String jobTitleName;
+    private String organizationTierName;
 
     /**
      * 状态
@@ -82,19 +82,19 @@ public class HumanresourceJobTitleDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getJobTitleCode() {
-        return jobTitleCode;
+    public String getOrganizationTierCode() {
+        return organizationTierCode;
     }
 
-    public void setJobTitleCode(String jobTitleCode) {
-        this.jobTitleCode = jobTitleCode;
+    public void setOrganizationTierCode(String organizationTierCode) {
+        this.organizationTierCode = organizationTierCode;
     }
-    public String getJobTitleName() {
-        return jobTitleName;
+    public String getOrganizationTierName() {
+        return organizationTierName;
     }
 
-    public void setJobTitleName(String jobTitleName) {
-        this.jobTitleName = jobTitleName;
+    public void setOrganizationTierName(String organizationTierName) {
+        this.organizationTierName = organizationTierName;
     }
     public String getStatus() {
         return status;
@@ -162,10 +162,10 @@ public class HumanresourceJobTitleDTO {
 
     @Override
     public String toString() {
-        return "HumanresourceJobTitle{" +
+        return "HumanresourceOrganizationTier{" +
             "id=" + id +
-            ", jobTitleCode=" + jobTitleCode +
-            ", jobTitleName=" + jobTitleName +
+            ", organizationTierCode=" + organizationTierCode +
+            ", organizationTierName=" + organizationTierName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

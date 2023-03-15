@@ -6,14 +6,15 @@ import java.util.Date;
 
 /**
  * <p>
- * 专长类别数据
+ * 专长数据
  * </p>
  *
  * @author xin
- * @since 2022-05-20
+ * @since 2022-05-05
  */
-@TableName("t_humanresource_speciality_type")
-public class HumanresourceSpecialityTypeDTO {
+@TableName("t_humanresource_speciality")
+public class SpecialityDTO {
+
 
     /**
      * 主键
@@ -21,14 +22,14 @@ public class HumanresourceSpecialityTypeDTO {
     private String id;
 
     /**
-     * 专长类别代号
+     * 专长代号
      */
-    private String specialityTypeCode;
+    private String specialityCode;
 
     /**
-     * 专长类别名称
+     * 专长名称
      */
-    private String specialityTypeName;
+    private String specialityName;
 
     /**
      * 状态
@@ -56,6 +57,11 @@ public class HumanresourceSpecialityTypeDTO {
     private String usedTimes;
 
     /**
+     * 所属专长类别
+     */
+    private String specialityTypeId;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -75,6 +81,16 @@ public class HumanresourceSpecialityTypeDTO {
      */
     private String updateUser;
 
+    /**
+     * 创建人姓名
+     */
+    private String createUserName;
+
+    /**
+     * 修改人姓名
+     */
+    private String updateUserName;
+
     public String getId() {
         return id;
     }
@@ -82,19 +98,19 @@ public class HumanresourceSpecialityTypeDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getSpecialityTypeCode() {
-        return specialityTypeCode;
+    public String getSpecialityCode() {
+        return specialityCode;
     }
 
-    public void setSpecialityTypeCode(String specialityTypeCode) {
-        this.specialityTypeCode = specialityTypeCode;
+    public void setSpecialityCode(String specialityCode) {
+        this.specialityCode = specialityCode;
     }
-    public String getSpecialityTypeName() {
-        return specialityTypeName;
+    public String getSpecialityName() {
+        return specialityName;
     }
 
-    public void setSpecialityTypeName(String specialityTypeName) {
-        this.specialityTypeName = specialityTypeName;
+    public void setSpecialityName(String specialityName) {
+        this.specialityName = specialityName;
     }
     public String getStatus() {
         return status;
@@ -131,6 +147,13 @@ public class HumanresourceSpecialityTypeDTO {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getSpecialityTypeId() {
+        return specialityTypeId;
+    }
+
+    public void setSpecialityTypeId(String specialityTypeId) {
+        this.specialityTypeId = specialityTypeId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -159,22 +182,39 @@ public class HumanresourceSpecialityTypeDTO {
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
 
     @Override
     public String toString() {
-        return "HumanresourceSpecialityType{" +
+        return "HumanresourceSpeciality{" +
             "id=" + id +
-            ", specialityTypeCode=" + specialityTypeCode +
-            ", specialityTypeName=" + specialityTypeName +
+            ", specialityCode=" + specialityCode +
+            ", specialityName=" + specialityName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", specialityTypeId=" + specialityTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +
             ", updateUser=" + updateUser +
+            ", createUserName=" + createUserName +
+            ", updateUserName=" + updateUserName +
         "}";
     }
 }

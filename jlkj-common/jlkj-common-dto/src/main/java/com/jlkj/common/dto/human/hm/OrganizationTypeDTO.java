@@ -6,14 +6,15 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构层级数据
+ * 机构类别数据
  * </p>
  *
  * @author xin
- * @since 2022-05-18
+ * @since 2022-05-19
  */
-@TableName("t_humanresource_organization_tier")
-public class HumanresourceOrganizationTierDTO {
+@TableName("t_humanresource_organization_type")
+public class OrganizationTypeDTO {
+
 
     /**
      * 主键
@@ -21,14 +22,14 @@ public class HumanresourceOrganizationTierDTO {
     private String id;
 
     /**
-     * 机构层级代号
+     * 机构类别代号
      */
-    private String organizationTierCode;
+    private String organizationTypeCode;
 
     /**
-     * 机构层级名称
+     * 机构类别名称
      */
-    private String organizationTierName;
+    private String organizationTypeName;
 
     /**
      * 状态
@@ -82,19 +83,19 @@ public class HumanresourceOrganizationTierDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationTierCode() {
-        return organizationTierCode;
+    public String getOrganizationTypeCode() {
+        return organizationTypeCode;
     }
 
-    public void setOrganizationTierCode(String organizationTierCode) {
-        this.organizationTierCode = organizationTierCode;
+    public void setOrganizationTypeCode(String organizationTypeCode) {
+        this.organizationTypeCode = organizationTypeCode;
     }
-    public String getOrganizationTierName() {
-        return organizationTierName;
+    public String getOrganizationTypeName() {
+        return organizationTypeName;
     }
 
-    public void setOrganizationTierName(String organizationTierName) {
-        this.organizationTierName = organizationTierName;
+    public void setOrganizationTypeName(String organizationTypeName) {
+        this.organizationTypeName = organizationTypeName;
     }
     public String getStatus() {
         return status;
@@ -162,10 +163,10 @@ public class HumanresourceOrganizationTierDTO {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationTier{" +
+        return "HumanresourceOrganizationType{" +
             "id=" + id +
-            ", organizationTierCode=" + organizationTierCode +
-            ", organizationTierName=" + organizationTierName +
+            ", organizationTypeCode=" + organizationTypeCode +
+            ", organizationTypeName=" + organizationTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

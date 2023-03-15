@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 岗位工作地点数据
+ * 岗位类别数据
  * </p>
  *
  * @author xin
- * @since 2022-05-20
+ * @since 2022-05-19
  */
-@TableName("t_humanresource_work_address")
-public class HumanresourceWorkAddressDTO {
+@TableName("t_humanresource_post_type")
+public class PostTypeDTO {
 
     /**
      * 主键
@@ -21,14 +21,14 @@ public class HumanresourceWorkAddressDTO {
     private String id;
 
     /**
-     * 工作地点代号
+     * 岗位类别代号
      */
-    private String workAddressCode;
+    private String postTypeCode;
 
     /**
-     * 工作地点名称
+     * 岗位类别名称
      */
-    private String workAddressName;
+    private String postTypeName;
 
     /**
      * 状态
@@ -54,6 +54,11 @@ public class HumanresourceWorkAddressDTO {
      * 使用次数
      */
     private String usedTimes;
+
+    /**
+     * 所属岗位序列
+     */
+    private String postSequenceId;
 
     /**
      * 创建时间
@@ -82,19 +87,19 @@ public class HumanresourceWorkAddressDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getWorkAddressCode() {
-        return workAddressCode;
+    public String getPostTypeCode() {
+        return postTypeCode;
     }
 
-    public void setWorkAddressCode(String workAddressCode) {
-        this.workAddressCode = workAddressCode;
+    public void setPostTypeCode(String postTypeCode) {
+        this.postTypeCode = postTypeCode;
     }
-    public String getWorkAddressName() {
-        return workAddressName;
+    public String getPostTypeName() {
+        return postTypeName;
     }
 
-    public void setWorkAddressName(String workAddressName) {
-        this.workAddressName = workAddressName;
+    public void setPostTypeName(String postTypeName) {
+        this.postTypeName = postTypeName;
     }
     public String getStatus() {
         return status;
@@ -131,6 +136,13 @@ public class HumanresourceWorkAddressDTO {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getPostSequenceId() {
+        return postSequenceId;
+    }
+
+    public void setPostSequenceId(String postSequenceId) {
+        this.postSequenceId = postSequenceId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -162,15 +174,16 @@ public class HumanresourceWorkAddressDTO {
 
     @Override
     public String toString() {
-        return "HumanresourceWorkAddress{" +
+        return "HumanresourcePostType{" +
             "id=" + id +
-            ", workAddressCode=" + workAddressCode +
-            ", workAddressName=" + workAddressName +
+            ", postTypeCode=" + postTypeCode +
+            ", postTypeName=" + postTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", postSequenceId=" + postSequenceId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构细类数据
+ * 职位名称数据
  * </p>
  *
  * @author xin
- * @since 2022-05-19
+ * @since 2022-05-20
  */
-@TableName("t_humanresource_organization_category")
-public class HumanresourceOrganizationCategoryDTO {
+@TableName("t_humanresource_job_title")
+public class JobTitleDTO {
 
     /**
      * 主键
@@ -21,14 +21,14 @@ public class HumanresourceOrganizationCategoryDTO {
     private String id;
 
     /**
-     * 机构细类代号
+     * 职位名称代号
      */
-    private String organizationCategoryCode;
+    private String jobTitleCode;
 
     /**
-     * 机构细类名称
+     * 职位名称
      */
-    private String organizationCategoryName;
+    private String jobTitleName;
 
     /**
      * 状态
@@ -54,11 +54,6 @@ public class HumanresourceOrganizationCategoryDTO {
      * 使用次数
      */
     private String usedTimes;
-
-    /**
-     * 所属机构类别
-     */
-    private String organizationTypeId;
 
     /**
      * 创建时间
@@ -87,19 +82,19 @@ public class HumanresourceOrganizationCategoryDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationCategoryCode() {
-        return organizationCategoryCode;
+    public String getJobTitleCode() {
+        return jobTitleCode;
     }
 
-    public void setOrganizationCategoryCode(String organizationCategoryCode) {
-        this.organizationCategoryCode = organizationCategoryCode;
+    public void setJobTitleCode(String jobTitleCode) {
+        this.jobTitleCode = jobTitleCode;
     }
-    public String getOrganizationCategoryName() {
-        return organizationCategoryName;
+    public String getJobTitleName() {
+        return jobTitleName;
     }
 
-    public void setOrganizationCategoryName(String organizationCategoryName) {
-        this.organizationCategoryName = organizationCategoryName;
+    public void setJobTitleName(String jobTitleName) {
+        this.jobTitleName = jobTitleName;
     }
     public String getStatus() {
         return status;
@@ -136,13 +131,6 @@ public class HumanresourceOrganizationCategoryDTO {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
-    public String getOrganizationTypeId() {
-        return organizationTypeId;
-    }
-
-    public void setOrganizationTypeId(String organizationTypeId) {
-        this.organizationTypeId = organizationTypeId;
-    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -174,16 +162,15 @@ public class HumanresourceOrganizationCategoryDTO {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationCategory{" +
+        return "HumanresourceJobTitle{" +
             "id=" + id +
-            ", organizationCategoryCode=" + organizationCategoryCode +
-            ", organizationCategoryName=" + organizationCategoryName +
+            ", jobTitleCode=" + jobTitleCode +
+            ", jobTitleName=" + jobTitleName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
-            ", organizationTypeId=" + organizationTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

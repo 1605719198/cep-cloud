@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * @author Xin
  */
-public class HumanresourceOrganizationDTO {
+public class OrganizationDTO {
 
     /**
      * 主键

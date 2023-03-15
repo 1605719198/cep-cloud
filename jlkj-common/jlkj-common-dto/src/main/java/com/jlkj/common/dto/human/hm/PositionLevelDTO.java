@@ -6,15 +6,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构类别数据
+ * 职位等级数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("t_humanresource_organization_type")
-public class HumanresourceOrganizationTypeDTO {
-
+@TableName("t_humanresource_position_level")
+public class PositionLevelDTO {
 
     /**
      * 主键
@@ -22,14 +21,14 @@ public class HumanresourceOrganizationTypeDTO {
     private String id;
 
     /**
-     * 机构类别代号
+     * 职位等级代号
      */
-    private String organizationTypeCode;
+    private String positionLevelCode;
 
     /**
-     * 机构类别名称
+     * 职位等级名称
      */
-    private String organizationTypeName;
+    private String positionLevelName;
 
     /**
      * 状态
@@ -83,19 +82,19 @@ public class HumanresourceOrganizationTypeDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationTypeCode() {
-        return organizationTypeCode;
+    public String getPositionLevelCode() {
+        return positionLevelCode;
     }
 
-    public void setOrganizationTypeCode(String organizationTypeCode) {
-        this.organizationTypeCode = organizationTypeCode;
+    public void setPositionLevelCode(String positionLevelCode) {
+        this.positionLevelCode = positionLevelCode;
     }
-    public String getOrganizationTypeName() {
-        return organizationTypeName;
+    public String getPositionLevelName() {
+        return positionLevelName;
     }
 
-    public void setOrganizationTypeName(String organizationTypeName) {
-        this.organizationTypeName = organizationTypeName;
+    public void setPositionLevelName(String positionLevelName) {
+        this.positionLevelName = positionLevelName;
     }
     public String getStatus() {
         return status;
@@ -163,10 +162,10 @@ public class HumanresourceOrganizationTypeDTO {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationType{" +
+        return "HumanresourcePositionLevel{" +
             "id=" + id +
-            ", organizationTypeCode=" + organizationTypeCode +
-            ", organizationTypeName=" + organizationTypeName +
+            ", positionLevelCode=" + positionLevelCode +
+            ", positionLevelName=" + positionLevelName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

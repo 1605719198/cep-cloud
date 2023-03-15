@@ -13,7 +13,7 @@ import java.util.Date;
  * @since 2022-04-29
  */
 @TableName("t_humanresource_post")
-public class HumanresourcePostDTO {
+public class PostDTO {
 
     private static final long serialVersionUID = 1L;
 

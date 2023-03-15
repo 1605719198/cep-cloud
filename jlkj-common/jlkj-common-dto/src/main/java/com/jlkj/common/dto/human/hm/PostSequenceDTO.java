@@ -1,19 +1,22 @@
 package com.jlkj.common.dto.human.hm;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 /**
  * <p>
- * 职级数据
+ * 岗位序列数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("t_humanresource_positions_class")
-public class HumanresourcePositionsClassDTO {
+@TableName("t_humanresource_post_sequence")
+public class PostSequenceDTO {
 
     /**
      * 主键
@@ -21,14 +24,14 @@ public class HumanresourcePositionsClassDTO {
     private String id;
 
     /**
-     * 职级代号
+     * 岗位序列代号
      */
-    private String positionsClassCode;
+    private String postSequenceCode;
 
     /**
-     * 职级名称
+     * 岗位序列名称
      */
-    private String positionsClassName;
+    private String postSequenceName;
 
     /**
      * 状态
@@ -58,11 +61,15 @@ public class HumanresourcePositionsClassDTO {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     /**
@@ -82,19 +89,19 @@ public class HumanresourcePositionsClassDTO {
     public void setId(String id) {
         this.id = id;
     }
-    public String getPositionsClassCode() {
-        return positionsClassCode;
+    public String getPostSequenceCode() {
+        return postSequenceCode;
     }
 
-    public void setPositionsClassCode(String positionsClassCode) {
-        this.positionsClassCode = positionsClassCode;
+    public void setPostSequenceCode(String postSequenceCode) {
+        this.postSequenceCode = postSequenceCode;
     }
-    public String getPositionsClassName() {
-        return positionsClassName;
+    public String getPostSequenceName() {
+        return postSequenceName;
     }
 
-    public void setPositionsClassName(String positionsClassName) {
-        this.positionsClassName = positionsClassName;
+    public void setPostSequenceName(String postSequenceName) {
+        this.postSequenceName = postSequenceName;
     }
     public String getStatus() {
         return status;
@@ -162,10 +169,10 @@ public class HumanresourcePositionsClassDTO {
 
     @Override
     public String toString() {
-        return "HumanresourcePositionsClass{" +
+        return "HumanresourcePostSequence{" +
             "id=" + id +
-            ", positionsClassCode=" + positionsClassCode +
-            ", positionsClassName=" + positionsClassName +
+            ", postSequenceCode=" + postSequenceCode +
+            ", postSequenceName=" + postSequenceName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
