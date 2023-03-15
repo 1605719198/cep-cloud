@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @TableName(value ="human_hm_personnel_education")
 @Data
-public class HumanresourcePersonnelEducation implements Serializable {
+public class PersonnelEducation implements Serializable {
     /**
      * uuid 主键ID
      */

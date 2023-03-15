@@ -15,7 +15,7 @@ import java.util.Date;
  * @since 2022-05-19
  */
 @TableName("human_hm_positions_class")
-public class HumanresourcePositionsClass implements Serializable {
+public class PositionsClass implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

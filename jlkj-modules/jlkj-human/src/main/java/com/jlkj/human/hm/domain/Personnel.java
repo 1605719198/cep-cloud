@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @TableName(value ="human_hm_personnel_info")
 @Data
-public class HumanresourcePersonnel implements Serializable {
+public class Personnel implements Serializable {
     /**
      * 主键
      */

@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人员职业资格表
- * @TableName human_hm_personnel_occupation
+ * 人员家属信息表
+ * @TableName human_hm_personnel_family
  */
-@TableName(value ="human_hm_personnel_occupation")
+@TableName(value ="human_hm_personnel_family")
 @Data
-public class HumanresourcePersonnelOccupation implements Serializable {
+public class PersonnelFamily implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -34,39 +34,39 @@ public class HumanresourcePersonnelOccupation implements Serializable {
     private String empId;
 
     /**
-     * 职业证书编号
+     * 与本人关系
      */
-    private String vocCerNo;
+    private String relationId;
 
     /**
-     * 职业类别
-     */
-    private String vocType;
-
-    /**
-     * 名称
+     * 姓名
      */
     private String name;
 
     /**
-     * 证书等级
+     * 出生日期
      */
-    private String cerTier;
+    private Date birthDate;
 
     /**
-     * 发证日期
+     * 现居住地
      */
-    private Date cerDate;
+    private String homeAddress;
 
     /**
-     * 发证机关
+     * 户口所在地
      */
-    private String cerComp;
+    private String registerAddress;
 
     /**
-     * 是否公司内
+     * 工作单位
      */
-    private String ifInComp;
+    private String workComp;
+
+    /**
+     * 联系电话
+     */
+    private String tele;
 
     /**
      * 更新人员

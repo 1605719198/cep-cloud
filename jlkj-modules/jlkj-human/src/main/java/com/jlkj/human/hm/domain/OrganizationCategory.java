@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 专长类别数据
+ * 机构细类数据
  * </p>
  *
  * @author xin
- * @since 2022-05-20
+ * @since 2022-05-19
  */
-@TableName("human_hm_speciality_type")
-public class HumanresourceSpecialityType implements Serializable {
+@TableName("human_hm_organization_category")
+public class OrganizationCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourceSpecialityType implements Serializable {
     private String id;
 
     /**
-     * 专长类别代号
+     * 机构细类代号
      */
-    private String specialityTypeCode;
+    private String organizationCategoryCode;
 
     /**
-     * 专长类别名称
+     * 机构细类名称
      */
-    private String specialityTypeName;
+    private String organizationCategoryName;
 
     /**
      * 状态
@@ -59,6 +59,11 @@ public class HumanresourceSpecialityType implements Serializable {
      * 使用次数
      */
     private String usedTimes;
+
+    /**
+     * 所属机构类别
+     */
+    private String organizationTypeId;
 
     /**
      * 创建时间
@@ -91,19 +96,19 @@ public class HumanresourceSpecialityType implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getSpecialityTypeCode() {
-        return specialityTypeCode;
+    public String getOrganizationCategoryCode() {
+        return organizationCategoryCode;
     }
 
-    public void setSpecialityTypeCode(String specialityTypeCode) {
-        this.specialityTypeCode = specialityTypeCode;
+    public void setOrganizationCategoryCode(String organizationCategoryCode) {
+        this.organizationCategoryCode = organizationCategoryCode;
     }
-    public String getSpecialityTypeName() {
-        return specialityTypeName;
+    public String getOrganizationCategoryName() {
+        return organizationCategoryName;
     }
 
-    public void setSpecialityTypeName(String specialityTypeName) {
-        this.specialityTypeName = specialityTypeName;
+    public void setOrganizationCategoryName(String organizationCategoryName) {
+        this.organizationCategoryName = organizationCategoryName;
     }
     public String getStatus() {
         return status;
@@ -140,6 +145,13 @@ public class HumanresourceSpecialityType implements Serializable {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getOrganizationTypeId() {
+        return organizationTypeId;
+    }
+
+    public void setOrganizationTypeId(String organizationTypeId) {
+        this.organizationTypeId = organizationTypeId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -171,15 +183,16 @@ public class HumanresourceSpecialityType implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourceSpecialityType{" +
+        return "HumanresourceOrganizationCategory{" +
             "id=" + id +
-            ", specialityTypeCode=" + specialityTypeCode +
-            ", specialityTypeName=" + specialityTypeName +
+            ", organizationCategoryCode=" + organizationCategoryCode +
+            ", organizationCategoryName=" + organizationCategoryName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", organizationTypeId=" + organizationTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

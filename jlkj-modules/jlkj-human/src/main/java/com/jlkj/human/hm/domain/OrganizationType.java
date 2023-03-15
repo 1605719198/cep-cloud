@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 职位名称数据
+ * 机构类别数据
  * </p>
  *
  * @author xin
- * @since 2022-05-20
+ * @since 2022-05-19
  */
-@TableName("human_hm_job_title")
-public class HumanresourceJobTitle implements Serializable {
+@TableName("human_hm_organization_type")
+public class OrganizationType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourceJobTitle implements Serializable {
     private String id;
 
     /**
-     * 职位名称代号
+     * 机构类别代号
      */
-    private String jobTitleCode;
+    private String organizationTypeCode;
 
     /**
-     * 职位名称
+     * 机构类别名称
      */
-    private String jobTitleName;
+    private String organizationTypeName;
 
     /**
      * 状态
@@ -91,19 +91,19 @@ public class HumanresourceJobTitle implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getJobTitleCode() {
-        return jobTitleCode;
+    public String getOrganizationTypeCode() {
+        return organizationTypeCode;
     }
 
-    public void setJobTitleCode(String jobTitleCode) {
-        this.jobTitleCode = jobTitleCode;
+    public void setOrganizationTypeCode(String organizationTypeCode) {
+        this.organizationTypeCode = organizationTypeCode;
     }
-    public String getJobTitleName() {
-        return jobTitleName;
+    public String getOrganizationTypeName() {
+        return organizationTypeName;
     }
 
-    public void setJobTitleName(String jobTitleName) {
-        this.jobTitleName = jobTitleName;
+    public void setOrganizationTypeName(String organizationTypeName) {
+        this.organizationTypeName = organizationTypeName;
     }
     public String getStatus() {
         return status;
@@ -171,10 +171,10 @@ public class HumanresourceJobTitle implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourceJobTitle{" +
+        return "HumanresourceOrganizationType{" +
             "id=" + id +
-            ", jobTitleCode=" + jobTitleCode +
-            ", jobTitleName=" + jobTitleName +
+            ", organizationTypeCode=" + organizationTypeCode +
+            ", organizationTypeName=" + organizationTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

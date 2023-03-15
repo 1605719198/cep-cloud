@@ -8,32 +8,32 @@ import java.util.Date;
 
 /**
  * <p>
- * 板块基础资料
+ * 专长数据
  * </p>
  *
- * @author Xin
- * @since 2022-04-28
+ * @author xin
+ * @since 2022-05-05
  */
-@TableName("human_hm_board")
-public class HumanresourceBoard implements Serializable {
+@TableName("human_hm_speciality")
+public class Speciality implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键ID
+     * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 板块代号
+     * 专长代号
      */
-    private String boardTypeCode;
+    private String specialityCode;
 
     /**
-     * 板块名称
+     * 专长名称
      */
-    private String boardTypeName;
+    private String specialityName;
 
     /**
      * 状态
@@ -61,6 +61,11 @@ public class HumanresourceBoard implements Serializable {
     private String usedTimes;
 
     /**
+     * 所属专长类别
+     */
+    private String specialityTypeId;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
@@ -84,6 +89,16 @@ public class HumanresourceBoard implements Serializable {
      */
     private String updateUser;
 
+    /**
+     * 创建人姓名
+     */
+    private String createUserName;
+
+    /**
+     * 修改人姓名
+     */
+    private String updateUserName;
+
     public String getId() {
         return id;
     }
@@ -91,19 +106,19 @@ public class HumanresourceBoard implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getBoardTypeCode() {
-        return boardTypeCode;
+    public String getSpecialityCode() {
+        return specialityCode;
     }
 
-    public void setBoardTypeCode(String boardTypeCode) {
-        this.boardTypeCode = boardTypeCode;
+    public void setSpecialityCode(String specialityCode) {
+        this.specialityCode = specialityCode;
     }
-    public String getBoardTypeName() {
-        return boardTypeName;
+    public String getSpecialityName() {
+        return specialityName;
     }
 
-    public void setBoardTypeName(String boardTypeName) {
-        this.boardTypeName = boardTypeName;
+    public void setSpecialityName(String specialityName) {
+        this.specialityName = specialityName;
     }
     public String getStatus() {
         return status;
@@ -140,6 +155,13 @@ public class HumanresourceBoard implements Serializable {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getSpecialityTypeId() {
+        return specialityTypeId;
+    }
+
+    public void setSpecialityTypeId(String specialityTypeId) {
+        this.specialityTypeId = specialityTypeId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -168,22 +190,39 @@ public class HumanresourceBoard implements Serializable {
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
 
     @Override
     public String toString() {
-        return "HumanresourceBoard{" +
+        return "HumanresourceSpeciality{" +
             "id=" + id +
-            ", boardTypeCode=" + boardTypeCode +
-            ", boardTypeName=" + boardTypeName +
+            ", specialityCode=" + specialityCode +
+            ", specialityName=" + specialityName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", specialityTypeId=" + specialityTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +
             ", updateUser=" + updateUser +
+            ", createUserName=" + createUserName +
+            ", updateUserName=" + updateUserName +
         "}";
     }
 }

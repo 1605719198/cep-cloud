@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @SuppressWarnings("AlibabaMethodTooLong")
 @TableName("human_hm_staff")
-public class HumanresourceStaff implements Serializable {
+public class Staff implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人员职称信息表
- * @TableName human_hm_personnel_professional
+ * 人员工作经历表
+ * @TableName human_hm_personnel_work
  */
-@TableName(value ="human_hm_personnel_professional")
+@TableName(value ="human_hm_personnel_work")
 @Data
-public class HumanresourcePersonnelProfessional implements Serializable {
+public class PersonnelWork implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -29,39 +29,59 @@ public class HumanresourcePersonnelProfessional implements Serializable {
     private String compId;
 
     /**
-     * 员工ID（人员基础信息表uuid）
+     * 员工ID
      */
     private String empId;
 
     /**
-     * 职称类别
+     * 开始日期
      */
-    private String proTypeId;
+    private Date startDate;
 
     /**
-     * 职称专业
+     * 截止日期
      */
-    private String proSpecId;
+    private Date endDate;
 
     /**
-     * 职称级别
+     * 单位
      */
-    private String proTierId;
+    private String comp;
 
     /**
-     * 证书编号
+     * 部门
      */
-    private String cerNo;
+    private String dept;
 
     /**
-     * 评定日期
+     * 职务（岗位）
      */
-    private Date cerDate;
+    private String post;
 
     /**
-     * 发证机关
+     * 证明人
      */
-    private String cerComp;
+    private String prover;
+
+    /**
+     * 证明人联系方式
+     */
+    private String tele;
+
+    /**
+     * 工作变动原因
+     */
+    private String changeReasonId;
+
+    /**
+     * 输入类型
+     */
+    private String inputType;
+
+    /**
+     * 是否公司内
+     */
+    private String ifInComp;
 
     /**
      * 更新人员

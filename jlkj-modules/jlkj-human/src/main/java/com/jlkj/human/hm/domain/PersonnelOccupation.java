@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人员培训经历表
- * @TableName human_hm_personnel_train
+ * 人员职业资格表
+ * @TableName human_hm_personnel_occupation
  */
-@TableName(value ="human_hm_personnel_train")
+@TableName(value ="human_hm_personnel_occupation")
 @Data
-public class HumanresourcePersonnelTrain implements Serializable {
+public class PersonnelOccupation implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -34,39 +34,34 @@ public class HumanresourcePersonnelTrain implements Serializable {
     private String empId;
 
     /**
-     * 开始日期
+     * 职业证书编号
      */
-    private Date startDate;
+    private String vocCerNo;
 
     /**
-     * 结束日期
+     * 职业类别
      */
-    private Date endDate;
+    private String vocType;
 
     /**
-     * 授课单位
+     * 名称
      */
-    private String trainComp;
+    private String name;
 
     /**
-     * 类别（内容）
+     * 证书等级
      */
-    private String content;
+    private String cerTier;
 
     /**
-     * 项目
+     * 发证日期
      */
-    private String project;
+    private Date cerDate;
 
     /**
-     * 获得资格
+     * 发证机关
      */
-    private String qualification;
-
-    /**
-     * 获得证书
-     */
-    private String certificate;
+    private String cerComp;
 
     /**
      * 是否公司内

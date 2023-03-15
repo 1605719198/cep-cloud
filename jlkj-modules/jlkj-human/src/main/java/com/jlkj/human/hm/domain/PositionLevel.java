@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 岗位序列数据
+ * 职位等级数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("human_hm_post_sequence")
-public class HumanresourcePostSequence implements Serializable {
+@TableName("human_hm_position_level")
+public class PositionLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourcePostSequence implements Serializable {
     private String id;
 
     /**
-     * 岗位序列代号
+     * 职位等级代号
      */
-    private String postSequenceCode;
+    private String positionLevelCode;
 
     /**
-     * 岗位序列名称
+     * 职位等级名称
      */
-    private String postSequenceName;
+    private String positionLevelName;
 
     /**
      * 状态
@@ -91,19 +91,19 @@ public class HumanresourcePostSequence implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getPostSequenceCode() {
-        return postSequenceCode;
+    public String getPositionLevelCode() {
+        return positionLevelCode;
     }
 
-    public void setPostSequenceCode(String postSequenceCode) {
-        this.postSequenceCode = postSequenceCode;
+    public void setPositionLevelCode(String positionLevelCode) {
+        this.positionLevelCode = positionLevelCode;
     }
-    public String getPostSequenceName() {
-        return postSequenceName;
+    public String getPositionLevelName() {
+        return positionLevelName;
     }
 
-    public void setPostSequenceName(String postSequenceName) {
-        this.postSequenceName = postSequenceName;
+    public void setPositionLevelName(String positionLevelName) {
+        this.positionLevelName = positionLevelName;
     }
     public String getStatus() {
         return status;
@@ -171,10 +171,10 @@ public class HumanresourcePostSequence implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourcePostSequence{" +
+        return "HumanresourcePositionLevel{" +
             "id=" + id +
-            ", postSequenceCode=" + postSequenceCode +
-            ", postSequenceName=" + postSequenceName +
+            ", positionLevelCode=" + positionLevelCode +
+            ", positionLevelName=" + positionLevelName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

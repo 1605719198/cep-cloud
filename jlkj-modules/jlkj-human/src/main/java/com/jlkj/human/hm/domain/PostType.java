@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 职位等级数据
+ * 岗位类别数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("human_hm_position_level")
-public class HumanresourcePositionLevel implements Serializable {
+@TableName("human_hm_post_type")
+public class PostType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourcePositionLevel implements Serializable {
     private String id;
 
     /**
-     * 职位等级代号
+     * 岗位类别代号
      */
-    private String positionLevelCode;
+    private String postTypeCode;
 
     /**
-     * 职位等级名称
+     * 岗位类别名称
      */
-    private String positionLevelName;
+    private String postTypeName;
 
     /**
      * 状态
@@ -59,6 +59,11 @@ public class HumanresourcePositionLevel implements Serializable {
      * 使用次数
      */
     private String usedTimes;
+
+    /**
+     * 所属岗位序列
+     */
+    private String postSequenceId;
 
     /**
      * 创建时间
@@ -91,19 +96,19 @@ public class HumanresourcePositionLevel implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getPositionLevelCode() {
-        return positionLevelCode;
+    public String getPostTypeCode() {
+        return postTypeCode;
     }
 
-    public void setPositionLevelCode(String positionLevelCode) {
-        this.positionLevelCode = positionLevelCode;
+    public void setPostTypeCode(String postTypeCode) {
+        this.postTypeCode = postTypeCode;
     }
-    public String getPositionLevelName() {
-        return positionLevelName;
+    public String getPostTypeName() {
+        return postTypeName;
     }
 
-    public void setPositionLevelName(String positionLevelName) {
-        this.positionLevelName = positionLevelName;
+    public void setPostTypeName(String postTypeName) {
+        this.postTypeName = postTypeName;
     }
     public String getStatus() {
         return status;
@@ -140,6 +145,13 @@ public class HumanresourcePositionLevel implements Serializable {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
+    public String getPostSequenceId() {
+        return postSequenceId;
+    }
+
+    public void setPostSequenceId(String postSequenceId) {
+        this.postSequenceId = postSequenceId;
+    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -171,15 +183,16 @@ public class HumanresourcePositionLevel implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourcePositionLevel{" +
+        return "HumanresourcePostType{" +
             "id=" + id +
-            ", positionLevelCode=" + positionLevelCode +
-            ", positionLevelName=" + positionLevelName +
+            ", postTypeCode=" + postTypeCode +
+            ", postTypeName=" + postTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
+            ", postSequenceId=" + postSequenceId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

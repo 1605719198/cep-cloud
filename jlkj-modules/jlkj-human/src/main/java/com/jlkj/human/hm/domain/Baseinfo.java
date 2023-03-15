@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @TableName(value ="human_hm_baseinfo")
 @Data
-public class HumanresourceBaseinfo implements Serializable {
+public class Baseinfo implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -67,15 +67,15 @@ public class HumanresourceBaseinfo implements Serializable {
      * 用来封装子节点数据
      */
     @TableField(exist = false)
-    private List<HumanresourceBaseinfo> children = new ArrayList<>();
+    private List<Baseinfo> children = new ArrayList<>();
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public HumanresourceBaseinfo() {
+    public Baseinfo() {
     }
 
-    public HumanresourceBaseinfo(String uuid, String parentId, String dicNo, String dicName, String status, String updateEmp, Date updateDate, String remark, List<HumanresourceBaseinfo> children) {
+    public Baseinfo(String uuid, String parentId, String dicNo, String dicName, String status, String updateEmp, Date updateDate, String remark, List<Baseinfo> children) {
         this.uuid = uuid;
         this.parentId = parentId;
         this.dicNo = dicNo;
@@ -87,16 +87,16 @@ public class HumanresourceBaseinfo implements Serializable {
         this.children = children;
     }
 
-    public HumanresourceBaseinfo(HumanresourceBaseinfo humanresourceBaseinfo) {
-        this.uuid = humanresourceBaseinfo.getUuid();
-        this.parentId = humanresourceBaseinfo.getParentId();
-        this.dicNo = humanresourceBaseinfo.getDicNo();
-        this.dicName = humanresourceBaseinfo.getDicName();
-        this.status = humanresourceBaseinfo.getStatus();
-        this.updateEmp = humanresourceBaseinfo.getUpdateEmp();
-        this.updateDate = humanresourceBaseinfo.getUpdateDate();
-        this.remark = humanresourceBaseinfo.getRemark();
-        this.children = humanresourceBaseinfo.getChildren().stream().map(HumanresourceBaseinfo::new).collect(Collectors.toList());
+    public Baseinfo(Baseinfo baseinfo) {
+        this.uuid = baseinfo.getUuid();
+        this.parentId = baseinfo.getParentId();
+        this.dicNo = baseinfo.getDicNo();
+        this.dicName = baseinfo.getDicName();
+        this.status = baseinfo.getStatus();
+        this.updateEmp = baseinfo.getUpdateEmp();
+        this.updateDate = baseinfo.getUpdateDate();
+        this.remark = baseinfo.getRemark();
+        this.children = baseinfo.getChildren().stream().map(Baseinfo::new).collect(Collectors.toList());
     }
 
 }

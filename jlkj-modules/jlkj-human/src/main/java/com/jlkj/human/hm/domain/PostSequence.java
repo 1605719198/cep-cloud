@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构类别数据
+ * 岗位序列数据
  * </p>
  *
  * @author xin
  * @since 2022-05-19
  */
-@TableName("human_hm_organization_type")
-public class HumanresourceOrganizationType implements Serializable {
+@TableName("human_hm_post_sequence")
+public class PostSequence implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourceOrganizationType implements Serializable {
     private String id;
 
     /**
-     * 机构类别代号
+     * 岗位序列代号
      */
-    private String organizationTypeCode;
+    private String postSequenceCode;
 
     /**
-     * 机构类别名称
+     * 岗位序列名称
      */
-    private String organizationTypeName;
+    private String postSequenceName;
 
     /**
      * 状态
@@ -91,19 +91,19 @@ public class HumanresourceOrganizationType implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationTypeCode() {
-        return organizationTypeCode;
+    public String getPostSequenceCode() {
+        return postSequenceCode;
     }
 
-    public void setOrganizationTypeCode(String organizationTypeCode) {
-        this.organizationTypeCode = organizationTypeCode;
+    public void setPostSequenceCode(String postSequenceCode) {
+        this.postSequenceCode = postSequenceCode;
     }
-    public String getOrganizationTypeName() {
-        return organizationTypeName;
+    public String getPostSequenceName() {
+        return postSequenceName;
     }
 
-    public void setOrganizationTypeName(String organizationTypeName) {
-        this.organizationTypeName = organizationTypeName;
+    public void setPostSequenceName(String postSequenceName) {
+        this.postSequenceName = postSequenceName;
     }
     public String getStatus() {
         return status;
@@ -171,10 +171,10 @@ public class HumanresourceOrganizationType implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationType{" +
+        return "HumanresourcePostSequence{" +
             "id=" + id +
-            ", organizationTypeCode=" + organizationTypeCode +
-            ", organizationTypeName=" + organizationTypeName +
+            ", postSequenceCode=" + postSequenceCode +
+            ", postSequenceName=" + postSequenceName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

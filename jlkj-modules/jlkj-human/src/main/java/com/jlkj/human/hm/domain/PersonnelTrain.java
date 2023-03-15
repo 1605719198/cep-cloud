@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人员家属信息表
- * @TableName human_hm_personnel_family
+ * 人员培训经历表
+ * @TableName human_hm_personnel_train
  */
-@TableName(value ="human_hm_personnel_family")
+@TableName(value ="human_hm_personnel_train")
 @Data
-public class HumanresourcePersonnelFamily implements Serializable {
+public class PersonnelTrain implements Serializable {
     /**
      * uuid 主键ID
      */
@@ -34,39 +34,44 @@ public class HumanresourcePersonnelFamily implements Serializable {
     private String empId;
 
     /**
-     * 与本人关系
+     * 开始日期
      */
-    private String relationId;
+    private Date startDate;
 
     /**
-     * 姓名
+     * 结束日期
      */
-    private String name;
+    private Date endDate;
 
     /**
-     * 出生日期
+     * 授课单位
      */
-    private Date birthDate;
+    private String trainComp;
 
     /**
-     * 现居住地
+     * 类别（内容）
      */
-    private String homeAddress;
+    private String content;
 
     /**
-     * 户口所在地
+     * 项目
      */
-    private String registerAddress;
+    private String project;
 
     /**
-     * 工作单位
+     * 获得资格
      */
-    private String workComp;
+    private String qualification;
 
     /**
-     * 联系电话
+     * 获得证书
      */
-    private String tele;
+    private String certificate;
+
+    /**
+     * 是否公司内
+     */
+    private String ifInComp;
 
     /**
      * 更新人员

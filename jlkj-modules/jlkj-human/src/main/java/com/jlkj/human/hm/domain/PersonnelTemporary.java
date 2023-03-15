@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @TableName(value ="human_hm_personnel_temporary")
 @Data
-public class HumanresourcePersonnelTemporary implements Serializable {
+public class PersonnelTemporary implements Serializable {
     /**
      * 主键ID
      */

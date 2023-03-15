@@ -15,7 +15,7 @@ import java.util.Date;
  * @since 2022-04-29
  */
 @TableName("human_hm_personnel_scheduling")
-public class HumanresourcePersonnelScheduling implements Serializable {
+public class PersonnelScheduling implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

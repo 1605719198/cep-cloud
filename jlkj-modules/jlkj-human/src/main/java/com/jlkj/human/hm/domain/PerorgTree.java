@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @since 2022-05-17
  */
 @TableName("human_hm_perorg_tree")
-public class HumanresourcePerorgTree implements Serializable {
+public class PerorgTree implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,12 +74,12 @@ public class HumanresourcePerorgTree implements Serializable {
      * 用来封装子节点数据
      */
     @TableField(exist = false)
-    private List<HumanresourcePerorgTree> children = new ArrayList<>();
+    private List<PerorgTree> children = new ArrayList<>();
 
-    public HumanresourcePerorgTree() {
+    public PerorgTree() {
     }
 
-    public HumanresourcePerorgTree(String id, String label, String parentId, String parentName, String flag, String jobNumber, String icon, String postName, String postId, Integer delFlag, List<HumanresourcePerorgTree> children) {
+    public PerorgTree(String id, String label, String parentId, String parentName, String flag, String jobNumber, String icon, String postName, String postId, Integer delFlag, List<PerorgTree> children) {
         this.id = id;
         this.label = label;
         this.parentId = parentId;
@@ -93,15 +93,15 @@ public class HumanresourcePerorgTree implements Serializable {
         this.children = children;
     }
 
-    public HumanresourcePerorgTree(HumanresourcePerorgTree humanresourcePerorgTree) {
-        this.id = humanresourcePerorgTree.getId();
-        this.label = humanresourcePerorgTree.getLabel();
-        this.parentId = humanresourcePerorgTree.getParentId();
-        this.parentName = humanresourcePerorgTree.getParentName();
-        this.flag = humanresourcePerorgTree.getFlag();
-        this.jobNumber = humanresourcePerorgTree.getJobNumber();
-        this.icon = humanresourcePerorgTree.getIcon();
-        this.children = humanresourcePerorgTree.getChildren().stream().map(HumanresourcePerorgTree::new).collect(Collectors.toList());
+    public PerorgTree(PerorgTree perorgTree) {
+        this.id = perorgTree.getId();
+        this.label = perorgTree.getLabel();
+        this.parentId = perorgTree.getParentId();
+        this.parentName = perorgTree.getParentName();
+        this.flag = perorgTree.getFlag();
+        this.jobNumber = perorgTree.getJobNumber();
+        this.icon = perorgTree.getIcon();
+        this.children = perorgTree.getChildren().stream().map(PerorgTree::new).collect(Collectors.toList());
     }
 
     public String getId() {
@@ -175,11 +175,11 @@ public class HumanresourcePerorgTree implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public List<HumanresourcePerorgTree> getChildren() {
+    public List<PerorgTree> getChildren() {
         return children;
     }
 
-    public void setChildren(List<HumanresourcePerorgTree> children) {
+    public void setChildren(List<PerorgTree> children) {
         this.children = children;
     }
 

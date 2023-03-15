@@ -8,32 +8,32 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构细类数据
+ * 板块基础资料
  * </p>
  *
- * @author xin
- * @since 2022-05-19
+ * @author Xin
+ * @since 2022-04-28
  */
-@TableName("human_hm_organization_category")
-public class HumanresourceOrganizationCategory implements Serializable {
+@TableName("human_hm_board")
+public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键
+     * 主键ID
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 机构细类代号
+     * 板块代号
      */
-    private String organizationCategoryCode;
+    private String boardTypeCode;
 
     /**
-     * 机构细类名称
+     * 板块名称
      */
-    private String organizationCategoryName;
+    private String boardTypeName;
 
     /**
      * 状态
@@ -59,11 +59,6 @@ public class HumanresourceOrganizationCategory implements Serializable {
      * 使用次数
      */
     private String usedTimes;
-
-    /**
-     * 所属机构类别
-     */
-    private String organizationTypeId;
 
     /**
      * 创建时间
@@ -96,19 +91,19 @@ public class HumanresourceOrganizationCategory implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationCategoryCode() {
-        return organizationCategoryCode;
+    public String getBoardTypeCode() {
+        return boardTypeCode;
     }
 
-    public void setOrganizationCategoryCode(String organizationCategoryCode) {
-        this.organizationCategoryCode = organizationCategoryCode;
+    public void setBoardTypeCode(String boardTypeCode) {
+        this.boardTypeCode = boardTypeCode;
     }
-    public String getOrganizationCategoryName() {
-        return organizationCategoryName;
+    public String getBoardTypeName() {
+        return boardTypeName;
     }
 
-    public void setOrganizationCategoryName(String organizationCategoryName) {
-        this.organizationCategoryName = organizationCategoryName;
+    public void setBoardTypeName(String boardTypeName) {
+        this.boardTypeName = boardTypeName;
     }
     public String getStatus() {
         return status;
@@ -145,13 +140,6 @@ public class HumanresourceOrganizationCategory implements Serializable {
     public void setUsedTimes(String usedTimes) {
         this.usedTimes = usedTimes;
     }
-    public String getOrganizationTypeId() {
-        return organizationTypeId;
-    }
-
-    public void setOrganizationTypeId(String organizationTypeId) {
-        this.organizationTypeId = organizationTypeId;
-    }
     public Date getCreateTime() {
         return createTime;
     }
@@ -183,16 +171,15 @@ public class HumanresourceOrganizationCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationCategory{" +
+        return "HumanresourceBoard{" +
             "id=" + id +
-            ", organizationCategoryCode=" + organizationCategoryCode +
-            ", organizationCategoryName=" + organizationCategoryName +
+            ", boardTypeCode=" + boardTypeCode +
+            ", boardTypeName=" + boardTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +
             ", createDate=" + createDate +
             ", usedTimes=" + usedTimes +
-            ", organizationTypeId=" + organizationTypeId +
             ", createTime=" + createTime +
             ", updateTime=" + updateTime +
             ", createUser=" + createUser +

@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 机构层级数据
+ * 专长类别数据
  * </p>
  *
  * @author xin
- * @since 2022-05-18
+ * @since 2022-05-20
  */
-@TableName("human_hm_organization_tier")
-public class HumanresourceOrganizationTier implements Serializable {
+@TableName("human_hm_speciality_type")
+public class SpecialityType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,14 @@ public class HumanresourceOrganizationTier implements Serializable {
     private String id;
 
     /**
-     * 机构层级代号
+     * 专长类别代号
      */
-    private String organizationTierCode;
+    private String specialityTypeCode;
 
     /**
-     * 机构层级名称
+     * 专长类别名称
      */
-    private String organizationTierName;
+    private String specialityTypeName;
 
     /**
      * 状态
@@ -91,19 +91,19 @@ public class HumanresourceOrganizationTier implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getOrganizationTierCode() {
-        return organizationTierCode;
+    public String getSpecialityTypeCode() {
+        return specialityTypeCode;
     }
 
-    public void setOrganizationTierCode(String organizationTierCode) {
-        this.organizationTierCode = organizationTierCode;
+    public void setSpecialityTypeCode(String specialityTypeCode) {
+        this.specialityTypeCode = specialityTypeCode;
     }
-    public String getOrganizationTierName() {
-        return organizationTierName;
+    public String getSpecialityTypeName() {
+        return specialityTypeName;
     }
 
-    public void setOrganizationTierName(String organizationTierName) {
-        this.organizationTierName = organizationTierName;
+    public void setSpecialityTypeName(String specialityTypeName) {
+        this.specialityTypeName = specialityTypeName;
     }
     public String getStatus() {
         return status;
@@ -171,10 +171,10 @@ public class HumanresourceOrganizationTier implements Serializable {
 
     @Override
     public String toString() {
-        return "HumanresourceOrganizationTier{" +
+        return "HumanresourceSpecialityType{" +
             "id=" + id +
-            ", organizationTierCode=" + organizationTierCode +
-            ", organizationTierName=" + organizationTierName +
+            ", specialityTypeCode=" + specialityTypeCode +
+            ", specialityTypeName=" + specialityTypeName +
             ", status=" + status +
             ", creator=" + creator +
             ", creatorId=" + creatorId +

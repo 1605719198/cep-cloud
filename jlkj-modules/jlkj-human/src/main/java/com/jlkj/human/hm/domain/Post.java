@@ -15,7 +15,7 @@ import java.util.Date;
  * @since 2022-04-29
  */
 @TableName("human_hm_post")
-public class HumanresourcePost implements Serializable {
+public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

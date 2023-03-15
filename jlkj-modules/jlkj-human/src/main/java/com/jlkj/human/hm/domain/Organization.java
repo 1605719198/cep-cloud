@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @since 2022-05-05
  */
 @TableName("human_hm_organization")
-public class HumanresourceOrganization implements Serializable {
+public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -157,12 +157,12 @@ public class HumanresourceOrganization implements Serializable {
      * 用来封装子节点数据
      */
     @TableField(exist = false)
-    private List<HumanresourceOrganization> children = new ArrayList<>();
+    private List<Organization> children = new ArrayList<>();
 
-    public HumanresourceOrganization() {
+    public Organization() {
     }
 
-    public HumanresourceOrganization(String id, String organizationCode, String organizationName, String boardId, String parentId, String parentName, String parentFullName, String organizationTierId, String organizationTypeId, String organizationCategoryId, Integer serialNo, String costCenterId, String approvalNo, String fax, String telephone, String changeReason, String effectDate, Integer versionNo, String ifCompany, String companyId, String ifDisplay, String creator, String creatorId, String createDate, String status, Date createTime, Date updateTime, String createUser, String updateUser, String createUserName, String updateUserName, List<HumanresourceOrganization> children) {
+    public Organization(String id, String organizationCode, String organizationName, String boardId, String parentId, String parentName, String parentFullName, String organizationTierId, String organizationTypeId, String organizationCategoryId, Integer serialNo, String costCenterId, String approvalNo, String fax, String telephone, String changeReason, String effectDate, Integer versionNo, String ifCompany, String companyId, String ifDisplay, String creator, String creatorId, String createDate, String status, Date createTime, Date updateTime, String createUser, String updateUser, String createUserName, String updateUserName, List<Organization> children) {
         this.id = id;
         this.organizationCode = organizationCode;
         this.organizationName = organizationName;
@@ -197,19 +197,19 @@ public class HumanresourceOrganization implements Serializable {
         this.children = children;
     }
 
-    public HumanresourceOrganization(HumanresourceOrganization humanresourceOrganization) {
-        this.id = humanresourceOrganization.getId();
-        this.organizationName = humanresourceOrganization.getOrganizationName();
-        this.parentId = humanresourceOrganization.getParentId();
-        this.parentName = humanresourceOrganization.getParentName();
-        this.children = humanresourceOrganization.getChildren().stream().map(HumanresourceOrganization::new).collect(Collectors.toList());
+    public Organization(Organization organization) {
+        this.id = organization.getId();
+        this.organizationName = organization.getOrganizationName();
+        this.parentId = organization.getParentId();
+        this.parentName = organization.getParentName();
+        this.children = organization.getChildren().stream().map(Organization::new).collect(Collectors.toList());
     }
 
-    public List<HumanresourceOrganization> getChildren() {
+    public List<Organization> getChildren() {
         return children;
     }
 
-    public void setChildren(List<HumanresourceOrganization> children) {
+    public void setChildren(List<Organization> children) {
         this.children = children;
     }
 
