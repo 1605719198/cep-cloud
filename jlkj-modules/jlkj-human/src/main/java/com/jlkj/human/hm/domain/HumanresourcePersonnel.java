@@ -31,7 +31,7 @@ public class HumanresourcePersonnel implements Serializable {
     /**
      * 工号
      */
-    private String jobNumber;
+    private String empNo;
 
     /**
      * 密码

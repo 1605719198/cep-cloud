@@ -85,10 +85,10 @@ public class HumanresourcePersonnelController {
     public Object getPersonnelBasicInfoList(HumanresourcePersonnel humanresourcePersonnel) {
         try {
             String compId = humanresourcePersonnel.getCompId();
-            String jobNumber = humanresourcePersonnel.getJobNumber();
+            String empNo = humanresourcePersonnel.getEmpNo();
             LambdaQueryWrapper<HumanresourcePersonnel> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(compId), HumanresourcePersonnel::getCompId, compId)
-                        .eq(HumanresourcePersonnel::getJobNumber, jobNumber);
+                        .eq(HumanresourcePersonnel::getEmpNo, empNo);
             List<HumanresourcePersonnel> list = humanresourcePersonnelService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
