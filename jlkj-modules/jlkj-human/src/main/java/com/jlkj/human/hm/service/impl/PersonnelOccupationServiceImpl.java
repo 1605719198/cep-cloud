@@ -1,9 +1,9 @@
 package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelOccupation;
+import com.jlkj.human.hm.domain.PersonnelOccupation;
 import com.jlkj.human.hm.service.HumanresourcePersonnelOccupationService;
-import com.jlkj.human.hm.mapper.HumanresourcePersonnelOccupationMapper;
+import com.jlkj.human.hm.mapper.PersonnelOccupationMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-09 10:06:06
 */
 @Service
-public class HumanresourcePersonnelOccupationServiceImpl extends ServiceImpl<HumanresourcePersonnelOccupationMapper, HumanresourcePersonnelOccupation>
+public class PersonnelOccupationServiceImpl extends ServiceImpl<PersonnelOccupationMapper, PersonnelOccupation>
     implements HumanresourcePersonnelOccupationService{
 
 }

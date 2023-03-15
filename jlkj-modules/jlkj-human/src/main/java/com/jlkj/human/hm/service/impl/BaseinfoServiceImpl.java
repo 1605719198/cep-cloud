@@ -3,9 +3,9 @@ package com.jlkj.human.hm.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.human.hm.domain.HumanresourceBaseinfo;
-import com.jlkj.human.hm.mapper.HumanresourceBaseinfoMapper;
-import com.jlkj.human.hm.service.HumanresourceBaseinfoService;
+import com.jlkj.human.hm.domain.Baseinfo;
+import com.jlkj.human.hm.mapper.BaseinfoMapper;
+import com.jlkj.human.hm.service.IBaseinfoService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,39 +19,39 @@ import java.util.stream.Collectors;
 * @createDate 2023-03-07 18:33:11
 */
 @Service
-public class HumanresourceBaseinfoServiceImpl extends ServiceImpl<HumanresourceBaseinfoMapper, HumanresourceBaseinfo>
-    implements HumanresourceBaseinfoService {
+public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoMapper, Baseinfo>
+    implements IBaseinfoService {
 
     /**
      * 选单配置树结构列表
      * @return
      */
     @Override
-    public List<HumanresourceBaseinfo> getBaseInfoTreeList() {
-        List<HumanresourceBaseinfo> returnList = new ArrayList<>();
+    public List<Baseinfo> getBaseInfoTreeList() {
+        List<Baseinfo> returnList = new ArrayList<>();
         List<String> tempList = new ArrayList<>();
 
         //查询选单配置资料
-        List<HumanresourceBaseinfo> humanresourceBaseinfoTrees = baseMapper.selectList(new QueryWrapper<HumanresourceBaseinfo>().orderByDesc("update_date"));
+        List<Baseinfo> baseinfoTrees = baseMapper.selectList(new QueryWrapper<Baseinfo>().orderByDesc("update_date"));
         //循环取出id值，存入tempList
-        if (StringUtils.isNotNull(humanresourceBaseinfoTrees)) {
-            for (HumanresourceBaseinfo baseInfo : humanresourceBaseinfoTrees) {
+        if (StringUtils.isNotNull(baseinfoTrees)) {
+            for (Baseinfo baseInfo : baseinfoTrees) {
                 tempList.add(baseInfo.getUuid());
             }
         }
-        for (Iterator<HumanresourceBaseinfo> iterator = humanresourceBaseinfoTrees.iterator(); iterator.hasNext();) {
-            HumanresourceBaseinfo baseInfo = (HumanresourceBaseinfo) iterator.next();
+        for (Iterator<Baseinfo> iterator = baseinfoTrees.iterator(); iterator.hasNext();) {
+            Baseinfo baseInfo = (Baseinfo) iterator.next();
             //如果是Root节点，遍历该父节点的所有子节点
             if (!tempList.contains(baseInfo.getParentId())) {
                 //进行递归操作
-                recursionFn(humanresourceBaseinfoTrees,baseInfo);
+                recursionFn(baseinfoTrees,baseInfo);
                 returnList.add(baseInfo);
             }
         }
         if (returnList.isEmpty()) {
-            returnList = humanresourceBaseinfoTrees;
+            returnList = baseinfoTrees;
         }
-        return returnList.stream().map(HumanresourceBaseinfo::new).collect(Collectors.toList());
+        return returnList.stream().map(Baseinfo::new).collect(Collectors.toList());
     }
 
     /**
@@ -59,11 +59,11 @@ public class HumanresourceBaseinfoServiceImpl extends ServiceImpl<HumanresourceB
      * @param list
      * @param baseInfo
      */
-    private void recursionFn(List<HumanresourceBaseinfo> list, HumanresourceBaseinfo baseInfo) {
+    private void recursionFn(List<Baseinfo> list, Baseinfo baseInfo) {
         //得到子节点列表
-        List<HumanresourceBaseinfo> childList = getChildList(list,baseInfo);
+        List<Baseinfo> childList = getChildList(list,baseInfo);
         baseInfo.setChildren(childList);
-        for (HumanresourceBaseinfo orgChild : childList) {
+        for (Baseinfo orgChild : childList) {
             if (hasChild(list, orgChild)) {
                 recursionFn(list, orgChild);
             }
@@ -76,12 +76,12 @@ public class HumanresourceBaseinfoServiceImpl extends ServiceImpl<HumanresourceB
      * @param baseInfo
      * @return
      */
-    private List<HumanresourceBaseinfo> getChildList(List<HumanresourceBaseinfo> list, HumanresourceBaseinfo baseInfo) {
-        List<HumanresourceBaseinfo> orgList = new ArrayList<>();
+    private List<Baseinfo> getChildList(List<Baseinfo> list, Baseinfo baseInfo) {
+        List<Baseinfo> orgList = new ArrayList<>();
         //声明迭代器
-        Iterator<HumanresourceBaseinfo> iterator = list.iterator();
+        Iterator<Baseinfo> iterator = list.iterator();
         while (iterator.hasNext()) {
-            HumanresourceBaseinfo baseinfoOrg = (HumanresourceBaseinfo) iterator.next();
+            Baseinfo baseinfoOrg = (Baseinfo) iterator.next();
             //判断当前迭代对象的父ID是否等于传入的ID
             if (StringUtils.isNotNull(baseinfoOrg.getParentId()) && baseinfoOrg.getParentId().equals(baseInfo.getUuid())) {
                 orgList.add(baseinfoOrg);
@@ -96,7 +96,7 @@ public class HumanresourceBaseinfoServiceImpl extends ServiceImpl<HumanresourceB
      * @param baseInfo
      * @return
      */
-    private boolean hasChild(List<HumanresourceBaseinfo> list, HumanresourceBaseinfo baseInfo) {
+    private boolean hasChild(List<Baseinfo> list, Baseinfo baseInfo) {
         return getChildList(list,baseInfo).size() > 0;
     }
 
