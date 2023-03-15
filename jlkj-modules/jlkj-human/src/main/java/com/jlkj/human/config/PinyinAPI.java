@@ -40,7 +40,7 @@ public class PinyinAPI {
      */
 
     public static boolean isNull(Object strData) {
-        if (strData == null || String.valueOf(strData).trim().equals("")) {
+        if (strData == null || "".equals(String.valueOf(strData).trim())) {
             return true;
         }
         return false;
@@ -57,10 +57,5 @@ public class PinyinAPI {
             return "";
         }
         return value.trim().replace(" ", "");
-    }
-
-    public static void main(String[] args) {
-        String ss = PinyinAPI.getPinYinHeadChar("复方丹参片");
-        System.out.print(ss);
     }
 }

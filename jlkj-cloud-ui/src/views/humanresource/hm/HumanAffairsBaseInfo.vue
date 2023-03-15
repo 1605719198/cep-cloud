@@ -158,6 +158,7 @@
           <el-date-picker
             v-model="form.birthTwoDate"
             type="date"
+            :disabled="true"
             style="width: 207.33px"
             placeholder="选择生日">
           </el-date-picker>
@@ -882,9 +883,6 @@ export default {
         ],
         birthdayChoice: [
           { required: true, message: "生日选择不能为空", trigger: "blur" }
-        ],
-        birthTwoDate: [
-          { required: true, message: "生日不能为空", trigger: "blur" }
         ],
         nationalityId: [
           { required: true, message: "国籍不能为空", trigger: "blur" }
