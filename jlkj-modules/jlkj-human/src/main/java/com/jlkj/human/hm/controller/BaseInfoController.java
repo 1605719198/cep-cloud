@@ -8,9 +8,9 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hm.domain.HumanresourceBaseinfo;
-import com.jlkj.human.hm.dto.HumanresourceBaseInfoDTO;
-import com.jlkj.human.hm.service.impl.HumanresourceBaseinfoServiceImpl;
+import com.jlkj.human.hm.domain.Baseinfo;
+import com.jlkj.human.hm.dto.BaseInfoDTO;
+import com.jlkj.human.hm.service.impl.BaseinfoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +26,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/baseInfo")
-public class HumanresourceBaseInfoController {
+public class BaseInfoController {
 
     @Autowired
-    HumanresourceBaseinfoServiceImpl humanresourceBaseinfoService;
+    BaseinfoServiceImpl BaseinfoService;
 
     /**
      * 获取选单配置树
@@ -38,7 +38,7 @@ public class HumanresourceBaseInfoController {
     @Operation(summary = "选单配置树")
     @GetMapping("/tree")
     public Object getDepartmentTree() {
-        List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.getBaseInfoTreeList();
+        List<Baseinfo> list = BaseinfoService.getBaseInfoTreeList();
         return AjaxResult.success(list);
     }
 
@@ -48,18 +48,18 @@ public class HumanresourceBaseInfoController {
     @Log(title = "获取子节点查询列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取子节点查询列表")
     @GetMapping("/list")
-    public Object getChildrenList(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+    public Object getChildrenList(BaseInfoDTO BaseInfoDTO) {
         try {
-            String uuid = humanresourceBaseInfoDTO.getUuid();
-            Long pageNum = humanresourceBaseInfoDTO.getPageNum();
-            Long pageSize = humanresourceBaseInfoDTO.getPageSize();
-            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(uuid), HumanresourceBaseinfo::getParentId, uuid)
-                        .orderByAsc(HumanresourceBaseinfo::getDicNo);
-            Page<HumanresourceBaseinfo> page = humanresourceBaseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
+            String uuid = BaseInfoDTO.getUuid();
+            Long pageNum = BaseInfoDTO.getPageNum();
+            Long pageSize = BaseInfoDTO.getPageSize();
+            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getParentId, uuid)
+                        .orderByAsc(Baseinfo::getDicNo);
+            Page<Baseinfo> page =BaseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
             long total = page.getTotal();
             //数据list集合
-            List<HumanresourceBaseinfo> records = page.getRecords();
+            List<Baseinfo> records = page.getRecords();
             Map<String, Object> dataMap = new HashMap<>(16);
             dataMap.put("total", total);
             dataMap.put("list", records);
@@ -79,19 +79,19 @@ public class HumanresourceBaseInfoController {
     @Operation(summary = "添加选单数据")
     @PostMapping("/add")
     @Log(title = "添加选单数据", businessType = BusinessType.INSERT)
-    public Object addBaseInfo(@RequestBody HumanresourceBaseinfo humanresourceBaseinfo) {
+    public Object addBaseInfo(@RequestBody Baseinfo baseinfo) {
         try {
-            String dicNo = humanresourceBaseinfo.getDicNo();
-            String dicName = humanresourceBaseinfo.getDicName();
-            humanresourceBaseinfo.setUpdateEmp(SecurityUtils.getNickName());
-            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourceBaseinfo::getDicNo, dicNo)
-                    .eq(HumanresourceBaseinfo::getDicName, dicName);
-            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapper);
+            String dicNo = baseinfo.getDicNo();
+            String dicName = baseinfo.getDicName();
+            baseinfo.setUpdateEmp(SecurityUtils.getNickName());
+            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Baseinfo::getDicNo, dicNo)
+                    .eq(Baseinfo::getDicName, dicName);
+            List<Baseinfo> list = BaseinfoService.list(queryWrapper);
             if (!list.isEmpty()) {
                 return AjaxResult.error("数据已存在，不允许重复！！！");
             }
-            boolean result = humanresourceBaseinfoService.save(humanresourceBaseinfo);
+            boolean result = BaseinfoService.save(baseinfo);
             if (result) {
                 return AjaxResult.success("保存成功");
             } else {
@@ -108,12 +108,12 @@ public class HumanresourceBaseInfoController {
     @Operation(summary = "修改选单数据")
     @PostMapping("/update")
     @Log(title = "选单数据编辑", businessType = BusinessType.UPDATE)
-    public Object updateBaseInfo(@RequestBody HumanresourceBaseinfo humanresourceBaseinfo) {
+    public Object updateBaseInfo(@RequestBody Baseinfo baseinfo) {
         try {
-            String uuid = humanresourceBaseinfo.getUuid();
-            LambdaUpdateWrapper<HumanresourceBaseinfo> updateWrapper = new LambdaUpdateWrapper<>();
-            updateWrapper.eq(StringUtils.isNotBlank(uuid), HumanresourceBaseinfo::getUuid, uuid);
-            boolean result = humanresourceBaseinfoService.update(humanresourceBaseinfo, updateWrapper);
+            String uuid = baseinfo.getUuid();
+            LambdaUpdateWrapper<Baseinfo> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getUuid, uuid);
+            boolean result = BaseinfoService.update(baseinfo, updateWrapper);
             if (result) {
                 return AjaxResult.success("保存成功");
             } else {
@@ -132,15 +132,15 @@ public class HumanresourceBaseInfoController {
     @Log(title = "删除选单数据", businessType = BusinessType.DELETE)
     public Object deleteBaseInfo(@RequestParam String uuid) {
         try {
-            LambdaQueryWrapper<HumanresourceBaseinfo> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(HumanresourceBaseinfo::getParentId, uuid);
-            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(wrapper);
+            LambdaQueryWrapper<Baseinfo> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Baseinfo::getParentId, uuid);
+            List<Baseinfo> list = BaseinfoService.list(wrapper);
             if (!list.isEmpty()) {
                 return AjaxResult.error("存在子类选单资料，不可删除资料");
             }
-            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourceBaseinfo::getUuid, uuid);
-            boolean delete = humanresourceBaseinfoService.remove(queryWrapper);
+            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Baseinfo::getUuid, uuid);
+            boolean delete = BaseinfoService.remove(queryWrapper);
             return AjaxResult.success(delete);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -153,17 +153,17 @@ public class HumanresourceBaseInfoController {
     @Log(title = "获取专业下拉选单列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取专业下拉选单列表")
     @GetMapping("/getDegreeMajor")
-    public Object getDegreeMajor(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+    public Object getDegreeMajor(BaseInfoDTO humanresourceBaseInfoDTO) {
         try {
             List<String> baseInfoList = humanresourceBaseInfoDTO.getBaseInfoList();
-            HashMap<String, List<HumanresourceBaseinfo>> map = new HashMap<>(16);
+            HashMap<String, List<Baseinfo>> map = new HashMap<>(16);
             for (String item : baseInfoList) {
-                LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-                LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapperA = new LambdaQueryWrapper<>();
-                queryWrapper.eq(HumanresourceBaseinfo::getDicNo, item);
-                HumanresourceBaseinfo baseInfo = humanresourceBaseinfoService.getOne(queryWrapper);
-                queryWrapperA.eq(HumanresourceBaseinfo::getParentId, baseInfo.getUuid());
-                List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapperA);
+                LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+                LambdaQueryWrapper<Baseinfo> queryWrapperA = new LambdaQueryWrapper<>();
+                queryWrapper.eq(Baseinfo::getDicNo, item);
+                Baseinfo baseInfo = BaseinfoService.getOne(queryWrapper);
+                queryWrapperA.eq(Baseinfo::getParentId, baseInfo.getUuid());
+                List<Baseinfo> list = BaseinfoService.list(queryWrapperA);
                 map.put(item, list);
             }
             return AjaxResult.success("查询成功！", map);
@@ -178,12 +178,12 @@ public class HumanresourceBaseInfoController {
     @Log(title = "获取专业细分下拉选单列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取专业细分下拉选单列表")
     @GetMapping("/getDegreeMajorSpecialization")
-    public Object getDegreeMajorSpecialization(HumanresourceBaseInfoDTO humanresourceBaseInfoDTO) {
+    public Object getDegreeMajorSpecialization(BaseInfoDTO baseInfoDTO) {
         try {
-            String uuid = humanresourceBaseInfoDTO.getUuid();
-            LambdaQueryWrapper<HumanresourceBaseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourceBaseinfo::getParentId, uuid);
-            List<HumanresourceBaseinfo> list = humanresourceBaseinfoService.list(queryWrapper);
+            String uuid = baseInfoDTO.getUuid();
+            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Baseinfo::getParentId, uuid);
+            List<Baseinfo> list = BaseinfoService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
