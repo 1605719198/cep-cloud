@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourcePersonnelScheduling;
+import com.jlkj.human.hm.domain.PersonnelScheduling;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePersonnelScheduling;
  * @author Xin
  * @since 2022-04-29
  */
-public interface HumanresourcePersonnelSchedulingMapper extends BaseMapper<HumanresourcePersonnelScheduling> {
+public interface PersonnelSchedulingMapper extends BaseMapper<PersonnelScheduling> {
 
 }

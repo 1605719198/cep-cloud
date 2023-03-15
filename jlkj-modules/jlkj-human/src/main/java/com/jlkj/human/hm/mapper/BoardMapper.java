@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourceBoard;
+import com.jlkj.human.hm.domain.Board;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceBoard;
  * @author Xin
  * @since 2022-04-28
  */
-public interface HumanresourceBoardMapper extends BaseMapper<HumanresourceBoard> {
+public interface BoardMapper extends BaseMapper<Board> {
 
 }

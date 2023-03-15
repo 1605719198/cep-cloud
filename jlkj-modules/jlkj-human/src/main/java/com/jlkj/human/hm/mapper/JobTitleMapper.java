@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourceJobTitle;
+import com.jlkj.human.hm.domain.JobTitle;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceJobTitle;
  * @author xin
  * @since 2022-05-20
  */
-public interface HumanresourceJobTitleMapper extends BaseMapper<HumanresourceJobTitle> {
+public interface JobTitleMapper extends BaseMapper<JobTitle> {
 
 }

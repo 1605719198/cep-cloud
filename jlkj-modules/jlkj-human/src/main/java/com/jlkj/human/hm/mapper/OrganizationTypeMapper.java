@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourceOrganizationType;
+import com.jlkj.human.hm.domain.OrganizationType;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceOrganizationType;
  * @author xin
  * @since 2022-05-19
  */
-public interface HumanresourceOrganizationTypeMapper extends BaseMapper<HumanresourceOrganizationType> {
+public interface OrganizationTypeMapper extends BaseMapper<OrganizationType> {
 
 }

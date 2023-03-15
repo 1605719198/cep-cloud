@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourceSpecialityType;
+import com.jlkj.human.hm.domain.SpecialityType;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceSpecialityType;
  * @author xin
  * @since 2022-05-20
  */
-public interface HumanresourceSpecialityTypeMapper extends BaseMapper<HumanresourceSpecialityType> {
+public interface SpecialityTypeMapper extends BaseMapper<SpecialityType> {
 
 }

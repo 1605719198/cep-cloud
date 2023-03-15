@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourcePostSequence;
+import com.jlkj.human.hm.domain.PostSequence;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePostSequence;
  * @author xin
  * @since 2022-05-19
  */
-public interface HumanresourcePostSequenceMapper extends BaseMapper<HumanresourcePostSequence> {
+public interface PostSequenceMapper extends BaseMapper<PostSequence> {
 
 }

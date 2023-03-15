@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourcePerorgTree;
+import com.jlkj.human.hm.domain.PerorgTree;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePerorgTree;
  * @author xin
  * @since 2022-05-17
  */
-public interface HumanresourcePerorgTreeMapper extends BaseMapper<HumanresourcePerorgTree> {
+public interface PerorgTreeMapper extends BaseMapper<PerorgTree> {
 
 }

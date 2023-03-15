@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourcePositionsClass;
+import com.jlkj.human.hm.domain.PositionsClass;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourcePositionsClass;
  * @author xin
  * @since 2022-05-19
  */
-public interface HumanresourcePositionsClassMapper extends BaseMapper<HumanresourcePositionsClass> {
+public interface PositionsClassMapper extends BaseMapper<PositionsClass> {
 
 }

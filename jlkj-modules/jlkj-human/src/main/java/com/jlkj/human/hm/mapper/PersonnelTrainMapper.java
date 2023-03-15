@@ -1,6 +1,6 @@
 package com.jlkj.human.hm.mapper;
 
-import com.jlkj.human.hm.domain.HumanresourcePersonnelTrain;
+import com.jlkj.human.hm.domain.PersonnelTrain;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-09 10:04:25
 * @Entity com.jlkj.human.hm.domain.HumanresourcePersonnelTrain
 */
-public interface HumanresourcePersonnelTrainMapper extends BaseMapper<HumanresourcePersonnelTrain> {
+public interface PersonnelTrainMapper extends BaseMapper<PersonnelTrain> {
 
 }
 

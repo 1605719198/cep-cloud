@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hm.domain.HumanresourceWorkAddress;
+import com.jlkj.human.hm.domain.WorkAddress;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.human.hm.domain.HumanresourceWorkAddress;
  * @author xin
  * @since 2022-05-20
  */
-public interface HumanresourceWorkAddressMapper extends BaseMapper<HumanresourceWorkAddress> {
+public interface WorkAddressMapper extends BaseMapper<WorkAddress> {
 
 }
