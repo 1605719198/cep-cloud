@@ -3,7 +3,7 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm">
+    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
       <el-table ref="table-input" class="table" :data="baseForm.cultivateExperienceList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
         <el-table-column type="selection" width="100" align="center" />
         <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column label="开始日期" align="center" key="startDate" prop="startDate" width="230">
           <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.startDate'">
+            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
               <el-date-picker placeholder="请选择开始日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.startDate`)"></el-date-picker>
             </el-form-item>
           </template>
@@ -78,7 +78,11 @@
 
 <script>
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
-import {addCultivateExperienceData} from "@/api/human/hm/personnelBasicInfo";
+import {
+  addCultivateExperienceData, delCultivateExperienceInfo,
+  queryCultivateExperienceInfo,
+  queryCultivateInfo
+} from "@/api/human/hm/personnelBasicInfo";
 
 export default {
   name: "CultivateExperienceInfo",
@@ -93,10 +97,17 @@ export default {
       multiple: true,
       baseInfoData: [],
       index: 0,
+      //人员基本信息表id
+      empId: undefined,
       baseInfo: {
         baseInfoList: [
           'ifInCompany']
       },
+      rules: {
+        startDate: [
+          {required: true, message: "请选择", trigger: "blur"}
+        ],
+      }
     }
   },
   created() {
@@ -105,6 +116,17 @@ export default {
     });
   },
   methods: {
+    queryCultivateExperienceInfo(query) {
+      this.empId = query.empId
+      queryCultivateExperienceInfo(query).then(res => {
+        this.baseForm.cultivateExperienceList = res.data
+      })
+    },
+    getList() {
+      queryCultivateInfo(this.empId).then(res => {
+        this.baseForm.cultivateExperienceList = res.data
+      })
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid);
@@ -119,6 +141,9 @@ export default {
       this.baseForm.cultivateExperienceList.push(newLine)
     },
     handleSave() {
+      for (const item of this.baseForm.cultivateExperienceList) {
+        item.empId = this.empId
+      }
       addCultivateExperienceData(this.baseForm).then(res => {
         if (res.code == 200) {
           this.$message({
@@ -126,18 +151,18 @@ export default {
             message: res.msg
           })
         }
+        this.getList();
       })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
-      // const userIds = row.userId || this.ids;
-      // this.$modal.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function() {
-      //   return delUser(userIds);
-      // }).then(() => {
-      //   this.getList();
-      //   this.$modal.msgSuccess("删除成功");
-      // }).catch(() => {});
+      const uuids = row.uuid || this.ids;
+      this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
+        return delCultivateExperienceInfo(uuids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     },
   }
 }

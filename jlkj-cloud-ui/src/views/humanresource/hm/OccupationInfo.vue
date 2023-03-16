@@ -3,7 +3,7 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm">
+    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
       <el-table ref="table-input" class="table" :data="baseForm.occupationList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
         <el-table-column type="selection" width="100" align="center" />
         <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
@@ -20,30 +20,30 @@
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="职业证书编号" align="center" key="vocCerNo" prop="vocCerNo">
+        <el-table-column label="职业证书编号" align="center" key="vocCerNo" prop="vocCerNo" :render-header="addRedStar">
           <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.vocCerNo'" class="all">
+            <el-form-item :prop="'occupationList.'+scope.$index+'.vocCerNo'" :rules="rules.vocCerNo">
               <el-input v-model="scope.row.vocCerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocCerNo`)"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column label="职业类别" align="center" key="vocType" prop="vocType">
           <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.vocType'" class="all">
+            <el-form-item :prop="'occupationList.'+scope.$index+'.vocType'">
               <el-input v-model="scope.row.vocType" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocType`)"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="名称" align="center" key="name" prop="name">
+        <el-table-column label="名称" align="center" key="name" prop="name" :render-header="addRedStar">
           <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.name'" class="all">
+            <el-form-item :prop="'occupationList.'+scope.$index+'.name'" :rules="rules.name">
               <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.name`)"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column label="证书等级" align="center" key="cerTier" prop="cerTier">
           <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.cerTier'" class="all">
+            <el-form-item :prop="'occupationList.'+scope.$index+'.cerTier'">
               <el-input v-model="scope.row.cerTier" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerTier`)"></el-input>
             </el-form-item>
           </template>
@@ -57,7 +57,7 @@
         </el-table-column>
         <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
           <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.cerComp'" class="all">
+            <el-form-item :prop="'occupationList.'+scope.$index+'.cerComp'">
               <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerComp`)"></el-input>
             </el-form-item>
           </template>
@@ -71,7 +71,12 @@
 
 <script>
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
-import {addOccupationData} from "@/api/human/hm/personnelBasicInfo";
+import {
+  addOccupationData,
+  delOccupationInfo,
+  queryOccupationInfo,
+  queryOccupation
+} from "@/api/human/hm/personnelBasicInfo";
 
 export default {
   name: "OccupationInfo",
@@ -86,11 +91,21 @@ export default {
       multiple: true,
       baseInfoData: [],
       index: 0,
+      //人员基本信息表id
+      empId: undefined,
       baseInfo: {
         uuid: '',
         baseInfoList: [
           'ifInCompany']
       },
+      rules: {
+        vocCerNo: [
+          {required: true, message: "请输入", trigger: "blur"}
+        ],
+        name: [
+          {required: true, message: "请输入", trigger: "blur"}
+        ],
+      }
     }
   },
   created() {
@@ -99,6 +114,17 @@ export default {
     });
   },
   methods: {
+    queryOccupationInfo(query) {
+      this.empId = query.empId
+      queryOccupationInfo(query).then(res => {
+        this.baseForm.occupationList = res.data
+      })
+    },
+    getList() {
+      queryOccupation(this.empId).then(res => {
+        this.baseForm.occupationList = res.data
+      })
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid);
@@ -113,6 +139,9 @@ export default {
       this.baseForm.occupationList.push(newLine)
     },
     handleSave() {
+      for (const item of this.baseForm.occupationList) {
+        item.empId = this.empId
+      }
       addOccupationData(this.baseForm).then(res => {
         if (res.code == 200) {
           this.$message({
@@ -120,18 +149,25 @@ export default {
             message: res.msg
           })
         }
+        this.getList();
       })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
-      // const userIds = row.userId || this.ids;
-      // this.$modal.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function() {
-      //   return delUser(userIds);
-      // }).then(() => {
-      //   this.getList();
-      //   this.$modal.msgSuccess("删除成功");
-      // }).catch(() => {});
+      const uuids = row.uuid || this.ids;
+      this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
+        return delOccupationInfo(uuids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
+    // 必选标识
+    addRedStar(h, { column }) {
+      return [
+        h('span', column.label + ' '),
+        h('span', { style: 'color: #F56C6C' }, '*')
+      ];
     },
   }
 }

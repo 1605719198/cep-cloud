@@ -14,6 +14,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,9 +68,11 @@ public class HumanresourcePersonnelController {
     @Log(title = "新增人员基本信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员基本信息")
     @PostMapping("/addPersonnelBasicInfo")
-    public Object addPersonnelBasicInfo(@RequestBody HumanresourcePersonnel humanresourcePersonnel) {
+    public Object addPersonnelBasicInfo(@RequestBody HumanresourcePersonnel humanresourcePersonnel) throws ParseException {
         // 根据姓名 取得大写首字母
         humanresourcePersonnel.setFullNamePinyin(PinyinAPI.getPinYinHeadChar(humanresourcePersonnel.getFullName()));
+        Date birthTwoDate = new SimpleDateFormat("yyyyMMdd").parse(humanresourcePersonnel.getCertificateNumber().substring(6, 14));
+        humanresourcePersonnel.setBirthTwoDate(birthTwoDate);
         boolean result = humanresourcePersonnelService.saveOrUpdate(humanresourcePersonnel);
         if (result) {
             return AjaxResult.success("保存成功");

@@ -28,7 +28,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item prop="photoAddress">
-          <photoUpload style="position: absolute"/>
+          <photoUpload v-model="form.photoAddress" style="position: absolute"/>
         </el-form-item>
       </el-col>
     </el-row>
@@ -942,6 +942,7 @@ export default {
     queryInfo(query) {
       queryInfo(query).then(response => {
         this.form = response.data[0];
+        this.$emit('empId', this.form.id)
         for (const item of this.options) {
           if (item.value == response.data[0].provinceOfBirthId){
             this.city = []

@@ -9,7 +9,7 @@
       :limit="limit"
       :on-error="handleUploadError"
       :on-exceed="handleExceed"
-      ref="imageUpload"
+      ref="photoUpload"
       :on-remove="handleDelete"
       :show-file-list="true"
       :headers="headers"
@@ -156,7 +156,7 @@ export default {
         this.number--;
         this.$modal.closeLoading();
         this.$modal.msgError(res.msg);
-        this.$refs.imageUpload.handleRemove(file);
+        this.$refs.photoUpload.handleRemove(file);
         this.uploadedSuccessfully();
       }
     },

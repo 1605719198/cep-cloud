@@ -11,12 +11,12 @@
         <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
         <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
       </div>
-      <el-form class="base-form" ref="baseForm" :model="baseForm">
+      <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
         <el-table ref="table-input" class="table" :data="baseForm.workExperienceList" :header-cell-class-name="cellClass" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
           <el-table-column type="selection" width="100" align="center" />
           <el-table-column label="到职日期" align="center" key="startDate" prop="startDate" width="230">
             <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.startDate'">
+              <el-form-item :prop="'workExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
                 <el-date-picker placeholder="请选择到职日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.startDate`)"></el-date-picker>
               </el-form-item>
             </template>
@@ -87,8 +87,7 @@
 </template>
 
 <script>
-import { addWorkExperienceData } from "@/api/human/hm/personnelBasicInfo";
-import {delUser} from "@/api/system/user";
+import { addWorkExperienceData, queryWorkExperienceInfo, delWorkExperienceInfo, queryWorkInfo } from "@/api/human/hm/personnelBasicInfo";
 export default {
   name: "WorkExperienceInfo",
   data() {
@@ -103,9 +102,29 @@ export default {
       index: 0,
       // 非多个禁用
       multiple: true,
+      // 选中数组
+      ids: [],
+      //人员基本信息表id
+      empId: '',
+      rules: {
+        startDate: [
+          { required: true, message: "请选择", trigger: "blur" }
+        ],
+      }
     }
   },
   methods: {
+    queryWorkExperienceInfo(query) {
+      this.empId = query.empId
+      queryWorkExperienceInfo(query).then(res => {
+        this.baseForm.workExperienceList = res.data
+      })
+    },
+    getList() {
+      queryWorkInfo(this.empId).then(res => {
+        this.baseForm.workExperienceList = res.data
+      })
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid);
@@ -126,6 +145,9 @@ export default {
       }
     },
     handleSave() {
+      for (const item of this.baseForm.workExperienceList) {
+        item.empId = this.empId
+      }
       addWorkExperienceData(this.baseForm).then(res => {
         if (res.code == 200) {
           this.$message({
@@ -133,18 +155,18 @@ export default {
             message: res.msg
           })
         }
+        this.getList()
       })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
-      // const userIds = row.userId || this.ids;
-      // this.$modal.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function() {
-      //   return delUser(userIds);
-      // }).then(() => {
-      //   this.getList();
-      //   this.$modal.msgSuccess("删除成功");
-      // }).catch(() => {});
+      const uuids = row.uuid || this.ids;
+      this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
+        return delWorkExperienceInfo(uuids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     },
   }
 }
