@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.workflow.mapper.WfCategoryMapper">
 
-    <resultMap type="com.jlkj.workflow.domain.WfCategory" id="FlowCategoryResult">
+    <resultMap type="com.jlkj.flow.workflow.domain.WfCategory" id="FlowCategoryResult">
         <result property="categoryId" column="category_id"/>
         <result property="categoryName" column="category_name"/>
         <result property="code" column="code"/>

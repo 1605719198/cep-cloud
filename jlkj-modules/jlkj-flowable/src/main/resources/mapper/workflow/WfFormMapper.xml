@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.workflow.mapper.WfFormMapper">
 
-    <resultMap type="com.jlkj.workflow.domain.WfForm" id="WfFormResult">
+    <resultMap type="com.jlkj.flow.workflow.domain.WfForm" id="WfFormResult">
         <result property="formId" column="form_id"/>
         <result property="formName" column="form_name"/>
         <result property="content" column="content"/>
@@ -15,7 +15,7 @@
         <result property="remark" column="remark"/>
     </resultMap>
 
-    <select id="selectFormVoList" resultType="com.jlkj.workflow.domain.vo.WfFormVo">
+    <select id="selectFormVoList" resultType="com.jlkj.flow.workflow.domain.vo.WfFormVo">
         SELECT
             t1.form_id AS formId,
             t1.form_name AS formName,
