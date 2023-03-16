@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jlkj-human</artifactId>
+    <artifactId>jlkj-modules-human</artifactId>
 
     <description>
         jlkj-modules-human人事模块
