@@ -1,8 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
@@ -10,6 +7,10 @@ import com.jlkj.system.domain.SysPost;
 import com.jlkj.system.mapper.SysPostMapper;
 import com.jlkj.system.mapper.SysUserPostMapper;
 import com.jlkj.system.service.ISysPostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层处理

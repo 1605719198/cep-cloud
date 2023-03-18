@@ -79,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
         </where>
+        order by post_sort asc
     </select>
     
     <select id="selectSysPostByPostId" parameterType="Long" resultMap="SysPostResult">

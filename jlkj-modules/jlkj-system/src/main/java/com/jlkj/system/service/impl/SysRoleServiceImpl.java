@@ -1,13 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.SpringUtils;
@@ -24,6 +16,11 @@ import com.jlkj.system.mapper.SysRoleMapper;
 import com.jlkj.system.mapper.SysRoleMenuMapper;
 import com.jlkj.system.mapper.SysUserRoleMapper;
 import com.jlkj.system.service.ISysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * 角色 业务层处理

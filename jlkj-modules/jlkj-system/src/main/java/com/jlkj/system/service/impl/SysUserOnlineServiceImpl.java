@@ -1,10 +1,10 @@
 package com.jlkj.system.service.impl;
 
-import org.springframework.stereotype.Service;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.system.api.model.LoginUser;
 import com.jlkj.system.domain.SysUserOnline;
 import com.jlkj.system.service.ISysUserOnlineService;
+import org.springframework.stereotype.Service;
 
 /**
  * 在线用户 服务层处理

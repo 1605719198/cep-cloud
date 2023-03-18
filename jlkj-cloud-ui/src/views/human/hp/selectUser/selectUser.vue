@@ -42,12 +42,12 @@
         <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true"/>
         <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true"/>
         <el-table-column label="状态" align="center" prop="status">
-          <template slot-scope="scope">
+          <template v-slot:default="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-          <template slot-scope="scope">
+          <template v-slot:default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>

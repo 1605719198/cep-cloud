@@ -1,6 +1,5 @@
 package com.jlkj.human.hp.mapper;
 
-import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysPost;
 
 import java.util.List;

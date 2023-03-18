@@ -1,15 +1,16 @@
 package com.jlkj.system.service.impl;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.system.api.domain.SysRole;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.service.ISysMenuService;
 import com.jlkj.system.service.ISysPermissionService;
 import com.jlkj.system.service.ISysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 用户权限处理

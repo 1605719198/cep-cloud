@@ -280,7 +280,7 @@
           </el-table-column>
           <el-table-column label="机构层级" prop="orgTierId" align="center" show-overflow-tooltip>
             <template v-slot:default="scope">
-              <dict-tag :options="dict.type.org_tier" :value="scope.row.orgTierId"/>
+              <dict-tag-human :options="baseInfoData.HP002" :value="scope.row.orgTierId"/>
             </template>
           </el-table-column>
           <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
@@ -311,6 +311,7 @@
 </template>
 
 <script>
+import DictTagHuman from "@/views/human/hp/DictTag/index"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
@@ -321,7 +322,7 @@ import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
   dicts: ['sys_normal_disable'],
-  components: {Treeselect,selectUser},
+  components: {Treeselect,selectUser,DictTagHuman},
   data() {
     return {
       //选单列表

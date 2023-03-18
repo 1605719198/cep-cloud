@@ -1,7 +1,6 @@
 package com.jlkj.human.hp.service.impl;
 
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.human.hp.domain.SysDeptVersion;
 import com.jlkj.human.hp.domain.SysPost;
 import com.jlkj.human.hp.domain.SysPostVersion;
 import com.jlkj.human.hp.mapper.SysPostMapper;

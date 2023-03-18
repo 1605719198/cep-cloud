@@ -57,28 +57,28 @@
       <el-table-column label="中文职称说明" align="center" prop="jobTitleName" />
       <el-table-column label="英文职称说明" align="center" prop="jobTitleNameEng" />
       <el-table-column label="申请加班" align="center" prop="overTime">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <dict-tag-human :options="baseInfoData.if_overtime" :value="scope.row.overTime"/>
         </template>
       </el-table-column>
       <el-table-column label="人员类别" align="center" prop="kind">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <dict-tag-human :options="baseInfoData.personnel_category" :value="scope.row.kind"/>
         </template>
       </el-table-column>
       <el-table-column label="人员层级" align="center" prop="titleLevel">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <dict-tag-human :options="baseInfoData.people_hierarchy" :value="scope.row.titleLevel"/>
         </template>
       </el-table-column>
       <el-table-column label="状态码" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="现有人数" align="center" prop="number" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot:default="scope">
           <el-button
             size="mini"
             type="text"
@@ -279,16 +279,6 @@ export default {
     this.getList();
     this.getName();
 
-    var aaa = [
-      {
-        Name:"test1Name",
-        type: "test",
-      },
-      {
-        Name:"test2",
-        model: "model2"
-      }
-    ];
   },
   methods: {
     //获取人事选单字典
@@ -325,7 +315,6 @@ export default {
     },
     //获得姓名
     getName(){    //获得姓名
-
       getAvatorByUserName(this.$store.state.user.name).then( response => {
         this.nickName=response.data.nickName
       })

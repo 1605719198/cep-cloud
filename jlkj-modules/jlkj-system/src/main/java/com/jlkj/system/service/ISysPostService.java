@@ -1,7 +1,8 @@
 package com.jlkj.system.service;
 
-import java.util.List;
 import com.jlkj.system.domain.SysPost;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层

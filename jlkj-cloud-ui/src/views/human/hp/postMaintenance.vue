@@ -21,7 +21,7 @@
               :highlight-current="true"
               :expand-on-click-node="false"
               :default-expanded-keys="expandedKeys"
-              node-key="id"
+              node-key="label3"
               ref="tree"
               @node-click="handleNodeClick"
             />
@@ -94,19 +94,19 @@
           <el-table-column label="定员" align="center" prop="planCapacity" />
           <el-table-column label="现员" align="center" prop="nowCapacity" />
           <el-table-column label="状态" align="center" prop="status">
-            <template slot-scope="scope">
+            <template v-slot:default="scope">
               <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
             </template>
           </el-table-column>
           <el-table-column label="该岗位上级岗位名称" align="center" prop="parentPostName" />
           <el-table-column label="更新人" align="center" prop="updateBy" />
           <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
-            <template slot-scope="scope">
+            <template v-slot:default="scope">
               <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template slot-scope="scope">
+            <template v-slot:default="scope">
               <el-button
                 size="mini"
                 type="text"
@@ -337,7 +337,7 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
-        this.expandedKeys.push(100);
+        this.expandedKeys.push('1');
       });
       treeselect().then(response => {
         this.allDeptOptions = response.data;
@@ -451,7 +451,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.compId = this.logincompId;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

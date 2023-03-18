@@ -1,15 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.common.core.constant.Constants;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.utils.StringUtils;
@@ -24,6 +14,11 @@ import com.jlkj.system.mapper.SysMenuMapper;
 import com.jlkj.system.mapper.SysRoleMapper;
 import com.jlkj.system.mapper.SysRoleMenuMapper;
 import com.jlkj.system.service.ISysMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 菜单 业务层处理

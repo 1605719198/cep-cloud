@@ -1,20 +1,14 @@
 package com.jlkj.system.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-
-import com.jlkj.common.core.domain.R;
-import com.jlkj.common.security.annotation.InnerAuth;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import com.jlkj.common.core.constant.UserConstants;
+import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.system.api.domain.SysDept;
@@ -24,6 +18,12 @@ import com.jlkj.system.domain.SysUserRole;
 import com.jlkj.system.service.ISysDeptService;
 import com.jlkj.system.service.ISysRoleService;
 import com.jlkj.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 角色信息

@@ -1,11 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.text.Convert;
@@ -20,6 +14,13 @@ import com.jlkj.system.domain.vo.TreeSelect;
 import com.jlkj.system.mapper.SysDeptMapper;
 import com.jlkj.system.mapper.SysRoleMapper;
 import com.jlkj.system.service.ISysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 部门管理 服务实现

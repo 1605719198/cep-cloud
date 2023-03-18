@@ -298,11 +298,10 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-
-      <div v-show="ifupdate">
+      <div v-show="ifupdate" slot="footer" >
         <el-divider content-position="center" >变更记录</el-divider>
       </div>
-      <el-table :data="formHistory" >
+      <el-table :data="formHistory"  v-show="ifupdate" slot="footer" >
         <el-table-column label="版本号" prop="versionNo" align="center" show-overflow-tooltip>
           <template v-slot:default="scope">
             <span>{{scope.row.versionNo}}</span>
@@ -318,7 +317,7 @@
             <span>{{scope.row.postName}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="所属公司/机构名称" prop="orgName" align="center" show-overflow-tooltip>
+        <el-table-column label="所属公司/机构" prop="orgName" align="center" show-overflow-tooltip>
           <template v-slot:default="scope">
             <span>{{scope.row.orgName}}</span>
           </template>

@@ -1,19 +1,5 @@
 package com.jlkj.system.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-
-import com.jlkj.common.core.web.page.PageQuery;
-import com.jlkj.common.core.web.page.TableDataInfoPlus;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.utils.StringUtils;
@@ -30,12 +16,18 @@ import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.api.domain.SysRole;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
-import com.jlkj.system.service.ISysConfigService;
-import com.jlkj.system.service.ISysDeptService;
-import com.jlkj.system.service.ISysPermissionService;
-import com.jlkj.system.service.ISysPostService;
-import com.jlkj.system.service.ISysRoleService;
-import com.jlkj.system.service.ISysUserService;
+import com.jlkj.system.service.*;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息
