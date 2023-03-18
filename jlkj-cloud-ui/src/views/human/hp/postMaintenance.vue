@@ -89,7 +89,7 @@
         </el-row>
         <el-table v-loading="loading" :data="postMaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="主键" align="center" prop="postId" />
+<!--          <el-table-column label="主键" align="center" prop="postId" />-->
           <el-table-column label="岗位名称" align="center" prop="postName" />
           <el-table-column label="定员" align="center" prop="planCapacity" />
           <el-table-column label="现员" align="center" prop="nowCapacity" />
