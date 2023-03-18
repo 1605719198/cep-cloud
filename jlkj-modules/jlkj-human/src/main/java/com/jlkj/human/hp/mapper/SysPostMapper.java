@@ -1,5 +1,6 @@
 package com.jlkj.human.hp.mapper;
 
+import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysPost;
 
 import java.util.List;
@@ -35,6 +36,14 @@ public interface SysPostMapper
      * @return 结果
      */
     public int insertSysPost(SysPost sysPost);
+
+    /**
+     * 根据部门编码查询信息
+     *
+     * @param postCode 部门编码
+     * @return 部门信息
+     */
+    public SysPost selectSysPostByPostCode(String postCode);
 
     /**
      * 修改岗位信息数据维护

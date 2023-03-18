@@ -58,17 +58,17 @@
       <el-table-column label="英文职称说明" align="center" prop="jobTitleNameEng" />
       <el-table-column label="申请加班" align="center" prop="overTime">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.human_hp_overtime" :value="scope.row.overTime"/>
+          <dict-tag-human :options="baseInfoData.if_overtime" :value="scope.row.overTime"/>
         </template>
       </el-table-column>
       <el-table-column label="人员类别" align="center" prop="kind">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.human_hp_kind" :value="scope.row.kind"/>
+          <dict-tag-human :options="baseInfoData.personnel_category" :value="scope.row.kind"/>
         </template>
       </el-table-column>
       <el-table-column label="人员层级" align="center" prop="titleLevel">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.human_hp_titlelevel" :value="scope.row.titleLevel"/>
+          <dict-tag-human :options="baseInfoData.people_hierarchy" :value="scope.row.titleLevel"/>
         </template>
       </el-table-column>
       <el-table-column label="状态码" align="center" prop="status">
@@ -130,10 +130,10 @@
             <el-form-item label="人员层级" prop="titleLevel">
               <el-select v-model="form.titleLevel" placeholder="请选择人员层级" style="width: 100%">
                 <el-option
-                  v-for="dict in dict.type.human_hp_titlelevel"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in baseInfoData.people_hierarchy"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -145,10 +145,10 @@
             <el-form-item label="申请加班" prop="overTime">
               <el-select v-model="form.overTime" placeholder="请选择申请加班" style="width: 100%">
                 <el-option
-                  v-for="dict in dict.type.human_hp_overtime"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in baseInfoData.if_overtime"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -157,10 +157,10 @@
             <el-form-item label="人员类别" prop="kind">
               <el-select v-model="form.kind" placeholder="请选择人员类别" style="width: 100%">
                 <el-option
-                  v-for="dict in dict.type.human_hp_kind"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in baseInfoData.personnel_category"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -212,13 +212,28 @@
 </template>
 
 <script>
+import DictTagHuman from "@/views/human/hp/DictTag/index"
+import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listJobTitle, getJobTitle, delJobTitle, addJobTitle, updateJobTitle } from "@/api/human/hp/jobTitle";
-import {deptTreeSelect, getAvatorByUserName, getUser} from "@/api/system/user";
+import { getAvatorByUserName} from "@/api/system/user";
+import Treeselect from '@riophae/vue-treeselect'
 export default {
   name: "JobTitle",
-  dicts: ['human_hp_overtime', 'human_hp_kind', 'human_hp_titlelevel', 'sys_normal_disable'],
+  dicts: ['sys_normal_disable'],
+  components: {DictTagHuman},
   data() {
     return {
+      //选单列表
+      baseInfo: {
+        uuid: '',
+        baseInfoList: [
+          'people_hierarchy',
+          'personnel_category',
+          'if_overtime'
+        ]
+      },
+      //选单数据
+      baseInfoData: [],
       //登录人姓名
       nickName: undefined,
       // 遮罩层
@@ -260,10 +275,28 @@ export default {
     };
   },
   created() {
+    this.getHumandisc();
     this.getList();
     this.getName();
+
+    var aaa = [
+      {
+        Name:"test1Name",
+        type: "test",
+      },
+      {
+        Name:"test2",
+        model: "model2"
+      }
+    ];
   },
   methods: {
+    //获取人事选单字典
+    getHumandisc(){
+      getBaseInfo(this.baseInfo).then(response => {
+        this.baseInfoData = response.data;
+      });
+    },
     /** 获取当前日期 */
     getDate(e){
       var today = new Date(); //日期
@@ -291,7 +324,8 @@ export default {
       });
     },
     //获得姓名
-    getName(){
+    getName(){    //获得姓名
+
       getAvatorByUserName(this.$store.state.user.name).then( response => {
         this.nickName=response.data.nickName
       })
@@ -346,8 +380,6 @@ export default {
       const id = row.id || this.ids
       getJobTitle(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.nickName;
-        this.form.createDate = this.getDate(1);
         this.open = true;
         this.title = "修改职位名称数据维护";
       });

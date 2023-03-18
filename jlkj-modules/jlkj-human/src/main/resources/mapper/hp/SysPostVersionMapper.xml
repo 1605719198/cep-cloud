@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hp.mapper.SysPostMapper">
-    
-    <resultMap type="SysPost" id="SysPostResult">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hp.mapper.SysPostVersionMapper">
+
+    <resultMap type="SysPostVersion" id="SysPostVersionResult">
+        <result property="Id"    column="id"    />
         <result property="postId"    column="post_id"    />
         <result property="postCode"    column="post_code"    />
         <result property="postName"    column="post_name"    />
@@ -67,28 +68,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="proAct"    column="pro_act"    />
     </resultMap>
 
-    <sql id="selectSysPostVo">
-        select post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post
+    <sql id="selectSysPostVersionVo">
+        select id, post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post_version
     </sql>
 
-    <select id="selectSysPostList" parameterType="SysPost" resultMap="SysPostResult">
-        <include refid="selectSysPostVo"/>
-        <where>  
-            <if test="status != null  and status != ''"> and status &lt;= #{status}</if>
-            <if test="orgId != null "> and org_id = #{orgId}</if>
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
+    <select id="selectSysPostVersionList" parameterType="SysPostVersion" resultMap="SysPostVersionResult">
+        <include refid="selectSysPostVersionVo"/>
+        <where>
+            <if test="postId != null "> and post_id = #{postId}</if>
         </where>
-    </select>
-    
-    <select id="selectSysPostByPostId" parameterType="Long" resultMap="SysPostResult">
-        <include refid="selectSysPostVo"/>
-        where post_id = #{postId}
+        order by version_no desc
     </select>
 
-    <insert id="insertSysPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
-        insert into sys_post
+    <select id="selectSysPostVersionById" parameterType="Long" resultMap="SysPostVersionResult">
+        <include refid="selectSysPostVersionVo"/>
+        where id = #{Id}
+    </select>
+
+    <update id="updateisNew" parameterType="Long">
+        update sys_post_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ifNew != null">if_new = 0,</if>
+        </trim>
+        where post_id = #{postId}
+    </update>
+
+    <insert id="insertSysPostVersion" parameterType="SysPostVersion" useGeneratedKeys="true" keyProperty="postId">
+        insert into sys_post_version
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postId != null and postId != ''">post_id,</if>
             <if test="postCode != null and postCode != ''">post_code,</if>
             <if test="postName != null and postName != ''">post_name,</if>
             <if test="deptId != null">dept_id,</if>
@@ -148,8 +156,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="otherClaim != null">other_claim,</if>
             <if test="knowTec != null">know_tec,</if>
             <if test="proAct != null">pro_act,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postId != null">#{postId},</if>
             <if test="postCode != null and postCode != ''">#{postCode},</if>
             <if test="postName != null and postName != ''">#{postName},</if>
             <if test="deptId != null">#{deptId},</if>
@@ -209,16 +218,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="otherClaim != null">#{otherClaim},</if>
             <if test="knowTec != null">#{knowTec},</if>
             <if test="proAct != null">#{proAct},</if>
-         </trim>
+        </trim>
     </insert>
 
-    <select id="selectSysPostByPostCode" parameterType="String" resultMap="SysPostResult">
-        <include refid="selectSysPostVo"/>
-        where post_code = #{postCode}
-    </select>
-
-    <update id="updateSysPost" parameterType="SysPost">
-        update sys_post
+    <update id="updateSysPostVersion" parameterType="SysPostVersion">
+        update sys_post_version
         <trim prefix="SET" suffixOverrides=",">
             <if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
             <if test="postName != null and postName != ''">post_name = #{postName},</if>
@@ -283,12 +287,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where post_id = #{postId}
     </update>
 
-    <delete id="deleteSysPostByPostId" parameterType="Long">
-        delete from sys_post where post_id = #{postId}
+    <delete id="deleteSysPostVersionById" parameterType="Long">
+        delete from sys_post_version where id = #{Id}
     </delete>
 
-    <delete id="deleteSysPostByPostIds" parameterType="String">
-        delete from sys_post where post_id in 
+    <delete id="deleteSysPostVersionByPostIds" parameterType="String">
+        delete from sys_post_version where post_id in
         <foreach item="postId" collection="array" open="(" separator="," close=")">
             #{postId}
         </foreach>

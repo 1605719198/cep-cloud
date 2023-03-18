@@ -9,6 +9,16 @@ export function listJobTitle(query) {
   })
 }
 
+
+// 查询职位名称数据idname
+export function listJobTitleidname(compId) {
+  return request({
+    url: '/human/jobTitle/getidname',
+    method: 'get',
+    params: compId
+  })
+}
+
 // 查询职位名称数据维护详细
 export function getJobTitle(id) {
   return request({

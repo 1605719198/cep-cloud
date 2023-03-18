@@ -5,10 +5,10 @@
         <div class="head-container">
           <el-select v-model="compId" placeholder="请选择公司名称" clearable size="small">
             <el-option
-              v-for="dict in dict.type.comp_id"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+              v-for="dict in baseInfoData.comp_id"
+              :key="dict.dicNo"
+              :label="dict.dicName"
+              :value="dict.dicNo"
             />
           </el-select>
         </div>
@@ -154,10 +154,10 @@
             <el-form-item label="机构层级" prop="orgTierId">
               <el-select v-model="form.orgTierId" placeholder="请选择机构层级" clearable size="small" style="width: 100%;">
                 <el-option
-                  v-for="dict in dict.type.org_tier"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in baseInfoData.HP002"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 />
               </el-select>
             </el-form-item>
@@ -230,7 +230,7 @@
           </el-col>
         </el-row>
         <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="300" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea"   placeholder="请输入变更原因" />
         </el-form-item>
 
         <el-row :gutter="20" v-show="!ifupdate">
@@ -311,32 +311,43 @@
 </template>
 
 <script>
+import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
-import { getAvatorByUserName } from "@/api/system/user";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { getAvatorByUserName } from "@/api/system/user";
 import { listDeptversion } from '@/api/human/hp/deptVersion'
 import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
-  dicts: ['org_tier', 'sys_normal_disable', 'comp_id'],
+  dicts: ['sys_normal_disable'],
   components: {Treeselect,selectUser},
   data() {
     return {
+      //选单列表
+      baseInfo: {
+        uuid: '',
+        baseInfoList: [
+          'comp_id',
+          'HP002'
+        ]
+      },
+      //选单数据
+      baseInfoData: [],
       //登录人姓名
       nickName: undefined,
       //登录人公司
       logincompId:undefined,
       // 选择人员单笔或多笔
       isSingle: true,
-      // 部门名称
+      // 公司名称
       compId: undefined,
       //默认展开指定节点
       expandedKeys: [],
       // 部门树选项
-      deptOptions: undefined,
+      deptOptions: [],
       //所有部门树
-      allDeptOptions: undefined,
+      allDeptOptions: [],
       //是否展示树和表
       treeandtable:true,
       // 遮罩层
@@ -380,10 +391,10 @@ export default {
       currentNodeId: '',
       // 表单参数
       form: {},
+      //el tree默认值
       defaultProps: {
         children: "children",
         label: "label",
-        ancestors: "ancestors"
       },
       //是否修改
       ifupdate:false,
@@ -428,20 +439,29 @@ export default {
       this.queryParams.deptId = null;
       this.queryParams3.compId =val;
       if(val){
-        this.treeandtable=true
+        this.treeandtable=true;
+        this.getTreeselect();
       }else{
         this.treeandtable=false
       }
       this.getList();
-      this.getTreeselect();
     }
   },
   created() {
+    treeselect().then(response => {
+      this.allDeptOptions = response.data;
+    });
+    this.getHumandisc();
     this.getName()
-    this.getTreeselect();
     // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
+    //获取人事选单字典
+    getHumandisc(){
+      getBaseInfo(this.baseInfo).then(response => {
+        this.baseInfoData = response.data;
+      });
+    },
     // 获取当前登录用户名称/信息
     getName(){
       getAvatorByUserName(this.$store.state.user.name).then( response => {
@@ -486,7 +506,7 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
-        this.expandedKeys.push(this.$store.state.user.deptId);
+        // this.expandedKeys.push(this.$store.state.user.deptId);
       });
       treeselect().then(response => {
         this.allDeptOptions = response.data;

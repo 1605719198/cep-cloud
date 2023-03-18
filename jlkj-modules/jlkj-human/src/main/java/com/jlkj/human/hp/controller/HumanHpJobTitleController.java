@@ -41,6 +41,17 @@ public class HumanHpJobTitleController extends BaseController
     }
 
     /**
+     * 查询职位名称idname列表
+     */
+    @GetMapping("/getidname")
+    public TableDataInfo list(String compId)
+    {
+        startPage();
+        List<HumanHpJobTitle> list = humanHpJobTitleService.selectHumanHpJobTitleidname(compId);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出职位名称数据维护列表
      */
     @RequiresPermissions("human:jobTitle:export")

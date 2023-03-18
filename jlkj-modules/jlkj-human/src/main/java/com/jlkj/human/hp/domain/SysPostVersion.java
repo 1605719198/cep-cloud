@@ -14,9 +14,12 @@ import java.util.Date;
  * @author 266861
  * @date 2023-03-15
  */
-public class SysPost extends BaseEntity
+public class SysPostVersion extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+
+    /** 主键 */
+    private Long Id;
 
     /** 主键 */
     private Long postId;
@@ -190,6 +193,16 @@ public class SysPost extends BaseEntity
 
     /** 职业化行为 */
     private String proAct;
+
+    public void setId(Long Id)
+    {
+        this.Id = Id;
+    }
+
+    public Long getId()
+    {
+        return Id;
+    }
 
     public void setPostId(Long postId)
     {
@@ -699,66 +712,67 @@ public class SysPost extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("postId", getPostId())
-            .append("postCode", getPostCode())
-            .append("postName", getPostName())
-            .append("deptId", getDeptId())
-            .append("specialityTypeId", getSpecialityTypeId())
-            .append("specialityId", getSpecialityId())
-            .append("postSequenceId", getPostSequenceId())
-            .append("postTypeId", getPostTypeId())
-            .append("jobTitleId", getJobTitleId())
-            .append("serialNumber", getSerialNumber())
-            .append("shiftWorkId", getShiftWorkId())
-            .append("employmentNatureId", getEmploymentNatureId())
-            .append("workAddressId", getWorkAddressId())
-            .append("workAddress", getWorkAddress())
-            .append("overseasLocations", getOverseasLocations())
-            .append("ifSpeciallyAssignedPerson", getIfSpeciallyAssignedPerson())
-            .append("planCapacity", getPlanCapacity())
-            .append("nowCapacity", getNowCapacity())
-            .append("postSort", getPostSort())
-            .append("capacityBasis", getCapacityBasis())
-            .append("costCenterId", getCostCenterId())
-            .append("status", getStatus())
-            .append("parentPostId", getParentPostId())
-            .append("parentPostName", getParentPostName())
-            .append("positionsClassId", getPositionsClassId())
-            .append("orgId", getOrgId())
-            .append("orgName", getOrgName())
-            .append("orgFullName", getOrgFullName())
-            .append("positionExpenseCategory", getPositionExpenseCategory())
-            .append("costCenterName", getCostCenterName())
-            .append("changeReason", getChangeReason())
-            .append("effectDate", getEffectDate())
-            .append("versionNo", getVersionNo())
-            .append("ifNew", getIfNew())
-            .append("compId", getCompId())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("workDesc", getWorkDesc())
-            .append("workCon", getWorkCon())
-            .append("apprKpi", getApprKpi())
-            .append("reviewKpi", getReviewKpi())
-            .append("workSta", getWorkSta())
-            .append("workAut", getWorkAut())
-            .append("workEnv", getWorkEnv())
-            .append("opeEquHp", getOpeEquHp())
-            .append("toolUsed", getToolUsed())
-            .append("officeEqu", getOfficeEqu())
-            .append("labourSta", getLabourSta())
-            .append("minAge", getMinAge())
-            .append("maxAge", getMaxAge())
-            .append("gender", getGender())
-            .append("recordId", getRecordId())
-            .append("speClaim", getSpeClaim())
-            .append("proQua", getProQua())
-            .append("workExp", getWorkExp())
-            .append("otherClaim", getOtherClaim())
-            .append("knowTec", getKnowTec())
-            .append("proAct", getProAct())
-            .toString();
+                .append("Id", getId())
+                .append("postId", getPostId())
+                .append("postCode", getPostCode())
+                .append("postName", getPostName())
+                .append("deptId", getDeptId())
+                .append("specialityTypeId", getSpecialityTypeId())
+                .append("specialityId", getSpecialityId())
+                .append("postSequenceId", getPostSequenceId())
+                .append("postTypeId", getPostTypeId())
+                .append("jobTitleId", getJobTitleId())
+                .append("serialNumber", getSerialNumber())
+                .append("shiftWorkId", getShiftWorkId())
+                .append("employmentNatureId", getEmploymentNatureId())
+                .append("workAddressId", getWorkAddressId())
+                .append("workAddress", getWorkAddress())
+                .append("overseasLocations", getOverseasLocations())
+                .append("ifSpeciallyAssignedPerson", getIfSpeciallyAssignedPerson())
+                .append("planCapacity", getPlanCapacity())
+                .append("nowCapacity", getNowCapacity())
+                .append("postSort", getPostSort())
+                .append("capacityBasis", getCapacityBasis())
+                .append("costCenterId", getCostCenterId())
+                .append("status", getStatus())
+                .append("parentPostId", getParentPostId())
+                .append("parentPostName", getParentPostName())
+                .append("positionsClassId", getPositionsClassId())
+                .append("orgId", getOrgId())
+                .append("orgName", getOrgName())
+                .append("orgFullName", getOrgFullName())
+                .append("positionExpenseCategory", getPositionExpenseCategory())
+                .append("costCenterName", getCostCenterName())
+                .append("changeReason", getChangeReason())
+                .append("effectDate", getEffectDate())
+                .append("versionNo", getVersionNo())
+                .append("ifNew", getIfNew())
+                .append("compId", getCompId())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("workDesc", getWorkDesc())
+                .append("workCon", getWorkCon())
+                .append("apprKpi", getApprKpi())
+                .append("reviewKpi", getReviewKpi())
+                .append("workSta", getWorkSta())
+                .append("workAut", getWorkAut())
+                .append("workEnv", getWorkEnv())
+                .append("opeEquHp", getOpeEquHp())
+                .append("toolUsed", getToolUsed())
+                .append("officeEqu", getOfficeEqu())
+                .append("labourSta", getLabourSta())
+                .append("minAge", getMinAge())
+                .append("maxAge", getMaxAge())
+                .append("gender", getGender())
+                .append("recordId", getRecordId())
+                .append("speClaim", getSpeClaim())
+                .append("proQua", getProQua())
+                .append("workExp", getWorkExp())
+                .append("otherClaim", getOtherClaim())
+                .append("knowTec", getKnowTec())
+                .append("proAct", getProAct())
+                .toString();
     }
 }

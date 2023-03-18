@@ -8,7 +8,9 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hp.domain.SysPost;
+import com.jlkj.human.hp.domain.SysPostVersion;
 import com.jlkj.human.hp.service.ISysPostService;
+import com.jlkj.human.hp.service.ISysPostVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,8 @@ public class SysPostController extends BaseController
 {
     @Autowired
     private ISysPostService sysPostService;
+    @Autowired
+    private ISysPostVersionService SysPostVersionService;
 
     /**
      * 查询岗位信息数据维护列表
@@ -37,6 +41,17 @@ public class SysPostController extends BaseController
     {
         startPage();
         List<SysPost> list = sysPostService.selectSysPostList(sysPost);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询部门资料变更版本列表
+     */
+    @GetMapping("/getHistory")
+    public TableDataInfo list(SysPostVersion SysPostVersion)
+    {
+        startPage();
+        List<SysPostVersion> list = SysPostVersionService.selectSysPostVersionList(SysPostVersion);
         return getDataTable(list);
     }
 
@@ -69,7 +84,7 @@ public class SysPostController extends BaseController
     @RequiresPermissions("human:postMaintenance:add")
     @Log(title = "岗位信息数据维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysPost sysPost)
+    public AjaxResult add(@RequestBody SysPost sysPost)throws Exception
     {
         return toAjax(sysPostService.insertSysPost(sysPost));
     }

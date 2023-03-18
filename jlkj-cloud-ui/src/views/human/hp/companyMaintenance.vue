@@ -5,10 +5,10 @@
         <div class="head-container">
             <el-select v-model="treestatus" placeholder="请选择公司状态" clearable size="small">
               <el-option
-                v-for="dict in dict.type.dept_status"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in baseInfoData.dept_status"
+                :key="dict.dicNo"
+                :label="dict.dicName"
+                :value="dict.dicNo"
               />
             </el-select>
         </div>
@@ -147,10 +147,10 @@
             <el-form-item label="所属板块类别" prop="boardId">
               <el-select v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" style="width: 100%">
                 <el-option
-                  v-for="dict in dict.type.board_id"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in baseInfoData.HP001"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 />
               </el-select>
             </el-form-item>
@@ -161,7 +161,7 @@
           <el-col :span="12">
             <el-form-item label="当前状态" prop="status">
               <el-radio-group v-model="form.status">
-                <el-radio  clique_id
+                <el-radio
                   v-for="dict in dict.type.sys_normal_disable"
                   :key="dict.value"
                   :label="dict.value"
@@ -185,10 +185,10 @@
             <el-form-item label="组织树是否显示" prop="ifDisplay">
               <el-radio-group v-model="form.ifDisplay">
                 <el-radio
-                  v-for="dict in dict.type.dept_if_display"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
+                  v-for="dict in baseInfoData.if_display"
+                  :key="dict.dicNo"
+                  :label="dict.dicNo"
+                >{{dict.dicName}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -223,7 +223,7 @@
         </el-row>
 
         <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="300" v-model="form.changeReason" type="textarea" placeholder="请输入变更原因" />
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea"   placeholder="请输入变更原因" />
         </el-form-item>
 
         <el-row :gutter="20">
@@ -307,6 +307,7 @@
 </template>
 
 <script>
+import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
 import { getAvatorByUserName } from "@/api/system/user";
@@ -315,17 +316,28 @@ import { listDeptversion } from '@/api/human/hp/deptVersion'
 import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
-  dicts: ['org_tier', 'sys_normal_disable', 'comp_id','dept_status','dept_if_display','clique_id','board_id'],
+  dicts: ['sys_normal_disable'],
   components: {Treeselect,selectUser},
   data() {
     return {
+      //选单列表
+      baseInfo: {
+        uuid: '',
+        baseInfoList: [
+          'dept_status',
+          'HP001',
+          'if_display'
+        ]
+      },
+      //选单数据
+      baseInfoData: [],
       //登录人姓名
       nickName: undefined,
       // 公司状态
       treestatus: '2',
       expandedKeys: [],
       // 部门树选项
-      deptOptions: undefined,
+      deptOptions: [],
       //全部门树
       alldeptOptions:undefined,
       //是否展示树和表
@@ -430,13 +442,21 @@ export default {
     }
   },
   created() {
-    this.getName()
+    this.getHumandisc();
+    this.getName();
     this.getTreeselect();
-    this.getList()
-    this.treeandtable=true
+    this.getList();
+    this.treeandtable=true;
+
     // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
+    //获取人事选单字典
+    getHumandisc(){
+      getBaseInfo(this.baseInfo).then(response => {
+        this.baseInfoData = response.data;
+      });
+    },
     // 获取当前登录用户名称
    getName(){
      getAvatorByUserName(this.$store.state.user.name).then( response => {
@@ -469,7 +489,7 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
-        this.expandedKeys.push(this.$store.state.user.deptId);
+        // this.expandedKeys.push(this.$store.state.user.deptId);
       });
     },
     /** 转换部门数据结构 */

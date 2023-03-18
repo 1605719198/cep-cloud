@@ -34,7 +34,7 @@ public interface ISysPostService
      * @param sysPost 岗位信息数据维护
      * @return 结果
      */
-    public int insertSysPost(SysPost sysPost);
+    public int insertSysPost(SysPost sysPost) throws Exception;
 
     /**
      * 修改岗位信息数据维护

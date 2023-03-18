@@ -49,6 +49,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where h.id = #{id}
     </select>
 
+    <select id="selectHumanHpJobTitleidname" parameterType="String" resultMap="HumanHpJobTitleResult">
+        select job_title_no,job_title_name
+        from human_hp_job_title h
+        where 1 = 1
+        <!--        <where>-->
+        <!--            <if test="compID != null  and compID != ''"> and comp_id = #{compId}</if>-->
+        <!--        </where>-->
+    </select>
+
         
     <insert id="insertHumanHpJobTitle" parameterType="HumanHpJobTitle">
         insert into human_hp_job_title

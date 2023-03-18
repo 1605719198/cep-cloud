@@ -19,6 +19,14 @@ public interface HumanHpJobTitleMapper
      * @return 职位名称数据维护
      */
     public HumanHpJobTitle selectHumanHpJobTitleById(String id);
+    /**
+     * 查询职位名称数据维护
+     *
+     * @param compId 公司Id
+     * @return 职位名称数据维护列表
+     */
+    public List<HumanHpJobTitle> selectHumanHpJobTitleidname(String compId);
+
 
     /**
      * 查询职位名称数据维护列表

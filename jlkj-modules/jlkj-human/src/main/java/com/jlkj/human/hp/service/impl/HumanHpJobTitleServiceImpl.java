@@ -33,6 +33,18 @@ public class HumanHpJobTitleServiceImpl implements IHumanHpJobTitleService
     }
 
     /**
+     * 查询职位名称数据维护
+     *
+     * @param compId 职位名称数据维护主键
+     * @return 职位名称数据维护
+     */
+    @Override
+    public List<HumanHpJobTitle> selectHumanHpJobTitleidname(String compId)
+    {
+        return humanHpJobTitleMapper.selectHumanHpJobTitleidname(compId);
+    }
+
+    /**
      * 查询职位名称数据维护列表
      *
      * @param humanHpJobTitle 职位名称数据维护
