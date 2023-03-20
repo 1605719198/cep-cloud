@@ -9,6 +9,15 @@ export function listDeptmaintenance(query) {
   })
 }
 
+// 查询部门资料变更版本列表
+export function listDeptversion(query) {
+  return request({
+    url: '/human/deptMaintenance/deptVersionlist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询部门资料维护详细
 export function getDeptmaintenance(deptId) {
   return request({

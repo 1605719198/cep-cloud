@@ -579,8 +579,8 @@ export default {
     },
     //职位名称选择
     handleChangeC(value,label){
-      alert(value)
-      alert(label)
+      // alert(value)
+      // alert(label)
     },
     //取消操作
     cancel() {

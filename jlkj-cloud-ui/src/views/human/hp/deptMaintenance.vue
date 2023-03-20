@@ -313,11 +313,10 @@
 <script>
 import DictTagHuman from "@/views/human/hp/DictTag/index"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect } from "@/api/human/hp/deptMaintenance";
+import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect,listDeptversion } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getAvatorByUserName } from "@/api/system/user";
-import { listDeptversion } from '@/api/human/hp/deptVersion'
 import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",

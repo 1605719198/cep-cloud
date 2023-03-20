@@ -77,7 +77,7 @@
         <where>
             <if test="postId != null "> and post_id = #{postId}</if>
         </where>
-        order by version_no desc
+        order by update_time desc
     </select>
 
     <select id="selectSysPostVersionById" parameterType="Long" resultMap="SysPostVersionResult">

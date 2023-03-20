@@ -162,7 +162,11 @@ public class SysDeptServiceImpl implements ISysDeptService
     public int updateSysDept(SysDept sysDept) throws Exception
     {
         SysDeptVersion sysDeptVersion = new SysDeptVersion();
-        sysDept.setUpdateTime(DateUtils.getNowDate());
+        SysDept oldDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getDeptId());
+        SysDept newParentDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getParentId());
+        String newAncestors = newParentDept.getAncestors()+","+newParentDept.getDeptId();
+//        String oldAncestors = oldDept.getAncestors();
+        sysDept.setAncestors(newAncestors);
         int updateOk=sysDeptMapper.updateSysDept(sysDept);
         if(updateOk==1){
             BeanUtils.copyProperties(sysDept,sysDeptVersion);
