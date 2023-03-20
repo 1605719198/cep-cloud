@@ -5,10 +5,10 @@
         <div class="head-container">
           <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
             <el-option
-              v-for="dict in dict.type.comp_id"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+              v-for="dict in baseInfoData.comp_id"
+              :key="dict.dicNo"
+              :label="dict.dicName"
+              :value="dict.dicNo"
             />
           </el-select>
         </div>
@@ -21,7 +21,7 @@
               :highlight-current="true"
               :expand-on-click-node="false"
               :default-expanded-keys="expandedKeys"
-              node-key="label3"
+              node-key="id"
               ref="tree"
               @node-click="handleNodeClick"
             />
@@ -33,10 +33,10 @@
           <el-form-item label="状态" prop="status">
             <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
               <el-option
-                v-for="dict in dict.type.dept_status"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in baseInfoData.dept_status"
+                :key="dict.dicNo"
+                :label="dict.dicName"
+                :value="dict.dicNo"
               />
             </el-select>
           </el-form-item>
@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
 import { getAvatorByUserName} from "@/api/system/user";
@@ -148,12 +149,22 @@ import { listPostMaintenance, getPostMaintenance, delPostMaintenance, addPostMai
 import AddOrUpdate from '@/views/human/hp/postView/base'
 export default {
   name: "PostMaintenance",
-  dicts: ['dept_status','sys_normal_disable','comp_id'],
+  dicts: ['sys_normal_disable'],
   components: {Treeselect,AddOrUpdate},
   data() {
     return {
       //新增修改界面是否显示
       addOrUpdateVisible:false,
+      //选单列表
+      baseInfo: {
+        uuid: '',
+        baseInfoList: [
+          'comp_id',
+          'dept_status'
+        ]
+      },
+      //选单数据
+      baseInfoData: [],
       // 公司名称
       compId: undefined,
       //登录人姓名
@@ -276,10 +287,28 @@ export default {
     }
   },
   created() {
-    this.getName()
+    this.getHumandisc();
+    this.getName();
     // this.getTreeselect();
   },
   methods: {
+    //获取人事选单字典
+    getHumandisc(){
+      getBaseInfo(this.baseInfo).then(response => {
+        this.baseInfoData = response.data;
+        // for(var i =0;i<this.baseInfoData.comp_id.length;i++){
+        //   console.log(JSON.stringify(baseInfoData.comp_id[i]))
+        // }
+        this.baseInfoData.comp_id.forEach((item,index,array)=>{
+          // this.expandedKeys.push(101);
+          // alert(item.dicNo)
+        })
+        this.expandedKeys.push(101);
+        this.expandedKeys.push(102);
+        this.expandedKeys.push(200);
+
+      });
+    },
     // 获取当前登录用户名称/信息
     getName(){
       getAvatorByUserName(this.$store.state.user.name).then( response => {
@@ -337,7 +366,6 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
-        this.expandedKeys.push('1');
       });
       treeselect().then(response => {
         this.allDeptOptions = response.data;
