@@ -239,3 +239,12 @@ export function queryProfessional(empId) {
     }
   })
 }
+
+//获取人员基本信息查询列表
+export function getAllUserList(data) {
+  return request({
+    url: '/human/personnel/base/getAllUserList',
+    method: 'get',
+    params: data
+  })
+}

@@ -2,12 +2,14 @@ package com.jlkj.human.hm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.HumanresourcePersonnelDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.config.PinyinAPI;
 import com.jlkj.human.hm.domain.HumanresourcePersonnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IHumanresourcePersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -99,6 +103,38 @@ public class HumanresourcePersonnelController {
                 return AjaxResult.error("查无资料");
             } else {
                 return AjaxResult.success("查询成功！", list);
+            }
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
+
+    /**
+     * 人员基本信息弹窗分页列表查询
+     */
+    @Log(title = "人员基本信息弹窗分页列表查询",businessType = BusinessType.OTHER)
+    @Operation(summary = "人员基本信息弹窗分页列表查询")
+    @GetMapping("/getAllUserList")
+    public Object getAllUserList(HumanresourcePersonnelInfoDTO humanresourcePersonnelInfoDTO) {
+        try {
+            String compId = humanresourcePersonnelInfoDTO.getCompId();
+            String empNo = humanresourcePersonnelInfoDTO.getEmpNo();
+            Long pageNum = humanresourcePersonnelInfoDTO.getPageNum();
+            Long pageSize = humanresourcePersonnelInfoDTO.getPageSize();
+            LambdaQueryWrapper<HumanresourcePersonnel> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(StringUtils.isNotBlank(compId), HumanresourcePersonnel::getCompId, compId)
+                        .eq(StringUtils.isNotBlank(empNo), HumanresourcePersonnel::getEmpNo, empNo);
+            Page<HumanresourcePersonnel> page = humanresourcePersonnelService.page(new Page<>(pageNum, pageSize), queryWrapper);
+            //总记录数
+            long total = page.getTotal();
+            List<HumanresourcePersonnel> records = page.getRecords();
+            Map<String,Object> dataMap = new HashMap<>(16);
+            dataMap.put("total",total);
+            dataMap.put("list",records);
+            if (records.isEmpty()){
+                return AjaxResult.success("查无资料", dataMap);
+            } else {
+                return AjaxResult.success("搜索成功,为您找到" + total + "笔资料", dataMap);
             }
         } catch (Exception e) {
             return AjaxResult.error();
