@@ -7,12 +7,11 @@
           <el-col :span="4" class="left_tree">
             <el-tree ref="tree"
                      class="filter-tree"
-                     node-key="uuid"
-                     style="height: 580px; overflow-y: scroll"
+                     node-key="id"
                      :props="defaultProps"
                      :data="menuData"
+                     default-expand-all
                      :expand-on-click-node="false"
-                     :default-expanded-keys="defaultShowNodes"
                      @node-click="handleNodeClick">
             </el-tree>
           </el-col>
@@ -36,7 +35,7 @@
                 <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo" />
                 <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName" />
                 <el-table-column label="状态" minWidth="150" align="center" prop="status">
-                  <template v-slot="scope">
+                  <template slot-scope="scope">
                     <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
                   </template>
                 </el-table-column>
@@ -118,9 +117,9 @@ export default {
         data: {},
       },
       queryParams: {
-        pageSize: 10,
+        pageSize: 20,
         pageNum: 1,
-        total: 0
+        total: 1
       },
       uuid: '',
       table: {
@@ -128,18 +127,6 @@ export default {
         loading: false,
       },
       tableData: [],
-      defaultShowNodes: [], //默认显示id
-    }
-  },
-  watch: {
-    //监听数据 设置默认展示第一层数据
-    menuData: {
-      handler(val) {
-        val.forEach(item => {
-            this.defaultShowNodes.push(item.uuid);
-        })
-      },
-      deep: true,
     }
   },
   created() {
@@ -173,12 +160,12 @@ export default {
     },
     // 分页-每页多少条
     handleSizeChange (val) {
-      this.queryParams.pageSize = val;
+      this.page.size = val;
       this.onLoad();
     },
     // 分页-当前页
     handleCurrentChange (val) {
-      this.queryParams.pageNum = val;
+      this.page.current = val;
       this.onLoad();
     },
     //新增

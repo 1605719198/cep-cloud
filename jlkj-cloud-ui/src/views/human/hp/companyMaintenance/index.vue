@@ -85,12 +85,12 @@
       <el-table-column label="领导" align="center" prop="leader" />
       <el-table-column label="创建人" align="center" prop="createBy" />
       <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
 <!--          <el-button-->
 <!--            size="mini"-->
 <!--            type="text"-->
@@ -117,7 +117,7 @@
       v-show="(total>0)&&treeandtable"
       :total="total"
       :page.sync="queryParams.pageNum"
-      :page-sizes="[20, 50, 100, 200]"
+      :page-sizes="[10, 20, 30, 50]"
       :page-size="queryParams.pageSize"
       @pagination="getList"
     />
@@ -254,32 +254,32 @@
 
         <el-table :data="deptversionlist"  ref="deptversion" v-show="ifupdate">
           <el-table-column label="版本号" prop="versionNo" align="center" width="60px">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.versionNo}}</span>
             </template>
           </el-table-column>
           <el-table-column label="公司名称" prop="deptName" align="center">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.deptName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="该公司上级" prop="parentName" align="center">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.parentName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更人" prop="updateBy" align="center">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.updateBy}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更日期" prop="updateTime" align="center">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.updateTime}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更原因" prop="changeReason" align="center">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{scope.row.changeReason}}</span>
             </template>
           </el-table-column>
@@ -342,14 +342,14 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         deptId: null,
         compId: null,
         ifCompany : 1,
       },
       queryParams2: {
         pageNum: 1,
-        pageSize: 100,
+        pageSize: 10,
         deptId: null,
       },
       queryParams3:{

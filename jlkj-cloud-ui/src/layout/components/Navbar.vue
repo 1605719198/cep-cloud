@@ -7,6 +7,9 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
+
+<!--        <SelectCompid id="header-compid" class="right-menu-item" />-->
+
         <search id="header-search" class="right-menu-item" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -46,9 +49,11 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import SelectCompid from "@/components/SelectCompid";
 
 export default {
   components: {
+    SelectCompid,
     Breadcrumb,
     TopNav,
     Hamburger,
