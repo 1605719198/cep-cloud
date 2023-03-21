@@ -23,7 +23,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="证件号码" prop="certificateNumber">
-          <el-input v-model="form.certificateNumber" placeholder="请输入证件号码" maxlength="18" />
+          <el-input v-model="form.certificateNumber" placeholder="请输入证件号码" maxlength="18" @input="inputChange"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -981,7 +981,28 @@ export default {
     },
     handleEmpty() {
       this.form = {}
-    }
+    },
+    inputChange() {
+      const reg =
+        /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+      if (reg.test(this.form.certificateNumber)) {
+        const org_birthday = this.form.certificateNumber.substring(6, 14);
+        const org_gender = this.form.certificateNumber.substring(16, 17);
+        const sex = org_gender % 2 == 1 ? "0" : "1";
+        const birthday =
+          org_birthday.substring(0, 4) +
+          "-" +
+          org_birthday.substring(4, 6) +
+          "-" +
+          org_birthday.substring(6, 8);
+        const birthdays = new Date(birthday.replace(/-/g, "/"));
+        this.form.genderId = sex;
+        this.form.birthDate = birthdays;
+      } else {
+        this.form.genderId = "未填写";
+        return false;
+      }
+    },
   }
 }
 </script>
