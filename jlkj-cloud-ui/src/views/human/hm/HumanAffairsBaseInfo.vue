@@ -158,7 +158,6 @@
           <el-date-picker
             v-model="form.birthTwoDate"
             type="date"
-            :disabled="true"
             style="width: 207.33px"
             placeholder="选择生日">
           </el-date-picker>

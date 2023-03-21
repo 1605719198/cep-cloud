@@ -7,64 +7,65 @@
           <el-col :span="4" class="left_tree">
             <el-tree ref="tree"
                      class="filter-tree"
-                     node-key="id"
+                     node-key="uuid"
+                     style="height: 580px; overflow-y: scroll"
                      :props="defaultProps"
                      :data="menuData"
-                     default-expand-all
                      :expand-on-click-node="false"
+                     :default-expanded-keys="defaultShowNodes"
                      @node-click="handleNodeClick">
             </el-tree>
           </el-col>
           <!-- 右侧列表 -->
           <el-col :span="20">
             <div>
-            <div class="avue-crud__search" style="border: 0">
-              <el-row>
-                <el-col :span="20">
-                  <el-form :inline="true">
-                    <!-- 操作按钮 -->
-                    <el-form-item>
-                      <el-button @click="handleAdd('add')" type="primary" icon="el-icon-plus" size="mini">新增</el-button>
-                    </el-form-item>
-                  </el-form>
-                </el-col>
-              </el-row>
-            </div>
-            <div>
-              <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
-                <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo" />
-                <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName" />
-                <el-table-column label="状态" minWidth="150" align="center" prop="status">
-                  <template slot-scope="scope">
-                    <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-                  </template>
-                </el-table-column>
-                <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp" />
-                <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
-                <el-table-column label="操作" align="center" min-width="160px">
-                  <template v-slot="scope">
-                    <el-button size="mini" type="primary" plain icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
-                      修改
-                    </el-button>
-                    <el-button size="mini" type="primary" plain icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">
-                      删除
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <div style="margin-top: 10px;margin-left: 58%;padding: 25px 0px 20px 20px;"
-                   class="avue-crud__pagination">
-                <el-pagination v-show="queryParams.total > 0"
-                               background
-                               @size-change="handleSizeChange"
-                               @current-change="handleCurrentChange"
-                               layout="total, sizes, prev, pager, next, jumper"
-                               :current-page="queryParams.pageNum"
-                               :page-sizes="[10, 20, 30, 50]"
-                               :page-size="queryParams.pageSize"
-                               :total="queryParams.total">
-                </el-pagination>
-               </div>
+              <div class="avue-crud__search" style="border: 0">
+                <el-row>
+                  <el-col :span="20">
+                    <el-form :inline="true">
+                      <!-- 操作按钮 -->
+                      <el-form-item>
+                        <el-button @click="handleAdd('add')" type="primary" icon="el-icon-plus" size="mini">新增</el-button>
+                      </el-form-item>
+                    </el-form>
+                  </el-col>
+                </el-row>
+              </div>
+              <div>
+                <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
+                  <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo" />
+                  <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName" />
+                  <el-table-column label="状态" minWidth="150" align="center" prop="status">
+                    <template v-slot="scope">
+                      <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp" />
+                  <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
+                  <el-table-column label="操作" align="center" min-width="160px">
+                    <template slot-scope="scope">
+                      <el-button size="mini" type="primary" plain icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
+                        修改
+                      </el-button>
+                      <el-button size="mini" type="primary" plain icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">
+                        删除
+                      </el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div style="margin-top: 10px;margin-left: 58%;padding: 25px 0px 20px 20px;"
+                     class="avue-crud__pagination">
+                  <el-pagination v-show="queryParams.total > 0"
+                                 background
+                                 @size-change="handleSizeChange"
+                                 @current-change="handleCurrentChange"
+                                 layout="total, sizes, prev, pager, next, jumper"
+                                 :current-page="queryParams.pageNum"
+                                 :page-sizes="[10, 20, 30, 50]"
+                                 :page-size="queryParams.pageSize"
+                                 :total="queryParams.total">
+                  </el-pagination>
+                </div>
               </div>
             </div>
           </el-col>
@@ -117,9 +118,9 @@ export default {
         data: {},
       },
       queryParams: {
-        pageSize: 20,
+        pageSize: 10,
         pageNum: 1,
-        total: 1
+        total: 0
       },
       uuid: '',
       table: {
@@ -127,6 +128,18 @@ export default {
         loading: false,
       },
       tableData: [],
+      defaultShowNodes: [], //默认显示id
+    }
+  },
+  watch: {
+    //监听数据 设置默认展示第一层数据
+    menuData: {
+      handler(val) {
+        val.forEach(item => {
+          this.defaultShowNodes.push(item.uuid);
+        })
+      },
+      deep: true,
     }
   },
   created() {
@@ -160,12 +173,12 @@ export default {
     },
     // 分页-每页多少条
     handleSizeChange (val) {
-      this.page.size = val;
+      this.queryParams.pageSize = val;
       this.onLoad();
     },
     // 分页-当前页
     handleCurrentChange (val) {
-      this.page.current = val;
+      this.queryParams.pageNum = val;
       this.onLoad();
     },
     //新增
