@@ -24,7 +24,7 @@ import java.util.List;
 public class PersonnelEducationController {
 
     @Autowired
-    private IPersonnelEducationService iPersonnelEducationService;
+    private IPersonnelEducationService personnelEducationService;
 
     /**
      * 新增教育经历信息
@@ -37,7 +37,7 @@ public class PersonnelEducationController {
         for (PersonnelEducation item : educationalExperienceList) {
             item.setCreator(SecurityUtils.getNickName());
         }
-        boolean result = iPersonnelEducationService.saveOrUpdateBatch(educationalExperienceList);
+        boolean result = personnelEducationService.saveOrUpdateBatch(educationalExperienceList);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {
@@ -51,12 +51,12 @@ public class PersonnelEducationController {
     @Log(title = "获取教育经历信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取教育经历信息列表")
     @GetMapping("/queryEducationalExperienceInfo")
-    public Object queryEducationalExperienceInfo(HumanresourcePersonnelEducationDTO humanresourcePersonnelEducationDTO) {
+    public Object queryEducationalExperienceInfo(PersonnelEducationDTO humanresourcePersonnelEducationDTO) {
         try {
             String empId = humanresourcePersonnelEducationDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelEducation> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelEducation::getEmpId, empId);
-            List<HumanresourcePersonnelEducation> list = humanresourcePersonnelEducationService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelEducation> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelEducation::getEmpId, empId);
+            List<PersonnelEducation> list = personnelEducationService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -76,9 +76,9 @@ public class PersonnelEducationController {
     @GetMapping("/queryEducationalInfo")
     public Object queryEducationalInfo(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelEducation> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelEducation::getEmpId, empId);
-            List<HumanresourcePersonnelEducation> list = humanresourcePersonnelEducationService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelEducation> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelEducation::getEmpId, empId);
+            List<PersonnelEducation> list = personnelEducationService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -94,7 +94,7 @@ public class PersonnelEducationController {
     public AjaxResult delEducationalExperienceInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelEducationService.removeBatchByIds(uuid);
+            boolean result = personnelEducationService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {

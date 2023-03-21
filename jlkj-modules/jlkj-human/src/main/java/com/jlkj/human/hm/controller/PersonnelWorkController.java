@@ -52,12 +52,12 @@ public class PersonnelWorkController {
     @Log(title = "获取工作经历信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取工作经历信息列表")
     @GetMapping("/queryWorkExperienceInfo")
-    public Object queryWorkExperienceInfo(HumanresourcePersonnelWorkDTO humanresourcePersonnelWorkDTO) {
+    public Object queryWorkExperienceInfo(PersonnelWorkDTO humanresourcePersonnelWorkDTO) {
         try {
             String empId = humanresourcePersonnelWorkDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelWork> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelWork::getEmpId, empId);
-            List<HumanresourcePersonnelWork> list = humanresourcePersonnelWorkService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelWork> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelWork::getEmpId, empId);
+            List<PersonnelWork> list = iPersonnelWorkService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -76,9 +76,9 @@ public class PersonnelWorkController {
     @GetMapping("/queryWorkInfo")
     public Object queryWorkInfo(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelWork> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelWork::getEmpId, empId);
-            List<HumanresourcePersonnelWork> list = humanresourcePersonnelWorkService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelWork> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelWork::getEmpId, empId);
+            List<PersonnelWork> list = iPersonnelWorkService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -94,7 +94,7 @@ public class PersonnelWorkController {
     public AjaxResult delWorkExperienceInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelWorkService.removeBatchByIds(uuid);
+            boolean result = iPersonnelWorkService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {

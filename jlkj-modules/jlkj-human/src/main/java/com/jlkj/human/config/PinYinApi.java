@@ -3,10 +3,13 @@ package com.jlkj.human.config;
 import net.sourceforge.pinyin4j.PinyinHelper;
 
 /**
- * @author HuangBing
- * @Date 2023/3/14
+ * @author 111191
+ * @version 1.0
+ * @className PinYinApi
+ * @description TODO
+ * @date 2023年3月21日, 0021 10
  */
-public class PinyinAPI {
+public class PinYinApi {
 
     /**
      * 提取每个汉字的首字母(大写)

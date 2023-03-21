@@ -52,12 +52,12 @@ public class PersonnelTrainController {
     @Log(title = "获取培训经历信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取培训经历信息列表")
     @GetMapping("/queryCultivateExperienceInfo")
-    public Object queryCultivateExperienceInfo(HumanresourcePersonnelTrainDTO humanresourcePersonnelTrainDTO) {
+    public Object queryCultivateExperienceInfo(PersonnelTrainDTO humanresourcePersonnelTrainDTO) {
         try {
             String empId = humanresourcePersonnelTrainDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelTrain> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelTrain::getEmpId, empId);
-            List<HumanresourcePersonnelTrain> list = humanresourcePersonnelTrainService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelTrain> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelTrain::getEmpId, empId);
+            List<PersonnelTrain> list = iPersonnelTrainService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -77,9 +77,9 @@ public class PersonnelTrainController {
     @GetMapping("/queryCultivateInfo")
     public Object queryCultivateInfo(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelTrain> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelTrain::getEmpId, empId);
-            List<HumanresourcePersonnelTrain> list = humanresourcePersonnelTrainService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelTrain> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelTrain::getEmpId, empId);
+            List<PersonnelTrain> list = iPersonnelTrainService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -95,7 +95,7 @@ public class PersonnelTrainController {
     public AjaxResult delCultivateExperienceInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelTrainService.removeBatchByIds(uuid);
+            boolean result = iPersonnelTrainService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {
