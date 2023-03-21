@@ -81,10 +81,11 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.github.yulichang</groupId>
-            <artifactId>mybatis-plus-join</artifactId>
-            <version>1.2.4</version>
+            <artifactId>mybatis-plus-join-boot-starter</artifactId>
+            <version>1.4.4</version>
         </dependency>
         <!-- JLKJ Common DTO -->
         <dependency>

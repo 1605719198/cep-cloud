@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceJobTitleDTO;
+import com.jlkj.common.dto.human.hm.JobTitleDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -77,19 +77,19 @@ public class HumanresourceJobTitleQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceJobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, HumanresourceJobTitleDTO.class);
+                JobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, JobTitleDTO.class);
                 humanResourceFeignService.addJobTitleData(humanresourceJobTitleDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceJobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, HumanresourceJobTitleDTO.class);
+                JobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, JobTitleDTO.class);
                 humanResourceFeignService.updateJobTitleData(humanresourceJobTitleDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceJobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, HumanresourceJobTitleDTO.class);
+                JobTitleDTO humanresourceJobTitleDTO = objectMapper.convertValue(item, JobTitleDTO.class);
                 humanResourceFeignService.deleteJobTitleData(humanresourceJobTitleDTO,TOKEN);
             });
         } else {

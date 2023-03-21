@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourcePostTypeDTO;
+import com.jlkj.common.dto.human.hm.PostTypeDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -77,19 +77,19 @@ public class HumanresourcePostTypeQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourcePostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, HumanresourcePostTypeDTO.class);
+                PostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, PostTypeDTO.class);
                 humanResourceFeignService.addPostTypeData(humanresourcePostTypeDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourcePostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, HumanresourcePostTypeDTO.class);
+                PostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, PostTypeDTO.class);
                 humanResourceFeignService.updatePostTypeData(humanresourcePostTypeDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourcePostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, HumanresourcePostTypeDTO.class);
+                PostTypeDTO humanresourcePostTypeDTO = objectMapper.convertValue(item, PostTypeDTO.class);
                 humanResourceFeignService.deletePostTypeData(humanresourcePostTypeDTO,TOKEN);
             });
         } else {

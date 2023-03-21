@@ -46,6 +46,8 @@ public class FinanceProductMillController {
 
     @Autowired
     FinanceProductSettingDetailService financeProductSettingDetailService;
+    @Autowired
+    FinanceProductSettingDetailServicea financeProductSettingDetailServicea;
 
     /**
      * 产线清单查询
@@ -405,10 +407,10 @@ public class FinanceProductMillController {
                     .innerJoin(FinanceProductBase.class, FinanceProductBase::getProductCode, FinanceProductMillProduct::getProductCode)
                     .eq(StringUtils.isNotBlank(millId), FinanceProductMillProduct::getMillId, millId);
             List<FinanceProductMill> list = financeProductMillService.list(queryWrapper);
-            List<FinanceProductMillDTO> listA = financeProductSettingDetailService.selectJoinList(FinanceProductMillDTO.class, wrapper);
+            List<FinanceProductMillDTO> listA = financeProductSettingDetailServicea.selectJoinList(FinanceProductMillDTO.class, wrapper);
             List<FinanceProductMillSystem> listB = financeProductMillSystemService.list(systemQueryWrapper);
             List<FinanceProductMillActivity> listC = financeProductMillActivityService.list(activityQueryWrapper);
-            List<FinanceProductMillDTO> listD = financeProductMillProductService.selectJoinList(FinanceProductMillDTO.class, wrapper1);
+            List<FinanceProductMillDTO> listD = financeProductSettingDetailServicea.selectJoinList(FinanceProductMillDTO.class, wrapper1);
             Map<String,Object> dataMap = new HashMap<>(16);
             dataMap.put("millData", list);
             dataMap.put("attriData", listA);
