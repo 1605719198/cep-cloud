@@ -5,60 +5,55 @@ import lombok.Data;
 
 /**
  * @author 智能研发室 黄兵
- * @date 2022/5/9 - 14:16
+ * @date 2022/5/17 - 16:20
  */
 @Data
-public class TsEquipBasicInformationDTO {
+public class TsElementTableDataDTO {
     /**
-     * 唯一标识
+     * 元素编号
      */
     @TableId
     private String id;
 
     /**
-     * 仪器代号
+     * 表格代号
      */
-    private String equipNo;
+    private String formatId;
 
     /**
-     * 仪器说明
+     * 表格说明
      */
-    private String equipDesc;
+    private String formatMemo;
 
     /**
-     * 操作类型
+     * 元素类别
      */
-    private String workType;
+    private String elementType;
 
     /**
-     * ID接收状态
+     * 试验元素代号
      */
-    private String receiveStatus;
+    private String elementIndex;
 
     /**
-     * 工作档名
+     * 元素名称/试验项目
      */
-    private String workFileName;
+    private String elementName;
 
     /**
-     * 传出IP
+     * 单位
      */
-    private String sendIp;
+    private String elementUnit;
 
     /**
-     * 传出PORT
+     * 元素显示顺序
      */
-    private String sendPort;
+    private Integer elementSeq;
 
     /**
-     * 接收PORT
+     * 表格元素数量
      */
-    private String receivePort;
-
-    /**
-     * 检验站号
-     */
-    private String inspectionStationNo;
+    private Integer elementCount;
 
     /**
      * 建档人员
@@ -76,9 +71,9 @@ public class TsEquipBasicInformationDTO {
     private String modifyTime;
 
     /**
-     * 新增人员
+     * 创建日期
      */
-    private String createUser;
+    private String createDate;
 
     /**
      * 创建日期
@@ -86,14 +81,19 @@ public class TsEquipBasicInformationDTO {
     private String createTime;
 
     /**
-     * 修改人员
+     * 修改日期
      */
-    private String updateUser;
+    private String modifyDate;
 
     /**
-     * 逻辑删除标识
+     * 新增人职工编号
      */
-    private Integer delFlag;
+    private String createUser;
+
+    /**
+     * 修改人职工编号
+     */
+    private String updateUser;
 
     /**
      * 当前页
