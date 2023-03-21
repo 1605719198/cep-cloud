@@ -51,12 +51,12 @@ public class PersonnelOccupationController {
     @Log(title = "获取职业资格信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取职业资格信息列表")
     @GetMapping("/queryOccupationInfo")
-    public Object queryOccupationInfo(HumanresourcePersonnelOccupationDTO humanresourcePersonnelOccupationDTO) {
+    public Object queryOccupationInfo(PersonnelOccupationDTO humanresourcePersonnelOccupationDTO) {
         try {
             String empId = humanresourcePersonnelOccupationDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelOccupation> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelOccupation::getEmpId, empId);
-            List<HumanresourcePersonnelOccupation> list = humanresourcePersonnelOccupationService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelOccupation> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelOccupation::getEmpId, empId);
+            List<PersonnelOccupation> list = iPersonnelOccupationService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -75,9 +75,9 @@ public class PersonnelOccupationController {
     @GetMapping("/queryOccupation")
     public Object queryOccupation(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelOccupation> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelOccupation::getEmpId, empId);
-            List<HumanresourcePersonnelOccupation> list = humanresourcePersonnelOccupationService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelOccupation> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelOccupation::getEmpId, empId);
+            List<PersonnelOccupation> list = iPersonnelOccupationService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -93,7 +93,7 @@ public class PersonnelOccupationController {
     public AjaxResult delOccupationInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelOccupationService.removeBatchByIds(uuid);
+            boolean result = iPersonnelOccupationService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {

@@ -51,12 +51,12 @@ public class PersonnelFamilyController {
     @Log(title = "获取家属信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取家属信息列表")
     @GetMapping("/queryFamilyInfo")
-    public Object queryFamilyInfo(HumanresourcePersonnelFamilyDTO humanresourcePersonnelFamilyDTO) {
+    public Object queryFamilyInfo(PersonnelFamilyDTO humanresourcePersonnelFamilyDTO) {
         try {
             String empId = humanresourcePersonnelFamilyDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelFamily> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelFamily::getEmpId, empId);
-            List<HumanresourcePersonnelFamily> list = humanresourcePersonnelFamilyService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelFamily> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelFamily::getEmpId, empId);
+            List<PersonnelFamily> list = iPersonnelFamilyService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -75,9 +75,9 @@ public class PersonnelFamilyController {
     @GetMapping("/queryFamily")
     public Object queryFamily(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelFamily> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelFamily::getEmpId, empId);
-            List<HumanresourcePersonnelFamily> list = humanresourcePersonnelFamilyService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelFamily> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelFamily::getEmpId, empId);
+            List<PersonnelFamily> list = iPersonnelFamilyService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -93,7 +93,7 @@ public class PersonnelFamilyController {
     public AjaxResult delFamilyInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelFamilyService.removeBatchByIds(uuid);
+            boolean result = iPersonnelFamilyService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {

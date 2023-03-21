@@ -52,12 +52,12 @@ public class PersonnelProfessionalController {
     @Log(title = "获取职称信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取职称信息列表")
     @GetMapping("/queryProfessionalInfo")
-    public Object queryProfessionalInfo(HumanresourcePersonnelProfessionalDTO humanresourcePersonnelProfessionalDTO) {
+    public Object queryProfessionalInfo(PersonnelProfessionalDTO humanresourcePersonnelProfessionalDTO) {
         try {
             String empId = humanresourcePersonnelProfessionalDTO.getEmpId();
-            LambdaQueryWrapper<HumanresourcePersonnelProfessional> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelProfessional::getEmpId, empId);
-            List<HumanresourcePersonnelProfessional> list = humanresourcePersonnelProfessionalService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelProfessional> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelProfessional::getEmpId, empId);
+            List<PersonnelProfessional> list = iPersonnelProfessionalService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -76,9 +76,9 @@ public class PersonnelProfessionalController {
     @GetMapping("/queryProfessional")
     public Object queryProfessional(@RequestParam String empId) {
         try {
-            LambdaQueryWrapper<HumanresourcePersonnelProfessional> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(HumanresourcePersonnelProfessional::getEmpId, empId);
-            List<HumanresourcePersonnelProfessional> list = humanresourcePersonnelProfessionalService.list(queryWrapper);
+            LambdaQueryWrapper<PersonnelProfessional> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(PersonnelProfessional::getEmpId, empId);
+            List<PersonnelProfessional> list = iPersonnelProfessionalService.list(queryWrapper);
             return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
@@ -94,7 +94,7 @@ public class PersonnelProfessionalController {
     public AjaxResult delProfessionalInfo(@RequestParam List<String> uuid)
     {
         try {
-            boolean result = humanresourcePersonnelProfessionalService.removeBatchByIds(uuid);
+            boolean result = iPersonnelProfessionalService.removeBatchByIds(uuid);
             if (result) {
                 return AjaxResult.success("删除成功");
             } else {
