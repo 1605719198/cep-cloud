@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.rabbit.mapper.MaterialsCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.rabbit.entity.MaterialsCategory">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
+            <result property="categoryCode" column="category_code" jdbcType="VARCHAR"/>
+            <result property="deleteFlag" column="delete_flag" jdbcType="SMALLINT"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,category_name,category_code,
+        delete_flag,create_user_id,create_user_name,
+        create_time,modify_user_id,modify_user_name,
+        modify_time
+    </sql>
+</mapper>

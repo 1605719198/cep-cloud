@@ -1,6 +1,7 @@
 package com.jlkj.human.hp.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hp.domain.SysDept;
 
 import java.io.Serializable;
@@ -54,12 +55,16 @@ public class TreeSelect implements Serializable
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
-    public TreeSelect(SysMenu menu)
+    public TreeSelect(Attendencebasis attendencebasis)
     {
-        this.id = menu.getMenuId();
-        this.label = menu.getMenuName();
-        this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+        this.id = attendencebasis.getId();
+        this.label = attendencebasis.getCode();
+        this.label2 = attendencebasis.getName();
+        this.label3 = attendencebasis.getStatus();
+        this.label4 = attendencebasis.getCompId();
+        this.children = attendencebasis.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
+
 
     public Long getId()
     {

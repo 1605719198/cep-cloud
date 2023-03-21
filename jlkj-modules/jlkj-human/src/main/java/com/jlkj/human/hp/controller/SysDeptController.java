@@ -7,7 +7,9 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.domain.SysDeptVersion;
 import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.service.ISysDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ public class SysDeptController extends BaseController
     @Autowired
     private ISysDeptService sysDeptService;
 
+    @Autowired
+    private ISysDeptVersionService sysDeptVersionService;
+
     /**
      * 查询部门资料维护列表
      */
@@ -35,6 +40,16 @@ public class SysDeptController extends BaseController
     {
         startPage();
         List<SysDept> list = sysDeptService.selectSysDeptList(sysDept);
+        return getDataTable(list);
+    }
+    /**
+     * 查询部门资料变更版本列表
+     */
+    @GetMapping("/deptVersionlist")
+    public TableDataInfo list(SysDeptVersion sysDeptVersion)
+    {
+        startPage();
+        List<SysDeptVersion> list = sysDeptVersionService.selectSysDeptVersionList(sysDeptVersion);
         return getDataTable(list);
     }
 
@@ -64,7 +79,7 @@ public class SysDeptController extends BaseController
      */
     @Log(title = "部门资料维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysDept sysDept)
+    public AjaxResult add(@RequestBody SysDept sysDept)throws Exception
     {
         return toAjax(sysDeptService.insertSysDept(sysDept));
     }
@@ -74,7 +89,7 @@ public class SysDeptController extends BaseController
      */
     @Log(title = "部门资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysDept sysDept)
+    public AjaxResult edit(@RequestBody SysDept sysDept) throws Exception
     {
         return toAjax(sysDeptService.updateSysDept(sysDept));
     }

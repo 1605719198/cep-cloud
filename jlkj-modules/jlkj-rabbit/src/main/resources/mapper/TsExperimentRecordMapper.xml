@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.rabbit.mapper.TsExperimentRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.rabbit.entity.TsExperimentRecord">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="formatId" column="format_id" jdbcType="VARCHAR"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="sendTime" column="send_time" jdbcType="VARCHAR"/>
+        <result property="sampleId" column="sample_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+        <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+        <result property="updateUserName" column="update_user_name" jdbcType="VARCHAR"/>
+        <result property="jsonString" column="json_string" jdbcType="VARCHAR"/>
+        <result property="shift" column="shift" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,code,format_id,
+        num,sample_id,
+        create_time,update_time,create_user,
+        update_user,create_user_name,update_user_name,
+        json_string,shift,send_time
+    </sql>
+
+    <select id="getShift" resultType="java.lang.String">
+        select class_type as shift
+        from v_humanresource_scheduling_work where shift != '01'
+        and #{condition} >= due_attendance_time_work and due_attendance_time_offduty > #{condition} and class_type is not NULL limit 1
+    </select>
+</mapper>

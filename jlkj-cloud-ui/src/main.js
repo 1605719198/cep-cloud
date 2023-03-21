@@ -21,8 +21,11 @@ import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/jlkj";
 // 分页组件
 import Pagination from "@/components/Pagination";
-// 自定义表格工具组件
+// 自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
+//代码高亮插件
+// import hljs from 'highlight.js'
+// import 'highlight.js/styles/github-gist.css'
 // 富文本组件
 import Editor from "@/components/Editor"
 // 文件上传组件
@@ -63,6 +66,7 @@ Vue.component('tinymce', Tinymce)
 
 
 Vue.use(directive)
+// Vue.use(hljs.vuePlugin);
 Vue.use(plugins)
 Vue.use(VueMeta)
 DictData.install()

@@ -1,10 +1,9 @@
 package com.jlkj.system.mapper;
 
-import java.util.List;
 import com.jlkj.system.domain.SysConfig;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.validation.constraints.Max;
+import java.util.List;
 
 /**
  * 参数配置 数据层

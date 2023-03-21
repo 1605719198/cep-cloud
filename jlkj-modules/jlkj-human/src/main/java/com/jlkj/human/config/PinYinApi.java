@@ -6,7 +6,7 @@ import net.sourceforge.pinyin4j.PinyinHelper;
  * @author HuangBing
  * @Date 2023/3/14
  */
-public class PinYinApi {
+public class PinyinAPI {
 
     /**
      * 提取每个汉字的首字母(大写)
@@ -58,5 +58,4 @@ public class PinYinApi {
         }
         return value.trim().replace(" ", "");
     }
-
 }

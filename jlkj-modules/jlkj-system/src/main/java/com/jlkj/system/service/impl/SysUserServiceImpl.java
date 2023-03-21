@@ -1,18 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.validation.Validator;
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.SpringUtils;
@@ -25,13 +12,20 @@ import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.domain.SysPost;
 import com.jlkj.system.domain.SysUserPost;
 import com.jlkj.system.domain.SysUserRole;
-import com.jlkj.system.mapper.SysPostMapper;
-import com.jlkj.system.mapper.SysRoleMapper;
-import com.jlkj.system.mapper.SysUserMapper;
-import com.jlkj.system.mapper.SysUserPostMapper;
-import com.jlkj.system.mapper.SysUserRoleMapper;
+import com.jlkj.system.mapper.*;
 import com.jlkj.system.service.ISysConfigService;
 import com.jlkj.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理

@@ -26,6 +26,13 @@ public interface SysDeptMapper
      * @return 部门信息
      */
     public SysDept selectDeptById(Long deptId);
+    /**
+     * 根据部门编码查询信息
+     *
+     * @param deptCode 部门编码
+     * @return 部门信息
+     */
+    public SysDept selectSysDeptByDeptCode(String deptCode);
 
     /**
      * 查询部门资料维护列表

@@ -35,5 +35,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("updateDate", new Date(), metaObject);
+        this.setFieldValByName("createDate", new Date(), metaObject);
     }
 }

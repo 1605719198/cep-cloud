@@ -1,8 +1,9 @@
 package com.jlkj.system.service;
 
-import java.util.List;
 import com.jlkj.system.api.domain.SysDictData;
 import com.jlkj.system.api.domain.SysDictType;
+
+import java.util.List;
 
 /**
  * 字典 业务层

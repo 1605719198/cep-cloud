@@ -1,11 +1,12 @@
 package com.jlkj.system.domain.vo;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.domain.SysMenu;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Treeselect树结构实体类

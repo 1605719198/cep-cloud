@@ -81,6 +81,11 @@ public class TsEquipBasicInformationDTO {
     private String createUser;
 
     /**
+     * 创建日期
+     */
+    private String createTime;
+
+    /**
      * 修改人员
      */
     private String updateUser;

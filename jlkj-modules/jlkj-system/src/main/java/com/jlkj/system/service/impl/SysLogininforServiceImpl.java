@@ -1,11 +1,12 @@
 package com.jlkj.system.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.system.api.domain.SysLogininfor;
 import com.jlkj.system.mapper.SysLogininforMapper;
 import com.jlkj.system.service.ISysLogininforService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 系统访问日志情况信息 服务层处理

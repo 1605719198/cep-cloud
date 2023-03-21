@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SysUser" id="SysUserResult">
         <id     property="userId"       column="user_id"      />
         <result property="deptId"       column="dept_id"      />
+		<result property="compId"       column="comp_id"      />
         <result property="userName"     column="user_name"    />
         <result property="nickName"     column="nick_name"    />
         <result property="email"        column="email"        />
@@ -86,13 +87,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectAvatorByUserName" parameterType="String" resultMap="SysUserResult">
-		select * from sys_user where 1=1
-								 and user_name = #{userName}
-								 and del_flag = '0'
+		select s.dept_id,s.user_name, s.nick_name , s.user_type, s.email, s.phonenumber, s.sex, h.comp_id AS comp_id
+		from sys_user s
+		LEFT JOIN human_hm_personnel_info h on s.user_name = h.emp_no
+		where 1 = 1
+		and s.del_flag = '0'
+		and s.user_name = #{userName}
 	</select>
 
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time ,u.comp_id
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id

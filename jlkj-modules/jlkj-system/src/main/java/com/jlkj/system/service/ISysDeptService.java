@@ -1,8 +1,9 @@
 package com.jlkj.system.service;
 
-import java.util.List;
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.domain.vo.TreeSelect;
+
+import java.util.List;
 
 /**
  * 部门管理 服务层

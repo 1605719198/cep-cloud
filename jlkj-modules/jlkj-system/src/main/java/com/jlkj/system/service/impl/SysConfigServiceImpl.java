@@ -1,10 +1,5 @@
 package com.jlkj.system.service.impl;
 
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.jlkj.common.core.constant.CacheConstants;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.exception.ServiceException;
@@ -14,6 +9,12 @@ import com.jlkj.common.redis.service.RedisService;
 import com.jlkj.system.domain.SysConfig;
 import com.jlkj.system.mapper.SysConfigMapper;
 import com.jlkj.system.service.ISysConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 参数配置 服务层实现
