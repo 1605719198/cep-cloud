@@ -5,16 +5,19 @@
         <el-row :gutter="20">
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
-            <el-tree ref="tree"
-                     class="filter-tree"
-                     node-key="uuid"
-                     style="height: 580px; overflow-y: scroll"
-                     :props="defaultProps"
-                     :data="menuData"
-                     :expand-on-click-node="false"
-                     :default-expanded-keys="defaultShowNodes"
-                     @node-click="handleNodeClick">
-            </el-tree>
+            <div class="head-container" style="height: 81vh;width: 100%;">
+              <el-scrollbar style="height: 100%;">
+                <el-tree ref="tree"
+                         class="filter-tree"
+                         node-key="uuid"
+                         :props="defaultProps"
+                         :data="menuData"
+                         :expand-on-click-node="false"
+                         :default-expanded-keys="defaultShowNodes"
+                         @node-click="handleNodeClick">
+                </el-tree>
+              </el-scrollbar>
+            </div>
           </el-col>
           <!-- 右侧列表 -->
           <el-col :span="20">
@@ -25,7 +28,8 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button @click="handleAdd('add')" type="primary" icon="el-icon-plus" size="mini">新增</el-button>
+                        <el-button @click="handleAdd('add')" type="primary" icon="el-icon-plus" size="mini">新增
+                        </el-button>
                       </el-form-item>
                     </el-form>
                   </el-col>
@@ -33,21 +37,23 @@
               </div>
               <div>
                 <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
-                  <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo" />
-                  <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName" />
+                  <el-table-column label="资料代号" minWidth="150" align="center" prop="dicNo"/>
+                  <el-table-column label="资料名称" minWidth="150" align="center" prop="dicName"/>
                   <el-table-column label="状态" minWidth="150" align="center" prop="status">
                     <template v-slot="scope">
                       <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
                     </template>
                   </el-table-column>
-                  <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp" />
-                  <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
+                  <el-table-column label="输入人" minWidth="150" align="center" prop="updateEmp"/>
+                  <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate"/>
                   <el-table-column label="操作" align="center" min-width="160px">
                     <template slot-scope="scope">
-                      <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
+                      <el-button size="mini" type="text" icon="el-icon-edit"
+                                 @click="handleEdit('edit',scope.$index, scope.row)">
                         修改
                       </el-button>
-                      <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">
+                      <el-button size="mini" type="text" icon="el-icon-delete"
+                                 @click="handleDelete(scope.$index, scope.row)">
                         删除
                       </el-button>
                     </template>
@@ -85,7 +91,7 @@
                       :data="dialog.data"
                       :uuid="uuid"
                       @submitSave="submitSave"
-                      @close="dialog.visible=false" />
+                      @close="dialog.visible=false"/>
             </template>
           </el-dialog>
         </div>
@@ -95,8 +101,9 @@
 </template>
 
 <script>
-import { baseInfoTree,getChildrenList,deleteBaseInfo } from "@/api/human/hm/baseInfo"
+import {baseInfoTree, getChildrenList, deleteBaseInfo} from "@/api/human/hm/baseInfo"
 import Update from "./Update.vue"
+
 export default {
   name: "BaseInfo",
   dicts: ['sys_normal_disable'],
@@ -172,17 +179,17 @@ export default {
       });
     },
     // 分页-每页多少条
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.queryParams.pageSize = val;
       this.onLoad();
     },
     // 分页-当前页
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.queryParams.pageNum = val;
       this.onLoad();
     },
     //新增
-    handleAdd (type) {
+    handleAdd(type) {
       this.dialog.type = type
       this.dialog.title = '新增选单资料'
       this.dialog.data = {};
@@ -190,14 +197,14 @@ export default {
       this.dialog.visible = true;
     },
     //修改
-    handleEdit (type, index, row) {
+    handleEdit(type, index, row) {
       this.dialog.type = type
       this.dialog.title = '编辑选单资料'
       this.dialog.data = row;
       this.dialog.visible = true;
     },
     // 删除
-    handleDelete (index, row) {
+    handleDelete(index, row) {
       this.$confirm('此操作将永久删除数据记录，是否继续？', '提示', {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {//点击确定，执行then方法
@@ -206,16 +213,16 @@ export default {
           this.onLoad();
           this.getBaseInfoTree()
           this.tableData = []
-          this.$message({ type: 'success', message: res.msg });
+          this.$message({type: 'success', message: res.msg});
         }, error => {
           window.console.log(error);
         });
       }).catch(() => {
-        this.$message({ type: 'info', message: '已取消删除' });
+        this.$message({type: 'info', message: '已取消删除'});
       });
     },
     //提供给子类调用的方法
-    submitSave () {
+    submitSave() {
       this.dialog.visible = false;
       this.dialog.data = {};
       this.onLoad();
