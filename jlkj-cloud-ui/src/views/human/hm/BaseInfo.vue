@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
-            <div class="head-container" style="height: 81vh;width: 100%;">
+            <div class="head-container" style="height: 75vh;width: 100%;">
               <el-scrollbar style="height: 100%;">
                 <el-tree ref="tree"
                          class="filter-tree"
@@ -232,6 +232,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
+}
 </style>

@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-          <el-form :model="queryParams" ref="queryForm" label-width="68px" :inline="true" v-show="showSearch">
+          <el-form :model="queryParams" ref="queryForm" label-width="40px" :inline="true" v-show="showSearch">
               <el-form-item label="公司">
                 <el-select v-model="queryParams.compId" placeholder="请选择公司">
                   <el-option
@@ -30,7 +30,7 @@
               </el-form-item>
           </el-form>
           <el-row :gutter="10" class="mb8">
-            <el-col>
+            <el-col :span="1.5">
               <el-button size="mini"
                          type="primary"
                          @click="handleAdd"

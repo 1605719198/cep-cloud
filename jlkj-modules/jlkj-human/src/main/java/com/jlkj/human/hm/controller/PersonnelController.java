@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/personnel/base")
 public class PersonnelController {
     @Autowired
-    private IPersonnelService humanresourcePersonnelService;
+    private IPersonnelService personnelService;
 
     /**
      * Mq新增人员资料
@@ -38,7 +38,7 @@ public class PersonnelController {
     @Operation(summary = "新增人员资料")
     @PostMapping("/addPersonnelData")
     public void addPersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
-        humanresourcePersonnelService.saveData(personnelDTO);
+        personnelService.saveData(personnelDTO);
     }
 
     /**
@@ -48,7 +48,7 @@ public class PersonnelController {
     @Operation(summary = "修改人员资料")
     @PutMapping("/updatePersonnelData")
     public void updatePersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
-        humanresourcePersonnelService.updateData(personnelDTO);
+        personnelService.updateData(personnelDTO);
     }
 
     /**
@@ -60,7 +60,7 @@ public class PersonnelController {
     public void deletePersonnelData(@RequestBody PersonnelDTO personnelDTO, @RequestHeader("token") String token) {
         Personnel personnel = new Personnel();
         BeanUtils.copyProperties(personnelDTO, personnel);
-        humanresourcePersonnelService.removeData(personnelDTO);
+        personnelService.removeData(personnelDTO);
     }
 
     /**
@@ -69,10 +69,10 @@ public class PersonnelController {
     @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员基本信息")
     @PostMapping("/addPersonnelBasicInfo")
-    public Object addPersonnelBasicInfo(@RequestBody Personnel humanresourcePersonnel) {
+    public Object addPersonnelBasicInfo(@RequestBody Personnel personnel) {
         // 根据姓名 取得大写首字母
-        humanresourcePersonnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(humanresourcePersonnel.getFullName()));
-        boolean result = humanresourcePersonnelService.saveOrUpdate(humanresourcePersonnel);
+        personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
+        boolean result = personnelService.saveOrUpdate(personnel);
         if (result) {
             return AjaxResult.success("保存成功");
         } else {
@@ -86,13 +86,13 @@ public class PersonnelController {
     @Log(title = "获取人员基本信息查询列表", businessType = BusinessType.OTHER)
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")
-    public Object getPersonnelBasicInfoList(Personnel humanresourcePersonnel) {
+    public Object getPersonnelBasicInfoList(Personnel personnel) {
         try {
-            String compId = humanresourcePersonnel.getCompId();
-            String empNo = humanresourcePersonnel.getEmpNo();
+            String compId = personnel.getCompId();
+            String empNo = personnel.getEmpNo();
             LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId).eq(Personnel::getEmpNo, empNo);
-            List<Personnel> list = humanresourcePersonnelService.list(queryWrapper);
+            List<Personnel> list = personnelService.list(queryWrapper);
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {

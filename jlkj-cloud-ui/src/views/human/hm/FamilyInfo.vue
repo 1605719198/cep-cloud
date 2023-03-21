@@ -4,7 +4,7 @@
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
     <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-      <el-table class="table" :data="baseForm.familyList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
+      <el-table class="table" :data="baseForm.familyList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
         <el-table-column type="selection" width="100" align="center" />
         <el-table-column label="与本人关系" align="center" :render-header="addRedStar">
           <template v-slot="scope">
@@ -78,9 +78,7 @@ export default {
   data() {
     return {
       baseForm: {
-        familyList: [
-          {startDate: ''}
-        ]
+        familyList: []
       },
       // 非多个禁用
       multiple: true,
@@ -171,6 +169,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-form-item {
+  margin-bottom: 11px;
+}
 </style>
