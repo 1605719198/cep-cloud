@@ -44,10 +44,10 @@
                   <el-table-column label="输入日期" minWidth="150" align="center" prop="updateDate" />
                   <el-table-column label="操作" align="center" min-width="160px">
                     <template slot-scope="scope">
-                      <el-button size="mini" type="primary" plain icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
+                      <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEdit('edit',scope.$index, scope.row)">
                         修改
                       </el-button>
-                      <el-button size="mini" type="primary" plain icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">
+                      <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">
                         删除
                       </el-button>
                     </template>
