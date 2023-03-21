@@ -10,11 +10,11 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.ChangeDetail;
 import com.jlkj.human.hm.domain.ChangeMaster;
-import com.jlkj.human.hm.domain.HumanresourcePersonnel;
+import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.EmployeeInductionDTO;
 import com.jlkj.human.hm.service.ChangeDetailService;
 import com.jlkj.human.hm.service.ChangeMasterService;
-import com.jlkj.human.hm.service.IHumanresourcePersonnelService;
+import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class EmployeeInduction {
     ChangeDetailService changeDetailService;
 
     @Autowired
-    IHumanresourcePersonnelService humanresourcePersonnelService;
+    IPersonnelService personnelService;
 
     /**
      * 查询员工入职作业列表
@@ -90,11 +90,11 @@ public class EmployeeInduction {
         boolean result = changeMasterService.save(changeMaster);
         changeDetailService.saveOrUpdateBatch(employeeInductionList);
         if (result) {
-            humanresourcePersonnelService.lambdaUpdate()
-                    .set(HumanresourcePersonnel::getPostName, employeeInductionDTO.getPostName())
-                    .set(HumanresourcePersonnel::getPostId, employeeInductionDTO.getPostId())
-                    .set(HumanresourcePersonnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
-                    .eq(HumanresourcePersonnel::getEmpNo, changeMaster.getEmpNo()).update();
+            personnelService.lambdaUpdate()
+                    .set(Personnel::getPostName, employeeInductionDTO.getPostName())
+                    .set(Personnel::getPostId, employeeInductionDTO.getPostId())
+                    .set(Personnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
+                    .eq(Personnel::getEmpNo, changeMaster.getEmpNo()).update();
             return AjaxResult.success("保存成功");
         } else {
             return AjaxResult.error("保存失败");
@@ -129,11 +129,11 @@ public class EmployeeInduction {
         }
         boolean result = changeMasterService.lambdaUpdate().lt(ChangeMaster::getCreateDate, new Date()).eq(ChangeMaster::getUuid, uuid).remove();
         if (result) {
-            humanresourcePersonnelService.lambdaUpdate()
-                    .set(HumanresourcePersonnel::getPostName, null)
-                    .set(HumanresourcePersonnel::getPostId, null)
-                    .set(HumanresourcePersonnel::getDepartmentName, null)
-                    .eq(HumanresourcePersonnel::getEmpNo, empNo).update();
+            personnelService.lambdaUpdate()
+                    .set(Personnel::getPostName, null)
+                    .set(Personnel::getPostId, null)
+                    .set(Personnel::getDepartmentName, null)
+                    .eq(Personnel::getEmpNo, empNo).update();
         }
         return AjaxResult.success("删除成功");
     }
@@ -156,11 +156,11 @@ public class EmployeeInduction {
         }
         changeDetailService.saveOrUpdateBatch(employeeInductionDTO.getEmployeeInductionList());
         if (result) {
-            humanresourcePersonnelService.lambdaUpdate()
-                    .set(HumanresourcePersonnel::getPostName, employeeInductionDTO.getPostName())
-                    .set(HumanresourcePersonnel::getPostId, employeeInductionDTO.getPostId())
-                    .set(HumanresourcePersonnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
-                    .eq(HumanresourcePersonnel::getEmpNo, employeeInductionDTO.getEmpNo()).update();
+            personnelService.lambdaUpdate()
+                    .set(Personnel::getPostName, employeeInductionDTO.getPostName())
+                    .set(Personnel::getPostId, employeeInductionDTO.getPostId())
+                    .set(Personnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
+                    .eq(Personnel::getEmpNo, employeeInductionDTO.getEmpNo()).update();
         }
         return AjaxResult.success("修改成功");
     }
