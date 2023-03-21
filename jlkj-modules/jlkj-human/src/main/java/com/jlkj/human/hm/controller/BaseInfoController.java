@@ -3,7 +3,6 @@ package com.jlkj.human.hm.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author HuangBing
@@ -51,23 +49,16 @@ public class BaseInfoController extends BaseController {
     @GetMapping("/list")
     public Object getChildrenList(BaseInfoDTO baseInfoDTO) {
         try {
+            startPage();
             String uuid = baseInfoDTO.getUuid();
-            Long pageNum = baseInfoDTO.getPageNum();
-            Long pageSize = baseInfoDTO.getPageSize();
             LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getParentId, uuid)
                         .orderByAsc(Baseinfo::getDicNo);
-            Page<Baseinfo> page =baseinfoService.page(new Page<>(pageNum, pageSize), queryWrapper);
-            long total = page.getTotal();
-            //数据list集合
-            List<Baseinfo> records = page.getRecords();
-            Map<String, Object> dataMap = new HashMap<>(16);
-            dataMap.put("total", total);
-            dataMap.put("list", records);
-            if (page.getRecords().isEmpty()) {
+            List<Baseinfo> list = baseinfoService.list(queryWrapper);
+            if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
-                return AjaxResult.success("查询成功！", dataMap);
+                return AjaxResult.success("查询成功！", getDataTable(list));
             }
         } catch (Exception e) {
             return AjaxResult.error();

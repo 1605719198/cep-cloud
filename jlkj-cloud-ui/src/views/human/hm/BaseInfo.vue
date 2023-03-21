@@ -171,7 +171,7 @@ export default {
       this.queryParams.uuid = this.uuid
       getChildrenList(this.queryParams).then(res => {
         this.queryParams.total = res.data.total;//数据总数
-        this.tableData = res.data.list;//表格数据
+        this.tableData = res.data.rows;//表格数据
         this.table.loading = false;
       }, error => {
         this.table.loading = false;

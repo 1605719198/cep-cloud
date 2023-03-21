@@ -1,231 +1,221 @@
 <template>
-  <div style="padding: 0px 10px;">
-    <div class="main">
-      <div class="avue-crud el-card__body " style="width: 98%;border: 0;">
-        <div class="avue-crud__search"
-             style="border: 0">
-          <el-form :model="queryParams" ref="queryForm" label-width="40px">
-            <el-row :gutter="20">
-              <el-col :span="6">
-                <el-form-item label="公司">
-                  <el-select v-model="queryParams.compId" placeholder="请选择公司">
-                    <el-option
-                      v-for="dict in dict.type.comp_id"
-                      :key="dict.value"
-                      :label="dict.label"
-                      :value="dict.value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
+  <div class="app-container">
+    <el-row :gutter="20">
+      <el-col :span="24" :xs="24">
+          <el-form :model="queryParams" ref="queryForm" label-width="68px" :inline="true" v-show="showSearch">
+              <el-form-item label="公司">
+                <el-select v-model="queryParams.compId" placeholder="请选择公司">
+                  <el-option
+                    v-for="dict in dict.type.comp_id"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="工号">
+                <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
+                  <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                </el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button size="mini"
+                           type="primary"
+                           @click="getList"
+                           icon="el-icon-search">搜 索</el-button>
+                <el-button size="mini"
+                           type="default"
+                           @click="handleEmpty"
+                           icon="el-icon-refresh-left">重 置</el-button>
+              </el-form-item>
+          </el-form>
+          <el-row :gutter="10" class="mb8">
+            <el-col>
+              <el-button size="mini"
+                         type="primary"
+                         @click="handleAdd"
+                         icon="el-icon-plus">新 增</el-button>
+            </el-col>
+            <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+          </el-row>
+          <el-table :data="postList">
+            <el-table-column label="工号" align="center" prop="empNo" v-if="columns[0].visible"/>
+            <el-table-column label="姓名" align="center" prop="empName" v-if="columns[1].visible"/>
+            <el-table-column label="职位等级" align="center" prop="postLevel" v-if="columns[2].visible"/>
+            <el-table-column label="生效日期" align="center" prop="effectDate" v-if="columns[3].visible"/>
+            <el-table-column label="操作" align="center">
+              <template v-slot="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="handleUpdate(scope.row)"
+                >修改
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="handleDelete(scope.row)"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        <!-- 添加或修改员工入职资料对话框 -->
+        <el-dialog
+          :title="title"
+          :visible.sync="open"
+          width="1000px"
+        >
+          <el-form
+            :model="addJsonForm"
+            ref="addJsonForm"
+            :rules="rules"
+            label-width="80px"
+          >
+            <el-row>
+              <el-col :span="8">
                 <el-form-item label="工号">
-                  <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                  <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
-                <el-form-item>
-                  <el-button size="mini"
-                             type="primary"
-                             @click="getList"
-                             icon="el-icon-search">搜 索</el-button>
-                  <el-button size="mini"
-                             type="default"
-                             @click="handleEmpty"
-                             icon="el-icon-refresh-left">重 置</el-button>
+              <el-col :span="8">
+                <el-form-item label="姓名">
+                  <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :disabled="!updatePop"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="生效日期" prop="effectDate">
+                  <el-date-picker
+                    v-model="addJsonForm.effectDate"
+                    type="date"
+                    placeholder="选择生效日期">
+                  </el-date-picker>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col>
-                <el-button size="mini"
-                           type="primary"
-                           @click="handleAdd"
-                           icon="el-icon-plus">新 增</el-button>
+                <el-form-item label="职位等级">
+                  <el-select v-model="addJsonForm.postLevel" placeholder="职位等级">
+                    <el-option
+                      v-for="dict in baseInfoData.HP005"
+                      :key="dict.dicName"
+                      :label="dict.dicName"
+                      :value="dict.dicName"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
             </el-row>
+            <el-row style="margin-bottom: 10px">
+              <el-col>
+                <span style="font-size: 18px">【岗位信息明细】</span>
+              </el-col>
+            </el-row>
+            <el-button type="primary" @click="addLine">添加</el-button>
+            <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
+            <el-table
+              :data="addJsonForm.employeeInductionList"
+              border
+              :key="key"
+              @selection-change="addJsonSelectionChange"
+            >
+              <el-table-column type="selection" width="55" align="center">
+              </el-table-column>
+              <el-table-column label="岗位类别" align="center">
+                <template v-slot="scope">
+                  <el-form-item
+                    :prop="'employeeInductionList.' + scope.$index + '.postTypeId'"
+                  >
+                    <el-select v-model="scope.row.postTypeId">
+                      <el-option
+                        v-for="dict in baseInfoData.post_type_id"
+                        :key="dict.dicNo"
+                        :label="dict.dicName"
+                        :value="dict.dicNo"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="岗位" align="center">
+                <template v-slot="scope">
+                  <el-form-item
+                    :prop="'employeeInductionList.' + scope.$index + '.newPostName'"
+                  >
+                    <el-input v-model="scope.row.newPostName" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="openPostName = true"></el-button>
+                    </el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form>
-        </div>
-        <el-table :data="postList">
-          <el-table-column label="工号" align="center" prop="empNo"/>
-          <el-table-column label="姓名" align="center" prop="empName"/>
-          <el-table-column label="职位等级" align="center" prop="postLevel"/>
-          <el-table-column label="生效日期" align="center" prop="effectDate" />
-          <el-table-column label="操作" align="center">
-            <template v-slot="scope">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
-              >修改
-              </el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-              >删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
-    <!-- 添加或修改员工入职资料对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="1000px"
-    >
-      <el-form
-        :model="addJsonForm"
-        ref="addJsonForm"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="工号">
-              <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="姓名">
-              <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :disabled="!updatePop"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="生效日期" prop="effectDate">
-              <el-date-picker
-                v-model="addJsonForm.effectDate"
-                type="date"
-                placeholder="选择生效日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item label="职位等级">
-              <el-select v-model="addJsonForm.postLevel" placeholder="职位等级">
-                <el-option
-                  v-for="dict in baseInfoData.HP005"
-                  :key="dict.dicName"
-                  :label="dict.dicName"
-                  :value="dict.dicName"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row style="margin-bottom: 10px">
-          <el-col>
-            <span style="font-size: 18px">【岗位信息明细】</span>
-          </el-col>
-        </el-row>
-        <el-button type="primary" @click="addLine">添加</el-button>
-        <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
-        <el-table
-          :data="addJsonForm.employeeInductionList"
-          border
-          :key="key"
-          @selection-change="addJsonSelectionChange"
-        >
-          <el-table-column type="selection" width="55" align="center">
-          </el-table-column>
-          <el-table-column label="岗位类别" align="center">
-            <template v-slot="scope">
-              <el-form-item
-                :prop="'employeeInductionList.' + scope.$index + '.postTypeId'"
-              >
-                <el-select v-model="scope.row.postTypeId">
-                  <el-option
-                    v-for="dict in baseInfoData.post_type_id"
-                    :key="dict.dicNo"
-                    :label="dict.dicName"
-                    :value="dict.dicNo"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="岗位" align="center">
-            <template v-slot="scope">
-              <el-form-item
-                :prop="'employeeInductionList.' + scope.$index + '.newPostName'"
-              >
-                <el-input v-model="scope.row.newPostName" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="openPostName = true"></el-button>
-                </el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resetAddJsonPopup">取 消</el-button>
-        <el-button type="primary" @click="submitForm">确定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog title="选择岗位"
-               :visible.sync="openPostName"
-               width="700px">
-      <el-form
-        :model="addJsonForm"
-        ref="addJsonForm"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-table :data="addJsonForm.employeeInductionList" border>
-          <el-table-column  label="所属组织机构" align="center">
-            <template v-slot="scope">
-              <el-form-item>
-                <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
-                  <el-option
-                    v-for="dict in baseInfoData.comp_id"
-                    :key="dict.dicNo"
-                    :label="dict.dicName"
-                    :value="dict.dicNo"
-                  />
-                </el-select>
-                <el-tree
-                  :data="newPostNameOptions"
-                  :props="defaultProps"
-                  :default-expand-al="false"
-                  :highlight-current="true"
-                  :expand-on-click-node="false"
-                  :default-expanded-keys="expandedKeys"
-                  v-show="tree"
-                  node-key="id"
-                  ref="tree"
-                  @node-click="handleNodeClick"
-                />
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column  label="选取岗位" align="center">
-            <template v-slot="scope">
-              <el-form-item>
-                <el-select v-model="scope.row.postName" placeholder="请选择岗位" clearable @change="changePostName">
-                  <el-option
-                    v-for="dict in postMaintenanceList"
-                    :key="dict.postName"
-                    :label="dict.postName"
-                    :value="dict.postName"
-                  />
-                </el-select>
-              </el-form-item>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form>
-    </el-dialog>
-    <select-user ref="select" @ok="getJobNumber"/>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="resetAddJsonPopup">取 消</el-button>
+            <el-button type="primary" @click="submitForm">确定</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog title="选择岗位"
+                   :visible.sync="openPostName"
+                   width="700px">
+          <el-form
+            :model="addJsonForm"
+            ref="addJsonForm"
+            :rules="rules"
+            label-width="80px"
+          >
+            <el-table :data="addJsonForm.employeeInductionList" border>
+              <el-table-column  label="所属组织机构" align="center">
+                <template v-slot="scope">
+                  <el-form-item>
+                    <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
+                      <el-option
+                        v-for="dict in baseInfoData.comp_id"
+                        :key="dict.dicNo"
+                        :label="dict.dicName"
+                        :value="dict.dicNo"
+                      />
+                    </el-select>
+                    <el-tree
+                      :data="newPostNameOptions"
+                      :props="defaultProps"
+                      :default-expand-al="false"
+                      :highlight-current="true"
+                      :expand-on-click-node="false"
+                      :default-expanded-keys="expandedKeys"
+                      v-show="tree"
+                      node-key="id"
+                      ref="tree"
+                      @node-click="handleNodeClick"
+                    />
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column  label="选取岗位" align="center">
+                <template v-slot="scope">
+                  <el-form-item>
+                    <el-select v-model="scope.row.postName" placeholder="请选择岗位" clearable @change="changePostName">
+                      <el-option
+                        v-for="dict in postMaintenanceList"
+                        :key="dict.postName"
+                        :label="dict.postName"
+                        :value="dict.postName"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
+        </el-dialog>
+        <select-user ref="select" @ok="getJobNumber"/>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -241,6 +231,8 @@ export default {
   components: {selectUser},
   data() {
     return {
+      // 显示搜索条件
+      showSearch: true,
       // 选中数组
       ids: [],
       // 表单参数
@@ -259,6 +251,13 @@ export default {
         compId: undefined,
         empNo: undefined
       },
+      // 列信息
+      columns: [
+        { key: 0, label: `工号`, visible: true },
+        { key: 1, label: `姓名`, visible: true },
+        { key: 2, label: `职位等级`, visible: true },
+        { key: 3, label: `生效日期`, visible: true },
+      ],
       // 弹出层标题
       title: "",
       // 是否显示弹出层

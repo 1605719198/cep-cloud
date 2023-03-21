@@ -4,7 +4,7 @@
       <div class="avue-crud el-card__body " style="width: 98%;border: 0;">
         <div class="avue-crud__search"
              style="border: 0">
-          <el-form :model="query" ref="queryForm" label-width="40px">
+          <el-form :model="query" ref="queryForm" label-width="40px" v-show="showSearch">
             <el-row :gutter="20">
               <el-col :span="6">
                 <el-form-item label="公司">
@@ -39,6 +39,7 @@
               </el-col>
             </el-row>
           </el-form>
+          <right-toolbar style="z-index: 999;" :showSearch.sync="showSearch" @queryTable="handleQuery"></right-toolbar>
         </div>
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="人事基本信息" name="first" :key="'first'">
@@ -90,6 +91,8 @@ export default {
   },
   data() {
     return {
+      // 显示搜索条件
+      showSearch: true,
       //查询参数
       query: {
         compId: undefined,
