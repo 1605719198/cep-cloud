@@ -238,21 +238,21 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建人员" prop="createBy">
               <el-input maxlength="20" v-model="form.createBy"  placeholder="请输入内容" disabled/>
             </el-form-item>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建日期" prop="createTime">
               <el-date-picker clearable
                               disabled
                               style="width: 100%;"
                               v-model="form.createTime"
-                              type="datetime"
+                              type="date"
                               placeholder="请选择创建日期">
               </el-date-picker>
             </el-form-item>
@@ -307,6 +307,7 @@
 </template>
 
 <script>
+import { getDateTime } from "@/api/human/hd/abchuman"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect,listDeptversion } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
@@ -462,23 +463,6 @@ export default {
        this.nickName=response.data.nickName
      })
    },
-    /** 获取当前日期 */
-    getDate(e){
-      var today = new Date(); //日期
-      var DD = String(today.getDate()).padStart(2, '0'); // 获取日
-      var MM = String(today.getMonth() + 1).padStart(2, '0'); //获取月份，1 月为 0
-      var yyyy = today.getFullYear(); // 获取年
-      var hh = String(today.getHours()).padStart(2, '0'); //获取当前小时数(0-23)
-      var mm = String(today.getMinutes()).padStart(2, '0'); //获取当前分钟数(0-59)
-      var ss = String(today.getSeconds()).padStart(2, '0'); //获取当前秒数(0-59)
-      var time =yyyy + '-' + MM + '-' + DD+' '+hh+':'+mm+':'+ss;
-      var date = yyyy + '-' + MM + '-' + DD;
-      if(e==0){
-        return time;
-      }else {
-        return date;
-      }
-    },
     /** 用户选单事件 */
     inputClick() {
       this.isSingle = true
@@ -613,9 +597,9 @@ export default {
       this.reset();
       this.form.createBy=this.nickName;
       this.form.updateBy=this.nickName;
-      this.form.createTime=this.getDate(0);
-      this.form.updateTime=this.getDate(0);
-      this.form.effectDate=this.getDate(1);
+      this.form.createTime=getDateTime(0);
+      this.form.updateTime=getDateTime(0);
+      this.form.effectDate=getDateTime(1);
       this.form.versionNo=1;
       this.form.ifCompany = 1;
       this.form.isNew=1;
@@ -636,8 +620,8 @@ export default {
       getDeptmaintenance(deptId).then(response => {
         this.form = response.data;
         this.form.updateBy=this.nickName;
-        this.form.updateTime=this.getDate(0);
-        this.form.effectDate=this.getDate(1);
+        this.form.updateTime=getDateTime(0);
+        this.form.effectDate=getDateTime(1);
         this.form.versionNo++;
         this.form.isNew=1;
         this.open = true;

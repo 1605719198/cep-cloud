@@ -812,7 +812,7 @@
 
 <script>
 import { getBaseInfo, getDegreeMajorSpecialization } from "@/api/human/hm/baseInfo"
-import photoUpload from "@/views/humanresource/hm/photoUpload";
+import photoUpload from "@/views/human/hm/photoUpload";
 import { regionData } from "element-china-area-data";
 import {addPersonnelData, queryInfo} from "@/api/human/hm/personnelBasicInfo";
 export default {

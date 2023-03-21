@@ -35,13 +35,6 @@ public interface ISysDeptService
      * @return 树结构列表
      */
     public List<SysDept> buildDeptTree(List<SysDept> depts);
-    /**
-     * 根据部门ID查询信息
-     *
-     * @param deptId 部门ID
-     * @return 部门信息
-     */
-    public SysDept selectDeptById(Long deptId);
 
     /**
      * 构建前端所需要下拉树结构
@@ -50,6 +43,15 @@ public interface ISysDeptService
      * @return 下拉树结构列表
      */
     public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts);
+
+    /**
+     * 根据部门ID查询信息
+     *
+     * @param deptId 部门ID
+     * @return 部门信息
+     */
+    public SysDept selectDeptById(Long deptId);
+
 
     /**
      * 新增部门资料维护

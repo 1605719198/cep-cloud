@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import { getDateTime } from "@/api/human/hd/abchuman"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { treeselect } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
@@ -327,23 +328,6 @@ export default {
       //   this.form.jobNumber = val[0].userName
       //   this.form.jobName = val[0].nickName
     },
-    /** 获取当前日期 */
-    getDate(e){
-      var today = new Date(); //日期
-      var DD = String(today.getDate()).padStart(2, '0'); // 获取日
-      var MM = String(today.getMonth() + 1).padStart(2, '0'); //获取月份，1 月为 0
-      var yyyy = today.getFullYear(); // 获取年
-      var hh = String(today.getHours()).padStart(2, '0'); //获取当前小时数(0-23)
-      var mm = String(today.getMinutes()).padStart(2, '0'); //获取当前分钟数(0-59)
-      var ss = String(today.getSeconds()).padStart(2, '0'); //获取当前秒数(0-59)
-      var time =yyyy + '-' + MM + '-' + DD+' '+hh+':'+mm+':'+ss;
-      var date = yyyy + '-' + MM + '-' + DD;
-      if(e==0){
-        return time;
-      }else {
-        return date;
-      }
-    },
     /** 转换部门数据结构 */
     normalizer(node) {
       // if (node.children && !node.children.length) {
@@ -439,14 +423,14 @@ export default {
         positionExpenseCategory: null,
         costCenterName: null,
         changeReason: null,
-        effectDate: this.getDate(1),
+        effectDate: getDateTime(1),
         versionNo: 1,
         ifNew: 1,
         compId: null,
         createBy: this.nickName,
-        createTime: this.getDate(0),
+        createTime: getDateTime(0),
         updateBy: this.nickName,
-        updateTime: this.getDate(0),
+        updateTime: getDateTime(0),
         workDesc: null,
         workCon: null,
         apprKpi: null,
@@ -503,8 +487,8 @@ export default {
         this.form = response.data;
         this.form.versionNo++;
         this.form.updateBy = this.nickName;
-        this.form.updateTime = this.getDate(0);
-        this.form.effectDate = this.getDate(1);
+        this.form.updateTime = getDateTime(0);
+        this.form.effectDate = getDateTime(1);
         this.addOrUpdateVisible = true;
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(this.form)

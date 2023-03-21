@@ -233,7 +233,14 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="职位费用类别" prop="positionExpenseCategory">
-                  <el-input v-model="form.positionExpenseCategory" placeholder="请输入职位费用类别" maxlength="32"/>
+                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" style="width: 100%">
+                    <el-option
+                      v-for="dict in baseInfoData.HP007"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -376,7 +383,8 @@ export default {
           'HP013',
           'HP004',
           'HP006',
-          'comp_id'
+          'comp_id',
+          'HP007'
         ]
       },
       //部门选单数据
