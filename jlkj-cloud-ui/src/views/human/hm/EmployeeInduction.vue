@@ -185,7 +185,7 @@
           <el-table-column  label="所属组织机构" align="center">
             <template v-slot="scope">
               <el-form-item>
-                <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
+                <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
                   <el-option
                     v-for="dict in baseInfoData.comp_id"
                     :key="dict.dicNo"
@@ -211,7 +211,7 @@
           <el-table-column  label="选取岗位" align="center">
             <template v-slot="scope">
               <el-form-item>
-                <el-select v-model="scope.row.newPostName" placeholder="请选择岗位" clearable @change="openPostName = false">
+                <el-select v-model="scope.row.postName" placeholder="请选择岗位" clearable @change="changePostName">
                   <el-option
                     v-for="dict in postMaintenanceList"
                     :key="dict.postName"
@@ -292,6 +292,7 @@ export default {
       },
       //默认展开指定节点
       expandedKeys: [],
+      index: 0,
       //是否展示树和表
       tree:false,
       // 岗位数据
@@ -301,7 +302,11 @@ export default {
       // 非多个禁用
       addJsonMultiple: true,
       updatePop: true,
-      key: undefined
+      key: undefined,
+      label: undefined,
+      parentPostName: undefined,
+      orgName: undefined,
+      postName: undefined
     }
   },
   watch: {
@@ -451,6 +456,8 @@ export default {
     },
     handleQuery() {
       listPostMaintenance(this.queryParams).then(response => {
+        this.orgName = response.rows[0].orgName
+        this.parentPostName = response.rows[0].parentPostName
         this.postMaintenanceList = response.rows;
         this.addJsonForm.postName = this.postMaintenanceList[0].postName
         this.addJsonForm.postId = this.postMaintenanceList[0].postId
@@ -463,6 +470,20 @@ export default {
         this.newPostNameOptions = response.data;
       });
     },
+    changeLabel(val) {
+      if (val == 'J00') {
+        this.label = '吉林建龙'
+      } else if (val == 'J01') {
+        this.label = '吉林龙翔冷轧新型材料有限公司'
+      } else {
+        this.label = '吉林建龙信息科技'
+      }
+    },
+    changePostName(val) {
+      this.openPostName = false
+      this.postName = val
+      this.addJsonForm.employeeInductionList[this.index].newPostName = this.label + '-' + this.parentPostName + '-' + this.orgName + '-' + this.postName
+    }
   }
 }
 </script>
