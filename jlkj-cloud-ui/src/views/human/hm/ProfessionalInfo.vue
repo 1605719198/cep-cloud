@@ -3,90 +3,94 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-      <el-table ref="table-input" class="table" :data="baseForm.professionalList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
-        <el-table-column type="selection" width="100" align="center" />
-        <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.ifInComp'">
-              <el-select v-model="scope.row.ifInComp">
-                <el-option
-                  v-for="dict in baseInfoData.ifInCompany"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="职业类别" align="center" key="proTypeId" prop="proTypeId">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.proTypeId'">
-              <el-select v-model="scope.row.proTypeId" @change="handleChange">
-                <el-option
-                  v-for="dict in baseInfoData.professionalTitleCategory"
-                  :key="dict.uuid"
-                  :label="dict.dicName"
-                  :value="dict.uuid"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="职称专业" align="center" key="proSpecId" prop="proSpecId" :render-header="addRedStar">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.proSpecId'">
-              <el-select v-model="scope.row.proSpecId">
-                <el-option
-                  v-for="dict in degreeMajorSpecialization"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="职称级别" align="center" key="proTierId" prop="proTierId" :render-header="addRedStar">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.proTierId'">
-              <el-select v-model="scope.row.proTierId">
-                <el-option
-                  v-for="dict in baseInfoData.professionalTitleLevel"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="证书编号" align="center" key="cerNo" prop="cerNo" :render-header="addRedStar">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.cerNo'" :rules="rules.cerNo">
-              <el-input v-model="scope.row.cerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerNo`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="评定日期" align="center" key="cerDate" prop="cerDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.cerDate'">
-              <el-date-picker placeholder="请选择评定日期" v-model="scope.row.cerDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'professionalList.'+scope.$index+'.cerComp'">
-              <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerComp`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-        <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-      </el-table>
-    </el-form>
+    <div class="head-container" style="height: 30vh;width: 100%;">
+      <el-scrollbar style="height: 100%;">
+        <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
+          <el-table ref="table-input" class="table" :data="baseForm.professionalList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
+            <el-table-column type="selection" width="100" align="center" />
+            <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.ifInComp'">
+                  <el-select v-model="scope.row.ifInComp">
+                    <el-option
+                      v-for="dict in baseInfoData.ifInCompany"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="职业类别" align="center" key="proTypeId" prop="proTypeId">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.proTypeId'">
+                  <el-select v-model="scope.row.proTypeId" @change="handleChange">
+                    <el-option
+                      v-for="dict in baseInfoData.professionalTitleCategory"
+                      :key="dict.uuid"
+                      :label="dict.dicName"
+                      :value="dict.uuid"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="职称专业" align="center" key="proSpecId" prop="proSpecId" :render-header="addRedStar">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.proSpecId'">
+                  <el-select v-model="scope.row.proSpecId">
+                    <el-option
+                      v-for="dict in degreeMajorSpecialization"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="职称级别" align="center" key="proTierId" prop="proTierId" :render-header="addRedStar">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.proTierId'">
+                  <el-select v-model="scope.row.proTierId">
+                    <el-option
+                      v-for="dict in baseInfoData.professionalTitleLevel"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证书编号" align="center" key="cerNo" prop="cerNo" :render-header="addRedStar">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.cerNo'" :rules="rules.cerNo">
+                  <el-input v-model="scope.row.cerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerNo`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="评定日期" align="center" key="cerDate" prop="cerDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.cerDate'">
+                  <el-date-picker placeholder="请选择评定日期" v-model="scope.row.cerDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'professionalList.'+scope.$index+'.cerComp'">
+                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerComp`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+            <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+          </el-table>
+        </el-form>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 

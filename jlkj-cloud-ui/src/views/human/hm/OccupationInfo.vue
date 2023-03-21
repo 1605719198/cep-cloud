@@ -3,69 +3,73 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-      <el-table ref="table-input" class="table" :data="baseForm.occupationList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
-        <el-table-column type="selection" width="100" align="center" />
-        <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.ifInComp'">
-              <el-select v-model="scope.row.ifInComp">
-                <el-option
-                  v-for="dict in baseInfoData.ifInCompany"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="职业证书编号" align="center" key="vocCerNo" prop="vocCerNo" :render-header="addRedStar">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.vocCerNo'" :rules="rules.vocCerNo">
-              <el-input v-model="scope.row.vocCerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocCerNo`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="职业类别" align="center" key="vocType" prop="vocType">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.vocType'">
-              <el-input v-model="scope.row.vocType" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocType`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="名称" align="center" key="name" prop="name" :render-header="addRedStar">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.name'" :rules="rules.name">
-              <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.name`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="证书等级" align="center" key="cerTier" prop="cerTier">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.cerTier'">
-              <el-input v-model="scope.row.cerTier" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerTier`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="发证日期" align="center" key="cerDate" prop="cerDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.cerDate'">
-              <el-date-picker placeholder="请选择发证日期" v-model="scope.row.cerDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'occupationList.'+scope.$index+'.cerComp'">
-              <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerComp`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-        <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-      </el-table>
-    </el-form>
+    <div class="head-container" style="height: 30vh;width: 100%;">
+      <el-scrollbar style="height: 100%;">
+        <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
+          <el-table ref="table-input" class="table" :data="baseForm.occupationList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
+            <el-table-column type="selection" width="100" align="center" />
+            <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.ifInComp'">
+                  <el-select v-model="scope.row.ifInComp">
+                    <el-option
+                      v-for="dict in baseInfoData.ifInCompany"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="职业证书编号" align="center" key="vocCerNo" prop="vocCerNo" :render-header="addRedStar">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.vocCerNo'" :rules="rules.vocCerNo">
+                  <el-input v-model="scope.row.vocCerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocCerNo`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="职业类别" align="center" key="vocType" prop="vocType">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.vocType'">
+                  <el-input v-model="scope.row.vocType" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocType`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="名称" align="center" key="name" prop="name" :render-header="addRedStar">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.name'" :rules="rules.name">
+                  <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.name`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证书等级" align="center" key="cerTier" prop="cerTier">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.cerTier'">
+                  <el-input v-model="scope.row.cerTier" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerTier`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="发证日期" align="center" key="cerDate" prop="cerDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.cerDate'">
+                  <el-date-picker placeholder="请选择发证日期" v-model="scope.row.cerDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'occupationList.'+scope.$index+'.cerComp'">
+                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerComp`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+            <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+          </el-table>
+        </el-form>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 

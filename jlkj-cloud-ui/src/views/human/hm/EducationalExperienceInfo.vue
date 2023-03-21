@@ -3,90 +3,94 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-      <el-table ref="table-input" class="table" :data="baseForm.educationalExperienceList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
-        <el-table-column type="selection" width="100" align="center" />
-        <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.ifInComp'">
-              <el-select v-model="scope.row.ifInComp">
-                <el-option
-                  v-for="dict in baseInfoData.ifInCompany"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="入学日期" align="center" key="startDate" prop="startDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
-              <el-date-picker placeholder="请选择入学日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.startDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="毕业时间" align="center" key="endDate" prop="endDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.endDate'">
-              <el-date-picker placeholder="请选择毕业时间" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.endDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="学校" align="center" key="school" prop="school">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.school'" class="all">
-              <el-input v-model="scope.row.school" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.school`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="专业" align="center" key="specId" prop="specId">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.specId'">
-              <el-select v-model="scope.row.specId" @change="handleChange">
-                <el-option
-                  v-for="dict in baseInfoData.profession"
-                  :key="dict.uuid"
-                  :label="dict.dicName"
-                  :value="dict.uuid"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="专业细分" align="center" key="psubSpecId" prop="psubSpecId">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.psubSpecId'">
-              <el-select v-model="scope.row.psubSpecId">
-                <el-option
-                  v-for="dict in degreeMajorSpecialization"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="培养方式" align="center" key="trainStypeId" prop="trainStypeId">
-          <template v-slot="scope">
-            <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.trainStypeId'">
-              <el-select v-model="scope.row.trainStypeId">
-                <el-option
-                  v-for="dict in baseInfoData.trainingMethod"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-        <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-      </el-table>
-    </el-form>
+    <div class="head-container" style="height: 30vh;width: 100%;">
+      <el-scrollbar style="height: 100%;">
+        <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
+          <el-table ref="table-input" class="table" :data="baseForm.educationalExperienceList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
+            <el-table-column type="selection" width="100" align="center" />
+            <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.ifInComp'">
+                  <el-select v-model="scope.row.ifInComp">
+                    <el-option
+                      v-for="dict in baseInfoData.ifInCompany"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="入学日期" align="center" key="startDate" prop="startDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
+                  <el-date-picker placeholder="请选择入学日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.startDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="毕业时间" align="center" key="endDate" prop="endDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.endDate'">
+                  <el-date-picker placeholder="请选择毕业时间" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.endDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="学校" align="center" key="school" prop="school">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.school'" class="all">
+                  <el-input v-model="scope.row.school" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.school`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="专业" align="center" key="specId" prop="specId">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.specId'">
+                  <el-select v-model="scope.row.specId" @change="handleChange">
+                    <el-option
+                      v-for="dict in baseInfoData.profession"
+                      :key="dict.uuid"
+                      :label="dict.dicName"
+                      :value="dict.uuid"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="专业细分" align="center" key="psubSpecId" prop="psubSpecId">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.psubSpecId'">
+                  <el-select v-model="scope.row.psubSpecId">
+                    <el-option
+                      v-for="dict in degreeMajorSpecialization"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="培养方式" align="center" key="trainStypeId" prop="trainStypeId">
+              <template v-slot="scope">
+                <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.trainStypeId'">
+                  <el-select v-model="scope.row.trainStypeId">
+                    <el-option
+                      v-for="dict in baseInfoData.trainingMethod"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+            <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+          </el-table>
+        </el-form>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
