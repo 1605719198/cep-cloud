@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourcePostSequenceDTO;
+import com.jlkj.common.dto.human.hm.PostSequenceDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -77,19 +77,19 @@ public class HumanresourcePostSequenceQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourcePostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, HumanresourcePostSequenceDTO.class);
+                PostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, PostSequenceDTO.class);
                 humanResourceFeignService.addPostSequenceData(humanresourcePostSequenceDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourcePostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, HumanresourcePostSequenceDTO.class);
+                PostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, PostSequenceDTO.class);
                 humanResourceFeignService.updatePostSequenceData(humanresourcePostSequenceDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourcePostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, HumanresourcePostSequenceDTO.class);
+                PostSequenceDTO humanresourcePostSequenceDTO = objectMapper.convertValue(item, PostSequenceDTO.class);
                 humanResourceFeignService.deletePostSequenceData(humanresourcePostSequenceDTO,TOKEN);
             });
         } else {

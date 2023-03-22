@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceWorkAddressDTO;
+import com.jlkj.common.dto.human.hm.WorkAddressDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -78,19 +78,19 @@ public class HumanresourceWorkAddressQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceWorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, HumanresourceWorkAddressDTO.class);
+                WorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, WorkAddressDTO.class);
                 humanResourceFeignService.addWorkAddressData(humanresourceWorkAddressDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceWorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, HumanresourceWorkAddressDTO.class);
+                WorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, WorkAddressDTO.class);
                 humanResourceFeignService.updateWorkAddressData(humanresourceWorkAddressDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceWorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, HumanresourceWorkAddressDTO.class);
+                WorkAddressDTO humanresourceWorkAddressDTO = objectMapper.convertValue(item, WorkAddressDTO.class);
                 humanResourceFeignService.deleteWorkAddressData(humanresourceWorkAddressDTO,TOKEN);
             });
         } else {

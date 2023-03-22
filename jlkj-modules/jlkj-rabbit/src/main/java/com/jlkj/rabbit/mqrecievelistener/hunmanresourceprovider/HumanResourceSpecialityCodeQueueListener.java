@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceSpecialityDTO;
+import com.jlkj.common.dto.human.hm.SpecialityDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -76,19 +76,19 @@ public class HumanResourceSpecialityCodeQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceSpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, HumanresourceSpecialityDTO.class);
+                SpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, SpecialityDTO.class);
                 humanResourceFeignService.addSpecialityData(humanresourceSpecialityDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceSpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, HumanresourceSpecialityDTO.class);
+                SpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, SpecialityDTO.class);
                 humanResourceFeignService.updateSpecialityData(humanresourceSpecialityDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceSpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, HumanresourceSpecialityDTO.class);
+                SpecialityDTO humanresourceSpecialityDTO = objectMapper.convertValue(item, SpecialityDTO.class);
                 humanResourceFeignService.deleteSpecialityData(humanresourceSpecialityDTO,TOKEN);
             });
         } else {

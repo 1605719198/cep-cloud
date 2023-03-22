@@ -52,17 +52,13 @@ public class PersonnelProfessionalController {
     @Log(title = "获取职称信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取职称信息列表")
     @GetMapping("/queryProfessionalInfo")
-    public Object queryProfessionalInfo(PersonnelProfessionalDTO humanresourcePersonnelProfessionalDTO) {
+    public Object queryProfessionalInfo(PersonnelProfessionalDTO personnelProfessionalDTO) {
         try {
-            String empId = humanresourcePersonnelProfessionalDTO.getEmpId();
+            String empId = personnelProfessionalDTO.getEmpId();
             LambdaQueryWrapper<PersonnelProfessional> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(PersonnelProfessional::getEmpId, empId);
             List<PersonnelProfessional> list = iPersonnelProfessionalService.list(queryWrapper);
-            if (list.isEmpty()) {
-                return AjaxResult.error("查无资料");
-            } else {
-                return AjaxResult.success("查询成功！", list);
-            }
+            return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
         }

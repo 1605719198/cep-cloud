@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourcePersonnelSchedulingDTO;
+import com.jlkj.common.dto.human.hm.PersonnelSchedulingDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -75,19 +75,19 @@ public class HumanResourcePersonnelSchedulingQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourcePersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, HumanresourcePersonnelSchedulingDTO.class);
+                PersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, PersonnelSchedulingDTO.class);
                 humanResourceFeignService.addPersonnelSchedulingData(humanresourcePersonnelSchedulingDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourcePersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, HumanresourcePersonnelSchedulingDTO.class);
+                PersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, PersonnelSchedulingDTO.class);
                 humanResourceFeignService.updatePersonnelSchedulingData(humanresourcePersonnelSchedulingDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourcePersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, HumanresourcePersonnelSchedulingDTO.class);
+                PersonnelSchedulingDTO humanresourcePersonnelSchedulingDTO = objectMapper.convertValue(item, PersonnelSchedulingDTO.class);
                 humanResourceFeignService.deletePersonnelSchedulingData(humanresourcePersonnelSchedulingDTO,TOKEN);
             });
         } else {

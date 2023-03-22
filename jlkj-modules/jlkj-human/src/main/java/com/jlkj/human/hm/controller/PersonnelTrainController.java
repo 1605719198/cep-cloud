@@ -52,17 +52,13 @@ public class PersonnelTrainController {
     @Log(title = "获取培训经历信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取培训经历信息列表")
     @GetMapping("/queryCultivateExperienceInfo")
-    public Object queryCultivateExperienceInfo(PersonnelTrainDTO humanresourcePersonnelTrainDTO) {
+    public Object queryCultivateExperienceInfo(PersonnelTrainDTO personnelTrainDTO) {
         try {
-            String empId = humanresourcePersonnelTrainDTO.getEmpId();
+            String empId = personnelTrainDTO.getEmpId();
             LambdaQueryWrapper<PersonnelTrain> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(PersonnelTrain::getEmpId, empId);
             List<PersonnelTrain> list = iPersonnelTrainService.list(queryWrapper);
-            if (list.isEmpty()) {
-                return AjaxResult.error("查无资料");
-            } else {
-                return AjaxResult.success("查询成功！", list);
-            }
+            return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
         }

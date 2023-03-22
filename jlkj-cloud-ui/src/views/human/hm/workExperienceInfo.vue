@@ -11,62 +11,66 @@
         <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
         <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
       </div>
-      <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-        <el-table ref="table-input" class="table" :data="baseForm.workExperienceList" :header-cell-class-name="cellClass" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
-          <el-table-column type="selection" width="100" align="center" />
-          <el-table-column label="到职日期" align="center" key="startDate" prop="startDate" width="230">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
-                <el-date-picker placeholder="请选择到职日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.startDate`)"></el-date-picker>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="离职日期" align="center" key="endDate" prop="endDate" width="230">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.endDate'">
-                <el-date-picker placeholder="请选择到职日期" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.endDate`)"></el-date-picker>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="工作单位" align="center" key="comp" prop="comp">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.comp'">
-                <el-input v-model="scope.row.comp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.comp`)"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="职务（岗位）" align="center" key="post" prop="post">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.post'">
-                <el-input v-model="scope.row.post" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.post`)"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="证明人" align="center" key="prover" prop="prover">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.prover'">
-                <el-input v-model="scope.row.prover" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.prover`)"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="证明人联系方式" align="center" key="tele" prop="tele">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.tele'">
-                <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.tele`)"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="离职原因" align="center" key="changeReasonId" prop="changeReasonId">
-            <template v-slot="scope">
-              <el-form-item :prop="'workExperienceList.'+scope.$index+'.changeReasonId'">
-                <el-input v-model="scope.row.changeReasonId" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.changeReasonId`)"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-          <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-        </el-table>
-      </el-form>
+      <div class="head-container" style="height: 30vh;width: 100%;">
+        <el-scrollbar style="height: 100%;">
+          <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
+            <el-table ref="table-input" class="table" :data="baseForm.workExperienceList" :header-cell-class-name="cellClass" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
+              <el-table-column type="selection" width="100" align="center" />
+              <el-table-column label="到职日期" align="center" key="startDate" prop="startDate" width="230">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
+                    <el-date-picker placeholder="请选择到职日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.startDate`)"></el-date-picker>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="离职日期" align="center" key="endDate" prop="endDate" width="230">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.endDate'">
+                    <el-date-picker placeholder="请选择到职日期" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.endDate`)"></el-date-picker>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="工作单位" align="center" key="comp" prop="comp">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.comp'">
+                    <el-input v-model="scope.row.comp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.comp`)"></el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="职务（岗位）" align="center" key="post" prop="post">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.post'">
+                    <el-input v-model="scope.row.post" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.post`)"></el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="证明人" align="center" key="prover" prop="prover">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.prover'">
+                    <el-input v-model="scope.row.prover" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.prover`)"></el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="证明人联系方式" align="center" key="tele" prop="tele">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.tele'">
+                    <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.tele`)"></el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="离职原因" align="center" key="changeReasonId" prop="changeReasonId">
+                <template v-slot="scope">
+                  <el-form-item :prop="'workExperienceList.'+scope.$index+'.changeReasonId'">
+                    <el-input v-model="scope.row.changeReasonId" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.changeReasonId`)"></el-input>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+              <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+            </el-table>
+          </el-form>
+        </el-scrollbar>
+      </div>
     </div>
     <div style="margin-top: 50px">
       <el-row>
@@ -74,14 +78,18 @@
           <span style="font-size: 18px">【公司内经历资料】</span>
         </el-col>
       </el-row>
-      <el-table :data="baseForm.companyExperienceList">
-        <el-table-column label="开始日期" align="center" key="startDate" prop="startDate" width="300"/>
-        <el-table-column label="截止日期" align="center" key="endDate" prop="endDate" width="250"/>
-        <el-table-column label="职务（岗位）" align="center" key="post" prop="post" width="620"/>
-        <el-table-column label="异动原因" align="center" key="changeReasonId" prop="changeReasonId" />
-        <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-        <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-      </el-table>
+      <div class="head-container" style="height: 30vh;width: 100%;">
+        <el-scrollbar style="height: 100%;">
+          <el-table :data="baseForm.companyExperienceList">
+            <el-table-column label="开始日期" align="center" key="startDate" prop="startDate" width="300"/>
+            <el-table-column label="截止日期" align="center" key="endDate" prop="endDate" width="250"/>
+            <el-table-column label="职务（岗位）" align="center" key="post" prop="post" width="620"/>
+            <el-table-column label="异动原因" align="center" key="changeReasonId" prop="changeReasonId" />
+            <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+            <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+          </el-table>
+        </el-scrollbar>
+      </div>
     </div>
   </div>
 </template>
@@ -94,9 +102,7 @@ export default {
     return {
       baseForm: {
         // 工作经历数据
-        workExperienceList: [
-          {startDate: ''}
-        ],
+        workExperienceList: [],
         companyExperienceList: [],
       },
       index: 0,
@@ -182,5 +188,14 @@ export default {
   content: '入企前';
   text-align: center;
   margin-left: 15px;
+}
+.el-form-item {
+  margin-bottom: 11px;
+}
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
 }
 </style>

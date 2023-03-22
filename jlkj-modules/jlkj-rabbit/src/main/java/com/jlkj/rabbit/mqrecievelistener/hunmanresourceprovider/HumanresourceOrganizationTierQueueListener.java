@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceOrganizationTierDTO;
+import com.jlkj.common.dto.human.hm.OrganizationTierDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -76,19 +76,19 @@ public class HumanresourceOrganizationTierQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceOrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, HumanresourceOrganizationTierDTO.class);
+                OrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, OrganizationTierDTO.class);
                 humanResourceFeignService.addOrganizationTierData(humanresourceOrganizationTierDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceOrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, HumanresourceOrganizationTierDTO.class);
+                OrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, OrganizationTierDTO.class);
                 humanResourceFeignService.updateOrganizationTierData(humanresourceOrganizationTierDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceOrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, HumanresourceOrganizationTierDTO.class);
+                OrganizationTierDTO humanresourceOrganizationTierDTO = objectMapper.convertValue(item, OrganizationTierDTO.class);
                 humanResourceFeignService.deleteOrganizationTierData(humanresourceOrganizationTierDTO,TOKEN);
             });
         } else {

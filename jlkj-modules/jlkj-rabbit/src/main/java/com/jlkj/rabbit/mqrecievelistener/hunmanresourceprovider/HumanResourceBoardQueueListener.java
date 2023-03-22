@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceBoardDTO;
+import com.jlkj.common.dto.human.hm.BoardDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -77,19 +77,19 @@ public class HumanResourceBoardQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceBoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, HumanresourceBoardDTO.class);
+                BoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, BoardDTO.class);
                 humanResourceFeignService.addBoardData(humanresourceBoardDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceBoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, HumanresourceBoardDTO.class);
+                BoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, BoardDTO.class);
                 humanResourceFeignService.updateBoardData(humanresourceBoardDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceBoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, HumanresourceBoardDTO.class);
+                BoardDTO humanresourceBoardDTO = objectMapper.convertValue(item, BoardDTO.class);
                 humanResourceFeignService.deleteBoardData(humanresourceBoardDTO,TOKEN);
             });
         } else {

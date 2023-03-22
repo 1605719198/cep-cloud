@@ -3,7 +3,7 @@ package com.jlkj.rabbit.mqrecievelistener.hunmanresourceprovider;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.human.hm.HumanresourceOrganizationCategoryDTO;
+import com.jlkj.common.dto.human.hm.OrganizationCategoryDTO;
 import com.jlkj.rabbit.feign.hunmanresourceprovider.HumanResourceFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -77,19 +77,19 @@ public class HumanresourceOrganizationCategoryQueueListener {
             //循环数组  新增
             dataArr.forEach( item -> {
                 //将item复制给HumanresourceBoardDTO
-                HumanresourceOrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, HumanresourceOrganizationCategoryDTO.class);
+                OrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, OrganizationCategoryDTO.class);
                 humanResourceFeignService.addOrganizationCategoryData(humanresourceOrganizationCategoryDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_S)) {
             //修改
             dataArr.forEach( item -> {
-                HumanresourceOrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, HumanresourceOrganizationCategoryDTO.class);
+                OrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, OrganizationCategoryDTO.class);
                 humanResourceFeignService.updateOrganizationCategoryData(humanresourceOrganizationCategoryDTO,TOKEN);
             });
         } else if (actionCode.equals(HUMANRESOURCE_D)) {
             //删除
             dataArr.forEach( item -> {
-                HumanresourceOrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, HumanresourceOrganizationCategoryDTO.class);
+                OrganizationCategoryDTO humanresourceOrganizationCategoryDTO = objectMapper.convertValue(item, OrganizationCategoryDTO.class);
                 humanResourceFeignService.deleteOrganizationCategoryData(humanresourceOrganizationCategoryDTO,TOKEN);
             });
         } else {

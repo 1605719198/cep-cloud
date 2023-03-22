@@ -51,17 +51,13 @@ public class PersonnelOccupationController {
     @Log(title = "获取职业资格信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取职业资格信息列表")
     @GetMapping("/queryOccupationInfo")
-    public Object queryOccupationInfo(PersonnelOccupationDTO humanresourcePersonnelOccupationDTO) {
+    public Object queryOccupationInfo(PersonnelOccupationDTO personnelOccupationDTO) {
         try {
-            String empId = humanresourcePersonnelOccupationDTO.getEmpId();
+            String empId = personnelOccupationDTO.getEmpId();
             LambdaQueryWrapper<PersonnelOccupation> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(PersonnelOccupation::getEmpId, empId);
             List<PersonnelOccupation> list = iPersonnelOccupationService.list(queryWrapper);
-            if (list.isEmpty()) {
-                return AjaxResult.error("查无资料");
-            } else {
-                return AjaxResult.success("查询成功！", list);
-            }
+            return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
         }

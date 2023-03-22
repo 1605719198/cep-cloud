@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
-            <div class="head-container" style="height: 81vh;width: 100%;">
+            <div class="head-container" style="height: 75vh;width: 100%;">
               <el-scrollbar style="height: 100%;">
                 <el-tree ref="tree"
                          class="filter-tree"
@@ -171,7 +171,7 @@ export default {
       this.queryParams.uuid = this.uuid
       getChildrenList(this.queryParams).then(res => {
         this.queryParams.total = res.data.total;//数据总数
-        this.tableData = res.data.list;//表格数据
+        this.tableData = res.data.rows;//表格数据
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
@@ -232,6 +232,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
+}
 </style>

@@ -3,76 +3,80 @@
     <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
     <el-button type="primary" size="medium" :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" @click="addLine">添加行信息</el-button>
-    <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
-      <el-table ref="table-input" class="table" :data="baseForm.cultivateExperienceList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row>
-        <el-table-column type="selection" width="100" align="center" />
-        <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.ifInComp'">
-              <el-select v-model="scope.row.ifInComp">
-                <el-option
-                  v-for="dict in baseInfoData.ifInCompany"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="开始日期" align="center" key="startDate" prop="startDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
-              <el-date-picker placeholder="请选择开始日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.startDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="结束日期" align="center" key="endDate" prop="endDate" width="230">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.endDate'">
-              <el-date-picker placeholder="请选择结束日期" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.endDate`)"></el-date-picker>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="授课单位" align="center" key="trainComp" prop="trainComp">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.trainComp'">
-              <el-input v-model="scope.row.trainComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.trainComp`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="类别（内容）" align="center" key="content" prop="content">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.content'">
-              <el-input v-model="scope.row.content" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.content`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="项目" align="center" key="project" prop="project">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.project'">
-              <el-input v-model="scope.row.project" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.project`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="获得资格" align="center" key="qualification" prop="qualification">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.qualification'">
-              <el-input v-model="scope.row.qualification" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.qualification`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="获得证书" align="center" key="certificate" prop="certificate">
-          <template v-slot="scope">
-            <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.certificate'">
-              <el-input v-model="scope.row.certificate" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.certificate`)"></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column label="修改人" align="center" key="creator" prop="creator" />
-        <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
-      </el-table>
-    </el-form>
+    <div class="head-container" style="height: 30vh;width: 100%;">
+      <el-scrollbar style="height: 100%;">
+        <el-form class="base-form" ref="baseForm" :model="baseForm" :rules="rules">
+          <el-table ref="table-input" class="table" :data="baseForm.cultivateExperienceList" @selection-change="handleSelectionChange" style="margin-top: 10px" highlight-current-row :cell-style="{paddingBottom:'0px'}">
+            <el-table-column type="selection" width="100" align="center" />
+            <el-table-column label="入企前/后" align="center" key="ifInComp" prop="ifInComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.ifInComp'">
+                  <el-select v-model="scope.row.ifInComp">
+                    <el-option
+                      v-for="dict in baseInfoData.ifInCompany"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="开始日期" align="center" key="startDate" prop="startDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.startDate'" :rules="rules.startDate">
+                  <el-date-picker placeholder="请选择开始日期" v-model="scope.row.startDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.startDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="结束日期" align="center" key="endDate" prop="endDate" width="230">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.endDate'">
+                  <el-date-picker placeholder="请选择结束日期" v-model="scope.row.endDate" type="date" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.endDate`)"></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="授课单位" align="center" key="trainComp" prop="trainComp">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.trainComp'">
+                  <el-input v-model="scope.row.trainComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.trainComp`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="类别（内容）" align="center" key="content" prop="content">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.content'">
+                  <el-input v-model="scope.row.content" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.content`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="项目" align="center" key="project" prop="project">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.project'">
+                  <el-input v-model="scope.row.project" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.project`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="获得资格" align="center" key="qualification" prop="qualification">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.qualification'">
+                  <el-input v-model="scope.row.qualification" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.qualification`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="获得证书" align="center" key="certificate" prop="certificate">
+              <template v-slot="scope">
+                <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.certificate'">
+                  <el-input v-model="scope.row.certificate" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.certificate`)"></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="修改人" align="center" key="creator" prop="creator" />
+            <el-table-column label="修改日期" align="center" key="createDate" prop="createDate" />
+          </el-table>
+        </el-form>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
@@ -89,9 +93,7 @@ export default {
   data() {
     return {
       baseForm: {
-        cultivateExperienceList: [
-          {startDate: ''}
-        ]
+        cultivateExperienceList: []
       },
       // 非多个禁用
       multiple: true,
@@ -168,6 +170,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-form-item {
+  margin-bottom: 11px;
+}
 </style>

@@ -51,17 +51,13 @@ public class PersonnelFamilyController {
     @Log(title = "获取家属信息列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取家属信息列表")
     @GetMapping("/queryFamilyInfo")
-    public Object queryFamilyInfo(PersonnelFamilyDTO humanresourcePersonnelFamilyDTO) {
+    public Object queryFamilyInfo(PersonnelFamilyDTO personnelFamilyDTO) {
         try {
-            String empId = humanresourcePersonnelFamilyDTO.getEmpId();
+            String empId = personnelFamilyDTO.getEmpId();
             LambdaQueryWrapper<PersonnelFamily> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(PersonnelFamily::getEmpId, empId);
             List<PersonnelFamily> list = iPersonnelFamilyService.list(queryWrapper);
-            if (list.isEmpty()) {
-                return AjaxResult.error("查无资料");
-            } else {
-                return AjaxResult.success("查询成功！", list);
-            }
+            return AjaxResult.success("查询成功！", list);
         } catch (Exception e) {
             return AjaxResult.error();
         }

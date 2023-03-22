@@ -41,6 +41,8 @@ public class FinanceProductController {
     private FinanceProductAccountService financeProductAccountService;
     @Autowired
     private SysDictDataFeignService sysDictDataFeignService;
+    @Autowired
+    private FinanceProductAccountServicea financeProductAccountServicea;
 
     /**
      * 根据产副品代码、产副品名称查询
@@ -165,7 +167,7 @@ public class FinanceProductController {
                     .leftJoin(FinanceIdCode.class, FinanceIdCode::getIdTypeNo, FinanceAccountCode::getIdTypeStus)
                     .leftJoin(FinanceRefCode.class, FinanceRefCode::getRefKindNum, FinanceAccountCode::getRefTypeStus)
                     .eq(StringUtils.isNotBlank(productCode), FinanceProductAccount::getProductCode, productCode);
-            IPage<FinanceProductAccountDTO> iPage = financeProductAccountService.selectJoinListPage(page1, FinanceProductAccountDTO.class, wrapper);
+            IPage<FinanceProductAccountDTO> iPage = financeProductAccountServicea.selectJoinListPage(page1, FinanceProductAccountDTO.class, wrapper);
 
             long total = page.getTotal();
             //数据list集合

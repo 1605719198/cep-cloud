@@ -20,16 +20,6 @@ public class BaseInfoDTO {
     private String uuid;
 
     /**
-     * 当前页
-     */
-    private Long pageNum;
-
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
-
-    /**
      * 选单数据list
      */
     private List<String> baseInfoList;
