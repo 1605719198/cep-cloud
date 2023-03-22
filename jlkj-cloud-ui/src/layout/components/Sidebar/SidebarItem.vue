@@ -98,3 +98,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+ /deep/.el-submenu__title {
+   padding: 0 0 0 20px !important;
+ }
+ .el-submenu .el-menu-item {
+   padding: 0px;
+ }
+ /deep/.el-menu-item {
+   padding-left: 20px !important;
+ }
+</style>
