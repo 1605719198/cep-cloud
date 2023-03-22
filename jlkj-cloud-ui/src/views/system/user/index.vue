@@ -18,12 +18,12 @@
             <el-tree
               :data="deptOptions"
               :props="defaultProps"
-              :expand-on-click-node="false"
+              :expand-on-click-node="true"
               :filter-node-method="filterNode"
               ref="tree"
               node-key="id"
-              default-expand-all
-              highlight-current
+              :default-expand-all="false"
+              :highlight-current="true"
               @node-click="handleNodeClick"
             />
           </el-scrollbar>
