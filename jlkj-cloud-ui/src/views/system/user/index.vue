@@ -156,7 +156,7 @@
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber"
                            v-if="columns[4].visible" width="120"/>
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-switch
                 v-model="scope.row.status"
                 active-value="0"
@@ -166,7 +166,7 @@
             </template>
           </el-table-column>
           <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
