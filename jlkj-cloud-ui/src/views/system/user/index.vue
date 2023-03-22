@@ -33,10 +33,10 @@
       <el-col :span="20" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
                  label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="用户工号" prop="userName">
             <el-input
               v-model="queryParams.userName"
-              placeholder="请输入用户名称"
+              placeholder="请输入用户工号"
               clearable
               style="width: 240px"
               @keyup.enter.native="handleQuery"
@@ -147,9 +147,9 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center"/>
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible"/>
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
+          <el-table-column label="用户工号" align="center" key="userName" prop="userName" v-if="columns[1].visible"
                            :show-overflow-tooltip="true"/>
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
+          <el-table-column label="用户姓名" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
                            :show-overflow-tooltip="true"/>
           <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
                            :show-overflow-tooltip="true"/>
@@ -224,7 +224,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
+            <el-form-item label="用户姓名" prop="nickName">
               <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30"/>
             </el-form-item>
           </el-col>
@@ -248,8 +248,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30"/>
+            <el-form-item v-if="form.userId == undefined" label="用户工号" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入用户工号" maxlength="30"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
