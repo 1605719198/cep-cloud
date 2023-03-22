@@ -230,7 +230,7 @@
 </template>
 
 <script>
-import selectUser from "@/views/human/hm/SelectUser";
+import selectUser from "@/views/human/hm/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, updateEmployeeInduction, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
 import {treeselect} from "@/api/human/hp/deptMaintenance";

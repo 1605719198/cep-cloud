@@ -102,7 +102,7 @@
 
 <script>
 import {baseInfoTree, getChildrenList, deleteBaseInfo} from "@/api/human/hm/baseInfo"
-import Update from "./Update.vue"
+import Update from "./update.vue"
 
 export default {
   name: "BaseInfo",

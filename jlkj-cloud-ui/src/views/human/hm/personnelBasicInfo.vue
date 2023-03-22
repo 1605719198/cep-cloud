@@ -69,13 +69,13 @@
 </template>
 
 <script>
-import HumanAffairsBaseInfo from "@/views/human/hm/HumanAffairsBaseInfo";
-import WorkExperienceInfo from "@/views/human/hm/WorkExperienceInfo";
-import EducationalExperienceInfo from "@/views/human/hm/EducationalExperienceInfo";
-import CultivateExperienceInfo from "@/views/human/hm/CultivateExperienceInfo";
-import FamilyInfo from "@/views/human/hm/FamilyInfo";
-import OccupationInfo from "@/views/human/hm/OccupationInfo";
-import ProfessionalInfo from "@/views/human/hm/ProfessionalInfo";
+import HumanAffairsBaseInfo from "@/views/human/hm/affairsBaseInfo";
+import WorkExperienceInfo from "@/views/human/hm/workExperienceInfo";
+import EducationalExperienceInfo from "@/views/human/hm/educationalExperienceInfo";
+import CultivateExperienceInfo from "@/views/human/hm/cultivateExperienceInfo";
+import FamilyInfo from "@/views/human/hm/familyInfo";
+import OccupationInfo from "@/views/human/hm/occupationInfo";
+import ProfessionalInfo from "@/views/human/hm/professionalInfo";
 export default {
   name: "PersonnelBasicInfo",
   dicts: ['comp_id'],
