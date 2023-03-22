@@ -56,7 +56,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2022 jlkj.com All Rights Reserved.</span>
+      <span>Copyright © 2018-2022 吉林建龙信息科技(www.jljlxxkj.com) All Rights Reserved.</span>
     </div>
   </div>
 </template>
