@@ -59,6 +59,8 @@ export default {
       visible: false,
       // 选中数组值
       userIds: [],
+      // 选中数组名称
+      userName: [],
       // 总条数
       total: 0,
       // 未授权用户数据
@@ -84,11 +86,12 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.userIds = selection.map(item => item.empNo);
+      this.userName = selection.map(item => item.fullName);
     },
     // 查询表数据
     getList() {
       getAllUserList(this.queryParams).then(res => {
-        this.userList = res.data.list;
+        this.userList = res.data.rows;
         this.total = res.data.total;
       });
     },
@@ -105,6 +108,7 @@ export default {
     /** 选择授权用户操作 */
     handleSelectUser() {
       const userIds = this.userIds.join(",");
+      const userName = this.userName.join(",");
       if (userIds == "") {
         this.$modal.msgError("请选择要分配的用户");
         return;
@@ -114,7 +118,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok",userIds);
+      this.$emit("ok",userIds, userName);
     }
   }
 };

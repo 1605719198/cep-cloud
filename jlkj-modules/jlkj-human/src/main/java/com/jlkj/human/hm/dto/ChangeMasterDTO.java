@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class EmployeeInductionDTO {
+public class ChangeMasterDTO {
 
     /**
      * 主键id
@@ -55,7 +55,7 @@ public class EmployeeInductionDTO {
     /**
      * 版本号
      */
-    private String versionNo;
+    private Integer versionNo;
 
     /**
      * 职位等级
@@ -103,6 +103,11 @@ public class EmployeeInductionDTO {
      * 岗位信息明细List
      */
     private List<ChangeDetail> employeeInductionList;
+
+    /**
+     * 岗位资料List
+     */
+    private List<ChangeDetail> employeeTurnoverList;
 
     /**
      * 岗位名称

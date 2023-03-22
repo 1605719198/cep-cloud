@@ -11,7 +11,7 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.ChangeDetail;
 import com.jlkj.human.hm.domain.ChangeMaster;
 import com.jlkj.human.hm.domain.Personnel;
-import com.jlkj.human.hm.dto.EmployeeInductionDTO;
+import com.jlkj.human.hm.dto.ChangeMasterDTO;
 import com.jlkj.human.hm.service.ChangeDetailService;
 import com.jlkj.human.hm.service.ChangeMasterService;
 import com.jlkj.human.hm.service.IPersonnelService;
@@ -63,12 +63,13 @@ public class EmployeeInduction {
     @Log(title = "添加员工入职作业", businessType = BusinessType.INSERT)
     @Operation(summary = "添加员工入职作业")
     @PostMapping("/addEmployeeInduction")
-    public Object addEmployeeInduction(@RequestBody EmployeeInductionDTO employeeInductionDTO) {
+    public Object addEmployeeInduction(@RequestBody ChangeMasterDTO changeMasterDTO) {
         ChangeMaster changeMaster = new ChangeMaster();
-        BeanUtils.copyProperties(employeeInductionDTO, changeMaster);
-        List<ChangeDetail> employeeInductionList = employeeInductionDTO.getEmployeeInductionList();
+        BeanUtils.copyProperties(changeMasterDTO, changeMaster);
+        List<ChangeDetail> employeeInductionList = changeMasterDTO.getEmployeeInductionList();
         Date effectDate = changeMaster.getEffectDate();
         changeMaster.setChangeTypeId("08");
+        changeMaster.setVersionNo(1);
         changeMaster.setUuid(IdUtils.fastSimpleUUID());
         for (ChangeDetail item : employeeInductionList) {
             item.setParentId(changeMaster.getUuid());
@@ -91,9 +92,9 @@ public class EmployeeInduction {
         changeDetailService.saveOrUpdateBatch(employeeInductionList);
         if (result) {
             personnelService.lambdaUpdate()
-                    .set(Personnel::getPostName, employeeInductionDTO.getPostName())
-                    .set(Personnel::getPostId, employeeInductionDTO.getPostId())
-                    .set(Personnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
+                    .set(Personnel::getPostName, changeMasterDTO.getPostName())
+                    .set(Personnel::getPostId, changeMasterDTO.getPostId())
+                    .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
                     .eq(Personnel::getEmpNo, changeMaster.getEmpNo()).update();
             return AjaxResult.success("保存成功");
         } else {
@@ -144,23 +145,23 @@ public class EmployeeInduction {
     @Operation(summary = "修改员工入职作业数据")
     @PostMapping("/updateEmployeeInduction")
     @Log(title = "修改员工入职作业数据", businessType = BusinessType.UPDATE)
-    public Object updateEmployeeInduction(@RequestBody EmployeeInductionDTO employeeInductionDTO) {
+    public Object updateEmployeeInduction(@RequestBody ChangeMasterDTO changeMasterDTO) {
         ChangeMaster changeMaster = new ChangeMaster();
-        BeanUtils.copyProperties(employeeInductionDTO, changeMaster);
+        BeanUtils.copyProperties(changeMasterDTO, changeMaster);
         LambdaUpdateWrapper<ChangeMaster> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.lt(ChangeMaster::getCreateDate, new Date())
-                     .eq(ChangeMaster::getUuid, employeeInductionDTO.getUuid());
+                     .eq(ChangeMaster::getUuid, changeMasterDTO.getUuid());
         boolean result = changeMasterService.saveOrUpdate(changeMaster, updateWrapper);
-        for (ChangeDetail item : employeeInductionDTO.getEmployeeInductionList()) {
+        for (ChangeDetail item : changeMasterDTO.getEmployeeInductionList()) {
             item.setParentId(changeMaster.getUuid());
         }
-        changeDetailService.saveOrUpdateBatch(employeeInductionDTO.getEmployeeInductionList());
+        changeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeInductionList());
         if (result) {
             personnelService.lambdaUpdate()
-                    .set(Personnel::getPostName, employeeInductionDTO.getPostName())
-                    .set(Personnel::getPostId, employeeInductionDTO.getPostId())
-                    .set(Personnel::getDepartmentName, employeeInductionDTO.getDepartmentName())
-                    .eq(Personnel::getEmpNo, employeeInductionDTO.getEmpNo()).update();
+                    .set(Personnel::getPostName, changeMasterDTO.getPostName())
+                    .set(Personnel::getPostId, changeMasterDTO.getPostId())
+                    .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
+                    .eq(Personnel::getEmpNo, changeMasterDTO.getEmpNo()).update();
         }
         return AjaxResult.success("修改成功");
     }

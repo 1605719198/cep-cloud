@@ -666,17 +666,6 @@ public class HumanresourcePersonnelInfoDTO implements Serializable {
      */
     private String signature;
 
-
-    /**
-     * 当前页
-     */
-    private Long pageNum;
-
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
-
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

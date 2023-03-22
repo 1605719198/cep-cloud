@@ -397,14 +397,14 @@
               v-for="dict in baseInfoData.profession"
               :key="dict.uuid"
               :label="dict.dicName"
-              :value="dict.uuid"
+              :value="dict.dicNo"
             ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="专业细分">
-          <el-select v-model="form.firstDegreeMajorSpecialization_id" placeholder="请选择专业细分">
+          <el-select v-model="form.firstDegreeMajorSpecializationId" placeholder="请选择专业细分">
             <el-option
               v-for="dict in degreeMajorSpecialization"
               :key="dict.dicNo"
@@ -488,7 +488,7 @@
               v-for="dict in baseInfoData.profession"
               :key="dict.uuid"
               :label="dict.dicName"
-              :value="dict.uuid"
+              :value="dict.dicNo"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -973,7 +973,10 @@ export default {
       }
     },
     handleChangeA(value) {
-      this.baseInfo.uuid = value
+      const selectedItem = this.baseInfoData.profession.find((item) => {
+        return item.dicNo === value
+      })
+      this.baseInfo.uuid = selectedItem.uuid
       this.degreeMajorSpecialization = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.degreeMajorSpecialization = response.data

@@ -1,16 +1,19 @@
 package com.jlkj.system.api.domain;
 
-import java.util.Date;
-import java.util.List;
-import javax.validation.constraints.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.annotation.Excel.ColumnType;
 import com.jlkj.common.core.annotation.Excel.Type;
 import com.jlkj.common.core.annotation.Excels;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import com.jlkj.common.core.xss.Xss;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户对象 sys_user
@@ -330,7 +333,6 @@ public class SysUser extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
             .append("dept", getDept())
             .toString();
     }

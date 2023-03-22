@@ -2,12 +2,14 @@ package com.jlkj.human.hm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.config.PinYinApi;
 import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personnel/base")
-public class PersonnelController {
+public class PersonnelController extends BaseController {
     @Autowired
     private IPersonnelService personnelService;
 
@@ -98,6 +100,27 @@ public class PersonnelController {
             } else {
                 return AjaxResult.success("查询成功！", list);
             }
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
+
+    /**
+     * 人员基本信息弹窗分页列表查询
+     */
+    @Log(title = "人员基本信息弹窗分页列表查询",businessType = BusinessType.OTHER)
+    @Operation(summary = "人员基本信息弹窗分页列表查询")
+    @GetMapping("/getAllUserList")
+    public Object getAllUserList(HumanresourcePersonnelInfoDTO humanresourcePersonnelInfoDTO) {
+        try {
+            startPage();
+            String compId = humanresourcePersonnelInfoDTO.getCompId();
+            String empNo = humanresourcePersonnelInfoDTO.getEmpNo();
+            LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
+                    .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo);
+            List<Personnel> list = personnelService.list(queryWrapper);
+            return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {
             return AjaxResult.error();
         }
