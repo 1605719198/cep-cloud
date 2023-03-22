@@ -67,7 +67,8 @@
     <!--  底部  -->
     <div class="el-login-footer">
       <p>Copyright © 2018-2022 All Rights Reserved.</p>
-      <p>吉林建龙信息科技(www.jljlxxkj.com)</p>
+      <p>吉林建龙信息科技有限责任公司(www.jljlxxkj.com)</p>
+      <p>辽宁鑫泰科智能系统有限公司（www.lnxtk.com）</p>
     </div>
   </div>
 </template>
@@ -216,7 +217,7 @@ export default {
 }
 
 .el-login-footer {
-  height: 50px;
+  height: 55px;
   line-height: 5px;
   position: fixed;
   bottom: 0;
