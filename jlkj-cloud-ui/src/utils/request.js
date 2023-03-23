@@ -6,6 +6,7 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/jlkj";
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
+import qs from 'qs'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -30,11 +31,17 @@ service.interceptors.request.use(config => {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   // get请求映射params参数
-  if (config.method === 'get' && config.params) {
-    let url = config.url + '?' + tansParams(config.params);
-    url = url.slice(0, -1);
-    config.params = {};
-    config.url = url;
+  // 只针对get方式进行序列化
+  // 传递数组时： ids = [001,002,003]  ==>  url?ids=001&ids=002&ids=003
+  if (config.method === 'get') {
+  // if (config.method === 'get' && config.params) {
+    // let url = config.url + '?' + tansParams(config.params);
+    // url = url.slice(0, -1);
+    // config.params = {};
+    // config.url = url;
+    config.paramsSerializer = function (params) {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    }
   }
   if (!isRepeatSubmit && (config.method === 'post' || config.method === 'put')) {
     const requestObj = {

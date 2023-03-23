@@ -1,0 +1,79 @@
+
+server:
+  port: 15151  #服务端口号
+spring:
+  application:
+    name: safetyandenvironmentalprotection-service-provider #服务名称--调用的时候根据名称来调用该服务的方法
+  cloud:
+    loadbalancer:
+      enabled: true
+    nacos:
+      discovery:
+        server-addr: 10.32.13.98:8848
+  datasource:
+    dynamic:
+      primary: master
+      strict: false
+      hikari:
+        min-idle: 1
+        max-pool-size: 15
+        idle-timeout: 180000
+        connection-timeout: 300000
+        is-auto-commit: true
+        max-lifetime: 1800000
+      datasource:
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://10.32.157.4:3306/cep?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          username: yanfa
+          password: yanfa
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  rabbitmq:
+    host: 10.32.157.5
+    port: 5672
+    connection-timeout: 10000
+    username: guest
+    password: guest
+    publisher-confirm-type: none
+    virtual-host: cep
+feign:
+  httpclient:
+    enabled: true
+
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**.xml
+  type-aliases-package: com.jlkj.safety.si.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    use-generated-keys: true
+    default-executor-type: reuse
+    call-setters-on-nulls: true
+  global-config:
+    db-config:
+      table-prefix: t_
+
+logging:
+  level:
+    com.jlkj.safety.si.mapper: debug
+
+management:
+  health:
+    redis:
+      enabled: false
+
+erp-file-upload:
+  download-dir: d:/
+  download-url: http://localhost:9321/neplatform/fileresource/
+  upload-url: http://10.32.102.225/lp/api/si/v1/hdi/module/event/hdiimgaction.do
+
+pdfTemplates:
+  url: d:/templates/

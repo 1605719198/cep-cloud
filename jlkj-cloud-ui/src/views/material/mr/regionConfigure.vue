@@ -317,7 +317,7 @@
         }).then(() => {
           deleteMaterialsSiloArea({
             id: row.id,
-            delete_user_id: this.userInfo.userId,
+            delete_user_id: this.$store.getters.userInfo.userId,
             delete_user_name: '姓名',
           }).then(res => {
             if (res.data.code === "0") {

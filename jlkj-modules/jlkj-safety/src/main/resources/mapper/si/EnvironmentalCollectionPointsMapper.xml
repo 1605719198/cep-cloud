@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.safety.si.mapper.EnvironmentalCollectionPointsMapper">
+
+    <select id="getPageData"
+            parameterType="com.jlkj.safety.si.dto.environmentalcollectionpoints.PageEnvironmentalCollectionPointsDTO"
+            resultType="java.util.Map">
+        select * from safe_si_environmental_collection_points a
+        <where>
+            <if test="condition.sort != null and condition.sort != ''">
+                and sort = #{condition.sort}
+            </if>
+            <if test="condition.deviceName != null and condition.deviceName != ''">
+                and device_name like concat('%',#{condition.deviceName},'%')
+            </if>
+            <if test="condition.pollutantName != null and condition.pollutantName != ''">
+                and pollutant_name = #{condition.pollutantName}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+</mapper>

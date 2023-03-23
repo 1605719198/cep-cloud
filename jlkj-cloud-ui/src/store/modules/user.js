@@ -1,8 +1,10 @@
 import { login, logout, getInfo, refreshToken } from '@/api/login'
 import { getToken, setToken, setExpiresIn, removeToken } from '@/utils/auth'
+import { setStore, getStore } from '@/utils/store'
 
 const user = {
   state: {
+    userInfo: getStore({ name: 'userInfo' }) || [],
     token: getToken(),
     name: '',
     avatar: '',
@@ -22,6 +24,10 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
+    },
+    SET_USER_INFO: (state, userInfo) => {
+      state.userInfo = userInfo;
+      setStore({ name: 'userInfo', content: state.userInfo })
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
@@ -64,6 +70,7 @@ const user = {
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }
+          commit('SET_USER_INFO', { ...user });
           commit('SET_NAME', user.userName)
           commit('SET_AVATAR', avatar)
           resolve(res)
@@ -85,11 +92,12 @@ const user = {
         })
       })
     },
-    
+
     // 退出系统
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
+          commit('SET_USER_INFO', {});
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           commit('SET_PERMISSIONS', [])

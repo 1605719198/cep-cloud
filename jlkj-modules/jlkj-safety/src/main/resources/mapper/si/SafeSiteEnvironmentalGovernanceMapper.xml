@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.safety.si.mapper.SafeSiteEnvironmentalGovernanceMapper">
+
+    <select id="getListPage"
+            parameterType="com.jlkj.safety.si.dto.safesiteenvironmentalgovernance.PageSafeSiteEnvironmentalGovernanceDTO"
+            resultType="java.util.Map">
+        select * from (
+        select
+        a.id,
+        department_id,
+        c.organization_name as department_name,
+        work_items,
+        complete_state,
+        work_target,
+        rectification_before_url,
+        rectification_after_url,
+        a.create_user_id,
+        a.create_user_name,
+        DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%s') as create_time,
+        a.modify_user_id,
+        a.modify_user_name,
+        DATE_FORMAT(a.modify_time, '%Y-%m-%d %H:%i:%s') as modify_time
+        from safe_si_site_environmental_governance a
+        left join human_hm_organization c on a.department_id = c.id
+        <where>
+            <if test="condition.departmentId != null and condition.departmentId != ''">
+                and department_id = #{condition.departmentId}
+            </if>
+            <if test="condition.completeState != null and condition.completeState != ''">
+                and complete_state = #{condition.completeState}
+            </if>
+        </where>
+        ) a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+</mapper>

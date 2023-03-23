@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.safety.si.mapper.HumanresourcePersonnelMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.safety.si.entity.HumanresourcePersonnel">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="jobNumber" column="job_number" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="certificateTypeId" column="certificate_type_id" jdbcType="VARCHAR"/>
+            <result property="certificateNumber" column="certificate_number" jdbcType="VARCHAR"/>
+            <result property="fullName" column="full_name" jdbcType="VARCHAR"/>
+            <result property="fullNamePinyin" column="full_name_pinyin" jdbcType="VARCHAR"/>
+            <result property="nameUsedBefore" column="name_used_before" jdbcType="VARCHAR"/>
+            <result property="englishName" column="english_name" jdbcType="VARCHAR"/>
+            <result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
+            <result property="genderId" column="gender_id" jdbcType="VARCHAR"/>
+            <result property="birthDate" column="birth_date" jdbcType="VARCHAR"/>
+            <result property="birthdayChoice" column="birthday_choice" jdbcType="VARCHAR"/>
+            <result property="politicalOutlookId" column="political_outlook_id" jdbcType="VARCHAR"/>
+            <result property="nationId" column="nation_id" jdbcType="VARCHAR"/>
+            <result property="maritalStatusId" column="marital_status_id" jdbcType="VARCHAR"/>
+            <result property="bloodTypeId" column="blood_type_id" jdbcType="VARCHAR"/>
+            <result property="height" column="height" jdbcType="VARCHAR"/>
+            <result property="weight" column="weight" jdbcType="VARCHAR"/>
+            <result property="nationalityId" column="nationality_id" jdbcType="VARCHAR"/>
+            <result property="provinceOfBirthId" column="province_of_birth_id" jdbcType="VARCHAR"/>
+            <result property="cityOfBirthId" column="city_of_birth_id" jdbcType="VARCHAR"/>
+            <result property="healthId" column="health_id" jdbcType="VARCHAR"/>
+            <result property="ifMedicalHistory" column="if_medical_history" jdbcType="VARCHAR"/>
+            <result property="medicalHistoryDescription" column="medical_history_description" jdbcType="VARCHAR"/>
+            <result property="religiousBeliefId" column="religious_belief_id" jdbcType="VARCHAR"/>
+            <result property="natureOfHouseholdRegistrationId" column="nature_of_household_registration_id" jdbcType="VARCHAR"/>
+            <result property="registeredPermanentResidenceProvinceId" column="registered_permanent_residence_province_id" jdbcType="VARCHAR"/>
+            <result property="registeredPermanentResidenceCityId" column="registered_permanent_residence_city_id" jdbcType="VARCHAR"/>
+            <result property="registeredPermanentResidencePostalCode" column="registered_permanent_residence_postal_code" jdbcType="VARCHAR"/>
+            <result property="nativePlaceId" column="native_place_id" jdbcType="VARCHAR"/>
+            <result property="joinWorkDate" column="join_work_date" jdbcType="VARCHAR"/>
+            <result property="entryDate" column="entry_date" jdbcType="VARCHAR"/>
+            <result property="workStartDate" column="work_start_date" jdbcType="VARCHAR"/>
+            <result property="sourceOfEmployees" column="source_of_employees" jdbcType="VARCHAR"/>
+            <result property="firstRecordId" column="first_record_id" jdbcType="VARCHAR"/>
+            <result property="firstRecordGraduateSchool" column="first_record_graduate_school" jdbcType="VARCHAR"/>
+            <result property="firstRecordTrainingMethod" column="first_record_training_method" jdbcType="VARCHAR"/>
+            <result property="firstRecordGraduationTime" column="first_record_graduation_time" jdbcType="VARCHAR"/>
+            <result property="firstDegreeId" column="first_degree_id" jdbcType="VARCHAR"/>
+            <result property="firstDegreeMajorId" column="first_degree_major_id" jdbcType="VARCHAR"/>
+            <result property="firstDegreeMajorSpecializationId" column="first_degree_major_specialization_id" jdbcType="VARCHAR"/>
+            <result property="lastRecordId" column="last_record_id" jdbcType="VARCHAR"/>
+            <result property="lastRecordGraduateSchool" column="last_record_graduate_school" jdbcType="VARCHAR"/>
+            <result property="lastRecordTrainingMethod" column="last_record_training_method" jdbcType="VARCHAR"/>
+            <result property="lastRecordGraduationTime" column="last_record_graduation_time" jdbcType="VARCHAR"/>
+            <result property="lastDegreeId" column="last_degree_id" jdbcType="VARCHAR"/>
+            <result property="lastDegreeMajorId" column="last_degree_major_id" jdbcType="VARCHAR"/>
+            <result property="lastDegreeMajorSpecializationId" column="last_degree_major_specialization_id" jdbcType="VARCHAR"/>
+            <result property="firstForeignLanguageId" column="first_foreign_language_id" jdbcType="VARCHAR"/>
+            <result property="firstForeignLanguageProficiencyId" column="first_foreign_language_proficiency_id" jdbcType="VARCHAR"/>
+            <result property="firstForeignLanguageLevelCertificate" column="first_foreign_language_level_certificate" jdbcType="VARCHAR"/>
+            <result property="firstForeignLanguageAcquisitionTime" column="first_foreign_language_acquisition_time" jdbcType="VARCHAR"/>
+            <result property="secondForeignLanguageId" column="second_foreign_language_id" jdbcType="VARCHAR"/>
+            <result property="secondForeignLanguageProficiencyId" column="second_foreign_language_proficiency_id" jdbcType="VARCHAR"/>
+            <result property="secondForeignLanguageLevelCertificate" column="second_foreign_language_level_certificate" jdbcType="VARCHAR"/>
+            <result property="secondForeignLanguageAcquisitionTime" column="second_foreign_language_acquisition_time" jdbcType="VARCHAR"/>
+            <result property="computerType" column="computer_type" jdbcType="VARCHAR"/>
+            <result property="computerTypeMastery" column="computer_type_mastery" jdbcType="VARCHAR"/>
+            <result property="computerTypeLevelCertificate" column="computer_type_level_certificate" jdbcType="VARCHAR"/>
+            <result property="computerTypeAcquisitionTime" column="computer_type_acquisition_time" jdbcType="VARCHAR"/>
+            <result property="specialty" column="specialty" jdbcType="VARCHAR"/>
+            <result property="myMobilePhone" column="my_mobile_phone" jdbcType="VARCHAR"/>
+            <result property="officeTelephone" column="office_telephone" jdbcType="VARCHAR"/>
+            <result property="insideLine" column="inside_line" jdbcType="VARCHAR"/>
+            <result property="officeEmail" column="office_email" jdbcType="VARCHAR"/>
+            <result property="reasonsForNotTerminatingTheContract" column="reasons_for_not_terminating_the_contract" jdbcType="VARCHAR"/>
+            <result property="personnelEmail" column="personnel_email" jdbcType="VARCHAR"/>
+            <result property="archivesLocation" column="archives_location" jdbcType="VARCHAR"/>
+            <result property="archivesTransferDate" column="archives_transfer_date" jdbcType="VARCHAR"/>
+            <result property="archivesNumber" column="archives_number" jdbcType="VARCHAR"/>
+            <result property="relativeFullName" column="relative_full_name" jdbcType="VARCHAR"/>
+            <result property="relationship" column="relationship" jdbcType="VARCHAR"/>
+            <result property="relationDepartment" column="relation_department" jdbcType="VARCHAR"/>
+            <result property="relationTelephone" column="relation_telephone" jdbcType="VARCHAR"/>
+            <result property="recommenderName" column="recommender_name" jdbcType="VARCHAR"/>
+            <result property="recommenderRelationship" column="recommender_relationship" jdbcType="VARCHAR"/>
+            <result property="recommenderDepartment" column="recommender_department" jdbcType="VARCHAR"/>
+            <result property="recommenderTelephone" column="recommender_telephone" jdbcType="VARCHAR"/>
+            <result property="emergencyContactPerson" column="emergency_contact_person" jdbcType="VARCHAR"/>
+            <result property="emergencyContactPersonRelationship" column="emergency_contact_person_relationship" jdbcType="VARCHAR"/>
+            <result property="emergencyContactPersonTelephone" column="emergency_contact_person_telephone" jdbcType="VARCHAR"/>
+            <result property="emergencyContactPersonEmail" column="emergency_contact_person_email" jdbcType="VARCHAR"/>
+            <result property="homeAddress" column="home_address" jdbcType="VARCHAR"/>
+            <result property="homePostCode" column="home_post_code" jdbcType="VARCHAR"/>
+            <result property="homeTelephone" column="home_telephone" jdbcType="VARCHAR"/>
+            <result property="nowAddress" column="now_address" jdbcType="VARCHAR"/>
+            <result property="nowAddressPostCode" column="now_address_post_code" jdbcType="VARCHAR"/>
+            <result property="nowAddressTelephone" column="now_address_telephone" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="companyId" column="company_id" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="alternateField1" column="alternate_field1" jdbcType="VARCHAR"/>
+            <result property="alternateField2" column="alternate_field2" jdbcType="VARCHAR"/>
+            <result property="alternateField3" column="alternate_field3" jdbcType="VARCHAR"/>
+            <result property="alternateField4" column="alternate_field4" jdbcType="VARCHAR"/>
+            <result property="alternateField5" column="alternate_field5" jdbcType="VARCHAR"/>
+            <result property="alternateField6" column="alternate_field6" jdbcType="VARCHAR"/>
+            <result property="alternateField7" column="alternate_field7" jdbcType="VARCHAR"/>
+            <result property="alternateField8" column="alternate_field8" jdbcType="VARCHAR"/>
+            <result property="alternateField9" column="alternate_field9" jdbcType="VARCHAR"/>
+            <result property="alternateField10" column="alternate_field10" jdbcType="VARCHAR"/>
+            <result property="alternateField11" column="alternate_field11" jdbcType="VARCHAR"/>
+            <result property="alternateField12" column="alternate_field12" jdbcType="VARCHAR"/>
+            <result property="alternateField13" column="alternate_field13" jdbcType="VARCHAR"/>
+            <result property="alternateField14" column="alternate_field14" jdbcType="VARCHAR"/>
+            <result property="alternateField15" column="alternate_field15" jdbcType="VARCHAR"/>
+            <result property="alternateField16" column="alternate_field16" jdbcType="VARCHAR"/>
+            <result property="departmentName" column="department_name" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+            <result property="birthTwoDate" column="birth_two_date" jdbcType="VARCHAR"/>
+            <result property="ifTerminateContract" column="if_terminate_contract" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,job_number,password,
+        certificate_type_id,certificate_number,full_name,
+        full_name_pinyin,name_used_before,english_name,
+        photo_address,gender_id,birth_date,
+        birthday_choice,political_outlook_id,nation_id,
+        marital_status_id,blood_type_id,height,
+        weight,nationality_id,province_of_birth_id,
+        city_of_birth_id,health_id,if_medical_history,
+        medical_history_description,religious_belief_id,nature_of_household_registration_id,
+        registered_permanent_residence_province_id,registered_permanent_residence_city_id,registered_permanent_residence_postal_code,
+        native_place_id,join_work_date,entry_date,
+        work_start_date,source_of_employees,first_record_id,
+        first_record_graduate_school,first_record_training_method,first_record_graduation_time,
+        first_degree_id,first_degree_major_id,first_degree_major_specialization_id,
+        last_record_id,last_record_graduate_school,last_record_training_method,
+        last_record_graduation_time,last_degree_id,last_degree_major_id,
+        last_degree_major_specialization_id,first_foreign_language_id,first_foreign_language_proficiency_id,
+        first_foreign_language_level_certificate,first_foreign_language_acquisition_time,second_foreign_language_id,
+        second_foreign_language_proficiency_id,second_foreign_language_level_certificate,second_foreign_language_acquisition_time,
+        computer_type,computer_type_mastery,computer_type_level_certificate,
+        computer_type_acquisition_time,specialty,my_mobile_phone,
+        office_telephone,inside_line,office_email,
+        reasons_for_not_terminating_the_contract,personnel_email,archives_location,
+        archives_transfer_date,archives_number,relative_full_name,
+        relationship,relation_department,relation_telephone,
+        recommender_name,recommender_relationship,recommender_department,
+        recommender_telephone,emergency_contact_person,emergency_contact_person_relationship,
+        emergency_contact_person_telephone,emergency_contact_person_email,home_address,
+        home_post_code,home_telephone,now_address,
+        now_address_post_code,now_address_telephone,creator,
+        creator_id,create_date,company_id,
+        status,alternate_field1,alternate_field2,
+        alternate_field3,alternate_field4,alternate_field5,
+        alternate_field6,alternate_field7,alternate_field8,
+        alternate_field9,alternate_field10,alternate_field11,
+        alternate_field12,alternate_field13,alternate_field14,
+        alternate_field15,alternate_field16,department_name,
+        post_name,create_time,update_time,
+        create_user,update_user,birth_two_date,
+        if_terminate_contract
+    </sql>
+</mapper>

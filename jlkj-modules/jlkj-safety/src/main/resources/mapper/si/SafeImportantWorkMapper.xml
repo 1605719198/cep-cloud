@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.safety.si.mapper.SafeImportantWorkMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.safety.si.entity.SafeImportantWork">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="departmentId" column="department_id" jdbcType="VARCHAR"/>
+        <result property="subject" column="subject" jdbcType="VARCHAR"/>
+        <result property="completeTarget" column="complete_target" jdbcType="VARCHAR"/>
+        <result property="completeState" column="complete_state" jdbcType="INTEGER"/>
+        <result property="planCompleteTime" column="plan_complete_time" jdbcType="TIMESTAMP"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+        <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+        <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,department_id,subject,major,complete_target,
+        complete_state,plan_complete_time,responsible_user_id,job_number,
+        reward_proportion,remarks,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+    </sql>
+
+    <select id="getPageData"
+            parameterType="com.jlkj.safety.si.dto.safeimportantwork.PageSafeImportantWorkDTO"
+            resultType="java.util.Map">
+        select * from (
+        select a.id,
+        department_id,
+        c.organization_name as department_name,
+        subject,
+        complete_target,
+        complete_state,
+        DATE_FORMAT(plan_complete_time, '%Y-%m-%d %H:%i:%s') as plan_complete_time,
+        remarks,
+        a.create_user_id,
+        a.create_user_name,
+        DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%s') as create_time,
+        a.modify_user_id,
+        a.modify_user_name,
+        DATE_FORMAT(a.modify_time, '%Y-%m-%d %H:%i:%s') as modify_time
+        from safe_si_important_work a
+        left join human_hm_organization c on a.department_id = c.id
+        <where>
+            <if test="condition.planStartTime != null and condition.planStartTime != ''">
+                and plan_complete_time &gt;= #{condition.planStartTime}
+            </if>
+            <if test="condition.planEndTime != null and condition.planEndTime != ''">
+                and plan_complete_time &lt;= #{condition.planEndTime}
+            </if>
+            <if test="condition.departmentId != null and condition.departmentId != ''">
+                and department_id = #{condition.departmentId}
+            </if>
+            <if test="condition.completeState != null and condition.completeState != ''">
+                and complete_state = #{condition.completeState}
+            </if>
+        </where>
+        ) a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+</mapper>

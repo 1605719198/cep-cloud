@@ -13,6 +13,7 @@ import router from './router'
 import directive from './directive' // directive
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
+import axios from 'axios'
 
 import './assets/icons' // icon
 import './permission' // permission control
@@ -41,7 +42,13 @@ import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
 import Tinymce from '@/components/tinymce/index.vue'
-
+// 数据可视化看板
+import * as echarts from "echarts";
+//全局变量
+import globalVariable from '@/utils/global_variable'
+//注册全局组件(单选下拉树)
+import selectTree from './components/select-Tree/selectTree.vue'
+Vue.component('select-tree', selectTree)
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -53,7 +60,18 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
-
+Vue.prototype.$axios = axios
+Vue.prototype.$echarts = echarts;
+//挂在全局变量
+Vue.prototype.GLOBAL = globalVariable
+//全局注册eventBus(页面关闭的时候需要取消关闭)
+Vue.prototype.$EventBus = new Vue();
+//注册全局组件
+import tableTabs from './components/table-tabs/tableTabs.vue'
+Vue.component('table-tabs', tableTabs)
+//wangEditor富文本编辑器
+import wangEditor from './components/Editor/WangEditor.vue'
+Vue.component('editor-bar', wangEditor)
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
 Vue.component('Pagination', Pagination)
@@ -69,6 +87,12 @@ Vue.use(directive)
 // Vue.use(hljs.vuePlugin);
 Vue.use(plugins)
 Vue.use(VueMeta)
+
+//注册全局组件(人员选择器)
+import personnelSelection from './components/personnel-selection/index.vue'
+Vue.component('personnel-selection', personnelSelection)
+
+
 DictData.install()
 
 /**

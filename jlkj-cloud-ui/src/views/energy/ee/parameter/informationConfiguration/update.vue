@@ -266,7 +266,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.type == 'add') {
-            // this.form.create_user = this.userInfo.userId;
+            // this.form.create_user = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.userInfo.userName;
             this.submitLoading = true
             insertEnergyInformationConfiguration(this.form).then(res => {
@@ -280,7 +280,7 @@ export default {
               window.console.log(error);
             });
           } else {
-            // this.form.update_user = this.userInfo.userId;
+            // this.form.update_user = this.$store.getters.userInfo.userId;
             this.form.update_user_name = this.userInfo.userName;
             this.submitLoading = true
             updateEnergyInformationConfiguration(this.form).then(res => {

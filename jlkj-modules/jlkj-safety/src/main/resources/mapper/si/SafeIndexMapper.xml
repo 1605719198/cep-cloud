@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.safety.si.mapper.SafeIndexMapper">
+
+    <select id="getListPage" parameterType="com.jlkj.safety.si.dto.safeindex.PageSafeIndexDTO" resultType="java.util.Map">
+        select * from (
+            select
+                id,
+                rule_number,
+                rule_describe,
+                rule_level,
+                rule_up,
+                rule_down,
+                unit,
+                status,
+                case status when 1 then '启用' when 2 then '停用' else '' end status_text,
+                a.create_user_id,
+                a.create_user_name,
+                DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%s') as create_time,
+                a.modify_user_id,
+                a.modify_user_name,
+                DATE_FORMAT(a.modify_time, '%Y-%m-%d %H:%i:%s') as modify_time
+            from safe_si_index a
+        ) a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getAnalysisListPage" parameterType="com.jlkj.safety.si.dto.safeindex.SafeAnalysisListDTO" resultType="java.util.Map">
+        select * from (
+              select fire.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '动火作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                                  from safe_si_job_fire
+                                  group by datetime, safe_area_id, safe_area_name, type) fire
+              union all
+              select high.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '高处作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                                  from safe_si_job_high
+                                  group by datetime, safe_area_id, safe_area_name, type) high
+              union all
+              select hoisting.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '吊装作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                                      from safe_si_job_hoisting
+                                      group by datetime, safe_area_id, safe_area_name, type) hoisting
+              union all
+              select space.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '有限空间作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                                   from safe_si_job_space
+                                   group by datetime, safe_area_id, safe_area_name, type) space
+              union all
+              select soil.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '动土作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                  from safe_si_job_soil
+                  group by datetime, safe_area_id, safe_area_name, type) soil
+              union all
+              select blind.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '抽堵盲板作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                  from safe_si_job_blind_plate_plugging
+                  group by datetime, safe_area_id, safe_area_name, type) blind
+              union all
+              select cut.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '断路安全作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                  from safe_si_job_cut_road
+                  group by datetime, safe_area_id, safe_area_name, type) cut
+              union all
+              select temporary.* from (select date_format(apply_time,'%Y-%m') as datetime, safe_area_id, safe_area_name, '临时用电作业票' as type, count(status = 0 or null) as prof, count(status = 1 or null) as appr, count(status = 2 or null) as working, count(status = 3 or null) as done
+                  from safe_si_job_temporary_electricity
+                  group by datetime, safe_area_id, safe_area_name, type) temporary
+          ) tt where tt.datetime like '%${condition.yearmonth}%' and tt.type like '%${condition.type}%' and ('' = #{condition.areaId} or tt.safe_area_id = #{condition.areaId})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getAnalysisPie" parameterType="com.jlkj.safety.si.dto.safeindex.SafeAnalysisListDTO" resultType="java.util.Map">
+        select count(1) as value, '动火作业票' as name from safe_si_job_fire where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '高处作业票' as name from safe_si_job_high where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '吊装作业票' as name from safe_si_job_hoisting where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '有限空间作业票' as name from safe_si_job_space where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '动土作业票' as name from safe_si_job_soil where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '抽堵盲板作业票' as name from safe_si_job_blind_plate_plugging where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '断路安全作业票' as name from safe_si_job_cut_road where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+        union all
+        select count(1) as value, '临时用电作业票' as name from safe_si_job_temporary_electricity where date_format(apply_time,'%Y-%m') like '%${yearmonth}%' and ('' = #{areaId} or safe_area_id = #{areaId})
+    </select>
+
+    <select id="getAnalysisLine" parameterType="com.jlkj.safety.si.dto.safeindex.SafeAnalysisListDTO" resultType="java.util.Map">
+        select a.datetime,
+               IFNULL(b.fires,0) as fires,
+               IFNULL(c.highs,0) as highs,
+               IFNULL(d.hoistings,0) as hoistings,
+               IFNULL(e.spaces,0) as spaces,
+               IFNULL(f.soils,0) as soils,
+               IFNULL(g.blinds,0) as blinds,
+               IFNULL(h.cuts,0) as cuts,
+               IFNULL(j.temporarys,0) as temporarys
+        from (
+              SELECT
+                  '${yearmonth}-01' AS datetime UNION
+              SELECT
+                  '${yearmonth}-02' AS datetime UNION
+              SELECT
+                  '${yearmonth}-03' AS datetime UNION
+              SELECT
+                  '${yearmonth}-04' AS datetime UNION
+              SELECT
+                  '${yearmonth}-05' AS datetime UNION
+              SELECT
+                  '${yearmonth}-06' AS datetime UNION
+              SELECT
+                  '${yearmonth}-07' AS datetime UNION
+              SELECT
+                  '${yearmonth}-08' AS datetime UNION
+              SELECT
+                  '${yearmonth}-09' AS datetime UNION
+              SELECT
+                  '${yearmonth}-10' AS datetime UNION
+              SELECT
+                  '${yearmonth}-11' AS datetime UNION
+              SELECT
+                  '${yearmonth}-12' AS datetime
+          ) a
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as fires
+              from safe_si_job_fire where  ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) b on a.datetime = b.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as highs
+              from safe_si_job_high where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) c on a.datetime = c.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as hoistings
+              from safe_si_job_hoisting where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) d on a.datetime = d.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as spaces
+              from safe_si_job_space where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) e on a.datetime = e.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as soils
+              from safe_si_job_soil where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) f on a.datetime = f.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as blinds
+              from safe_si_job_blind_plate_plugging where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) g on a.datetime = g.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as cuts
+              from safe_si_job_cut_road where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) h on a.datetime = h.dt
+              left join
+          (
+              select date_format(apply_time,'%Y-%m') as dt, count(1) as temporarys
+              from safe_si_job_temporary_electricity where ('' = #{areaId} or safe_area_id = #{areaId})
+              group by dt
+          ) j on a.datetime = j.dt
+    </select>
+
+    <select id="getAnalysisBoardTicketTotal" parameterType="java.util.Map" resultType="java.util.Map">
+        select count(1) as value, '动火作业票' as name from safe_si_job_fire where status = 2
+        union all
+        select count(1) as value, '高处作业票' as name from safe_si_job_high where status = 2
+        union all
+        select count(1) as value, '吊装作业票' as name from safe_si_job_hoisting where status = 2
+        union all
+        select count(1) as value, '有限空间作业票' as name from safe_si_job_space where status = 2
+        union all
+        select count(1) as value, '动土作业票' as name from safe_si_job_soil where status = 2
+        union all
+        select count(1) as value, '抽堵盲板作业票' as name from safe_si_job_blind_plate_plugging where status = 2
+        union all
+        select count(1) as value, '断路安全作业票' as name from safe_si_job_cut_road where status = 2
+        union all
+        select count(1) as value, '临时用电作业票' as name from safe_si_job_temporary_electricity where status = 2
+    </select>
+</mapper>
