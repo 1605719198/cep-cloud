@@ -174,7 +174,7 @@ export default {
       this.processView.index = definitionId;
       // 发送请求，获取xml
       getBpmnXml(definitionId).then(res => {
-        this.processView.xmlData = res.data;
+        this.processView.xmlData = res.msg;
       })
       this.processView.open = true;
     },

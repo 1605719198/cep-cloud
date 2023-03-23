@@ -216,8 +216,8 @@ public class WfProcessController extends BaseController {
      * @param processDefId 流程定义ID
      */
     @GetMapping("/bpmnXml/{processDefId}")
-    public R<String> getBpmnXml(@PathVariable(value = "processDefId") String processDefId) {
-        return R.ok(null, processService.queryBpmnXmlById(processDefId));
+    public AjaxResult getBpmnXml(@PathVariable(value = "processDefId") String processDefId) {
+        return AjaxResult.success(processService.queryBpmnXmlById(processDefId));
     }
 
     /**
