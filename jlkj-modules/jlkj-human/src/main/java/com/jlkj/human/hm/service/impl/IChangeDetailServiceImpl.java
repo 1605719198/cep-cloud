@@ -2,7 +2,7 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.ChangeDetail;
-import com.jlkj.human.hm.service.ChangeDetailService;
+import com.jlkj.human.hm.service.IChangeDetailService;
 import com.jlkj.human.hm.mapper.ChangeDetailMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-17 08:39:47
 */
 @Service
-public class ChangeDetailServiceImpl extends ServiceImpl<ChangeDetailMapper, ChangeDetail>
-    implements ChangeDetailService{
+public class IChangeDetailServiceImpl extends ServiceImpl<ChangeDetailMapper, ChangeDetail>
+    implements IChangeDetailService {
 
 }
 

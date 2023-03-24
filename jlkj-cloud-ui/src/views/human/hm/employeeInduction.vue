@@ -33,6 +33,7 @@
             <el-col :span="1.5">
               <el-button size="mini"
                          type="primary"
+                         plain
                          @click="handleAdd"
                          icon="el-icon-plus">新 增</el-button>
             </el-col>
@@ -66,7 +67,7 @@
         <el-dialog
           :title="title"
           :visible.sync="open"
-          width="1000px"
+          width="1200px"
         >
           <el-form
             :model="addJsonForm"
@@ -75,19 +76,19 @@
             label-width="80px"
           >
             <el-row>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="工号">
                   <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
                     <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="姓名">
                   <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :disabled="!updatePop"/>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="生效日期" prop="effectDate">
                   <el-date-picker
                     v-model="addJsonForm.effectDate"
@@ -96,9 +97,7 @@
                   </el-date-picker>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="职位等级">
                   <el-select v-model="addJsonForm.postLevel" placeholder="职位等级" style="width: 100%">
                     <el-option
@@ -116,14 +115,15 @@
                 <span style="font-size: 18px">【岗位信息明细】</span>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="addLine">添加</el-button>
-            <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
+            <el-button type="primary" plain icon="el-icon-plus" @click="addLine">添加</el-button>
+            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
             <el-table
               :data="addJsonForm.employeeInductionList"
               border
               :key="key"
               @selection-change="addJsonSelectionChange"
               :cell-style="{paddingBottom:'0px'}"
+              class="aa"
             >
               <el-table-column type="selection" width="55" align="center">
               </el-table-column>
@@ -485,8 +485,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-form-item {
   margin-bottom: 11px;
+}
+.aa >>> .el-form-item__content {
+  margin-left:0px !important;
 }
 </style>

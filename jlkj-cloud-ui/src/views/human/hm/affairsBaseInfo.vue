@@ -1,7 +1,7 @@
 <template>
   <div>
-  <el-button type="primary" size="medium" @click="handleSave">保存</el-button>
-  <el-button type="primary" size="medium" @click="handleEmpty">新增</el-button>
+  <el-button type="primary" size="medium" plain @click="handleSave">保存</el-button>
+  <el-button type="primary" size="medium" plain @click="handleEmpty">新增</el-button>
   <el-form ref="form" :model="form" :rules="rules" label-width="195px">
     <el-row>
       <el-col :span="6">

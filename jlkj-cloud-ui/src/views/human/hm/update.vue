@@ -5,32 +5,50 @@
                :model="form"
                :rules="rules"
                label-width="80px">
-        <el-form-item prop="dicNo"
-                      label="资料代号">
-          <el-input v-model="form.dicNo"></el-input>
-        </el-form-item>
-        <el-form-item prop="dicName"
-                      label="资料名称">
-          <el-input v-model="form.dicName"></el-input>
-        </el-form-item>
-        <el-form-item prop="status"
-                      label="资料状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item prop="updateEmp"
-                      label="输入人">
-          <el-input v-model="form.updateEmp" disabled></el-input>
-        </el-form-item>
-        <el-form-item prop="updateDate"
-                      label="输入日期">
-          <el-input v-model="form.updateDate" disabled></el-input>
-        </el-form-item>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="dicNo"
+                          label="资料代号">
+              <el-input v-model="form.dicNo"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="dicName"
+                          label="资料名称">
+              <el-input v-model="form.dicName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="status"
+                          label="资料状态">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in dict.type.sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="updateEmp"
+                          label="输入人">
+              {{form.updateEmp}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="updateDate"
+                          label="输入日期">
+              {{form.updateDate}}
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
     <div style="width:100%;text-align: center;">

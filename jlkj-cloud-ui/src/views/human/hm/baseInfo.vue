@@ -28,7 +28,7 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button @click="handleAdd('add')" type="primary" icon="el-icon-plus" size="mini">新增
+                        <el-button @click="handleAdd('add')" plain type="primary" icon="el-icon-plus" size="mini">新增
                         </el-button>
                       </el-form-item>
                     </el-form>

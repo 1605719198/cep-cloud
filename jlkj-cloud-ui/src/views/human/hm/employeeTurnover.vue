@@ -43,7 +43,7 @@
           <el-table-column label="姓名" align="center" prop="empName" v-if="columns[1].visible"/>
           <el-table-column label="异动时间" align="center" prop="createDate" v-if="columns[2].visible"/>
           <el-table-column label="异动类别" align="center" prop="changeTypeId" v-if="columns[3].visible">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <dict-tag-human :options="baseInfoData.ChangeCategory" :value="scope.row.changeTypeId"/>
             </template>
           </el-table-column>
