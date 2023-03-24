@@ -35,10 +35,10 @@ import java.util.Map;
 public class EmployeeInductionController {
 
     @Autowired
-    IChangeMasterService IChangeMasterService;
+    IChangeMasterService changeMasterService;
 
     @Autowired
-    IChangeDetailService IChangeDetailService;
+    IChangeDetailService changeDetailService;
 
     @Autowired
     IPersonnelService personnelService;
@@ -53,7 +53,7 @@ public class EmployeeInductionController {
         LambdaQueryWrapper<ChangeMaster> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(StringUtils.isNotBlank(changeMaster.getCompId()), ChangeMaster::getCompId, changeMaster.getCompId())
                     .eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo());
-        List<ChangeMaster> list = IChangeMasterService.list(queryWrapper);
+        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
         return AjaxResult.success("查询成功", list);
    }
 
@@ -80,16 +80,16 @@ public class EmployeeInductionController {
         LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
         queryWrapper1.eq(ChangeDetail::getParentId, changeMaster.getUuid())
                      .eq(ChangeDetail::getPostTypeId, "01");
-        List<ChangeMaster> list = IChangeMasterService.list(queryWrapper);
-        List<ChangeDetail> list1 = IChangeDetailService.list(queryWrapper1);
+        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
+        List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
         if (list1.size() > 1) {
             return AjaxResult.error("只能存在一笔主岗位资料！！！");
         }
         if (!list.isEmpty()) {
             return AjaxResult.error("员工同一生效日期已存在异动信息，新增失败！");
         }
-        boolean result = IChangeMasterService.save(changeMaster);
-        IChangeDetailService.saveOrUpdateBatch(employeeInductionList);
+        boolean result = changeMasterService.save(changeMaster);
+        changeDetailService.saveOrUpdateBatch(employeeInductionList);
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
@@ -109,8 +109,8 @@ public class EmployeeInductionController {
     @GetMapping("/queryEmployeeInductionByUuid")
     @Log(title = "根据工号查询员工入职详细信息", businessType = BusinessType.OTHER)
     public Object queryEmployeeInductionByUuid(@RequestParam String uuid) {
-        List<ChangeMaster> list = IChangeMasterService.query().eq("uuid", uuid).list();
-        List<ChangeDetail> employeeInductionList = IChangeDetailService.query().eq("parent_id", uuid).list();
+        List<ChangeMaster> list = changeMasterService.query().eq("uuid", uuid).list();
+        List<ChangeDetail> employeeInductionList = changeDetailService.query().eq("parent_id", uuid).list();
         Map<String,Object> dataMap = new HashMap<>(16);
         dataMap.put("list", list);
         dataMap.put("employeeInductionList", employeeInductionList);
@@ -124,11 +124,11 @@ public class EmployeeInductionController {
     @DeleteMapping("/delEmployeeInduction")
     @Log(title = "根据工号删除员工入职信息", businessType = BusinessType.DELETE)
     public Object delEmployeeInduction(@RequestParam String uuid, String empNo) {
-        List<ChangeDetail> list = IChangeDetailService.lambdaQuery().eq(ChangeDetail::getParentId, uuid).list();
+        List<ChangeDetail> list = changeDetailService.lambdaQuery().eq(ChangeDetail::getParentId, uuid).list();
         if (!list.isEmpty()) {
             return AjaxResult.error("入职信息存在岗位信息，不可删除！");
         }
-        boolean result = IChangeMasterService.lambdaUpdate().lt(ChangeMaster::getCreateDate, new Date()).eq(ChangeMaster::getUuid, uuid).remove();
+        boolean result = changeMasterService.lambdaUpdate().lt(ChangeMaster::getCreateDate, new Date()).eq(ChangeMaster::getUuid, uuid).remove();
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, null)
@@ -151,11 +151,11 @@ public class EmployeeInductionController {
         LambdaUpdateWrapper<ChangeMaster> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.lt(ChangeMaster::getCreateDate, new Date())
                      .eq(ChangeMaster::getUuid, changeMasterDTO.getUuid());
-        boolean result = IChangeMasterService.saveOrUpdate(changeMaster, updateWrapper);
+        boolean result = changeMasterService.saveOrUpdate(changeMaster, updateWrapper);
         for (ChangeDetail item : changeMasterDTO.getEmployeeInductionList()) {
             item.setParentId(changeMaster.getUuid());
         }
-        IChangeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeInductionList());
+        changeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeInductionList());
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
@@ -173,7 +173,7 @@ public class EmployeeInductionController {
     @DeleteMapping("/delEmployeeInductionDetail")
     @Log(title = "根据uuid删除员工入职信息明细", businessType = BusinessType.DELETE)
     public Object delEmployeeInductionDetail(@RequestParam List<String> uuid) {
-        IChangeDetailService.removeBatchByIds(uuid);
+        changeDetailService.removeBatchByIds(uuid);
         return AjaxResult.success("删除成功");
     }
 }

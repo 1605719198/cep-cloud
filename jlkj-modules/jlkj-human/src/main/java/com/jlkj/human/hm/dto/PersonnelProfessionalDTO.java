@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 人员职称信息表
+ * @author huangbing
  * @TableName human_hm_personnel_professional
  */
 @TableName(value ="human_hm_personnel_professional")

@@ -1,8 +1,10 @@
 package com.jlkj.human.hm.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.util.Date;
 
 /**
  * 人员离职信息表
+ * @author huangbing
  * @TableName human_hm_leave
  */
 @TableName(value ="human_hm_leave")
@@ -49,16 +52,19 @@ public class Leave implements Serializable {
     /**
      * 入企日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date enterDate;
 
     /**
      * 离职生效日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date leaveEffectDate;
 
     /**
      * 止薪日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endPayDate;
 
     /**
@@ -89,6 +95,8 @@ public class Leave implements Serializable {
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 
     /**

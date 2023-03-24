@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 人员家属信息表
+ * @author huangbing
  * @TableName human_hm_personnel_family
  */
 @TableName(value ="human_hm_personnel_family")

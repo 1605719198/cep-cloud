@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * 人员工作经历表
+ * @author huangbing
  * @TableName human_hm_personnel_work
  */
 @TableName(value ="human_hm_personnel_work")

@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 人员异动信息主表
+ * @author huangbing
  * @TableName human_hm_change_master
  */
 @TableName(value ="human_hm_change_master")

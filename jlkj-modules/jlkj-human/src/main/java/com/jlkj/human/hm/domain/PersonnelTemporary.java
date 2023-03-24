@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 /**
  * 人员数据中间表
+ * @author huangbing
  * @TableName human_hm_personnel_temporary
  */
 @TableName(value ="human_hm_personnel_temporary")

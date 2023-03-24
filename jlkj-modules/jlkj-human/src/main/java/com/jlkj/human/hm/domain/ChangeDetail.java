@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,6 +12,7 @@ import java.util.Date;
 
 /**
  * 人员异动信息明细表
+ * @author huangbing
  * @TableName human_hm_change_detail
  */
 @TableName(value ="human_hm_change_detail")

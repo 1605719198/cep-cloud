@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 人员教育经历表
+ * @author huangbing
  * @TableName human_hm_personnel_education
  */
 @TableName(value ="human_hm_personnel_education")

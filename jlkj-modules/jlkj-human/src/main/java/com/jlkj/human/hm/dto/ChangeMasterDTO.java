@@ -9,6 +9,9 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author huangbing
+ */
 @Data
 public class ChangeMasterDTO {
 

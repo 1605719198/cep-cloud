@@ -32,10 +32,10 @@ import java.util.*;
 public class EmployeeTurnoverController extends BaseController {
 
     @Autowired
-    IChangeMasterService IChangeMasterService;
+    IChangeMasterService changeMasterService;
 
     @Autowired
-    IChangeDetailService IChangeDetailService;
+    IChangeDetailService changeDetailService;
 
     @Autowired
     IPersonnelService personnelService;
@@ -51,11 +51,11 @@ public class EmployeeTurnoverController extends BaseController {
         queryWrapper.eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo())
                     .orderBy(true, false, ChangeMaster::getVersionNo)
                     .last("limit 1");
-        List<ChangeMaster> list = IChangeMasterService.list(queryWrapper);
+        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
         LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
         queryWrapper1.eq(ChangeDetail::getParentId, list.get(0).getUuid())
                      .eq(ChangeDetail::getPostTypeId, "01");
-        List<ChangeDetail> list1 = IChangeDetailService.list(queryWrapper1);
+        List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
         Map<String,Object> dataMap = new HashMap<>(16);
         dataMap.put("list", list);
         dataMap.put("list1", list1);
@@ -76,7 +76,7 @@ public class EmployeeTurnoverController extends BaseController {
         queryWrapper.eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo())
                 .orderBy(true, false, ChangeMaster::getVersionNo)
                 .last("limit 1");
-        List<ChangeMaster> list = IChangeMasterService.list(queryWrapper);
+        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
         if (changeMasterDTO.getEffectDate().after(list.get(0).getEffectDate())) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.DATE, 10);
@@ -91,12 +91,12 @@ public class EmployeeTurnoverController extends BaseController {
                 LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
                 queryWrapper1.eq(ChangeDetail::getParentId, changeMaster.getUuid())
                         .eq(ChangeDetail::getPostTypeId, "01");
-                List<ChangeDetail> list1 = IChangeDetailService.list(queryWrapper1);
+                List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
                 if (list1.size() > 1) {
                     return AjaxResult.error("只能存在一笔主岗位资料！！！");
                 }
-                IChangeMasterService.save(changeMaster);
-                IChangeDetailService.saveOrUpdateBatch(employeeTurnoverList);
+                changeMasterService.save(changeMaster);
+                changeDetailService.saveOrUpdateBatch(employeeTurnoverList);
                 if (changeMasterDTO.getEffectDate().after(new Date())) {
                     return AjaxResult.success("生效日期大于当前日期，不更新人员基本资料表");
                 } else {
@@ -127,11 +127,11 @@ public class EmployeeTurnoverController extends BaseController {
         LambdaUpdateWrapper<ChangeMaster> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.lt(ChangeMaster::getCreateDate, new Date())
                 .eq(ChangeMaster::getUuid, changeMasterDTO.getUuid());
-        boolean result = IChangeMasterService.saveOrUpdate(changeMaster, updateWrapper);
+        boolean result = changeMasterService.saveOrUpdate(changeMaster, updateWrapper);
         for (ChangeDetail item : changeMasterDTO.getEmployeeTurnoverList()) {
             item.setParentId(changeMaster.getUuid());
         }
-        IChangeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeTurnoverList());
+        changeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeTurnoverList());
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
@@ -153,10 +153,10 @@ public class EmployeeTurnoverController extends BaseController {
         queryWrapper.eq(ChangeMaster::getEmpNo, empNo)
                 .orderBy(true, false, ChangeMaster::getVersionNo)
                 .last("limit 1");
-        List<ChangeMaster> list = IChangeMasterService.list(queryWrapper);
+        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
         if (uuid.equals(list.get(0).getUuid())) {
-            boolean result = IChangeMasterService.lambdaUpdate().lt(ChangeMaster::getCreateDate, new Date()).eq(ChangeMaster::getUuid, uuid).remove();
-            IChangeDetailService.lambdaUpdate().eq(ChangeDetail::getParentId, uuid).remove();
+            boolean result = changeMasterService.lambdaUpdate().lt(ChangeMaster::getCreateDate, new Date()).eq(ChangeMaster::getUuid, uuid).remove();
+            changeDetailService.lambdaUpdate().eq(ChangeDetail::getParentId, uuid).remove();
             if (result) {
                 personnelService.lambdaUpdate()
                         .set(Personnel::getPostName, null)

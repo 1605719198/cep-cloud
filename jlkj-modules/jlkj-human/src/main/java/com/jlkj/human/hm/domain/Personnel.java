@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 人事管理-人员登录数据
+ * @author huangbing
  * @TableName human_hm_personnel
  */
 @TableName(value ="human_hm_personnel_info")
