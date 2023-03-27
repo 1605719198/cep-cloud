@@ -277,12 +277,12 @@
     getEnvironmentalCollectionPoints,
     getEnvironmentalCollectionPointsCharts
 
-  } from '@/api/security/index'
+  } from '@/api/security/si/index'
   import GoodDaysEcharts from './goodDaysEcharts'
   import ExponentialEcharts from './exponentialEcharts'
   import OverproofNum from './overproofNum'
   import DetectionEcharts from './detectionEcharts'
-  import {showDateFormat} from '@/util/date'
+  import {showDateFormat} from '@/utils/date'
   import AMap from "AMap";
   import L from 'leaflet';
   import "leaflet/dist/leaflet.css"
