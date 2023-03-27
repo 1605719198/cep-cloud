@@ -57,28 +57,28 @@
       <el-table-column label="中文职称说明" align="center" prop="jobTitleName" />
       <el-table-column label="英文职称说明" align="center" prop="jobTitleNameEng" />
       <el-table-column label="申请加班" align="center" prop="overTime">
-        <template v-slot:default="scope">
-          <dict-tag-human :options="baseInfoData.if_overtime" :value="scope.row.overTime"/>
+        <template v-slot="scope">
+          <dict-tag-human-base :options="baseInfoData.if_overtime" :value="scope.row.overTime"/>
         </template>
       </el-table-column>
       <el-table-column label="人员类别" align="center" prop="kind">
-        <template v-slot:default="scope">
-          <dict-tag-human :options="baseInfoData.personnel_category" :value="scope.row.kind"/>
+        <template v-slot="scope">
+          <dict-tag-human-base :options="baseInfoData.personnel_category" :value="scope.row.kind"/>
         </template>
       </el-table-column>
       <el-table-column label="人员层级" align="center" prop="titleLevel">
-        <template v-slot:default="scope">
-          <dict-tag-human :options="baseInfoData.people_hierarchy" :value="scope.row.titleLevel"/>
+        <template v-slot="scope">
+          <dict-tag-human-base :options="baseInfoData.people_hierarchy" :value="scope.row.titleLevel"/>
         </template>
       </el-table-column>
       <el-table-column label="状态码" align="center" prop="status">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="现有人数" align="center" prop="number" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"
@@ -128,7 +128,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="人员层级" prop="titleLevel">
-              <el-select v-model="form.titleLevel" placeholder="请选择人员层级" style="width: 100%">
+              <el-select v-model="form.titleLevel" placeholder="请选择人员层级" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.people_hierarchy"
                   :key="dict.dicNo"
@@ -143,7 +143,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="申请加班" prop="overTime">
-              <el-select v-model="form.overTime" placeholder="请选择申请加班" style="width: 100%">
+              <el-select v-model="form.overTime" placeholder="请选择申请加班" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.if_overtime"
                   :key="dict.dicNo"
@@ -155,7 +155,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="人员类别" prop="kind">
-              <el-select v-model="form.kind" placeholder="请选择人员类别" style="width: 100%">
+              <el-select v-model="form.kind" placeholder="请选择人员类别" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.personnel_category"
                   :key="dict.dicNo"
@@ -187,18 +187,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="维护人" prop="creator" >
-              <el-input v-model="form.creator" placeholder="请输入维护人" disabled/>
+              {{form.creator}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="维护日期" prop="createDate" >
-              <el-date-picker clearable disabled
-                              style="width: 100%"
-                              v-model="form.createDate"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择维护日期">
-              </el-date-picker>
+              {{form.createDate}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -213,7 +207,7 @@
 
 <script>
 import { getDateTime } from "@/api/human/hd/abchuman"
-import DictTagHuman from "@/views/human/hp/DictTag/index"
+import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listJobTitle, getJobTitle, delJobTitle, addJobTitle, updateJobTitle } from "@/api/human/hp/jobTitle";
 import { getAvatorByUserName} from "@/api/system/user";
@@ -221,7 +215,7 @@ import Treeselect from '@riophae/vue-treeselect'
 export default {
   name: "JobTitle",
   dicts: ['sys_normal_disable'],
-  components: {DictTagHuman},
+  components: {DictTagHumanBase},
   data() {
     return {
       //选单列表
@@ -397,3 +391,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.maxWidth{
+  width: 100%;
+}
+</style>

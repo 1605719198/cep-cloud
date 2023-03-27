@@ -1,6 +1,8 @@
 package com.jlkj.human.hp.mapper;
 
 import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.dto.CopySysDept;
+import com.jlkj.human.hp.dto.DeptUnionPost;
 
 import java.util.List;
 
@@ -43,12 +45,35 @@ public interface SysDeptMapper
     public List<SysDept> selectSysDeptList(SysDept sysDept);
 
     /**
+     * 查询公司资料列表
+     *
+     * @return 部门公司资料集合
+     */
+    public List<SysDept> selectCompanyList();
+
+    /**
+     * 查询部门岗位资料维护列表
+     *
+     * @param deptpost 部门岗位资料维护
+     * @return 部门岗位资料维护集合
+     */
+    public List<DeptUnionPost> selectDeptUnionPost(DeptUnionPost deptpost);
+
+    /**
      * 新增部门资料维护
      * 
      * @param sysDept 部门资料维护
      * @return 结果
      */
     public int insertSysDept(SysDept sysDept);
+
+    /**
+     * 复制组织机构
+     *
+     * @param copySysDept 组织机构复制设定
+     * @return 结果
+     */
+    public int copySysDept (CopySysDept copySysDept);
 
     /**
      * 修改部门资料维护
@@ -65,6 +90,22 @@ public interface SysDeptMapper
      * @return 结果
      */
     public int deleteSysDeptByDeptId(Long deptId);
+
+    /**
+     * 查询组织结构设定复制来源公司
+     *
+     * @param oldCompId 来源公司别
+     * @return 结果
+     */
+    public int querycopybyOldCompId(String oldCompId);
+
+    /**
+     * 查询组织机构设定复制目标公司
+     *
+     * @param newCompId 目标公司别
+     * @return 结果
+     */
+    public int querycopybyNewCompId(String  newCompId);
 
     /**
      * 批量删除部门资料维护

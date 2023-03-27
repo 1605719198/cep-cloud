@@ -6,8 +6,11 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.dto.CopySysDept;
+import com.jlkj.human.hp.dto.DeptUnionPost;
 import com.jlkj.human.hp.service.ISysDeptService;
 import com.jlkj.human.hp.service.ISysDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,7 @@ public class SysDeptController extends BaseController
     /**
      * 查询部门资料维护列表
      */
+    @RequiresPermissions("human:deptMaintenance:list")
     @GetMapping("/list")
     public TableDataInfo list(SysDept sysDept)
     {
@@ -77,6 +81,7 @@ public class SysDeptController extends BaseController
     /**
      * 新增部门资料维护
      */
+    @RequiresPermissions("human:deptMaintenance:add")
     @Log(title = "部门资料维护", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SysDept sysDept)throws Exception
@@ -85,8 +90,20 @@ public class SysDeptController extends BaseController
     }
 
     /**
+     * 复制组织机构数据
+     */
+    @RequiresPermissions("human:deptMaintenance:copy")
+    @Log(title = "组织机构复制", businessType = BusinessType.INSERT)
+    @PostMapping("/copySysDept")
+    public AjaxResult copy(@RequestBody CopySysDept copySysDept) throws Exception
+    {
+        return toAjax(sysDeptService.copySysDept(copySysDept));
+    }
+
+    /**
      * 修改部门资料维护
      */
+    @RequiresPermissions("human:deptMaintenance:edit")
     @Log(title = "部门资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysDept sysDept) throws Exception
@@ -97,6 +114,7 @@ public class SysDeptController extends BaseController
     /**
      * 删除部门资料维护
      */
+    @RequiresPermissions("human:deptMaintenance:remove")
     @Log(title = "部门资料维护", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{deptIds}")
     public AjaxResult remove(@PathVariable Long[] deptIds)
@@ -111,5 +129,25 @@ public class SysDeptController extends BaseController
     {
         List<SysDept> depts = sysDeptService.selectSysDeptList(dept);
         return AjaxResult.success(sysDeptService.buildDeptTreeSelect(depts));
+    }
+
+    /**
+     * 获取部门岗位下拉树列表
+     */
+    @GetMapping("/deptpostTree")
+    public AjaxResult deptpostTree(DeptUnionPost deptpost)
+    {
+        List<DeptUnionPost> deptPostList = sysDeptService.selectDeptPostList(deptpost);
+        return AjaxResult.success(sysDeptService.buildDeptPostTree(deptPostList));
+    }
+
+    /**
+     * 获取公司资料列表
+     */
+    @GetMapping("/selectCompany")
+    public AjaxResult selectCompany()
+    {
+        List<SysDept> companyList = sysDeptService.selectCompanyList();
+        return AjaxResult.success(companyList);
     }
 }

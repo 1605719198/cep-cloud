@@ -76,4 +76,14 @@ public interface IAttendencebasisService
      * @return 结果
      */
     public int deleteAttendencebasisById(Long id) throws Exception;
+
+
+    /**
+     * 查询员工出勤基本资料维护选单
+     *
+     * @param code 员工出勤基本资料维护编码
+     * @return 结果
+     */
+    public List<Attendencebasis> selectBasisOptions(String code) ;
+
 }

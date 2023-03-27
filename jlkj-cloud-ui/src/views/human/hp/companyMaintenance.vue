@@ -12,8 +12,8 @@
               />
             </el-select>
         </div>
-        <div class="head-container" style="height: 81vh;width: 100%;" v-show="treeandtable">
-          <el-scrollbar style="height: 100%;">
+        <div class="head-container treeDept"   v-show="treeandtable">
+          <el-scrollbar  class="treeScrollbar">
             <el-tree
               default-expand-all
               :data="deptOptions"
@@ -31,23 +31,26 @@
       </el-col>
     <el-col :span="20" :xs="24">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="机构id值" prop="deptId">
-        <el-input maxlength="20"
-          type="number"
-          v-model="queryParams.deptId"
-          placeholder="请输入机构id"
+<!--      <el-form-item label="机构id值" prop="deptId">-->
+<!--        <el-input maxlength="20"-->
+<!--          type="number"-->
+<!--          v-model="queryParams.deptId"-->
+<!--          placeholder="请输入机构id"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="公司编码" prop="deptCode">
+        <el-input maxlength="8"
+                  v-model="queryParams.deptCode"
+                  placeholder="请输入公司编码"
         />
       </el-form-item>
-<!--      <el-form-item label="机构层级" prop="compId">-->
-<!--        <el-select v-model="form.compId" placeholder="请选择机构层级" clearable size="small">-->
-<!--          <el-option-->
-<!--            v-for="dict in dict.type.comp_id"-->
-<!--            :key="dict.value"-->
-<!--            :label="dict.label"-->
-<!--            :value="dict.value"-->
-<!--          />-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
+      <el-form-item label="公司名称" prop="deptName">
+        <el-input maxlength="200"
+                  v-model="queryParams.deptName"
+                  placeholder="请输入公司名称"
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -62,6 +65,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          v-hasPermi="['human:deptMaintenance:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -72,25 +76,26 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
+          v-hasPermi="['human:deptMaintenance:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="机构id" align="center" prop="deptId" />
-      <el-table-column label="机构编码" align="center" prop="deptCode" />
-      <el-table-column label="机构名称" align="center" prop="deptName" />
+      <el-table-column label="机构id" align="center" width="120" prop="deptId" />
+      <el-table-column label="机构编码" align="center" width="120" prop="deptCode" />
+      <el-table-column label="机构名称" align="center" width="300" prop="deptName" />
       <el-table-column label="排序序号" align="center" prop="orderNum" />
-      <el-table-column label="领导" align="center" prop="leader" />
+      <el-table-column label="法人" align="center" prop="leader" />
       <el-table-column label="创建人" align="center" prop="createBy" />
       <el-table-column label="状态" align="center" prop="status">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
 <!--          <el-button-->
 <!--            size="mini"-->
 <!--            type="text"-->
@@ -102,12 +107,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            v-hasPermi="['human:deptMaintenance:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            v-hasPermi="['human:deptMaintenance:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -145,7 +152,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属板块类别" prop="boardId">
-              <el-select v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" style="width: 100%">
+              <el-select v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.HP001"
                   :key="dict.dicNo"
@@ -197,8 +204,8 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="领导" prop="leader">
-              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入领导" >
+            <el-form-item label="法人" prop="leader">
+              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入法人" >
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>
@@ -217,20 +224,20 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="传真" prop="fax">
-              <el-input maxlength="11" v-model="form.fax" placeholder="请输入传真" />
+              <el-input maxlength="30" v-model="form.fax" placeholder="请输入传真" />
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="300" v-model="form.changeReason" type="textarea"   placeholder="请输入变更原因" />
+        <el-form-item label="变更原因" prop="changeReason" v-if="ifupdate">
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea" show-word-limit   placeholder="请输入变更原因" />
         </el-form-item>
 
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="生效日期" prop="effectDate">
               <el-date-picker clearable size="small"
-                              style="width: 100%"
+                              class="maxWidth"
                               v-model="form.effectDate"
                               type="date"
                               value-format="yyyy-MM-dd"
@@ -243,18 +250,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建人员" prop="createBy">
-              <el-input maxlength="20" v-model="form.createBy"  placeholder="请输入内容" disabled/>
+              {{form.createBy}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="创建日期" prop="createTime">
-              <el-date-picker clearable
-                              disabled
-                              style="width: 100%;"
-                              v-model="form.createTime"
-                              type="date"
-                              placeholder="请选择创建日期">
-              </el-date-picker>
+              {{form.createTime}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -265,32 +266,32 @@
 
         <el-table :data="deptversionlist"  ref="deptversion" v-show="ifupdate">
           <el-table-column label="版本号" prop="versionNo" align="center" width="60px" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.versionNo}}</span>
             </template>
           </el-table-column>
           <el-table-column label="公司名称" prop="deptName" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.deptName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="该公司上级" prop="parentName" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.parentName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.changeReason}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.updateBy}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更日期" prop="updateTime" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.updateTime}}</span>
             </template>
           </el-table-column>
@@ -371,10 +372,14 @@ export default {
         deptId: null,
         compId: null,
         ifCompany : 1,
+        deptCode:null,
+        deptName:null,
       },
+      //历史版本查询参数
       queryParams2: {
         deptId: null,
       },
+      //treeselect查询参数
       queryParams3:{
         ifCompany:1,
       },
@@ -407,10 +412,7 @@ export default {
           { required: true, message: '请选择当前状态', trigger: 'change' },
         ],
         leader: [
-          {required: true,message: "请输入领导", trigger: "blur"}
-        ],
-        phone: [
-          {required: true,message: "请输入领导电话", trigger: "blur"}
+          {required: true,message: "请输入法人", trigger: "blur"}
         ],
         ifDisplay: [
           {required: true,message: "请选择组织树是否显示", trigger: "change"}
@@ -420,10 +422,19 @@ export default {
         ],
         effectDate:[
           {required: true,message: "生效日期不能为空", trigger: "change"}
+        ],
+        changeReason: [
+          {required: true,message: "请输入变更原因", trigger: "blur"}
+        ],
+        phone:[
+          { pattern:/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/, message: '手机号格式不正确', trigger: 'blur'}
+        ],
+        email:[
+          { pattern:/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/, message: '邮箱格式不正确', trigger: 'blur'}
+        ],
+        fax:[
+          { pattern:/^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/, message: '传真格式不正确', trigger: 'blur'}
         ]
-        // changeReason: [
-        //   {required: true,message: "请输入变更原因", trigger: "blur"}
-        // ]
       }
     };
   },
@@ -669,3 +680,14 @@ export default {
   }
 };
 </script>
+<style scoped>
+.treeDept {
+  height: 81vh;width: 100%;
+}
+.treeScrollbar {
+  height: 100%;
+}
+.maxWidth{
+  width: 100%;
+}
+</style>

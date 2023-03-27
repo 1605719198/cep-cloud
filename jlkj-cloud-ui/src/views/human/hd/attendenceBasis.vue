@@ -1,5 +1,24 @@
 <template>
   <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="资料名称" prop="name">
+        <el-input maxlength="200"
+                  v-model="queryParams.name"
+                  placeholder="请输入资料名称"
+        />
+      </el-form-item>
+      <el-form-item label="资料编码" prop="code">
+        <el-input maxlength="10"
+                  v-model="queryParams.code"
+                  placeholder="请输入资料编码"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -19,18 +38,18 @@
       <el-table-column label="资料名称" align="center" prop="name" />
       <el-table-column label="资料编码" align="center" prop="code" />
       <el-table-column label="状态" align="center" prop="status">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template v-slot:default="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"
@@ -101,19 +120,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入人" prop="creator">
-              <el-input v-model="form.creator" placeholder="请输入输入人" disabled />
+              {{form.creator}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="输入日期" prop="createDate">
-              <el-date-picker clearable
-                              disabled
-                              style="width: 100%;"
-                              v-model="form.createDate"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择输入日期">
-              </el-date-picker>
+             {{form.createDate}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,7 +162,7 @@
 </template>
 
 <script>
-import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis, } from "@/api/human/hd/attendenceBasis";
+import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis } from "@/api/human/hd/attendenceBasis";
 import { getAvatorByUserName } from "@/api/system/user";
 import { getDateTime } from '@/api/human/hd/abchuman'
 export default {
@@ -190,6 +202,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        name:null,
+        code:null,
       },
       // 表单参数
       form: {},

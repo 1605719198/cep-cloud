@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.ClockworkMapper">
+    
+    <resultMap type="Clockwork" id="ClockworkResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="note"    column="note"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="firstDeptName"    column="first_dept_name"    />
+        <result property="firstDeptId"    column="first_dept_id"    />
+    </resultMap>
+
+    <sql id="selectClockworkVo">
+        select id, code, name, comp_id, first_dept_name, first_dept_id, note, creator, creator_id, create_date from human_hd_clockwork
+    </sql>
+
+    <select id="selectClockworkList" parameterType="Clockwork" resultMap="ClockworkResult">
+        <include refid="selectClockworkVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+
+    <select id="queryRepetitivedata" resultType="Int" parameterType="Clockwork">
+        select count(*) from human_hd_clockwork
+        <where>
+            <if test="code!=null and code!=''"> and code =#{code}</if>
+            <if test="id!=null and id!=''"> and id !=#{id}</if>
+        </where>
+    </select>
+    
+    <select id="selectClockworkById" parameterType="String" resultMap="ClockworkResult">
+        <include refid="selectClockworkVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertClockwork" parameterType="Clockwork">
+        insert into human_hd_clockwork
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="firstDeptName != null">first_dept_name,</if>
+            <if test="firstDeptId != null">first_dept_id,</if>
+            <if test="note != null">note,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="firstDeptName != null">#{firstDeptName},</if>
+            <if test="firstDeptId != null">#{firstDeptId},</if>
+            <if test="note != null">#{note},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClockwork" parameterType="Clockwork">
+        update human_hd_clockwork
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="firstDeptName != null">first_dept_name = #{firstDeptName},</if>
+            <if test="firstDeptId != null">first_dept_id = #{firstDeptId},</if>
+            <if test="note != null">note = #{note},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteClockworkById" parameterType="String">
+        delete from human_hd_clockwork where id = #{id}
+    </delete>
+
+    <delete id="deleteClockworkByIds" parameterType="String">
+        delete from human_hd_clockwork where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

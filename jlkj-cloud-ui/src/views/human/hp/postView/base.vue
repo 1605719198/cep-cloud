@@ -40,7 +40,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="专长类别" prop="specialityTypeId">
-                  <el-select v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA" style="width: 100%">
+                  <el-select v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  width="100%" >
                     <el-option
                       v-for="dict in baseInfoData.HP013"
                       :key="dict.uuid"
@@ -52,7 +52,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="专长" prop="specialityId">
-                  <el-select v-model="form.specialityId" placeholder="请选择专长" style="width: 100%" >
+                  <el-select v-model="form.specialityId" placeholder="请选择专长" width="100%" >
                     <el-option
                       v-for="dict in deepOptions1"
                       :key="dict.dicNo"
@@ -67,7 +67,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="岗位序列" prop="postSequenceId">
-                  <el-select v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" style="width: 100%">
+                  <el-select v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" width="100%">
                     <el-option
                       v-for="dict in baseInfoData.HP003"
                       :key="dict.uuid"
@@ -79,7 +79,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="岗位类别" prop="postTypeId">
-                  <el-select v-model="form.postTypeId" placeholder="请选择岗位类别" style="width: 100%">
+                  <el-select v-model="form.postTypeId" placeholder="请选择岗位类别" width="100%">
                     <el-option
                       v-for="dict in deepOptions2"
                       :key="dict.dicNo"
@@ -94,7 +94,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="职位名称" prop="jobTitleId">
-                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" style="width: 100%">
+                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" width="100%">
                     <el-option
                       v-for="dict in jobTitle"
                       :key="dict.jobTitleNo"
@@ -104,7 +104,7 @@
                   </el-select>
                 </el-form-item>
 <!--                <el-form-item label="职位名称" prop="jobTitleId" >-->
-<!--                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" style="width: 100%">-->
+<!--                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" width="100%">-->
 <!--                    <el-option-->
 <!--                      v-for="dict in dict.type.job_title_id"-->
 <!--                      :key="dict.value"-->
@@ -116,7 +116,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="流水号" prop="serialNumber">
-                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="5" />
+                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="20" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -124,7 +124,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="工作地点" prop="workAddressId">
-                  <el-select v-model="form.workAddressId" placeholder="请选择工作地点" style="width: 100%">
+                  <el-select v-model="form.workAddressId" placeholder="请选择工作地点" width="100%">
                     <el-option
                       v-for="dict in baseInfoData.HP004"
                       :key="dict.dicNo"
@@ -136,12 +136,12 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="公司(具体工作地点)" prop="workAddress">
-                  <el-select v-model="form.workAddress" placeholder="请选择公司" style="width: 100%">
+                  <el-select v-model="form.workAddress" placeholder="请选择公司" width="100%">
                     <el-option
-                      v-for="dict in baseInfoData.comp_id"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
+                      v-for="dict in companyList"
+                      :key="dict.comp_id"
+                      :label="dict.deptName"
+                      :value="dict.comp_id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -156,7 +156,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="20">
+            <el-row :gutter="20" v-if="this.form.postId!=null">
               <el-col :span="12">
                 <el-form-item label="定员" prop="planCapacity">
                   <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
@@ -164,15 +164,28 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="现员" prop="nowCapacity">
-                  <el-input v-model="form.nowCapacity" placeholder="请输入现员" type="number" maxlength="10"/>
+                  <el-input v-model="form.nowCapacity" placeholder="请输入现员" type="number" maxlength="10" disabled/>
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row :gutter="20">
+            <el-row :gutter="20" v-if="this.form.postId!=null">
               <el-col :span="12">
                 <el-form-item label="该岗位直接下级定员数" prop="planCapacity" >
                   <el-input v-model="form.planCapacity" disabled/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="排序序号" prop="postSort">
+                  <el-input v-model="form.postSort" placeholder="请输入排序序号" type="number" maxlength="5"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20" v-if="this.form.postId!=null">
+              <el-col :span="12">
+                <el-form-item label="定员" prop="planCapacity">
+                  <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -195,14 +208,15 @@
               </el-col>
             </el-row>
 
-            <el-form-item label="变更原因" prop="changeReason">
-              <el-input v-model="form.changeReason" type="textarea"   placeholder="请输入内容" maxlength="1000" />
+
+            <el-form-item label="变更原因" prop="changeReason" v-if="this.form.postId!=null">
+              <el-input v-model="form.changeReason" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="1000" />
             </el-form-item>
 
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="用工性质" prop="employmentNatureId">
-                  <el-select v-model="form.employmentNatureId" placeholder="请选择用工性质" style="width: 100%">
+                  <el-select v-model="form.employmentNatureId" placeholder="请选择用工性质" width="100%">
                     <el-option
                       v-for="dict in baseInfoData.HP006"
                       :key="dict.dicNo"
@@ -213,27 +227,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="生效日期" prop="effectDate">
-                  <el-date-picker clearable
-                                  style="width: 100%"
-                                  v-model="form.effectDate"
-                                  type="date"
-                                  value-format="yyyy-MM-dd"
-                                  placeholder="请选择生效日期">
-                  </el-date-picker>
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-form-item label="定员依据" prop="capacityBasis">
-                  <el-input v-model="form.capacityBasis" type="textarea"   placeholder="请输入内容" maxlength="500"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
                 <el-form-item label="职位费用类别" prop="positionExpenseCategory">
-                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" style="width: 100%">
+                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" width="100%">
                     <el-option
                       v-for="dict in baseInfoData.HP007"
                       :key="dict.dicNo"
@@ -245,22 +240,34 @@
               </el-col>
             </el-row>
 
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="定员依据" prop="capacityBasis">
+                  <el-input v-model="form.capacityBasis" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="500"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="生效日期" prop="effectDate">
+                  <el-date-picker clearable
+                                  width="100%"
+                                  v-model="form.effectDate"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择生效日期">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
             <el-row :gutter="20" >
               <el-col :span="12">
                 <el-form-item label="输入人" prop="updateBy">
-                  <el-input maxlength="20" v-model="form.updateBy"  placeholder="请输入输入人" disabled/>
+                  {{form.updateBy}}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="输入日期" prop="updateTime">
-                  <el-date-picker clearable
-                                  disabled
-                                  style="width: 100%;"
-                                  v-model="form.updateTime"
-                                  type="date"
-                                  value-format="yyyy-MM-dd"
-                                  placeholder="请选择输入日期">
-                  </el-date-picker>
+                  {{form.updateTime}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -310,42 +317,42 @@
       </div>
       <el-table :data="formHistory"  v-show="ifupdate" slot="footer" >
         <el-table-column label="版本号" prop="versionNo" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.versionNo}}</span>
           </template>
         </el-table-column>
         <el-table-column label="岗位编码" prop="postCode" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.postCode}}</span>
           </template>
         </el-table-column>
         <el-table-column label="岗位名称" prop="postName" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.postName}}</span>
           </template>
         </el-table-column>
         <el-table-column label="所属公司/机构" prop="orgName" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.orgName}}</span>
           </template>
         </el-table-column>
         <el-table-column label="定员" prop="planCapacity" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.planCapacity}}</span>
           </template>
         </el-table-column>
         <el-table-column label="生效日期" prop="effectDate" align="center" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.effectDate}}</span>
           </template>
         </el-table-column>
         <el-table-column label="输入人" prop="updateBy" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span>{{scope.row.updateBy}}</span>
           </template>
         </el-table-column>
         <el-table-column label="输入日期" prop="updateTime" show-overflow-tooltip>
-          <template v-slot:default="scope">
+          <template v-slot="scope">
             <span v-text="scope.row.updateTime"   ></span>
           </template>
         </el-table-column>
@@ -357,7 +364,7 @@
 <script>
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import {  treeselect } from "@/api/human/hp/deptMaintenance";
+import {  treeselect,selectCompany } from "@/api/human/hp/deptMaintenance";
 import {  listJobTitleidname } from "@/api/human/hp/jobTitle";
 import duty from './duty'
 import qualification from './qualification'
@@ -373,6 +380,8 @@ export default {
   dicts: ['sys_normal_disable'],
   data(){
     return{
+      //公司数据
+      companyList:[],
       //是否为修改
       ifupdate:false,
       //选单列表
@@ -383,7 +392,6 @@ export default {
           'HP013',
           'HP004',
           'HP006',
-          'comp_id',
           'HP007'
         ]
       },
@@ -440,9 +448,6 @@ export default {
         planCapacity: [
           { required: true, message: "定员不能为空", trigger: "blur" }
         ],
-        nowCapacity: [
-          { required: true, message: "现员不能为空", trigger: "blur" }
-        ],
         postSort: [
           { required: true, message: "显示顺序不能为空", trigger: "blur" }
         ],
@@ -460,7 +465,14 @@ export default {
     }
   },
   methods:{
+    //获取公司列表
+    getCompanyList(){
+      selectCompany().then(response=>{
+        this.companyList = response.data
+      })
+    },
     init(form) {
+      this.getCompanyList();
       listJobTitleidname('J00').then(response =>{
         this.jobTitle = response.rows;
       })
@@ -493,37 +505,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.qualification.init(this.form)
       })
-      // queryRelations(id).then(response => {
-      //   this.relationsForm = response.data
-      //   this.flagForm={}
-      //   this.relationsForm.map(item => {
-      //     if (item.relation === "FC") {
-      //       this.flagForm.FC = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.queryFc.initFc(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "MP"){
-      //       this.flagForm.MP = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.queryMp.initMP(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "ST"){
-      //       this.flagForm.ST = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.querySt.initSt(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "SO"){
-      //       this.flagForm.SO = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.querySo.initSo(id,manufacturerChineseName)
-      //       })
-      //     }
-      //   })
-      // });
-      // getBase1(id).then(response => {
-      //   this.dataForm = response.data
-      //   console.log(response.data);
-      // });
     },
     /** 转换部门数据结构 */
     normalizer(node) {

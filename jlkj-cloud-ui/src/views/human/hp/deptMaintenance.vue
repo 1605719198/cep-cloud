@@ -5,15 +5,15 @@
         <div class="head-container">
           <el-select v-model="compId" placeholder="请选择公司名称" clearable size="small">
             <el-option
-              v-for="dict in baseInfoData.comp_id"
-              :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
+              v-for="dict in companyList"
+              :key="dict.compId"
+              :label="dict.deptName"
+              :value="dict.compId"
             />
           </el-select>
         </div>
-        <div class="head-container" style="height: 81vh;width: 100%;" v-show="treeandtable">
-          <el-scrollbar style="height: 100%;">
+        <div class="head-container treeDept"  v-show="treeandtable">
+          <el-scrollbar class="treeScrollbar">
             <el-tree
               :data="deptOptions"
               :props="defaultProps"
@@ -30,23 +30,25 @@
       </el-col>
       <el-col :span="20" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="机构id值" prop="deptId">
-            <el-input maxlength="10"
-                      v-model="queryParams.deptId"
-                      type="number"
-                      placeholder="请输入机构id"
+<!--          <el-form-item label="机构id" prop="deptId">-->
+<!--            <el-input maxlength="10"-->
+<!--                      v-model="queryParams.deptId"-->
+<!--                      type="number"-->
+<!--                      placeholder="请输入机构id"-->
+<!--            />-->
+<!--          </el-form-item>-->
+          <el-form-item label="机构编码" prop="deptCode">
+            <el-input maxlength="8"
+                      v-model="queryParams.deptCode"
+                      placeholder="请输入机构编码"
             />
           </el-form-item>
-          <!--      <el-form-item label="机构层级" prop="compId">-->
-          <!--        <el-select v-model="form.compId" placeholder="请选择机构层级" clearable size="small">-->
-          <!--          <el-option-->
-          <!--            v-for="dict in dict.type.comp_id"-->
-          <!--            :key="dict.value"-->
-          <!--            :label="dict.label"-->
-          <!--            :value="dict.value"-->
-          <!--          />-->
-          <!--        </el-select>-->
-          <!--      </el-form-item>-->
+          <el-form-item label="机构名称" prop="deptName">
+            <el-input maxlength="200"
+                      v-model="queryParams.deptName"
+                      placeholder="请输入机构名称"
+            />
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -61,7 +63,18 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
+              v-hasPermi="['human:deptMaintenance:add']"
             >新增</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="success"
+              plain
+              icon="el-icon-share"
+              size="mini"
+              @click="handleCopy"
+              v-hasPermi="['human:deptMaintenance:copy']"
+            >复制</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -71,26 +84,27 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
+              v-hasPermi="['human:deptMaintenance:remove']"
             >删除</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
         <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
-          <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="机构id" align="center" prop="deptId" />
-          <el-table-column label="机构编码" align="center" prop="deptCode" />
-          <el-table-column label="机构名称" align="center" prop="deptName" />
-          <el-table-column label="排序序号" align="center" prop="orderNum" />
-          <el-table-column label="领导" align="center" prop="leader" />
-          <el-table-column label="创建人" align="center" prop="createBy" />
+          <el-table-column type="selection" width="55" align="center" show-overflow-tooltip />
+          <el-table-column label="机构id" align="center" width="120" prop="deptId" show-overflow-tooltip />
+          <el-table-column label="机构编码" align="center" width="120" prop="deptCode" show-overflow-tooltip />
+          <el-table-column label="机构名称" align="center" width="300" prop="deptName" show-overflow-tooltip />
+          <el-table-column label="排序序号" align="center" prop="orderNum" show-overflow-tooltip />
+          <el-table-column label="部门负责人" align="center" prop="leader" show-overflow-tooltip />
+          <el-table-column label="创建人" align="center" prop="createBy" show-overflow-tooltip />
           <el-table-column label="状态" align="center" prop="status">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <!--          <el-button-->
               <!--            size="mini"-->
               <!--            type="text"-->
@@ -102,12 +116,14 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
+                v-hasPermi="['human:deptMaintenance:edit']"
               >修改</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
+                v-hasPermi="['human:deptMaintenance:remove']"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -137,13 +153,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-        <!--        <el-form-item label="上级机构id" prop="parentId">-->
-        <!--          <el-input maxlength="20" v-model="form.parentId" placeholder="请输入上级机构id" />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="上级机构全称" prop="parentName">-->
-        <!--          <el-input maxlength="20" v-model="form.parentFullName" placeholder="请输入上级机构全称" />-->
-        <!--        </el-form-item>-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="上级机构" prop="parentId">
@@ -152,7 +161,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构层级" prop="orgTierId">
-              <el-select v-model="form.orgTierId" placeholder="请选择机构层级" clearable size="small" style="width: 100%;">
+              <el-select v-model="form.orgTierId" placeholder="请选择机构层级" clearable size="small" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.HP002"
                   :key="dict.dicNo"
@@ -185,8 +194,8 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="领导" prop="leader">
-              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入领导" >
+            <el-form-item label="部门负责人" prop="leader">
+              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入部门负责人" >
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>
@@ -206,7 +215,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="传真" prop="fax">
-              <el-input maxlength="11" v-model="form.fax" placeholder="请输入传真" />
+              <el-input maxlength="30" v-model="form.fax" placeholder="请输入传真" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -220,7 +229,7 @@
           <el-col :span="12">
             <el-form-item label="生效日期" prop="effectDate">
               <el-date-picker clearable size="small"
-                              style="width: 100%"
+                              class="maxWidth"
                               v-model="form.effectDate"
                               type="date"
                               value-format="yyyy-MM-dd"
@@ -229,25 +238,19 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="变更原因" prop="changeReason" v-show="ifupdate">
-          <el-input maxlength="300" v-model="form.changeReason" type="textarea"   placeholder="请输入变更原因" />
+        <el-form-item label="变更原因" prop="changeReason" v-if="ifupdate">
+          <el-input maxlength="300" v-model="form.changeReason" type="textarea" show-word-limit  placeholder="请输入变更原因" />
         </el-form-item>
 
         <el-row :gutter="20" v-show="!ifupdate">
           <el-col :span="12">
             <el-form-item label="创建人员" prop="createBy">
-              <el-input maxlength="20" v-model="form.createBy"  placeholder="请输入内容" disabled/>
+              {{form.createBy}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="创建日期" prop="createTime">
-              <el-date-picker clearable
-                              disabled
-                              style="width: 100%;"
-                              v-model="form.createTime"
-                              type="date"
-                              placeholder="请选择创建日期">
-              </el-date-picker>
+              {{form.createTime}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -257,43 +260,43 @@
         </div>
 
         <el-table :data="deptversionlist"  ref="deptversion" v-show="ifupdate">
-          <el-table-column label="版本号" prop="versionNo" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+          <el-table-column label="版本号" prop="versionNo" align="center" width="60px" show-overflow-tooltip>
+            <template v-slot="scope">
               <span>{{scope.row.versionNo}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="机构编码" prop="deptCode" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+          <el-table-column label="机构编码" prop="deptCode" align="center"  show-overflow-tooltip>
+            <template v-slot="scope">
               <span>{{scope.row.deptCode}}</span>
             </template>
           </el-table-column>
           <el-table-column label="机构名称" prop="deptName" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.deptName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="该机构上级" prop="parentName" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.parentName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="机构层级" prop="orgTierId" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
-              <dict-tag-human :options="baseInfoData.HP002" :value="scope.row.orgTierId"/>
+            <template v-slot="scope">
+              <dict-tag-human-base :options="baseInfoData.HP002" :value="scope.row.orgTierId"/>
             </template>
           </el-table-column>
           <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{scope.row.changeReason}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="变更人" prop="updateBy" show-overflow-tooltip>
-            <template v-slot:default="scope">
+          <el-table-column label="变更人" prop="updateBy" align="center"  show-overflow-tooltip>
+            <template v-slot="scope">
               <span>{{scope.row.updateBy}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span v-text="scope.row.updateTime"   ></span>
             </template>
           </el-table-column>
@@ -305,15 +308,44 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <!-- 组织机构数据复制对话框 -->
+    <el-dialog :title="titlecopy" :visible.sync="opencopy" width="500px" append-to-body>
+      <el-form ref="formcopy" :model="formcopy" :rules="rulescopy" label-width="150px">
+        <el-form-item label="来源公司" prop="oldCompId">
+          <el-select v-model="formcopy.oldCompId" placeholder="请选择来源公司" clearable>
+            <el-option
+              v-for="dict in companyList"
+              :key="dict.compId"
+              :label="dict.deptName"
+              :value="dict.compId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="目标公司" prop="newCompId">
+          <el-select v-model="formcopy.newCompId" placeholder="请选择目标公司" clearable>
+            <el-option
+              v-for="dict in companyList"
+              :key="dict.compId"
+              :label="dict.deptName"
+              :value="dict.compId"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFormcopy">确 定</el-button>
+        <el-button @click="cancelcopy">取 消</el-button>
+      </div>
+    </el-dialog>
     <select-user ref="select" @ok="getJobNumber"></select-user>
   </div>
 </template>
 
 <script>
 import { getDateTime } from "@/api/human/hd/abchuman"
-import DictTagHuman from "@/views/human/hp/DictTag/index"
+import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect, listDeptversion } from "@/api/human/hp/deptMaintenance";
+import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect, listDeptversion,copySysDept,selectCompany } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getAvatorByUserName } from "@/api/system/user";
@@ -321,14 +353,21 @@ import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
   dicts: ['sys_normal_disable'],
-  components: {Treeselect,selectUser,DictTagHuman},
+  components: {Treeselect,selectUser,DictTagHumanBase},
   data() {
     return {
+      //公司数据
+      companyList:[],
+      //复制弹出层标题
+      titlecopy:'组织部门复制窗口',
+      //复制弹出层显示
+      opencopy:false,
+      //复制表单
+      formcopy:{},
       //选单列表
       baseInfo: {
         uuid: '',
         baseInfoList: [
-          'comp_id',
           'HP002'
         ]
       },
@@ -378,12 +417,16 @@ export default {
         compId: null,
         ifCompany : 0,
         ancestors :null,
+        deptCode:null,
+        deptName:null,
       },
+      //查历史版本参数
       queryParams2: {
         pageNum: 1,
         pageSize: 100,
         deptId: null,
       },
+      //treeselect查询参数
       queryParams3:{
         compId: null,
         ifCompany:0,
@@ -407,8 +450,8 @@ export default {
           { required: true, message: '请输入机构名称', trigger: 'blur' },
         ],
         parentId: [
-          { required: true, message: '请选择该机构上级', trigger: 'blur' },
-          { pattern:/^(?!100$)/, message: '不能选择集团为机构上级', trigger: 'blur'}
+          { required: true, message: '请选择该机构上级', trigger: 'change' },
+          { pattern:/^(?!100$)/, message: '不能选择集团为机构上级', trigger: 'change'}
         ],
         orgTierId: [
           { required: true, message: '请选择机构层级', trigger: 'change' },
@@ -417,17 +460,31 @@ export default {
           { required: true, message: '请选择当前状态', trigger: 'change' },
         ],
         leader: [
-          {required: true,message: "请输入领导", trigger: "blur"}
-        ],
-        phone: [
-          {required: true,message: "请输入领导电话", trigger: "blur"}
+          {required: true,message: "请输入部门负责人", trigger: "blur"}
         ],
         effectDate:[
           { required: true, message: '生效日期不能为空', trigger: 'change' },
+        ],
+        changeReason: [
+          {required: true,message: "请输入变更原因", trigger: "blur"}
+        ],
+        phone:[
+          { pattern:/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/, message: '手机号格式不正确', trigger: 'blur'}
+        ],
+        email:[
+          { pattern:/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/, message: '邮箱格式不正确', trigger: 'blur'}
+        ],
+        fax:[
+          { pattern:/^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/, message: '传真格式不正确', trigger: 'blur'}
         ]
-        // changeReason: [
-        //   {required: true,message: "请输入变更原因", trigger: "blur"}
-        // ]
+      },
+      rulescopy:{
+        oldCompId:[
+          { required: true, message: "来源公司不能为空", trigger: "change" }
+        ],
+        newCompId:[
+          { required: true, message: "目标公司不能为空", trigger: "change" }
+        ]
       }
     };
   },
@@ -448,14 +505,17 @@ export default {
     }
   },
   created() {
-    treeselect().then(response => {
-      this.allDeptOptions = response.data;
-    });
+    this.getCompanyList();
     this.getHumandisc();
     this.getName()
-    // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
+    //获取公司列表
+    getCompanyList(){
+      selectCompany().then(response=>{
+        this.companyList = response.data
+      })
+    },
     //获取人事选单字典
     getHumandisc(){
       getBaseInfo(this.baseInfo).then(response => {
@@ -549,6 +609,11 @@ export default {
       this.open = false;
       this.reset();
     },
+    // 取消复制按钮
+    cancelcopy() {
+      this.resetcopy();
+      this.opencopy = false;
+    },
     // 表单重置
     reset() {
       this.form = {
@@ -584,6 +649,18 @@ export default {
       };
       this.resetForm("form");
     },
+    //复制表单重置
+    resetcopy(){
+      this.formcopy={
+        oldCompId: '',
+        newCompId: '',
+        createBy:this.nickName,
+        updateBy:this.nickName,
+        createTime:getDateTime(0),
+        updateTime:getDateTime(0),
+      };
+      this.resetForm("formcopy");
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -600,6 +677,11 @@ export default {
       this.ids = selection.map(item => item.deptId)
       this.single = selection.length!==1
       this.multiple = !selection.length
+    },
+    /** 复制按钮操作 */
+    handleCopy(){
+      this.resetcopy();
+      this.opencopy = true;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -663,6 +745,22 @@ export default {
         }
       });
     },
+    /** 假别参数复制提交按钮 */
+    submitFormcopy(){
+      this.$refs["formcopy"].validate(valid => {
+        if (valid) {
+          if(this.formcopy.newCompId==this.formcopy.oldCompId){
+            this.$modal.msgError("请选择两个不同的公司");
+          }else{
+            copySysDept(this.formcopy).then(response =>{
+              this.$modal.msgSuccess("复制成功");
+              this.opencopy = false;
+              this.getList();
+            })
+          }
+        }
+      });
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const deptIds = row.deptId || this.ids;
@@ -679,4 +777,13 @@ export default {
 </script>
 
 <style scoped>
+.treeDept {
+  height: 81vh;width: 100%;
+}
+.treeScrollbar {
+  height: 100%;
+}
+.maxWidth{
+  width: 100%;
+}
 </style>

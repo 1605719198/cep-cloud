@@ -27,6 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectAttendencebasisList" parameterType="Attendencebasis" resultMap="AttendencebasisResult">
         <include refid="selectAttendencebasisVo"/>
         <where>
+            <if test="name!=null and name!=''"> and name like concat('%', #{name}, '%')</if>
+            <if test="id!=code and code!=''"> and code =#{code}</if>
         </where>
         order by order_num asc
     </select>
@@ -46,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectAttendencebasisByCode" parameterType="String" resultMap="AttendencebasisResult">
-        <include refid="selectAttendencebasisVo"/>
+        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendenceBasis
         where code = #{code}
     </select>
 

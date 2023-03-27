@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <!-- 添加或修改岗位信息数据维护对话框 -->
-      <el-form ref="form" :model="form" :rules="rules" label-width="180px" style="width: 900px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px" width="900">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="岗位名称" prop="postName">
@@ -15,22 +15,22 @@
           </el-col>
         </el-row>
         <el-form-item label="岗位工作概述" prop="workDesc">
-          <el-input v-model="form.workDesc" type="textarea"   placeholder="请输入内容" maxlength="500" />
+          <el-input v-model="form.workDesc" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="500" />
         </el-form-item>
         <el-form-item label="岗位职责内容" prop="workCon">
-          <el-input v-model="form.workCon" type="textarea"   placeholder="请输入内容" maxlength="500" />
+          <el-input v-model="form.workCon" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="500" />
         </el-form-item>
 
 
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="考核指标" prop="apprKpi">
-                <el-input v-model="form.apprKpi" type="textarea"   placeholder="请输入考核指标" maxlength="500" />
+                <el-input v-model="form.apprKpi" type="textarea"  show-word-limit  placeholder="请输入考核指标" maxlength="500" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="检讨指标" prop="reviewKpi">
-                <el-input v-model="form.reviewKpi" type="textarea"   placeholder="请输入检讨指标" maxlength="500" />
+                <el-input v-model="form.reviewKpi" type="textarea"  show-word-limit  placeholder="请输入检讨指标" maxlength="500" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -38,7 +38,7 @@
 
 
         <el-form-item label="工作标准" prop="workSta">
-          <el-input v-model="form.workSta" type="textarea"   placeholder="请输入内容" maxlength="500" />
+          <el-input v-model="form.workSta" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="500" />
         </el-form-item>
 
         <el-form-item label="工作权限" prop="workAut">

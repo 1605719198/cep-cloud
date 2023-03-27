@@ -3,6 +3,7 @@ package com.jlkj.human.hp.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.dto.DeptUnionPost;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,23 +18,19 @@ public class TreeSelect implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    /** 节点ID */
     private Long id;
 
-    /** 部门名称 */
     private String label;
 
-    /** 公司编码 */
     private String label2;
 
-    /** 是否是公司 */
     private String label3;
 
-    /** 状态正常/作废 */
     private String label4;
 
-    /** 祖级列表 */
     private String label5;
+
+    private Long label6;
 
     /** 子节点 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -46,13 +43,23 @@ public class TreeSelect implements Serializable
 
     public TreeSelect(SysDept dept)
     {
-        this.id = dept.getDeptId();
-        this.label = dept.getDeptName();
-        this.label2 = dept.getCompId();
-        this.label3 = dept.getIfCompany();
-        this.label4 = dept.getStatus();
-        this.label5 = dept.getAncestors();
+        this.id = dept.getDeptId();         // 节点ID
+        this.label = dept.getDeptName();    // 部门名称
+        this.label2 = dept.getCompId();     // 公司编码
+        this.label3 = dept.getIfCompany();  // 是否是公司
+        this.label4 = dept.getStatus();     //状态正常/作废
+        this.label5 = dept.getAncestors();  //祖级列表
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(DeptUnionPost deptunionpost)
+    {
+        this.id = deptunionpost.getDeptId();          // 部门ID
+//        this.label = deptunionpost.getParentId();   // 部门名称
+        this.label2 = deptunionpost.getCompId();      // 公司编码
+        this.label3 = deptunionpost.getName();        // 名称
+        this.label6 = deptunionpost.getPostId();      // 岗位id
+        this.children = deptunionpost.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
     public TreeSelect(Attendencebasis attendencebasis)
@@ -124,6 +131,16 @@ public class TreeSelect implements Serializable
     public void setLabel5(String label5)
     {
         this.label5 = label5;
+    }
+
+    public Long getLabel6()
+    {
+        return label6;
+    }
+
+    public void setLabel5(Long label6)
+    {
+        this.label6 = label6;
     }
 
     public List<TreeSelect> getChildren()

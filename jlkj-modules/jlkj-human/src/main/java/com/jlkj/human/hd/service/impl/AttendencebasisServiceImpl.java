@@ -142,8 +142,8 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     public int insertAttendencebasis(Attendencebasis attendencebasis) throws Exception
     {
 
-        List oldAttendencebasis = attendencebasisMapper.selectAttendencebasisByCode(attendencebasis.getCode());
-        if(!oldAttendencebasis.isEmpty()){
+        int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
+        if(i>0){
             throw new Exception("资料编码已存在，请重新输入");
         }
         return attendencebasisMapper.insertAttendencebasis(attendencebasis);
@@ -191,5 +191,19 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
             throw new Exception("该资料下存在子节点，不可删除");
         }
         return attendencebasisMapper.deleteAttendencebasisById(id);
+    }
+
+    /**
+     * 查询员工出勤基本资料维护选单
+     *
+     * @param code 员工出勤基本资料维护编码
+     * @return 结果
+     */
+    @Override
+    public List<Attendencebasis> selectBasisOptions(String code) {
+
+        Long parentid = attendencebasisMapper.selectAttendencebasisByCode(code).get(0).getId();
+        List<Attendencebasis> list = attendencebasisMapper.selectAttendencebasisByParentid(parentid);
+        return list;
     }
 }

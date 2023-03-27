@@ -1,46 +1,20 @@
 <template>
   <!-- 授权用户 -->
-  <el-dialog title="选择用户" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
+  <el-dialog title="选择一级机构" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
     <el-form :model="queryParams" ref="queryForm" :inline="true">
-          <el-form-item label="用户工号" prop="userName">
-            <el-input
-              v-model="queryParams.userName"
-              placeholder="请输入用户工号"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="手机号码" prop="phonenumber">
-            <el-input
-              v-model="queryParams.phonenumber"
-              placeholder="请输入手机号码"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="归属部门" prop="deptId">
-            <treeselect v-model="queryParams.deptId"
-                        class="treeselect-main"
-                        :options="deptOptionsa"
-                        :show-count="true"
-                        placeholder="请选择部门"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
+      <el-form-item>
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+      </el-form-item>
     </el-form>
     <el-row>
-      <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange"
+      <el-table @row-click="clickRow" ref="table" :data="deptList" @selection-change="handleSelectionChange"
                 height="360px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="用户工号" prop="userName" :show-overflow-tooltip="true"/>
-        <el-table-column label="用户姓名" prop="nickName" :show-overflow-tooltip="true"/>
-        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true"/>
-        <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true"/>
+        <el-table-column label="部门id" prop="deptId" :show-overflow-tooltip="true"/>
+        <el-table-column label="部门编码" prop="deptCode" :show-overflow-tooltip="true"/>
+        <el-table-column label="部门名称" prop="deptName" :show-overflow-tooltip="true"/>
+        <el-table-column label="领导" prop="leader" :show-overflow-tooltip="true"/>
         <el-table-column label="状态" align="center" prop="status">
           <template v-slot="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -68,14 +42,10 @@
 </template>
 
 <script>
-import {getAllUserList} from "@/api/system/role";
-import {deptTreeSelect} from "@/api/system/user";
-import Treeselect from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { listDeptmaintenance} from "@/api/human/hp/deptMaintenance";
 
 export default {
   dicts: ['sys_normal_disable'],
-  components: {Treeselect},
   data() {
     return {
       // 判断选择单笔还是多笔
@@ -86,37 +56,29 @@ export default {
       userIds: [],
       // 总条数
       total: 0,
-      // 未授权用户数据
-      userList: [],
+      // 一级部门
+      deptList: [],
       // 部门树选项
       deptOptionsa: undefined,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        roleId: 1,
-        userName: undefined,
-        phonenumber: undefined,
-        deptId: undefined
+        compId:null,
+        orgTierId:'01',
+        status:'0',
       }
     };
   },
   created() {
-    this.getDeptTree();
   },
   methods: {
     // 显示弹框
     show(val) {
+      this.queryParams.compId=val;
       this.getList();
       this.visible = true;
-      this.isSingle = val
-
-    },
-    /** 查询部门下拉树结构 */
-    getDeptTree() {
-      deptTreeSelect().then(response => {
-        this.deptOptionsa = response.data;
-      });
+      this.isSingle = false;
 
     },
     clickRow(row) {
@@ -128,8 +90,8 @@ export default {
     },
     // 查询表数据
     getList() {
-      getAllUserList(this.queryParams).then(res => {
-        this.userList = res.rows;
+      listDeptmaintenance(this.queryParams).then(res => {
+        this.deptList = res.rows;
         this.total = res.total;
       });
     },
@@ -160,7 +122,4 @@ export default {
 };
 </script>
 <style scoped>
-.treeselect-main {
-  width: 200px;
-}
 </style>

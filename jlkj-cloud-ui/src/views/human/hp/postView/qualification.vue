@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <!-- 添加或修改岗位信息数据维护对话框 -->
-      <el-form ref="form" :model="form" :rules="rules" label-width="180px" style="width: 900px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px" width="900">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="岗位名称" prop="postName">
@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <div style="display: flex;justify-content: flex-end;width: 100%">
+        <div class="divFather">
           <div class="page3_div">
             <div class="page3_div_left">
               <label >
@@ -143,6 +143,11 @@ export default {
 </script>
 
 <style scoped>
+.divFather{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%
+}
 .page3_div{
   background-color: #f7f7f7;
   width: 90%;

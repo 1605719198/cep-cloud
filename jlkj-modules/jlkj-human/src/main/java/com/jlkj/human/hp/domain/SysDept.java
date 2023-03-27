@@ -46,6 +46,9 @@ public class SysDept extends BaseEntity
     /** 祖级列表 */
     private String ancestors;
 
+    /** 层级逗号数 */
+    private Integer ancestorsLevel;
+
     /** 机构层级 */
     private String orgTierId;
 
@@ -99,6 +102,10 @@ public class SysDept extends BaseEntity
 
     /** 公司简称 */
     private String companyName;
+
+    /** 集团编码 */
+    private String cliqueCode = "JL";
+
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
 
@@ -173,6 +180,15 @@ public class SysDept extends BaseEntity
     public String getAncestors()
     {
         return ancestors;
+    }
+    public void setAncestorsLevel(Integer ancestorsLevel)
+    {
+        this.ancestorsLevel = ancestorsLevel;
+    }
+
+    public Integer getAncestorsLevel()
+    {
+        return ancestorsLevel;
     }
     public void setOrgTierId(String orgTierId)
     {
@@ -327,6 +343,15 @@ public class SysDept extends BaseEntity
     {
         return companyName;
     }
+    public void setCliqueCode(String cliqueCode)
+    {
+        this.cliqueCode = cliqueCode;
+    }
+
+    public String getCliqueCode()
+    {
+        return cliqueCode;
+    }
 
     public List<SysDept> getChildren()
     {
@@ -349,6 +374,7 @@ public class SysDept extends BaseEntity
             .append("parentName", getParentName())
             .append("parentFullName", getParentFullName())
             .append("ancestors", getAncestors())
+            .append("ancestorsLevel",getAncestorsLevel())
             .append("orgTierId", getOrgTierId())
             .append("orderNum", getOrderNum())
             .append("leader", getLeader())
@@ -370,6 +396,7 @@ public class SysDept extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("isNew", getIsNew())
             .append("companyName", getCompanyName())
+            .append("cliqueCode",getCliqueCode())
             .toString();
     }
 }

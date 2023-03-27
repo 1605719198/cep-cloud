@@ -35,6 +35,15 @@ export function addDeptmaintenance(data) {
   })
 }
 
+// 复制部门资料维护
+export function copySysDept(data) {
+  return request({
+    url: '/human/deptMaintenance/copySysDept',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改部门资料维护
 export function updateDeptmaintenance(data) {
   return request({
@@ -51,12 +60,29 @@ export function delDeptmaintenance(deptId) {
     method: 'delete'
   })
 }
-//获取树形选择器
+//获取部门树形选择器
 export function treeselect(query) {
   return request({
     url: '/human/deptMaintenance/treeselect',
     method: 'get',
     params: query
+  })
+}
+
+//获取部门岗位树形选择器
+export function deptpostTree(query) {
+  return request({
+    url: '/human/deptMaintenance/deptpostTree',
+    method: 'get',
+    params: query
+  })
+}
+
+//获取公司列表
+export function selectCompany() {
+  return request({
+    url: '/human/deptMaintenance/selectCompany',
+    method: 'get',
   })
 }
 

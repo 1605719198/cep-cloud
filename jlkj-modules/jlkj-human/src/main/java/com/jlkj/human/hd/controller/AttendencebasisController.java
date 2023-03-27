@@ -104,4 +104,15 @@ public class AttendencebasisController extends BaseController
         List<Attendencebasis> attendencebasiss = attendencebasisService.selectAttendencebasisList(attendencebasis);
         return AjaxResult.success(attendencebasisService.buildAttendenceTreeSelect(attendencebasiss));
     }
+
+    /**
+     * 获取出勤作业下拉选单列表
+     */
+    @GetMapping(value = "/getBasisOptions/{code}")
+//    public Object getBasisOptions(AttendencebasisDTO attendencebasisDTO)
+    public TableDataInfo getBasisOptions(@PathVariable("code") String code)
+    {
+            List<Attendencebasis> list = attendencebasisService.selectBasisOptions(code);
+            return getDataTable(list);
+    }
 }

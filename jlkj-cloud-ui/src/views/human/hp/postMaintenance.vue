@@ -5,15 +5,15 @@
         <div class="head-container">
           <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
             <el-option
-              v-for="dict in baseInfoData.comp_id"
-              :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
+              v-for="dict in companyList"
+              :key="dict.compId"
+              :label="dict.deptName"
+              :value="dict.compId"
             />
           </el-select>
         </div>
-        <div class="head-container" style="height: 81vh;width: 100%;" v-show="treeandtable">
-          <el-scrollbar style="height: 100%;">
+        <div class="head-container treeDept"  v-show="treeandtable">
+          <el-scrollbar class="treeScrollbar">
             <el-tree
               :data="deptOptions"
               :props="defaultProps"
@@ -75,16 +75,6 @@
               v-hasPermi="['human:postMaintenance:remove']"
             >删除</el-button>
           </el-col>
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              type="warning"-->
-<!--              plain-->
-<!--              icon="el-icon-download"-->
-<!--              size="mini"-->
-<!--              @click="handleExport"-->
-<!--              v-hasPermi="['human:postMaintenance:export']"-->
-<!--            >导入</el-button>-->
-<!--          </el-col>-->
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
         <el-table v-loading="loading" :data="postMaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
@@ -94,19 +84,19 @@
           <el-table-column label="定员" align="center" prop="planCapacity" />
           <el-table-column label="现员" align="center" prop="nowCapacity" />
           <el-table-column label="状态" align="center" prop="status">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
             </template>
           </el-table-column>
           <el-table-column label="该岗位上级岗位名称" align="center" prop="parentPostName" />
           <el-table-column label="更新人" align="center" prop="updateBy" />
           <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template v-slot:default="scope">
+            <template v-slot="scope">
               <el-button
                 size="mini"
                 type="text"
@@ -142,9 +132,9 @@
 <script>
 import { getDateTime } from "@/api/human/hd/abchuman"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { treeselect } from "@/api/human/hp/deptMaintenance";
-import Treeselect from "@riophae/vue-treeselect";
 import { getAvatorByUserName} from "@/api/system/user";
+import { treeselect , selectCompany } from "@/api/human/hp/deptMaintenance";
+import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listPostMaintenance, getPostMaintenance, delPostMaintenance, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
 import AddOrUpdate from '@/views/human/hp/postView/base'
@@ -154,6 +144,8 @@ export default {
   components: {Treeselect,AddOrUpdate},
   data() {
     return {
+      //公司数据
+      companyList:[],
       //新增修改界面是否显示
       addOrUpdateVisible:false,
       //选单列表
@@ -288,26 +280,21 @@ export default {
     }
   },
   created() {
+    this.getCompanyList();
     this.getHumandisc();
     this.getName();
-    // this.getTreeselect();
   },
   methods: {
+    //获取公司列表
+    getCompanyList(){
+      selectCompany().then(response=>{
+        this.companyList = response.data
+      })
+    },
     //获取人事选单字典
     getHumandisc(){
       getBaseInfo(this.baseInfo).then(response => {
         this.baseInfoData = response.data;
-        // for(var i =0;i<this.baseInfoData.comp_id.length;i++){
-        //   console.log(JSON.stringify(baseInfoData.comp_id[i]))
-        // }
-        this.baseInfoData.comp_id.forEach((item,index,array)=>{
-          // this.expandedKeys.push(101);
-          // alert(item.dicNo)
-        })
-        this.expandedKeys.push(101);
-        this.expandedKeys.push(102);
-        this.expandedKeys.push(200);
-
       });
     },
     // 获取当前登录用户名称/信息
@@ -317,16 +304,6 @@ export default {
         this.logincompId=response.data.compId
         this.compId=response.data.compId
       })
-    },
-    /** 点选获取人员信息 */
-    getJobNumber(val) {
-      this.form.leader = val[0].nickName;
-      if(val[0].phonenumber!=null){
-        this.form.phone = val[0].phonenumber;
-        this.form.email = val[0].email;
-      }
-      //   this.form.jobNumber = val[0].userName
-      //   this.form.jobName = val[0].nickName
     },
     /** 转换部门数据结构 */
     normalizer(node) {
@@ -350,6 +327,7 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data;
+        this.expandedKeys.push(response.data[0].id);
       });
       treeselect().then(response => {
         this.allDeptOptions = response.data;
@@ -505,12 +483,15 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/postMaintenance/export', {
-        ...this.queryParams
-      }, `postMaintenance_${new Date().getTime()}.xlsx`)
-    }
   }
 };
 </script>
+<style scoped>
+.treeDept {
+  height: 81vh;width: 100%;
+}
+.treeScrollbar {
+  height: 100%;
+}
+
+</style>

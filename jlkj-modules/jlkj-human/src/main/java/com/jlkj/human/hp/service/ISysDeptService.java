@@ -2,6 +2,8 @@ package com.jlkj.human.hp.service;
 
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
+import com.jlkj.human.hp.dto.CopySysDept;
+import com.jlkj.human.hp.dto.DeptUnionPost;
 
 import java.util.List;
 
@@ -28,6 +30,21 @@ public interface ISysDeptService
      * @return 部门资料维护集合
      */
     public List<SysDept> selectSysDeptList(SysDept sysDept);
+
+    /**
+     * 查询部门岗位资料维护列表
+     *
+     * @param deptpost 部门岗位资料维护
+     * @return 部门岗位资料集合
+     */
+    public List<DeptUnionPost> selectDeptPostList(DeptUnionPost deptpost);
+
+    /**
+     * 查询公司列表
+     *
+     * @return 公司列表资料集合
+     */
+    public List<SysDept> selectCompanyList();
     /**
      * 构建前端所需要树结构
      *
@@ -45,6 +62,22 @@ public interface ISysDeptService
     public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts);
 
     /**
+     * 构建前端所需要树结构
+     *
+     * @param deptpostList 部门列表
+     * @return 树结构列表
+     */
+    public List<DeptUnionPost> buildDeptPostTree(List<DeptUnionPost> deptpostList);
+
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param deptpostList 部门列表
+     * @return 下拉树结构列表
+     */
+    public List<TreeSelect> buildDeptPostTreeSelect(List<DeptUnionPost> deptpostList);
+
+    /**
      * 根据部门ID查询信息
      *
      * @param deptId 部门ID
@@ -59,7 +92,16 @@ public interface ISysDeptService
      * @param sysDept 部门资料维护
      * @return 结果
      */
+
     public int insertSysDept(SysDept sysDept)throws Exception;
+
+    /**
+     * 复制组织机构设定
+     *
+     * @param copySysDept 假别参数复制设定
+     * @return 结果
+     */
+    public int copySysDept (CopySysDept copySysDept) throws Exception;
 
     /**
      * 修改部门资料维护

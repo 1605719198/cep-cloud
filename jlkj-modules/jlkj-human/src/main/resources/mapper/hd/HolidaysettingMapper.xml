@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.HolidaysettingMapper">
+
+    <resultMap type="Holidaysetting" id="HolidaysettingResult">
+        <result property="id"    column="id"    />
+        <result property="holidayTypeCode"    column="holiday_type_code"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="isIncHol"    column="is_inc_hol"    />
+        <result property="isNeedCheck"    column="is_need_check"    />
+        <result property="minUnitDay"    column="min_unit_day"    />
+        <result property="minUnitTurns"    column="min_unit_turns"    />
+        <result property="description"    column="description"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectHolidaysettingVo">
+        select id, holiday_type_code, comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, creator, creator_id, create_date from human_hd_holidaysetting
+    </sql>
+
+    <select id="selectHolidaysettingList" parameterType="Holidaysetting" resultMap="HolidaysettingResult">
+        <include refid="selectHolidaysettingVo"/>
+        <where>
+            <if test="holidayTypeCode != null  and holidayTypeCode != ''"> and holiday_type_code = #{holidayTypeCode}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+
+    <select id="selectHolidaysettingById" parameterType="String" resultMap="HolidaysettingResult">
+        <include refid="selectHolidaysettingVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="queryRepetitivedata" parameterType="Holidaysetting" resultType="Int">
+        select count(*) from human_hd_holidaysetting
+        <where>
+            <if test="holidayTypeCode!=null and holidayTypeCode!=''"> and holiday_type_code =#{holidayTypeCode}</if>
+            <if test="id!=null and id!=''"> and id !=#{id}</if>
+            <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
+        </where>
+    </select>
+
+    <insert id="insertHolidaysetting" parameterType="Holidaysetting">
+        insert into human_hd_holidaysetting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="holidayTypeCode != null and holidayTypeCode != ''">holiday_type_code,</if>
+            <if test="compId != null and compId != ''">comp_id,</if>
+            <if test="isIncHol != null and isIncHol != ''">is_inc_hol,</if>
+            <if test="isNeedCheck != null">is_need_check,</if>
+            <if test="minUnitDay != null">min_unit_day,</if>
+            <if test="minUnitTurns != null">min_unit_turns,</if>
+            <if test="description != null">description,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="holidayTypeCode != null and holidayTypeCode != ''">#{holidayTypeCode},</if>
+            <if test="compId != null and compId != ''">#{compId},</if>
+            <if test="isIncHol != null and isIncHol != ''">#{isIncHol},</if>
+            <if test="isNeedCheck != null">#{isNeedCheck},</if>
+            <if test="minUnitDay != null">#{minUnitDay},</if>
+            <if test="minUnitTurns != null">#{minUnitTurns},</if>
+            <if test="description != null">#{description},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <insert id="copyHolidaysetting" parameterType="CopyHolidaysetting" >
+        insert into human_hd_holidaysetting
+        (holiday_type_code , comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, creator, creator_id,create_date)
+        select holiday_type_code ,#{newCompId} AS comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, #{creator} AS creator,#{creatorId} AS creator_id, #{createDate} AS create_date
+        from human_hd_holidaysetting
+        where
+            comp_id=#{oldCompId};
+    </insert>
+
+    <select id="querycopybyOldCompId" parameterType="String" resultType="Int">
+        select count(*) from human_hd_holidaysetting
+        <where>
+            <if test="oldCompId!=null and oldCompId!=''"> and comp_id =#{oldCompId}</if>
+        </where>
+    </select>
+
+    <select id="querycopybyNewCompId" parameterType="String" resultType="Int">
+        select count(*) from human_hd_holidaysetting
+        <where>
+            <if test="newCompId!=null and newCompId!=''"> and comp_id =#{newCompId}</if>
+        </where>
+    </select>
+
+    <update id="updateHolidaysetting" parameterType="Holidaysetting">
+        update human_hd_holidaysetting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="holidayTypeCode != null and holidayTypeCode != ''">holiday_type_code = #{holidayTypeCode},</if>
+            <if test="compId != null and compId != ''">comp_id = #{compId},</if>
+            <if test="isIncHol != null and isIncHol != ''">is_inc_hol = #{isIncHol},</if>
+            <if test="isNeedCheck != null">is_need_check = #{isNeedCheck},</if>
+            <if test="minUnitDay != null">min_unit_day = #{minUnitDay},</if>
+            <if test="minUnitTurns != null">min_unit_turns = #{minUnitTurns},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHolidaysettingById" parameterType="String">
+        delete from human_hd_holidaysetting where id = #{id}
+    </delete>
+
+    <delete id="deleteHolidaysettingByIds" parameterType="String">
+        delete from human_hd_holidaysetting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
