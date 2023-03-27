@@ -991,6 +991,8 @@ export default {
       if (reg.test(this.form.certificateNumber)) {
         const org_birthday = this.form.certificateNumber.substring(6, 14);
         const org_gender = this.form.certificateNumber.substring(16, 17);
+        const area = this.form.certificateNumber.substring(0, 5);
+        console.log(area);
         const sex = org_gender % 2 == 1 ? "0" : "1";
         const birthday =
           org_birthday.substring(0, 4) +

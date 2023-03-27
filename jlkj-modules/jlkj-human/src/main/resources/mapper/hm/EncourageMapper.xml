@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hm.mapper.EncourageMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hm.domain.Encourage">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="postFullName" column="post_full_name" jdbcType="VARCHAR"/>
+            <result property="effectDate" column="effect_date" jdbcType="DATE"/>
+            <result property="postLevel" column="post_level" jdbcType="VARCHAR"/>
+            <result property="encourageType" column="encourage_type" jdbcType="VARCHAR"/>
+            <result property="encourageAccording" column="encourage_according" jdbcType="VARCHAR"/>
+            <result property="encourageReason" column="encourage_reason" jdbcType="VARCHAR"/>
+            <result property="docNo" column="doc_no" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="alternateField1" column="alternate_field1" jdbcType="VARCHAR"/>
+            <result property="alternateField2" column="alternate_field2" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,emp_id,
+        emp_name,emp_no,post_id,
+        post_full_name,effect_date,post_level,
+        encourage_type,encourage_according,encourage_reason,
+        doc_no,remark,creator,
+        creator_id,create_date,alternate_field1,
+        alternate_field2
+    </sql>
+</mapper>

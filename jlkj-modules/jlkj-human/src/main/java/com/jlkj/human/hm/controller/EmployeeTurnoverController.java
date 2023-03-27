@@ -26,7 +26,6 @@ import java.util.*;
  * @Description
  * @create 2023-03-16 13:42
  */
-@ControllerAdvice
 @RestController
 @RequestMapping("/employeeTurnover")
 public class EmployeeTurnoverController extends BaseController {

@@ -14,7 +14,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="工号">
-                <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
+                <el-input v-model="queryParams.empNo" placeholder="请输入工号" disabled>
                   <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
                 </el-input>
               </el-form-item>
@@ -453,12 +453,10 @@ export default {
     },
     handleQuery() {
       listPostMaintenance(this.queryParams).then(response => {
-        this.orgName = response.rows[0].orgName
-        this.parentPostName = response.rows[0].parentPostName
         this.postMaintenanceList = response.rows;
-        this.addJsonForm.postName = this.postMaintenanceList[0].postName
-        this.addJsonForm.postId = this.postMaintenanceList[0].postId
-        this.addJsonForm.departmentName = this.postMaintenanceList[0].orgName
+        this.orgName = this.postMaintenanceList[0].orgName
+        this.parentPostName = this.postMaintenanceList[0].parentPostName
+        this.addJsonForm.employeeInductionList[this.index].newPostId = this.postMaintenanceList[0].postId
       });
     },
     /** 查询部门下拉树结构 */

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询人员离职信息列表
+// 查询员工离职信息列表
 export function listEmployeeLeave(query) {
   return request({
     url: '/human/employeeLeave/list',
@@ -9,7 +9,7 @@ export function listEmployeeLeave(query) {
   })
 }
 
-// 查询人员离职信息详细
+// 查询员工离职信息详细
 export function getEmployeeLeave(uuid) {
   return request({
     url: '/human/employeeLeave/' + uuid,
@@ -17,7 +17,7 @@ export function getEmployeeLeave(uuid) {
   })
 }
 
-// 新增人员离职信息
+// 新增员工离职信息
 export function addEmployeeLeave(data) {
   return request({
     url: '/human/employeeLeave',
@@ -26,7 +26,7 @@ export function addEmployeeLeave(data) {
   })
 }
 
-// 修改人员离职信息
+// 修改员工离职信息
 export function updateEmployeeLeave(data) {
   return request({
     url: '/human/employeeLeave',
@@ -35,7 +35,7 @@ export function updateEmployeeLeave(data) {
   })
 }
 
-// 删除人员离职信息
+// 删除员工离职信息
 export function delEmployeeLeave(uuid) {
   return request({
     url: '/human/employeeLeave/' + uuid,

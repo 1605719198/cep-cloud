@@ -33,6 +33,7 @@
           <el-col :span="1.5">
             <el-button size="mini"
                        type="primary"
+                       plain
                        @click="handleAdd"
                        icon="el-icon-plus">新 增</el-button>
           </el-col>
@@ -280,7 +281,7 @@
 <script>
 import selectUser from "@/views/human/hm/selectUser";
 import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
-import {queryEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
+import {queryEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
 import {
   addEmployeeTurnover,
   delEmployeeTurnover,
@@ -289,7 +290,7 @@ import {
 } from "@/api/human/hm/employeeTurnover"
 import {treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
-import DictTagHuman from "@/views/human/hp/DictTag/index"
+import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo"
 export default {
   name: "EmployeeTurnover",
   dicts: ['comp_id'],
@@ -534,12 +535,10 @@ export default {
     },
     handleQuery() {
       listPostMaintenance(this.queryParams).then(response => {
-        this.orgName = response.rows[0].orgName
-        this.parentPostName = response.rows[0].parentPostName
         this.postMaintenanceList = response.rows;
-        this.addJsonForm.postName = this.postMaintenanceList[0].postName
-        this.addJsonForm.postId = this.postMaintenanceList[0].postId
-        this.addJsonForm.departmentName = this.postMaintenanceList[0].orgName
+        this.orgName = this.postMaintenanceList[0].orgName
+        this.parentPostName = this.postMaintenanceList[0].parentPostName
+        this.addJsonForm.employeeInductionList[this.index].newPostId = this.postMaintenanceList[0].postId
       });
     },
     /** 查询部门下拉树结构 */

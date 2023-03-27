@@ -42,27 +42,20 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-              v-hasPermi="['human:employeeLeave:add']"
+              v-hasPermi="['human:employeeEncourage:add']"
             >新增</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="employeeLeaveList">
+        <el-table v-loading="loading" :data="employeeEncourageList">
+          <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="工号" align="center" prop="empNo" />
           <el-table-column label="姓名" align="center" prop="empName" />
-          <el-table-column label="离职生效日期" align="center" prop="leaveEffectDate" width="180">
-            <template v-slot="scope">
-              <span>{{ parseTime(scope.row.leaveEffectDate, '{y}-{m}-{d}') }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="离职类别" align="center" prop="leaveTypeId" >
-            <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.ResignationCategory" :value="scope.row.leaveTypeId"/>
-            </template>
-          </el-table-column>
+          <el-table-column label="岗位" align="center" prop="postFullName" />
+          <el-table-column label="奖惩类别" align="center" prop="encourageType" />
           <el-table-column label="输入人" align="center" prop="creator" />
-          <el-table-column label="输入日期" align="center" prop="createDate" width="180">
+          <el-table-column label="输入时间" align="center" prop="createDate" width="180">
             <template v-slot="scope">
               <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
             </template>
@@ -74,14 +67,14 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                v-hasPermi="['human:employeeLeave:edit']"
+                v-hasPermi="['human:employeeEncourage:edit']"
               >修改</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-                v-hasPermi="['human:employeeLeave:remove']"
+                v-hasPermi="['human:employeeEncourage:remove']"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -95,73 +88,52 @@
           @pagination="getList"
         />
 
-        <!-- 添加或修改人员离职信息对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="850px" append-to-body>
-          <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+        <!-- 添加或修改人员奖惩信息对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="工号" prop="empNo">
                   <el-input v-model="form.empNo" placeholder="请输入工号" disabled>
                     <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="姓名" prop="empName">
                   <el-input v-model="form.empName" placeholder="请输入姓名" disabled/>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="离职前主岗位" prop="leaveMainPost">
-                  <el-input v-model="form.leaveMainPost" placeholder="请输入离职前主岗位" disabled/>
+              <el-col :span="8">
+                <el-form-item label="职位等级" prop="postLevel">
+                  <el-input v-model="form.postLevel" placeholder="请输入职位等级" disabled/>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="12">
-                <el-form-item label="入企日期" prop="enterDate">
-                  <el-date-picker clearable
-                                  v-model="form.enterDate"
-                                  type="date"
-                                  class="aa"
-                                  disabled
-                                  value-format="yyyy-MM-dd"
-                                  placeholder="请选择入企日期">
-                  </el-date-picker>
+              <el-col :span="16">
+                <el-form-item label="岗位" prop="postFullName">
+                  <el-input v-model="form.postFullName" placeholder="请输入岗位" disabled/>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
-                <el-form-item label="离职生效日期" prop="leaveEffectDate">
+              <el-col :span="8">
+                <el-form-item label="生效日期" prop="effectDate">
                   <el-date-picker clearable
-                                  v-model="form.leaveEffectDate"
+                                  v-model="form.effectDate"
                                   type="date"
                                   class="aa"
                                   value-format="yyyy-MM-dd"
-                                  placeholder="请选择离职生效日期">
+                                  placeholder="请选择生效日期">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="12">
-                <el-form-item label="离职类别" prop="leaveTypeId">
-                  <el-select v-model="form.leaveTypeId" placeholder="请选择" style="width: 100%">
+              <el-col :span="8">
+                <el-form-item label="奖惩类别" prop="encourageType">
+                  <el-select v-model="form.encourageType">
                     <el-option
-                      v-for="dict in baseInfoData.ResignationCategory"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="离职原因" prop="leaveReason">
-                  <el-select v-model="form.leaveReason" placeholder="请选择" style="width: 131px" @change="changeLeaveReason">
-                    <el-option
-                      v-for="dict in baseInfoData.ReasonForResignation"
+                      v-for="dict in baseInfoData.EncourageType"
                       :key="dict.uuid"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -169,38 +141,29 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
-                <el-form-item prop="leaveReasonDetail">
-                  <el-select v-model="form.leaveReasonDetail" style="width: 158px;margin-left: -65px">
-                    <el-option
-                      v-for="dict in leaveReasonDetail"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
+              <el-col :span="16">
+                <el-form-item label="奖惩依据" prop="encourageAccording">
+                  <el-input v-model="form.encourageAccording" placeholder="请输入奖惩依据" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="奖惩原因" prop="encourageReason">
+                  <el-input v-model="form.encourageReason" type="textarea" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="止薪日期" prop="endPayDate">
-                  <el-date-picker clearable
-                                  v-model="form.endPayDate"
-                                  type="date"
-                                  class="aa"
-                                  value-format="yyyy-MM-dd"
-                                  placeholder="请选择止薪日期">
-                  </el-date-picker>
+                <el-form-item label="公文文号" prop="docNo">
+                  <el-input v-model="form.docNo" type="textarea" placeholder="请输入公文文号" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="输入人" prop="creator">{{form.creator}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="输入日期" prop="createDate">{{ parseTime(form.createDate, '{y}-{m}-{d}') }}</el-form-item>
+                <el-form-item label="备注" prop="remark">
+                  <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form>
@@ -216,28 +179,25 @@
 </template>
 
 <script>
-import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
+import { listEmployeeEncourage, getEmployeeEncourage, delEmployeeEncourage, addEmployeeEncourage, updateEmployeeEncourage } from "@/api/human/hm/employeeEncourage";
 import selectUser from "@/views/human/hm/selectUser";
-import {listEmployeeLeave, getEmployeeLeave, addEmployeeLeave, updateEmployeeLeave, delEmployeeLeave} from "@/api/human/hm/employeeLeave";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
-import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
+import {getBaseInfo} from "@/api/human/hm/baseInfo";
 
 export default {
-  name: "employeeLeave",
+  name: "employeeEncourage",
   dicts: ['comp_id'],
-  components: {selectUser, DictTagHuman},
+  components: {selectUser},
   data() {
     return {
       // 遮罩层
       loading: false,
-      // 选中数组
-      ids: [],
       // 显示搜索条件
       showSearch: true,
       // 总条数
       total: 0,
-      // 人员离职信息表格数据
-      employeeLeaveList: [],
+      // 人员奖惩信息表格数据
+      employeeEncourageList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -253,26 +213,25 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        leaveEffectDate: [
-          { required: true, message: "离职生效日期不能为空", trigger: "blur" }
+        effectDate: [
+          { required: true, message: "生效日期不能为空", trigger: "blur" }
         ],
-        leaveTypeId: [
-          { required: true, message: "离职类别不能为空", trigger: "blur" }
+        encourageType: [
+          { required: true, message: "奖惩类别不能为空", trigger: "blur" }
         ],
-        leaveReason: [
-          { required: true, message: "离职原因不能为空", trigger: "blur" }
+        encourageAccording: [
+          { required: true, message: "奖惩依据不能为空", trigger: "blur" }
+        ],
+        encourageReason: [
+          { required: true, message: "奖惩原因不能为空", trigger: "blur" }
         ],
       },
       //选单数据
       baseInfoData: [],
       baseInfo: {
-        uuid: '',
         baseInfoList: [
-          'ResignationCategory',
-          'ReasonForResignation']
+          'EncourageType']
       },
-      //离职原因细分
-      leaveReasonDetail: []
     };
   },
   created() {
@@ -281,12 +240,12 @@ export default {
     });
   },
   methods: {
-    /** 查询人员离职信息列表 */
+    /** 查询人员奖惩信息列表 */
     getList() {
       this.loading = true;
-      listEmployeeLeave(this.queryParams).then(response => {
-        this.employeeLeaveList = response.data.rows;
-        this.total = response.data.total;
+      listEmployeeEncourage(this.queryParams).then(response => {
+        this.employeeEncourageList = response.rows;
+        this.total = response.total;
         this.loading = false;
       });
     },
@@ -298,17 +257,25 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        empNo: null,
+        uuid: null,
+        compId: null,
+        empId: null,
         empName: null,
-        leaveMainPost: null,
-        enterDate: null,
-        leaveEffectDate: new Date(),
-        endPayDate: new Date(),
-        leaveTypeId: null,
-        leaveReason: null,
-        leaveReasonDetail: null,
+        empNo: null,
+        postId: null,
+        postFullName: null,
+        effectDate: null,
+        postLevel: null,
+        encourageType: null,
+        encourageAccording: null,
+        encourageReason: null,
+        docNo: null,
+        remark: null,
         creator: null,
-        createDate: new Date(),
+        creatorId: null,
+        createDate: null,
+        alternateField1: null,
+        alternateField2: null
       };
       this.resetForm("form");
     },
@@ -324,16 +291,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加员工离职资料";
+      this.title = "新增员工奖惩资料";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const uuid = row.uuid
-      getEmployeeLeave(uuid).then(response => {
+      const uuid = row.uuid;
+      getEmployeeEncourage(uuid).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改员工离职资料";
+        this.title = "修改员工奖惩资料";
       });
     },
     /** 提交按钮 */
@@ -341,13 +308,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.uuid != null) {
-            updateEmployeeLeave(this.form).then(response => {
+            updateEmployeeEncourage(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addEmployeeLeave(this.form).then(response => {
+            addEmployeeEncourage(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -359,23 +326,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const uuids = row.uuid;
-      const empNo = row.empNo;
-      this.$modal.confirm('是否确认删除工号为"' + empNo + '"的数据项？').then(function() {
-        return delEmployeeLeave(uuids);
+      this.$modal.confirm('是否确认删除人员奖惩信息编号为"' + uuids + '"的数据项？').then(function() {
+        return delEmployeeEncourage(uuids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
-    },
-    changeLeaveReason(val) {
-      const selectedItem = this.baseInfoData.ReasonForResignation.find((item) => {
-        return item.dicNo === val
-      })
-      this.baseInfo.uuid = selectedItem.uuid
-      this.leaveReasonDetail = []
-      getDegreeMajorSpecialization(this.baseInfo).then(response => {
-        this.leaveReasonDetail = response.data
-      });
     },
     /** 工号点击事件 */
     inputClick() {
@@ -387,8 +343,8 @@ export default {
       this.form.empNo = val
       this.form.empName = userName
       queryNewPostNameAndChangeDetail(this.form).then(res => {
-        this.form.leaveMainPost = res.data.list1[0].newPostName
-        this.form.enterDate = res.data.list[0].effectDate
+        this.form.postFullName = res.data.list1[0].newPostName
+        this.form.postLevel = res.data.list[0].postLevel
       })
     },
   }
@@ -396,6 +352,7 @@ export default {
 </script>
 <style scoped>
 .aa {
-  width: 295px;
+  width: 206px;
 }
 </style>
+

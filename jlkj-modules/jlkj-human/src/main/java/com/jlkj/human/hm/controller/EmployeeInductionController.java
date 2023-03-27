@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -29,10 +30,9 @@ import java.util.Map;
  * @Description
  * @create 2023-03-16 13:42
  */
-@ControllerAdvice
 @RestController
 @RequestMapping("/employeeInduction")
-public class EmployeeInductionController {
+public class EmployeeInductionController extends BaseController {
 
     @Autowired
     IChangeMasterService changeMasterService;
