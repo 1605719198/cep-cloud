@@ -244,7 +244,7 @@ public class SafeJobTemporaryElectricityController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "temporaryelectricity_list")
+
     public Object getSafeJobTemporaryElectricityPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobTemporaryElectricityService.getSafeJobTemporaryElectricityPageList(params));

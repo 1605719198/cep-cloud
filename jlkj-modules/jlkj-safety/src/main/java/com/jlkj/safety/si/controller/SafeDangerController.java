@@ -73,7 +73,6 @@ public class SafeDangerController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-	//@RoleAndPermission(permission = "danger_list")
     public Object getSafeDangerRecordPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeDangerRecordService.getSafeDangerRecordPageList(params));
@@ -125,7 +124,6 @@ public class SafeDangerController {
             )
     )
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-	//@RoleAndPermission(permission = "danger_info")
     public Object getSafeDangerRecordById(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeDangerRecordService.getSafeDangerRecordById(params));
@@ -160,7 +158,6 @@ public class SafeDangerController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-	//@RoleAndPermission(permission = "danger_insert")
     public Object addSafeDangerRecord(@RequestBody Map<String, Object> params) {
 		try {
 			SafeSiDangerRecord safeSiDangerRecord;
@@ -194,7 +191,6 @@ public class SafeDangerController {
 			@ApiResponse(code = 0, message = "调用成功", response = String.class)
 	)
 	@RequestMapping(value = "/dispose", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "danger_dispose")
 	public Object disposeSafeDanger(@RequestBody Map<String, Object> params) {
 		try {
 			return AjaxResult.success(safeDangerRecordService.disposeSafeDanger(params));
@@ -222,7 +218,6 @@ public class SafeDangerController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/acceptance", method = RequestMethod.POST)
-	//@RoleAndPermission(permission = "danger_acceptance")
     public Object acceptanceSafeDanger(@RequestBody Map<String, Object> params) {
 		try {
 			return AjaxResult.success(safeDangerRecordService.acceptanceSafeDanger(params));
@@ -240,7 +235,6 @@ public class SafeDangerController {
 			@ApiResponse(code = 0, message = "调用成功", response = String.class)
 	)
 	@RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "danger_delete")
 	public Object deleteSafeDanger(@RequestBody Map<String, Object> params) {
 		log.info("RequestParam => {}", params);
 		try {

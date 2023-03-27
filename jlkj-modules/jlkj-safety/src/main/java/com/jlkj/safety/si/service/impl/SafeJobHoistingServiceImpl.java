@@ -12,7 +12,6 @@ import com.jlkj.safety.si.service.SafeJobHoistingService;
 import com.jlkj.safety.si.utils.JobUtil;
 import com.jlkj.safety.si.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -115,9 +114,6 @@ public class SafeJobHoistingServiceImpl extends ServiceImpl<SafeJobHoistingMappe
     @Override
     @Transactional(readOnly = true)
     public Object getSafeJobHoistingPageList(Map<String, Object> params) {
-//        if (!params.containsKey("start_time")) {
-//            params.put("start_time","");
-//        }
         return ResponseUtil.toResult(params, safeJobHoistingMapper.getSafeJobHoistingPageList(ResponseUtil.initPage(params), params));
     }
 

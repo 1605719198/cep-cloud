@@ -234,7 +234,7 @@ public class SafeJobCutRoadController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "cutroad_list")
+
     public Object getSafeJobCutRoadPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobCutRoadService.getSafeJobCutRoadPageList(params));

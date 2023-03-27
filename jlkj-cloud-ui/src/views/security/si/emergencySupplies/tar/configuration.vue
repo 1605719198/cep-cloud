@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top: 10px;right: 0"
+      <div style="margin-top: 10px; float: right"
            class="avue-crud__pagination">
         <el-pagination v-show="page.total > 0"
                        background

@@ -5,11 +5,10 @@
   <div class="avue-crud el-card__body"
        style="background-color: #FFF ;width:99%">
     <div class="avue-crud__search">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <div>
-              <div>
+      <el-form :inline="true">
+            <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">作业时间</label>
+              <div class="el-form-item__content">
                 <el-date-picker v-model="query.dateRange"
                                 type="daterange"
                                 range-separator="至"
@@ -18,10 +17,10 @@
                                 value-format="yyyy-MM-dd" />
               </div>
             </div>
-          </el-col>
-          <el-col :span="3">
-            <div>
-              <div>
+
+          <div class="el-form-item el-form-item--small">
+            <label class="el-form-item__label">状态</label>
+            <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            :popper-append-to-body="false"
                            v-model="query.status"
@@ -34,10 +33,9 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">申请人姓名</label>
               <div class="el-form-item__content">
                 <el-input v-model="query.apply_person_name"
                           ref="person"
@@ -47,10 +45,9 @@
                 </el-input>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">作业区域</label>
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            filterable
@@ -67,10 +64,7 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
 
-
-          <el-col :span="8">
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button v-hasPermi="['blindplateplugging_list']"
@@ -83,22 +77,16 @@
                          type="default"
                          @click="handleResetting">重置</el-button>
             </div>
-          </el-col>
-
-          <el-col :span="2">
-            <div class="el-form-item__content"
-                 style="float: right">
-              <el-button v-hasPermi="['blindplateplugging_list']"
-                         type="primary"
-                         size="mini"
-                         icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handlerAdd('add')">新增
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
       </el-form>
+      <div class="el-form-item__content">
+        <el-button v-hasPermi="['blindplateplugging_list']"
+                   type="primary"
+                   size="mini"
+                   icon="el-icon-plus"
+                   plain
+                   @click="handlerAdd('add')">新增
+        </el-button>
+      </div>
     </div>
     <div>
       <el-form>
@@ -151,7 +139,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;right: 0"
+        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;float: right"
              class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
@@ -189,7 +177,6 @@
 
 <script>
 import EditorContainer from "@/views/security/si/operation/EditorContainer";
-import moment from "moment";
 import {blindplatepluggingList, deleteBlindingPlatePlugging, getSafetyArea} from '@/api/security/si/WorkTicketApi'
 export default {
   components: {
@@ -456,9 +443,6 @@ export default {
   padding: 0px;
 }
 
-.el-form-item {
-  margin-bottom: 0;
-}
 
 ::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;

@@ -302,7 +302,7 @@ public class SafeJobBlindPlatePluggingServiceImpl extends ServiceImpl<SafeJobBli
             safeJobHoisting.put("image" + i, IMG_URL + images.get(i).get("url"));
         }
 
-//        PdfUtil.exportDownloadPdf(response, "cdmb", safeJobHoisting,"盲板抽堵安全作业证-" + safeJobHoisting.get("job_code"));
+///        PdfUtil.exportDownloadPdf(response, "cdmb", safeJobHoisting,"盲板抽堵安全作业证-" + safeJobHoisting.get("job_code"));
         PdfUtil.exportStreamPdf(response, "cdmb", safeJobHoisting);
     }
 }

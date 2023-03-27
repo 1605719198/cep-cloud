@@ -283,7 +283,6 @@ public class SafeJobFireController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @RoleAndPermission(permission = "fire_list")
     public Object getSafeJobFirePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobFireService.getSafeJobFirePageList(params));

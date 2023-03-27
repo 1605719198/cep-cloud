@@ -49,7 +49,8 @@ import globalVariable from '@/utils/global_variable'
 //注册全局组件(单选下拉树)
 import selectTree from './components/select-Tree/selectTree.vue'
 Vue.component('select-tree', selectTree)
-
+import moment from 'moment'
+Vue.prototype.$moment = moment
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey

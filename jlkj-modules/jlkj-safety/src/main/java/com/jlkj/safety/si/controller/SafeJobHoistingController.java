@@ -239,7 +239,6 @@ public class SafeJobHoistingController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @RoleAndPermission(permission = "hoisting_list")
     public Object getSafeJobHoistingPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingPageList(params));

@@ -86,7 +86,6 @@ public class SafeImportantWorkController {
     )
     @Log(title = "安全重点工作-查询列表", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeImportantWork_list")
     public Object list(@Validated @ParamModel PageSafeImportantWorkDTO pageSafeImportantWorkDTO) {
         log.info("params => " + pageSafeImportantWorkDTO);
         String errorMsg = ValidUtil.checkValid(pageSafeImportantWorkDTO);
@@ -116,7 +115,6 @@ public class SafeImportantWorkController {
     )
     @Log(title = "安全重点工作-新增", businessType = BusinessType.INSERT)
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeImportantWork_save")
     public Object save(@Valid @RequestBody AddSafeImportantWorkDTO addSafeImportantWorkDTO) {
         log.info("params => " + addSafeImportantWorkDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addSafeImportantWorkDTO);
@@ -170,7 +168,7 @@ public class SafeImportantWorkController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @Log(title = "安全重点工作-修改", businessType = BusinessType.UPDATE)
-    //@RoleAndPermission(permission = "safeImportantWork_update")
+
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     public Object update(@Valid @RequestBody UpdateSafeImportantWorkDTO updateSafeImportantWorkDTO) {
         log.info("params => " + updateSafeImportantWorkDTO);
@@ -224,7 +222,7 @@ public class SafeImportantWorkController {
     )
     @Log(title = "安全重点工作-删除", businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeImportantWork_delete")
+
     public Object delete(@Valid @RequestBody DeleteSafeImportantWorkDTO deleteSafeImportantWorkDTO) {
         log.info("params => " + deleteSafeImportantWorkDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteSafeImportantWorkDTO);
@@ -263,7 +261,7 @@ public class SafeImportantWorkController {
     )
     @Log(title = "安全重点工作-奖励比例列表", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listProportions", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeImportantWork_listProportions")
+
     public Object proportions(@Validated @ParamModel ListProportionsDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);

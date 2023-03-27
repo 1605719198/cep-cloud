@@ -80,7 +80,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/area/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "area_list")
     public Object getSafeAreaPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeAreaService.getSafeAreaPageList(params));
@@ -98,7 +97,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/area/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "area_insert")
     public Object insertSafeArea(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -121,7 +119,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/area/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "area_update")
     public Object updateSafeArea(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -141,7 +138,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/area/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "area_delete")
     public Object deleteSafeArea(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -173,7 +169,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/worktype/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "worktype_list")
     public Object getSafeWorkTypePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeWorkTypeService.getSafeWorkTypePageList(params));
@@ -189,7 +184,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/worktype/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "worktype_insert")
     public Object insertSafeWorkType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -210,7 +204,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/worktype/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "worktype_update")
     public Object updateSafeWorkType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -230,7 +223,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/worktype/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "worktype_delete")
     public Object deleteSafeWorkType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -262,7 +254,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/dangertype/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "dangertype_list")
     public Object getSafeDangerTypePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeDangerTypeService.getSafeDangerTypePageList(params));
@@ -278,7 +269,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/dangertype/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "dangertype_insert")
     public Object insertSafeDangerType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -299,7 +289,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/dangertype/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "dangertype_update")
     public Object updateSafeDangerType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -319,7 +308,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/dangertype/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "dangertype_delete")
     public Object deleteSafeDangerType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -351,7 +339,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/checktype/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "checktype_list")
     public Object getSafeCheckTypePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeCheckTypeService.getSafeCheckTypePageList(params));
@@ -367,7 +354,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/checktype/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "checktype_insert")
     public Object insertSafeCheckType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -388,7 +374,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/checktype/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "checktype_update")
     public Object updateSafeCheckType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -408,7 +393,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/checktype/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "checktype_delete")
     public Object deleteSafeCheckType(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -442,7 +426,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/knowledgecategory/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "knowledgecategory_list")
     public Object getSafeKnowledgeCategoryPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeKnowledgeCategoryService.getSafeKnowledgeCategoryPageList(params));
@@ -460,7 +443,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgecategory/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgecategory_insert")
     public Object insertSafeKnowledgeCategory(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -483,7 +465,7 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgecategory/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgecategory_update")
+
     public Object updateSafeKnowledgeCategory(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -503,7 +485,7 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgecategory/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgecategory_delete")
+
     public Object deleteSafeKnowledgeCategory(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -542,7 +524,7 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/knowledgelibrary/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "knowledgelibrary_list")
+
     public Object getSafeKnowledgeLibraryPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeKnowledgeLibraryService.getSafeKnowledgeLibraryPageList(params));
@@ -589,7 +571,7 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgelibrary/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgelibrary_insert")
+
     public Object insertSafeKnowledgeLibrary(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         String msg = "知识库添加失败";
@@ -648,7 +630,7 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgelibrary/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgelibrary_update")
+
     public Object updateSafeKnowledgeLibrary(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         String msg = "知识库修改失败";
@@ -702,7 +684,7 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/knowledgelibrary/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "knowledgelibrary_delete")
+
     public Object deleteSafeKnowledgeLibrary(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -736,7 +718,7 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/constructionunit/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "constructionunit_list")
+
     public Object getSafeConstructionUnitPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeConstructionUnitService.getSafeConstructionUnitPageList(params));
@@ -753,7 +735,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunit/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunit_insert")
     public Object insertSafeConstructionUnit(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -775,7 +756,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunit/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunit_update")
     public Object updateSafeConstructionUnit(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -795,7 +775,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunit/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunit_delete")
     public Object deleteSafeConstructionUnit(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -841,7 +820,6 @@ public class BaseDataController {
             )
     )
     @RequestMapping(value = "/constructionunitpersons/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "constructionunitpersons_list")
     public Object getSafeConstructionUnitPersonsPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeConstructionUnitPersonsService.getSafeConstructionUnitPersonsPageList(params));
@@ -864,7 +842,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunitpersons/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunitpersons_insert")
     public Object insertSafeConstructionUnitPersons(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -892,7 +869,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunitpersons/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunitpersons_update")
     public Object updateSafeConstructionUnitPersons(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {
@@ -912,7 +888,6 @@ public class BaseDataController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/constructionunitpersons/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "constructionunitpersons_delete")
     public Object deleteSafeConstructionUnitPersons(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {

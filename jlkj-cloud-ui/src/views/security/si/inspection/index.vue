@@ -6,12 +6,11 @@
         <div class="avue-crud__search"
              style="border: 0">
           <el-row>
-            <el-col :span="22">
               <!-- 表单筛选 -->
               <el-form :model="query"
                        ref="query"
                        :inline="true">
-                <el-form-item prop="checkTimeArr">
+                <el-form-item label="巡检日期" prop="checkTimeArr">
                   <el-date-picker v-model="query.checkTimeArr"
                                   type="daterange"
                                   range-separator="至"
@@ -20,7 +19,7 @@
                                   value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="safe_area_id">
+                <el-form-item label="作业区域" prop="safe_area_id">
                   <el-select class="customSelectStyle"
                              v-model="query.safe_area_id"
                              :popper-append-to-body="false"
@@ -35,7 +34,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="check_type_id">
+                <el-form-item label="安全类型" prop="check_type_id">
                   <el-select class="customSelectStyle"
                              v-model="query.check_type_id"
                              :popper-append-to-body="false"
@@ -49,7 +48,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="check_status">
+                <el-form-item label="巡检状况" prop="check_status">
                   <el-select class="customSelectStyle"
                              v-model="checkStatus"
                              :popper-append-to-body="false"
@@ -63,7 +62,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="check_person_name">
+                <el-form-item label="巡检人员" prop="check_person_name">
                   <el-input v-model="query.check_person_name"
                             placeholder="巡检人员"></el-input>
                 </el-form-item>
@@ -78,24 +77,23 @@
                              icon="el-icon-refresh-left"
                              size="mini">重置</el-button>
                 </el-form-item>
+
               </el-form>
-            </el-col>
-            <el-col :span="2">
-              <div style="text-align: right;">
-                <el-button v-hasPermi="['check_insert']"
-                           type="primary"
-                           size="mini"
-                           icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                           @click="handleAdd('add')">新增
-                </el-button>
-                <!-- <el-button size="mini"
-                           icon="el-icon-s-promotion"
-                           @click="handleDerive('add')">导出
-                </el-button> -->
-              </div>
-            </el-col>
           </el-row>
+          <div class="el-form-item__content">
+            <el-button v-hasPermi="['check_insert']"
+                       type="primary"
+                       size="mini"
+                       icon="el-icon-plus"
+                       plain
+                       style="margin: 5px 0;"
+                       @click="handleAdd('add')">新增
+            </el-button>
+            <!-- <el-button size="mini"
+                       icon="el-icon-s-promotion"
+                       @click="handleDerive('add')">导出
+            </el-button> -->
+          </div>
         </div>
         <div>
           <el-table height="70vh"
@@ -206,7 +204,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+          <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
                class="avue-crud__pagination">
             <el-pagination v-show="page.total > 0"
                            background

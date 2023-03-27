@@ -69,7 +69,7 @@ public class SafeJobAnalysis {
     )
     @Log(title = "业务操作-查询", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeAnalysis_list")
+
     public Object list(@Validated @ParamModel SafeAnalysisListDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
@@ -122,7 +122,7 @@ public class SafeJobAnalysis {
     )
     @Log(title = "业务操作-查询", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/line", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeAnalysis_line")
+
     public Object line(@ParamModel SafeAnalysisListDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);

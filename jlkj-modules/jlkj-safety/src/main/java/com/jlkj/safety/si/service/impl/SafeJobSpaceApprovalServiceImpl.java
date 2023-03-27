@@ -190,7 +190,8 @@ public class SafeJobSpaceApprovalServiceImpl extends ServiceImpl<SafeJobSpaceApp
                 update(null,updateWrapper);
                 safeJobSpace.setStatus(0);
                 safeJobSpace.setFinishTime(null);
-                safeJobSpaceService.updateById(safeJobSpace);//生成回退日志
+                //生成回退日志
+                safeJobSpaceService.updateById(safeJobSpace);
 
                 SafeJobApprovalRecord safeJobApprovalRecord = new SafeJobApprovalRecord();
                 safeJobApprovalRecord.setId(IdUtil.randomUUID());

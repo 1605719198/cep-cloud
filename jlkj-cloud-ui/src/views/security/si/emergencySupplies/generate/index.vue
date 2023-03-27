@@ -8,6 +8,7 @@
                  ref="query"
                  :inline="true">
           <el-form-item prop="material_name"
+                        label="名称"
                         style="margin-right:20px;">
             <el-input v-model="query.material_name"
                       placeholder="名称"></el-input>
@@ -95,7 +96,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+      <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
            class="avue-crud__pagination">
         <el-pagination v-show="page.total > 0"
                        background

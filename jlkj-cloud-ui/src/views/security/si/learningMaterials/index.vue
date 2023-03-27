@@ -27,11 +27,11 @@
                     <el-form :model="query"
                              ref="query"
                              :inline="true">
-                      <el-form-item prop="title">
+                      <el-form-item label="标题" prop="title">
                         <el-input v-model="query.title"
                                   placeholder="标题"></el-input>
                       </el-form-item>
-                      <el-form-item prop="keywords">
+                      <el-form-item label="关键字" prop="keywords">
                         <el-input v-model="query.keywords"
                                   placeholder="关键字"></el-input>
                       </el-form-item>
@@ -130,7 +130,7 @@
                     </template>
                   </el-table-column>
                 </el-table>
-                <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+                <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
                      class="avue-crud__pagination">
                   <el-pagination v-show="page.total > 0"
                                  background

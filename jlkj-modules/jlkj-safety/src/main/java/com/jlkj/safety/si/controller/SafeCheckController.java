@@ -67,7 +67,6 @@ public class SafeCheckController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-	//@RoleAndPermission(permission = "check_list")
     public Object getSafeCheckRecordPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeCheckRecordService.getSafeCheckRecordPageList(params));
@@ -113,7 +112,6 @@ public class SafeCheckController {
             )
     )
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-	//@RoleAndPermission(permission = "check_info")
     public Object getSafeCheckRecordById(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeCheckRecordService.getSafeCheckRecordById(params));
@@ -146,7 +144,6 @@ public class SafeCheckController {
 			)
 	)
 	@RequestMapping(value = "/insert", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "check_insert")
 	public Object insertSafeCheckRecord(@RequestBody Map<String, Object> params) {
 		log.info("RequestParam => {}", params);
 		try {
@@ -180,7 +177,6 @@ public class SafeCheckController {
 			@ApiResponse(code = 0, message = "调用成功", response = String.class)
 	)
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "check_update")
 	public Object updateSafeCheckRecord(@RequestBody Map<String, Object> params) {
 		log.info("RequestParam => {}", params);
 		try {
@@ -200,7 +196,6 @@ public class SafeCheckController {
 			@ApiResponse(code = 0, message = "调用成功", response = String.class)
 	)
 	@RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "check_delete")
 	public Object deleteSafeCheckRecord(@RequestBody Map<String, Object> params) {
 		try {
 			return AjaxResult.success(safeCheckRecordService.deleteSafeCheckRecord(params));
@@ -224,7 +219,6 @@ public class SafeCheckController {
 			@ApiResponse(code = 0, message = "调用成功", response = String.class)
 	)
 	@RequestMapping(value = "/dispose", method = RequestMethod.POST, produces = "application/json")
-	//@RoleAndPermission(permission = "check_dispose")
 	public Object setSafeCheckDisposed(@RequestBody Map<String, Object> params) {
 		try {
 			return AjaxResult.success(safeCheckRecordService.setSafeCheckDisposed(params));

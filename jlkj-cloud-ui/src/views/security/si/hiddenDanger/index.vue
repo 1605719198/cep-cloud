@@ -2,16 +2,15 @@
   <div style="padding: 0px 10px;">
     <div class="main">
       <div class="avue-crud el-card__body"
-           style="width: 98%;border: 0;">
+           style="width: 99%;border: 0;">
         <div class="avue-crud__search"
              style="border: 0">
           <el-row>
-            <el-col :span="22">
               <!-- 表单筛选 -->
               <el-form :model="query"
                        ref="query"
                        :inline="true">
-                <el-form-item prop="danger_time">
+                <el-form-item label="上报日期" prop="danger_time">
                   <el-date-picker v-model="query.danger_time"
                                   type="daterange"
                                   range-separator="至"
@@ -20,7 +19,7 @@
                                   value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="safe_area_id">
+                <el-form-item label="作业区域" prop="safe_area_id">
                   <el-select class="customSelectStyle"
                              v-model="query.safe_area_id"
                              :popper-append-to-body="false"
@@ -35,7 +34,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="danger_type_id">
+                <el-form-item label="隐患等级" prop="danger_type_id">
                   <el-select class="customSelectStyle"
                              v-model="query.danger_type_id"
                              :popper-append-to-body="false"
@@ -49,7 +48,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="danger_status">
+                <el-form-item label="状态" prop="danger_status">
                   <el-select class="customSelectStyle"
                              v-model="dangerStatus"
                              :popper-append-to-body="false"
@@ -63,7 +62,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="timeout_status">
+                <el-form-item label="是否超时" prop="timeout_status">
                   <el-select class="customSelectStyle"
                              v-model="timeoutStatus"
                              :popper-append-to-body="false"
@@ -89,10 +88,7 @@
                              type="default"
                              size="mini">重置</el-button>
                 </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :span="2">
-              <div style="text-align: right;">
+              <div class="el-form-item__content" style="float: right">
                 <el-button v-hasPermi="['danger_insert']"
                            type="primary"
                            size="mini"
@@ -105,7 +101,7 @@
                            @click="handleDerive('add')">导出
                 </el-button> -->
               </div>
-            </el-col>
+              </el-form>
           </el-row>
         </div>
         <div>
@@ -222,7 +218,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+          <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
                class="avue-crud__pagination">
             <el-pagination v-show="page.total > 0"
                            background

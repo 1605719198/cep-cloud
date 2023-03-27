@@ -238,7 +238,7 @@ public class SafeJobHighController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "high_list")
+
     public Object getSafeJobHighPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobHighService.getSafeJobHighPageList(params));

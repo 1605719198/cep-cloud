@@ -7,22 +7,24 @@
           <el-form ref="form"
                    :inline="true"
                    class="opetions1 ">
-            <el-form-item>
+            <el-form-item label="年">
               <el-date-picker v-model="query.year"
                               type="year"
                               placeholder="选择年"
                               value-format="yyyy"
                               @change="">
               </el-date-picker>
+            </el-form-item>
+            <el-form-item label="月">
               <el-date-picker v-model="query.month"
                               type="month"
                               placeholder="选择月"
                               format="MM"
-                              value-format="MM"
-                              style="margin-left: 20px">
+                              value-format="MM">
               </el-date-picker>
+            </el-form-item>
+            <el-form-item label="作业票类型">
               <el-select placeholder="作业票类型"
-                         style="margin-left: 20px"
                          v-model="query.type"
                          clearable>
                 <el-option v-for="item in options"
@@ -31,9 +33,10 @@
                            :value="item.label">
                 </el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item label="作业区">
               <el-select placeholder="作业区"
                          clearable
-                         style="margin-left: 20px"
                          v-model="query.areaId"
                          class="customSelectStyle"
                          :popper-append-to-body="false">
@@ -43,6 +46,8 @@
                            :value="item.id">
                 </el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item>
               <el-button v-hasPermi="['safeAnalysis_list']"
                          type="primary"
                          icon="el-icon-search"
@@ -106,10 +111,8 @@
       </el-table>
       <div style="margin-top: 10px;">
         <el-row>
-          <el-col :span="12">
-          </el-col>
-          <el-col :span="12">
-            <el-pagination style="margin-top: 10px;right: 0;padding: 0;"
+
+            <el-pagination style="margin-top: 10px; float: right;padding: 0;"
                            class="avue-crud__pagination"
                            background
                            @size-change="handleSizeChange"
@@ -120,7 +123,6 @@
                            layout=" prev, pager, next,sizes"
                            :total="page.total">
             </el-pagination>
-          </el-col>
         </el-row>
       </div>
     </div>

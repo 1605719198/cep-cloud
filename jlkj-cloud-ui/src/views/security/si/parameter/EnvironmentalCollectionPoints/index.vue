@@ -1,44 +1,34 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
-      <el-form>
+      <el-form :inline="true">
         <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item label="" prop="sort">
+            <el-form-item label="位号" prop="sort">
               <el-select v-model="query.sort" placeholder="请选择位号" clearable filterable :popper-append-to-body="false">
                 <el-option v-for="i in 32" :key="i" :label="i" :value="i"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="" prop="sort">
+            <el-form-item label="名称" prop="sort">
               <el-input v-model="query.deviceName" placeholder="名称" clearable/>
             </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="" prop="pollutantName">
+            <el-form-item label="污染物名称" prop="pollutantName">
               <el-select v-model="query.pollutantName" placeholder="污染物名称" :popper-append-to-body="false" clearable>
                 <el-option label="颗粒物" value="颗粒物"/>
                 <el-option label="氮氧化物" value="氮氧化物"/>
                 <el-option label="二氧化硫" value="二氧化硫"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
             <div class="el-form-item__content" style="margin-left: 0px;">
               <el-button size="mini" icon="el-icon-search" type="primary"
                          @click="handleQuery">搜索
               </el-button>
               <el-button size="mini" icon="el-icon-refresh-left" type="default" @click="handleEmpty">重置</el-button>
             </div>
-          </el-col>
-          <el-col :span="4">
             <div class="el-form-item__content" style="float: right">
               <el-button type="primary" size="mini" icon="el-icon-plus"
                            style="margin: 5px 0;" @click="handleOpenWindow('add')">新增
               </el-button>
             </div>
-          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -71,7 +61,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+        <div style="margin-top: 10px; float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"

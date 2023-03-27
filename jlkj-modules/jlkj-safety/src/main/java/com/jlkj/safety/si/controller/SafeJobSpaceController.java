@@ -277,7 +277,7 @@ public class SafeJobSpaceController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "space_list")
+
     public Object getSafeJobSpacePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobSpaceService.getSafeJobSpacePageList(params));

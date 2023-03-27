@@ -1,56 +1,43 @@
 <template>
   <div class="avue-crud el-card__body" style="background-color: #FFF;width:99%">
     <div class="avue-crud__search">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-form-item label="" prop="planDate">
+      <el-form :inline="true">
+            <el-form-item label="作业日期" prop="planDate">
               <el-date-picker v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
                               end-placeholder="计划结束日期"/>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item label="" prop="status">
+            <el-form-item label="状态" prop="status">
               <el-select v-model="query.status" placeholder="请选择状态" :popper-append-to-body="false" clearable>
                 <el-option v-for="item in selectJobTicketStatus" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
             <!--            <el-form-item label="" prop="safe_area_name">-->
             <!--              <el-input v-model="query.safe_area_name" placeholder="请输入区域名称" clearable/>-->
             <!--            </el-form-item>-->
-            <el-form-item label="" prop="safe_area_id">
+            <el-form-item label="区域名称" prop="safe_area_id">
               <el-select v-model="query.safe_area_id" placeholder="请选择区域名称" filterable clearable>
                 <el-option v-for="item in safeAreaOptions" :key="item.id" :label="item.name" :value="item.id"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item label="" prop="apply_person_name">
+            <el-form-item label="申请人姓名" prop="apply_person_name">
               <el-input v-model="query.apply_person_name" @focus="$refs.person.blur(),treeOpen=true" placeholder="请选择申请人姓名" ref="person"
                         clearable @clear="query.apply_person_name = '',query.apply_person_id=''"/>
             </el-form-item>
-          </el-col>
-          <el-col :span="6">
             <div class="el-form-item__content" style="margin-left: 0px;">
               <el-button v-hasPermi="['temporaryelectricity_list']" size="mini" icon="el-icon-search" type="primary"
                          @click="handleQuery">搜索
               </el-button>
               <el-button size="mini" icon="el-icon-refresh-left" type="default" @click="handleEmpty">重置</el-button>
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="el-form-item__content" style="float: right">
-              <el-button v-hasPermi="['temporaryelectricity_list']" type="primary" size="mini" icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handleOpenWindow('add')">新增
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
       </el-form>
+      <div class="el-form-item__content">
+        <el-button v-hasPermi="['temporaryelectricity_list']" type="primary" size="mini" icon="el-icon-plus"
+                   style="margin: 5px 0;"
+                   plain
+                   @click="handleOpenWindow('add')">新增
+        </el-button>
+      </div>
     </div>
     <div>
       <el-form>
@@ -98,7 +85,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;right: 0" class="avue-crud__pagination">
+        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;float: right" class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
@@ -354,11 +341,11 @@
   }
 
   .el-form-item {
-    margin-bottom: 0;
+    //margin-bottom: 0;
   }
 
   ::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
-    margin-bottom: 0 !important;
+    //margin-bottom: 0 !important;
   }
 
   // ::v-deep .el-form-item__content {

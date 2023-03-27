@@ -288,7 +288,7 @@ public class SafeJobCutRoadServiceImpl extends ServiceImpl<SafeJobCutRoadMapper,
             measures.append("\r\n");
         }
         safeJobHoisting.put("safetyMeasures", measures);
-//        PdfUtil.exportDownloadPdf(response, "dl", safeJobHoisting,"断路作业证许可证-" + safeJobHoisting.get("job_code"));
+///        PdfUtil.exportDownloadPdf(response, "dl", safeJobHoisting,"断路作业证许可证-" + safeJobHoisting.get("job_code"));
         PdfUtil.exportStreamPdf(response, "dl", safeJobHoisting);
     }
 }

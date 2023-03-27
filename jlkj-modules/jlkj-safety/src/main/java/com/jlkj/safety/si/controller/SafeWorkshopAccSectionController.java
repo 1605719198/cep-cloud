@@ -45,7 +45,7 @@ public class SafeWorkshopAccSectionController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "workshopacc_section_list")
+
     public Object getSafeJobFirePageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeWorkshopAccSectionService.getSafeWorkshopAccSectionPageList(params));
@@ -61,7 +61,7 @@ public class SafeWorkshopAccSectionController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "workshopacc_section_insert")
+
     @Transactional(rollbackFor = Exception.class)
     public Object insertSafeJobFire(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
@@ -84,7 +84,7 @@ public class SafeWorkshopAccSectionController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "workshopacc_section_update")
+
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobFire(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
@@ -105,7 +105,7 @@ public class SafeWorkshopAccSectionController {
             @ApiResponse(code = 0, message = "调用成功", response = String.class)
     )
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "workshopacc_section_delete")
+
     public Object deleteSafeJobFire(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         try {

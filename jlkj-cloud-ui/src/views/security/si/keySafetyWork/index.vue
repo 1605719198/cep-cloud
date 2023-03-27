@@ -11,7 +11,7 @@
               <el-form :model="query"
                        ref="query"
                        :inline="true">
-                <el-form-item prop="planTime">
+                <el-form-item label="计划日期" prop="planTime">
                   <el-date-picker v-model="query.planTime"
                                   type="daterange"
                                   range-separator="至"
@@ -20,7 +20,7 @@
                                   value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="departmentId">
+                <el-form-item label="单位" prop="departmentId">
                   <select-tree v-model="query.departmentId"
                                placeholder="单位"
                                :selectForm="deptForm"
@@ -32,7 +32,7 @@
                                :isNodeChildrenNull="true"
                                @change="getDept" />
                 </el-form-item>
-                <el-form-item prop="completeState">
+                <el-form-item label="完成情况" prop="completeState">
                   <el-select class="customSelectStyle"
                              v-model="query.completeState"
                              :popper-append-to-body="false"
@@ -164,7 +164,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+          <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
                class="avue-crud__pagination">
             <el-pagination v-show="page.total > 0"
                            background

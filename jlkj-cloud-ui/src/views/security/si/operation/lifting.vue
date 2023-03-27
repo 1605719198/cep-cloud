@@ -2,10 +2,9 @@
   <div class="avue-crud el-card__body"
        style="background-color: #FFF;width:99%">
     <div class="avue-crud__search">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="5">
+      <el-form :inline="true">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">作业时间</label>
               <div class="el-form-item__content">
                 <el-date-picker v-model="query.dateRange"
                                 type="daterange"
@@ -15,9 +14,8 @@
                                 value-format="yyyy-MM-dd" />
               </div>
             </div>
-          </el-col>
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">状态</label>
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            :popper-append-to-body="false"
@@ -32,10 +30,9 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">申请人姓名</label>
               <div class="el-form-item__content">
                 <el-input v-model="query.apply_person_name"
                           ref="person"
@@ -45,10 +42,9 @@
                 </el-input>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">作业区域</label>
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            filterable
@@ -65,10 +61,9 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">作业级别</label>
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            :popper-append-to-body="false"
@@ -83,9 +78,7 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
 
-          <el-col :span="5">
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button
@@ -99,22 +92,20 @@
                          @click="handleResetting">重置
               </el-button>
             </div>
-          </el-col>
 
-          <el-col :span="2">
-            <div class="el-form-item__content"
-                 style="float: right">
-              <el-button
-                         type="primary"
-                         size="mini"
-                         icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handlerAdd">新增
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
+
       </el-form>
+      <div class="el-form-item__content"
+           style="float: left">
+        <el-button
+          type="primary"
+          size="mini"
+          plain
+          icon="el-icon-plus"
+          style="margin: 5px 0;"
+          @click="handlerAdd">新增
+        </el-button>
+      </div>
     </div>
     <div>
       <el-form>
@@ -172,7 +163,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0"
+        <div style="margin-top: 10px; float: right"
              class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
@@ -468,7 +459,9 @@ element.style {
   color: white;
   border: white;
 }
-
+.el-form-item__content {
+  //width: 68px;
+}
 //.el-dialog__wrapper {
 //  ::v-deep.el-dialog {
 //    .el-dialog__header {
@@ -527,9 +520,9 @@ element.style {
 .securityOperationDialogStyle .el-dialog__body {
   padding: 20px;
 }
-::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: -17px !important;
-}
+//::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
+//  margin-bottom: -17px !important;
+//}
 </style>
 <style>
 .securityOperationDialogStyle .el-dialog__body {

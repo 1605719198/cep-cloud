@@ -265,7 +265,7 @@ public class SafeJobTemporaryElectricityServiceImpl extends ServiceImpl<SafeJobT
         safeJobHoisting.put("electrician", electrician);
         safeJobHoisting.put("name", name);
         safeJobHoisting.put("code", code);
-//        PdfUtil.exportDownloadPdf(response, "lsyd", safeJobHoisting,"临时用电作业许可证-" + safeJobHoisting.get("job_code"));
+///        PdfUtil.exportDownloadPdf(response, "lsyd", safeJobHoisting,"临时用电作业许可证-" + safeJobHoisting.get("job_code"));
         PdfUtil.exportStreamPdf(response, "lsyd", safeJobHoisting);
     }
 }

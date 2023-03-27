@@ -265,7 +265,7 @@ public class SafeJobSoilServiceImpl extends ServiceImpl<SafeJobSoilMapper, SafeJ
                 safeJobSoil.put("xmzj_signature", IMG_URL + approval.get("signature"));
             }
         }
-//        PdfUtil.exportDownloadPdf(response, "dt", safeJobSoil,"动土作业证许可证-" + safeJobSoil.get("job_code"));
+///        PdfUtil.exportDownloadPdf(response, "dt", safeJobSoil,"动土作业证许可证-" + safeJobSoil.get("job_code"));
         PdfUtil.exportStreamPdf(response, "dt", safeJobSoil);
     }
 }

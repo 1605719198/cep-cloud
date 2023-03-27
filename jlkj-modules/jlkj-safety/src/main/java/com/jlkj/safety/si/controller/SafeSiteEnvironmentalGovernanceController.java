@@ -88,7 +88,7 @@ public class SafeSiteEnvironmentalGovernanceController {
     )
     @Log(title = "现场环境治理-查询列表", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeSiteEnvironmentalGovernance_list")
+
     public Object list(@Validated @ParamModel PageSafeSiteEnvironmentalGovernanceDTO pageSafeSiteEnvironmentalGovernanceDTO) {
         log.info("params => " + pageSafeSiteEnvironmentalGovernanceDTO);
         String errorMsg = ValidUtil.checkValid(pageSafeSiteEnvironmentalGovernanceDTO);
@@ -118,7 +118,7 @@ public class SafeSiteEnvironmentalGovernanceController {
     )
     @Log(title = "现场环境治理-新增", businessType = BusinessType.INSERT)
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeSiteEnvironmentalGovernance_save")
+
     public Object save(@Valid @RequestBody AddSafeSiteEnvironmentalGovernanceDTO addSafeSiteEnvironmentalGovernanceDTO) {
         log.info("params => " + addSafeSiteEnvironmentalGovernanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addSafeSiteEnvironmentalGovernanceDTO);
@@ -171,7 +171,7 @@ public class SafeSiteEnvironmentalGovernanceController {
     )
     @Log(title = "现场环境治理-修改", businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeSiteEnvironmentalGovernance_update")
+
     public Object update(@Valid @RequestBody UpdateSafeSiteEnvironmentalGovernanceDTO updateSafeSiteEnvironmentalGovernanceDTO) {
         log.info("params => " + updateSafeSiteEnvironmentalGovernanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateSafeSiteEnvironmentalGovernanceDTO);
@@ -224,7 +224,7 @@ public class SafeSiteEnvironmentalGovernanceController {
     )
     @Log(title = "现场环境治理-删除", businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeSiteEnvironmentalGovernance_delete")
+
     public Object delete(@Valid @RequestBody DeleteSafeSiteEnvironmentalGovernanceDTO deleteSafeSiteEnvironmentalGovernanceDTO) {
         log.info("params => " + deleteSafeSiteEnvironmentalGovernanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteSafeSiteEnvironmentalGovernanceDTO);
@@ -260,7 +260,6 @@ public class SafeSiteEnvironmentalGovernanceController {
     )
     @Log(title = "现场环境治理-奖励比例列表", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listProportions", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeSiteEnvironmentalGovernance_listProportions")
     public Object proportions(@Validated @ParamModel ListProportionsGovernanceDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);

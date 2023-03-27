@@ -10,7 +10,7 @@
             <el-form :model="query"
                      ref="query"
                      :inline="true">
-              <el-form-item prop="construction_unit_name">
+              <el-form-item label="单位名称" prop="construction_unit_name">
                 <el-input v-model="query.construction_unit_name"
                           placeholder="单位名称"></el-input>
               </el-form-item>
@@ -93,7 +93,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+        <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
              class="avue-crud__pagination">
           <el-pagination v-show="page.total > 0"
                          background

@@ -271,7 +271,7 @@ public class SafeJobBlindPlatePluggingController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "blindplateplugging_list")
+
     public Object getSafeJobBlindPlatePluggingPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobBlindPlatePluggingService.getSafeJobBlindPlatePluggingPageList(params));
@@ -785,7 +785,7 @@ public class SafeJobBlindPlatePluggingController {
     @RequestMapping(value = "/approval/template/list", method = RequestMethod.GET)
     public Object getSafeJobHoistingApprovalTemplateList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        return safeJobBlindPlatePluggingService.getSafeJobBlendingApprovalTemplateList(params);
+        return AjaxResult.success(safeJobBlindPlatePluggingService.getSafeJobBlendingApprovalTemplateList(params));
     }
 
 

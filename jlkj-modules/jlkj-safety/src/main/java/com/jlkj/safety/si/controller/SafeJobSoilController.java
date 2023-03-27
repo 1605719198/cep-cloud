@@ -230,7 +230,7 @@ public class SafeJobSoilController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "soil_list")
+
     public Object getSafeJobSoilPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobSoilService.getSafeJobSoilPageList(params));

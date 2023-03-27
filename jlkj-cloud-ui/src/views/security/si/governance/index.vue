@@ -11,7 +11,7 @@
               <el-form :model="query"
                        ref="query"
                        :inline="true">
-                <el-form-item prop="department_id">
+                <el-form-item label="单位" prop="department_id">
                   <select-tree v-model="query.department_id"
                                placeholder="单位"
                                :selectForm="deptForm"
@@ -23,7 +23,7 @@
                                :isNodeChildrenNull="true"
                                @change="getDept" />
                 </el-form-item>
-                <el-form-item prop="completeState">
+                <el-form-item label="完成情况" prop="completeState">
                   <el-select class="customSelectStyle"
                              v-model="query.completeState"
                              :popper-append-to-body="false"
@@ -167,7 +167,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+          <div style="margin-top: 10px; float: right;padding: 25px 0px 20px 20px;"
                class="avue-crud__pagination">
             <el-pagination v-show="page.total > 0"
                            background

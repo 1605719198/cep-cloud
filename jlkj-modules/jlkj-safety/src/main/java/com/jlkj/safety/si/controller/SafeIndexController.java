@@ -83,7 +83,7 @@ public class SafeIndexController {
     )
     @Log(title = "业务操作-查询", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    //@RoleAndPermission(permission = "safeIndex_list")
+
     public Object list(@Validated @ParamModel PageSafeIndexDTO pageSafeIndexDTO) {
         log.info("params => " + pageSafeIndexDTO);
         String errorMsg = ValidUtil.checkValid(pageSafeIndexDTO);
@@ -112,7 +112,7 @@ public class SafeIndexController {
     )
     @Log(title = "业务操作-新增", businessType = BusinessType.INSERT)
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeIndex_insert")
+
     public Object save(@Valid @RequestBody AddSafeIndexDTO addSafeIndexDTO) {
         log.info("params => " + addSafeIndexDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addSafeIndexDTO);
@@ -153,7 +153,7 @@ public class SafeIndexController {
     )
     @Log(title = "业务操作-修改", businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeIndex_update")
+
     public Object update(@Valid @RequestBody UpdateSafeIndexDTO updateSafeIndexDTO) {
         log.info("params => " + updateSafeIndexDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateSafeIndexDTO);
@@ -186,7 +186,7 @@ public class SafeIndexController {
     )
     @Log(title = "业务操作-删除", businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-    //@RoleAndPermission(permission = "safeIndex_delete")
+
     public Object delete(@Valid @RequestBody DeleteSafeIndexDTO deleteSafeIndexDTO) {
         log.info("params => " + deleteSafeIndexDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteSafeIndexDTO);
