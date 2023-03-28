@@ -65,7 +65,7 @@
           },
           xAxis: {
             type: 'category',
-            data: xAxis,
+            data: this.xAxis,
             axisLine: {
               lineStyle: {color: '#fff',}
             }
@@ -88,7 +88,7 @@
           series: [
             {
               type: 'bar',
-              data: data,
+              data: this.data,
               barWidth: "60%",
               //显示数值
               itemStyle: {

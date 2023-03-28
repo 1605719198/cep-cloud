@@ -2,7 +2,6 @@
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
       <el-form :inline="true">
-        <el-row :gutter="20">
             <el-form-item label="位号" prop="sort">
               <el-select v-model="query.sort" placeholder="请选择位号" clearable filterable :popper-append-to-body="false">
                 <el-option v-for="i in 32" :key="i" :label="i" :value="i"/>
@@ -24,13 +23,12 @@
               </el-button>
               <el-button size="mini" icon="el-icon-refresh-left" type="default" @click="handleEmpty">重置</el-button>
             </div>
-            <div class="el-form-item__content" style="float: right">
-              <el-button type="primary" size="mini" icon="el-icon-plus"
-                           style="margin: 5px 0;" @click="handleOpenWindow('add')">新增
-              </el-button>
-            </div>
-        </el-row>
       </el-form>
+      <div class="el-form-item__content" >
+        <el-button type="primary" size="mini" icon="el-icon-plus" plain
+                   style="margin: 5px 0;" @click="handleOpenWindow('add')">新增
+        </el-button>
+      </div>
     </div>
     <div>
       <el-form>

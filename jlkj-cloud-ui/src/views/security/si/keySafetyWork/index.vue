@@ -59,22 +59,22 @@
                 </el-form-item>
               </el-form>
             </el-col>
-            <el-col :span="4">
-              <div style="text-align: right;">
-                <el-button v-hasPermi="['safeImportantWork_save']"
-                           type="primary"
-                           size="mini"
-                           icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                           @click="handleAdd('add')">新增
-                </el-button>
-                <!-- <el-button size="mini"
-                         icon="el-icon-s-promotion"
-                         @click="handleDerive('add')">导出
-              </el-button> -->
-              </div>
-            </el-col>
+
           </el-row>
+          <div>
+            <el-button v-hasPermi="['safeImportantWork_save']"
+                       type="primary"
+                       size="mini"
+                       plain
+                       icon="el-icon-plus"
+                       style="margin: 5px 0;"
+                       @click="handleAdd('add')">新增
+            </el-button>
+            <!-- <el-button size="mini"
+                     icon="el-icon-s-promotion"
+                     @click="handleDerive('add')">导出
+          </el-button> -->
+          </div>
         </div>
         <div>
           <el-table height="70vh"

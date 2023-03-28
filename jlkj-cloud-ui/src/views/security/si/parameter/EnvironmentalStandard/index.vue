@@ -6,21 +6,18 @@
       <div class="avue-crud__search"
            style="border: 0">
         <el-row>
-          <el-col :span="20">
             <!-- 表单筛选 -->
-          </el-col>
-          <el-col :span="4">
-            <div style="text-align: right; margin:0 10px 26px 0;">
-              <el-button v-hasPermi="['safeIndex_insert']"
-                         type="primary"
-                         size="mini"
-                         icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handleAdd('add')">新增
-              </el-button>
-            </div>
-          </el-col>
         </el-row>
+        <div class="el-form-item__content">
+          <el-button v-hasPermi="['safeIndex_insert']"
+                     type="primary"
+                     size="mini"
+                     plain
+                     icon="el-icon-plus"
+                     style="margin: 5px 0;"
+                     @click="handleAdd('add')">新增
+          </el-button>
+        </div>
       </div>
       <!-- 内容 -->
       <div>

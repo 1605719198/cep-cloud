@@ -1,5 +1,5 @@
 package com.jlkj.safety.si.entity;
-		
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
  * @author yzl
  * @create 2022-12-14 09:36:40.865321
  */
-@TableName(value ="t_alert_record")
+@TableName(value ="safe_si_alert_record")
 @Data
 public class AlertRecord  implements Serializable{
     /** 主键标识;UUID */

@@ -99,7 +99,7 @@
             <el-button size="mini"
                        plain
                        icon="el-icon-edit"
-                       type="primary"
+                       type="text"
                        @click="handleEdit('edit',scope.$index, scope.row)"> 编辑
             </el-button>
             <el-button size="mini"
@@ -283,7 +283,6 @@ export default {
 .search {
   width: 100%;
   display: flex;
-  justify-content: space-between;
 }
 ::v-deep.el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;
@@ -305,7 +304,7 @@ export default {
   .el-dialog__wrapper {
   ::v-deep.el-dialog {
         .el-dialog__body {
-        padding: 10px 40px 40px 40px;
+        padding: 10px 40px 75px 40px;
     }
   }
   }

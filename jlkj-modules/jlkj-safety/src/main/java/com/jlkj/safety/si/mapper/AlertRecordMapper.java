@@ -18,7 +18,7 @@ public interface AlertRecordMapper extends BaseMapper<AlertRecord> {
      * 环保看板 - 查询环保报警
      * @return
      */
-    @Select("SELECT a.* FROM t_alert_record a INNER JOIN safe_si_environmental_collection_points b on a.sourceh_id=b.id AND a.alarm_value > b.emission_limit where is_handle = 0 ")
+    @Select("SELECT a.* FROM safe_si_alert_record a INNER JOIN safe_si_environmental_collection_points b on a.sourceh_id=b.id AND a.alarm_value > b.emission_limit where is_handle = 0 ")
     List<Map<String, String>> getAlertRecord();
 
     /**
@@ -29,7 +29,7 @@ public interface AlertRecordMapper extends BaseMapper<AlertRecord> {
             " SUM(CASE sourceh_name WHEN '颗粒物' THEN 1 ELSE 0 END) AS ParticulateMatter, " +
             " SUM(CASE sourceh_name WHEN '二氧化硫' THEN 1 ELSE 0 END) AS SO2, " +
             " SUM(CASE sourceh_name WHEN '氮氧化物' THEN 1 ELSE 0 END) AS NitrogenOxides " +
-            "FROM t_alert_record a INNER JOIN safe_si_environmental_collection_points b ON a.sourceh_id = b.id AND a.alarm_value > b.emission_limit  " +
+            "FROM safe_si_alert_record a INNER JOIN safe_si_environmental_collection_points b ON a.sourceh_id = b.id AND a.alarm_value > b.emission_limit  " +
             "WHERE is_handle = 0 AND DATE_FORMAT(a.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')")
     Map<String, String> getAlertRecordExceedance();
 
@@ -37,7 +37,7 @@ public interface AlertRecordMapper extends BaseMapper<AlertRecord> {
      * 首页 - 环保指标
      * @return
      */
-    @Select("SELECT a.sourceh_name,alarm_value,emission_limit,(alarm_value-emission_limit) as exceedance FROM t_alert_record a " +
+    @Select("SELECT a.sourceh_name,alarm_value,emission_limit,(alarm_value-emission_limit) as exceedance FROM safe_si_alert_record a " +
             "INNER JOIN safe_si_environmental_collection_points b ON a.sourceh_id = b.id AND a.alarm_value > b.emission_limit WHERE is_handle = 0")
     List<Map<String, String>> getHomeAlertRecord();
 

@@ -217,7 +217,7 @@ export default {
     },
     //下载
     handleDownload (index, row) {
-      // let download = `http://192.168.105.249:15234/file/download/${row.file_id}`
+      // let download = `http://192.168.105.249:9300/file/download/${row.file_id}`
       let download = this.download + row.file_id
       // console.log(download)
       window.open(download)

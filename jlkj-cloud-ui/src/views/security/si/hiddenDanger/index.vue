@@ -77,7 +77,8 @@
                   </el-select>
                 </el-form-item>
                 <!-- 操作按钮 -->
-                <el-form-item>
+                <div class="el-form-item__content"
+                     style="margin-left: 0px;">
                   <el-button v-hasPermi="['danger_list']"
                              @click="handleQuery"
                              type="primary"
@@ -87,21 +88,23 @@
                              icon="el-icon-refresh-left"
                              type="default"
                              size="mini">重置</el-button>
-                </el-form-item>
-              <div class="el-form-item__content" style="float: right">
-                <el-button v-hasPermi="['danger_insert']"
-                           type="primary"
-                           size="mini"
-                           icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                           @click="handleAdd('add')">新增
-                </el-button>
-                <!-- <el-button size="mini"
-                           icon="el-icon-s-promotion"
-                           @click="handleDerive('add')">导出
-                </el-button> -->
-              </div>
+                </div>
+
               </el-form>
+            <div class="el-form-item__content">
+              <el-button v-hasPermi="['danger_insert']"
+                         type="primary"
+                         size="mini"
+                         plain
+                         icon="el-icon-plus"
+                         style="margin: 5px 0;"
+                         @click="handleAdd('add')">新增
+              </el-button>
+              <!-- <el-button size="mini"
+                         icon="el-icon-s-promotion"
+                         @click="handleDerive('add')">导出
+              </el-button> -->
+            </div>
           </el-row>
         </div>
         <div>

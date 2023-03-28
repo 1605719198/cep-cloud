@@ -11,7 +11,6 @@
                      ref="query"
                      :inline="true">
               <!-- 操作按钮 -->
-              <el-form-item>
                 <!-- <el-button @click="handleQuery"
                          type="primary"
                          icon="el-icon-search"
@@ -19,21 +18,19 @@
                 <!-- <el-button @click="handleReset"
                            icon="el-icon-refresh-left"
                            size="mini">重置</el-button> -->
-              </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="4">
-            <div style="text-align: right;margin:0 10px 26px 0;">
-              <el-button v-hasPermi="['knowledgecategory_insert']"
-                         type="primary"
-                         size="mini"
-                         icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handleAdd('add')">新增
-              </el-button>
-            </div>
-          </el-col>
         </el-row>
+        <div class="el-form-item__content">
+          <el-button v-hasPermi="['knowledgecategory_insert']"
+                     type="primary"
+                     size="mini"
+                     plain
+                     icon="el-icon-plus"
+                     style="margin: 5px 0;"
+                     @click="handleAdd('add')">新增
+          </el-button>
+        </div>
       </div>
       <div>
         <el-table height="71vh"

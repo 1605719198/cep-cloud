@@ -50,10 +50,11 @@
     methods: {
       onLoad () {
         getAlertRecordExceedance().then(res => {
-          if(res.data.data !== null){
-            this.ParticulateMatter = res.data.data.ParticulateMatter;
-            this.SO2 = res.data.data.SO2;
-            this.NitrogenOxides = res.data.data.NitrogenOxides;
+          // console.log(res);
+          if(typeof res.data !== "undefined"){
+            this.ParticulateMatter = res.data.ParticulateMatter;
+            this.SO2 = res.data.SO2;
+            this.NitrogenOxides = res.data.NitrogenOxides;
           }
         });
       }
@@ -108,7 +109,7 @@
   }
 
   .title {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     margin-top: 8px;
     padding: 2px 5px;

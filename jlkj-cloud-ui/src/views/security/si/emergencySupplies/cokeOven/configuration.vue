@@ -6,14 +6,13 @@
                  ref="query">
         </el-form>
       </el-row>
-      <el-row style="margin-right: 20px; margin-bottom: 22px">
-        <el-button type="primary"
-                   size="mini"
-                   icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                   @click="handleAdd('add')">新增
-        </el-button>
-      </el-row>
+      <el-button type="primary"
+                 size="mini"
+                 plain
+                 icon="el-icon-plus"
+                         style="margin: 5px 0;"
+                 @click="handleAdd('add')">新增
+      </el-button>
     </div>
     <div>
       <el-table height="70vh"
@@ -35,7 +34,7 @@
             <el-button size="mini"
                        plain
                        icon="el-icon-edit"
-                       type="primary"
+                       type="text"
                        @click="handleEdit('edit',scope.$index, scope.row)"> 编辑
             </el-button>
             <el-button size="mini"
@@ -214,7 +213,6 @@ export default {
 .search {
   width: 100%;
   display: flex;
-  justify-content: space-between;
 }
 .el-dialog__wrapper {
   ::v-deep.el-dialog {
@@ -233,7 +231,7 @@ export default {
   .el-dialog__wrapper {
   ::v-deep.el-dialog {
         .el-dialog__body {
-        padding: 10px 40px 40px 40px;
+        padding: 10px 40px 75px 40px !important;
     }
   }
   }

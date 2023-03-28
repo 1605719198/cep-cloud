@@ -173,7 +173,7 @@
                 style="width: 50%"
                 class="upload-demo"
                 ref="upload"
-                action="http://192.168.105.249:15234/file/upload"
+                action="http://192.168.105.249:9300/file/upload"
                 multiple
                 :on-remove="handleRemove"
                 :on-preview="handlePreview"
@@ -401,7 +401,7 @@
             that.fileList.push({
               name: obj.file_name,
               appendixId: obj.appendix_id,
-              url: 'http://' + url + ':15234/file/download/' + obj.appendix_id
+              url: 'http://' + url + ':9300/file/download/' + obj.appendix_id
             });
           });
         }, error => {

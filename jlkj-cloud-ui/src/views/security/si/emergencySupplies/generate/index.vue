@@ -32,6 +32,7 @@
                    type="primary"
                    size="mini"
                    icon="el-icon-plus"
+                   plain
                            style="margin: 5px 0;"
                    @click="handleAdd('add')">新增
         </el-button>
@@ -328,8 +329,6 @@ export default {
 <style scoped lang="scss">
 .search {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
 }
 ::v-deep.el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;
@@ -351,7 +350,7 @@ export default {
 .el-dialog__wrapper {
   ::v-deep.el-dialog {
     .el-dialog__body {
-      padding: 10px 40px 40px 40px;
+      padding: 10px 40px 75px 40px;
     }
   }
 }

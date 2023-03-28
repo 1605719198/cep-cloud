@@ -6,7 +6,6 @@
         <div class="avue-crud__search"
              style="border: 0">
           <el-row>
-            <el-col :span="20">
               <!-- 表单筛选 -->
               <el-form :model="query"
                        ref="query"
@@ -49,12 +48,12 @@
                              size="mini">重置</el-button>
                 </el-form-item>
               </el-form>
-            </el-col>
-            <el-col :span="4">
-              <div style="text-align: right;">
+          </el-row>
+              <div class="el-form-item__content">
                 <el-button v-hasPermi="['safeSiteEnvironmentalGovernance_save']"
                            type="primary"
                            size="mini"
+                           plain
                            icon="el-icon-plus"
                            style="margin: 5px 0;"
                            @click="handleAdd('add')">新增
@@ -64,8 +63,7 @@
                          @click="handleDerive('add')">导出
               </el-button> -->
               </div>
-            </el-col>
-          </el-row>
+
         </div>
         <div>
           <el-table height="70vh"

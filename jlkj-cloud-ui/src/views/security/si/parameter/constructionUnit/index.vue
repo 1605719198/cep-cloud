@@ -27,18 +27,17 @@
               </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="4">
-            <div style="text-align: right;margin-right: 10px;">
-              <el-button v-hasPermi="['constructionunit_insert']"
-                         type="primary"
-                         size="mini"
-                         icon="el-icon-plus"
-                           style="margin: 5px 0;"
-                         @click="handleAdd('add')">新增
-              </el-button>
-            </div>
-          </el-col>
         </el-row>
+        <div class="el-form-item__content">
+          <el-button v-hasPermi="['constructionunit_insert']"
+                     type="primary"
+                     size="mini"
+                     plain
+                     icon="el-icon-plus"
+                     style="margin: 5px 0;"
+                     @click="handleAdd('add')">新增
+          </el-button>
+        </div>
       </div>
       <div>
         <el-table height="71vh"

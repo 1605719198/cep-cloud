@@ -5,7 +5,6 @@
            style="width: 98%;border: 0;">
         <div class="avue-crud__search"
              style="border: 0">
-          <el-row>
               <!-- 表单筛选 -->
               <el-form :model="query"
                        ref="query"
@@ -67,7 +66,8 @@
                             placeholder="巡检人员"></el-input>
                 </el-form-item>
                 <!-- 操作按钮 -->
-                <el-form-item>
+                <div class="el-form-item__content"
+                     style="margin-left: 0px;">
                   <el-button v-hasPermi="['check_list']"
                              @click="handleQuery"
                              type="primary"
@@ -76,11 +76,10 @@
                   <el-button @click="handleReset"
                              icon="el-icon-refresh-left"
                              size="mini">重置</el-button>
-                </el-form-item>
-
+                </div>
               </el-form>
-          </el-row>
-          <div class="el-form-item__content">
+          <div class="el-form-item__content"
+               style="float: left">
             <el-button v-hasPermi="['check_insert']"
                        type="primary"
                        size="mini"

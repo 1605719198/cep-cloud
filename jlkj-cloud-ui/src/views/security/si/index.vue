@@ -409,8 +409,8 @@
       },
       getJobSlip() {
         getAnalysisBoardTicketTotal().then(res => {
-          // console.log(res.data.data, '作业票数')
-          let data = res.data.data
+          // console.log(res, '作业票数')
+          let data = res.data
           this.projectList = []
           data.forEach(item => {
             if (item.name == "吊装作业票") {
@@ -486,14 +486,14 @@
 
       getEnvironmentalCollectionPointsInfo(sort) {
         getEnvironmentalCollectionPoints({sort: sort}).then(res => {
-          this.environmentalCollectionPoints = res.data.data;
+          this.environmentalCollectionPoints = res.data;
         });
       },
       getEnvironmentalCollectionPointsCharts(tag) {
         getEnvironmentalCollectionPointsCharts({tag: tag}).then(res => {
           let DetectionEchartsXAxis= [];
           let DetectionEchartsData= [];
-          res.data.data.forEach(item=>{
+          res.data.forEach(item=>{
             DetectionEchartsXAxis.push(item.time);
             DetectionEchartsData.push(item.valueNum);
           });
@@ -571,8 +571,8 @@
     background-position: center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    height: 100%;
-    // height: 100vh;
+    //height: 100%;
+    height: 100vh;
   }
 
   //头部
