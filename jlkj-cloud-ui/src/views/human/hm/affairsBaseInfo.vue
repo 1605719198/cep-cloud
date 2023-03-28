@@ -6,12 +6,12 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="工号" prop="empNo">
-          <el-input v-model="form.empNo" placeholder="请输入工号" maxlength="20"/>
+          <el-input v-model="form.empNo" placeholder="请输入工号"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="证件类型" prop="certificateTypeId">
-          <el-select v-model="form.certificateTypeId" placeholder="证件类型">
+          <el-select v-model="form.certificateTypeId" placeholder="证件类型" @change="changeCertificateTypeId">
             <el-option
               v-for="dict in baseInfoData.documentType"
               :key="dict.dicNo"
@@ -850,8 +850,9 @@ export default {
       // 表单校验
       rules: {
         empNo: [
+          { pattern: /^[+]?(0|([1-9]\d*))?$/, message: "请输入数字", trigger: "blur"},
           { required: true, message: "工号不能为空", trigger: "blur" },
-          { min: 6, max: 20, message: '工号长度必须介于 6 和 20 之间', trigger: 'blur' }
+          { min: 0, max: 6, message: '工号长度必须介于 0 和 6 之间', trigger: 'blur' }
         ],
         certificateTypeId: [
           { required: true, message: "证件类型不能为空", trigger: "blur" }
@@ -991,8 +992,8 @@ export default {
       if (reg.test(this.form.certificateNumber)) {
         const org_birthday = this.form.certificateNumber.substring(6, 14);
         const org_gender = this.form.certificateNumber.substring(16, 17);
-        const area = this.form.certificateNumber.substring(0, 5);
-        console.log(area);
+        const province = this.form.certificateNumber.substring(0, 2);
+        const area = this.form.certificateNumber.substring(0, 6);
         const sex = org_gender % 2 == 1 ? "0" : "1";
         const birthday =
           org_birthday.substring(0, 4) +
@@ -1003,15 +1004,25 @@ export default {
         const birthdays = new Date(birthday.replace(/-/g, "/"));
         this.form.genderId = sex;
         this.form.birthDate = birthdays;
+        this.form.provinceOfBirthId = province + '0000';
+        this.form.cityOfBirthId = area;
+        this.handleChange(this.form.provinceOfBirthId);
       } else {
         this.form.genderId = "未填写";
         return false;
       }
     },
+    changeCertificateTypeId(val) {
+      if (val = '01') {
+        this.form.nationalityId = '01'
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-
+.el-row {
+  margin-bottom: 10px;
+}
 </style>

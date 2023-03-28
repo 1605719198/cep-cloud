@@ -1062,7 +1062,6 @@ export default {
         if (valid) {
 
           if (this.form.parentId !== undefined) {
-            debugger
             this.form.updateUser = '123456'
             this.form.updateUserName = '姓名'
             this.lisetloading = false

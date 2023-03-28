@@ -224,7 +224,6 @@ export default {
             updateFinancetest(this.ruleForm).then(response => {
               console.log(response.data.data);
               if (response.data.data) {
-                debugger
                 this.$message({
                   type: 'success',
                   message: '修改成功'
