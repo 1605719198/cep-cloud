@@ -164,7 +164,7 @@
 <script>
 import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis } from "@/api/human/hd/attendenceBasis";
 import { getAvatorByUserName } from "@/api/system/user";
-import { getDateTime } from '@/api/human/hd/abchuman'
+import { getDateTime } from '@/api/human/hd/ahumanutils'
 export default {
   name: "AttendenceBasis",
   dicts: ['sys_normal_disable'],
@@ -354,3 +354,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.maxWidth {
+  width: 100%;
+}
+</style>

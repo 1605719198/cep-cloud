@@ -6,7 +6,7 @@
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
-            :label="dict.deptName"
+            :label="dict.companyName"
             :value="dict.compId"
           />
         </el-select>
@@ -107,7 +107,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司别" prop="compId">
-              <el-select v-model="form.compId" placeholder="请选择公司别" clearable width="100%" :disabled="this.form.id">
+              <el-select v-model="form.compId" placeholder="请选择公司别" clearable class="maxWidth" :disabled="this.form.id">
                 <el-option
                   v-for="dict in companyList"
                   :key="dict.compId"
@@ -119,7 +119,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="假别名称" prop="holidayTypeCode">
-              <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable width="100%" :disabled="this.form.id">
+              <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id">
                 <el-option
                   v-for="dict in humanOptions"
                   :key="dict.code"
@@ -220,7 +220,7 @@
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBasis"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getBasisOptions } from "@/api/human/hd/attendenceBasis";
-import { getDateTime } from "@/api/human/hd/abchuman"
+import { getDateTime } from "@/api/human/hd/ahumanutils"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { listHolidaysetting, getHolidaysetting, delHolidaysetting, addHolidaysetting, updateHolidaysetting, copyHolidaysetting } from "@/api/human/hd/holidaysetting";
@@ -495,3 +495,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.maxWidth {
+  width: 100%;
+}
+</style>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.OrganizationsettingMapper">
+    
+    <resultMap type="Organizationsetting" id="OrganizationsettingResult">
+        <result property="id"    column="id"    />
+        <result property="onDutyTime"    column="on_duty_time"    />
+        <result property="offDutyTime"    column="off_duty_time"    />
+        <result property="lateTime"    column="late_time"    />
+        <result property="leaTime"    column="lea_time"    />
+        <result property="offDutyAm"    column="off_duty_am"    />
+        <result property="onDutyPm"    column="on_duty_pm"    />
+        <result property="spaceTime"    column="space_time"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="delayTime"    column="delay_time"    />
+        <result property="beforeCheckDays"    column="before_check_days"    />
+        <result property="description"    column="description"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="compName"    column="comp_name"    />
+        <result property="organizationId"    column="organization_id"    />
+        <result property="organizationName"    column="organization_name"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectOrganizationsettingVo">
+        select id, on_duty_time, off_duty_time, late_time, lea_time, off_duty_am, on_duty_pm, space_time, effect_date, delay_time, before_check_days, description, comp_id, comp_name, organization_id, organization_name, creator, creator_id, create_date from human_hd_organizationsetting
+    </sql>
+
+    <select id="selectOrganizationsettingList" parameterType="Organizationsetting" resultMap="OrganizationsettingResult">
+        <include refid="selectOrganizationsettingVo"/>
+        <where>  
+            <if test="onDutyTime != null "> and on_duty_time = #{onDutyTime}</if>
+            <if test="offDutyTime != null "> and off_duty_time = #{offDutyTime}</if>
+            <if test="lateTime != null "> and late_time = #{lateTime}</if>
+            <if test="leaTime != null "> and lea_time = #{leaTime}</if>
+            <if test="offDutyAm != null "> and off_duty_am = #{offDutyAm}</if>
+            <if test="onDutyPm != null "> and on_duty_pm = #{onDutyPm}</if>
+            <if test="spaceTime != null "> and space_time = #{spaceTime}</if>
+            <if test="effectDate != null "> and effect_date = #{effectDate}</if>
+            <if test="delayTime != null "> and delay_time = #{delayTime}</if>
+            <if test="beforeCheckDays != null "> and before_check_days = #{beforeCheckDays}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="compName != null  and compName != ''"> and comp_name like concat('%', #{compName}, '%')</if>
+            <if test="organizationId != null  and organizationId != ''"> and organization_id = #{organizationId}</if>
+            <if test="organizationName != null  and organizationName != ''"> and organization_name like concat('%', #{organizationName}, '%')</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+        order by effect_date desc
+    </select>
+    
+    <select id="selectOrganizationsettingById" parameterType="String" resultMap="OrganizationsettingResult">
+        <include refid="selectOrganizationsettingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrganizationsetting" parameterType="Organizationsetting">
+        insert into human_hd_organizationsetting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="onDutyTime != null">on_duty_time,</if>
+            <if test="offDutyTime != null">off_duty_time,</if>
+            <if test="lateTime != null">late_time,</if>
+            <if test="leaTime != null">lea_time,</if>
+            <if test="offDutyAm != null">off_duty_am,</if>
+            <if test="onDutyPm != null">on_duty_pm,</if>
+            <if test="spaceTime != null">space_time,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="delayTime != null">delay_time,</if>
+            <if test="beforeCheckDays != null">before_check_days,</if>
+            <if test="description != null">description,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="compName != null">comp_name,</if>
+            <if test="organizationId != null">organization_id,</if>
+            <if test="organizationName != null">organization_name,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="onDutyTime != null">#{onDutyTime},</if>
+            <if test="offDutyTime != null">#{offDutyTime},</if>
+            <if test="lateTime != null">#{lateTime},</if>
+            <if test="leaTime != null">#{leaTime},</if>
+            <if test="offDutyAm != null">#{offDutyAm},</if>
+            <if test="onDutyPm != null">#{onDutyPm},</if>
+            <if test="spaceTime != null">#{spaceTime},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="delayTime != null">#{delayTime},</if>
+            <if test="beforeCheckDays != null">#{beforeCheckDays},</if>
+            <if test="description != null">#{description},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="compName != null">#{compName},</if>
+            <if test="organizationId != null">#{organizationId},</if>
+            <if test="organizationName != null">#{organizationName},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrganizationsetting" parameterType="Organizationsetting">
+        update human_hd_organizationsetting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="onDutyTime != null">on_duty_time = #{onDutyTime},</if>
+            <if test="offDutyTime != null">off_duty_time = #{offDutyTime},</if>
+            <if test="lateTime != null">late_time = #{lateTime},</if>
+            <if test="leaTime != null">lea_time = #{leaTime},</if>
+            <if test="offDutyAm != null">off_duty_am = #{offDutyAm},</if>
+            <if test="onDutyPm != null">on_duty_pm = #{onDutyPm},</if>
+            <if test="spaceTime != null">space_time = #{spaceTime},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="delayTime != null">delay_time = #{delayTime},</if>
+            <if test="beforeCheckDays != null">before_check_days = #{beforeCheckDays},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="compName != null">comp_name = #{compName},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="organizationName != null">organization_name = #{organizationName},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrganizationsettingById" parameterType="String">
+        delete from human_hd_organizationsetting where id = #{id}
+    </delete>
+
+    <delete id="deleteOrganizationsettingByIds" parameterType="String">
+        delete from human_hd_organizationsetting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

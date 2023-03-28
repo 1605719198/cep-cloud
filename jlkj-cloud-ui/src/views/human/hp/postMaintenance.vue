@@ -7,7 +7,7 @@
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
-              :label="dict.deptName"
+              :label="dict.companyName"
               :value="dict.compId"
             />
           </el-select>
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/abchuman"
+import { getDateTime } from "@/api/human/hd/ahumanutils"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { treeselect , selectCompany } from "@/api/human/hp/deptMaintenance";

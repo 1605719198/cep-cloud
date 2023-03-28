@@ -40,7 +40,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="专长类别" prop="specialityTypeId">
-                  <el-select v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  width="100%" >
+                  <el-select v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  class="maxWidth" >
                     <el-option
                       v-for="dict in baseInfoData.HP013"
                       :key="dict.uuid"
@@ -52,7 +52,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="专长" prop="specialityId">
-                  <el-select v-model="form.specialityId" placeholder="请选择专长" width="100%" >
+                  <el-select v-model="form.specialityId" placeholder="请选择专长" class="maxWidth" >
                     <el-option
                       v-for="dict in deepOptions1"
                       :key="dict.dicNo"
@@ -67,7 +67,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="岗位序列" prop="postSequenceId">
-                  <el-select v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" width="100%">
+                  <el-select v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP003"
                       :key="dict.uuid"
@@ -79,7 +79,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="岗位类别" prop="postTypeId">
-                  <el-select v-model="form.postTypeId" placeholder="请选择岗位类别" width="100%">
+                  <el-select v-model="form.postTypeId" placeholder="请选择岗位类别" class="maxWidth">
                     <el-option
                       v-for="dict in deepOptions2"
                       :key="dict.dicNo"
@@ -94,7 +94,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="职位名称" prop="jobTitleId">
-                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" width="100%">
+                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" class="maxWidth">
                     <el-option
                       v-for="dict in jobTitle"
                       :key="dict.jobTitleNo"
@@ -104,7 +104,7 @@
                   </el-select>
                 </el-form-item>
 <!--                <el-form-item label="职位名称" prop="jobTitleId" >-->
-<!--                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" width="100%">-->
+<!--                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" class="maxWidth">-->
 <!--                    <el-option-->
 <!--                      v-for="dict in dict.type.job_title_id"-->
 <!--                      :key="dict.value"-->
@@ -124,7 +124,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="工作地点" prop="workAddressId">
-                  <el-select v-model="form.workAddressId" placeholder="请选择工作地点" width="100%">
+                  <el-select v-model="form.workAddressId" placeholder="请选择工作地点" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP004"
                       :key="dict.dicNo"
@@ -136,11 +136,11 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="公司(具体工作地点)" prop="workAddress">
-                  <el-select v-model="form.workAddress" placeholder="请选择公司" width="100%">
+                  <el-select v-model="form.workAddress" placeholder="请选择公司" class="maxWidth">
                     <el-option
                       v-for="dict in companyList"
                       :key="dict.comp_id"
-                      :label="dict.deptName"
+                      :label="dict.companyName"
                       :value="dict.comp_id"
                     ></el-option>
                   </el-select>
@@ -216,7 +216,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="用工性质" prop="employmentNatureId">
-                  <el-select v-model="form.employmentNatureId" placeholder="请选择用工性质" width="100%">
+                  <el-select v-model="form.employmentNatureId" placeholder="请选择用工性质" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP006"
                       :key="dict.dicNo"
@@ -228,7 +228,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="职位费用类别" prop="positionExpenseCategory">
-                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" width="100%">
+                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP007"
                       :key="dict.dicNo"
@@ -249,7 +249,7 @@
               <el-col :span="12">
                 <el-form-item label="生效日期" prop="effectDate">
                   <el-date-picker clearable
-                                  width="100%"
+                                  class="maxWidth"
                                   v-model="form.effectDate"
                                   type="date"
                                   value-format="yyyy-MM-dd"
@@ -580,7 +580,8 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-
+.maxWidth{
+  width: 100%;
+}
 </style>

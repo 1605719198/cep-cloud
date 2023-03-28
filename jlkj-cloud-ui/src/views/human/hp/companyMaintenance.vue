@@ -308,7 +308,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/abchuman"
+import { getDateTime } from "@/api/human/hd/ahumanutils"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect,listDeptversion } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";

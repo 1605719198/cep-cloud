@@ -6,7 +6,7 @@
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
-            :label="dict.deptName"
+            :label="dict.companyName"
             :value="dict.compId"
           />
         </el-select>
@@ -76,7 +76,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司别" prop="compId">
-              <el-select v-model="form.compId" placeholder="请选择公司别" clearable size="small" width="100%">
+              <el-select v-model="form.compId" placeholder="请选择公司别" clearable  class="maxWidth">
                 <el-option
                   v-for="dict in companyList"
                   :key="dict.compId"
@@ -106,7 +106,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="备注" prop="note">
+        <el-form-item label="备注" prop="note" >
           <el-input v-model="form.note" type="textarea" show-word-limit :autosize="{ minRows: 2, maxRows: 6 }" placeholder="请输入内容" maxlength="500" />
         </el-form-item>
         <el-row :gutter="20">
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/abchuman"
+import { getDateTime } from "@/api/human/hd/ahumanutils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
@@ -356,3 +356,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.maxWidth{
+  width: 100%;
+}
+</style>
