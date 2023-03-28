@@ -85,5 +85,4 @@ public class EmployeeEncourageController extends BaseController {
         iEncourageService.lambdaUpdate().eq(Encourage::getUuid, uuid).remove();
         return AjaxResult.success("删除成功");
     }
-
 }

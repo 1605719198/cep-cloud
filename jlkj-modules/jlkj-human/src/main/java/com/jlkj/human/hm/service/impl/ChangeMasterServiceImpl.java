@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-17 08:39:33
 */
 @Service
-public class IChangeMasterServiceImpl extends ServiceImpl<ChangeMasterMapper, ChangeMaster>
+public class ChangeMasterServiceImpl extends ServiceImpl<ChangeMasterMapper, ChangeMaster>
     implements IChangeMasterService {
 
 }

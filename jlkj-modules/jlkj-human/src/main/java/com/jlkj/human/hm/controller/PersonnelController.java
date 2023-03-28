@@ -125,4 +125,25 @@ public class PersonnelController extends BaseController {
             return AjaxResult.error();
         }
     }
+
+    /**
+     * 职位人员明细列表查询
+     */
+    @Log(title = "职位人员明细列表查询",businessType = BusinessType.OTHER)
+    @Operation(summary = "职位人员明细列表查询")
+    @GetMapping("/getPostLevelEmployee")
+    public Object getPostLevelEmployee(HumanresourcePersonnelInfoDTO humanresourcePersonnelInfoDTO) {
+        try {
+            startPage();
+            String compId = humanresourcePersonnelInfoDTO.getCompId();
+            String postId = humanresourcePersonnelInfoDTO.getPostId();
+            LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
+                    .eq(StringUtils.isNotBlank(postId), Personnel::getEmpNo, postId);
+            List<Personnel> list = personnelService.list(queryWrapper);
+            return AjaxResult.success("查询成功", getDataTable(list));
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
 }

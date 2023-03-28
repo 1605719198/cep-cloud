@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-23 14:25:12
 */
 @Service
-public class ILeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave>
+public class LeaveServiceImpl extends ServiceImpl<LeaveMapper, Leave>
     implements ILeaveService {
 
 }

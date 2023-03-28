@@ -49,11 +49,14 @@
         </el-row>
 
         <el-table v-loading="loading" :data="employeeEncourageList">
-          <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="工号" align="center" prop="empNo" />
           <el-table-column label="姓名" align="center" prop="empName" />
           <el-table-column label="岗位" align="center" prop="postFullName" />
-          <el-table-column label="奖惩类别" align="center" prop="encourageType" />
+          <el-table-column label="奖惩类别" align="center" prop="encourageType">
+            <template v-slot="scope">
+              <dict-tag-human :options="baseInfoData.EncourageType" :value="scope.row.encourageType"/>
+            </template>
+          </el-table-column>
           <el-table-column label="输入人" align="center" prop="creator" />
           <el-table-column label="输入时间" align="center" prop="createDate" width="180">
             <template v-slot="scope">
@@ -134,7 +137,7 @@
                   <el-select v-model="form.encourageType">
                     <el-option
                       v-for="dict in baseInfoData.EncourageType"
-                      :key="dict.uuid"
+                      :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
                     ></el-option>
@@ -183,11 +186,12 @@ import { listEmployeeEncourage, getEmployeeEncourage, delEmployeeEncourage, addE
 import selectUser from "@/views/human/hm/selectUser";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
+import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 
 export default {
   name: "employeeEncourage",
   dicts: ['comp_id'],
-  components: {selectUser},
+  components: {selectUser,DictTagHuman},
   data() {
     return {
       // 遮罩层
@@ -244,8 +248,8 @@ export default {
     getList() {
       this.loading = true;
       listEmployeeEncourage(this.queryParams).then(response => {
-        this.employeeEncourageList = response.rows;
-        this.total = response.total;
+        this.employeeEncourageList = response.data.rows;
+        this.total = response.data.total;
         this.loading = false;
       });
     },

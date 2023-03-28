@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-27 16:32:02
 */
 @Service
-public class IEncourageServiceImpl extends ServiceImpl<EncourageMapper, Encourage>
+public class EncourageServiceImpl extends ServiceImpl<EncourageMapper, Encourage>
     implements IEncourageService {
 
 }

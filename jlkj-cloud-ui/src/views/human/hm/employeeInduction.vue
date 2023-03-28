@@ -6,10 +6,10 @@
               <el-form-item label="公司">
                 <el-select v-model="queryParams.compId" placeholder="请选择公司">
                   <el-option
-                    v-for="dict in dict.type.comp_id"
-                    :key="dict.value"
-                    :label="dict.label"
-                    :value="dict.value"
+                    v-for="dict in companyName"
+                    :key="dict.compId"
+                    :label="dict.companyName"
+                    :value="dict.compId"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -224,11 +224,10 @@
 import selectUser from "@/views/human/hm/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, updateEmployeeInduction, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
-import {treeselect} from "@/api/human/hp/deptMaintenance";
+import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
 export default {
   name: "EmployeeInduction",
-  dicts: ['comp_id'],
   components: {selectUser},
   data() {
     return {
@@ -304,7 +303,8 @@ export default {
       label: undefined,
       parentPostName: undefined,
       orgName: undefined,
-      postName: undefined
+      postName: undefined,
+      companyName: []
     }
   },
   watch: {
@@ -324,6 +324,9 @@ export default {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    selectCompany().then(res => {
+      this.companyName = res.data
+    })
   },
   methods: {
     getList() {
