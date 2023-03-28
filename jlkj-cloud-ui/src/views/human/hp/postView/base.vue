@@ -316,42 +316,42 @@
         <el-divider content-position="center" >变更记录</el-divider>
       </div>
       <el-table :data="formHistory"  v-show="ifupdate" slot="footer" >
-        <el-table-column label="版本号" prop="versionNo" align="center" show-overflow-tooltip>
+        <el-table-column label="版本号" prop="versionNo" width="75" align="center" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.versionNo}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="岗位编码" prop="postCode" align="center" show-overflow-tooltip>
+        <el-table-column label="岗位编码" prop="postCode" width="75" align="center" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.postCode}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="岗位名称" prop="postName" align="center" show-overflow-tooltip>
+        <el-table-column label="岗位名称" prop="postName" align="center" width="150" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.postName}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="所属公司/机构" prop="orgName" align="center" show-overflow-tooltip>
+        <el-table-column label="所属公司/机构" prop="orgName" align="center" width="200" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.orgName}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="定员" prop="planCapacity" align="center" show-overflow-tooltip>
+        <el-table-column label="定员" prop="planCapacity" width="55" align="center" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.planCapacity}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="生效日期" prop="effectDate" align="center" show-overflow-tooltip>
+        <el-table-column label="生效日期" prop="effectDate" align="center" width="100" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.effectDate}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="输入人" prop="updateBy" show-overflow-tooltip>
+        <el-table-column label="输入人" prop="updateBy" align="center" width="80" show-overflow-tooltip>
           <template v-slot="scope">
             <span>{{scope.row.updateBy}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="输入日期" prop="updateTime" show-overflow-tooltip>
+        <el-table-column label="输入日期" prop="updateTime" align="center" show-overflow-tooltip>
           <template v-slot="scope">
             <span v-text="scope.row.updateTime"   ></span>
           </template>

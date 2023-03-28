@@ -111,7 +111,7 @@
                 <el-option
                   v-for="dict in companyList"
                   :key="dict.compId"
-                  :label="dict.deptName"
+                  :label="dict.companyName"
                   :value="dict.compId"
                 />
               </el-select>
@@ -192,7 +192,7 @@
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
-              :label="dict.deptName"
+              :label="dict.companyName"
               :value="dict.compId"
             />
           </el-select>
@@ -202,7 +202,7 @@
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
-              :label="dict.deptName"
+              :label="dict.companyName"
               :value="dict.compId"
             />
           </el-select>
