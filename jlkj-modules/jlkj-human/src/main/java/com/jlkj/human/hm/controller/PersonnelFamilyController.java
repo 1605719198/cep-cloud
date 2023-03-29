@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.PersonnelFamily;
 import com.jlkj.human.hm.dto.PersonnelFamilyDTO;
@@ -29,6 +30,7 @@ public class PersonnelFamilyController {
     /**
      * 新增家属信息
      */
+    @RequiresPermissions("human:familyInfo:save")
     @Log(title = "新增家属信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增家属信息")
     @PostMapping("/addFamilyData")
@@ -83,6 +85,7 @@ public class PersonnelFamilyController {
     /**
      * 删除家属信息
      */
+    @RequiresPermissions("human:familyInfo:remove")
     @Log(title = "删除家属信息", businessType = BusinessType.DELETE)
     @Operation(summary = "删除家属信息")
     @DeleteMapping("/delete")

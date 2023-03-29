@@ -217,7 +217,7 @@
 
 <script>
 import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
-import selectUser from "@/views/human/hm/selectUser";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 import {listEmployeeLeave, getEmployeeLeave, addEmployeeLeave, updateEmployeeLeave, delEmployeeLeave} from "@/api/human/hm/employeeLeave";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";

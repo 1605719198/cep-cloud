@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button type="primary" size="medium" plain @click="handleSave">保存</el-button>
-    <el-button type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
+    <el-button v-hasPermi="['human:occupationInfo:save']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
+    <el-button v-hasPermi="['human:occupationInfo:remove']" type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" plain @click="addLine">添加行信息</el-button>
     <div class="head-container" style="height: 30vh;width: 100%;">
       <el-scrollbar style="height: 100%;">

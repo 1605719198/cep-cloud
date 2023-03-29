@@ -388,7 +388,7 @@
 
 <script>
 import { listLaborContract, getLaborContract, delLaborContract, addLaborContract, updateLaborContract } from "@/api/human/hm/laborContract";
-import selectUser from "@/views/human/hm/selectUser";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";

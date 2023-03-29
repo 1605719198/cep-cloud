@@ -7,6 +7,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.config.PinYinApi;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
@@ -68,6 +69,7 @@ public class PersonnelController extends BaseController {
     /**
      * 新增人员基本信息
      */
+    @RequiresPermissions("human:affairsBaseInfo:save")
     @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员基本信息")
     @PostMapping("/addPersonnelBasicInfo")
@@ -85,6 +87,7 @@ public class PersonnelController extends BaseController {
     /**
      * 获取人员基本信息查询列表
      */
+    @RequiresPermissions("human:personnelBasicInfo:query")
     @Log(title = "获取人员基本信息查询列表", businessType = BusinessType.OTHER)
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")

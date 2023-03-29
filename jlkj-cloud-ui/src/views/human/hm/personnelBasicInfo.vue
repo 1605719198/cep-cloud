@@ -26,7 +26,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item>
-                    <el-button v-hasPermi="['sampleBasicData_queryList']"
+                    <el-button v-hasPermi="['human:personnelBasicInfo:query']"
                                size="mini"
                                type="primary"
                                @click="handleQuery"

@@ -77,14 +77,14 @@
           >
             <el-row>
               <el-col :span="6">
-                <el-form-item label="工号">
+                <el-form-item label="工号" prop="empNo">
                   <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
                     <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="姓名">
+                <el-form-item label="姓名" prop="empName">
                   <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :disabled="!updatePop"/>
                 </el-form-item>
               </el-col>
@@ -221,11 +221,12 @@
 </template>
 
 <script>
-import selectUser from "@/views/human/hm/selectUser";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, updateEmployeeInduction, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
+import {checkRealName} from "@/utils/jlkj";
 export default {
   name: "EmployeeInduction",
   components: {selectUser},
@@ -274,6 +275,13 @@ export default {
       },
       // 表单校验
       rules: {
+        empNo: [
+          { pattern: /^[+]?(0|([1-9]\d*))?$/, message: "请输入数字", trigger: "blur"},
+          { min: 0, max: 6, message: '工号长度必须介于 0 和 6 之间', trigger: 'blur' }
+        ],
+        empName: [
+          { required: false, validator: checkRealName, trigger: "blur" }
+        ],
         effectDate: [
           { required: true, message: "生效日期不能为空", trigger: "blur" }
         ],
@@ -335,9 +343,11 @@ export default {
       })
     },
     /** 获取工号 */
-    getJobNumber(val) {
+    getJobNumber(val,userName) {
       this.queryParams.empNo = val
       this.addJsonForm.empNo = val
+      this.addJsonForm.empName = userName
+      this.getList();
     },
     /** 工号点击事件 */
     inputClick() {
@@ -359,7 +369,7 @@ export default {
         postLevel: undefined,
         employeeInductionList: [
           {
-            postTypeId: undefined,
+            postTypeId: '01',
             newPostName: undefined,
           }
         ]
@@ -383,22 +393,26 @@ export default {
       })
     },
     submitForm() {
-      if (this.addJsonForm.uuid != undefined) {
-        updateEmployeeInduction(this.addJsonForm).then(res => {
-          if (res.code === 200) {
-            this.$message({ type: "success", message: res.msg });
+      this.$refs["addJsonForm"].validate(valid => {
+        if (valid) {
+          if (this.addJsonForm.uuid != undefined) {
+            updateEmployeeInduction(this.addJsonForm).then(res => {
+              if (res.code === 200) {
+                this.$message({type: "success", message: res.msg});
+              }
+              this.open = false;
+              this.getList();
+            });
+          } else {
+            addEmployeeInduction(this.addJsonForm).then(res => {
+              if (res.code === 200) {
+                this.$message({type: "success", message: res.msg});
+              }
+              this.open = false
+            })
           }
-          this.open = false;
-          this.getList();
-        });
-      } else {
-        addEmployeeInduction(this.addJsonForm).then(res => {
-          if (res.code === 200) {
-            this.$message({ type: "success", message: res.msg });
-          }
-          this.open = false
-        })
-      }
+        }
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {

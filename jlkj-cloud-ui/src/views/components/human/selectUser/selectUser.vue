@@ -20,6 +20,14 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
+          <el-form-item label="归属部门" prop="deptId">
+            <treeselect v-model="queryParams.deptId"
+                        class="treeselect-main"
+                        :options="deptOptions"
+                        :show-count="true"
+                        placeholder="请选择部门"
+            />
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -31,6 +39,7 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="用户工号" prop="empNo" :show-overflow-tooltip="true"/>
         <el-table-column label="用户姓名" prop="fullName" :show-overflow-tooltip="true"/>
+        <el-table-column label="部门" prop="departmentName" :show-overflow-tooltip="true"/>
         <el-table-column label="邮箱" prop="officeEmail" :show-overflow-tooltip="true"/>
         <el-table-column label="手机" prop="myMobilePhone" :show-overflow-tooltip="true"/>
       </el-table>
@@ -51,8 +60,12 @@
 
 <script>
 import {getAllUserList} from "@/api/human/hm/personnelBasicInfo";
+import {deptTreeSelect} from "@/api/system/user";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
+  components: {Treeselect},
   data() {
     return {
       // 遮罩层
@@ -65,14 +78,20 @@ export default {
       total: 0,
       // 未授权用户数据
       userList: [],
+      // 部门树选项
+      deptOptions: undefined,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         empNo: undefined,
         myMobilePhone: undefined,
+        deptId: undefined
       }
     };
+  },
+  created() {
+    this.getDeptTree();
   },
   methods: {
     // 显示弹框
@@ -119,9 +138,18 @@ export default {
       }
       this.visible = false;
       this.$emit("ok",userIds, userName);
-    }
+    },
+    /** 查询部门下拉树结构 */
+    getDeptTree() {
+      deptTreeSelect().then(response => {
+        this.deptOptions = response.data;
+      });
+    },
   }
 };
 </script>
 <style scoped>
+.treeselect-main {
+  width: 200px;
+}
 </style>

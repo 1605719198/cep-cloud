@@ -1,6 +1,6 @@
 <template>
   <div>
-  <el-button type="primary" size="medium" plain @click="handleSave">保存</el-button>
+  <el-button v-hasPermi="['human:affairsBaseInfo:save']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
   <el-button type="primary" size="medium" plain @click="handleEmpty">新增</el-button>
   <el-form ref="form" :model="form" :rules="rules" label-width="195px">
     <el-row>
@@ -1011,14 +1011,18 @@ export default {
       })
     },
     handleSave() {
-      addPersonnelData(this.form).then(response => {
-        if (response.code == 200) {
-          this.$message({
-            type: 'success',
-            message: response.msg
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          addPersonnelData(this.form).then(response => {
+            if (response.code == 200) {
+              this.$message({
+                type: 'success',
+                message: response.msg
+              })
+            }
           })
         }
-      })
+      });
     },
     handleChange(value) {
       for (const item of this.options) {

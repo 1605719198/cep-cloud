@@ -163,8 +163,8 @@
                 <span style="font-size: 18px">【岗位资料】</span>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="addLine">添加岗位信息</el-button>
-            <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除岗位信息</el-button>
+            <el-button type="primary" @click="addLine">添加</el-button>
+            <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
             <el-table
               :data="addJsonForm.employeeTurnoverList"
               border
@@ -279,7 +279,7 @@
 </template>
 
 <script>
-import selectUser from "@/views/human/hm/selectUser";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
 import {queryEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
 import {
@@ -435,7 +435,7 @@ export default {
         postLevel: undefined,
         employeeTurnoverList: [
           {
-            postTypeId: undefined,
+            postTypeId: '01',
             newPostName: undefined,
           }
         ]
@@ -462,22 +462,26 @@ export default {
       })
     },
     submitForm() {
-      if (this.addJsonForm.uuid != undefined) {
-        updateEmployeeTurnover(this.addJsonForm).then(res => {
-          if (res.code === 200) {
-            this.$message({ type: "success", message: res.msg });
+      this.$refs["addJsonForm"].validate(valid => {
+        if (valid) {
+          if (this.addJsonForm.uuid != undefined) {
+            updateEmployeeTurnover(this.addJsonForm).then(res => {
+              if (res.code === 200) {
+                this.$message({type: "success", message: res.msg});
+              }
+              this.open = false;
+              this.getList();
+            });
+          } else {
+            addEmployeeTurnover(this.addJsonForm).then(res => {
+              if (res.code === 200) {
+                this.$message({type: "success", message: res.msg});
+              }
+              this.open = false
+            })
           }
-          this.open = false;
-          this.getList();
-        });
-      } else {
-        addEmployeeTurnover(this.addJsonForm).then(res => {
-          if (res.code === 200) {
-            this.$message({ type: "success", message: res.msg });
-          }
-          this.open = false
-        })
-      }
+        }
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {

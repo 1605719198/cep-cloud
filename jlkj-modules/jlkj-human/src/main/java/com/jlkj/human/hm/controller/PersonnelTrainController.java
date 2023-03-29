@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.PersonnelTrain;
 import com.jlkj.human.hm.dto.PersonnelTrainDTO;
@@ -30,6 +31,7 @@ public class PersonnelTrainController {
     /**
      * 新增培训经历信息
      */
+    @RequiresPermissions("human:cultivateExperienceInfo:save")
     @Log(title = "新增培训经历信息",businessType = BusinessType.INSERT)
     @Operation(summary = "新增培训经历信息")
     @PostMapping("/addCultivateExperienceData")
@@ -85,6 +87,7 @@ public class PersonnelTrainController {
     /**
      * 删除培训经历信息
      */
+    @RequiresPermissions("human:cultivateExperienceInfo:remove")
     @Log(title = "删除培训经历信息", businessType = BusinessType.DELETE)
     @Operation(summary = "删除培训经历信息")
     @DeleteMapping("/delete")

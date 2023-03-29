@@ -183,7 +183,7 @@
 
 <script>
 import { listEmployeeEncourage, getEmployeeEncourage, delEmployeeEncourage, addEmployeeEncourage, updateEmployeeEncourage } from "@/api/human/hm/employeeEncourage";
-import selectUser from "@/views/human/hm/selectUser";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";

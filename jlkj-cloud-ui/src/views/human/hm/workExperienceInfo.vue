@@ -7,8 +7,8 @@
         </el-col>
       </el-row>
       <div style="margin-top: 10px">
-        <el-button type="primary" size="medium" plain @click="handleSave">保存</el-button>
-        <el-button type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
+        <el-button v-hasPermi="['human:workExperienceInfo:save']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:workExperienceInfo:remove']"  type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
         <el-button type="success" size="medium" plain @click="addLine">添加行信息</el-button>
       </div>
       <div class="head-container" style="height: 30vh;width: 100%;">
@@ -154,15 +154,19 @@ export default {
       for (const item of this.baseForm.workExperienceList) {
         item.empId = this.empId
       }
-      addWorkExperienceData(this.baseForm).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            type: 'success',
-            message: res.msg
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          addWorkExperienceData(this.baseForm).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: 'success',
+                message: res.msg
+              })
+            }
+            this.getList()
           })
         }
-        this.getList()
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {

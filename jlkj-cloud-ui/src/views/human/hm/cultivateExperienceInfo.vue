@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button type="primary" size="medium" plain @click="handleSave">保存</el-button>
-    <el-button type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
+    <el-button v-hasPermi="['human:cultivateExperienceInfo:save']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
+    <el-button v-hasPermi="['human:cultivateExperienceInfo:remove']" type="danger" size="medium" plain :disabled="multiple" @click="handleDelete">删除</el-button>
     <el-button type="success" size="medium" plain @click="addLine">添加行信息</el-button>
     <div class="head-container" style="height: 30vh;width: 100%;">
       <el-scrollbar style="height: 100%;">
@@ -146,15 +146,19 @@ export default {
       for (const item of this.baseForm.cultivateExperienceList) {
         item.empId = this.empId
       }
-      addCultivateExperienceData(this.baseForm).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            type: 'success',
-            message: res.msg
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          addCultivateExperienceData(this.baseForm).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: 'success',
+                message: res.msg
+              })
+            }
+            this.getList();
           })
         }
-        this.getList();
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
