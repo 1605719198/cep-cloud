@@ -23,7 +23,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="证件号码" prop="certificateNumber">
-          <el-input v-model="form.certificateNumber" placeholder="请输入证件号码" maxlength="18" @input="inputChange"/>
+          <el-input v-model="form.certificateNumber" placeholder="请输入证件号码" :maxlength="18" @input="inputChange"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -814,6 +814,15 @@ import { getBaseInfo, getDegreeMajorSpecialization } from "@/api/human/hm/baseIn
 import photoUpload from "@/views/human/hm/photoUpload";
 import { regionData } from "element-china-area-data";
 import {addPersonnelData, queryInfo} from "@/api/human/hm/personnelBasicInfo";
+import {
+  checkRealName,
+  postalCode,
+  validateContacts,
+  validateEMail,
+  validateNumber,
+  validatePhoneTwo,
+  validateSfz
+} from "@/utils/jlkj";
 export default {
   name: "HumanAffairsBaseInfo",
   dicts: ['sys_user_sex', 'sys_yes_no'],
@@ -858,10 +867,52 @@ export default {
           { required: true, message: "证件类型不能为空", trigger: "blur" }
         ],
         certificateNumber: [
-          { required: true, message: "证件号码不能为空", trigger: "blur" }
+          { required: true, validator: validateSfz, trigger: "blur" }
         ],
         fullName: [
-          { required: true, message: "姓名不能为空", trigger: "blur" }
+          { required: true, validator: checkRealName, trigger: "blur" }
+        ],
+        nameUsedBefore: [
+          { required: false, validator: checkRealName, trigger: "blur" }
+        ],
+        medicalHistoryDescription: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        firstRecordGraduateSchool: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        lastRecordGraduateSchool: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        firstForeignLanguageLevelCertificate: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        secondForeignLanguageLevelCertificate: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        computerTypeLevelCertificate: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        computerType: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        specialty: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        officeAddress: [
+          { required: false, validator: validateContacts, trigger: "blur" }
+        ],
+        registeredPermanentResidencePostalCode: [
+          { required: false, validator: postalCode, trigger: "blur" }
+        ],
+        englishName: [
+          { pattern: /^[A-Za-z]+$/, message: "请输入英文", trigger: "blur"},
+        ],
+        height: [
+          { required: false, validator: validateNumber, trigger: "blur" }
+        ],
+        weight: [
+          { required: false, validator: validateNumber, trigger: "blur" }
         ],
         joinWorkDate: [
           { required: true, message: "参加工作时间不能为空", trigger: "blur" }
@@ -916,7 +967,13 @@ export default {
           }
         ],
         officeTelephone: [
-          { required: true, message: "办公电话不能为空", trigger: "blur" }
+          { required: true, validator: validatePhoneTwo, trigger: "blur" }
+        ],
+        insideLine: [
+          { required: true, validator: validatePhoneTwo, trigger: "blur" }
+        ],
+        emergencyContactPersonEmail: [
+          { required: true, validator: validateEMail, trigger: "blur" }
         ],
         ifTerminateContract: [
           { required: true, message: "与原单位是否解除劳动关系不能为空", trigger: "blur" }
@@ -994,6 +1051,7 @@ export default {
         const org_gender = this.form.certificateNumber.substring(16, 17);
         const province = this.form.certificateNumber.substring(0, 2);
         const area = this.form.certificateNumber.substring(0, 6);
+        const area1 = this.form.certificateNumber.substring(0, 4);
         const sex = org_gender % 2 == 1 ? "0" : "1";
         const birthday =
           org_birthday.substring(0, 4) +
@@ -1005,7 +1063,11 @@ export default {
         this.form.genderId = sex;
         this.form.birthDate = birthdays;
         this.form.provinceOfBirthId = province + '0000';
-        this.form.cityOfBirthId = area;
+        if (province == 11 || province == 12 || province == 31 || province == 50) {
+          this.form.cityOfBirthId = area;
+        } else {
+          this.form.cityOfBirthId = area1 + '00';
+        }
         this.handleChange(this.form.provinceOfBirthId);
       } else {
         this.form.genderId = "未填写";
