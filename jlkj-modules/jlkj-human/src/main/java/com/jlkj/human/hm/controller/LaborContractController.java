@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author HuangBing
+ * @Description
+ * @create 2023-03-28 13:42
+ */
 @RestController
 @RequestMapping("/laborContract")
 public class LaborContractController extends BaseController {

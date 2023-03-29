@@ -13,6 +13,7 @@ import java.util.Date;
 /**
  * 人员奖惩信息表
  * @TableName human_hm_encourage
+ * @author HuangBing
  */
 @TableName(value ="human_hm_encourage")
 @Data

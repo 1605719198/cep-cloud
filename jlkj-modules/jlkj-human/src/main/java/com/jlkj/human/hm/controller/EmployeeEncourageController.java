@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author HuangBing
+ * @Description
+ * @create 2023-03-27 13:42
+ */
 @RestController
 @RequestMapping("/employeeEncourage")
 public class EmployeeEncourageController extends BaseController {

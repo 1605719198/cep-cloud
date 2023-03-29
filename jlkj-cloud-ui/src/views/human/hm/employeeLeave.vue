@@ -386,6 +386,7 @@ export default {
       this.queryParams.empNo = val
       this.form.empNo = val
       this.form.empName = userName
+      this.getList();
       queryNewPostNameAndChangeDetail(this.form).then(res => {
         this.form.leaveMainPost = res.data.list1[0].newPostName
         this.form.enterDate = res.data.list[0].effectDate

@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author HuangBing
+ * @Description
+ * @create 2023-03-29 13:42
+ */
 @RestController
 @RequestMapping("/attendenceRecord")
 public class AttendenceRecordController extends BaseController {

@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * 员工出勤有效记录资料表
  * @TableName human_hd_attendence_record
+ * @author HuangBing
  */
 @TableName(value ="human_hd_attendence_record")
 @Data

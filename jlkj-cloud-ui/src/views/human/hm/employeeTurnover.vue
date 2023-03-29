@@ -408,6 +408,7 @@ export default {
       this.queryParams.empNo = val
       this.addJsonForm.empNo = val
       this.addJsonForm.empName = userName
+      this.getList();
       queryNewPostNameAndChangeDetail(this.addJsonForm).then(res => {
         this.addJsonForm.nowPostName = res.data.list1[0].newPostName
         this.addJsonForm.nowPostLevel = res.data.list[0].postLevel

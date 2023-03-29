@@ -13,6 +13,7 @@ import java.util.Date;
 /**
  * 人员劳动合同表
  * @TableName human_hm_contract
+ * @author HuangBing
  */
 @TableName(value ="human_hm_contract")
 @Data

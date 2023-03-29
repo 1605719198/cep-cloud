@@ -590,6 +590,7 @@ export default {
       this.form.empNo = val
       this.form.empName = userName
       this.bol = false
+      this.getList();
       queryNewPostNameAndChangeDetail(this.form).then(res => {
         this.form.deptName = res.data.list1[0].newPostName
         this.$nextTick(() => {
