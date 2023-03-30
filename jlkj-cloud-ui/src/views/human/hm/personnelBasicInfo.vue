@@ -10,10 +10,10 @@
                 <el-form-item label="公司">
                   <el-select v-model="query.compId" placeholder="请选择公司">
                     <el-option
-                      v-for="dict in dict.type.comp_id"
-                      :key="dict.value"
-                      :label="dict.label"
-                      :value="dict.value"
+                      v-for="dict in companyName"
+                      :key="dict.compId"
+                      :label="dict.companyName"
+                      :value="dict.compId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -77,9 +77,10 @@ import CultivateExperienceInfo from "@/views/human/hm/cultivateExperienceInfo";
 import FamilyInfo from "@/views/human/hm/familyInfo";
 import OccupationInfo from "@/views/human/hm/occupationInfo";
 import ProfessionalInfo from "@/views/human/hm/professionalInfo";
+import {getBaseInfo} from "@/api/human/hm/baseInfo";
+import {selectCompany} from "@/api/human/hp/deptMaintenance";
 export default {
   name: "PersonnelBasicInfo",
-  dicts: ['comp_id'],
   components:{
     HumanAffairsBaseInfo,
     WorkExperienceInfo,
@@ -107,7 +108,13 @@ export default {
       isFifth: false,
       isSixth: false,
       isSeventh: false,
+      companyName: []
     }
+  },
+  created() {
+    selectCompany().then(res => {
+      this.companyName = res.data
+    })
   },
   methods: {
     /** 查询人员基本信息 */

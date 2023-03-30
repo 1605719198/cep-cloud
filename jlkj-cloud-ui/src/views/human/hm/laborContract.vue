@@ -6,10 +6,10 @@
           <el-form-item label="公司">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
-                v-for="dict in dict.type.comp_id"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in companyName"
+                :key="dict.compId"
+                :label="dict.companyName"
+                :value="dict.compId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -392,10 +392,11 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
+import {selectCompany} from "@/api/human/hp/deptMaintenance";
 
 export default {
   name: "laborContract",
-  dicts: ['comp_id', 'sys_yes_no'],
+  dicts: ['sys_yes_no'],
   components: {selectUser,DictTagHuman},
   data() {
     return {
@@ -451,12 +452,16 @@ export default {
           'changeReason',
           'agreementType']
       },
+      companyName: []
     };
   },
   created() {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    selectCompany().then(res => {
+      this.companyName = res.data
+    })
   },
   watch: {
 

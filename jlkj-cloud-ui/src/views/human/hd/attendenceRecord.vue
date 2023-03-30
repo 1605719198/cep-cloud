@@ -6,10 +6,10 @@
           <el-form-item label="公司">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
-                v-for="dict in dict.type.comp_id"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in companyList"
+                :key="dict.compId"
+                :label="dict.companyName"
+                :value="dict.compId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -72,13 +72,15 @@
 <script>
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import { listAttendenceRecord } from "@/api/human/hd/attendenceRecord";
+import {selectCompany} from "@/api/human/hp/deptMaintenance";
 
 export default {
   name: "AttendenceRecord",
-  dicts: ['comp_id'],
   components: {selectUser},
   data() {
     return {
+      //公司数据
+      companyList:[],
       // 遮罩层
       loading: false,
       // 显示搜索条件
@@ -100,8 +102,15 @@ export default {
     };
   },
   created() {
+    this.getCompanyList();
   },
   methods: {
+    //获取公司列表
+    getCompanyList(){
+      selectCompany().then(response=>{
+        this.companyList = response.data
+      })
+    },
     /** 查询员工出勤有效记录资料列表 */
     getList() {
       this.loading = true;
