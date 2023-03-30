@@ -86,7 +86,8 @@ export default {
         pageSize: 10,
         empNo: undefined,
         myMobilePhone: undefined,
-        deptId: undefined
+        deptId: undefined,
+        compId: undefined
       }
     };
   },
@@ -95,7 +96,10 @@ export default {
   },
   methods: {
     // 显示弹框
-    show() {
+    show(queryParams) {
+      if(queryParams){
+        this.queryParams = queryParams;
+      }
       this.getList();
       this.visible = true;
     },
@@ -128,6 +132,7 @@ export default {
     handleSelectUser() {
       const userIds = this.userIds.join(",");
       const userName = this.userName.join(",");
+      const compId = this.compId.join(",");
       if (userIds == "") {
         this.$modal.msgError("请选择要分配的用户");
         return;
@@ -137,7 +142,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok",userIds, userName);
+      this.$emit("ok",userIds, userName, compId);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {
