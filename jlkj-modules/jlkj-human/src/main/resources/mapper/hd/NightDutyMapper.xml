@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.NightDutyMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.NightDuty">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="postFullname" column="post_fullname" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="shiftId" column="shift_id" jdbcType="VARCHAR"/>
+            <result property="shiftDate" column="shift_date" jdbcType="DATE"/>
+            <result property="bigNight" column="big_night" jdbcType="DECIMAL"/>
+            <result property="smallNight" column="small_night" jdbcType="DECIMAL"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,emp_id,
+        emp_no,emp_name,post_fullname,
+        post_id,shift_id,shift_date,
+        big_night,small_night,creator,
+        creator_id,create_date
+    </sql>
+</mapper>
