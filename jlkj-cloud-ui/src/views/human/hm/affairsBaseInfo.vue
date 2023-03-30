@@ -816,7 +816,7 @@ import { regionData } from "element-china-area-data";
 import {addPersonnelData, queryInfo} from "@/api/human/hm/personnelBasicInfo";
 import {
   checkRealName,
-  postalCode,
+  postalCode, validateAlphabets,
   validateContacts,
   validateEMail,
   validateNumber,
@@ -912,7 +912,7 @@ export default {
           { required: false, validator: postalCode, trigger: "change" }
         ],
         englishName: [
-          { pattern: /^[A-Za-z]+$/, message: "请输入英文", trigger: "blur"},
+          { required: false, validator: validateAlphabets, trigger: "blur" },
           { max: 50, message: '英文名长度不能超过50', trigger: 'blur' }
         ],
         height: [
