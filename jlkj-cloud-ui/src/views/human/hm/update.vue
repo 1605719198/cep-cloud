@@ -80,8 +80,14 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        dicNo: [{ required: true, message: '资料代号不能为空', trigger: 'blur' }],
-        dicName: [{ required: true, message: '资料名称不能为空', trigger: 'blur' }],
+        dicNo: [
+          { required: true, message: '资料代号不能为空', trigger: 'blur' },
+          { max: 50, message: '资料代号长度不能超过50', trigger: 'blur' }
+        ],
+        dicName: [
+          { required: true, message: '资料名称不能为空', trigger: 'blur' },
+          { max: 50, message: '资料名称长度不能超过50', trigger: 'blur' }
+        ],
         status: [{ required: true, message: '资料状态不能为空', trigger: 'blur' }]
       },
       submitLoading: false,
@@ -131,5 +137,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.el-row {
+  margin-bottom: 10px;
+}
 </style>

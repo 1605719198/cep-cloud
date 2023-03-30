@@ -74,8 +74,6 @@ export default {
       userIds: [],
       // 选中数组名称
       userName: [],
-      //选中数组公司
-      compId: [],
       // 总条数
       total: 0,
       // 未授权用户数据
@@ -89,7 +87,7 @@ export default {
         empNo: undefined,
         myMobilePhone: undefined,
         deptId: undefined,
-        compId: undefined,
+        compId: undefined
       }
     };
   },
@@ -100,7 +98,7 @@ export default {
     // 显示弹框
     show(queryParams) {
       if(queryParams){
-        this.queryParams=queryParams;
+        this.queryParams = queryParams;
       }
       this.getList();
       this.visible = true;
@@ -112,7 +110,6 @@ export default {
     handleSelectionChange(selection) {
       this.userIds = selection.map(item => item.empNo);
       this.userName = selection.map(item => item.fullName);
-      this.compId = selection.map(item => item.compId);
     },
     // 查询表数据
     getList() {
@@ -145,7 +142,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok",userIds, userName,compId);
+      this.$emit("ok",userIds, userName, compId);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {

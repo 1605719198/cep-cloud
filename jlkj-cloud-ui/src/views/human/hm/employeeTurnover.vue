@@ -6,10 +6,10 @@
           <el-form-item label="公司">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
-                v-for="dict in dict.type.comp_id"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in companyName"
+                :key="dict.compId"
+                :label="dict.companyName"
+                :value="dict.compId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -288,12 +288,11 @@ import {
   queryNewPostNameAndChangeDetail,
   updateEmployeeTurnover
 } from "@/api/human/hm/employeeTurnover"
-import {treeselect} from "@/api/human/hp/deptMaintenance";
+import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo"
 export default {
   name: "EmployeeTurnover",
-  dicts: ['comp_id'],
   components: {selectUser,DictTagHuman},
   data() {
     return {
@@ -376,7 +375,8 @@ export default {
       orgName: undefined,
       postName: undefined,
       //异动类别细分
-      postLevelDetail: []
+      postLevelDetail: [],
+      companyName: []
     }
   },
   watch: {
@@ -396,6 +396,9 @@ export default {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    selectCompany().then(res => {
+      this.companyName = res.data
+    })
   },
   methods: {
     getList() {

@@ -6,10 +6,10 @@
           <el-form-item label="公司">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
-                v-for="dict in dict.type.comp_id"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
+                v-for="dict in companyName"
+                :key="dict.compId"
+                :label="dict.companyName"
+                :value="dict.compId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -221,6 +221,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import {listEmployeeLeave, getEmployeeLeave, addEmployeeLeave, updateEmployeeLeave, delEmployeeLeave} from "@/api/human/hm/employeeLeave";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
+import {selectCompany} from "@/api/human/hp/deptMaintenance";
 
 export default {
   name: "employeeLeave",
@@ -272,13 +273,17 @@ export default {
           'ReasonForResignation']
       },
       //离职原因细分
-      leaveReasonDetail: []
+      leaveReasonDetail: [],
+      companyName: []
     };
   },
   created() {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    selectCompany().then(res => {
+      this.companyName = res.data
+    })
   },
   methods: {
     /** 查询人员离职信息列表 */

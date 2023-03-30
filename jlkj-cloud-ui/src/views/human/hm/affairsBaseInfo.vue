@@ -861,7 +861,7 @@ export default {
         empNo: [
           { pattern: /^[+]?(0|([1-9]\d*))?$/, message: "请输入数字", trigger: "blur"},
           { required: true, message: "工号不能为空", trigger: "blur" },
-          { min: 0, max: 6, message: '工号长度必须介于 0 和 6 之间', trigger: 'blur' }
+          { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
         ],
         certificateTypeId: [
           { required: true, message: "证件类型不能为空", trigger: "blur" }
@@ -873,46 +873,53 @@ export default {
           { required: true, validator: checkRealName, trigger: "blur" }
         ],
         nameUsedBefore: [
-          { required: false, validator: checkRealName, trigger: "blur" }
+          { required: false, validator: checkRealName, trigger: "change" }
         ],
         medicalHistoryDescription: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         firstRecordGraduateSchool: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         lastRecordGraduateSchool: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         firstForeignLanguageLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         secondForeignLanguageLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         computerTypeLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         computerType: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         specialty: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         officeAddress: [
-          { required: false, validator: validateContacts, trigger: "blur" }
+          { required: false, validator: validateContacts, trigger: "change" }
         ],
         registeredPermanentResidencePostalCode: [
-          { required: false, validator: postalCode, trigger: "blur" }
+          { required: false, validator: postalCode, trigger: "change" }
+        ],
+        homePostCode: [
+          { required: false, validator: postalCode, trigger: "change" }
+        ],
+        nowAddressPostCode: [
+          { required: false, validator: postalCode, trigger: "change" }
         ],
         englishName: [
           { pattern: /^[A-Za-z]+$/, message: "请输入英文", trigger: "blur"},
+          { max: 50, message: '英文名长度不能超过50', trigger: 'blur' }
         ],
         height: [
-          { required: false, validator: validateNumber, trigger: "blur" }
+          { required: false, validator: validateNumber, trigger: "change" }
         ],
         weight: [
-          { required: false, validator: validateNumber, trigger: "blur" }
+          { required: false, validator: validateNumber, trigger: "change" }
         ],
         joinWorkDate: [
           { required: true, message: "参加工作时间不能为空", trigger: "blur" }

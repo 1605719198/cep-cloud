@@ -1,8 +1,10 @@
 package com.jlkj.human.hd.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -55,16 +57,19 @@ public class AttendenceRecord implements Serializable {
     /**
      * 班次日期（年月日）
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date shiftDate;
 
     /**
      * 刷卡日期（年月日）
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date slotCardDate;
 
     /**
      * 刷卡时间（年月日 HH:MM）
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date slotCardTime;
 
     /**
@@ -105,6 +110,8 @@ public class AttendenceRecord implements Serializable {
     /**
      * 输入日期
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 
     /**
