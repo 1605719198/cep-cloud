@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.HolidayOvertimeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.HolidayOvertime">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="postFullName" column="post_full_name" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="legalHolDate" column="legal_hol_date" jdbcType="DATE"/>
+            <result property="turnTypeId" column="turn_type_id" jdbcType="VARCHAR"/>
+            <result property="turnTypeName" column="turn_type_name" jdbcType="VARCHAR"/>
+            <result property="classId" column="class_id" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="effectDate" column="effect_date" jdbcType="DATE"/>
+            <result property="extraWorkBegin" column="extra_work_begin" jdbcType="TIMESTAMP"/>
+            <result property="extraWorkEnd" column="extra_work_end" jdbcType="TIMESTAMP"/>
+            <result property="extraWorkHours" column="extra_work_hours" jdbcType="DECIMAL"/>
+            <result property="slotCardTime" column="slot_card_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,emp_id,
+        emp_no,emp_name,post_full_name,
+        post_id,legal_hol_date,turn_type_id,
+        turn_type_name,class_id,class_name,
+        effect_date,extra_work_begin,extra_work_end,
+        extra_work_hours,slot_card_time
+    </sql>
+</mapper>

@@ -14,12 +14,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="工号" prop="empNo">
-            <el-input
-              v-model="queryParams.empNo"
-              placeholder="请输入工号"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
+            <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
+              <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+            </el-input>
           </el-form-item>
           <el-form-item label="班次日期" prop="shiftDate">
             <el-date-picker
@@ -73,6 +70,7 @@
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
         />
+        <select-user ref="select" @ok="getJobNumber"/>
       </el-col>
     </el-row>
 
@@ -116,9 +114,11 @@ import { listNightDuty } from "@/api/human/hd/nightDuty";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {validateNumber} from "@/utils/jlkj";
 import {getToken} from "@/utils/auth";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 
 export default {
   name: "NightDuty",
+  components: {selectUser},
   data() {
     return {
       // 遮罩层
@@ -227,7 +227,15 @@ export default {
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();
-    }
+    },
+    /** 工号点击事件 */
+    inputClick() {
+      this.$refs.select.show();
+    },
+    /** 获取工号 */
+    getJobNumber(val) {
+      this.queryParams.empNo = val
+    },
   }
 };
 </script>

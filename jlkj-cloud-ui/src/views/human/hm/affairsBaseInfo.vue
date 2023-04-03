@@ -817,15 +817,14 @@ import {addPersonnelData, queryInfo} from "@/api/human/hm/personnelBasicInfo";
 import {
   checkRealName,
   postalCode, validateAlphabets,
-  validateContacts,
   validateEMail,
-  validateNumber,
   validatePhoneTwo,
   validateSfz
 } from "@/utils/jlkj";
 export default {
   name: "HumanAffairsBaseInfo",
   dicts: ['sys_user_sex', 'sys_yes_no'],
+  props: ['compId'],
   components: { photoUpload },
   data() {
     return {
@@ -872,35 +871,29 @@ export default {
         fullName: [
           { required: true, validator: checkRealName, trigger: "blur" }
         ],
-        nameUsedBefore: [
-          { required: false, validator: checkRealName, trigger: "change" }
-        ],
-        medicalHistoryDescription: [
-          { required: false, validator: validateContacts, trigger: "change" }
-        ],
         firstRecordGraduateSchool: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         lastRecordGraduateSchool: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         firstForeignLanguageLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         secondForeignLanguageLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         computerTypeLevelCertificate: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         computerType: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         specialty: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         officeAddress: [
-          { required: false, validator: validateContacts, trigger: "change" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         registeredPermanentResidencePostalCode: [
           { required: false, validator: postalCode, trigger: "change" }
@@ -916,10 +909,10 @@ export default {
           { max: 50, message: '英文名长度不能超过50', trigger: 'blur' }
         ],
         height: [
-          { required: false, validator: validateNumber, trigger: "change" }
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
         ],
         weight: [
-          { required: false, validator: validateNumber, trigger: "change" }
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
         ],
         joinWorkDate: [
           { required: true, message: "参加工作时间不能为空", trigger: "blur" }
@@ -997,7 +990,13 @@ export default {
       },
     }
   },
+  watch: {
+    compId(oldVal) {
+      this.form.compId = oldVal
+    }
+  },
   created() {
+    this.form.compId = this.compId;
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });

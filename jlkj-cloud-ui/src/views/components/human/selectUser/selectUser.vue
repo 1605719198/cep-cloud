@@ -74,6 +74,8 @@ export default {
       userIds: [],
       // 选中数组名称
       userName: [],
+      // 选中公司别数组名称
+      compId: [],
       // 总条数
       total: 0,
       // 未授权用户数据
@@ -142,7 +144,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok",userIds, userName, compId);
+      this.$emit("ok", userIds, userName, compId);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {

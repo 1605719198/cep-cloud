@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :rules="rules" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
@@ -18,9 +18,9 @@
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="刷卡日期" prop="slotCardDate">
+          <el-form-item label="日期" prop="legalHolDate">
             <el-date-picker
-              v-model="queryParams.slotCardDate"
+              v-model="queryParams.legalHolDate"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="~"
@@ -37,23 +37,38 @@
 
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
 
-        <el-table v-loading="loading" :data="attendenceRecordList">
+        <el-table v-loading="loading" :data="holidayOvertimeList">
+          <el-table-column label="岗位" align="center" prop="postFullName" />
           <el-table-column label="工号" align="center" prop="empNo" />
           <el-table-column label="姓名" align="center" prop="empName" />
-          <el-table-column label="岗位" align="center" prop="postName" />
-          <el-table-column label="刷卡日期" align="center" prop="slotCardDate" width="180">
+          <el-table-column label="法定假日期" align="center" prop="legalHolDate" width="180">
             <template v-slot="scope">
-              <span>{{ parseTime(scope.row.slotCardDate, '{y}-{m}-{d}') }}</span>
+              <span>{{ parseTime(scope.row.legalHolDate, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="轮班方式" align="center" prop="turnTypeName" />
+          <el-table-column label="班别" align="center" prop="className" />
+          <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
+            <template v-slot="scope">
+              <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="班次开始时间" align="center" prop="extraWorkBegin" width="180">
+            <template v-slot="scope">
+              <span>{{ parseTime(scope.row.extraWorkBegin, '{y}-{m}-{d}') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="班次结束时间" align="center" prop="extraWorkEnd" width="180">
+            <template v-slot="scope">
+              <span>{{ parseTime(scope.row.extraWorkEnd, '{y}-{m}-{d}') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="加班时数" align="center" prop="extraWorkHours" />
           <el-table-column label="刷卡时间" align="center" prop="slotCardTime" width="180">
             <template v-slot="scope">
               <span>{{ parseTime(scope.row.slotCardTime, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="上/下班" align="center" prop="onOffDuty" />
-          <el-table-column label="星期" align="center" prop="week" />
-          <el-table-column label="刷卡钟名称" align="center" prop="clockName" />
         </el-table>
 
         <pagination
@@ -70,35 +85,58 @@
 </template>
 
 <script>
-import selectUser from "@/views/components/human/selectUser/selectUser";
-import { listAttendenceRecord } from "@/api/human/hd/attendenceRecord";
+import { listHolidayOvertime } from "@/api/human/hd/holidayOvertime";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import {validateNumber} from "@/utils/jlkj";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 
 export default {
-  name: "AttendenceRecord",
+  name: "HolidayOvertime",
   components: {selectUser},
   data() {
     return {
-      //公司数据
-      companyList:[],
       // 遮罩层
       loading: false,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
       // 显示搜索条件
       showSearch: true,
       // 总条数
       total: 0,
-      // 员工出勤有效记录资料表格数据
-      attendenceRecordList: [],
+      // 倒班人员法定假日加班资料表格数据
+      holidayOvertimeList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         compId: null,
         empNo: null,
-        slotCardDate: '',
+        legalHolDate: '',
         startTime: '',
         endTime: ''
       },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+        empNo: [
+          { required: true, validator: validateNumber, trigger: "blur" },
+          { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
+        ],
+        legalHolDate: [
+          { required: true, message: "日期不能为空", trigger: "blur" }
+        ]
+      },
+      //公司数据
+      companyList:[],
     };
   },
   created() {
@@ -111,11 +149,11 @@ export default {
         this.companyList = response.data
       })
     },
-    /** 查询员工出勤有效记录资料列表 */
+    /** 查询倒班人员法定假日加班资料列表 */
     getList() {
       this.loading = true;
-      listAttendenceRecord(this.queryParams).then(response => {
-        this.attendenceRecordList = response.data.rows;
+      listHolidayOvertime(this.queryParams).then(response => {
+        this.holidayOvertimeList = response.data.rows;
         this.total = response.data.total;
         this.loading = false;
       });
@@ -130,10 +168,6 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    dateFormat(picker) {
-      this.queryParams.startTime=picker[0]
-      this.queryParams.endTime=picker[1]
-    },
     /** 工号点击事件 */
     inputClick() {
       this.$refs.select.show();
@@ -141,6 +175,10 @@ export default {
     /** 获取工号 */
     getJobNumber(val) {
       this.queryParams.empNo = val
+    },
+    dateFormat(picker) {
+      this.queryParams.startTime=picker[0]
+      this.queryParams.endTime=picker[1]
     },
   }
 };
