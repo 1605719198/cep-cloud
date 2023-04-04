@@ -141,7 +141,13 @@
             <artifactId>hutool-all</artifactId>
             <version>5.7.20</version>
         </dependency>
-
+        <!--   trueLicense     -->
+        <dependency>
+            <groupId>de.schlichtherle.truelicense</groupId>
+            <artifactId>truelicense-core</artifactId>
+            <version>1.33</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
