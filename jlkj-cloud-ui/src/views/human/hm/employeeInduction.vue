@@ -19,7 +19,8 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button size="mini"
+                <el-button v-hasPermi="['human:employeeInduction:list']"
+                           size="mini"
                            type="primary"
                            @click="getList"
                            icon="el-icon-search">搜 索</el-button>
@@ -31,7 +32,8 @@
           </el-form>
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button size="mini"
+              <el-button v-hasPermi="['human:employeeInduction:add']"
+                         size="mini"
                          type="primary"
                          plain
                          @click="handleAdd"
@@ -47,6 +49,7 @@
             <el-table-column label="操作" align="center">
               <template v-slot="scope">
                 <el-button
+                  v-hasPermi="['human:employeeInduction:edit']"
                   size="mini"
                   type="text"
                   icon="el-icon-edit"
@@ -54,6 +57,7 @@
                 >修改
                 </el-button>
                 <el-button
+                  v-hasPermi="['human:employeeInduction:remove']"
                   size="mini"
                   type="text"
                   icon="el-icon-delete"
@@ -404,6 +408,7 @@ export default {
               this.getList();
             });
           } else {
+            this.addJsonForm.compId = this.queryParams.compId
             addEmployeeInduction(this.addJsonForm).then(res => {
               if (res.code === 200) {
                 this.$message({type: "success", message: res.msg});

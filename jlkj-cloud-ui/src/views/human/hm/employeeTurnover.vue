@@ -477,6 +477,7 @@ export default {
               this.getList();
             });
           } else {
+            this.addJsonForm.compId = this.queryParams.compId
             addEmployeeTurnover(this.addJsonForm).then(res => {
               if (res.code === 200) {
                 this.$message({type: "success", message: res.msg});

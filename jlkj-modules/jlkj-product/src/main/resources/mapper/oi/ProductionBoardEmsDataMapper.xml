@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionBoardEmsDataMapper">
+
+    <select id="getSteamByBoiler" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date, IFNULL(output,0) AS output FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT date, SUM(qty) AS output FROM (
+            SELECT DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date, a.engy_type, SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE a.engy_type = 'D200'
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date, a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b
+        on a.date = b.date
+    </select>
+
+
+    <select id="getSteamByOutput" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date,type, IFNULL(output,0) AS output FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT date, '产量' as type, SUM(qty) AS output FROM (
+            SELECT DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date, a.engy_type, SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE a.engy_type = 'D200'
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date, a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b
+        on a.date = b.date
+    </select>
+
+    <select id="getSteamByRetrieve" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date, IFNULL(output,0) AS output FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT date, SUM(qty) AS output FROM (
+            SELECT DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date, a.engy_type, SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE a.engy_type = 'D900'
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date, a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b
+        on a.date = b.date
+    </select>
+
+
+    <select id="getSteamByWater" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date, IFNULL(consume,0) AS consume FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT date, SUM(qty) AS consume FROM (
+            SELECT DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date, a.engy_type, SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE a.engy_type = 'W100'
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date, a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b
+        on a.date = b.date
+    </select>
+
+
+
+
+
+    <select id="getElectricityDayConsume" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+
+        SELECT a.date, IFNULL(consume,0) AS consume FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT date, SUM(qty) AS consume FROM (
+            SELECT DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date, a.engy_type, SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE a.engy_type = 'P000'
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+            AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date, a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b
+        on a.date = b.date
+
+
+    </select>
+
+    <select id="getElectricityDayConsumeInfo" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+               DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date,
+               energy_code_name,
+               SUM(a.qty) AS qty
+        FROM v_energy_board_ems_data a
+            INNER JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+        WHERE a.engy_type = 'P000'
+          AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+          AND DATE_FORMAT(e_count_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+        GROUP BY date,energy_code_name
+    </select>
+
+
+
+
+
+</mapper>

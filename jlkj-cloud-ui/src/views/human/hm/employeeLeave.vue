@@ -23,7 +23,8 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini"
+            <el-button v-hasPermi="['human:employeeLeave:list']"
+                       size="mini"
                        type="primary"
                        @click="getList"
                        icon="el-icon-search">搜 索</el-button>
@@ -352,6 +353,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.compId = this.queryParams.compId
             addEmployeeLeave(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

@@ -237,7 +237,7 @@
 <script>
 import EditorContainer from "@/views/security/si/operation/EditorContainer";
 import moment from "moment";
-import { delProductionTargetItem } from "@/api/production/parameter";
+import { delProductionTargetItem } from "@/api/production/oi/parameter";
 import { spaceDelete, spaceList } from "@/api/security/si/ConfinedSpaceApi";
 import { getSafetyArea } from "@/api/security/si/WorkTicketApi";
 export default {

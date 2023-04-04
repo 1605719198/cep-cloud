@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionYieldAnalysisDateMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionYieldAnalysisDate">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="INTEGER"/>
+        <result property="month" column="month" jdbcType="INTEGER"/>
+        <result property="date" column="date" jdbcType="INTEGER"/>
+        <result property="materialsId" column="materials_id" jdbcType="VARCHAR"/>
+        <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+        <result property="productionPlan" column="production_plan" jdbcType="DECIMAL"/>
+        <result property="productionPerformance" column="production_performance" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,year,month,
+        date,materials_id,materials_name,
+        production_plan,production_performance
+    </sql>
+
+    <select id="getProductionYieldAnalysisColList" resultType="java.util.Map">
+        select id,target_item_name as materials_name from product_oi_parameter_target_item where target_item_type_id = 1 and target_item_name != '干熄焦' and target_item_name != '湿熄焦'
+        union all
+        select '0000000001' as id,'干熄焦' as materials_name
+        union all
+        select '0000000002' as id,'湿熄焦' as materials_name
+    </select>
+
+    <select id="getProductionYieldAnalysisDateList" parameterType="com.jlkj.product.oi.dto.productionyieldanalysisdate.ListProductionYieldAnalysisDateDTO" resultType="java.util.Map">
+        select year,month,date ${colsMax} from(
+            select year,month,date ${cols}
+            from product_oi_yield_analysis_date
+            where year = #{year}
+            and month = #{month}
+            and materials_name != '干熄焦'
+            and materials_name != '湿熄焦'
+            union all
+            select year,month,date ${cols}
+            from (
+                select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
+                       case when coke_type = 1 then '0000000001' else '0000000002' end as materials_id,
+                       case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
+                from product_oi_output_performance_manual_bake
+                group by year,month,date,coke_type
+            ) as a
+            where year = #{year}
+            and month = #{month}
+            union all
+            select year, month, date ${cols}
+            from (select year(production_date)       as year,
+                         month(production_date)      as month,
+                         day(production_date)      as date,
+                         0                           as production_plan,
+                         sum(single_hole_production) as production_performance,
+                         #{qjItemId}                 as materials_id,
+                         '全焦'                        as materials_name
+                  from product_oi_output_performance_manual_bake
+                  group by year, month, date) as a
+            where year = #{year}
+              and month = #{month}
+            union all
+            select year, month, date ${cols}
+            from (select a.year,
+                         a.month,
+                         a.date,
+                         0 as production_plan,
+                         (a.production_performance - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) as production_performance,
+                         #{yjjItemId} as materials_id,
+                         '冶金焦' as materials_name
+                  from (select year(production_date)       as year,
+                               month(production_date)      as month,
+                               day(production_date)      as date,
+                               sum(single_hole_production) as production_performance
+                        from product_oi_output_performance_manual_bake
+                        group by year, month, date
+                       ) as a
+                           LEFT JOIN (
+                      select year,month,date,
+                             sum(production_performance_jd) as nutCoOutput,
+                             sum(production_performance_jf) as coFinesOutput
+                      from (
+                               select year(car_send_date) as year,
+                                      month(car_send_date) as month,
+                                      day(car_send_date)      as date,
+                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                      0 as production_performance_jf
+                               from t_logistics_trans_actual_nut a
+                               group by year,month,date
+                               union all
+                               select year(car_send_date) as year,
+                                      month(car_send_date) as month,
+                                      day(car_send_date)      as date,
+                                      0 as production_performance_jd,
+                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                               from t_logistics_trans_actual_fines a
+                               group by year,month,date
+                           ) as a
+                      group by year,month,date
+                  ) b ON a.year = b.year and a.month = b.month and a.date = b.date
+                 ) as a
+            where year = #{year}
+              and month = #{month}
+         ) as a group by year,month,date
+        order by year,month,date
+    </select>
+
+    <select id="getProductionYieldAnalysisChartDate" parameterType="com.jlkj.product.oi.dto.productionyieldanalysisdate.ListProductionYieldAnalysisDateMaterialDTO" resultType="com.jlkj.product.oi.vo.productionyieldanalysisdate.ListProductionYieldAnalysisDateMaterialVO">
+        select a.`date`,
+               max(ifnull(a.production_plan,0))        as production_plan,
+               max(ifnull(a.production_performance,0)) as production_performance
+        from (select
+            a.`date`,
+            a.production_plan,
+            a.production_performance
+        from product_oi_yield_analysis_date a
+        where a.`year` = #{year}
+          and a.`month` = #{month}
+          and materials_name != '干熄焦'
+          and materials_name != '湿熄焦'
+        and a.materials_name = #{materialsName}
+        union all
+        select a.`date`,
+               a.production_plan,
+               a.production_performance
+        from (
+                 select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
+                        case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
+                 from product_oi_output_performance_manual_bake
+                 group by year,month,date,coke_type
+        ) as a
+        where year = #{year}
+          and month = #{month}
+          and a.materials_name = #{materialsName}
+        union all
+        select a.`date`,
+               a.production_plan,
+               a.production_performance
+        from (select year(production_date)       as year,
+                     month(production_date)      as month,
+                     day(production_date)        as date,
+                     0                           as production_plan,
+                     sum(single_hole_production) as production_performance
+              from product_oi_output_performance_manual_bake
+              where #{materialsName} = '全焦'
+              group by year, month,date) as a
+        where year = #{year}
+          and month = #{month}
+        union all
+        select a.`date`,
+               a.production_plan,
+               a.production_performance
+        from (select a.year,
+                     a.month,
+                     a.`date`,
+                     0                          as production_plan,
+                     (a.production_performance - ifnull(b.nutCoOutput, 0) - ifnull(coFinesOutput, 0)) as production_performance
+              from (select year(production_date)       as year,
+                           month(production_date)      as month,
+                           day(production_date)        as date,
+                           sum(single_hole_production) as production_performance
+                    from product_oi_output_performance_manual_bake
+                    where #{materialsName} = '冶金焦'
+                    group by year, month, date) as a
+                       LEFT JOIN (select year,
+                                         month,
+                                         date,
+                                         sum(production_performance_jd) as nutCoOutput,
+                                         sum(production_performance_jf) as coFinesOutput
+                                  from (select year(car_send_date)                  as year,
+                                               month(car_send_date)                 as month,
+                                               day(car_send_date)      as date,
+                                               sum(ifnull(a.complete_pound_num, 0)) as production_performance_jd,
+                                               0                                    as production_performance_jf
+                                        from t_logistics_trans_actual_nut a
+                                        group by year, month,date
+                                        union all
+                                        select year(car_send_date)                  as year,
+                                               month(car_send_date)                 as month,
+                                               day(car_send_date)      as date,
+                                               0                                    as production_performance_jd,
+                                               sum(ifnull(a.complete_pound_num, 0)) as production_performance_jf
+                                        from t_logistics_trans_actual_fines a
+                                        group by year, month,date) as a
+                                  group by year, month,date) b ON a.year = b.year and a.month = b.month and a.date = b.date) as a
+        where year = #{year}
+          and month = #{month}
+        ) as a
+        group by a.`date`
+        order by a.`date`
+    </select>
+
+    <select id="getProductionHomeYieldChartData" parameterType="com.jlkj.product.oi.dto.home.HomeDTO" resultType="com.jlkj.product.oi.vo.home.ListYieldChartVO">
+        select a.materials_name,
+               sum(a.production_plan) as production_plan,
+               sum(a.production_performance) as production_performance
+        from (
+            select a.target_item_name as materials_name,
+                   sum(ifnull(b.production_plan,0)) as production_plan,
+                   0 as production_performance
+            from product_oi_parameter_target_item a
+            left join product_oi_yield_analysis_date b on a.id = b.materials_id
+            where concat(`year`,'-',LPAD(`month`,2,'0'),'-',LPAD(`date`,2,'0')) &gt;= #{startDate}
+              and concat(`year`,'-',LPAD(`month`,2,'0'),'-',LPAD(`date`,2,'0')) &lt;= #{endDate}
+              and a.target_item_type_id = 1 and a.target_item_name in ('全焦','冶金焦','蒸汽')
+            group by a.target_item_name
+            union all
+            select '全焦' as materials_name,
+                   0 as production_plan,
+                   sum(ifnull(a.single_hole_production,0)) as production_performance
+            from product_oi_output_performance_manual_bake a
+            where a.production_date &gt;= #{startDate}
+              and a.production_date &lt;= #{endDate}
+            union all
+            select '冶金焦' as materials_name,
+                   0 as production_plan,
+                   (sum(production_performance) - sum(production_performance_jd) - sum(production_performance_jf)) as production_performance
+            from (
+                select sum(ifnull(a.single_hole_production,0)) as production_performance,
+                       0 as production_performance_jd,
+                       0 as production_performance_jf
+                from product_oi_output_performance_manual_bake a
+                where a.production_date &gt;= #{startDate}
+                  and a.production_date &lt;= #{endDate}
+                union all
+                select 0 as production_performance,
+                       sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                       0 as production_performance_jf
+                from t_logistics_trans_actual_nut a
+                where a.car_send_date &gt;= #{startDate}
+                  and a.car_send_date &lt;= #{endDate}
+                union all
+                select 0 as production_performance,
+                       0 as production_performance_jd,
+                       sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                from t_logistics_trans_actual_fines a
+                where a.car_send_date &gt;= #{startDate}
+                  and a.car_send_date &lt;= #{endDate}
+            ) as a
+            union all
+            select '蒸汽' as materials_name,
+                   0 as production_plan,
+                   0 as production_performance
+        ) as a
+        group by a.materials_name
+    </select>
+
+    <select id="getProductionHomeYieldStatisticsData" parameterType="com.jlkj.product.oi.dto.home.HomeDTO" resultType="com.jlkj.product.oi.vo.home.InfoYieldStatisticsVO">
+        select sum(production_plan) as production_plan,sum(production_performance) as production_performance
+        from (
+            select sum(ifnull(a.production_plan,0)) as production_plan,
+                   0 as production_performance
+            from product_oi_yield_analysis_date a
+            where concat(`year`,'-',LPAD(`month`,2,'0'),'-',LPAD(`date`,2,'0')) &gt;= #{startDate}
+              and concat(`year`,'-',LPAD(`month`,2,'0'),'-',LPAD(`date`,2,'0')) &lt;= #{endDate}
+              and a.materials_id = '123456789'
+            union all
+            select 0 as production_plan, sum(ifnull(a.single_hole_production,0)) as production_performance
+            from product_oi_output_performance_manual_bake a
+            where a.production_date &gt;= #{startDate}
+              and a.production_date &lt;= #{endDate}
+        ) as a
+    </select>
+
+    <select id="getProductionHomePowerStatisticsData" parameterType="com.jlkj.product.oi.dto.home.HomeDTO" resultType="com.jlkj.product.oi.vo.home.InfoPowerStatisticsVO">
+        select sum(a.power_plan) as power_plan,sum(a.power_performance) as power_performance
+        from (
+            select sum(a.plan_value) as power_plan, 0 as power_performance
+              from energy_ee_day_plan_output a
+              where planyear_month_day &gt;= #{startDate}
+                and planyear_month_day &lt;= #{endDate}
+              union all
+              select 0 as power_plan, sum(a.yield) as power_performance
+              from product_oi_power_generation_performance a
+              where 1 = 1
+                and (#{startDate} = '' or
+                     a.stat_time &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                and (#{endDate} = '' or
+                     a.stat_time &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+        ) as a
+    </select>
+
+    <select id="getProductionHomePowerMeterChartData" parameterType="com.jlkj.product.oi.dto.home.HomeDTO" resultType="com.jlkj.product.oi.vo.home.ListPowerMeterChartVO">
+        select a.turbine_no, sum(a.yield) as yield, sum(a.steam) as steam
+        from product_oi_power_generation_performance a
+        where 1 = 1
+          and (#{startDate} = '' or
+               a.stat_time &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+          and (#{endDate} = '' or
+               a.stat_time &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+        group by a.turbine_no
+        order by a.turbine_no
+    </select>
+
+    <select id="getProductionHomeStatisticsData" parameterType="com.jlkj.product.oi.dto.home.HomeDTO" resultType="com.jlkj.product.oi.vo.home.InfoStatisticsVO">
+        select
+            max(full_coke_rate) as full_coke_rate,
+            max(coke_dry_quenching_rate) as coke_dry_quenching_rate,
+            max(steam_rate) as steam_rate,
+            max(coal_consumption_per_ton) as coal_consumption_per_ton,
+            max(electric_consumption_per_ton) as electric_consumption_per_ton
+        from (
+                 select case when sum(Loading_coal) = 0 then 0 else round(sum(single_hole_production) / sum(Loading_coal) * 100, 2) end as full_coke_rate,
+                        0 as coke_dry_quenching_rate,
+                        0 as steam_rate,
+                        0 as coal_consumption_per_ton,
+                        0 as electric_consumption_per_ton
+                 from product_oi_output_performance
+                 where 1 = 1
+                   and (#{startDate} = '' or production_date &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                   and (#{endDate} = '' or production_date &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+                 union all
+                 select 0 as full_coke_rate,
+                        case when sum(material_weight) = 0 then 0 else round(sum(case when material_code = '12345678' then material_weight else 0 end) / sum(material_weight) * 100, 2) end as coke_dry_quenching_rate,
+                        0 as steam_rate,
+                        0 as coal_consumption_per_ton,
+                        0 as electric_consumption_per_ton
+                 from product_oi_coke_records
+                 where 1 = 1
+                   and (#{startDate} = '' or class_start_time &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                   and (#{endDate} = '' or class_start_time &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+                 union all
+                 select 0 as full_coke_rate,
+                        0 as coke_dry_quenching_rate,
+                        case when b.coke_yield = 0 or isnull(b.coke_yield) then 0 else round(a.steam_yield / b.coke_yield * 100, 2) end as steam_rate,
+                        0 as coal_consumption_per_ton,
+                        0 as electric_consumption_per_ton
+                 from (
+                          select sum(yield) as steam_yield
+                          from product_oi_steam_performance
+                          where 1 = 1
+                            and (#{startDate} = '' or stat_time &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                            and (#{endDate} = '' or stat_time &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+                      ) a,
+                      (
+                          select sum(single_hole_production) as coke_yield
+                          from product_oi_output_performance
+                          where 1 = 1
+                            and (#{startDate} = '' or production_date &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                            and (#{endDate} = '' or production_date &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+                      ) b
+                 union all
+                 select 0 as full_coke_rate,
+                        0 as coke_dry_quenching_rate,
+                        0 as steam_rate,
+                        case when sum(single_hole_production) = 0 then 0 else round(sum(Loading_coal) / sum(single_hole_production) * 100, 2) end as coal_consumption_per_ton,
+                        0 as electric_consumption_per_ton
+                 from product_oi_output_performance
+                 where 1 = 1
+                   and (#{startDate} = '' or production_date &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                   and (#{endDate} = '' or production_date &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+             ) as a
+    </select>
+
+
+</mapper>

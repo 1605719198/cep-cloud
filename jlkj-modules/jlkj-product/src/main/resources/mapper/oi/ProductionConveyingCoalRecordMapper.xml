@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionConveyingCoalRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionConveyingCoalRecord">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="configCokePlanId" column="config_coke_plan_id" jdbcType="VARCHAR"/>
+        <result property="coalLevelMaterialsCode" column="coal_level_materials_code" jdbcType="VARCHAR"/>
+        <result property="coalLevelMaterialsName" column="coal_level_materials_name" jdbcType="VARCHAR"/>
+        <result property="cokeWarehouseNumber" column="coke_warehouse_number" jdbcType="INTEGER"/>
+        <result property="cokeMaterialsCode" column="coke_materials_code" jdbcType="VARCHAR"/>
+        <result property="cokeMaterialsName" column="coke_materials_name" jdbcType="VARCHAR"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+        <result property="cokeWeight" column="coke_weight" jdbcType="INTEGER"/>
+        <result property="cokeWeightBefor" column="coke_weight_befor" jdbcType="INTEGER"/>
+        <result property="cokeWeightAfter" column="coke_weight_after" jdbcType="INTEGER"/>
+        <result property="cokeMaterialLevelBefor" column="coke_material_level_befor" jdbcType="INTEGER"/>
+        <result property="cokeMaterialLevelAfter" column="coke_material_level_after" jdbcType="INTEGER"/>
+        <result property="dataSources" column="data_sources" jdbcType="SMALLINT"/>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+        <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        config_coke_plan_id,coal_level_materials_code,coal_level_materials_name,
+        coke_warehouse_number,coke_materials_code,coke_materials_name,
+        start_time,end_time,coke_weight,
+        coke_weight_befor,coke_weight_after,coke_material_level_befor,
+        coke_material_level_after,data_sources,create_user_id,
+        create_user_name,create_time
+    </sql>
+
+    <select id="getProductionConveyingCoalRecordPageData" parameterType="com.jlkj.product.oi.dto.productionconveyingcoalrecord.PageProductionConveyingCoalRecordDTO" resultType="com.jlkj.product.oi.vo.productionconveyingcoalrecord.PageProductionConveyingCoalRecordVO">
+        select
+            a.id,
+            a.shift_name,
+            a.class_name,
+            a.config_coke_plan_id,
+            b.plan_number,
+            a.coal_level_materials_code,
+            a.coal_level_materials_name,
+            a.coke_warehouse_number,
+            a.coke_materials_code,
+            a.coke_materials_name,
+            case when ISNULL(a.start_time) then '' else DATE_FORMAT(a.start_time,'%Y-%m-%d %H:%i:%s') end as start_time,
+            case when ISNULL(a.end_time) then '' else DATE_FORMAT(a.end_time,'%Y-%m-%d %H:%i:%s') end as end_time,
+            a.coke_weight,
+            a.coke_weight_befor,
+            a.coke_weight_after,
+            a.coke_material_level_befor,
+            a.coke_material_level_after,
+            a.data_sources,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.coke_materials_small_code,
+            a.coke_materials_small_name
+        from product_oi_conveying_coal_record a
+        INNER JOIN product_oi_plan_config_coke b ON a.config_coke_plan_id = b.id
+        where 1=1
+          and (#{condition.shiftName} = '' or a.shift_name = #{condition.shiftName})
+          and (#{condition.className} = '' or a.class_name = #{condition.className})
+          and (#{condition.cokeMaterialsCode} = '' or a.coke_materials_code = #{condition.cokeMaterialsCode})
+          and (#{condition.startTime} = '' or a.start_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
+          and (#{condition.endTime} = '' or a.start_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getQualityTsRecordByTeam" parameterType="com.jlkj.product.oi.dto.productionconveyingcoalrecord.InsertProductionConveyingCoalRecordDTO" resultType="map">
+        SELECT * FROM v_quality_ts_record
+        WHERE recordType = 'MA' and coalType = 'Z' and
+              test_time &gt; #{dueAttendanceTimeWork} and test_time &lt; #{dueAttendanceTimeOffduty}
+        ORDER BY test_time DESC
+        LIMIT 1
+    </select>
+
+</mapper>
+

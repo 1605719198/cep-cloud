@@ -43,7 +43,7 @@
         </div>
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="人事基本信息" name="first" :key="'first'">
-            <HumanAffairsBaseInfo v-if="isFirst" ref="humanAffairsBaseInfo" @empId="passData"/>
+            <HumanAffairsBaseInfo v-if="isFirst" ref="humanAffairsBaseInfo" @empId="passData" :compId="this.query.compId"/>
           </el-tab-pane>
           <el-tab-pane label="工作经历信息" name="second" :key="'second'">
             <WorkExperienceInfo v-if="isSecond" ref="workExperienceInfo"/>
@@ -96,7 +96,7 @@ export default {
       showSearch: true,
       //查询参数
       query: {
-        compId: undefined,
+        compId: 'J00',
         empNo: undefined,
         empId: undefined
       },

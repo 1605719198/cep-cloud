@@ -566,6 +566,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.compId = this.queryParams.compId
             addLaborContract(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

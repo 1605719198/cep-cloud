@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCoalTowerBlendedCoalRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCoalTowerBlendedCoalRecord">
+            <result property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="coalBlendingPlanId" column="coal_blending_plan_id" jdbcType="VARCHAR"/>
+            <result property="coalLevelMaterialsCode" column="coal_level_materials_code" jdbcType="VARCHAR"/>
+            <result property="coalLevelMaterialsName" column="coal_level_materials_name" jdbcType="VARCHAR"/>
+            <result property="coalTowerNumber" column="coal_tower_number" jdbcType="INTEGER"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="coalWeight" column="coal_weight" jdbcType="DECIMAL"/>
+            <result property="coalWeightBefor" column="coal_weight_befor" jdbcType="DECIMAL"/>
+            <result property="coalWeightAfter" column="coal_weight_after" jdbcType="DECIMAL"/>
+            <result property="coalMaterialLevelBefor" column="coal_material_level_befor" jdbcType="DECIMAL"/>
+            <result property="coalMaterialLevelAfter" column="coal_material_level_after" jdbcType="DECIMAL"/>
+            <result property="dataSources" column="data_sources" jdbcType="INTEGER"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        coal_blending_plan_id,coal_level_materials_code,coal_level_materials_name,
+        coal_tower_number,start_time,end_time,
+        coal_weight,coal_weight_befor,coal_weight_after,
+        coal_material_level_befor,coal_material_level_after,data_sources,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+    </sql>
+</mapper>

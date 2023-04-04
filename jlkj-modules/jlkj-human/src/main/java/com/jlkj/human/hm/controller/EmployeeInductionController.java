@@ -9,6 +9,7 @@ import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hm.domain.ChangeDetail;
 import com.jlkj.human.hm.domain.ChangeMaster;
 import com.jlkj.human.hm.domain.Personnel;
@@ -46,6 +47,7 @@ public class EmployeeInductionController extends BaseController {
     /**
      * 查询员工入职作业列表
      */
+    @RequiresPermissions("human:employeeInduction:list")
     @Log(title = "查询员工入职作业列表",businessType = BusinessType.OTHER)
     @Operation(summary = "查询员工入职作业列表")
     @GetMapping("/getList")
@@ -60,6 +62,7 @@ public class EmployeeInductionController extends BaseController {
     /**
      * 添加员工入职作业
      */
+    @RequiresPermissions("human:employeeInduction:add")
     @Log(title = "添加员工入职作业", businessType = BusinessType.INSERT)
     @Operation(summary = "添加员工入职作业")
     @PostMapping("/addEmployeeInduction")
@@ -120,6 +123,7 @@ public class EmployeeInductionController extends BaseController {
     /**
      * 根据工号删除员工入职信息
      */
+    @RequiresPermissions("human:employeeInduction:remove")
     @Operation(summary = "根据工号删除员工入职信息")
     @DeleteMapping("/delEmployeeInduction")
     @Log(title = "根据工号删除员工入职信息", businessType = BusinessType.DELETE)
@@ -142,6 +146,7 @@ public class EmployeeInductionController extends BaseController {
     /**
      * 修改员工入职作业数据
      */
+    @RequiresPermissions("human:employeeInduction:edit")
     @Operation(summary = "修改员工入职作业数据")
     @PostMapping("/updateEmployeeInduction")
     @Log(title = "修改员工入职作业数据", businessType = BusinessType.UPDATE)

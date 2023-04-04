@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * 系统管理-字典数据表
+ * @author Xin
  * @TableName logistics_wv_dict_data
  */
 @TableName(value ="logistics_wv_dict_data")

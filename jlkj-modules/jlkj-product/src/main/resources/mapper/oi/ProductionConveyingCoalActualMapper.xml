@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionConveyingCoalActualMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionConveyingCoalActual">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="configCokePlanId" column="config_coke_plan_id" jdbcType="VARCHAR"/>
+            <result property="coalLevelMaterialsCode" column="coal_level_materials_code" jdbcType="VARCHAR"/>
+            <result property="coalLevelMaterialsName" column="coal_level_materials_name" jdbcType="VARCHAR"/>
+            <result property="cokeWarehouseNumber" column="coke_warehouse_number" jdbcType="INTEGER"/>
+            <result property="cokeMaterialsCode" column="coke_materials_code" jdbcType="VARCHAR"/>
+            <result property="cokeMaterialsName" column="coke_materials_name" jdbcType="VARCHAR"/>
+            <result property="cokeWeight" column="coke_weight" jdbcType="INTEGER"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        config_coke_plan_id,coal_level_materials_code,coal_level_materials_name,
+        coke_warehouse_number,coke_materials_code,coke_materials_name,
+        coke_weight,create_user_id,create_user_name,
+        create_time,modify_user_id,modify_user_name,
+        modify_time
+    </sql>
+
+    <select id="getProductionConveyingCoalActualPageData" parameterType="com.jlkj.product.oi.dto.productionconveyingcoalactual.PageProductionConveyingCoalActualDTO" resultType="com.jlkj.product.oi.vo.productionconveyingcoalactual.PageProductionConveyingCoalActualVO">
+        select
+            a.id,
+            a.shift_name,
+            a.class_name,
+            a.config_coke_plan_id,
+            b.plan_number,
+            a.coal_level_materials_code,
+            a.coal_level_materials_name,
+            a.coke_warehouse_number,
+            a.coke_materials_code,
+            a.coke_materials_name,
+            a.coke_weight,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            a.coke_materials_small_code,
+            a.coke_materials_small_name
+        from product_oi_conveying_coal_actual a
+        INNER JOIN product_oi_plan_config_coke b ON a.config_coke_plan_id = b.id
+        where 1=1
+        and (#{condition.shiftName} = '' or a.shift_name = #{condition.shiftName})
+        and (#{condition.className} = '' or a.class_name = #{condition.className})
+        and (#{condition.cokeMaterialsCode} = '' or a.coke_materials_code = #{condition.cokeMaterialsCode})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>

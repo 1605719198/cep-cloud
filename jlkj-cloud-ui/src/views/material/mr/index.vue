@@ -89,7 +89,7 @@
 <script>
 import {getCoalStock, getMaterialsCoalWarehouseStock, getUpCoalWeightByNowDay} from "@/api/material/mr/kanban/kanbanApi";
 import moment from "moment";
-import {getCokeStock} from "@/api/production/kanbanApi";
+import {getCokeStock} from "@/api/production/oi/kanbanApi";
 
 export default {
   name: "index",

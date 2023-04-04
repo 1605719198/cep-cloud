@@ -405,9 +405,13 @@ export function validateEMail(rule, value,callback) {
 }
 
 // 合法url
-export function validateURL(url) {
-  const urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
-  return urlregex.test(url);
+export function validateURL(rule, value, callback) {
+  const urlRegex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+  if (!urlRegex.test(value)) {
+    callback(new Error('请输入合法url'))
+  } else {
+    callback()
+  }
 }
 
 // 自动检验数值的范围
@@ -619,9 +623,13 @@ export function isCheckPort(rule, value, callback) {
 }
 
 // 小写字母
-export function validateLowerCase(val) {
+export function validateLowerCase(rule, value, callback) {
   const reg = /^[a-z]+$/;
-  return reg.test(val);
+  if (!reg.test(value)) {
+    callback(new Error('请输入小写字母'))
+  } else {
+    callback()
+  }
 }
 
 // 两位小数验证
@@ -634,15 +642,23 @@ export function validateValidity(rule, value, callback) {
 }
 
 // 是否大写字母
-export function validateUpperCase(val) {
+export function validateUpperCase(rule, value, callback) {
   const reg = /^[A-Z]+$/;
-  return reg.test(val);
+  if (!reg.test(value)) {
+    callback(new Error('请输入大写字母'))
+  } else {
+    callback()
+  }
 }
 
 // 是否大小写字母
-export function validatAlphabets(val) {
+export function validateAlphabets(rule, value, callback) {
   const reg = /^[A-Za-z]+$/;
-  return reg.test(val);
+  if (!reg.test(value)) {
+    callback(new Error('请输入大小写字母'))
+  } else {
+    callback()
+  }
 }
 
 // 密码校验
