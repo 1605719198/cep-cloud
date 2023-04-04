@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCoefficientRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCoefficientRecord">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="cokeOvenNumber" column="coke_oven_number" jdbcType="INTEGER"/>
+            <result property="measureTime" column="measure_time" jdbcType="TIMESTAMP"/>
+            <result property="kJun" column="k_jun" jdbcType="DECIMAL"/>
+            <result property="kAn" column="k_an" jdbcType="DECIMAL"/>
+            <result property="k1" column="k1" jdbcType="DECIMAL"/>
+            <result property="k2" column="k2" jdbcType="DECIMAL"/>
+            <result property="k3" column="k3" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        coke_oven_number,measure_time,k_jun,
+        k_an,k1,k2,
+        k3
+    </sql>
+</mapper>

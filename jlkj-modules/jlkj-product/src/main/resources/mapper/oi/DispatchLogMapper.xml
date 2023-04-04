@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.DispatchLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.DispatchLog">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="dispatcherId" column="dispatcher_id" jdbcType="VARCHAR"/>
+            <result property="dispatcherName" column="dispatcher_name" jdbcType="VARCHAR"/>
+            <result property="workerId" column="worker_id" jdbcType="VARCHAR"/>
+            <result property="workerName" column="worker_name" jdbcType="VARCHAR"/>
+            <result property="workContent" column="work_content" jdbcType="VARCHAR"/>
+            <result property="disposeContent" column="dispose_content" jdbcType="VARCHAR"/>
+            <result property="dispose" column="dispose" jdbcType="VARCHAR"/>
+            <result property="stateFlag" column="state_flag" jdbcType="SMALLINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="dispathTime" column="dispath_time" jdbcType="TIMESTAMP"/>
+            <result property="disposeTime" column="dispose_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,dispatcher_id,dispatcher_name,
+        worker_id,worker_name,work_content,
+        dispose_content,dispose,state_flag,
+        create_time,dispath_time,dispose_time
+
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.dispatchlog.PageDispatchLogDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.dispatcher_id,
+            a.dispatcher_name,
+            a.worker_id,
+            a.worker_name,
+            a.work_content,
+            a.dispose_content,
+            a.dispose,
+            case state_flag when 0 then '未下发' when 1 then '未完成' when 2 then '已完成' else '未知状态' end as state_flag,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            case when ISNULL(a.dispath_time) then '' else DATE_FORMAT(a.dispath_time,'%Y-%m-%d %H:%i:%s') end as dispath_time,
+            case when ISNULL(a.dispose_time) then '' else DATE_FORMAT(a.dispose_time,'%Y-%m-%d %H:%i:%s') end as dispose_time
+        from t_dispatch_log a
+        where 1=1
+          and (#{condition.id} = '' or a.id = #{condition.id})
+        and (#{condition.workContent} = '' or a.work_content like concat('%',#{condition.workContent},'%'))
+        and (#{condition.dispathTimeStart} = '' or dispath_time &gt;= case when #{condition.dispathTimeStart} = '' then null else #{condition.dispathTimeStart} end)
+        and (#{condition.dispathTimeEnd} = '' or dispath_time &lt;= case when #{condition.dispathTimeEnd} = '' then null else #{condition.dispathTimeEnd} end)
+        and (#{condition.dispatcherId} = '' or dispatcher_id = #{condition.dispatcherId})
+          and (#{condition.workerId} = '' or worker_id = #{condition.workerId})
+          and (#{condition.stateFlag} = -1 or state_flag = #{condition.stateFlag})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

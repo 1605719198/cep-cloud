@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.MaterialsCoalDayStockMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.MaterialsCoalDayStock">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="categoryId" column="category_id" jdbcType="VARCHAR"/>
+            <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
+            <result property="materialsId" column="materials_id" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="storageSpacesId" column="storage_spaces_id" jdbcType="VARCHAR"/>
+            <result property="storageSpacesName" column="storage_spaces_name" jdbcType="VARCHAR"/>
+            <result property="inventory" column="inventory" jdbcType="VARCHAR"/>
+            <result property="todayUnloadedWeight" column="today_unloaded_weight" jdbcType="DECIMAL"/>
+            <result property="todayLoadingWeight" column="today_loading_weight" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="clearName" column="clear_name" jdbcType="TIMESTAMP"/>
+            <result property="statDate" column="stat_date" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,category_id,category_name,
+        materials_id,materials_name,storage_spaces_id,
+        storage_spaces_name,inventory,today_unloaded_weight,
+        today_loading_weight,create_time,clear_name,
+        stat_date
+    </sql>
+</mapper>

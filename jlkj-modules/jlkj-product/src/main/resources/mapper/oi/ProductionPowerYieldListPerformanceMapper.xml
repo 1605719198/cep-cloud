@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPowerListPerformanceMapper">
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPowerListPerformanceEntity">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="turbineNo" column="turbine_no" jdbcType="VARCHAR"/>
+        <result property="shift" column="shift" jdbcType="VARCHAR"/>
+        <result property="classes" column="classes" jdbcType="VARCHAR"/>
+        <result property="statTime" column="stat_time" jdbcType="TIMESTAMP"/>
+        <result property="yield" column="yield" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,turbine_no,shift,
+        classes,stat_time,yield
+    </sql>
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionpowerlistperformance.ProductionPowerYieldListPerformanceDTO" resultType="java.util.Map">
+        SELECT
+        a.equipment_no,
+        a.cost_center,
+        a.engy_id,
+        a.io_type_id,
+        a.engy_type,
+        a.charge_cost_center,
+        a.qty,
+        DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS e_count_date,
+        b.energy_code_name
+        FROM v_energy_board_ems_data a
+        LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+        WHERE a.engy_type IN (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '电力' )
+        <if test="condition.startDate != null and condition.startDate != ''">
+            and STR_TO_DATE(e_count_date, '%Y%m%d') &gt;= #{condition.startDate}
+        </if>
+        <if test="condition.endDate != null and condition.endDate != ''">
+            and STR_TO_DATE(e_count_date, '%Y%m%d') &lt;= #{condition.endDate}
+        </if>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+</mapper>

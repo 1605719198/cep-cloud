@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionConfigureCoalSpeciesPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionConfigureCoalSpeciesPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="configureCoalSpeciesDate" column="configure_coal_species_date" jdbcType="DATE"/>
+            <result property="coalTowerNumber" column="coal_tower_number" jdbcType="INTEGER"/>
+            <result property="beforeMaterialLevel" column="before_material_level" jdbcType="DECIMAL"/>
+            <result property="afterMaterialLevel" column="after_material_level" jdbcType="DECIMAL"/>
+            <result property="beforeStock" column="before_stock" jdbcType="DECIMAL"/>
+            <result property="afterStock" column="after_stock" jdbcType="DECIMAL"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="duration" column="duration" jdbcType="DECIMAL"/>
+            <result property="coalTowerWeight" column="coal_tower_weight" jdbcType="DECIMAL"/>
+            <result property="actualProportion" column="actual_proportion" jdbcType="DECIMAL"/>
+            <result property="coalBlendingAccuracy" column="coal_blending_accuracy" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        configure_coal_species_date,coal_tower_number,before_material_level,
+        after_material_level,before_stock,after_stock,
+        start_time,end_time,duration,
+        coal_tower_weight,actual_proportion,coal_blending_accuracy,
+        create_time
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageProductionConfigureCoalSpeciesPerformanceDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.shift_name,
+            a.class_name,
+            case when ISNULL(a.configure_coal_species_date) then '' else DATE_FORMAT(a.configure_coal_species_date,'%Y-%m-%d') end as configure_coal_species_date,
+            a.coal_tower_number,
+            a.before_material_level,
+            a.after_material_level,
+            a.before_stock,
+            a.after_stock,
+            case when ISNULL(a.start_time) then '' else DATE_FORMAT(a.start_time,'%Y-%m-%d %H:%i:%s') end as start_time,
+            case when ISNULL(a.end_time) then '' else DATE_FORMAT(a.end_time,'%Y-%m-%d %H:%i:%s') end as end_time,
+            a.duration,
+            a.coal_tower_weight,
+            a.actual_proportion,
+            a.coal_blending_accuracy,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time
+        from product_oi_configure_coal_species_performance a
+        where 1=1
+        and (#{condition.shiftName} = '' or a.shift_name like concat(#{condition.shiftName},'%'))
+        and (#{condition.className} = '' or a.class_name like concat(#{condition.className},'%'))
+        and (#{condition.startTime} = '' or a.start_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
+        and (#{condition.endTime} = '' or a.start_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+    <select id="getConfigureCoalSpeciesAnalysis" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageProductionConfigureCoalSpeciesAnalysisDTO" resultType="java.util.Map">
+        select * from (
+        select
+            a.id,
+            a.plan_number,
+            a.plan_state,
+            case plan_state when 1 then '未确认' when 2 then '已确认' when 3 then '执行中' when 4 then '已完成' else '未知状态' end as plan_state_text,
+            case when ISNULL(a.receive_time) then '' else DATE_FORMAT(a.receive_time,'%Y-%m-%d %H:%i:%s') end as receive_time,
+            case when ISNULL(b.start_time) then '' else DATE_FORMAT(b.start_time,'%Y-%m-%d %H:%i:%s') end as start_time,
+            case when ISNULL(b.end_time) then '' else DATE_FORMAT(b.end_time,'%Y-%m-%d %H:%i:%s') end as end_time,
+            b.duration
+        from product_oi_plan_config_coke a
+        left join product_oi_configure_coal_species_performance b on a.id=b.plan_id
+        ) as a
+        <where>
+            <if test="condition.year != null and condition.year != ''">
+                and date_format(receive_time, '%Y') = #{condition.year}
+            </if>
+            <if test="condition.month != null and condition.month != ''">
+                and date_format(receive_time, '%c') = #{condition.month}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+    <select id="getConfigureCoalSpeciesAnalysisChartByYear" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageProductionConfigureCoalSpeciesAnalysisChartDTO" resultType="java.util.Map">
+        select
+            year, month, material_number, material_code, material_name, avg (material_weight) weight
+        from (
+            SELECT
+            date_format(start_time, '%Y') as year,
+            date_format(start_time, '%c') as month,
+            date_format(start_time, '%e') as day,
+            material_number,
+            material_code,
+            material_name,
+            material_weight
+            FROM product_oi_configure_coal_species_performance_detail a
+            where date_format(start_time, '%Y') = #{year}
+            ) as a
+        GROUP BY year, month, material_number, material_code, material_name
+        ORDER BY year, month,material_name
+    </select>
+
+    <select id="getConfigureCoalSpeciesAnalysisChartByMonth" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageProductionConfigureCoalSpeciesAnalysisChartDTO" resultType="java.util.Map">
+        select
+            year, month, day, material_number, material_code, material_name, avg (material_weight) weight
+        from (
+            SELECT
+            date_format(start_time, '%Y') as year,
+            date_format(start_time, '%c') as month,
+            date_format(start_time, '%e') as day,
+            material_number,
+            material_code,
+            material_name,
+            material_weight
+            FROM product_oi_configure_coal_species_performance_detail a
+            where
+                date_format(start_time, '%Y') = #{year} and
+                date_format(start_time, '%c') = #{month}
+            ) as a
+        GROUP BY year, month, day, material_number, material_code, material_name
+        ORDER BY year, month,material_name
+    </select>
+
+    <select id="getMaterialByYear" parameterType="string" resultType="java.util.Map">
+        select material_number, material_code, material_name
+        from (
+                 SELECT date_format(start_time, '%Y') as year,material_number, material_code, material_name
+                 FROM product_oi_configure_coal_species_performance_detail a
+                 where date_format(start_time, '%Y') = #{year}
+             ) as a
+        GROUP BY year, material_number, material_code, material_name
+        ORDER BY material_name
+    </select>
+
+    <select id="getMaterialByMonth" parameterType="string" resultType="java.util.Map">
+        select material_number, material_code, material_name
+        from (
+                 SELECT date_format(start_time, '%Y') as year, date_format(start_time, '%c') as month,material_number, material_code, material_name
+                 FROM product_oi_configure_coal_species_performance_detail a
+                 where
+                    date_format(start_time, '%Y') = #{year} and
+                    date_format(start_time, '%c') = #{month}
+             ) as a
+        GROUP BY year, month, material_number, material_code, material_name
+        ORDER BY material_name
+    </select>
+
+
+    <select id="getConfigureCoalSpeciesAnalysisStatisticsPlan" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageConfigureCoalSpeciesAnalysisStatisticsDTO" resultType="java.util.Map">
+        SELECT LEFT(yearMonth,4) AS year,RIGHT(yearMonth,2) AS month, plan_number, material_code, material_name,
+          SUM(weight) weight,AVG(proportion) proportion FROM (
+        SELECT
+            DATE_FORMAT(configure_coal_species_date, '%Y-%m') yearMonth,
+            plan_number,
+            materials_code AS material_code,
+            coal_type_name AS material_name,
+            proportion * coal_tower_weight / 100 /1000 AS weight,
+            proportion
+        FROM product_oi_plan_config_coke AS a
+        INNER JOIN product_oi_plan_config_coke_detail AS b on a.id = b.plan_id
+        INNER JOIN product_oi_configure_coal_species_performance AS c on a.id = c.plan_id
+        INNER JOIN t_materials_code e on b.coal_type_id=e.id
+        WHERE plan_state &gt;= 2
+        <choose>
+            <when test="year != null and year != ''">
+                AND DATE_FORMAT(configure_coal_species_date, '%Y') = #{year}
+            </when>
+            <otherwise>
+                AND DATE_FORMAT(configure_coal_species_date, '%Y') = DATE_FORMAT(NOW(), '%Y')
+            </otherwise>
+        </choose>
+        ) a
+        GROUP BY yearMonth, plan_number, material_code, material_name
+    </select>
+    <select id="getConfigureCoalSpeciesAnalysisStatisticsPerformance" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformance.PageConfigureCoalSpeciesAnalysisStatisticsDTO" resultType="java.util.Map">
+        SELECT LEFT(yearMonth,4) AS year,RIGHT(yearMonth,2) AS month, plan_number, material_code, material_name,
+          SUM(weight) weight,SUM(proportion) proportion FROM (
+        SELECT
+        DATE_FORMAT(a.configure_coal_species_date, '%Y-%m') yearMonth,
+        plan_number,
+        b.material_code,
+        b.material_name,
+        material_weight / 1000 AS weight,
+        material_weight / c.coal_tower_weight * 100 AS proportion
+        FROM product_oi_configure_coal_species_performance AS a
+        INNER JOIN product_oi_configure_coal_species_performance_detail AS b on a.id = b.main_id
+        INNER JOIN (
+        SELECT
+        DATE_FORMAT(a.configure_coal_species_date, '%Y-%m') AS yearMonth,
+        plan_id,plan_number,SUM(coal_tower_weight) coal_tower_weight
+        FROM product_oi_configure_coal_species_performance a
+        INNER JOIN product_oi_plan_config_coke c on a.plan_id = c.id
+        WHERE plan_state &gt;= 2
+        <choose>
+            <when test="year != null and year != ''">
+                AND DATE_FORMAT(configure_coal_species_date, '%Y') = #{year}
+            </when>
+            <otherwise>
+                AND DATE_FORMAT(configure_coal_species_date, '%Y') = DATE_FORMAT(NOW(), '%Y')
+            </otherwise>
+        </choose>
+        GROUP BY DATE_FORMAT(a.configure_coal_species_date, '%Y-%m'),plan_id,plan_number) c on a.plan_id = c.plan_id
+        AND DATE_FORMAT(a.configure_coal_species_date, '%Y-%m') = c.yearMonth
+        <where>
+            <choose>
+                <when test="year != null and year != ''">
+                    AND DATE_FORMAT(a.configure_coal_species_date, '%Y') = #{year}
+                </when>
+                <otherwise>
+                    AND DATE_FORMAT(a.configure_coal_species_date, '%Y') = DATE_FORMAT(NOW(), '%Y')
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY yearMonth, plan_number, material_code, material_name
+    </select>
+
+</mapper>
+

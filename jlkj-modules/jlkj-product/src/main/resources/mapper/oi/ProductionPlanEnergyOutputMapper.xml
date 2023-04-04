@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPlanEnergyOutputMapper">
+
+    <select id="getPlanEnergyOutputMonthPage" parameterType="com.jlkj.product.oi.dto.productionplanenergyoutput.GetProductionPlanEnergyOutputDTO" resultType="java.util.Map">
+        select
+               id,
+               serial_no,
+               factory_name,
+               factory_area,
+               plan_value,
+               planyear_month AS planDate,
+               unit,
+               create_date,
+               create_emp_no,
+               update_emp_no,
+               update_date,
+               create_user,
+               update_user,
+               memo,
+               DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%s') as create_time,
+               DATE_FORMAT(a.update_time, '%Y-%m-%d %H:%i:%s') as update_time
+        from energy_ee_month_plan_output a
+        <where>
+            <choose>
+                <when test="condition.planYear != null and condition.planYear != ''">
+                    left(planyear_month,4) = #{condition.planYear}
+                </when>
+                <otherwise>
+                    left(planyear_month,4) = YEAR(NOW())
+                </otherwise>
+            </choose>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getPlanEnergyOutputDayPage" parameterType="com.jlkj.product.oi.dto.productionplanenergyoutput.GetProductionPlanEnergyOutputDTO" resultType="java.util.Map">
+        select
+            id,
+            serial_no,
+            factory_name,
+            factory_area,
+            plan_value,
+            planyear_month_day AS planDate,
+            unit,
+            create_date,
+            create_emp_no,
+            update_emp_no,
+            update_date,
+            create_user,
+            update_user,
+            memo,
+            DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%s') as create_time,
+            DATE_FORMAT(a.update_time, '%Y-%m-%d %H:%i:%s') as update_time
+        from energy_ee_day_plan_output a
+        <where>
+            left(planyear_month_day,7) = CONCAT(#{condition.planYear},'-',RIGHT(CONCAT('0', #{condition.planMonth}) ,2))
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>

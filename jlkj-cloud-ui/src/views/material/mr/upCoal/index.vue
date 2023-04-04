@@ -56,7 +56,7 @@
 
 <script>
 import { listMaterialsBoxM } from "@/api/material/mr/parameter/materialCode"
-import { getProductionConveyingCoalActualPage } from "@/api/actual/coal/MaterialLoadingPerformanceApi";
+import { getProductionConveyingCoalActualPage } from "@/api/production/oi/actual/coal/MaterialLoadingPerformanceApi";
 import { getDicts } from '@/api/system/dict/data'
 export default {
   data() {

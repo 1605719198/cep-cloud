@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCokeRecordsMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCokeRecords">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="classStartTime" column="class_start_time" jdbcType="TIMESTAMP"/>
+            <result property="classEndTime" column="class_end_time" jdbcType="TIMESTAMP"/>
+            <result property="materialCode" column="material_code" jdbcType="VARCHAR"/>
+            <result property="materialName" column="material_name" jdbcType="VARCHAR"/>
+            <result property="materialWeight" column="material_weight" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        class_start_time,class_end_time,material_code,
+        material_name,material_weight
+    </sql>
+
+    <select id="getHomeCokeProportionListData" parameterType="com.jlkj.product.oi.dto.productioncokerecords.ListHomeCokeProportionDTO" resultType="com.jlkj.product.oi.vo.productioncokerecords.ListHomeCokeProportionVO">
+        select a.material_name,
+               sum(material_weight) as yield
+        from product_oi_coke_records a
+        where 1=1
+          and (#{startDate} = '' or a.class_start_time &gt;= case when #{startDate} = '' then null else concat(#{startDate},' 00:00:00') end)
+          and (#{endDate} = '' or a.class_start_time &lt;= case when #{endDate} = '' then null else concat(#{endDate},' 23:59:59') end)
+        group by a.material_name
+    </select>
+</mapper>

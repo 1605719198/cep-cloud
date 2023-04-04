@@ -63,8 +63,8 @@ public class LogisticsTransActualServiceImpl extends ServiceImpl<LogisticsTransA
     public JSONObject getOutCokeLocation(String startDate, String endDate) {
         JSONObject resultJson = new JSONObject();
         List<LogisticsTransActual> list =  logisticsTransActualMapper.getOutCokeLocation(startDate,endDate);
-        Map<String,JSONObject> jsonMap = new HashMap<>();
-        Map<String,String> goodsMap = new HashMap<>();
+        Map<String,JSONObject> jsonMap = new HashMap<>(64);
+        Map<String,String> goodsMap = new HashMap<>(64);
         // 初始化焦炭种类
         JSONArray dimensions = new JSONArray();
         dimensions.add("product");

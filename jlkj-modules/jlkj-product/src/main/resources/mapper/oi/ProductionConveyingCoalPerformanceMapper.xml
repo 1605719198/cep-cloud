@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionConveyingCoalPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionConveyingCoalPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="conveyingCoalWarehouseNumber" column="conveying_coal_warehouse_number" jdbcType="INTEGER"/>
+            <result property="stackerReclaimerNumber" column="stacker_reclaimer_number" jdbcType="INTEGER"/>
+            <result property="siloNumber" column="silo_number" jdbcType="VARCHAR"/>
+            <result property="siloName" column="silo_name" jdbcType="VARCHAR"/>
+            <result property="slotNumber" column="slot_number" jdbcType="VARCHAR"/>
+            <result property="slotName" column="slot_name" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="duration" column="duration" jdbcType="DECIMAL"/>
+            <result property="materialWeight" column="material_weight" jdbcType="DECIMAL"/>
+            <result property="materialNumber" column="material_number" jdbcType="VARCHAR"/>
+            <result property="materialName" column="material_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        conveying_coal_warehouse_number,stacker_reclaimer_number,silo_number,
+        silo_name,slot_number,slot_name,
+        start_time,end_time,duration,
+        material_weight,material_number,material_name,
+        create_time
+    </sql>
+</mapper>

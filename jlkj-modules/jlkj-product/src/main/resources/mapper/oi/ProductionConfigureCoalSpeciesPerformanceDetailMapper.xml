@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionConfigureCoalSpeciesPerformanceDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionConfigureCoalSpeciesPerformanceDetail">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="mainId" column="main_id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="planId" column="plan_id" jdbcType="VARCHAR"/>
+            <result property="bunkerNumber" column="bunker_number" jdbcType="INTEGER"/>
+            <result property="coalTowerNumber" column="coal_tower_number" jdbcType="INTEGER"/>
+            <result property="beforeMaterialLevel" column="before_material_level" jdbcType="DECIMAL"/>
+            <result property="afterMaterialLevel" column="after_material_level" jdbcType="DECIMAL"/>
+            <result property="beforeStock" column="before_stock" jdbcType="DECIMAL"/>
+            <result property="afterStock" column="after_stock" jdbcType="DECIMAL"/>
+            <result property="coalDeliveryDate" column="coal_delivery_date" jdbcType="DATE"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="duration" column="duration" jdbcType="DECIMAL"/>
+            <result property="materialWeight" column="material_weight" jdbcType="DECIMAL"/>
+            <result property="materialNumber" column="material_number" jdbcType="VARCHAR"/>
+            <result property="materialName" column="material_name" jdbcType="VARCHAR"/>
+            <result property="materialCode" column="material_code" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,main_id,shift_name,
+        class_name,plan_id,bunker_number,
+        coal_tower_number,before_material_level,after_material_level,
+        before_stock,after_stock,coal_delivery_date,
+        start_time,end_time,duration,
+        material_weight,material_number,material_name,
+        material_code,create_time
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformancedetail.PageProductionConfigureCoalSpeciesPerformanceDetailDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.main_id,
+            a.shift_name,
+            a.class_name,
+            a.plan_id,
+            a.bunker_number,
+            a.coal_tower_number,
+            a.before_material_level,
+            a.after_material_level,
+            a.before_stock,
+            a.after_stock,
+            case when ISNULL(a.coal_delivery_date) then '' else DATE_FORMAT(a.coal_delivery_date,'%Y-%m-%d') end as coal_delivery_date,
+            case when ISNULL(a.start_time) then '' else DATE_FORMAT(a.start_time,'%Y-%m-%d %H:%i:%s') end as start_time,
+            case when ISNULL(a.end_time) then '' else DATE_FORMAT(a.end_time,'%Y-%m-%d %H:%i:%s') end as end_time,
+            a.duration,
+            a.material_weight,
+            a.material_number,
+            a.material_name,
+            a.material_code,
+            a.material_small_code,
+            a.material_small_name,
+            a.create_user_id,
+            a.create_user_name,
+            a.data_sources,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time
+        from product_oi_configure_coal_species_performance_detail a
+        where 1=1
+        and (a.main_id = #{condition.mainId})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

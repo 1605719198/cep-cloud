@@ -273,7 +273,7 @@ export default {
       }).then(() => {
         deleteSilos({
           id: row.id,
-          delete_user_id: this.userInfo.userId,
+          delete_user_id: this.$store.state.user.userInfo.userName,
           delete_user_name: '姓名',
         }).then(res => {
           this.onLoad();

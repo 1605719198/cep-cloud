@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPowerGenerationPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPowerGenerationPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="turbineNo" column="turbine_no" jdbcType="VARCHAR"/>
+            <result property="shift" column="shift" jdbcType="VARCHAR"/>
+            <result property="classes" column="classes" jdbcType="VARCHAR"/>
+            <result property="statTime" column="stat_time" jdbcType="TIMESTAMP"/>
+            <result property="yield" column="yield" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,turbine_no,shift,
+        classes,stat_time,yield
+
+    </sql>
+
+    <select id="getHomeProductionPowerGenerationYieldListData" parameterType="com.jlkj.product.oi.dto.productionpowergenerationperformance.ListHomeProductionPowerGenerationYieldDTO" resultType="com.jlkj.product.oi.vo.productionpowergenerationperformance.ListHomeProductionPowerGenerationYieldVO">
+        select stat_time,sum(plan_yield) as plan_yield,sum(performance_yield) as performance_yield
+        from (
+                 select substring(planyear_month_day, 6, 5) as stat_time,
+                        sum(a.plan_value)                   as plan_yield,
+                        0                                   as performance_yield
+                 from energy_ee_day_plan_output a
+                 where 1 = 1
+                   and (#{startDate} = '' or
+                        a.planyear_month_day &gt;= case when #{startDate} = '' then null else #{startDate} end)
+                   and (#{endDate} = '' or
+                        a.planyear_month_day &lt;= case when #{endDate} = '' then null else #{endDate} end)
+                 group by substring(planyear_month_day, 6, 5)
+                 union all
+                 SELECT
+                     DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%m-%d') as stat_time,
+                     0 as plan_yield,
+                     sum(a.qty) as performance_yield
+                 FROM v_energy_board_ems_data a
+                          LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+                 WHERE a.engy_type IN (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '电力' )
+                   and (#{startDate} = '' or
+                        STR_TO_DATE(e_count_date, '%Y%m%d') &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
+                   and (#{endDate} = '' or
+                        STR_TO_DATE(e_count_date, '%Y%m%d') &lt;= case when #{endDate} = '' then null else concat(#{endDate}, ' 23:59:59') end)
+                 group by DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%m-%d')
+        ) as a
+        group by a.stat_time
+        order by a.stat_time
+    </select>
+</mapper>
+

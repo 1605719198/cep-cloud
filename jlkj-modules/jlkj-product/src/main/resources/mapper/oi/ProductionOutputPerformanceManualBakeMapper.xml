@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionOutputPerformanceManualBakeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionOutputPerformanceManualBake">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="cokeOvenNumber" column="coke_oven_number" jdbcType="INTEGER"/>
+            <result property="carbonizationChamberNumber" column="carbonization_chamber_number" jdbcType="INTEGER"/>
+            <result property="productionDate" column="production_date" jdbcType="DATE"/>
+            <result property="planningProductionTime" column="planning_production_time" jdbcType="TIME"/>
+            <result property="actualProductionTime" column="actual_production_time" jdbcType="TIME"/>
+            <result property="cokeCurrent" column="coke_current" jdbcType="DECIMAL"/>
+            <result property="cokeType" column="coke_type" jdbcType="SMALLINT"/>
+            <result property="planningRunCycle" column="planning_run_cycle" jdbcType="DECIMAL"/>
+            <result property="actualRunCycle" column="actual_run_cycle" jdbcType="DECIMAL"/>
+            <result property="singleHoleProduction" column="single_hole_production" jdbcType="DECIMAL"/>
+            <result property="coalPlanNumber" column="coal_plan_number" jdbcType="VARCHAR"/>
+            <result property="materialsCode" column="materials_code" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        coke_oven_number,carbonization_chamber_number,production_date,
+        planning_production_time,actual_production_time,coke_current,
+        coke_type,planning_run_cycle,actual_run_cycle,
+        single_hole_production,coal_plan_number,materials_code,
+        materials_name,create_user_id,create_user_name,
+        create_time
+    </sql>
+
+    <select id="getProductionOutputPerformanceManualBakePageData" parameterType="com.jlkj.product.oi.dto.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeVO">
+        select a.id,
+               a.shift_name,
+               a.class_name,
+               a.coke_oven_number,
+               a.carbonization_chamber_number,
+               case
+                   when ISNULL(a.production_date) then ''
+                   else DATE_FORMAT(a.production_date, '%Y-%m-%d') end          as production_date,
+               case
+                   when ISNULL(a.planning_production_time) then ''
+                   else DATE_FORMAT(a.planning_production_time, '%H:%i:%s') end as planning_production_time,
+               case
+                   when ISNULL(a.actual_production_time) then ''
+                   else DATE_FORMAT(a.actual_production_time, '%H:%i:%s') end   as actual_production_time,
+               a.coke_current,
+               a.coke_type,
+               a.planning_run_cycle,
+               a.actual_run_cycle,
+               a.single_hole_production,
+               case
+                   when ISNULL(b.planning_load_coal_time) then ''
+                   else DATE_FORMAT(b.planning_load_coal_time, '%H:%i:%s') end as planning_load_coal_time,
+               case
+                   when ISNULL(b.actual_load_coal_time) then ''
+                   else DATE_FORMAT(b.actual_load_coal_time, '%H:%i:%s') end   as actual_load_coal_time,
+               b.coal_current,
+               b.Loading_coal as loading_coal,
+               a.materials_name,
+               b.coal_tower_number
+        from product_oi_output_performance_manual_bake a
+        INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+        where (#{condition.shiftName} = '' or a.shift_name = #{condition.shiftName})
+        and (#{condition.className} = '' or a.class_name = #{condition.className})
+        and (#{condition.cokeOvenNumber} = 0 or a.coke_oven_number = #{condition.cokeOvenNumber})
+        and (#{condition.carbonizationChamberNumber} = 0 or a.carbonization_chamber_number = #{condition.carbonizationChamberNumber})
+        and (#{condition.startDate} = '' or a.production_date &gt;= case when #{condition.startDate} = '' then null else #{condition.startDate} end)
+        and (#{condition.endDate} = '' or a.production_date &lt;= case when #{condition.endDate} = '' then null else #{condition.endDate} end)
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>

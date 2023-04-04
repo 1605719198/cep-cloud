@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionInformationConfigurationMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionInformationConfiguration">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="materialsCode" column="materials_code" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="quenchingMethod" column="quenching_method" jdbcType="VARCHAR"/>
+            <result property="singleHoleWeight" column="single_hole_weight" jdbcType="DECIMAL"/>
+            <result property="singleConsumption" column="single_consumption" jdbcType="DECIMAL"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,materials_code,materials_name,
+        quenching_method,single_hole_weight,single_consumption,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+
+    </sql>
+
+    <select id="getProductionInformationConfigurationPageData" parameterType="com.jlkj.product.oi.dto.productioninformationconfiguration.PageProductionInformationConfigurationDTO" resultType="com.jlkj.product.oi.vo.productioninformationconfiguration.PageProductionInformationConfigurationVO">
+        select
+            a.id,
+            a.materials_code,
+            a.materials_name,
+            a.quenching_method,
+            a.single_hole_weight,
+            a.single_consumption,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time
+        from product_oi_information_configuration a
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+
