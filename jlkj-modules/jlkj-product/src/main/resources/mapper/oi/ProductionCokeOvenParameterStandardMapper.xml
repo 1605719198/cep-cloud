@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCokeOvenParameterStandardMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCokeOvenParameterStandard">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="standardCoalLoading" column="standard_coal_loading" jdbcType="DECIMAL"/>
+            <result property="cokingCycle" column="coking_cycle" jdbcType="DECIMAL"/>
+            <result property="fireTemperature" column="fire_temperature" jdbcType="DECIMAL"/>
+            <result property="zhiHangTemperature" column="zhi_hang_temperature" jdbcType="DECIMAL"/>
+            <result property="coalLoadingFactor" column="coal_loading_factor" jdbcType="DECIMAL"/>
+            <result property="planningFactor" column="planning_factor" jdbcType="DECIMAL"/>
+            <result property="averageCoefficient" column="average_coefficient" jdbcType="DECIMAL"/>
+            <result property="stabilityFactor" column="stability_factor" jdbcType="DECIMAL"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,standard_coal_loading,coking_cycle,
+        fire_temperature,zhi_hang_temperature,coal_loading_factor,
+        planning_factor,average_coefficient,stability_factor,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+    </sql>
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productioncokeovenparameterstandard.PageProductionCokeOvenParameterStandardDTO" resultType="java.util.Map">
+        select
+            id,
+            standard_coal_loading,
+            coking_cycle,
+            fire_temperature,
+            zhi_hang_temperature,
+            coal_loading_factor,
+            planning_factor,
+            average_coefficient,
+            stability_factor,
+            create_user_id,
+            create_user_name,
+            DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+            modify_user_id,
+            modify_user_name,
+            DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        from product_oi_coke_oven_parameter_standard
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+</mapper>

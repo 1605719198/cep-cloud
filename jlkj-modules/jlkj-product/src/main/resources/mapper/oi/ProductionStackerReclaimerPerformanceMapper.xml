@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionStackerReclaimerPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionStackerReclaimerPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="stackerReclaimerNumber" column="stacker_reclaimer_number" jdbcType="INTEGER"/>
+            <result property="slotNumber" column="slot_number" jdbcType="VARCHAR"/>
+            <result property="slotName" column="slot_name" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="duration" column="duration" jdbcType="DECIMAL"/>
+            <result property="materialNumber" column="material_number" jdbcType="VARCHAR"/>
+            <result property="materialName" column="material_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        stacker_reclaimer_number,slot_number,slot_name,
+        start_time,end_time,duration,
+        material_number,material_name,create_time
+    </sql>
+
+    <select id="getUserSchedulingInfoData" parameterType="com.jlkj.product.oi.dto.productionstackerreclaimerperformance.InfoSchedulingDTO" resultType="com.jlkj.product.oi.vo.productionstackerreclaimerperformance.InfoSchedulingVO">
+        select
+            a.shift,
+            a.class_type
+        from t_humanresource_personnel_scheduling a
+        where a.job_number = #{jobNumber} and #{dueAttendanceTimeWork} &gt;= a.due_attendance_time_work and #{dueAttendanceTimeWork} &lt;= a.due_attendance_time_offduty
+        limit 1
+    </select>
+</mapper>

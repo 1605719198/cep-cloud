@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPlanConfigCokeDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPlanConfigCokeDetail">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planId" column="plan_id" jdbcType="VARCHAR"/>
+            <result property="warehouseNumber" column="warehouse_number" jdbcType="INTEGER"/>
+            <result property="coalTypeId" column="coal_type_id" jdbcType="VARCHAR"/>
+            <result property="coalTypeName" column="coal_type_name" jdbcType="VARCHAR"/>
+            <result property="proportion" column="proportion" jdbcType="DECIMAL"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_id,warehouse_number,
+        coal_type_id,coal_type_name,proportion,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.productionplanconfigcokedetail.PageProductionPlanConfigCokeDetailDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.plan_id,
+            a.warehouse_number,
+            a.coal_type_id,
+            a.coal_type_name,
+            a.materials_small_code,
+            c.materials_small_name,
+            a.proportion,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time
+        from product_oi_plan_config_coke_detail a
+        LEFT JOIN t_materials_code_small c ON a.materials_small_code = c.materials_small_code
+        where 1=1
+        and (a.plan_id = #{condition.planId})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getProductionPlanConfigCokeDetailInfoByWarehouseNumberData" parameterType="com.jlkj.product.oi.dto.productionplanconfigcokedetail.InfoProductionPlanConfigCokeDetailByWarehouseNumberDTO" resultType="com.jlkj.product.oi.vo.productionplanconfigcokedetail.InfoProductionPlanConfigCokeDetailByWarehouseNumberVO">
+        select
+            a.plan_id,
+            b.plan_number,
+            c.materials_code as coal_type_code,
+            a.coal_type_name,
+            b.material_name,
+            b.material_code,
+            a.materials_small_code,
+            d.materials_small_name
+        from product_oi_plan_config_coke_detail a
+        INNER JOIN product_oi_plan_config_coke b ON a.plan_id = b.id
+        INNER JOIN t_materials_code c ON a.coal_type_id = c.id
+        LEFT JOIN t_materials_code_small d ON a.materials_small_code = d.materials_small_code
+        where 1=1
+          and a.warehouse_number = #{warehouseNumber}
+          and a.plan_id = #{planId}
+          and b.plan_state in (2,3)
+          and b.plan_end_time is null
+    </select>
+</mapper>
+

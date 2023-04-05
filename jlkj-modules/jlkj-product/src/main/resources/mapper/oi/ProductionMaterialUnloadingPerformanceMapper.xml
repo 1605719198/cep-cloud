@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionMaterialUnloadingPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionMaterialUnloadingPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planId" column="plan_id" jdbcType="VARCHAR"/>
+            <result property="planDate" column="plan_date" jdbcType="TIMESTAMP"/>
+            <result property="supplierNumber" column="supplier_number" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="shippingMethod" column="shipping_method" jdbcType="VARCHAR"/>
+            <result property="vehicleNumber" column="vehicle_number" jdbcType="VARCHAR"/>
+            <result property="storageSpacesId" column="storage_spaces_id" jdbcType="INTEGER"/>
+            <result property="materialNumber" column="material_number" jdbcType="VARCHAR"/>
+            <result property="materialName" column="material_name" jdbcType="VARCHAR"/>
+            <result property="materialCode" column="material_code" jdbcType="VARCHAR"/>
+            <result property="materialWeight" column="material_weight" jdbcType="DECIMAL"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="unloadingTime" column="unloading_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_id,plan_date,
+        supplier_number,supplier_name,shipping_method,
+        vehicle_number,storage_spaces_id,material_number,
+        material_name,material_code,material_weight,
+        shift_name,class_name,unloading_time,
+        create_user_id,create_user_name,create_time,
+        modify_user_id,modify_user_name,modify_time
+    </sql>
+</mapper>

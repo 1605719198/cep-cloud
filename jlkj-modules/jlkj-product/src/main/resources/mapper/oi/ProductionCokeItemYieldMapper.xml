@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCokeItemYieldMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCokeItemYieldEntity">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+        <result property="materialsCode" column="materials_code" jdbcType="VARCHAR"/>
+        <result property="yield" column="yield" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,materials_name,
+        materials_code,yield
+    </sql>
+
+    <select id="getProductionCokeMaterialsNameByTime" resultType="String">
+        select material_name from product_oi_coke_records where #{datetime} between class_start_time and class_end_time group by material_name
+    </select>
+
+    <select id="getMaterialsCokeStockOneByMaterialName" resultType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
+        select * from t_materials_coke_stock where materials_name = #{materialsName}
+    </select>
+
+    <update id="updateMaterialsCokeStockById"  parameterType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
+        update t_materials_coke_stock set inventory = #{inventory} where id = #{id}
+    </update>
+
+    <select id="getMaterialsCokeStockMultipleByMaterialName" resultType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
+        select * from t_materials_coke_stock where
+        <if test="nameList != null and nameList.size()>0">
+            <foreach collection="nameList" item="name" separator=" or ">
+                materials_name = #{name}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getCokeItemYieldList2" parameterType="com.jlkj.product.oi.dto.productioncokeitemyield.CokeItemYieldQueryDTO" resultType="java.util.Map">
+        select
+        DATE_FORMAT(a.pound_date,'%Y-%m-%d %H:%i:%s') AS pound_date,goods_no,goods_name,complete_pound_num
+        from (
+        select * from t_logistics_trans_actual_nut where compute_flag > 0
+        UNION ALL
+        select * from t_logistics_trans_actual_fines where compute_flag > 0
+        ) a
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and pound_date &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and pound_date &lt;= #{condition.endTime}
+            </if>
+            <if test="condition.materialsCode != null and condition.materialsCode != ''">
+                and goods_no &lt;= #{condition.materialsCode}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+</mapper>

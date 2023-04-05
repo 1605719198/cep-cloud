@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionRealOutputMonthMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionRealOutputMonth">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="year" column="year" jdbcType="INTEGER"/>
+            <result property="month" column="month" jdbcType="INTEGER"/>
+            <result property="targetItemId" column="target_item_id" jdbcType="VARCHAR"/>
+            <result property="targetItemName" column="target_item_name" jdbcType="VARCHAR"/>
+            <result property="targetItemOutput" column="target_item_output" jdbcType="DECIMAL"/>
+            <result property="averageLastYear" column="average_last_year" jdbcType="DECIMAL"/>
+            <result property="sameTimeLastYear" column="same_time_last_year" jdbcType="DECIMAL"/>
+            <result property="historicalMaximum" column="historical_maximum" jdbcType="DECIMAL"/>
+            <result property="historicalMinimum" column="historical_minimum" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,`year`,`month`,
+        target_item_id,target_item_name,target_item_output,
+        average_last_year,same_time_last_year,historical_maximum,
+        historical_minimum
+    </sql>
+
+    <select id="getMonthQjMinMax" resultType="java.util.Map">
+        select ifnull(min(target_item_output_real),0) as min_target_item_output_real,ifnull(max(target_item_output_real),0) as max_target_item_output_real
+        from (
+                 select year(a.production_date)     as year,
+                        month(a.production_date)    as month,
+                        round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real
+                 from product_oi_output_performance_manual_bake a
+                 INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 group by year,month
+         ) as a
+    </select>
+
+    <select id="getMonthQjAvg" parameterType="java.util.Map" resultType="java.util.Map">
+        select case when count(target_item_output_real) = 0 then 0 else sum(ifnull(target_item_output_real,0)) / count(target_item_output_real) end as avg_target_item_output_real
+        from (
+                 select year(a.production_date)     as year,
+                        month(a.production_date)    as month,
+                        round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real
+                 from product_oi_output_performance_manual_bake a
+                          INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 where year(a.production_date) = #{year}
+                 group by year,month
+             ) as a
+    </select>
+
+    <select id="getMonthQjTq" parameterType="java.util.Map" resultType="java.util.Map">
+        select ifnull(round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3),0) as target_item_output_real
+        from product_oi_output_performance_manual_bake a
+        INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+        where year(a.production_date) = #{year}
+          and month(a.production_date) = #{month}
+    </select>
+
+    <select id="getMonthYjjMinMax" parameterType="java.util.Map" resultType="java.util.Map">
+        select ifnull(min(target_item_output_real),0) as min_target_item_output_real,ifnull(max(target_item_output_real),0) as max_target_item_output_real
+        from (
+                 select round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real
+                 from (
+                          select year(a.production_date)     as year,
+                                 month(a.production_date)    as month,
+                                 sum(a.single_hole_production) as target_item_output_real
+                          from product_oi_output_performance_manual_bake a
+                                   INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                          group by year, month
+                      ) as a
+                          LEFT JOIN (
+                     select year,month,
+                            sum(production_performance_jd) as nutCoOutput,
+                            sum(production_performance_jf) as coFinesOutput
+                     from (
+                              select year(car_send_date) as year,
+                                     month(car_send_date) as month,
+
+                                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                     0 as production_performance_jf
+                              from t_logistics_trans_actual_nut a
+                              group by year,month
+                              union all
+                              select year(car_send_date) as year,
+                                     month(car_send_date) as month,
+                                     0 as production_performance_jd,
+                                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                              from t_logistics_trans_actual_fines a
+                              group by year,month
+                          ) as a
+                     group by year,month
+                 ) b ON a.year = b.year and a.month = b.month
+             ) as a
+    </select>
+
+    <select id="getMonthYjjAvg" parameterType="java.util.Map" resultType="java.util.Map">
+        select case when count(target_item_output_real) = 0 then 0 else sum(ifnull(target_item_output_real,0)) / count(target_item_output_real) end as avg_target_item_output_real
+        from (
+                 select round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real
+                 from (
+                          select year(a.production_date)     as year,
+                                 month(a.production_date)    as month,
+                                 sum(a.single_hole_production) as target_item_output_real
+                          from product_oi_output_performance_manual_bake a
+                                   INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                          where year(a.production_date) = #{year}
+                          group by year, month
+                 ) as a
+                 LEFT JOIN (
+                     select year,month,
+                            sum(production_performance_jd) as nutCoOutput,
+                            sum(production_performance_jf) as coFinesOutput
+                     from (
+                              select year(car_send_date) as year,
+                                     month(car_send_date) as month,
+                                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                     0 as production_performance_jf
+                              from t_logistics_trans_actual_nut a
+                              group by year,month
+                              union all
+                              select year(car_send_date) as year,
+                                     month(car_send_date) as month,
+                                     0 as production_performance_jd,
+                                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                              from t_logistics_trans_actual_fines a
+                              group by year,month
+                     ) as a
+                     where a.year = #{year}
+                     group by year,month
+                 ) b ON a.year = b.year and a.month = b.month
+             ) as a
+    </select>
+
+    <select id="getMonthYjjTq" parameterType="java.util.Map" resultType="java.util.Map">
+        select ifnull(round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3),0) as target_item_output_real
+        from (
+                 select year(a.production_date)     as year,
+                        month(a.production_date)    as month,
+                        sum(a.single_hole_production) as target_item_output_real
+                 from product_oi_output_performance_manual_bake a
+                          INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 where year(a.production_date) = #{year}
+                   and month(a.production_date) = #{month}
+                 group by year, month
+        ) as a
+        LEFT JOIN (
+            select year,month,
+                   sum(production_performance_jd) as nutCoOutput,
+                   sum(production_performance_jf) as coFinesOutput
+            from (
+                     select year(car_send_date) as year,
+                            month(car_send_date) as month,
+                            sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                            0 as production_performance_jf
+                     from t_logistics_trans_actual_nut a
+                     group by year,month
+                     union all
+                     select year(car_send_date) as year,
+                            month(car_send_date) as month,
+                            0 as production_performance_jd,
+                            sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                     from t_logistics_trans_actual_fines a
+                     group by year,month
+                 ) as a
+            where a.year = #{year}
+              and a.month = #{month}
+            group by year,month
+        ) b ON a.year = b.year and a.month = b.month
+    </select>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.productionrealoutputmonth.PageProductionRealOutputMonthDTO" resultType="com.jlkj.product.oi.vo.productionrealoutputmonth.PageProductionRealOutputMonthVO">
+        select a.`year`,
+               a.`month`,
+               a.target_item_name,
+               ifnull(max(a.target_item_output),0) as target_item_output,
+               ifnull(max(a.target_item_output_real),0) as target_item_output_real,
+               ifnull(max(a.average_last_year),0) as average_last_year,
+               ifnull(max(a.same_time_last_year),0) as same_time_last_year,
+               ifnull(max(a.historical_maximum),0) as historical_maximum,
+               ifnull(max(a.historical_minimum),0) as historical_minimum
+        from (
+            select
+                a.`year`,
+                a.`month`,
+                a.target_item_name,
+                a.target_item_output,
+                a.target_item_output_real,
+                a.average_last_year,
+                a.same_time_last_year,
+                a.historical_maximum,
+                a.historical_minimum
+            from product_oi_real_output_month a
+            where a.`year` = #{condition.year}
+            and (#{condition.month} = 0 or a.`month` = #{condition.month})
+            and (#{condition.targetItemName} = '' or a.target_item_name like concat('%',#{condition.targetItemName},'%'))
+            union all
+            select year(a.production_date)     as year,
+                   month(a.production_date)    as month,
+                   '全焦'                       as target_item_name,
+                   0                           as target_item_output,
+                   round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real,
+                   0 as average_last_year,
+                   0 as same_time_last_year,
+                   0 as historical_maximum,
+                   0 as historical_minimum
+            from product_oi_output_performance_manual_bake a
+            INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+            where year(a.production_date) = #{condition.year}
+            group by year, month
+            union all
+            select a.year,
+                   a.month,
+                   '冶金焦' as target_item_name,
+                   0 as target_item_output,
+                   round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real,
+                   0 as average_last_year,
+                   0 as same_time_last_year,
+                   0 as historical_maximum,
+                   0 as historical_minimum
+            from (
+                select year(a.production_date)     as year,
+                       month(a.production_date)    as month,
+                       sum(a.single_hole_production) as target_item_output_real
+                from product_oi_output_performance_manual_bake a
+                         INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                where year(a.production_date) = #{condition.year}
+                group by year, month
+            ) as a
+            LEFT JOIN (
+                select year,month,
+                       sum(production_performance_jd) as nutCoOutput,
+                       sum(production_performance_jf) as coFinesOutput
+                from (
+                         select year(car_send_date) as year,
+                                month(car_send_date) as month,
+
+                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                0 as production_performance_jf
+                         from t_logistics_trans_actual_nut a
+                         group by year,month
+                         union all
+                         select year(car_send_date) as year,
+                                month(car_send_date) as month,
+                                0 as production_performance_jd,
+                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                         from t_logistics_trans_actual_fines a
+                         group by year,month
+                     ) as a
+                group by year,month
+            ) b ON a.year = b.year and a.month = b.month
+        ) as a
+        where (#{condition.targetItemName} = '' or a.target_item_name like concat('%',#{condition.targetItemName},'%'))
+        group by a.`year`,
+                 a.`month`,
+                 a.target_item_name
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getProductionRealOutputMonthTargetItemChartData" parameterType="com.jlkj.product.oi.dto.productionrealoutputmonth.ListProductionRealOutputMonthTargetItemDTO" resultType="com.jlkj.product.oi.vo.productionrealoutputmonth.ListProductionRealOutputMonthTargetItemVO">
+        select a.`month`,
+               max(target_item_output) as target_item_output
+        from (
+            select
+                a.`month`,
+                ifnull(a.target_item_output_real,0) as target_item_output
+            from product_oi_real_output_month a
+            where a.`year` = #{year}
+            and (#{targetItemName} = '' or a.target_item_name like concat('%',#{targetItemName},'%'))
+            union all
+            select month(a.production_date)    as month,
+                   round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output
+            from product_oi_output_performance_manual_bake a
+            INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+            where year(a.production_date) = #{year}
+              and #{targetItemName} = '全焦'
+            group by month
+            union all
+            select a.month,
+                   round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output
+            from (
+                     select year(a.production_date)     as year,
+                            month(a.production_date)    as month,
+                            sum(a.single_hole_production) as target_item_output_real
+                     from product_oi_output_performance_manual_bake a
+                              INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     where year(a.production_date) = #{year}
+                       and #{targetItemName} = '冶金焦'
+                     group by year, month
+            ) as a
+            LEFT JOIN (
+                select year,month,
+                       sum(production_performance_jd) as nutCoOutput,
+                       sum(production_performance_jf) as coFinesOutput
+                from (
+                         select year(car_send_date) as year,
+                                month(car_send_date) as month,
+
+                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                0 as production_performance_jf
+                         from t_logistics_trans_actual_nut a
+                         group by year,month
+                         union all
+                         select year(car_send_date) as year,
+                                month(car_send_date) as month,
+                                0 as production_performance_jd,
+                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                         from t_logistics_trans_actual_fines a
+                         group by year,month
+                     ) as a
+                group by year,month
+            ) b ON a.year = b.year and a.month = b.month
+        ) as a
+        group by a.`month`
+        order by a.`month`
+    </select>
+
+    <select id="getProductionRealOutputMonthRangeChartData" parameterType="com.jlkj.product.oi.dto.productionrealoutputmonth.ListProductionRealOutputMonthRangeDTO" resultType="com.jlkj.product.oi.vo.productionrealoutputmonth.ListProductionRealOutputMonthRangeVO">
+        select target_item_name,
+               max(target_item_output) as target_item_output
+        from (
+            select
+                a.target_item_name,
+                ifnull(b.target_item_output_real,0) as target_item_output
+            from product_oi_parameter_target_item a
+            LEFT JOIN product_oi_real_output_month b ON a.id = b.target_item_id
+            and (b.`year` &gt;= #{startYear})
+            and (b.`year` &lt;= #{endYear})
+            and (b.`month` &gt;= #{startMonth})
+            and (b.`month` &lt;= #{endMonth})
+            union all
+            select '全焦'   as target_item_name,
+                   round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output
+            from product_oi_output_performance_manual_bake a
+                     INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+            where (year(a.production_date) &gt;= #{startYear})
+              and (year(a.production_date) &lt;= #{endYear})
+              and (month(a.production_date) &gt;= #{startMonth})
+              and (month(a.production_date) &lt;= #{endMonth})
+            union all
+            select '冶金焦'   as target_item_name,
+                   round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output
+            from (
+                     select sum(a.single_hole_production) as target_item_output_real
+                     from product_oi_output_performance_manual_bake a
+                              INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     where (year(a.production_date) &gt;= #{startYear})
+                       and (year(a.production_date) &lt;= #{endYear})
+                       and (month(a.production_date) &gt;= #{startMonth})
+                       and (month(a.production_date) &lt;= #{endMonth})
+            ) as a,(
+                select sum(production_performance_jd) as nutCoOutput,
+                       sum(production_performance_jf) as coFinesOutput
+                from (
+                         select sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                0 as production_performance_jf
+                         from t_logistics_trans_actual_nut a
+                         where (year(a.car_send_date) &gt;= #{startYear})
+                           and (year(a.car_send_date) &lt;= #{endYear})
+                           and (month(a.car_send_date) &gt;= #{startMonth})
+                           and (month(a.car_send_date) &lt;= #{endMonth})
+                         union all
+                         select 0 as production_performance_jd,
+                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                         from t_logistics_trans_actual_fines a
+                         where (year(a.car_send_date) &gt;= #{startYear})
+                           and (year(a.car_send_date) &lt;= #{endYear})
+                           and (month(a.car_send_date) &gt;= #{startMonth})
+                           and (month(a.car_send_date) &lt;= #{endMonth})
+                     ) as a
+            ) b
+        ) as a
+        group by a.target_item_name
+        order by a.target_item_name
+    </select>
+
+
+    <select id="getProductivityAnalys" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="map">
+        SELECT
+            plan_date,
+            MAX(CASE WHEN target_item_name = '全焦-计划' THEN target_item_output ELSE 0 END) AS coke_all_plan,
+            MAX(CASE WHEN target_item_name = '全焦-实绩' THEN target_item_output ELSE 0 END) AS coke_all_real,
+            MAX(CASE WHEN target_item_name = '冶金焦-计划' THEN target_item_output ELSE 0 END) AS coke_plan,
+            MAX(CASE WHEN target_item_name = '冶金焦-实绩' THEN target_item_output ELSE 0 END) AS coke_real
+        FROM
+            (
+                SELECT
+                    CONCAT(year,'-', RIGHT(CONCAT('0',month),2),'-', RIGHT(CONCAT('0',date),2)) AS plan_date,
+                    CONCAT(target_item_name,'-计划') AS target_item_name,
+                    target_item_output
+                FROM product_oi_real_output_date
+                WHERE CONCAT(year,'-', RIGHT(CONCAT('0',month),2),'-', RIGHT(CONCAT('0',date),2)) <![CDATA[ >= ]]> #{start_time}
+                  AND CONCAT(year,'-', RIGHT(CONCAT('0',month),2),'-', RIGHT(CONCAT('0',date),2)) <![CDATA[ <= ]]> #{end_time}
+                UNION ALL
+                SELECT
+                    a.production_date,
+                    '全焦-实绩' AS target_item_name,
+                    ROUND(SUM(a.single_hole_production) / SUM(b.loading_coal) * 100,3) as target_item_output_real
+                FROM product_oi_output_performance_manual_bake a
+                INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                WHERE a.production_date <![CDATA[ >= ]]> #{start_time}
+                  AND a.production_date <![CDATA[ <= ]]> #{end_time}
+                GROUP BY a.production_date
+                UNION ALL
+                SELECT
+                    a.production_date,
+                    '冶金焦-实绩' as target_item_name,
+                    ROUND((a.target_item_output_real - IFNULL(b.nutCoOutput,0) - IFNULL(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real
+                FROM (
+                         SELECT
+                             a.production_date,
+                             SUM(a.single_hole_production) as target_item_output_real
+                         FROM product_oi_output_performance_manual_bake a
+                         INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                         WHERE a.production_date <![CDATA[ >= ]]> #{start_time}
+                           AND a.production_date <![CDATA[ <= ]]> #{end_time}
+                         GROUP BY a.production_date
+                     ) as a
+                         LEFT JOIN (
+                    SELECT
+                        car_send_date,
+                        SUM(production_performance_jd) as nutCoOutput,
+                        SUM(production_performance_jf) as coFinesOutput
+                    FROM (
+                             SELECT
+                                 DATE_FORMAT(a.car_send_date, '%Y-%m-%d') AS car_send_date,
+                                 SUM(IFNULL(a.complete_pound_num,0)) as production_performance_jd,
+                                 0 as production_performance_jf
+                             FROM t_logistics_trans_actual_nut a
+                             WHERE car_send_date <![CDATA[ >= ]]> #{start_time}
+                               AND car_send_date <![CDATA[ <= ]]> #{end_time}
+                             GROUP BY car_send_date
+                             UNION ALL
+                             SELECT
+                                 DATE_FORMAT(a.car_send_date, '%Y-%m-%d') AS car_send_date,
+                                 0 as production_performance_jd,
+                                 SUM(IFNULL(a.complete_pound_num,0)) as production_performance_jf
+                             FROM t_logistics_trans_actual_fines a
+                             WHERE car_send_date <![CDATA[ >= ]]> #{start_time}
+                               AND car_send_date <![CDATA[ <= ]]> #{end_time}
+                             GROUP BY car_send_date
+                         ) as a
+                    GROUP BY car_send_date
+                ) b ON a.production_date = b.car_send_date
+            ) a
+        GROUP BY plan_date
+        ORDER BY plan_date
+
+
+    </select>
+
+
+    <select id="getProductivityAnalysInfo" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="map">
+        SELECT '全焦'                                                               AS target_item_name,
+               ROUND(SUM(a.single_hole_production) / SUM(b.loading_coal) * 100, 3) AS target_item_output_real
+        FROM product_oi_output_performance_manual_bake a
+                 INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+        WHERE a.production_date <![CDATA[ >= ]]> #{start_time}
+          AND a.production_date <![CDATA[ <= ]]> #{end_time}
+        UNION ALL
+        SELECT '冶金焦'                                   AS target_item_name,
+               ROUND((a.target_item_output_real - IFNULL(b.nutCoOutput, 0) - IFNULL(coFinesOutput, 0)) /
+                     a.target_item_output_real * 100, 3) AS target_item_output_real
+        FROM (
+                 SELECT '冶金焦'                       AS target_item_name,
+                        SUM(a.single_hole_production) AS target_item_output_real
+                 FROM product_oi_output_performance_manual_bake a
+                 INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 WHERE a.production_date <![CDATA[ >= ]]> #{start_time}
+                   AND a.production_date <![CDATA[ <= ]]> #{end_time}
+             ) AS a
+        LEFT JOIN (
+            SELECT '冶金焦'                        AS target_item_name,
+                   SUM(production_performance_jd) AS nutCoOutput,
+                   SUM(production_performance_jf) AS coFinesOutput
+            FROM (
+                     SELECT SUM(IFNULL(a.complete_pound_num, 0)) AS production_performance_jd,
+                            0                                    AS production_performance_jf
+                     FROM t_logistics_trans_actual_nut a
+                     WHERE car_send_date <![CDATA[ >= ]]> #{start_time}
+                       AND car_send_date <![CDATA[ <= ]]> #{end_time}
+                     UNION ALL
+                     SELECT 0                                    AS production_performance_jd,
+                            SUM(IFNULL(a.complete_pound_num, 0)) AS production_performance_jf
+                     FROM t_logistics_trans_actual_fines a
+                     WHERE car_send_date <![CDATA[ >= ]]> #{start_time}
+                       AND car_send_date <![CDATA[ <= ]]> #{end_time}
+                 ) AS a
+        ) b ON a.target_item_name = b.target_item_name
+        UNION ALL
+        SELECT '干熄焦率',
+               ROUND(SUM(CASE WHEN coke_type = 1 THEN 1 ELSE 0 END) / COUNT(*) * 100, 3) AS target_item_output_real
+        FROM product_oi_output_performance_manual_bake a
+        WHERE a.production_date <![CDATA[ >= ]]> #{start_time}
+          AND a.production_date <![CDATA[ <= ]]> #{end_time}
+    </select>
+
+
+</mapper>
+

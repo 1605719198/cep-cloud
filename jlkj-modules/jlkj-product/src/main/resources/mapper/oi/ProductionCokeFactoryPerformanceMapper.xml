@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCokeFactoryPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionCokeFactoryPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="person" column="person" jdbcType="VARCHAR"/>
+            <result property="clientId" column="client_id" jdbcType="VARCHAR"/>
+            <result property="clientName" column="client_name" jdbcType="VARCHAR"/>
+            <result property="materialCode" column="material_code" jdbcType="VARCHAR"/>
+            <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+            <result property="vehicleNumber" column="vehicle_number" jdbcType="VARCHAR"/>
+            <result property="loadingTime" column="loading_time" jdbcType="TIMESTAMP"/>
+            <result property="netWgt" column="net_wgt" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        person,client_id,client_name,
+        material_code,materials_name,vehicle_number,
+        loading_time,net_wgt
+    </sql>
+
+    <select id="getProductionCokeFactoryPerformancePageData" parameterType="com.jlkj.product.oi.dto.productioncokefactoryperformance.PageProductionCokeFactoryPerformanceDTO" resultType="com.jlkj.product.oi.vo.productioncokefactoryperformance.PageProductionCokeFactoryPerformanceVO">
+        select
+            a.shift_name,
+            a.class_name,
+            a.person,
+            a.client_name,
+            a.materials_name,
+            a.vehicle_number,
+            case when ISNULL(a.loading_time) then '' else DATE_FORMAT(a.loading_time,'%Y-%m-%d %H:%i:%s') end as loading_time,
+            a.net_wgt,
+            issue_emp_no,
+            issue_emp_name
+        from product_oi_coke_factory_performance a
+        where 1=1
+        and (#{condition.shiftName} = '' or a.shift_name = #{condition.shiftName})
+        and (#{condition.className} = '' or a.class_name = #{condition.className})
+        and (#{condition.materialCode} = '' or a.material_code = #{condition.materialCode})
+        and (#{condition.startTime} = '' or a.loading_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
+        and (#{condition.endTime} = '' or a.loading_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

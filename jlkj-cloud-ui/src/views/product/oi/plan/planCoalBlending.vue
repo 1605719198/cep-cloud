@@ -1,0 +1,371 @@
+<template>
+  <div class="avue-crud el-card__body" style="width: 98%;border: 0">
+    <div class="avue-crud__search" style="border: 0">
+      <el-form :model="query" ref="query">
+        <el-row :gutter="20">
+          <el-col :span="3">
+            <el-form-item label="" prop="planNumber">
+              <el-input type="text" placeholder="计划编号" v-model="query.planNumber" clearable/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="" prop="planDate">
+              <el-date-picker v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
+                              end-placeholder="计划结束日期"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item label="" prop="plan_state">
+              <el-select v-model="planState" placeholder="选择状态" clearable>
+                <el-option v-for="item in selectStates" :key="item.value" :label="item.label"
+                           :value="item.value"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item label="" prop="materialId">
+              <el-select v-model="query.materialId" placeholder="选择焦炭等级" clearable>
+                <el-option v-for="item in selectCokeType" :key="item.id" :label="item.materials_name" :value="item.id"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <div class="el-form-item__content" style="margin-left: 0px;">
+              <el-button v-hasPermi="['listProductionCfgCokePlans']"
+                         size="medium" type="primary" icon="el-icon-search" @click="handleQuery">搜 索
+              </el-button>
+              <el-button size="medium" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置
+              </el-button>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="el-form-item__content" style="float: right">
+              <el-button v-hasPermi="['addProductionPlanCfgCoke']"
+                         type="primary" size="medium" icon="el-icon-plus" @click="handleOpenWindow('add')">新增
+              </el-button>
+              <el-button v-hasPermi="['addProductionPlanCfgCoke']" type="primary" size="medium"
+                         @click="handleOpenWindow('changePlanCoal')">手动切配煤计划
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div>
+      <el-form>
+        <el-table height="65vh" size="small" v-loading="table.loading" :data="tableData" stripe
+                  @sort-change="handleSort">
+          <template v-for="(column,index)  in columns">
+            <el-table-column v-if="column.customStyle"
+                             :key="index"
+                             :prop="column.prop"
+                             :label="column.label"
+                             :type="column.type"
+                             :width="column.width"
+                             :min-width="column.minWidth"
+                             :sortable="column.sortable">
+              <template slot-scope="scope">
+                <div v-html="column.customStyle(scope.row,scope.$index,scope)"></div>
+              </template>
+            </el-table-column>
+            <el-table-column v-else
+                             :key="index"
+                             :prop="column.prop"
+                             :label="column.label"
+                             :type="column.type"
+                             :width="column.width"
+                             :min-width="column.minWidth"
+                             :sortable="column.sortable"
+                             :formatter="column.formatter"/>
+          </template>
+          <el-table-column fixed="right" label="操作" width="360px">
+            <template slot-scope="scope">
+              <template v-if="scope.row.plan_state === '未确认'">
+                <el-button v-hasPermi="['listProductionCfgCokePlans']"
+                           size="mini" plain icon="el-icon-info" type="info"
+                           @click="handleOpenWindow('info',scope.$index, scope.row)"> 详情
+                </el-button>
+                <el-button v-hasPermi="['editProductionPlanCfgCoke']"
+                           size="mini" plain icon="el-icon-edit" type="success"
+                           @click="handleOpenWindow('edit',scope.$index, scope.row)"> 修改
+                </el-button>
+                <el-button v-hasPermi="['delProductionPlanCfgCoke']"
+                           size="mini" plain icon="el-icon-delete" type="danger"
+                           @click="handleDelete(scope.$index, scope.row)">删除
+                </el-button>
+                <el-button v-hasPermi="['editProductionPlanCfgCoke']"
+                           size="mini" plain icon="el-icon-success" type="warning"
+                           @click="handleConfirm(scope.$index, scope.row)"> 确认
+                </el-button>
+              </template>
+              <template v-else>
+                <el-button v-hasPermi="['listProductionCfgCokePlans']"
+                           size="mini" plain icon="el-icon-info" type="info"
+                           @click="handleOpenWindow('info',scope.$index, scope.row)">详情
+                </el-button>
+                <el-button v-hasPermi="['editProductionPlanCfgCoke']"
+                           size="mini" icon="el-icon-edit" type="success" disabled>修改
+                </el-button>
+                <el-button v-hasPermi="['delProductionPlanCfgCoke']"
+                           size="mini" plain icon="el-icon-delete" type="danger" disabled>删除
+                </el-button>
+                <el-button v-hasPermi="['editProductionPlanCfgCoke']"
+                           size="mini" plain icon="el-icon-success" type="success" disabled>已确认
+                </el-button>
+              </template>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+          <el-pagination background
+                         @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :current-page="page.current"
+                         :page-sizes="[20, 50, 100, 200]"
+                         :page-size="page.size"
+                         :total="page.total">
+          </el-pagination>
+        </div>
+      </el-form>
+    </div>
+    <div v-if="openDialog.open">
+      <el-dialog :title="openDialog.title" :visible.sync="openDialog.open" :width="openDialog.width"
+                 class="customDialogStyle" append-to-body :destroy-on-close="true" :close-on-click-modal="false">
+        <template v-if="openDialog.type === 'add' || openDialog.type === 'edit'">
+          <planCoalBlendingEdit :data="openDialog.data" @submitSave="submitSave" @close="openDialog.open=false"/>
+        </template>
+        <template v-if="openDialog.type === 'info'">
+          <planCoalBlendingInfo :data="openDialog.data" @close="openDialog.open=false"/>
+        </template>
+        <template v-if="openDialog.type === 'changePlanCoal'">
+          <planCoalBlendingChange :data="openDialog.data" @submitSave="submitSave" @close="openDialog.open=false"/>
+        </template>
+      </el-dialog>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import {req} from "@/api/production/oi/common";
+import planCoalBlendingEdit from "./planCoalBlendingEdit";
+import planCoalBlendingInfo from "./planCoalBlendingInfo";
+import planCoalBlendingChange from "./planCoalBlendingChange";
+import {mapGetters} from "vuex";
+import {listMaterialsBoxJ} from "@/api/material/mr/parameter/materialCode";
+
+export default {
+  components: {
+    planCoalBlendingEdit,
+    planCoalBlendingInfo,
+    planCoalBlendingChange,
+  },
+  name: "planCoalBlending",
+  data() {
+    return {
+      openDialog: {open: false, type: '', title: '', width: '500px', data: {},},
+      page: {size: 20, current: 1, total: 1, order: "create_time", orderby: "desc",},
+      query: {plan_start_time: '', plan_end_time: '', plan_state: 0, materialId: '', planNumber: ''},
+      table: {border: true, loading: true,},
+      planState: "", planDate: [],
+      selectStates: [
+        {value: '1', label: '未确认'},
+        {value: '2', label: '已确认'},
+        {value: '3', label: '执行中'},
+        {value: '4', label: '已完成'},
+      ],
+      selectCokeType: [],
+      columns: [
+        {label: '计划编号', prop: "plan_number", sortable: true, type: 'year', minWidth: '100px'},
+        // {label: '储煤塔号', prop: "tower_number", sortable: true, minWidth: '150px'},
+        {label: '焦炭等级', prop: "material_name", sortable: true, minWidth: '150px'},
+        {label: '开始时间', prop: "plan_start_time", sortable: true, minWidth: '150px'},
+        {label: '结束时间', prop: "plan_end_time", sortable: true, minWidth: '150px'},
+        {label: '计划状态', prop: "plan_state", sortable: true, minWidth: '100px'},
+        // {label: '接收人', prop: "receive_user_name", sortable: true, minWidth: '150px'},
+        // {label: '接收确认时间', prop: "receive_time", sortable: true, minWidth: '150px'},
+        {label: '创建人', prop: "create_user_name", sortable: true, minWidth: '150px'},
+        {label: '创建时间', prop: "create_time", sortable: true, minWidth: '150px'},
+        {label: '确认人', prop: "receive_user_name", sortable: true, minWidth: '150px'},
+        {label: '确认时间', prop: "receive_time", sortable: true, minWidth: '150px'},
+      ],
+      tableData: [],
+    }
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
+  created() {
+    listMaterialsBoxJ().then(res => {
+      // this.selectCokeType = res.data;//表格数据
+      this.selectCokeType = res.data.filter(item => {
+        return item.materials_code.substring(0, 5) === '01501';
+      });
+    }, error => {
+      window.console.log(error);
+    });
+    this.onLoad();
+  },
+  methods: {
+    //载入数据
+    onLoad() {
+      this.table.loading = true;//加载状态
+      let data = {...this.page, ...this.query};
+      req('get', 'listProductionCfgCokePlans', data).then(res => {
+        this.table.loading = false;
+        this.tableData = res.data.data.records;//表格数据
+        this.page.total = res.data.data.total;
+
+      }, error => {
+        this.table.loading = false;
+        window.console.log(error);
+      });
+    },
+    // 分页-每页多少条
+    handleSizeChange(val) {
+      this.page.size = val;
+      this.onLoad();
+    },
+    // 分页-当前页
+    handleCurrentChange(val) {
+      this.page.current = val;
+      this.onLoad();
+    },
+    // 排序
+    handleSort(column) {
+      if (column.order === null) {
+        //默认
+        this.page.order = "create_time";
+        this.page.orderby = "desc";
+      } else {
+        //选中项
+        this.page.order = column.prop;
+        this.page.orderby = column.order === 'ascending' ? 'asc' : 'desc';
+      }
+      this.onLoad();
+    },
+    //查询
+    handleQuery() {
+      this.page.current = 1;
+      this.onLoad();
+    },
+    // 清空
+    handleEmpty() {
+      this.planDate = [];
+      this.query = {plan_start_time: '', plan_end_time: '', plan_state: 0,};
+      this.planState = '';
+      this.onLoad();
+    },
+    // 打开窗口
+    handleOpenWindow(type, index, row) {
+      let title = '配煤计划';
+      this.openDialog.open = true;
+      this.openDialog.type = type;
+      this.openDialog.width = '1160px';
+      this.openDialog.data = row;
+      if (type === 'add') {
+        this.openDialog.title = '新增' + title;
+        this.openDialog.data = {};
+      } else if (type === 'edit') {
+        this.openDialog.title = '编辑' + title;
+      } else if (type === 'info') {
+        this.openDialog.title = '查看' + title;
+        this.openDialog.width = '850px';
+      } else if (type === 'changePlanCoal') {
+        this.openDialog.title = '查看' + title;
+        this.openDialog.width = '850px';
+      } else {
+        this.openDialog.open = false;
+        this.openDialog.data = {};
+      }
+    },
+    // 删除
+    handleDelete(index, row) {
+      this.$confirm('此操作将删除计划编号为' + row.plan_number + '的配煤计划, 是否继续?', '提示', {
+        confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
+      }).then(() => {
+        req('post', 'delProductionPlanCfgCoke', {
+          id: row.id,
+          deleteUserId: this.userInfo.userId,
+          deleteUserName: this.userInfo.userName,
+        }).then(res => {
+          if (res.data.code === "0") {
+            this.$message({
+              type: "success", message: "操作成功！", duration: 1000,
+              onClose: () => {
+                this.onLoad();
+              }
+            });
+          }
+        }, error => {
+          window.console.log(error);
+        });
+      }).catch(() => {
+        this.$message({type: 'info', message: '已取消删除'});
+      });
+    },
+    //提供给子类调用的方法
+    submitSave() {
+      this.openDialog.open = false;
+      this.openDialog.data = {};
+      this.onLoad();
+    },
+    handleConfirm(index, row) {
+      this.$confirm('是否确认计划编号为' + row.plan_number + '的配煤计划，确认后的配煤计划将无法修改, 是否继续?', '提示', {
+        confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
+      }).then(() => {
+        req('post', 'updateProductionPlanCfgCokeConfirm', {
+          id: row.id, receive_user_id: this.userInfo.userId, receive_user_name: this.userInfo.userName,
+        }).then(res => {
+          if (res.data.code === "0") {
+            this.$message({
+              type: "success", message: "操作成功！", duration: 1000,
+              onClose: () => {
+                this.onLoad();
+              }
+            });
+          }
+        }, error => {
+          window.console.log(error);
+        });
+      }).catch(() => {
+      });
+    },
+    changePlanCoal() {
+
+    },
+
+
+  },
+  // 侦听器
+  watch: {
+    planDate(newValue) {
+      if (newValue !== null && newValue.length > 0) {
+        this.query.plan_start_time = this.$moment(newValue[0]).format('YYYY-MM-DD');
+        this.query.plan_end_time = this.$moment(newValue[1]).format('YYYY-MM-DD');
+      } else {
+        this.query.plan_start_time = "";
+        this.query.plan_end_time = "";
+      }
+    },
+    planState(newValue) {
+      if (newValue === '') {
+        this.query.plan_state = 0;
+      } else {
+        this.query.plan_state = newValue;
+      }
+
+    }
+  }
+}
+</script>
+
+<style scoped>
+.el-button--success {
+  background-color: #b3e19d;
+  color: white;
+  border: white;
+}
+</style>

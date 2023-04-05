@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCoalWarehouseStockMapper">
+
+    <select id="getMaterialsCoalWarehouseStock" resultType="java.util.Map">
+        SELECT coal_warehouse_number,
+               SUM(coal_surplus)/1000   AS coal_surplus,
+               SUM(material_level) AS material_level
+        FROM product_oi_coal_warehouse_stock
+        GROUP BY coal_warehouse_number
+    </select>
+
+</mapper>

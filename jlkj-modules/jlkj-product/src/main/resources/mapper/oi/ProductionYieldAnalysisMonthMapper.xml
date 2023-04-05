@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionYieldAnalysisMonthMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionYieldAnalysisMonth">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="INTEGER"/>
+        <result property="month" column="month" jdbcType="INTEGER"/>
+        <result property="materialsId" column="materials_id" jdbcType="VARCHAR"/>
+        <result property="materialsName" column="materials_name" jdbcType="VARCHAR"/>
+        <result property="productionPlan" column="production_plan" jdbcType="DECIMAL"/>
+        <result property="productionPerformance" column="production_performance" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,year,month,
+        materials_id,materials_name,production_plan,
+        production_performance
+    </sql>
+
+    <select id="getProductionYieldAnalysisMonthList" parameterType="com.jlkj.product.oi.dto.productionyieldanalysismonth.ListProductionYieldAnalysisMonthDTO" resultType="java.util.Map">
+        select year, month ${colsMax}
+        from (select year, month ${cols}
+              from product_oi_yield_analysis_month
+              where year = #{year}
+                and materials_name != '干熄焦'
+                and materials_name != '湿熄焦'
+              union all
+              select year, month ${cols}
+              from (select year(production_date)                                           as year,
+                           month(production_date)                                          as month,
+                           0                                                               as production_plan,
+                           sum(single_hole_production)                                     as production_performance,
+                           case when coke_type = 1 then '0000000001' else '0000000002' end as materials_id,
+                           case when coke_type = 1 then '干熄焦' else '湿熄焦' end               as materials_name
+                    from product_oi_output_performance_manual_bake
+                    group by year, month, coke_type) as a
+              where year = #{year}
+              union all
+              select year, month ${cols}
+              from (select year(production_date)       as year,
+                           month(production_date)      as month,
+                           0                           as production_plan,
+                           sum(single_hole_production) as production_performance,
+                           #{qjItemId}                 as materials_id,
+                           '全焦'                        as materials_name
+                    from product_oi_output_performance_manual_bake
+                    group by year, month) as a
+              where year = #{year}
+              union all
+              select year, month ${cols}
+              from (select a.year,
+                           a.month,
+                           0 as production_plan,
+                           (a.production_performance - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) as production_performance,
+                           #{yjjItemId} as materials_id,
+                           '冶金焦' as materials_name
+                    from (select year(production_date)       as year,
+                                 month(production_date)      as month,
+                                 sum(single_hole_production) as production_performance
+                          from product_oi_output_performance_manual_bake
+                          group by year, month
+                    ) as a
+                    LEFT JOIN (
+                         select year,month,
+                                sum(production_performance_jd) as nutCoOutput,
+                                sum(production_performance_jf) as coFinesOutput
+                         from (
+                                  select year(car_send_date) as year,
+                                         month(car_send_date) as month,
+
+                                         sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                         0 as production_performance_jf
+                                  from t_logistics_trans_actual_nut a
+                                  group by year,month
+                                  union all
+                                  select year(car_send_date) as year,
+                                         month(car_send_date) as month,
+                                         0 as production_performance_jd,
+                                         sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                                  from t_logistics_trans_actual_fines a
+                                  group by year,month
+                         ) as a
+                         group by year,month
+                    ) b ON a.year = b.year and a.month = b.month
+              ) as a
+              where year = #{year}
+        ) as a
+        group by year, month
+        order by year, month
+    </select>
+
+    <select id="getProductionYieldAnalysisChartMonth" parameterType="com.jlkj.product.oi.dto.productionyieldanalysismonth.ListProductionYieldAnalysisMonthMaterialDTO" resultType="com.jlkj.product.oi.vo.productionyieldanalysismonth.ListProductionYieldAnalysisMonthMaterialVO">
+        select a.`month`,
+               max(ifnull(a.production_plan,0))        as production_plan,
+               max(ifnull(a.production_performance,0)) as production_performance
+        from (select a.`month`,
+                     a.production_plan,
+                     a.production_performance
+              from product_oi_yield_analysis_month a
+              where a.`year` = #{year}
+                and materials_name != '干熄焦'
+                and materials_name != '湿熄焦'
+                and a.materials_name = #{materialsName}
+              union all
+              select a.`month`,
+                     a.production_plan,
+                     a.production_performance
+              from (select year(production_date)                             as year,
+                           month(production_date)                            as month,
+                           0                                                 as production_plan,
+                           sum(single_hole_production)                       as production_performance,
+                           case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
+                    from product_oi_output_performance_manual_bake
+                    group by year, month, coke_type) as a
+              where year = #{year}
+                and a.materials_name = #{materialsName}
+              union all
+              select a.`month`,
+                     a.production_plan,
+                     a.production_performance
+              from (select year(production_date)       as year,
+                           month(production_date)      as month,
+                           0                           as production_plan,
+                           sum(single_hole_production) as production_performance
+                    from product_oi_output_performance_manual_bake
+                    where #{materialsName} = '全焦'
+                    group by year, month) as a
+              where year = #{year}
+              union all
+              select a.`month`,
+                     a.production_plan,
+                     a.production_performance
+              from (select a.year,
+                           a.month,
+                           0                          as production_plan,
+                           (a.production_performance - ifnull(b.nutCoOutput, 0) -
+                            ifnull(coFinesOutput, 0)) as production_performance
+                    from (select year(production_date)       as year,
+                                 month(production_date)      as month,
+                                 sum(single_hole_production) as production_performance
+                          from product_oi_output_performance_manual_bake
+                          where #{materialsName} = '冶金焦'
+                          group by year, month) as a
+                             LEFT JOIN (select year,
+                                               month,
+                                               sum(production_performance_jd) as nutCoOutput,
+                                               sum(production_performance_jf) as coFinesOutput
+                                        from (select year(car_send_date)                  as year,
+                                                     month(car_send_date)                 as month,
+
+                                                     sum(ifnull(a.complete_pound_num, 0)) as production_performance_jd,
+                                                     0                                    as production_performance_jf
+                                              from t_logistics_trans_actual_nut a
+                                              group by year, month
+                                              union all
+                                              select year(car_send_date)                  as year,
+                                                     month(car_send_date)                 as month,
+                                                     0                                    as production_performance_jd,
+                                                     sum(ifnull(a.complete_pound_num, 0)) as production_performance_jf
+                                              from t_logistics_trans_actual_fines a
+                                              group by year, month) as a
+                                        group by year, month) b ON a.year = b.year and a.month = b.month) as a
+              where year = #{year}
+        ) as a
+        group by a.`month`
+        order by a.`month`
+    </select>
+</mapper>

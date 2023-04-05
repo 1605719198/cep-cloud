@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionDataBoardMapper">
+
+    <select id="getCokeOutputAnalysisByNowDay" resultType="java.util.Map">
+        select
+            year,
+            month,
+            date,
+            sum(production_performance) yield
+        from product_oi_yield_analysis_date a
+        WHERE
+            year = YEAR(NOW()) and
+            month = MONTH(NOW()) and
+            date = DAY(NOW())
+        GROUP BY year,month,date
+        ORDER BY month
+    </select>
+
+    <select id="getCokeOutputAnalysis" resultType="java.util.Map">
+        select
+            year,
+            month,
+            sum(production_performance) yield
+        from product_oi_yield_analysis_month a
+        WHERE
+            year = YEAR(NOW())
+        GROUP BY year,month
+        ORDER BY month
+    </select>
+
+    <select id="getUpCoalWeightByNowDay" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetUpCoalValueByNowDayDTO" resultType="java.util.Map">
+        select
+            coke_materials_code AS material_number,
+            coke_materials_name AS material_name,
+            sum(coke_weight)/1000 weight
+        from product_oi_conveying_coal_actual a
+        <where>
+            <choose>
+                <when test="startDate != null and startDate != ''">
+                    DATE_FORMAT(create_time,'%Y-%m-%d') = #{startDate}
+                </when>
+                <otherwise>
+                    DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY coke_materials_code,coke_materials_name
+   </select>
+
+
+
+
+
+
+    <select id="getTodayYieldByCoke" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT coke_type,
+               materials_code,
+               materials_name,
+               SUM(single_hole_production) / 1000 weight
+        FROM product_oi_output_performance_manual_bake
+        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+          AND production_date &lt; concat(curdate(), ' 20:00:00')
+        GROUP BY coke_type, materials_code, materials_name
+        UNION ALL
+        SELECT 10000,
+               materials_code,
+               materials_name,
+               SUM(single_hole_production) / 1000 weight
+        FROM product_oi_output_performance_manual_bake
+        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+          AND production_date &lt; concat(curdate(), ' 20:00:00')
+        GROUP BY materials_code, materials_name
+    </select>
+
+    <select id="getTodayYieldByPowder" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT IFNULL(SUM(weight), 0) / 1000 AS weight
+        FROM (
+                 SELECT SUM(complete_pound_num) weight
+                 FROM t_logistics_trans_actual_nut
+                 WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+                   AND pound_date &lt; concat(curdate(), ' 20:00:00')
+                 UNION ALL
+                 SELECT SUM(complete_pound_num) weight
+                 FROM t_logistics_trans_actual_fines
+                 WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+                   AND pound_date &lt; concat(curdate(), ' 20:00:00')
+             ) a
+    </select>
+    <select id="getTodayYieldByStoveCount" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT COUNT(*) AS stoveCount FROM product_oi_output_performance_manual_bake
+        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+          AND production_date &lt; concat(curdate(), ' 20:00:00')
+    </select>
+
+
+    <select id="getTodayConsumption" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT SUM(CASE WHEN type = '焦炭' THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
+               SUM(CASE WHEN type = 'W000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS water,
+               SUM(CASE WHEN type = 'P000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS electricity
+        FROM (
+                 SELECT '焦炭' AS                                   type,
+                        CAST(SUM(loading_coal)/ 1000 as decimal(18, 2)) weight
+                 FROM product_oi_output_performance_manual_bake a
+                          LEFT JOIN product_oi_output_performance_manual_coal b on b.id = a.coal_record_id
+                 WHERE a.production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
+                   AND a.production_date &lt; concat(curdate(), ' 20:00:00')
+                 UNION ALL
+                 SELECT engy_type,
+                        CAST(SUM(qty) as decimal(18, 2))
+                 FROM v_energy_board_ems_data a
+                 WHERE STR_TO_DATE(e_count_date, '%Y%m%d') = curdate()
+                 GROUP BY engy_type
+             ) a
+    </select>
+
+
+    <select id="getTodayCokeStock" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            *
+        FROM
+            t_materials_coke_stock
+    </select>
+
+
+    <select id="getCokeCode" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        select
+            a.materials_code,
+            a.materials_name
+        from t_materials_code a
+        where a.delete_flag = 0 AND mtrlType = '01'
+        order by materials_code
+    </select>
+
+    <select id="getTodayCokeShipmentInternal" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT complete_pound_num AS weight,
+               goods_no           AS material_code,
+               goods_name         AS materials_name
+        FROM t_logistics_trans_actual_coke
+        WHERE compute_flag &lt; 0
+          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+        UNION ALL
+        SELECT complete_pound_num,
+               goods_no,
+               goods_name
+        FROM t_logistics_trans_actual_nut
+        WHERE compute_flag &lt; 0
+          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+        UNION ALL
+        SELECT complete_pound_num,
+               goods_no,
+               goods_name
+        FROM t_logistics_trans_actual_fines
+        WHERE compute_flag &lt; 0
+          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+    </select>
+
+    <select id="getTodayCokeShipmentOutgoing" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT net_wgt AS weight,
+               material_code,
+               materials_name
+        FROM product_oi_coke_factory_performance a
+        WHERE DATE_FORMAT(loading_time, '%Y-%m-%d') = curdate()
+    </select>
+
+    <select id="getTodayCokeSteam" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT '产量' AS type,
+               IFNULL(SUM(a.qty),0) AS qty
+        FROM v_energy_board_ems_data a
+                 LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+        WHERE a.engy_type IN
+              (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气')
+          and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
+        UNION ALL
+        SELECT '回收量',
+               IFNULL(SUM(a.qty),0) AS qty
+        FROM v_energy_board_ems_data a
+                 LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+        WHERE a.engy_type IN
+              (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸汽回收量')
+          and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
+    </select>
+
+    <select id="getCoalConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            date,
+            material_code,
+            material_name,
+            IFNULL(weight,0) AS weight
+        FROM (
+        SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+        WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+        ) AS a
+        LEFT JOIN (
+            SELECT
+                configure_coal_species_date,
+                material_code,
+                material_name,
+                ROUND(SUM(material_weight)/1000,3) AS weight
+            FROM product_oi_configure_coal_species_performance a
+            INNER JOIN product_oi_configure_coal_species_performance_detail b on b.main_id = a.id
+            WHERE configure_coal_species_date <![CDATA[ >= ]]> #{start_time}
+            AND configure_coal_species_date <![CDATA[ <= ]]> #{end_time}
+            GROUP BY configure_coal_species_date,material_code,material_name
+            ORDER BY configure_coal_species_date,material_code,material_name
+        ) AS b on a.date = b.configure_coal_species_date
+    </select>
+
+    <select id="getCoalConsumptionInfo" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+            SELECT
+                material_code,
+                material_name,
+                ROUND(SUM(material_weight)/1000,3) AS weight
+            FROM product_oi_configure_coal_species_performance a
+            INNER JOIN product_oi_configure_coal_species_performance_detail b on b.main_id = a.id
+            WHERE configure_coal_species_date <![CDATA[ >= ]]> #{start_time}
+            AND configure_coal_species_date <![CDATA[ <= ]]> #{end_time}
+            GROUP BY material_code,material_name
+            ORDER BY material_code,material_name
+    </select>
+
+    <select id="getEnergyConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            a.date,
+            IFNULL(electric,0) AS electric,
+            IFNULL(water,0) AS water,
+            IFNULL(gas,0) AS gas
+        FROM (
+            SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date FROM (
+            SELECT @row := @row + 1 as xx FROM
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+            (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+            (SELECT @row := -1) r) se
+            WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+            ) AS a
+            LEFT JOIN (
+            SELECT
+                date,
+                SUM(CASE WHEN engy_type = 'P000' THEN qty ELSE 0 END) AS electric,
+                SUM(CASE WHEN engy_type = 'W000' THEN qty ELSE 0 END) AS water,
+                SUM(CASE WHEN engy_type = 'D100' THEN qty ELSE 0 END) AS gas
+            FROM (
+            SELECT
+                DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS date,
+                a.engy_type,
+                SUM(a.qty) AS qty
+            FROM v_energy_board_ems_data a
+            LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
+            WHERE
+                STR_TO_DATE(e_count_date, '%Y%m%d') <![CDATA[ >= ]]> #{start_time}
+                AND STR_TO_DATE(e_count_date, '%Y%m%d') <![CDATA[ <= ]]> #{end_time}
+            GROUP BY e_count_date,a.engy_type
+            ) a
+            GROUP BY date
+            ) AS b on a.date = b.date
+    </select>
+
+</mapper>

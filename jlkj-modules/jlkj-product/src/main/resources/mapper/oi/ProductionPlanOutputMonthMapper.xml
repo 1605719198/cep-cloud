@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPlanOutputMonthMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPlanOutputMonth">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planYear" column="plan_year" jdbcType="INTEGER"/>
+            <result property="planMonth" column="plan_month" jdbcType="INTEGER"/>
+            <result property="targetItemId" column="target_item_id" jdbcType="VARCHAR"/>
+            <result property="targetItemOutput" column="target_item_output" jdbcType="DECIMAL"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_year,plan_month,
+        target_item_id,target_item_output,create_user_id,
+        create_user_name,create_time,modify_user_id,
+        modify_user_name,modify_time
+    </sql>
+
+    <select id="getList" parameterType="java.lang.String" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+    <select id="getProductionPlanOutputMonthTargetItemChartData" parameterType="com.jlkj.product.oi.dto.productionplanoutputmonth.ListProductionPlanOutputMonthTargetItemDTO" resultType="com.jlkj.product.oi.vo.productionplanoutputmonth.ListProductionPlanOutputMonthTargetItemVO">
+        select
+            a.plan_month as `month`,
+            a.target_item_value as target_item_output
+        from product_oi_plan_target_month a
+        INNER JOIN product_oi_parameter_target_item b ON a.target_item_id = b.id
+        where a.plan_year = #{year}
+        and (#{targetItemName} = '' or b.target_item_name like concat('%',#{targetItemName},'%'))
+        order by a.plan_month asc
+    </select>
+</mapper>

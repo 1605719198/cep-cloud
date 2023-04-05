@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPlanConfigCokeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPlanConfigCoke">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planNumber" column="plan_number" jdbcType="VARCHAR"/>
+            <result property="planStartTime" column="plan_start_time" jdbcType="TIMESTAMP"/>
+            <result property="planEndTime" column="plan_end_time" jdbcType="TIMESTAMP"/>
+            <result property="planState" column="plan_state" jdbcType="SMALLINT"/>
+            <result property="receiveUserId" column="receive_user_id" jdbcType="VARCHAR"/>
+            <result property="receiveUserName" column="receive_user_name" jdbcType="VARCHAR"/>
+            <result property="receiveTime" column="receive_time" jdbcType="TIMESTAMP"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_number,plan_start_time,
+        plan_end_time,plan_state,receive_user_id,
+        receive_user_name,receive_time,create_user_id,
+        create_user_name,create_time,modify_user_id,
+        modify_user_name,modify_time
+    </sql>
+
+    <select id="getPageData" parameterType="com.jlkj.product.oi.dto.productionplanconfigcoke.PageProductionPlanConfigCokeDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.plan_number,
+            case when ISNULL(a.plan_start_time) then '' else DATE_FORMAT(a.plan_start_time,'%Y-%m-%d %H:%i:%s') end as plan_start_time,
+            case when ISNULL(a.plan_end_time) then '' else DATE_FORMAT(a.plan_end_time,'%Y-%m-%d %H:%i:%s') end as plan_end_time,
+            case plan_state when 1 then '未确认' when 2 then '已确认' when 3 then '执行中' when 4 then '已完成' else '未知状态' end as plan_state,
+            a.receive_user_id,
+            a.receive_user_name,
+            case when ISNULL(a.receive_time) then '' else DATE_FORMAT(a.receive_time,'%Y-%m-%d %H:%i:%s') end as receive_time,
+            a.create_user_id,
+            a.create_user_name,
+            case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
+            material_id,
+            material_name,
+            tower_number
+        from product_oi_plan_config_coke a
+        where 1=1
+        and (#{condition.planStartTime} = '' or a.plan_start_time &gt;= case when #{condition.planStartTime} = '' then null else #{condition.planStartTime} end)
+        and (#{condition.planEndTime} = '' or a.plan_start_time &lt;= case when #{condition.planEndTime} = '' then null else #{condition.planEndTime} end)
+        and (#{condition.planState} = 0 or a.plan_state = #{condition.planState})
+        <if test="condition.materialId != null and condition.materialId != ''">
+            and material_id = #{condition.materialId}
+        </if>
+        <if test="condition.planNumber != null and condition.planNumber != ''">
+            and a.plan_number like concat('%',#{condition.planNumber},'%')
+        </if>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getPlanCodeData" parameterType="java.util.Map" resultType="java.util.Map">
+        select max(plan_number) as plan_number
+        from product_oi_plan_config_coke
+        where plan_number like concat(#{codeHeader}, '%')
+    </select>
+</mapper>
+

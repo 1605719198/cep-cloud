@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPowerPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPowerPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="classStartTime" column="class_start_time" jdbcType="TIMESTAMP"/>
+            <result property="classEndTime" column="class_end_time" jdbcType="TIMESTAMP"/>
+            <result property="powerGeneration" column="power_generation" jdbcType="DECIMAL"/>
+            <result property="powerInternet" column="power_internet" jdbcType="DECIMAL"/>
+            <result property="powerPlantEnergy" column="power_plant_energy" jdbcType="DECIMAL"/>
+            <result property="generatorConsumptionRate" column="generator_consumption_rate" jdbcType="DECIMAL"/>
+            <result property="unitAir" column="unit_air" jdbcType="DECIMAL"/>
+            <result property="desalinationWaterVolume" column="desalination_water_volume" jdbcType="DECIMAL"/>
+            <result property="endDifference" column="end_difference" jdbcType="DECIMAL"/>
+            <result property="vacuum" column="vacuum" jdbcType="DECIMAL"/>
+            <result property="newWaterVolume" column="new_water_volume" jdbcType="DECIMAL"/>
+            <result property="lowerUnitElectricity" column="lower_unit_electricity" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shift_name,class_name,
+        class_start_time,class_end_time,power_generation,
+        power_internet,power_plant_energy,generator_consumption_rate,
+        unit_air,desalination_water_volume,end_difference,
+        vacuum,new_water_volume,lower_unit_electricity
+    </sql>
+</mapper>

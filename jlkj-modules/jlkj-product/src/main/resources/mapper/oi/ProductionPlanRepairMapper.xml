@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionPlanRepairMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionPlanRepair">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="planCode" column="plan_code" jdbcType="VARCHAR"/>
+            <result property="departmentId" column="department_id" jdbcType="VARCHAR"/>
+            <result property="repairTypeId" column="repair_type_id" jdbcType="INTEGER"/>
+            <result property="personMainLiableId" column="person_main_liable_id" jdbcType="VARCHAR"/>
+            <result property="personMainLiableName" column="person_main_liable_name" jdbcType="VARCHAR"/>
+            <result property="personProfessionLiableId" column="person_profession_liable_id" jdbcType="VARCHAR"/>
+            <result property="personProfessionLiableName" column="person_profession_liable_name" jdbcType="VARCHAR"/>
+            <result property="equipmentNumber" column="equipment_number" jdbcType="VARCHAR"/>
+            <result property="equipmentName" column="equipment_name" jdbcType="VARCHAR"/>
+            <result property="planStartDate" column="plan_start_date" jdbcType="DATE"/>
+            <result property="planEndDate" column="plan_end_date" jdbcType="DATE"/>
+            <result property="realStartDate" column="real_start_date" jdbcType="DATE"/>
+            <result property="realEndDate" column="real_end_date" jdbcType="DATE"/>
+            <result property="planState" column="plan_state" jdbcType="SMALLINT"/>
+            <result property="repairContent" column="repair_content" jdbcType="VARCHAR"/>
+            <result property="isAffectOutput" column="is_affect_output" jdbcType="SMALLINT"/>
+            <result property="completeUserId" column="complete_user_id" jdbcType="VARCHAR"/>
+            <result property="completeUserName" column="complete_user_name" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="remindDays" column="remind_days" jdbcType="INTEGER"/>
+            <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+            <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyUserId" column="modify_user_id" jdbcType="VARCHAR"/>
+            <result property="modifyUserName" column="modify_user_name" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,plan_code,department_id,repair_type_id,
+        person_main_liable_id,person_main_liable_name,person_profession_liable_id,
+        person_profession_liable_name,equipment_number,equipment_name,
+        plan_start_date,plan_end_date,real_start_date,
+        real_end_date,plan_state,repair_content,
+        is_affect_output,complete_user_id,complete_user_name,
+        remark,remind_days,create_user_id,
+        create_user_name,create_time,modify_user_id,
+        modify_user_name,modify_time
+    </sql>
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionplanrepair.PageProductionPlanRepairDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.plan_code,
+            a.department_id,
+            a.repair_type_id,
+            a.person_main_liable_id,
+            a.person_main_liable_name,
+            a.person_profession_liable_id,
+            a.person_profession_liable_name,
+            a.equipment_number,
+            a.equipment_name,
+            case when ISNULL(a.plan_start_date) then '' else DATE_FORMAT(a.plan_start_date,'%Y-%m-%d') end as plan_start_date,
+            case when ISNULL(a.plan_end_date) then '' else DATE_FORMAT(a.plan_end_date,'%Y-%m-%d') end as plan_end_date,
+            case when ISNULL(a.real_start_date) then '' else DATE_FORMAT(a.real_start_date,'%Y-%m-%d') end as real_start_date,
+            case when ISNULL(a.real_end_date) then '' else DATE_FORMAT(a.real_end_date,'%Y-%m-%d') end as real_end_date,
+            case a.plan_state when 0 then '未完成' when 1 then '已完成' else '未知' end as plan_state,
+            a.repair_content,
+            a.is_affect_output,
+            a.complete_user_id,
+            a.complete_user_name,
+            a.remark,
+            a.remind_days,
+            a.create_user_id,
+            a.create_user_name,
+            DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') as modify_time,
+            b.organization_name
+        from product_oi_plan_repair a
+        INNER JOIN t_humanresource_organization b ON a.department_id = b.id
+        where (#{condition.departmentId} = '' or a.department_id = #{condition.departmentId})
+        and (#{condition.equipmentNumber} = '' or a.equipment_number = #{condition.equipmentNumber})
+        and (#{condition.startDate} = '' or a.plan_start_date &gt;= case when #{condition.startDate} = '' then null else #{condition.startDate} end)
+        and (#{condition.endDate} = '' or a.plan_start_date &lt;= case when #{condition.endDate} = '' then null else #{condition.endDate} end)
+        and (#{condition.repairContent} = '' or a.repair_content like concat('%',#{condition.repairContent},'%'))
+        and (#{condition.planState} = -1 or a.plan_state = #{condition.planState})
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>

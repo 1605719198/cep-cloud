@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionOutputPerformanceTemperatureMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionOutputPerformanceTemperature">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="measureTime" column="measure_time" jdbcType="TIMESTAMP"/>
+            <result property="shiftName" column="shift_name" jdbcType="VARCHAR"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="cokeOvenNumber" column="coke_oven_number" jdbcType="INTEGER"/>
+            <result property="measureType" column="measure_type" jdbcType="SMALLINT"/>
+            <result property="standardTemp" column="standard_temp" jdbcType="DECIMAL"/>
+            <result property="high" column="high" jdbcType="DECIMAL"/>
+            <result property="low" column="low" jdbcType="DECIMAL"/>
+            <result property="maximumTemp" column="maximum_temp" jdbcType="DECIMAL"/>
+            <result property="minimumTemp" column="minimum_temp" jdbcType="DECIMAL"/>
+            <result property="averageTemp" column="average_temp" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,measure_time,shift_name,
+        class_name,coke_oven_number,measure_type,
+        standard_temp,high,low,
+        maximum_temp,minimum_temp,average_temp
+
+    </sql>
+
+    <select id="getProductionOutputPerformanceTemperaturePageData" parameterType="com.jlkj.product.oi.dto.productionoutputperformancetemperature.PageProductionOutputPerformanceTemperatureDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformancetemperature.PageProductionOutputPerformanceTemperatureVO">
+        select
+            case when ISNULL(a.measure_time) then '' else DATE_FORMAT(a.measure_time,'%Y-%m-%d %H:%i:%s') end as measure_time,
+            a.shift_name,
+            a.class_name,
+            a.coke_oven_number,
+            a.measure_type,
+            a.standard_temp,
+            a.high,
+            a.low,
+            a.maximum_temp,
+            a.minimum_temp,
+            a.average_temp
+        from product_oi_output_performance_temperature a
+        where 1=1
+        and (#{condition.startTime} = '' or a.measure_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
+        and (#{condition.endTime} = '' or a.measure_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        and (#{condition.shiftName} = '' or a.shift_name like concat(#{condition.shiftName},'%'))
+        and (#{condition.className} = '' or a.class_name like concat(#{condition.className},'%'))
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

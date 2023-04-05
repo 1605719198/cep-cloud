@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionHandoverStockVerifyMapper">
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionHandoverStockVerify.PageProductionHandoverStockVerifyDTO" resultType="java.util.Map">
+        select days.date          as date,
+        ifnull(bn1, 0.00)  as bn1,
+        ifnull(bn2, 0.00)  as bn2,
+        ifnull(bn3, 0.00)  as bn3,
+        ifnull(bn4, 0.00)  as bn4,
+        ifnull(bn5, 0.00)  as bn5,
+        ifnull(bn6, 0.00)  as bn6,
+        ifnull(bn7, 0.00)  as bn7,
+        ifnull(bn8, 0.00)  as bn8,
+        ifnull(bn9, 0.00)  as bn9,
+        ifnull(bn10, 0.00) as bn10,
+        ifnull(bn11, 0.00) as bn11,
+        ifnull(bn12, 0.00) as bn12,
+        ifnull(bn13, 0.00) as bn13,
+        ifnull(bn14, 0.00) as bn14
+        from (
+        select DATE_FORMAT(date_add(#{condition.startTime}, interval xx DAY), '%Y-%m-%d') as date
+        from (
+        SELECT @row := @row + 1 as xx
+        FROM (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t,
+        (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t2,
+        (SELECT @row := -1) r
+        ) se
+        where date_add(#{condition.startTime}, interval xx DAY) <![CDATA[ <= ]]> #{condition.endTime}
+        ) days
+        left join (
+        select date,
+        sum(case bn when 1 then weight else 0.00 end)  as bn1,
+        sum(case bn when 2 then weight else 0.00 end)  as bn2,
+        sum(case bn when 3 then weight else 0.00 end)  as bn3,
+        sum(case bn when 4 then weight else 0.00 end)  as bn4,
+        sum(case bn when 5 then weight else 0.00 end)  as bn5,
+        sum(case bn when 6 then weight else 0.00 end)  as bn6,
+        sum(case bn when 7 then weight else 0.00 end)  as bn7,
+        sum(case bn when 8 then weight else 0.00 end)  as bn8,
+        sum(case bn when 9 then weight else 0.00 end)  as bn9,
+        sum(case bn when 10 then weight else 0.00 end) as bn10,
+        sum(case bn when 11 then weight else 0.00 end) as bn11,
+        sum(case bn when 12 then weight else 0.00 end) as bn12,
+        sum(case bn when 13 then weight else 0.00 end) as bn13,
+        sum(case bn when 14 then weight else 0.00 end) as bn14
+        from (
+        select ta.bn as bn, ta.date as date, ta.weight - tb.weight as weight
+        from (
+        select a.bn,
+        sum(ifnull(a.coke_weight, 0.00))       as weight,
+        date_format(a.create_time, '%Y-%m-%d') as date
+        from (
+        select *
+        from product_oi_conveying_coal_record a
+        right join (
+        select 1 as bn
+        union
+        select 2 as bn
+        union
+        select 3 as bn
+        union
+        select 4 as bn
+        union
+        select 5 as bn
+        union
+        select 6 as bn
+        union
+        select 7 as bn
+        union
+        select 8 as bn
+        union
+        select 9 as bn
+        union
+        select 10 as bn
+        ) bna on bna.bn = a.coke_warehouse_number and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{condition.startTime} and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> #{condition.endTime}
+        ) a
+        group by a.bn, date_format(a.create_time, '%Y-%m-%d')
+        order by a.bn asc
+        ) ta
+        inner join
+        (
+        select a.bn,
+        sum(ifnull(a.material_weight, 0.00))   as weight,
+        date_format(a.create_time, '%Y-%m-%d') as date
+        from (
+        select *
+        from product_oi_configure_coal_species_performance_detail a
+        right join (
+        select 1 as bn
+        union
+        select 2 as bn
+        union
+        select 3 as bn
+        union
+        select 4 as bn
+        union
+        select 5 as bn
+        union
+        select 6 as bn
+        union
+        select 7 as bn
+        union
+        select 8 as bn
+        union
+        select 9 as bn
+        union
+        select 10 as bn
+        ) bna on bna.bn = a.bunker_number and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{condition.startTime} and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> #{condition.endTime}
+        ) a
+        group by a.bn, date_format(a.create_time, '%Y-%m-%d')
+        order by a.bn asc
+        ) tb on ta.bn = tb.bn
+        union all
+        select case ta.bn when 1 then 11 when 2 then 12 when 3 then 13 when 4 then 14 end as bn,
+        ta.date                                                                    as date,
+        ifnull(ta.weight - tb.weight, 0.00)                                        as weight
+        from (
+        select a.bn,
+        sum(ifnull(a.material_weight, 0.00))   as weight,
+        date_format(a.create_time, '%Y-%m-%d') as date
+        from (
+        select *
+        from product_oi_configure_coal_species_performance_detail a
+        right join (
+        select 1 as bn
+        union
+        select 2 as bn
+        union
+        select 3 as bn
+        union
+        select 4 as bn
+        ) bna on bna.bn = a.coal_tower_number and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{condition.startTime} and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> #{condition.endTime}
+        ) a
+        group by a.bn, date_format(a.create_time, '%Y-%m-%d')
+        order by a.bn asc
+        ) ta
+        left join
+        (
+        select a.bn,
+        sum(ifnull(a.loading_coal, 0.00))      as weight,
+        date_format(a.create_time, '%Y-%m-%d') as date
+        from (
+        select *
+        from product_oi_output_performance_manual_coal a
+        right join (
+        select 1 as bn
+        union
+        select 2 as bn
+        union
+        select 3 as bn
+        union
+        select 4 as bn
+        ) bna on bna.bn = a.coal_tower_number and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{condition.startTime} and
+        date_format(a.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> #{condition.endTime}
+        ) a
+        group by a.bn, date_format(a.create_time, '%Y-%m-%d')
+        order by a.bn asc
+        ) tb on ta.bn = tb.bn and ta.date = tb.date
+        ) tt
+        where date is not null
+        group by date
+        ) tb on days.date = tb.date
+    </select>
+</mapper>

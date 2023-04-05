@@ -178,8 +178,8 @@ export default {
       }).then(() => {
         deleteEnergyInformationConfiguration({
           id: row.id,
-          delete_user_id: this.userInfo.userId,
-          delete_user_name: this.userInfo.userName,
+          delete_user_id: this.$store.state.user.userInfo.userName,
+          delete_user_name: this.$store.state.user.userInfo.nickName,
         }).then(res => {
           this.onLoad();
           this.$message({ type: 'success', message: res.msg });
