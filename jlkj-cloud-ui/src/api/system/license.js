@@ -8,4 +8,11 @@ export function getServerInfos(query) {
     params: query
   })
 }
-
+// 生成License 授权信息
+export function generateLicense(data) {
+  return request({
+    url: '/system/license/generateLicense',
+    method: 'post',
+    data: data
+  })
+}

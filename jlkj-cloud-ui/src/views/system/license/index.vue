@@ -132,7 +132,7 @@
           plain
           icon="el-icon-printer"
           size="small"
-          @click="getInfos"
+          @click="generateLicense"
           v-hasPermi="['system:license:create']"
         >生成授权License
         </el-button>
@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import {getServerInfos} from "@/api/system/license";
+import {getServerInfos,generateLicense} from "@/api/system/license";
 
 export default {
   name: "License",
@@ -166,7 +166,7 @@ export default {
     this.getInfos();
   },
   methods: {
-    /** 查询字典类型列表 */
+    /** 查询设备信息 */
     getInfos() {
       this.loading = true;
       getServerInfos().then(response => {
@@ -180,18 +180,27 @@ export default {
         }
       );
     },
+    //复制授权信息码
     doCopy() {
       this.$copyText(this.infos.jsonData).then(
         (e) => {
-          this.$message.success("内容已复制到剪切板");
-          console.log(e);
+          this.$modal.msgSuccess("内容已复制到剪切板");
         },
         (e) => {
-          this.$message.error("抱歉，复制失败！");
+          this.$modal.msgError("抱歉，复制失败！");
         })
     },
     select(){
+      this.$set(this.infos,'isNoTimeLimit',this.isShow == true ? 'Y' : 'N');
+      this.infos.jsonData = "";
+      this.infos.jsonData = JSON.stringify(this.infos);
       this.isShow = !this.isShow;
+    },
+    // 生成授权
+    generateLicense(){
+      generateLicense(this.infos.jsonData).then(response =>{
+        this.$modal.msgSuccess("授权成功");
+      })
     }
   }
 };

@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +77,7 @@ public class LicenseCreatorController extends BaseController {
      *              "mainBoardSerial":"L1HF65E00X9"}}
      * @return java.util.Map<java.lang.String, java.lang.Object>
      */
-    @RequestMapping(value = "/generateLicense", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/generateLicense", method = RequestMethod.POST,  produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public AjaxResult generateLicense(@RequestBody LicenseCreatorParam param) {
         Map<String, Object> resultMap = new HashMap<>(2);
 
