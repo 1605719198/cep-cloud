@@ -109,4 +109,5 @@ public class WindowsServerInfos extends AbstractServerInfos {
         scanner.close();
         return serialNumber;
     }
+
 }

@@ -42,9 +42,26 @@ public class LicenseCheckModel implements Serializable {
     private String cpuSerial;
     /**
      * 可被允许的主板序列号
+     *
      * @author 111191
      * @Date 上午 11:02:29 2023年4月2日, 0002
      * @param null
      */
     private String mainBoardSerial;
+    /**
+     * 服务器操作系统类型 （windows\linux\mac os)
+     *
+     * @author 111191
+     * @Date 上午 10:03:06 2023年4月4日, 0004
+     * @param null
+     */
+    private String osName;
+    /**
+     * 机器码
+     *
+     * @author 111191
+     * @Date 下午 03:38:19 2023年4月4日, 0004
+     * @param null
+     */
+    private String machineCode;
 }
