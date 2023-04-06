@@ -47,7 +47,7 @@ public class PdfUtil {
      * @param template 模板名称
      * @param map      填充数据
      */
-    @SneakyThrows
+    @SneakyThrows(Exception.class)
     public static void exportStreamPdf(HttpServletResponse response, String template, Map<String, Object> map) {
         String jasperPath = pdfTemplatesFileUrl +  template + ".jasper";
         //填充数据---使用JavaBean数据源方式填充
@@ -63,7 +63,7 @@ public class PdfUtil {
      * @param template 模板名称
      * @param map      填充数据
      */
-    @SneakyThrows
+    @SneakyThrows(Exception.class)
     public static void exportDownloadPdf(HttpServletResponse response, String template, Map<String, Object> map, String fileName) {
         String jasperPath = pdfTemplatesFileUrl +  template + ".jasper";
         //填充数据---使用JavaBean数据源方式填充
