@@ -2,8 +2,6 @@ package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -212,7 +210,7 @@ public class ProductionPlanConfigCokeController {
     @Log(title = "配煤计划主记录-计划编号",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionPlanConfigCokePlanNumber", method = RequestMethod.GET)
     public Object getPlanCodeData() {
-        return Result.success(productionPlanConfigCokeService.getPlanCodeData());
+        return AjaxResult.success(productionPlanConfigCokeService.getPlanCodeData());
     }
     @Operation(summary = "手动切配煤计划-配煤计划主记录",
             parameters = {

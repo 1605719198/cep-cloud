@@ -8,6 +8,7 @@ import com.jlkj.material.mr.dto.materialscoalstock.PageMaterialsCoalStockDTO;
 import com.jlkj.material.mr.domain.MaterialsCoalStock;
 import com.jlkj.material.mr.vo.materialscoalstock.ListHomeMaterialAnalysisListVO;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface MaterialsCoalStockMapper extends BaseMapper<MaterialsCoalStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, PageMaterialsCoalStockDTO condition);
+    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, @Param("condition") PageMaterialsCoalStockDTO condition);
     /**
      * 分类汇总
      * @param condition
@@ -49,7 +50,7 @@ public interface MaterialsCoalStockMapper extends BaseMapper<MaterialsCoalStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getConveyingCoalList(Page<Map<String, String>> page, PageMaterialsCoalStockDTO condition);
+    IPage<Map<String, String>> getConveyingCoalList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCoalStockDTO condition);
     /**
      * 煤场库存 - 卸煤记录 - 查询
      * @param page
@@ -57,7 +58,7 @@ public interface MaterialsCoalStockMapper extends BaseMapper<MaterialsCoalStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getHCoalUnloadingList(Page<Map<String, String>> page, PageMaterialsCoalStockDTO condition);
+    IPage<Map<String, String>> getHCoalUnloadingList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCoalStockDTO condition);
 
 
 }

@@ -67,6 +67,17 @@ public class MaterialsStorageSpaces implements Serializable {
      */
     private Date modifyTime;
 
+    /**
+     * 物料小煤种代码
+     */
+    private String materialsSmallCode;
+
+    /**
+     * 煤排
+     */
+    private Integer coalSort;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

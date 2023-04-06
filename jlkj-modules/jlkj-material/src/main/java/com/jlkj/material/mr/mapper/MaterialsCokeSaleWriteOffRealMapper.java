@@ -7,6 +7,7 @@ import com.jlkj.material.mr.dto.materialscokesalewriteoffreal.ListHomeCokeSaleWr
 import com.jlkj.material.mr.dto.materialscokesalewriteoffreal.PageMaterialsCokeSaleWriteOffRealDto;
 import com.jlkj.material.mr.domain.MaterialsCokeSaleWriteOffReal;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface MaterialsCokeSaleWriteOffRealMapper extends BaseMapper<Material
      * @return 分页列表
      */
     @MapKey("id")
-    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, PageMaterialsCokeSaleWriteOffRealDto condition);
+    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, @Param("condition") PageMaterialsCokeSaleWriteOffRealDto condition);
 
     /**
      * 焦炭外发-首页-图表

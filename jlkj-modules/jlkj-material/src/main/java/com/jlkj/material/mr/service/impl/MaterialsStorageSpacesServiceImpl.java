@@ -103,6 +103,8 @@ public class MaterialsStorageSpacesServiceImpl extends ServiceImpl<MaterialsStor
         materialsStorageSpaces.setModifyUserId(addMaterialsStorageSpacesDTO.getCreateUserId());
         materialsStorageSpaces.setModifyUserName(addMaterialsStorageSpacesDTO.getCreateUserName());
         materialsStorageSpaces.setModifyTime(new Date());
+        materialsStorageSpaces.setMaterialsSmallCode(addMaterialsStorageSpacesDTO.getMaterialsSmallCode());
+        materialsStorageSpaces.setCoalSort(addMaterialsStorageSpacesDTO.getCoalSort());
         save(materialsStorageSpaces);
         return AjaxResult.success("储位增加成功");
     }
@@ -159,6 +161,8 @@ public class MaterialsStorageSpacesServiceImpl extends ServiceImpl<MaterialsStor
                 materialsStorageSpaces.setModifyUserId(updateMaterialsStorageSpacesDTO.getModifyUserId());
                 materialsStorageSpaces.setModifyUserName(updateMaterialsStorageSpacesDTO.getModifyUserName());
                 materialsStorageSpaces.setModifyTime(new Date());
+                materialsStorageSpaces.setMaterialsSmallCode(updateMaterialsStorageSpacesDTO.getMaterialsSmallCode());
+                materialsStorageSpaces.setCoalSort(updateMaterialsStorageSpacesDTO.getCoalSort());
                 updateById(materialsStorageSpaces);
                 return AjaxResult.success("储位修改成功");
             }

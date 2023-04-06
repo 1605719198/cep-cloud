@@ -51,7 +51,7 @@
     <select id="getCokeOutStorageList" parameterType="com.jlkj.material.mr.dto.materialscokestock.PageMaterialsCokeStockDTO" resultType="java.util.Map">
         select * from (
         select '外售' as type, a.client_name, a.materials_name, vehicle_number, DATE_FORMAT(loading_time, '%Y-%m-%d') AS loading_time, net_wgt
-        from t_production_coke_factory_performance a where a.material_code = #{condition.materialsId}
+        from product_oi_coke_factory_performance a where a.material_code = #{condition.materialsId}
         UNION ALL
         SELECT '内耗' as type, vender_name,goods_name,car_no,DATE_FORMAT(pound_date, '%Y-%m-%d'),complete_pound_num
         FROM logistics_wv_trans_actual_coke WHERE compute_flag &lt; 0 and goods_no = #{condition.materialsId}

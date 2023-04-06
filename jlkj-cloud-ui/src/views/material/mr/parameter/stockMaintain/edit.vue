@@ -77,14 +77,14 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.form.modify_user_id = '123456'
-          this.form.modify_user_name = '姓名';
+          this.form.modify_user_id = this.$store.getters.userInfo.userId;
+          this.form.modify_user_name = this.$store.getters.userInfo.nickName;
           this.submitLoading = true
           // this.$emit('submitSave')
           updateSilo(this.form).then(res => {
-            if (res.data.code === "0") {
-              this.$message({ type: "success", message: res.data.msg });
-              this.$emit('submitSave', res.data.msg)
+            if (res.code == 200) {
+              this.$message({ type: "success", message: res.msg });
+              this.$emit('submitSave', res.msg)
             }
             this.submitLoading = false
           }, error => {

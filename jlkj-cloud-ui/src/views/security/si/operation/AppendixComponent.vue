@@ -145,7 +145,7 @@ export default {
     }
   },
   created() {
-    this.action = this.GLOBAL.fileUrl + '/file/upload';
+    this.action = process.env.VUE_APP_BASE_API + "/file/file/upload", // 上传的图片服务器地址
     this.download = this.GLOBAL.fileUrl + '/file/download';
   }
 }

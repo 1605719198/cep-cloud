@@ -9,6 +9,7 @@ import com.jlkj.material.mr.dto.materialscode.PageMaterialsCodeDTO;
 import com.jlkj.material.mr.domain.MaterialsCode;
 import com.jlkj.material.mr.vo.materialscode.ListMaterialsCodeByTypeVO;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface MaterialsCodeMapper extends BaseMapper<MaterialsCode> {
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getPageData(Page<?> page, PageMaterialsCodeDTO condition);
+    IPage<Map<String, String>> getPageData(Page<?> page, @Param("condition") PageMaterialsCodeDTO condition);
 
     /**
      * 查询-列表-物料代码-下拉

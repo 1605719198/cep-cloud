@@ -30,5 +30,9 @@ public class ListMaterialsSiloAreaDTO {
     @JsonProperty("show_zero")
     private Integer showZero;
 
+
+    @JsonProperty("coal_sort")
+    private Integer coalSort;
+
 }
 

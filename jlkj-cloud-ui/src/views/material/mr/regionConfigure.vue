@@ -5,7 +5,9 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-form-item label="煤场长度">
-            <el-input v-model="form.silo_length" disabled/>
+            <el-input v-model="form.silo_length" disabled>
+              <template slot="append">米</template>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -102,8 +104,7 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import {listMaterialsBoxM, listMaterialsBoxByCataId} from "@/api/material/mr/parameter/materialCode"
+  import {listMaterialsBoxM} from "@/api/material/mr/parameter/materialCode"
   import {
     listMaterialsSiloArea,
     getPageMaterialsSiloAreaHistory,
@@ -114,7 +115,7 @@
 
   export default {
     name: "regionConfigure",
-    props: ['siloId', 'siloLength'],
+    props: ['siloId', 'siloLength', 'coalSort'],
     data() {
       return {
         isSiloArea: true,
@@ -126,9 +127,7 @@
         },
         options: [], materials: {},
         list: [],
-
         historyOpen: false, history_list: [],
-
         submitLoading: false,
       }
     },
@@ -151,7 +150,7 @@
         this.options = options;
 
 
-        listMaterialsSiloArea({silo_id: this.form.silo_id, show_zero: 1}).then(res => {
+        listMaterialsSiloArea({silo_id: that.form.silo_id, show_zero: 1, coal_sort: that.coalSort}).then(res => {
           let data = res.data;
           let list = [];
           data.forEach(function (value, index) {
@@ -171,7 +170,7 @@
               options: option,
             });
           });
-          listStorageSpacesBySiloId({silo_id: this.form.silo_id}).then(res2 => {
+          listStorageSpacesBySiloId({silo_id: that.form.silo_id, coal_sort: that.coalSort}).then(res2 => {
             let data = res.data;
             res2.data.forEach(function (value, index) {
               if (!data.some(function (x) {
@@ -274,8 +273,8 @@
           this.submitLoading = true;
           saveMaterialsSiloArea({
             silo_id: this.form.silo_id,
-            create_user_id: '123456',
-            create_user_name: '姓名',
+            create_user_id: this.$store.getters.userInfo.userId,
+            create_user_name: this.$store.getters.userInfo.nickName,
             storage_spaces: list
           }).then(res => {
             if (res.data.code === "0") {
@@ -318,7 +317,7 @@
           deleteMaterialsSiloArea({
             id: row.id,
             delete_user_id: this.$store.getters.userInfo.userId,
-            delete_user_name: '姓名',
+            delete_user_name: this.$store.getters.userInfo.nickName,
           }).then(res => {
             if (res.data.code === "0") {
               this.$message({

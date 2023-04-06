@@ -1,8 +1,7 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -64,10 +63,10 @@ public class ProductionRealOutputDateController {
         log.info("params => " + pageProductionRealOutputDateDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionRealOutputDateDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionRealOutputDateDTO);
-        return PageResult.success(productionRealOutputDateService.getPageData(pageProductionRealOutputDateDTO));
+        return AjaxResult.success(productionRealOutputDateService.getPageData(pageProductionRealOutputDateDTO));
     }
 
     @Operation(summary = "生产管理-指标跟踪-图表-指标项(日实际)",
@@ -88,7 +87,7 @@ public class ProductionRealOutputDateController {
         log.info("params => " + listProductionRealOutputDateTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(listProductionRealOutputDateTargetItemDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionRealOutputDateTargetItemDTO);
         return productionRealOutputDateService.getProductionRealOutputDateTargetItemChartData(listProductionRealOutputDateTargetItemDTO);

@@ -1,5 +1,6 @@
 package com.jlkj.material.mr.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -58,13 +59,13 @@ import static com.jlkj.common.core.constant.SysLogConstant.SYS_LOG_PARAM_KEY;
 @RequestMapping("/stock/materialsCoalStock")
 @Slf4j
 public class MaterialsCoalStockController {
-    @Autowired
+    @Resource
     HttpServletRequest httpServletRequest;
-    @Autowired
+    @Resource
     MaterialsCoalStockService materialsCoalStockService;
     @Resource
     private MaterialsCoalDayStockService materialsCoalDayStockService;
-    @Autowired
+    @Resource
     MaterialsCoalStockHistoryService materialsCoalStockHistoryService;
     @Resource
     private ChangeLogService changeLogService;
@@ -147,7 +148,7 @@ public class MaterialsCoalStockController {
             BigDecimal inventory =adjustMaterialsCoalStockDTO.getInventory().subtract(materialsCoalStock.getInventory());
 
             MaterialsCoalStockHistory materialsCoalStockHistory = new MaterialsCoalStockHistory();
-            materialsCoalStockHistory.setId(UUID.randomUUID().toString());
+            materialsCoalStockHistory.setId(IdUtil.randomUUID());
             materialsCoalStockHistory.setCoalStockId(adjustMaterialsCoalStockDTO.getId());
             materialsCoalStockHistory.setBeforeInventory(materialsCoalStock.getInventory());
             materialsCoalStockHistory.setAfterInventory(adjustMaterialsCoalStockDTO.getInventory());
@@ -186,7 +187,7 @@ public class MaterialsCoalStockController {
                 materialsCoalDayStockService.updateById(coal);
             }else{
                 coal = new MaterialsCoalDayStock();
-                coal.setId(UUID.randomUUID().toString());
+                coal.setId(IdUtil.randomUUID());
                 coal.setCategoryId(materialsCoalStock.getCategoryId());
                 coal.setCategoryName(materialsCoalStock.getCategoryName());
                 coal.setMaterialsId(materialsCoalStock.getMaterialsId());
@@ -383,14 +384,15 @@ public class MaterialsCoalStockController {
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
 
         QueryWrapper<MaterialsCoalStock> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MaterialsCoalStock::getMaterialsId, dto.getMaterialId());
+        queryWrapper.lambda().eq(MaterialsCoalStock::getMaterialsSmallCode, dto.getMaterialsSmallCode());
         List<Map<String, Object>> list = materialsCoalStockService.listMaps(queryWrapper);
         if (list.size() > 0) {
-            return AjaxResult.error("物料代码不可重复，请重新输入！");
+            return AjaxResult.error("小煤种不可重复，请重新输入！");
         } else {
             String content = "新增期初：" +
                     "[物料类别：" + dto.getCategoryName() + "]" +
                     "[物料代码：" + dto.getMaterialName() + "]" +
+                    "[小煤种：" + dto.getMaterialsSmallName() + "]" +
                     "[储位名称：" + dto.getStorageSpaceName() + "]" +
                     "[库存量：" + dto.getInventory().stripTrailingZeros().toPlainString() + "]";
             InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
@@ -402,11 +404,13 @@ public class MaterialsCoalStockController {
             changeLogService.insertChangeLogData(insertChangeLogDTO);
 
             MaterialsCoalStock materialsCoalStock = new MaterialsCoalStock();
-            materialsCoalStock.setId(UUID.randomUUID().toString());
+            materialsCoalStock.setId(IdUtil.randomUUID());
             materialsCoalStock.setCategoryId(dto.getCategoryId());
             materialsCoalStock.setCategoryName(dto.getCategoryName());
             materialsCoalStock.setMaterialsId(dto.getMaterialId());
             materialsCoalStock.setMaterialsName(dto.getMaterialName());
+            materialsCoalStock.setMaterialsSmallCode(dto.getMaterialsSmallCode());
+            materialsCoalStock.setMaterialsSmallName(dto.getMaterialsSmallName());
             materialsCoalStock.setStorageSpacesId(dto.getStorageSpaceId());
             materialsCoalStock.setStorageSpacesName(dto.getStorageSpaceName());
             materialsCoalStock.setInventory(dto.getInventory());

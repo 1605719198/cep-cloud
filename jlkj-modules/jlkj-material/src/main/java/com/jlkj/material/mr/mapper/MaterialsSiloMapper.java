@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.material.mr.dto.materialssilo.PageMaterialsSiloDTO;
 import com.jlkj.material.mr.domain.MaterialsSilo;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public interface MaterialsSiloMapper extends BaseMapper<MaterialsSilo> {
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getPageData(Page<?> page, PageMaterialsSiloDTO condition);
+    IPage<Map<String, String>> getPageData(Page<?> page,@Param("condition")  PageMaterialsSiloDTO condition);
 
     /**
      * 查询-列表-料仓-下拉

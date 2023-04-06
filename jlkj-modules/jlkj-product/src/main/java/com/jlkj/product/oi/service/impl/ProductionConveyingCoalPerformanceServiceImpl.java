@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.resp.PageResult;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionConveyingCoalPerformance;
 import com.jlkj.product.oi.dto.productionconveyingcoalperformance.GetProductionConveyingCoalPerformanceDTO;
 import com.jlkj.product.oi.mapper.ProductionConveyingCoalPerformanceMapper;
@@ -37,7 +37,7 @@ public class ProductionConveyingCoalPerformanceServiceImpl extends ServiceImpl<P
                 .eq(!StrUtil.isEmpty(dto.getClassName()), ProductionConveyingCoalPerformance::getClassName, dto.getClassName());
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         IPage<Map<String, Object>> list = pageMaps(page, queryWrapper);
-        return PageResult.success(list);
+        return AjaxResult.success(list);
     }
 }
 

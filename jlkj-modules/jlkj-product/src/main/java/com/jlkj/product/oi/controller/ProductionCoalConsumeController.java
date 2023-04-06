@@ -1,7 +1,6 @@
 package com.jlkj.product.oi.controller;
 
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
@@ -66,10 +65,10 @@ public class ProductionCoalConsumeController {
         log.info("params => " + pageProductionCoalConsumeDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCoalConsumeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionCoalConsumeDTO);
-        return PageResult.success(productionCoalConsumeService.getProductionCoalConsumePageData(pageProductionCoalConsumeDTO));
+        return AjaxResult.success(productionCoalConsumeService.getProductionCoalConsumePageData(pageProductionCoalConsumeDTO));
     }
 
     @Operation(summary = "炼焦煤消耗维护-新增",

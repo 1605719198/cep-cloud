@@ -1,6 +1,6 @@
 package com.jlkj.product.oi.controller;
 
-import com.jlkj.common.core.web.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.EnergyCode;
@@ -57,6 +57,6 @@ public class ProductionEnergyCodeController {
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
 
         List<EnergyCode> list = energyCodeService.lambdaQuery().orderByAsc(EnergyCode::getEngyType).list();
-        return Result.success(list);
+        return AjaxResult.success(list);
     }
 }
