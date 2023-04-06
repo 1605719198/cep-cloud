@@ -10,7 +10,7 @@ import com.jlkj.human.hm.domain.PersonnelOccupation;
 import com.jlkj.human.hm.dto.PersonnelOccupationDTO;
 import com.jlkj.human.hm.service.IPersonnelOccupationService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/occupation")
 public class PersonnelOccupationController {
 
-    @Autowired
-    private IPersonnelOccupationService iPersonnelOccupationService;
+    private final IPersonnelOccupationService iPersonnelOccupationService;
 
     /**
      * 新增职业资格信息

@@ -10,7 +10,7 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.Encourage;
 import com.jlkj.human.hm.service.IEncourageService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-27 13:42
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/employeeEncourage")
 public class EmployeeEncourageController extends BaseController {
     
-    @Autowired
-    IEncourageService iEncourageService;
+    private final IEncourageService iEncourageService;
 
     /**
      * 查询员工奖惩信息列表

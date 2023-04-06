@@ -10,7 +10,7 @@ import com.jlkj.human.hm.domain.PersonnelEducation;
 import com.jlkj.human.hm.dto.PersonnelEducationDTO;
 import com.jlkj.human.hm.service.IPersonnelEducationService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/education")
 public class PersonnelEducationController {
 
-    @Autowired
-    private IPersonnelEducationService personnelEducationService;
+    private final IPersonnelEducationService personnelEducationService;
 
     /**
      * 新增教育经历信息

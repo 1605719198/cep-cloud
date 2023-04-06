@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.OrganizationType;
 import com.jlkj.human.hm.service.IOrganizationTypeService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-19
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/organization/type")
 public class OrganizationTypeController {
-    @Autowired
-    private IOrganizationTypeService humanresourceOrganizationTypeService;
+    private final IOrganizationTypeService humanresourceOrganizationTypeService;
     /**
      * 新增机构类别数据
      */

@@ -11,6 +11,7 @@ import com.jlkj.human.hm.domain.PersonnelTrain;
 import com.jlkj.human.hm.dto.PersonnelTrainDTO;
 import com.jlkj.human.hm.service.IPersonnelTrainService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/cultivate")
 public class PersonnelTrainController {
 
-    @Autowired
-    private IPersonnelTrainService iPersonnelTrainService;
+    private final IPersonnelTrainService iPersonnelTrainService;
 
     /**
      * 新增培训经历信息

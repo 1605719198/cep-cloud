@@ -9,6 +9,7 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.OrganizationCategory;
 import com.jlkj.human.hm.service.IOrganizationCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-19
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/organization/category")
 public class OrganizationCategoryController {
-    @Autowired
-    private IOrganizationCategoryService humanresourceOrganizationCategoryService;
+    private final IOrganizationCategoryService humanresourceOrganizationCategoryService;
     /**
      * 新增机构层级数据
      */
