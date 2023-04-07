@@ -290,11 +290,12 @@ export default {
             updateManufacturerBasicSo(this.soForm).then(response => {
               this.$modal.msgSuccess("客户关系修改成功");
               this.statusTabs=true
+              this.$emit('getLists',this.statusTabs);
             });
           }
 
       });
-      this.$emit('getLists',this.statusTabs);
+
     },
     initSo(manufacturerId, manufacturerChineseName,taxNo) {
       this.visible = true

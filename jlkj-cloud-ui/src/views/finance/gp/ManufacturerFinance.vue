@@ -253,6 +253,7 @@ export default {
   dicts: ['gp_main_areaid','gp_customer_payway'],
   data(){
     return{
+      statusTabs:false,
       manufacturerId:"",
       manufacturerChineseName:"",
       // 显示搜索条件
@@ -389,11 +390,12 @@ export default {
           this.fcForm.manufacturerId = this.manufacturerId
             updateManufacturerBasicFc(this.fcForm).then(response => {
               this.$modal.msgSuccess("报支关系修改成功");
-              this.statusTabs=true
+              this.statusTabsFc=true
+
+              this.$emit('getLists',this.statusTabsFc);
             });
           }
       });
-      this.$emit('getLists',this.statusTabs);
     },
     initFc(manufacturerId,manufacturerChineseName) {
       this.manufacturerChineseName=manufacturerChineseName;

@@ -43,6 +43,7 @@
         </el-form-item>-->
         <el-form-item label="发票地址:"  prop="billAddress">
           <el-input v-model="mpForm.billAddress"   style="width: 757px" ></el-input>
+          <el-button  icon="el-icon-download" @click="billAddressRenewal(mpForm.billAddress)"></el-button>
         </el-form-item>
       </el-col>
       <el-col :span="24">
@@ -194,6 +195,7 @@ export default {
   dicts: ['gp_purchase_vendortype',],
   data(){
     return{
+      billAddressName:'',
       manufacturerId:"",
       manufacturerChineseName:"",
       taxNo:"",
@@ -251,7 +253,7 @@ export default {
       {max: 10, message: '最大长度为10个字符', trigger: 'blur'}],
     billAddress: [
       { pattern:/^[\u0391-\uFFE5]+$/, message: "请输入正确的发票地址(中文)", trigger: "blur"},
-      {max: 10, message: '最大长度为10个字符', trigger: 'blur'}],
+      {max: 101, message: '最大长度为101个字符', trigger: 'blur'}],
     contactZip: [
       { pattern:/^[0-9]*$/, message: "请输入正确的联络地址(区号)", trigger: "blur"},
       {max: 10, message: '最大长度为10个字符', trigger: 'blur'}],
@@ -282,6 +284,10 @@ export default {
 
   },
   methods: {
+    billAddressRenewal(billAddress){
+
+      this.mpForm.contactAddr = billAddress
+    },
     // 取消按钮
     cancel() {
       this.$emit('getLists');
@@ -298,17 +304,19 @@ export default {
             updateManufacturerBasicsMp(this.mpForm).then(response => {
               this.$modal.msgSuccess("采购关系修改成功");
               this.statusTabs=true
+              this.$emit('getLists',this.statusTabs);
             });
           }
 
       });
-      this.$emit('getLists',this.statusTabs);
+
     },
 
-    initMP(manufacturerId,manufacturerChineseName,taxNo) {
+    initMP(manufacturerId,manufacturerChineseName,taxNo,billAddress) {
       this.manufacturerChineseName=manufacturerChineseName;
       this.manufacturerId=manufacturerId;
       this.taxNo  = taxNo
+      this.billAddress = billAddress
       this.visible = true
       queryMp(manufacturerId).then(response => {
         if (response.data!=null){
@@ -350,12 +358,17 @@ export default {
             productDescp:'',
             badHistory:'',
             memo:'',
-
+            billAddress:''
           }
         }
         if ( response.data.financeGpPurchaseLinkList!=null){
           this.tfinanceGpPurchaseLinkList = response.data.financeGpPurchaseLinkList
         }
+        console.log(this.mpForm.billAddress);
+        if (this.mpForm.billAddress == ""){
+          this.mpForm.billAddress =  this.billAddress
+        }
+
 
       });
 

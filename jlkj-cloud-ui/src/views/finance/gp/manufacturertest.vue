@@ -4,7 +4,7 @@
       class="customDialogStyle"
       :visible.sync="visible"
       custom-class="saveAsDialog">
-      <el-tabs tab-position="left" >
+      <el-tabs tab-position="left"  @tab-click="handleClick">
         <el-tab-pane label="基础资料">
           <el-form :rules="rules" :model="dataForm" ref="dataForm" size="small" :inline="true" v-show="showSearch"
                    label-width="144px"
@@ -103,8 +103,8 @@
               </el-col>
 
               <el-col :span="12">
-                <el-form-item label="原中文名称:" prop="originalChineseName">
-                  <el-input v-model="dataForm.originalChineseName" :disabled="currencyDisabled"
+                <el-form-item label="原中文名称:" prop="originalManufacturerChineseName">
+                  <el-input v-model="dataForm.originalManufacturerChineseName" :disabled="true"
                             ></el-input>
                 </el-form-item>
               </el-col>
@@ -281,8 +281,22 @@ export default {
     ManufacturerCustomer,
     ManufacturerTransport
   },
+/*  watch:{
+    'dataForm.manufacturerChineseName':{
+      handler(obj,newObj) {
+        if (newObj != null) {
+          this.originalName(newObj)
+
+        }
+;
+      },
+      deep: true//深度监听
+    },
+
+  },*/
   data() {
     return {
+      ChineseNameUpdate:'',
       //所在区码是否显示
       mainAreaIdIf:false,
       mainAreaIdIfN:false,
@@ -308,7 +322,7 @@ export default {
         mainAreaId: '',
         detailAreaId: '',
         isCentralizedPurchase: '',
-        originalChineseName: '',
+        originalManufacturerChineseName: '',
         manufacturerEnglishName: '',
         capitalCurrencyCode: '',
         turnover: '',
@@ -318,7 +332,11 @@ export default {
         web: '',
         capital:''
       },
-      statusTabs:'',
+      statusTabs:false,
+      statusTabsFc:false,
+      statusTabsMp:false,
+      statusTabsSt:false,
+      statusTabsSo:false,
       rules: {
         countryId: [
           {required: true, message: '请输入国别', trigger: 'blur'},
@@ -347,7 +365,7 @@ export default {
           { required: true, validator: validateContacts, trigger: "blur" },
           { message: '请输入中文名称', trigger: 'blur'},
           {max: 100, message: '最大长度为100个字符', trigger: 'blur'}],
-        originalChineseName: [
+        originalManufacturerChineseName: [
           { pattern:/^[\u0391-\uFFE5]+$/, message: "请输入正确的原中文名称", trigger: "blur"},
           {max: 1000, message: '最大长度为1000个字符', trigger: 'blur'}],
         manufacturerEnglishName: [
@@ -367,7 +385,8 @@ export default {
         turnoverCurrencyCode: [
           {required: true, message: '请输入营业额币别"', trigger: 'blur'},],
         billAddress: [
-          {max: 50, message: '最大长度为50个字符', trigger: 'blur'}],
+          { pattern:/^[\u0391-\uFFE5]+$/, message: "请输入正确的发票地址(中文)", trigger: "blur"},
+          {max: 100, message: '最大长度为50个字符', trigger: 'blur'}],
         billZipCode: [
           { pattern:/^[0-9]*$/, message: "请输入邮递区号", trigger: "blur"},
           {max: 10, message: '最大长度为10个字符', trigger: 'blur'}],
@@ -393,29 +412,107 @@ export default {
   },
 
   methods: {
+
     cancel() {
       this.visible = false;
       this.flagForm = {}
       this.reset()
     },
+    handleClick(tab, event) {
 
+/*      if (tab.label=="基础资料"){
+        if (this.statusTabs==false){
+          this.$message({
+            message: '基础资料未保存，请先报存基础资料',
+            type: 'warning'
+          });
+        }
+
+      }else if (tab.label=="报支关系"){
+        if (this.statusTabsFc==false){
+          this.$message({
+            message: '报支关系未保存，请先报存报支关系',
+            type: 'warning'
+          });
+        }
+        ;
+      }
+      else if (tab.label=="采购关系"){
+        if (this.statusTabsMp==false){
+          this.$message({
+            message: '采购关系未保存，请先报存采购关系',
+            type: 'warning'
+          });
+        }
+
+      }
+      else if (tab.label=="客户关系"){
+        if (this.statusTabsSo==false){
+          this.$message({
+            message: '客户关系未保存，请先报存客户关系',
+            type: 'warning'
+          });
+        }
+
+      }
+      else if (tab.label=="承运关系"){
+        if (this.statusTabsSt==false){
+          this.$message({
+            message: '承运关系未保存，请先报存承运关系',
+            type: 'warning'
+          });
+        }
+
+      }*/
+      if (tab.label=="基础资料"|| this.statusTabs==false){
+        this.$message({
+          message: '基础资料未保存，请先报存基础资料',
+          type: 'warning'
+        });
+      }else if (tab.label=="报支关系"||this.statusTabsFc==false){
+        this.$message({
+          message: '报支关系未保存，请先报存报支关系',
+          type: 'warning'
+        });
+      }
+      else if (tab.label=="采购关系"||this.statusTabsMp==false){
+        this.$message({
+          message: '采购关系未保存，请先报存采购关系',
+          type: 'warning'
+        });
+      }
+        else if (tab.label=="客户关系"||this.statusTabsSo==false){
+        this.$message({
+          message: '客户关系未保存，请先报存客户关系',
+          type: 'warning'
+        });
+      }
+      else if (tab.label=="承运关系"||this.statusTabsSt==false){
+
+        this.$message({
+          message: '承运关系未保存，请先报存承运关系',
+          type: 'warning'
+        });
+      }
+    },
 
     getQueryFc(val) {
-      this.statusTabs = val
-      this.beforeLeave()
+      this.statusTabsFc = val
+
+      // this.beforeLeave()
     },
 
     getQueryMp(val) {
-     this.statusTabs = val
-      this.beforeLeave()
+     this.statusTabsMp = val
+     // this.beforeLeave()
     },
     getQuerySo(val) {
-      this.statusTabs = val
-      this.beforeLeave()
+      this.statusTabSo = val
+     // this.beforeLeave()
     },
     getQuerySt(val) {
-      this.statusTabs = val
-      this.beforeLeave()
+      this.statusTabsSt = val
+     // this.beforeLeave()
     },
 
     // 表单重置
@@ -427,18 +524,21 @@ export default {
     submitForm(formName) {
 
       this.$refs[formName].validate(valid => {
-
+        this.dataForm.originalManufacturerChineseName = this.ChineseNameUpdate
+        console.log(this.dataForm.originalManufacturerChineseName);
         if (valid) {
           if (this.dataForm.manufacturerId != null) {
             updateManufacturerBasics(this.dataForm).then(response => {
               this.$modal.msgSuccess("基础资料修改成功");
               this.$emit('getLists');
+              this.revise(this.dataForm.manufacturerId,this.dataForm.manufacturerChineseName,this.dataForm.taxNo)
               this.statusTabs=true
             });
           } else {
             addManufacturerBasics(this.dataForm).then(response => {
               this.$modal.msgSuccess("基础资料新增成功");
               this.$emit('getLists');
+              this.revise(this.dataForm.manufacturerId,this.dataForm.manufacturerChineseName,this.dataForm.taxNo)
               this.statusTabs=true
             });
           }
@@ -471,40 +571,40 @@ export default {
       this.currencyDisabled = true
       this.mainAreaIdDisabled= true
       this.defineIf = false
-      queryRelations(id).then(response => {
-        this.relationsForm = response.data
-        this.flagForm = {}
-        this.relationsForm.map(item => {
-          if (item.relation === "FC") {
-            this.flagForm.FC = item.relation
-            this.$nextTick(() => {
-              this.$refs.queryFc.initFc(id, manufacturerChineseName)
-            })
-          } else if (item.relation === "MP") {
-            this.flagForm.MP = item.relation
-            this.$nextTick(() => {
-              this.$refs.queryMp.initMP(id, manufacturerChineseName,taxNo)
-            })
-          } else if (item.relation === "ST") {
-            this.flagForm.ST = item.relation
-            this.$nextTick(() => {
-              this.$refs.querySt.initSt(id, manufacturerChineseName)
-            })
-          } else if (item.relation === "SO") {
-            this.flagForm.SO = item.relation
-            this.$nextTick(() => {
-              this.$refs.querySo.initSo(id, manufacturerChineseName,taxNo)
-            })
-          }
-        })
-      });
       getBase1(id).then(response => {
         this.dataForm = response.data
+        queryRelations(id).then(response => {
+          this.relationsForm = response.data
+          this.flagForm = {}
+          this.relationsForm.map(item => {
+            if (item.relation === "FC") {
+              this.flagForm.FC = item.relation
+              this.$nextTick(() => {
+                this.$refs.queryFc.initFc(id, manufacturerChineseName)
+              })
+            } else if (item.relation === "MP") {
+              this.flagForm.MP = item.relation
+              this.$nextTick(() => {
+                this.$refs.queryMp.initMP(id, manufacturerChineseName,taxNo,this.dataForm.billAddress)
+              })
+            } else if (item.relation === "ST") {
+              this.flagForm.ST = item.relation
+              this.$nextTick(() => {
+                this.$refs.querySt.initSt(id, manufacturerChineseName)
+              })
+            } else if (item.relation === "SO") {
+              this.flagForm.SO = item.relation
+              this.$nextTick(() => {
+                this.$refs.querySo.initSo(id, manufacturerChineseName,taxNo)
+              })
+            }
+          })
+        });
       });
+
+
     },
     revise(id, manufacturerChineseName,taxNo) {
-      console.log(id, manufacturerChineseName, taxNo+"修改");
-
       this.visible = true
       this.mainAreaIdIf = false
       this.mainAreaIdIfN = true
@@ -512,37 +612,46 @@ export default {
       this.currencyDisabled = false
       this.mainAreaIdDisabled= true
       this.defineIf = true
-      queryRelations(id).then(response => {
-        this.relationsForm = response.data
-        this.flagForm = {}
-        this.relationsForm.map(item => {
-          if (item.relation === "FC") {
-            this.flagForm.FC = item.relation
-            this.$nextTick(() => {
-              this.$refs.queryFc.initFc(id, manufacturerChineseName)
-            })
-          } else if (item.relation === "MP") {
-            this.flagForm.MP = item.relation
-            this.$nextTick(() => {
-              this.$refs.queryMp.initMP(id, manufacturerChineseName,taxNo)
-            })
-          } else if (item.relation === "ST") {
-            this.flagForm.ST = item.relation
-            this.$nextTick(() => {
-              this.$refs.querySt.initSt(id, manufacturerChineseName)
-            })
-          } else if (item.relation === "SO") {
-            this.flagForm.SO = item.relation
-            this.$nextTick(() => {
-              this.$refs.querySo.initSo(id, manufacturerChineseName,taxNo)
-            })
-          }
-        })
-      });
+      this.statusTabs=false
+      this.statusTabsFc=false
+      this.statusTabsMp=false
+      this.statusTabsSo=false
+      this.statusTabsSt=false
       getBase1(id).then(response => {
         this.dataForm = response.data
-        console.log(this.dataForm);
+        this.ChineseNameUpdate=this.dataForm.manufacturerChineseName
+        queryRelations(id).then(response => {
+          this.relationsForm = response.data
+          this.flagForm = {}
+          this.relationsForm.map(item => {
+            if (item.relation === "FC") {
+
+              this.flagForm.FC = item.relation
+              this.$nextTick(() => {
+                this.$refs.queryFc.initFc(id, manufacturerChineseName)
+              })
+            } else if (item.relation === "MP") {
+              this.flagForm.MP = item.relation
+              this.$nextTick(() => {
+
+                this.$refs.queryMp.initMP(id, manufacturerChineseName,taxNo,this.dataForm.billAddress)
+              })
+            } else if (item.relation === "ST") {
+              this.flagForm.ST = item.relation
+              this.$nextTick(() => {
+                this.$refs.querySt.initSt(id, manufacturerChineseName)
+              })
+            } else if (item.relation === "SO") {
+              this.flagForm.SO = item.relation
+              this.$nextTick(() => {
+                this.$refs.querySo.initSo(id, manufacturerChineseName,taxNo)
+              })
+            }
+          })
+        });
       });
+
+
     },
   }
 }
