@@ -1,79 +1,130 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true"  label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
 
       <el-form-item label="厂商编码" prop="manufacturerId">
         <el-input v-model="queryParams.manufacturerId"
                   placeholder="请输入厂商编码"
                   clearable
-                  @keyup.enter.native="handleQuery" />
+                  @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="中文名称" prop="manufacturerChineseName">
         <el-input v-model="queryParams.manufacturerChineseName"
                   placeholder="请输入中文名称"
                   clearable
-                  @keyup.enter.native="handleQuery" />
+                  @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="统一编号" prop="taxNo">
         <el-input v-model="queryParams.taxNo"
                   placeholder="请输入统一编号"
                   clearable
-                  @keyup.enter.native="handleQuery" />
+                  @keyup.enter.native="handleQuery"/>
       </el-form-item>
 
       <el-form-item>
         <el-button type="primary"
                    icon="el-icon-search"
                    size="mini"
-                   v-hasPermi="['manufacturer_queryAll']"
-                   @click="handleQuery">搜索</el-button>
+                   @click="handleQuery">搜索
+        </el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >新增
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+        >修改
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+        >删除
+        </el-button>
+      </el-col>
 
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
     <el-table stripe v-loading="loading" :data="base1List" @selection-change="handleSelectionChange"
               :default-sort="{ prop: 'date', order: 'descending' }" height="67vh">
       <el-table-column type="selection"
                        width="55"
-                       align="center" />
+                       align="center"/>
       <el-table-column label="厂商编码"
                        sortable
                        align="center"
                        prop="manufacturerId"
-                       key="manufacturerId" />
+                       key="manufacturerId"/>
       <el-table-column label="中文名称"
                        sortable
                        align="center"
                        prop="manufacturerChineseName"
                        key="manufacturerChineseName"
-                       :show-overflow-tooltip='true' />
+                       :show-overflow-tooltip='true'/>
       <el-table-column label="厂商简称"
                        sortable
                        align="center"
                        prop="manufacturerShortName"
                        key="manufacturerShortName"
-                       :show-overflow-tooltip='true' />
+                       :show-overflow-tooltip='true'/>
       <el-table-column label="统一编号"
                        sortable
                        align="center"
                        prop="taxNo"
-                       key="taxNo" />
+                       key="taxNo"/>
       <el-table-column label="英文名称"
                        sortable
                        align="center"
                        prop="manufacturerEnglishName"
-                       key="manufacturerEnglishName" />
+                       key="manufacturerEnglishName"/>
       <el-table-column label="操作"
                        align="center"
                        class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-hasPermi="['manufacturer_queryOne']"
-                     icon="el-icon-info"
-                     type="text"
-                     size="mini"
-                     @click="handleUpdate(scope.row)">详情</el-button>
+<!--          <el-button
+            icon="el-icon-info"
+            type="text"
+            size="mini"
+            @click="handleDetails(scope.row)">详情
+          </el-button>-->
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+          >修改
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+          >删除
+          </el-button>
         </template>
+
       </el-table-column>
     </el-table>
 
@@ -89,20 +140,21 @@
     </pagination>
 
     <!-- 添加或修改参数配置对话框 -->
-    <add-or-update v-if="addOrUpdateVisible"
-                   ref="addOrUpdate"></add-or-update>
+    <add-or-update  v-if="addOrUpdateVisible"
+                   ref="addOrUpdate" @getLists="getListHandle"></add-or-update>
   </div>
 </template>
 
 <script>
-import { queryAll } from "@/api/finance/gp/base1";
+import {queryAll,delManufacturerBasics} from "@/api/finance/gp/base1";
 import AddOrUpdate from './manufacturertest'
+
 export default {
   name: "Base1",
   components: {
     AddOrUpdate
   },
-  data () {
+  data() {
     return {
       currentPage4: 1,
       // 遮罩层
@@ -137,26 +189,26 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
-      }
+      rules: {}
     };
   },
-  created () {
+  created() {
     this.getList();
   },
   methods: {
     // 分页数据
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.queryParams.pageSize = val
       this.getList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.queryParams.pageNum = val
       this.getList()
     },
     /** 查询厂商基本资料列表 */
-    getList () {
+    getList() {
       queryAll(this.queryParams).then(response => {
+
         this.loading = false;
         if (response == null) {
           this.base1List = []
@@ -164,20 +216,20 @@ export default {
           this.costAccount = true
           this.loading = false;
         } else {
-          this.base1List = response.list;
-          this.total = response.total;
+          this.base1List = response.data.list;
+          this.total = response.data.total;
           this.loading = false;
         }
 
       });
     },
     // 取消按钮
-    cancel () {
+    cancel() {
       this.open = false;
       this.reset();
     },
     // 表单重置
-    reset () {
+    reset() {
       this.form = {
         compId: undefined,
         manufacturerId: null,
@@ -189,12 +241,12 @@ export default {
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
-    handleQuery () {
+    handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
     /** 重置按钮操作 */
-    resetQuery () {
+    resetQuery() {
       this.resetForm("queryForm");
       this.queryParams = {
         pageNum: 1,
@@ -208,18 +260,53 @@ export default {
     },
 
     // 多选框选中数据
-    handleSelectionChange (selection) {
+    handleSelectionChange(selection) {
       this.ids = selection.map(item => item.manufacturerId)
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
-    /** 查看详情按钮操作 */
-    handleUpdate (row) {
+    /** 添加按钮操作 */
+    handleAdd () {
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.init(row.manufacturerId, row.manufacturerChineseName)
+        this.$refs.addOrUpdate.AddPage()
+      })
+
+    },
+/*    /!** 查看详情按钮操作 *!/
+    handleDetails(row) {
+      this.addOrUpdateVisible = true
+      this.$nextTick(() => {
+        this.$refs.addOrUpdate.init(row.manufacturerId, row.manufacturerChineseName,row.taxNo)
+      })
+    },*/
+    /** 查看修改按钮操作 */
+    handleUpdate(row) {
+      this.addOrUpdateVisible = true
+      this.$nextTick(() => {
+        this.$refs.addOrUpdate.revise(row.manufacturerId, row.manufacturerChineseName,row.taxNo)
       })
     },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const id = row.id || this.ids;
+      this.$confirm('此操作将永久删除'+row.manufacturerShortName+'数据记录，是否继续？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {//点击确定，执行then方法
+        //调用删除的方法
+        delManufacturerBasics(id).then(response => {
+          if (response.data.code === "0") {
+            this.getList();
+          }
+        })
+      })
+    },
+    getListHandle () {
+      this.getList()
+
+    }
   }
 };
 
@@ -231,6 +318,7 @@ export default {
   color: #337ab7;
   cursor: pointer;
 }
+
 /*.avue-crud .el-date-editor.el-input {*/
 /*  width: auto !important;*/
 /*}*/
