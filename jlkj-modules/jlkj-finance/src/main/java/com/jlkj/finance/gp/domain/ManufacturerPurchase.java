@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -404,5 +405,9 @@ public class ManufacturerPurchase implements Serializable {
     private String specialCode;
 
     @TableField(exist = false)
+
+    /** 细项维护信息 */
+
+    private List<FinanceGpPurchaseLink> financeGpPurchaseLinkList;
     private static final long serialVersionUID = 1L;
 }

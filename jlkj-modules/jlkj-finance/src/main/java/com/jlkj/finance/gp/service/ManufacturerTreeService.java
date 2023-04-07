@@ -19,4 +19,5 @@ public interface ManufacturerTreeService extends IService<ManufacturerTree> {
      * @return List<ManufacturerTreeDTO> getManufacturerTreeList()
      */
     List<ManufacturerTreeDTO> getManufacturerTreeList();
+
 }

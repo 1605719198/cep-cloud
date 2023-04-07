@@ -1,8 +1,79 @@
 import request from '@/utils/request';
+// 新增厂商基础资料
+export function addManufacturerBasics(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doAdd`,
+    method: 'post',
+    data: data
+  })
+}
+// 修改厂商基础资料
+export function updateManufacturerBasics(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doEdit`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 删除厂商基础资料
+export function delManufacturerBasics(id) {
+  return request({
+    url: `/finance/finance/manufacturer/delete?id=${id}` ,
+    method: 'delete'
+  })
+
+}
+
+
+
+
+// 修改厂商采购关系资料
+export function updateManufacturerBasicsMp(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doEditMp`,
+    method: 'post',
+    data: data
+  })
+}
+// 修改厂商客户关系资料
+export function updateManufacturerBasicSo(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doEditSo`,
+    method: 'post',
+    data: data
+  })
+}
+// 修改厂商报支关系资料
+export function updateManufacturerBasicFc(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doEditFc`,
+    method: 'post',
+    data: data
+  })
+}
+// 修改厂商报支关系资料
+export function updateManufacturerBasicSt(data) {
+  return request({
+    url: `/finance/finance/manufacturer/doEditSt`,
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 查询厂商基本资料列表
 export function queryAll(data) {
   return request({
     url: `/finance/finance/manufacturer/queryAll`,
+    method: 'get',
+    params: data
+  })
+}
+// 查询厂商基本资料列表
+export function selectGoodsByGroupId(data) {
+  return request({
+    url: `/finance/finance/manufacturer/selectGoodsByGroupId`,
     method: 'get',
     params: data
   })

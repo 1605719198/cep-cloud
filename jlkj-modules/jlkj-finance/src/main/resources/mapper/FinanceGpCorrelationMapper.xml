@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.FinanceGpCorrelationMapper">
+    
+    <resultMap type="com.jlkj.finance.gp.domain.FinanceGpCorrelation" id="FinanceGpCorrelationResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="currentStatus"    column="current_status"    />
+        <result property="preStatus"    column="pre_status"    />
+        <result property="correlationDate"    column="correlation_date"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceGpCorrelationVo">
+        select uuid, comp_id, manufacturer_id, current_status, pre_status, correlation_date, create_user, create_date, update_user, update_user_name, create_user_name, del_flag, create_time, update_time from finance_gp_correlation
+    </sql>
+
+    <select id="selectFinanceGpCorrelationList" parameterType="com.jlkj.finance.gp.domain.FinanceGpCorrelation" resultMap="FinanceGpCorrelationResult">
+        <include refid="selectFinanceGpCorrelationVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="manufacturerId != null  and manufacturerId != ''"> and manufacturer_id = #{manufacturerId}</if>
+            <if test="currentStatus != null  and currentStatus != ''"> and current_status = #{currentStatus}</if>
+            <if test="preStatus != null  and preStatus != ''"> and pre_status = #{preStatus}</if>
+            <if test="correlationDate != null "> and correlation_date = #{correlationDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceGpCorrelationByUuid" parameterType="String" resultMap="FinanceGpCorrelationResult">
+        <include refid="selectFinanceGpCorrelationVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceGpCorrelation" parameterType="com.jlkj.finance.gp.domain.FinanceGpCorrelation">
+        insert into finance_gp_correlation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="currentStatus != null">current_status,</if>
+            <if test="preStatus != null">pre_status,</if>
+            <if test="correlationDate != null">correlation_date,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="currentStatus != null">#{currentStatus},</if>
+            <if test="preStatus != null">#{preStatus},</if>
+            <if test="correlationDate != null">#{correlationDate},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceGpCorrelation" parameterType="com.jlkj.finance.gp.domain.FinanceGpCorrelation">
+        update finance_gp_correlation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="currentStatus != null">current_status = #{currentStatus},</if>
+            <if test="preStatus != null">pre_status = #{preStatus},</if>
+            <if test="correlationDate != null">correlation_date = #{correlationDate},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceGpCorrelationByUuid" parameterType="String">
+        delete from finance_gp_correlation where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceGpCorrelationByUuids" parameterType="String">
+        delete from finance_gp_correlation where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>
