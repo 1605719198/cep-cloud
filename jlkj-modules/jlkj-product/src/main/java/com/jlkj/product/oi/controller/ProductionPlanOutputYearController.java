@@ -4,8 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jlkj.common.core.web.resp.Result;
-import com.jlkj.common.core.web.resp.ResultCode;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.*;
@@ -151,10 +150,11 @@ public class ProductionPlanOutputYearController {
         List<ProductionPlanOutputYear> yearList = planOutputYearService.list(new QueryWrapper<ProductionPlanOutputYear>().lambda()
                 .eq(ProductionPlanOutputYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
         if (yearList.size() < 1) {
-            return Result.failed(ResultCode.EXISTSORNOT, "当前年份计划不存在");
+//            ResultCode.EXISTSORNOT
+            return AjaxResult.error("当前年份计划不存在");
         }
         if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
-            return Result.failed(ResultCode.EXISTSORNOT, "往年计划不能删除");
+            return AjaxResult.error("往年计划不能删除");
         }
 
         StringBuilder content = new StringBuilder();
@@ -186,6 +186,6 @@ public class ProductionPlanOutputYearController {
                 .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
         planOutputDateService.remove(new LambdaQueryWrapper<ProductionPlanOutputDate>()
                 .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        return Result.success();
+        return AjaxResult.success();
     }
 }

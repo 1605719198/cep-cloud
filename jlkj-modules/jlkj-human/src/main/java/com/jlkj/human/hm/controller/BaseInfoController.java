@@ -12,7 +12,7 @@ import com.jlkj.human.hm.domain.Baseinfo;
 import com.jlkj.human.hm.dto.BaseInfoDTO;
 import com.jlkj.human.hm.service.impl.BaseinfoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,11 +24,11 @@ import java.util.List;
  * @create 2023-03-07 18:42
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/baseInfo")
 public class BaseInfoController extends BaseController {
 
-    @Autowired
-    BaseinfoServiceImpl baseinfoService;
+    private final BaseinfoServiceImpl baseinfoService;
 
     /**
      * 获取选单配置树

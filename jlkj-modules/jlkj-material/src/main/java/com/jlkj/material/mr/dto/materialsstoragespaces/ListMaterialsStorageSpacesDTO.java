@@ -1,5 +1,6 @@
 package com.jlkj.material.mr.dto.materialsstoragespaces;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -18,5 +19,7 @@ public class ListMaterialsStorageSpacesDTO {
     @Size(max = 36, message = "料仓编号长度不能超过36")
     private String siloId;
 
+    @JsonProperty("coal_sort")
+    private Integer coalSort;
 }
 

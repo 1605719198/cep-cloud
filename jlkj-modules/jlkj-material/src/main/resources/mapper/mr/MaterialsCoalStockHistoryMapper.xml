@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.material.mr.mapper.MaterialsCoalStockHistoryMapper">
 
+
+<select id="getCoalWaterRateData" resultType="com.jlkj.material.mr.vo.water.CoalWaterRateVO">
+    select mt FROM `v_quality_ts_record` WHERE coalType = 'F' and send_date = curdate() ORDER BY send_time DESC limit 1
+</select>
+
 </mapper>

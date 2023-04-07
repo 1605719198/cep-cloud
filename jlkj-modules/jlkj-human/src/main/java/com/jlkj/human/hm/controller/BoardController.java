@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.Board;
 import com.jlkj.human.hm.service.IBoardService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-04-28
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/board")
 public class BoardController {
 
-    @Autowired
-    private IBoardService boardService;
+    private final IBoardService boardService;
     /**
      * 新增板块资料
      */

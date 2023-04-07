@@ -1,7 +1,7 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.web.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO;
@@ -83,7 +83,7 @@ public class DashboardIndexController {
         Map<String, Object> res = new HashMap<>(1);
         res.put("plan", plan);
         res.put("perf", perf);
-        return Result.success(res);
+        return AjaxResult.success(res);
     }
 
 
@@ -104,7 +104,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> cokeLevel = performanceService.getCokeOutputAnalysByLevel(dto);
-        return Result.success(cokeLevel);
+        return AjaxResult.success(cokeLevel);
     }
 
     @Operation(summary = "焦炭产量-详情-焦炭产量 基于 炉号",
@@ -124,7 +124,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> cokeStove = performanceService.getCokeOutputAnalysByStove(dto);
-        return Result.success(cokeStove);
+        return AjaxResult.success(cokeStove);
     }
 
     @Operation(summary = "焦炭产量-详情-焦炭产率（干熄焦、湿熄焦）",
@@ -152,7 +152,7 @@ public class DashboardIndexController {
             res.put("gxj",0.000);
             res.put("sxj",0.000);
         }
-        return Result.success(res);
+        return AjaxResult.success(res);
     }
 
 
@@ -193,7 +193,7 @@ public class DashboardIndexController {
         res.put("coke_all_real", cokeAllReal);
         res.put("coke_plan", cokePlan);
         res.put("coke_real", cokeReal);
-        return Result.success(res);
+        return AjaxResult.success(res);
     }
 
     @Operation(summary = "焦炭产量-详情-收率对比-详情",
@@ -213,7 +213,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> productivity = productionRealOutputMonthService.getProductivityAnalysInfo(dto);
-        return Result.success(productivity);
+        return AjaxResult.success(productivity);
     }
 
 
@@ -260,7 +260,7 @@ public class DashboardIndexController {
         res.put("coalData", coalData);
         res.put("coalDataSum", coalDataSum);
         res.put("date", date);
-        return Result.success(res);
+        return AjaxResult.success(res);
     }
 
     @Operation(summary = "焦炭产量-详情-煤种耗煤量-详情",
@@ -280,7 +280,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> coal = productionDataBoardService.getCoalConsumptionInfo(dto);
-        return Result.success(coal);
+        return AjaxResult.success(coal);
     }
 
 
@@ -317,7 +317,7 @@ public class DashboardIndexController {
         res.put("electric",electric);
         res.put("water",water);
         res.put("gas",gas);
-        return Result.success(res);
+        return AjaxResult.success(res);
     }
 
 
@@ -346,7 +346,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getSteamByBoiler(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
     @Operation(summary = "首页看板-蒸气产量-蒸气总产量",
@@ -366,7 +366,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getSteamByOutput(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
     @Operation(summary = "首页看板-蒸气产量-蒸气回收量实绩",
@@ -386,7 +386,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getSteamByRetrieve(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
     @Operation(summary = "首页看板-蒸气产量-水耗用量",
@@ -406,7 +406,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getSteamByWater(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
 
@@ -430,7 +430,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getElectricityDayConsume(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
 
@@ -451,7 +451,7 @@ public class DashboardIndexController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         List<Map<String, Object>> steam = productionBoardEmsDataService.getElectricityDayConsumeInfo(dto);
-        return Result.success(steam);
+        return AjaxResult.success(steam);
     }
 
 

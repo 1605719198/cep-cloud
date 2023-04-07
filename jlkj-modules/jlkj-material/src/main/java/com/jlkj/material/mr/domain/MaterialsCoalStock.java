@@ -33,6 +33,12 @@ public class MaterialsCoalStock implements Serializable{
     /** 物料名称 */
 	private String materialsName ;
 
+    /** 物料小煤种代码 */
+    private String materialsSmallCode ;
+
+    /** 物料小煤种简称 */
+    private String materialsSmallName ;
+
     /** 储位编号 */
 	private String storageSpacesId ;
 

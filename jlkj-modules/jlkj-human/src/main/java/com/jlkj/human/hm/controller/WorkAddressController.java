@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.WorkAddress;
 import com.jlkj.human.hm.service.IWorkAddressService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-20
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/work/address")
 public class WorkAddressController {
-    @Autowired
-    private IWorkAddressService humanresourceWorkAddressService;
+    private final IWorkAddressService humanresourceWorkAddressService;
 
     /**
      * 新增岗位工作地点数据

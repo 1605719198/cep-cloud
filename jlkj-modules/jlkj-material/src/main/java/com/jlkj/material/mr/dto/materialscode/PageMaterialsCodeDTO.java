@@ -1,5 +1,6 @@
 package com.jlkj.material.mr.dto.materialscode;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -12,6 +13,20 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class PageMaterialsCodeDTO {
+
+
+    /**
+     * 物料代码
+     */
+    @JsonProperty("materials_code")
+    private String materialsCode;
+
+    /**
+     * 物料大类
+     */
+    private String mtrlType;
+
+
     /**
      * 当前页
      */

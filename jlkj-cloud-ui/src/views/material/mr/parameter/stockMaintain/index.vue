@@ -8,11 +8,12 @@
                  ref="query">
         </el-form>
       </el-row>
-      <el-row style="margin-bottom: 25px">
+      <el-row style="margin-bottom: 5px">
         <el-button v-hasPermi="['saveSilo']"
                    :disabled="tableData.length ? true : false"
                    type="primary"
-                   size="medium"
+                   size="mini"
+                   plain
                    icon="el-icon-plus"
                    @click="handleAdd('add')">新增
         </el-button>
@@ -248,8 +249,8 @@ export default {
 <style scoped lang="scss">
 .search {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  //display: flex;
+  //justify-content: space-between;
 }
 .el-button--success {
   background-color: #b3e19d;

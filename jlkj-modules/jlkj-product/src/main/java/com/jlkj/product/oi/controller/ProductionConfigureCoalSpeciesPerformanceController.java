@@ -1,8 +1,6 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
@@ -129,10 +127,10 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return PageResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysis(dto));
+        return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysis(dto));
     }
 
 
@@ -163,10 +161,10 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return Result.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByYear(dto));
+        return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByYear(dto));
     }
 
     @Operation(summary = "查询-分页-配煤分析-图表-月",
@@ -198,10 +196,10 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return Result.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByMonth(dto));
+        return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByMonth(dto));
     }
 
 
@@ -226,7 +224,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     public Object getConfigureCoalSpeciesAnalysisStatistics(@Validated @ParamModel PageConfigureCoalSpeciesAnalysisStatisticsDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return Result.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisStatistics(dto));
+        return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisStatistics(dto));
     }
 
 }

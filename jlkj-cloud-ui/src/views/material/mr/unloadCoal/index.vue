@@ -10,9 +10,9 @@
                         value-format="yyyy-MM-dd">
         </el-date-picker>
       </el-form-item>
-      <el-form-item prop="class_name" label="班别">
+      <el-form-item prop="className" label="班别">
         <el-select :popper-append-to-body="false"
-                   v-model="query.class_name"
+                   v-model="query.className"
                    clearable
                    placeholder="选择班别">
           <el-option v-for="item in classOptions"
@@ -22,21 +22,21 @@
           </el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item prop="shift_name" label="班次">-->
-<!--        <el-select :popper-append-to-body="false"-->
-<!--                   v-model="query.shift_name"-->
-<!--                   clearable-->
-<!--                   placeholder="选择班次">-->
-<!--          <el-option v-for="item in shiftOptions"-->
-<!--                     :key="item.value"-->
-<!--                     :label="item.label"-->
-<!--                     :value="item.value">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
-      <el-form-item prop="shipping_method" label="运输方式">
+      <el-form-item prop="shiftName" label="班次">
         <el-select :popper-append-to-body="false"
-                   v-model="query.shipping_method"
+                   v-model="query.shiftName"
+                   clearable
+                   placeholder="选择班次">
+          <el-option v-for="item in shiftOptions"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.label">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="shippingMethod" label="运输方式">
+        <el-select :popper-append-to-body="false"
+                   v-model="query.shippingMethod"
                    clearable
                    placeholder="选择运输方式">
           <el-option v-for="item in shippingOptions"
@@ -58,20 +58,20 @@
           </el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item prop="material_code" label="物料名称">-->
-<!--        <el-select :popper-append-to-body="false"-->
-<!--                   class="customSelectStyle"-->
-<!--                   v-model="query.material_code"-->
-<!--                   clearable-->
-<!--                   filterable-->
-<!--                   placeholder="选择物料名称">-->
-<!--          <el-option v-for="item in materialsOptions"-->
-<!--                     :key="item.id"-->
-<!--                     :label="item.name"-->
-<!--                     :value="item.id">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
+      <el-form-item prop="materialCode" label="物料名称">
+        <el-select :popper-append-to-body="false"
+                   class="customSelectStyle"
+                   v-model="query.materialCode"
+                   clearable
+                   filterable
+                   placeholder="选择物料名称">
+          <el-option v-for="item in materialsOptions"
+                     :key="item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" v-hasPermi="['listMaterialUnloadingPerformance']" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="handleReset">重置</el-button>
@@ -253,11 +253,11 @@
         is_done: '',
         query: {
           unloading: null,
-          is_done: null,
-          shipping_method: null,
-          class_name: null,
-          shift_name: null,
-          material_code: null
+          isDone: null,
+          shippingMethod: null,
+          className: null,
+          shiftName: null,
+          materialCode: null
         },
         materialsOptions: [],
         table: {
@@ -288,7 +288,7 @@
         listMaterialsBoxM(param).then((res) => {
           // console.log(res)
           let options = []
-          res.data.forEach(item => {
+          res.forEach(item => {
             let i = {
               id: item.materials_code,
               name: item.materials_name
@@ -309,12 +309,13 @@
         }
         //完成状态
         if (this.is_done === '') {
-          this.query.is_done = 0
+          this.query.isDone = 0
         } else {
-          this.query.is_done = this.is_done
+          this.query.isDone = this.is_done
         }
         this.table.loading = true;//加载状态
         listMaterialUnloadingPerformance(this.page, this.query).then(res => {
+          // console.log(res);
           this.table.loading = false;
           let data = res.data;//表格相关数据
           this.page.total = data.total;//数据总数

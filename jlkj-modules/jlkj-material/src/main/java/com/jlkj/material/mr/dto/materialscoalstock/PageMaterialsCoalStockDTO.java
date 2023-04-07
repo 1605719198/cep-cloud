@@ -1,11 +1,11 @@
 package com.jlkj.material.mr.dto.materialscoalstock;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 /**
  * @author yzl
  * @Description 物料煤场库存 查询
@@ -44,5 +44,8 @@ public class PageMaterialsCoalStockDTO {
 	private String clearEndTime;
 
 	private String materialsName;
+
+	@JsonProperty("materials_small_code")
+	private String materialsSmallCode;
 }
 

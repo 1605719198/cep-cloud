@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.Post;
 import com.jlkj.human.hm.service.IPostService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-04-29
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/post/base")
 public class PostController {
-    @Autowired
-    private IPostService humanresourcePostService;
+    private final IPostService humanresourcePostService;
     /**
      * 新增岗位资料
      */

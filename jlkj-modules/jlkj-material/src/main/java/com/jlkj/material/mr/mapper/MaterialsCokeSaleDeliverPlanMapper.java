@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.material.mr.dto.materialscokesaledeliverplan.PageMaterialsCokeSaleDeliverPlanDTO;
 import com.jlkj.material.mr.domain.MaterialsCokeSaleDeliverPlan;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -23,6 +24,6 @@ public interface MaterialsCokeSaleDeliverPlanMapper extends BaseMapper<Materials
      * @return 分页列表
      */
     @MapKey("id")
-    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, PageMaterialsCokeSaleDeliverPlanDTO condition);
+    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, @Param("condition") PageMaterialsCokeSaleDeliverPlanDTO condition);
 }
 

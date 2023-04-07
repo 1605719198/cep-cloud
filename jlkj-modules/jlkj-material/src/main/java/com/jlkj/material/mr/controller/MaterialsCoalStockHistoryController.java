@@ -15,8 +15,11 @@ import com.jlkj.material.mr.dto.materialscoalstockhistory.PageMaterialsCoalStock
 import com.jlkj.material.mr.dto.materialscoalstockhistory.SendDTO;
 import com.jlkj.material.mr.domain.HumanresourceOrganization;
 import com.jlkj.material.mr.domain.MaterialsCoalStockHistory;
+import com.jlkj.material.mr.feignclients.LogisticsFeignService;
+import com.jlkj.material.mr.mapper.MaterialsCoalStockHistoryMapper;
 import com.jlkj.material.mr.service.MaterialsCoalStockHistoryService;
 import com.jlkj.material.mr.service.impl.HumanresourceOrganizationServiceImpl;
+import com.jlkj.material.mr.vo.water.CoalWaterRateVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.math.BigDecimal;
 
 import static com.jlkj.common.core.constant.SysLogConstant.SYS_LOG_PARAM_KEY;
 import static com.jlkj.common.core.constant.RabbitConstant.MATERIAL_CONSUMPTION_ROUTE_KEY;
@@ -62,6 +67,13 @@ public class MaterialsCoalStockHistoryController {
 
     @Resource
     private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private MaterialsCoalStockHistoryMapper materialsCoalStockHistoryMapper;
+
+    @Resource
+    private LogisticsFeignService logisticsFeignService;
+
 
     @Operation(summary = "查询物料煤场库存调整记录",
             parameters = {
@@ -126,29 +138,26 @@ public class MaterialsCoalStockHistoryController {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         try {
-
-            HumanresourceOrganization organization = organizationService.getOne(new LambdaQueryWrapper<HumanresourceOrganization>()
-                    .eq(HumanresourceOrganization::getId, dto.getOrganizationCode()));
+            String waterRate = "-1";
+            CoalWaterRateVO coalWaterRateVO = materialsCoalStockHistoryMapper.getCoalWaterRateData();
+            if(null != coalWaterRateVO) {
+                waterRate = coalWaterRateVO.getMt();
+            }
             JSONObject object = new JSONObject();
             object.put("class", "com.icsc.mr.api.mrjc150Api");
             object.put("messageId", "MR58");
             object.put("actionCode", "N");
             object.put("dataSource", "cep");
-            JSONObject data = new JSONObject();
-            data.put("planListNo", DateUtil.current());
-            data.put("conveyance", "C");
-            data.put("purposeId", "41");
-            data.put("reptDate", DateUtil.format(DateUtil.date(), "yyyyMMdd"));
-            data.put("deptNo", organization.getOrganizationCode());
-            data.put("seqNo", DateUtil.format(DateUtil.date(), "yyyyMMddHHmm") + "00001");
-            data.put("matrlnoA", dto.getMatrlnoA());
-            data.put("matrlnoB", "");
-            data.put("stgNoA", "WK0100");
-            data.put("stgNoB", "");
-            data.put("costCenter", "0WK10");
-            data.put("qty", dto.getQty());
-            data.put("waterRate", dto.getWaterRate());
-            object.put("data", data);
+            object.put("data", logisticsFeignService.getLogisticsMrPlan(
+                    DateUtil.format(DateUtil.date(), "yyyyMMdd"),
+                    new BigDecimal(dto.getQty()),
+                    "41",
+                    DateUtil.format(DateUtil.date(), "yyyyMMddHHmm") + "00001",
+                    new BigDecimal(waterRate),
+                    dto.getMatrlnoA(),
+                    "carrierType_C_" + dto.getMatrlnoA(),
+                    "clent-test"
+            ));
             log.info("send mq message:{}:{} => {}", MATERIAL_EXCHANGE, MATERIAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(object));
             rabbitTemplate.convertAndSend(MATERIAL_EXCHANGE, MATERIAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(object));
         } catch (Exception e) {
@@ -156,6 +165,13 @@ public class MaterialsCoalStockHistoryController {
             return AjaxResult.error();
         }
         return AjaxResult.success();
+    }
+
+    private String getSeqNo(Integer no) {
+        // 0 代表前面补充0
+        // 5 代表长度为5
+        // d 代表参数为正数型
+        return String.format("%05d", no);
     }
 }
 

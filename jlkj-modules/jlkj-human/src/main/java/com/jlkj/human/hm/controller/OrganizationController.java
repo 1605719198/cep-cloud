@@ -7,7 +7,7 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.dto.OrganizationTreeDTO;
 import com.jlkj.human.hm.service.IOrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +21,11 @@ import java.util.List;
  * @since 2022-05-05
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/organization/base")
 public class OrganizationController {
-    @Autowired
-    private IOrganizationService humanresourceOrganizationService;
+
+    private final IOrganizationService humanresourceOrganizationService;
 
     /**
      * 新增机构资料

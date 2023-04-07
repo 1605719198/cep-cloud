@@ -1,216 +1,237 @@
 <template>
-  <div class="app-container">
-    <el-form :model="query" ref="query" :inline="true"  label-width="68px">
-      <el-form-item prop="createdTime" label="创建时间">
-        <el-date-picker v-model="query.createdTime"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="创建开始时间"
-                        end-placeholder="创建结束时间"
-                        value-format="yyyy-MM-dd">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item prop="clearTime" label="清零时间">
-        <el-date-picker v-model="query.clearTime"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="清零开始时间"
-                        end-placeholder="清零结束时间"
-                        value-format="yyyy-MM-dd">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item prop="materialsId" label="物料代码">
-        <el-select :popper-append-to-body="false"
-                   class="customSelectStyle"
-                   v-model="query.materialsId"
-                   clearable
-                   filterable
-                   placeholder="选择物料代码">
-          <el-option v-for="item in materialsOptions"
-                     :key="item.id"
-                     :label="item.name"
-                     :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="storageSpacesId" label="储位">
-        <el-select :popper-append-to-body="false"
-                   class="customSelectStyle"
-                   v-model="query.storageSpacesId"
-                   clearable
-                   filterable
-                   placeholder="选择储位">
-          <el-option v-for="item in storageSpacesOptions"
-                     :key="item.id"
-                     :label="item.name"
-                     :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" v-hasPermi="['materialsCoalStock_list']" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd('add')"
-          v-hasPermi="['materialsCoalStock_list']"
-        >原始库存</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="table.loading" :data="tableData" @sort-change="handleSort" stripe height="67vh">
-      <el-table-column label="序号"
-                       width="55"
-                       type="index" />
-      <el-table-column label="物料类别"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="category_name" />
-      <el-table-column label="物料代码"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="materials_name" />
-      <el-table-column label="储位名称"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="storage_spaces_name" />
-      <el-table-column label="库存量(t)"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="inventory">
-        <template slot-scope="scope">
-          {{scope.row.inventory/1000}}
-        </template>
-      </el-table-column>
-      <el-table-column label="今日卸煤净重(t)"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="today_unloaded_weight">
-        <template slot-scope="scope">
-          {{scope.row.today_unloaded_weight/1000}}
-        </template>
-      </el-table-column>
-      <el-table-column label="今日配煤重量(t)"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="today_loading_weight">
-        <template slot-scope="scope">
-          {{scope.row.today_loading_weight/1000}}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间"
-                       sortable
-                       minWidth="150"
-                       align="left"
-                       prop="create_time" />
-      <el-table-column fixed="right"
-                       label="操作"
-                       width="180"
-                       align="center">
-        <template slot-scope="scope">
-          <el-button v-hasPermi="['materialsCoalStock_list']"
-                     size="mini"
-                     plain
-                     icon="el-icon-edit"
-                     type="success"
-                     @click="handleEdit('edit',scope.$index, scope.row)">修改
-          </el-button>
-          <el-button v-hasPermi="['materialsCoalStock_list']"
-                     size="mini"
-                     plain
-                     icon="el-icon-view"
-                     type="info"
-                     @click="handleView(scope.$index, scope.row)">详情
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination v-show="page.total > 0"
-                background
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                layout="total, sizes, prev, pager, next, jumper"
-                :current-page="page.current"
-                :page-sizes="[20, 50, 100, 200]"
-                :page-size="page.size"
-                :total="page.total">
-    </pagination>
-
-    <!-- 弹窗 -->
-    <div v-if="dialog.visible">
-      <el-dialog :title="dialog.title"
-                 :visible.sync="dialog.visible"
-                 class="customDialogStyle"
-                 append-to-body
-                 :destroy-on-close="true"
-                 :close-on-click-modal="false">
-        <template>
-          <Add v-if="dialog.type === 'add'"
-               :storageSpacesOptions="storageSpacesOptions"
-               @submitSave="submitSave"
-               @close="dialog.visible=false" />
-          <Edit v-if=" dialog.type === 'edit'"
-                :data="dialog.data"
-                @submitSave="submitSave"
-                @close="dialog.visible=false" />
-        </template>
-      </el-dialog>
+  <div style="padding: 0px 10px;">
+    <div class="main">
+      <div class="avue-crud el-card__body"
+           style="width: 98%;border: 0;">
+        <div class="avue-crud__search search"
+             style="border: 0">
+          <el-row>
+            <!-- 表单筛选 -->
+            <el-form :model="query"
+                     ref="query"
+                     :inline="true">
+              <el-row>
+                  <el-form-item prop="createdTime" label="创建时间">
+                    <el-date-picker v-model="query.createdTime"
+                                    type="daterange"
+                                    range-separator="至"
+                                    start-placeholder="创建开始时间"
+                                    end-placeholder="创建结束时间"
+                                    value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                  </el-form-item>
+                  <el-form-item prop="clearTime" label="清零时间">
+                    <el-date-picker v-model="query.clearTime"
+                                    type="daterange"
+                                    range-separator="至"
+                                    start-placeholder="清零开始时间"
+                                    end-placeholder="清零结束时间"
+                                    value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                  </el-form-item>
+                  <el-form-item prop="materialsId" label="物料代码">
+                    <el-select :popper-append-to-body="false"
+                               class="customSelectStyle"
+                               v-model="query.materialsId"
+                               clearable
+                               filterable
+                               placeholder="选择物料代码">
+                      <el-option v-for="item in materialsOptions"
+                                 :key="item.id"
+                                 :label="item.name"
+                                 :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item prop="storageSpacesId" label="储位">
+                    <el-select :popper-append-to-body="false"
+                               class="customSelectStyle"
+                               v-model="query.storageSpacesId"
+                               clearable
+                               filterable
+                               placeholder="选择储位">
+                      <el-option v-for="item in storageSpacesOptions"
+                                 :key="item.id"
+                                 :label="item.name"
+                                 :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                <!-- 操作按钮 -->
+                  <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" size="mini" v-hasPermi="['materialsCoalStock_list']" @click="handleQuery">搜索</el-button>
+                    <el-button icon="el-icon-refresh" size="mini" @click="handleReset">重置</el-button>
+                  </el-form-item>
+              </el-row>
+            </el-form>
+          </el-row>
+          <el-row :gutter="10" class="mb8">
+            <el-col
+                    style="text-align:left">
+              <div class="el-form-item__content">
+                <el-button
+                  type="primary"
+                  plain
+                  icon="el-icon-plus"
+                  size="mini"
+                  @click="handleAdd('add')"
+                  v-hasPermi="['materialsCoalStock_list']"
+                >原始库存</el-button>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div>
+          <el-table height="69vh"
+                    size="small"
+                    v-loading="table.loading"
+                    :data="tableData"
+                    stripe
+                    @sort-change="handleSort">
+            <el-table-column label="序号"
+                             width="55"
+                             type="index" />
+            <el-table-column label="物料类别"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="category_name" />
+            <el-table-column label="物料代码"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="materials_name" />
+            <el-table-column label="小煤种"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="materials_small_name" />
+            <el-table-column label="储位名称"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="storage_spaces_name" />
+            <el-table-column label="库存量(t)"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="inventory">
+              <template slot-scope="scope">
+                {{scope.row.inventory/1000}}
+              </template>
+            </el-table-column>
+            <el-table-column label="今日卸煤净重(t)"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="today_unloaded_weight">
+              <template slot-scope="scope">
+                {{scope.row.today_unloaded_weight/1000}}
+              </template>
+            </el-table-column>
+            <el-table-column label="今日配煤重量(t)"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="today_loading_weight">
+              <template slot-scope="scope">
+                {{scope.row.today_loading_weight/1000}}
+              </template>
+            </el-table-column>
+            <!--            <el-table-column label="配煤重量(t)"-->
+            <!--                             sortable-->
+            <!--                             minWidth="150"-->
+            <!--                             align="left"-->
+            <!--                             prop="">-->
+            <!--              &lt;!&ndash; <template slot-scope="scope">-->
+            <!--                {{scope.row.today_loading_weight/1000}}-->
+            <!--              </template> &ndash;&gt;-->
+            <!--            </el-table-column>-->
+            <el-table-column label="创建时间"
+                             sortable
+                             minWidth="150"
+                             align="left"
+                             prop="create_time" />
+            <!--            <el-table-column label="清零时间"-->
+            <!--                             sortable-->
+            <!--                             minWidth="150"-->
+            <!--                             align="left"-->
+            <!--                             prop="clear_name" />-->
+            <el-table-column fixed="right"
+                             label="操作"
+                             width="180"
+                             align="center">
+              <template slot-scope="scope">
+                <el-button v-hasPermi="['materialsCoalStock_list']"
+                           size="mini"
+                           plain
+                           icon="el-icon-edit"
+                           type="success"
+                           @click="handleEdit('edit',scope.$index, scope.row)">修改
+                </el-button>
+                <el-button v-hasPermi="['materialsCoalStock_list']"
+                           size="mini"
+                           plain
+                           icon="el-icon-view"
+                           type="info"
+                           @click="handleView(scope.$index, scope.row)">详情
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin-top: 10px;float: right;padding: 25px 0px 20px 20px;"
+               class="avue-crud__pagination">
+            <el-pagination
+                           background
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :current-page="page.current"
+                           :page-sizes="[20, 50, 100, 200]"
+                           :page-size="page.size"
+                           :total="page.total">
+            </el-pagination>
+          </div>
+        </div>
+      </div>
+      <!-- 弹窗 -->
+      <div v-if="dialog.visible">
+        <el-dialog :title="dialog.title"
+                   :visible.sync="dialog.visible"
+                   class="customDialogStyle"
+                   append-to-body
+                   :destroy-on-close="true"
+                   :close-on-click-modal="false">
+          <template>
+            <Edit v-if=" dialog.type === 'edit'"
+                  :data="dialog.data"
+                  @submitSave="submitSave"
+                  @close="dialog.visible=false" />
+            <Add v-if="dialog.type === 'add'"
+                 @close="dialog.visible=false"
+                 :data="dialog.data"
+                 :storageSpacesOptions="storageSpacesOptions"
+                 @submitSave="submitSave"></Add>
+          </template>
+        </el-dialog>
+      </div>
+      <div v-if="ss.visible">
+        <el-dialog title="煤场库存详情"
+                   :visible.sync="ss.visible"
+                   class="customDialogStyle"
+                   append-to-body
+                   :destroy-on-close="true"
+                   :close-on-click-modal="false"
+                   :width="dialog.width">
+          <template>
+            <Views :data="dialog.data"
+                   @close="ss.visible=false" />
+          </template>
+        </el-dialog>
+      </div>
     </div>
-    <!-- 弹窗 -->
-    <div v-if="dialog.visible">
-      <el-dialog :title="dialog.title"
-                 :visible.sync="dialog.visible"
-                 class="customDialogStyle"
-                 append-to-body
-                 :destroy-on-close="true"
-                 :close-on-click-modal="false">
-        <template>
-          <Edit v-if=" dialog.type === 'edit'"
-                :data="dialog.data"
-                @submitSave="submitSave"
-                @close="dialog.visible=false" />
-          <Add v-if="dialog.type === 'add'"
-               @close="dialog.visible=false"
-               :data="dialog.data"
-               :storageSpacesOptions="  storageSpacesOptions"
-               @submitSave="submitSave"></Add>
-        </template>
-      </el-dialog>
-    </div>
-    <div v-if="ss.visible">
-      <el-dialog title="煤场库存详情"
-                 :visible.sync="ss.visible"
-                 class="customDialogStyle"
-                 append-to-body
-                 :destroy-on-close="true"
-                 :close-on-click-modal="false"
-                 :width="dialog.width">
-        <template>
-          <Views :data="dialog.data"
-                 @close="dialog.visible=false" />
-        </template>
-      </el-dialog>
-    </div>
-
   </div>
 </template>
-
 
 <script>
 import { listMaterialsCategoryBox } from "@/api/material/mr/parameter/materialType";
@@ -300,7 +321,7 @@ export default {
       listMaterialsBoxM(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.materials_code,
             name: item.materials_name
@@ -316,10 +337,10 @@ export default {
       listMaterialsStorageSpacesBox(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.id,
-            name: item.storage_spaces_name
+            name: item.materials_small_name
           }
           options.push(i)
         });
@@ -424,7 +445,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.pagination {
+.el-pagination {
   white-space: nowrap;
   padding: 25px 0px 20px 0px;
   color: #303133;

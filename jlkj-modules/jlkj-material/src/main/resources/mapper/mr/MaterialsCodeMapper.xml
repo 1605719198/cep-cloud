@@ -46,6 +46,12 @@
         from materials_mr_code a
         INNER JOIN materials_mr_category b ON a.category_id = b.id
         where a.delete_flag = 0
+        <if test="condition.materialsCode != null and condition.materialsCode != ''">
+            AND a.materials_code like concat('%',#{condition.materialsCode},'%')
+        </if>
+        <if test="condition.mtrlType != null and condition.mtrlType != ''">
+            AND a.mtrlType = #{condition.mtrlType}
+        </if>
         order by ${condition.order} ${condition.orderby}
     </select>
 
@@ -76,7 +82,7 @@
             a.materials_name,
             a.materials_code
         from materials_mr_code a
-        where 1=1
+        where delete_flag = 0
           and (#{mtrlType} = '' or a.mtrlType = #{mtrlType})
     </select>
 </mapper>

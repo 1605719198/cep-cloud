@@ -3,8 +3,6 @@ package com.jlkj.product.oi.controller;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.resp.Result;
-import com.jlkj.common.core.web.resp.ResultCode;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;

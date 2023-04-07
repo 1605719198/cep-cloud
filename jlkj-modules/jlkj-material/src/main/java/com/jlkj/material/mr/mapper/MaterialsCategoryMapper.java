@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.material.mr.dto.materialscategory.PageMaterialsCategoryDTO;
 import com.jlkj.material.mr.domain.MaterialsCategory;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public interface MaterialsCategoryMapper extends BaseMapper<MaterialsCategory> {
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getPageData(Page<?> page, PageMaterialsCategoryDTO condition);
+    IPage<Map<String, String>> getPageData(Page<?> page, @Param("condition") PageMaterialsCategoryDTO condition);
 
     /**
      * 查询-列表-物料类别-下拉

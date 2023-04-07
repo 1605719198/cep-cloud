@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.JobTitle;
 import com.jlkj.human.hm.service.IJobTitleService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-20
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/job/title")
 public class JobTitleController {
-    @Autowired
-    private IJobTitleService humanresourceJobTitleService;
+    private final IJobTitleService humanresourceJobTitleService;
 
     /**
      * 新增职位名称数据

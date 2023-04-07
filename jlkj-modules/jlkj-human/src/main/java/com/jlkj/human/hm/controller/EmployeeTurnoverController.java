@@ -16,7 +16,7 @@ import com.jlkj.human.hm.service.IChangeDetailService;
 import com.jlkj.human.hm.service.IChangeMasterService;
 import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -27,17 +27,15 @@ import java.util.*;
  * @create 2023-03-16 13:42
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/employeeTurnover")
 public class EmployeeTurnoverController extends BaseController {
 
-    @Autowired
-    IChangeMasterService changeMasterService;
+    private final IChangeMasterService changeMasterService;
 
-    @Autowired
-    IChangeDetailService changeDetailService;
+    private final IChangeDetailService changeDetailService;
 
-    @Autowired
-    IPersonnelService personnelService;
+    private final IPersonnelService personnelService;
 
     /**
      * 根据工号查询异动信息主表

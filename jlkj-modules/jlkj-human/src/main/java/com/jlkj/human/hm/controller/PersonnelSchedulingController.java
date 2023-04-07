@@ -8,6 +8,7 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.PersonnelScheduling;
 import com.jlkj.human.hm.service.IPersonnelSchedulingService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-04-29
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/personnel/scheduling")
 public class PersonnelSchedulingController {
 
@@ -33,8 +35,7 @@ public class PersonnelSchedulingController {
     private static final String CLASS_TYPE_B = "B";
     private static final String CLASS_TYPE_C = "C";
     private static final String CLASS_TYPE_D = "D";
-    @Autowired
-    private IPersonnelSchedulingService humanresourcePersonnelSchedulingService;
+    private final IPersonnelSchedulingService humanresourcePersonnelSchedulingService;
     /**
      * 新增人员排班资料
      */

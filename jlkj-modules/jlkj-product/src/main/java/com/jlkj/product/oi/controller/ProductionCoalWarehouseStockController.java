@@ -1,6 +1,6 @@
 package com.jlkj.product.oi.controller;
 
-import com.jlkj.common.core.web.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.service.ProductionCoalWarehouseStockService;
@@ -57,7 +57,7 @@ public class ProductionCoalWarehouseStockController {
         log.info("params => ");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
         List<Map<String, String>> list = productionCoalWarehouseStockService.getMaterialsCoalWarehouseStock();
-        return Result.success(list);
+        return AjaxResult.success(list);
     }
 
 }

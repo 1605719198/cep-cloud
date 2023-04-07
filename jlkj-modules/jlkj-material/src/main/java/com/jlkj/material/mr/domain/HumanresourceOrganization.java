@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * 机构数据
+ * @author zyf
  * @TableName t_humanresource_organization
  */
 @TableName(value ="human_hm_organization")
@@ -47,7 +48,7 @@ public class HumanresourceOrganization implements Serializable {
     private String parentName;
 
     /**
-     * 上级机构全称 
+     * 上级机构全称
      */
     private String parentFullName;
 

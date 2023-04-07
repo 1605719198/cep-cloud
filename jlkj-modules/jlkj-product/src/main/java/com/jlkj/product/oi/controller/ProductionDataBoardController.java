@@ -1,7 +1,7 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO;
@@ -64,7 +64,7 @@ public class ProductionDataBoardController {
     public Object getCokeOutputAnalysisByNowDay() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getCokeOutputAnalysisByNowDay());
+        return AjaxResult.success(productionDataBoardService.getCokeOutputAnalysisByNowDay());
     }
 
     @Operation(summary = "生产看板-本年度-焦炭产量分析-分类汇总",
@@ -88,7 +88,7 @@ public class ProductionDataBoardController {
     public Object getCokeOutputAnalysis() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getCokeOutputAnalysis());
+        return AjaxResult.success(productionDataBoardService.getCokeOutputAnalysis());
     }
 
 
@@ -115,7 +115,7 @@ public class ProductionDataBoardController {
     public Object getUpCoalValueByNowDay(@Valid @ParamModel GetUpCoalValueByNowDayDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getUpCoalWeightByNowDay(dto));
+        return AjaxResult.success(productionDataBoardService.getUpCoalWeightByNowDay(dto));
     }
 
 
@@ -136,7 +136,7 @@ public class ProductionDataBoardController {
     public Object getTodayYield(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getTodayYield(dto));
+        return AjaxResult.success(productionDataBoardService.getTodayYield(dto));
     }
 
     @Operation(summary = "生产看板-总耗用量",
@@ -154,7 +154,7 @@ public class ProductionDataBoardController {
     public Object getTodayConsumption(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getTodayConsumption(dto));
+        return AjaxResult.success(productionDataBoardService.getTodayConsumption(dto));
     }
 
     @Operation(summary = "生产看板-焦棚库存量",
@@ -172,7 +172,7 @@ public class ProductionDataBoardController {
     public Object getTodayCokeStock(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getTodayCokeStock(dto));
+        return AjaxResult.success(productionDataBoardService.getTodayCokeStock(dto));
     }
 
 
@@ -191,7 +191,7 @@ public class ProductionDataBoardController {
     public Object getTodayCokeShipment(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getTodayCokeShipment(dto));
+        return AjaxResult.success(productionDataBoardService.getTodayCokeShipment(dto));
     }
 
     @Operation(summary = "生产看板-蒸汽产量",
@@ -209,7 +209,7 @@ public class ProductionDataBoardController {
     public Object getTodayCokeSteam(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return Result.success(productionDataBoardService.getTodayCokeSteam(dto));
+        return AjaxResult.success(productionDataBoardService.getTodayCokeSteam(dto));
     }
 
 

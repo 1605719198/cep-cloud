@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.resp.PageResult;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionOutputPerformance;
 import com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO;
 import com.jlkj.product.oi.dto.productionoutputperformance.GetProductionOutputPerformanceDTO;
@@ -39,7 +39,7 @@ public class ProductionOutputPerformanceServiceImpl extends ServiceImpl<Producti
                 .eq(!StrUtil.isEmpty(dto.getClassName()), ProductionOutputPerformance::getClassName, dto.getClassName());
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         IPage<Map<String, Object>> list = pageMaps(page, queryWrapper);
-        return PageResult.success(list);
+        return AjaxResult.success(list);
     }
 
     public List<Map<String, Object>> getCokePlanAnalys(GetCokePlanPerformanceDTO dto) {

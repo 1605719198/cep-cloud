@@ -46,11 +46,17 @@
             a.modify_user_name,
             case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
             b.storage_spaces_name,
-            b.material_category_id
+        b.material_category_id,
+        c.materials_small_name,
+        coal_sort
         from materials_mr_silo_area a
         INNER JOIN materials_mr_storage_spaces b ON a.storage_spaces_id = b.id
+        LEFT JOIN materials_mr_code_small c ON b.materials_small_code = c.materials_small_code
         where a.silo_id = #{siloId} and (#{showZero} = 1 or (#{showZero} = 0 and a.start_location != a.end_location))
-        order by a.start_location
+        <if test="coalSort != null and coalSort != ''">
+            and coal_sort = #{coalSort}
+        </if>
+        order by coal_sort,a.start_location,a.end_location
     </select>
 
 </mapper>

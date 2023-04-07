@@ -10,7 +10,7 @@ import com.jlkj.human.hm.domain.PersonnelWork;
 import com.jlkj.human.hm.dto.PersonnelWorkDTO;
 import com.jlkj.human.hm.service.IPersonnelWorkService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +22,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/work")
 public class PersonnelWorkController {
 
-    @Autowired
-    private IPersonnelWorkService iPersonnelWorkService;
+    private final IPersonnelWorkService iPersonnelWorkService;
 
     /**
      * 新增工作经历信息

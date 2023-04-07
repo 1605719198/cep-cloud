@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -139,7 +137,7 @@ public class ProductionParameterTargetItemController {
         log.info("params => " + pageProductionParameterTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionParameterTargetItemDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionParameterTargetItemDTO);
         IPage<Map<String, String>> list = productionParameterTargetItemService.getListPage(pageProductionParameterTargetItemDTO);

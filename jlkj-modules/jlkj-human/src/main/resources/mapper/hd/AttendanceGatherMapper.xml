@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.AttendanceGatherMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.AttendanceGather">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="year" column="year" jdbcType="VARCHAR"/>
+            <result property="month" column="month" jdbcType="VARCHAR"/>
+            <result property="dueAttDuty" column="due_att_duty" jdbcType="DECIMAL"/>
+            <result property="dueAttHou" column="due_att_hou" jdbcType="DECIMAL"/>
+            <result property="shoAttDuty" column="sho_att_duty" jdbcType="DECIMAL"/>
+            <result property="shoAttHou" column="sho_att_hou" jdbcType="DECIMAL"/>
+            <result property="actAttDuty" column="act_att_duty" jdbcType="DECIMAL"/>
+            <result property="actAttHou" column="act_att_hou" jdbcType="DECIMAL"/>
+            <result property="lateNum" column="late_num" jdbcType="INTEGER"/>
+            <result property="leaNum" column="lea_num" jdbcType="INTEGER"/>
+            <result property="holDuty" column="hol_duty" jdbcType="DECIMAL"/>
+            <result property="holHou" column="hol_hou" jdbcType="DECIMAL"/>
+            <result property="truDuty" column="tru_duty" jdbcType="DECIMAL"/>
+            <result property="truHou" column="tru_hou" jdbcType="DECIMAL"/>
+            <result property="befEntDuty" column="bef_ent_duty" jdbcType="DECIMAL"/>
+            <result property="befEntHou" column="bef_ent_hou" jdbcType="DECIMAL"/>
+            <result property="bigNig" column="big_nig" jdbcType="INTEGER"/>
+            <result property="smaNig" column="sma_nig" jdbcType="INTEGER"/>
+            <result property="aftEntDuty" column="aft_ent_duty" jdbcType="DECIMAL"/>
+            <result property="aftEntHou" column="aft_ent_hou" jdbcType="DECIMAL"/>
+            <result property="savHou" column="sav_hou" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="overTimeHou" column="over_time_hou" jdbcType="DECIMAL"/>
+            <result property="restHou" column="rest_hou" jdbcType="DECIMAL"/>
+            <result property="bigSmaNig" column="big_sma_nig" jdbcType="INTEGER"/>
+            <result property="resHou" column="res_hou" jdbcType="DECIMAL"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="updDueAttDuty" column="upd_due_att_duty" jdbcType="DECIMAL"/>
+            <result property="updDueAttHou" column="upd_due_att_hou" jdbcType="DECIMAL"/>
+            <result property="updShoAttDuty" column="upd_sho_att_duty" jdbcType="DECIMAL"/>
+            <result property="updShoAttHou" column="upd_sho_att_hou" jdbcType="DECIMAL"/>
+            <result property="updActAttDuty" column="upd_act_att_duty" jdbcType="DECIMAL"/>
+            <result property="updActAttHou" column="upd_act_att_hou" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,year,month,
+        due_att_duty,due_att_hou,sho_att_duty,
+        sho_att_hou,act_att_duty,act_att_hou,
+        late_num,lea_num,hol_duty,
+        hol_hou,tru_duty,tru_hou,
+        bef_ent_duty,bef_ent_hou,big_nig,
+        sma_nig,aft_ent_duty,aft_ent_hou,
+        sav_hou,emp_id,comp_id,
+        creator,creator_id,create_date,
+        over_time_hou,rest_hou,big_sma_nig,
+        res_hou,emp_no,post_id,
+        post_name,emp_name,upd_due_att_duty,
+        upd_due_att_hou,upd_sho_att_duty,upd_sho_att_hou,
+        upd_act_att_duty,upd_act_att_hou
+    </sql>
+</mapper>
