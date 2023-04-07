@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.FinanceGpPurchaseLinkMapper">
+    
+    <resultMap type="com.jlkj.finance.gp.domain.FinanceGpPurchaseLink" id="FinanceGpPurchaseLinkResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="contact"    column="contact"    />
+        <result property="dept"    column="dept"    />
+        <result property="title"    column="title"    />
+        <result property="tel"    column="tel"    />
+        <result property="moblie"    column="moblie"    />
+        <result property="email"    column="email"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectFinanceGpPurchaseLinkVo">
+        select uuid, comp_id, manufacturer_id, contact, dept, title, tel, moblie, email, create_user, create_date, update_user, update_date, create_time, update_time, create_user_name, update_user_name, del_flag from finance_gp_purchase_link
+    </sql>
+
+    <select id="selectFinanceGpPurchaseLinkList" parameterType="com.jlkj.finance.gp.domain.FinanceGpPurchaseLink" resultMap="FinanceGpPurchaseLinkResult">
+        <include refid="selectFinanceGpPurchaseLinkVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="manufacturerId != null  and manufacturerId != ''"> and manufacturer_id = #{manufacturerId}</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+            <if test="moblie != null  and moblie != ''"> and moblie = #{moblie}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceGpPurchaseLinkByUuid" parameterType="String" resultMap="FinanceGpPurchaseLinkResult">
+        <include refid="selectFinanceGpPurchaseLinkVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceGpPurchaseLink" parameterType="com.jlkj.finance.gp.domain.FinanceGpPurchaseLink">
+        insert into finance_gp_purchase_link
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="contact != null">contact,</if>
+            <if test="dept != null">dept,</if>
+            <if test="title != null">title,</if>
+            <if test="tel != null">tel,</if>
+            <if test="moblie != null">moblie,</if>
+            <if test="email != null">email,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="dept != null">#{dept},</if>
+            <if test="title != null">#{title},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="moblie != null">#{moblie},</if>
+            <if test="email != null">#{email},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+    <insert id="batchFinanceGpPurchaseLink">
+        insert into  finance_gp_purchase_link (  uuid, comp_id, manufacturer_id, contact, dept, title, tel, moblie, email,
+                                               create_user, create_date, update_user, update_date, create_time, update_time, create_user_name,
+                                               update_user_name, del_flag ) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.uuid}, #{item.compId}, #{item.manufacturerId}, #{item.contact}, #{item.dept}, #{item.title}, #{item.tel}, #{item.moblie}, #{item.email},
+             #{item.createUser}, #{item.createDate}, #{item.updateUser}, #{item.updateDate}, #{item.createTime}, #{item.updateTime}, #{item.createUserName}, #{item.updateUserName}, #{item.delFlag})
+        </foreach>
+    </insert>
+
+    <update id="updateFinanceGpPurchaseLink" parameterType="com.jlkj.finance.gp.domain.FinanceGpPurchaseLink">
+        update finance_gp_purchase_link
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="moblie != null">moblie = #{moblie},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceGpPurchaseLinkByUuid" parameterType="String">
+        delete from finance_gp_purchase_link where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceGpPurchaseLinkByUuids" parameterType="String">
+        delete from finance_gp_purchase_link where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFinanceGpPurchaseLink" parameterType="String">
+        delete from finance_gp_purchase_link where manufacturer_id = #{manufacturerId}
+    </delete>
+
+</mapper>

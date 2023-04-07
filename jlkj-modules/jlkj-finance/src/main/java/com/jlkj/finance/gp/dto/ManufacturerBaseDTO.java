@@ -1,6 +1,8 @@
 package com.jlkj.finance.gp.dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -23,7 +25,10 @@ public class ManufacturerBaseDTO {
      * 税号
      */
     private   String taxNo ;
-
+    /**
+     * 厂商关系
+     */
+    private   String[]  relation;
     /**
      * 当前页
      */
@@ -240,6 +245,10 @@ public class ManufacturerBaseDTO {
      */
     private String parentId;
 
+    /** 关联日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "关联日期", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date correlationDate;
     /**
      * 逻辑删除标识
      */
