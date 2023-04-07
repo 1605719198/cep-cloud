@@ -24,6 +24,7 @@ public interface LogisticsFeignService {
      * @param seqNo
      * @param waterRate
      * @param mtrlNo
+     * @param carrierType
      * @param token
      * @return
      */

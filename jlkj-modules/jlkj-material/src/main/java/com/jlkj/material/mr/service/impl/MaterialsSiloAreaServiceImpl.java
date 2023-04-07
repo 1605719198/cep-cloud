@@ -58,10 +58,7 @@ public class MaterialsSiloAreaServiceImpl extends ServiceImpl<MaterialsSiloAreaM
         int len = 0;
         MaterialsSilo materialsSilo = materialsSiloService.getById(saveMaterialsSiloAreaDTO.getSiloId());
         for (UpdateMaterialsSiloAreaDTO updateMaterialsSiloAreaDTO: saveMaterialsSiloAreaDTO.getStorageSpaces()) {
-            List<MaterialsSiloArea> list = list(new QueryWrapper<MaterialsSiloArea>().lambda()
-                    .ne(MaterialsSiloArea::getSiloId, saveMaterialsSiloAreaDTO.getSiloId())
-                    .ne(MaterialsSiloArea::getStorageSpacesId, updateMaterialsSiloAreaDTO.getStorageSpacesId())
-                    .last(CommonConstant.LIMIT_ONE_ROW)
+            List<MaterialsSiloArea> list = list(new QueryWrapper<MaterialsSiloArea>().lambda() .ne(MaterialsSiloArea::getSiloId, saveMaterialsSiloAreaDTO.getSiloId()) .ne(MaterialsSiloArea::getStorageSpacesId, updateMaterialsSiloAreaDTO.getStorageSpacesId()) .last(CommonConstant.LIMIT_ONE_ROW)
             );
             if (list.size() > 0) {
                 MaterialsSiloArea materialsSiloArea = list.get(0);
@@ -82,11 +79,7 @@ public class MaterialsSiloAreaServiceImpl extends ServiceImpl<MaterialsSiloAreaM
             );
             if (list.size() == 0) {
                 MaterialsStorageSpaces materialsStorageSpaces = materialsStorageSpacesService.getById(updateMaterialsSiloAreaDTO.getStorageSpacesId());
-                String content = "新增：" +
-                        "[储位名称：" + materialsStorageSpaces.getStorageSpacesName() + "]" +
-                        "[颜色值：" + updateMaterialsSiloAreaDTO.getColorValue() + "]" +
-                        "[起始位置：" + updateMaterialsSiloAreaDTO.getStartLocation() + "]" +
-                        "[结束位置：" + updateMaterialsSiloAreaDTO.getEndLocation() + "]";
+                String content = "新增：" + "[储位名称：" + materialsStorageSpaces.getStorageSpacesName() + "]" + "[颜色值：" + updateMaterialsSiloAreaDTO.getColorValue() + "]" + "[起始位置：" + updateMaterialsSiloAreaDTO.getStartLocation() + "]" + "[结束位置：" + updateMaterialsSiloAreaDTO.getEndLocation() + "]";
                 InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
                 insertChangeLogDTO.setModuleName("物料管理");
                 insertChangeLogDTO.setFunctionName("区域配置");
@@ -94,7 +87,6 @@ public class MaterialsSiloAreaServiceImpl extends ServiceImpl<MaterialsSiloAreaM
                 insertChangeLogDTO.setCreateUserId(saveMaterialsSiloAreaDTO.getCreateUserId());
                 insertChangeLogDTO.setCreateUserName(saveMaterialsSiloAreaDTO.getCreateUserName());
                 changeLogService.insertChangeLogData(insertChangeLogDTO);
-
                 MaterialsSiloArea materialsSiloArea = new MaterialsSiloArea();
                 materialsSiloArea.setSiloId(saveMaterialsSiloAreaDTO.getSiloId());
                 materialsSiloArea.setStorageSpacesId(updateMaterialsSiloAreaDTO.getStorageSpacesId());

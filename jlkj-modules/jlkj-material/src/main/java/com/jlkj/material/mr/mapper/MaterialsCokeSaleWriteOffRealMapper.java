@@ -40,6 +40,7 @@ public interface MaterialsCokeSaleWriteOffRealMapper extends BaseMapper<Material
     /**
      * 获取当前班次信息
      * @return 当前班次信息
+     * @param condition 查询条件dto
      */
     @Select(
             "select shift,class_type,full_name\n" +

@@ -26,6 +26,10 @@ public interface MaterialsCodeSmallMapper extends BaseMapper<MaterialsCodeSmall>
     @MapKey("id")
     IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, @Param("condition") PageMaterialsCodeSmallDTO condition);
 
+    /**
+     * 查询-小煤种
+     * @return
+     */
     @MapKey("id")
     List<Map<String, Object>> getMaterialsCodeSmallDic();
 }

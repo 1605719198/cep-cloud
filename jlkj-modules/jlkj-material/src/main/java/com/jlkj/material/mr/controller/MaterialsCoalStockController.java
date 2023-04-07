@@ -346,14 +346,14 @@ public class MaterialsCoalStockController {
     )
     @Log(title = "查询煤场库存-卸煤记录", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getHCoalUnloadingList", method = RequestMethod.GET)
-    public Object getHCoalUnloadingList(@Validated @ParamModel PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO) {
+    public Object getCoalUnloadingList(@Validated @ParamModel PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO) {
         log.info("params => " + pageMaterialsCoalStockDTO);
         String errorMsg = ValidUtil.checkValid(pageMaterialsCoalStockDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageMaterialsCoalStockDTO);
-        IPage<Map<String, String>> list = materialsCoalStockService.getHCoalUnloadingList(pageMaterialsCoalStockDTO);
+        IPage<Map<String, String>> list = materialsCoalStockService.getCoalUnloadingList(pageMaterialsCoalStockDTO);
         return AjaxResult.success(list);
     }
 

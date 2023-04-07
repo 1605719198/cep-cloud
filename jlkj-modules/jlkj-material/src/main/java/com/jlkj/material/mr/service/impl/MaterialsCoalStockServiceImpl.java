@@ -49,9 +49,9 @@ public class MaterialsCoalStockServiceImpl extends ServiceImpl<MaterialsCoalStoc
         return getBaseMapper().getConveyingCoalList(page, pageMaterialsCoalStockDTO);
     }
     @Override
-    public IPage<Map<String, String>> getHCoalUnloadingList(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO) {
+    public IPage<Map<String, String>> getCoalUnloadingList(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO) {
         Page<Map<String, String>> page = new Page<>(pageMaterialsCoalStockDTO.getCurrent(), pageMaterialsCoalStockDTO.getSize());
-        return getBaseMapper().getHCoalUnloadingList(page, pageMaterialsCoalStockDTO);
+        return getBaseMapper().getCoalUnloadingList(page, pageMaterialsCoalStockDTO);
     }
 
 }

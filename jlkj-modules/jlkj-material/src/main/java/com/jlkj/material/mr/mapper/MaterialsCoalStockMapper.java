@@ -58,7 +58,7 @@ public interface MaterialsCoalStockMapper extends BaseMapper<MaterialsCoalStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getHCoalUnloadingList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCoalStockDTO condition);
+    IPage<Map<String, String>> getCoalUnloadingList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCoalStockDTO condition);
 
 
 }

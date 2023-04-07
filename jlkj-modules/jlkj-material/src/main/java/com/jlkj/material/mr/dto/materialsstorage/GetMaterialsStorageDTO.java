@@ -1,6 +1,5 @@
 package com.jlkj.material.mr.dto.materialsstorage;
 
-//import com.jlkj.common.dto.material.mr.BasePage;
 import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
