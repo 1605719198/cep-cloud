@@ -277,11 +277,11 @@
             create_user_name: this.$store.getters.userInfo.nickName,
             storage_spaces: list
           }).then(res => {
-            if (res.data.code === "0") {
+            if (res.code == 200) {
               this.$message({
                 type: "success", message: "操作成功！", duration: 1000,
                 onClose: () => {
-                  this.$emit('submitSave', res.data.msg)
+                  this.$emit('submitSave', res.msg)
                 }
               });
             }
@@ -319,7 +319,7 @@
             delete_user_id: this.$store.getters.userInfo.userId,
             delete_user_name: this.$store.getters.userInfo.nickName,
           }).then(res => {
-            if (res.data.code === "0") {
+            if (res.code == 200) {
               this.$message({
                 type: "success", message: "操作成功！", duration: 1000,
                 onClose: () => {

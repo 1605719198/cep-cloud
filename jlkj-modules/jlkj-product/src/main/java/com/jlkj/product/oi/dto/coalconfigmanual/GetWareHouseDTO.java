@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class GetWareHouseDTO {
-    private int tower;
+    private Integer tower;
 
     private String tower_id;
 }

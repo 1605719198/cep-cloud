@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.product.oi.mapper.ProductionHandoverStockVerifyMapper">
-    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionHandoverStockVerify.PageProductionHandoverStockVerifyDTO" resultType="java.util.Map">
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionhandoverstockverify.PageProductionHandoverStockVerifyDTO" resultType="java.util.Map">
         select days.date          as date,
         ifnull(bn1, 0.00)  as bn1,
         ifnull(bn2, 0.00)  as bn2,
