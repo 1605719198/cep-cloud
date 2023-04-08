@@ -159,9 +159,7 @@ public abstract class AbstractServerInfos {
         result.add(javaVMVersion);
         String osVersion = props.getProperty("os.name");
         result.add(osVersion);
-        System.out.println(result.toString());
         String code = MD5.create().digestHex(result.toString(), Charset.forName("utf-8"));
-        System.out.println(code);
         return getSplitString(code, "-", 4);
 
     }

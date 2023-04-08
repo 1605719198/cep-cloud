@@ -8,13 +8,13 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 断路作业票-附件表
- * @TableName safe_si_job_cut_road_appendix
+ * 临时用电作业票-附件表
+ * @TableName safe_si_job_temporary_electricity_appendix
  * @author zyf
  */
-@TableName(value ="safe_si_job_cut_road_appendix")
+@TableName(value ="safe_si_job_temporary_electricity_appendix")
 @Data
-public class SafeJobCutRoadAppendix implements Serializable {
+public class SafeSiJobTemporaryElectricityAppendix implements Serializable {
     /**
      * 主键标识;UUID
      */

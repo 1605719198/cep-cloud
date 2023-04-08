@@ -9,10 +9,10 @@ export function getServerInfos(query) {
   })
 }
 // 生成License 授权信息
-export function generateLicense(data) {
+export function generater(data) {
   return request({
-    url: '/system/license/generateLicense',
-    method: 'post',
+    url: '/system/license',
+    method: 'put',
     data: data
   })
 }

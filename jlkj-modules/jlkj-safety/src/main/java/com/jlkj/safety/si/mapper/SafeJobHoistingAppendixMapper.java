@@ -1,7 +1,7 @@
 package com.jlkj.safety.si.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.safety.si.entity.SafeJobHoistingAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobHoistingAppendix;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jlkj.safety.si.entity.SafeJobHoistingAppendix;
  * @author su
  * @since 2022-06-14
  */
-public interface SafeJobHoistingAppendixMapper extends BaseMapper<SafeJobHoistingAppendix> {
+public interface SafeJobHoistingAppendixMapper extends BaseMapper<SafeSiJobHoistingAppendix> {
 
 }

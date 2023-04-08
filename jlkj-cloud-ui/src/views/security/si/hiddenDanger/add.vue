@@ -153,6 +153,7 @@
               <el-upload class="upload-demo"
                          :action="action"
                          accept=".png,.jpg"
+                         :headers="headers"
                          multiple
                          :limit="4"
                          :on-exceed="handleExceed"
@@ -184,6 +185,7 @@ import { getSafetyArea, dangertype } from "@/api/security/si/WorkTicketApi"
 import { dangerInsert } from "@/api/security/si/hiddenDanger/index";
 import { getOrganizationDeptTree, getOrganizationUserList, getHumanTree } from "@/api/human/hm/humanResourceTree";
 import { mapGetters } from "vuex";
+import {getToken} from "@/utils/auth";
 // import { dateFormat } from '@/utils/date'
 export default {
   data () {
@@ -227,6 +229,9 @@ export default {
       //图片回显列表
       fileList: [],
       submitLoading: false,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       action: ''
     }
   },
@@ -240,7 +245,7 @@ export default {
     this.getTree()
     this.getSafeArea()
     this.getDangertype()
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload'
     //上报单位（当前登录人的单位）
     this.form.submit_depart_name = this.$store.getters.userInfo.dept.deptName
     this.form.submit_depart_id = this.$store.getters.userInfo.dept.deptId

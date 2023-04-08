@@ -1,17 +1,20 @@
 package com.jlkj.file;
 
+import com.jlkj.common.security.annotation.EnableCustomConfig;
+import com.jlkj.common.security.annotation.EnableRyFeignClients;
+import com.jlkj.common.swagger.annotation.EnableCustomSwagger2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import com.jlkj.common.swagger.annotation.EnableCustomSwagger2;
 
 /**
  * 文件服务
  *
  * @author jlkj
  */
+@EnableCustomConfig
 @EnableCustomSwagger2
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+@SpringBootApplication
+@EnableRyFeignClients
 public class FileApplication
 {
     public static void main(String[] args)

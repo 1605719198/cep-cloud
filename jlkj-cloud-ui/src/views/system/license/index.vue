@@ -13,27 +13,27 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-form ref="form" :model="infos" label-width="115px">
+    <el-form ref="form" :model="form" label-width="115px">
       <el-row :gutter="10" class="mb8">
         <el-divider><i class="el-icon-mobile-phone"></i>设备信息</el-divider>
         <el-col :span="4">
           <el-form-item label="IP地址：" prop="ipAddress">
-            {{ infos.ipAddress }}
+            {{ form.ipAddress }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="Mac地址：" prop="macAddress">
-            {{ infos.macAddress }}
+            {{ form.macAddress }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="CPU序列号：" prop="cpuSerial">
-            {{ infos.cpuSerial }}
+            {{ form.cpuSerial }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="主板序列号：" prop="mainBoardSerial">
-            {{ infos.mainBoardSerial }}
+            {{ form.mainBoardSerial }}
           </el-form-item>
         </el-col>
       </el-row>
@@ -41,7 +41,7 @@
         <el-divider><i class="el-icon-truck"></i>操作系统</el-divider>
         <el-col :span="10">
           <el-form-item label="操作系统：">
-            <el-radio-group v-model="infos.osName">
+            <el-radio-group v-model="form.osName">
               <el-radio label="windows">Windows</el-radio>
               <el-radio label="linux">Linux</el-radio>
               <el-radio label="mac">Mac OS</el-radio>
@@ -51,7 +51,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="机器码：" prop="machineCode">
-            <el-input v-model="infos.machineCode"/>
+            <el-input v-model="form.machineCode"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -59,69 +59,71 @@
         <el-divider><i class="el-icon-medal-1"></i>授权信息</el-divider>
         <el-col :span="1.5">
           <el-form-item label="是否永久：">
-            <el-radio-group v-model="infos.isNoTimeLimit" @change="select">
+            <el-radio-group v-model="form.isNoTimeLimit" @change="select">
               <el-radio label="Y">是</el-radio>
               <el-radio label="N">否</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
-          <el-form-item label="使用者数量：" prop="userAcount">
-            <el-input-number v-model="infos.userAcount" placeholder="请输入使用者数量" maxlength="5" :precision="0"
+          <el-form-item label="使用者数量：" prop="consumerAmount">
+            <el-input-number v-model="form.consumerAmount" placeholder="请输入使用者数量" maxlength="5" :precision="0"
                              :step="1" :min="1" :max="99999">
             </el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
-          <el-form-item label="有效期限：" prop="licenseLimit" v-show="isShow">
+          <el-form-item label="有效期限：" prop="expiryTime" v-show="isShow">
             <el-date-picker clearable
                             class="maxWidth"
-                            v-model="infos.licenseLimit"
+                            v-model="form.expiryTime"
                             type="datetime"
                             value-format="yyyy-MM-dd HH:mm:ss"
-                            placeholder="请选择有效期限">
+                            placeholder="请选择有效期限"
+                            @input="dataPickerChange"
+            >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
           <el-form-item label="证书描述信息：" prop="description">
-            <el-input v-model="infos.description" placeholder="请输入证书描述信息" clearable/>
+            <el-input v-model="form.description" placeholder="请输入证书描述信息" clearable @input="descInput"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="8" class="mb8">
         <el-col :span="1.5">
           <el-form-item label="授权项目：" prop="subject">
-            <el-input v-model="infos.subject" placeholder="请输入授权项目名称（英文）" clearable/>
+            <el-input v-model="form.subject" placeholder="请输入授权项目名称（英文）" clearable @input="subjectInput"/>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
           <el-form-item label="私钥名称：" prop="privateAlias">
-            <el-input v-model="infos.privateAlias" placeholder="请输入私钥名称（英文）" clearable/>
+            <el-input v-model="form.privateAlias" placeholder="请输入私钥名称（英文）" clearable @input="aliasInput"/>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
           <el-form-item label="私钥密码：" prop="keyPass">
-            <el-input type="password" v-model="infos.keyPass" placeholder="请输入私钥密码（英文）" clearable
-                      show-password/>
+            <el-input type="password" v-model="form.keyPass" placeholder="请输入私钥密码（英文）" clearable
+                      show-password @input="keyPassInput"/>
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
           <el-form-item label="授权库密码：" prop="storePass">
-            <el-input type="password" v-model="infos.storePass" placeholder="请输入授权库密码（英文）" clearable
-                      show-password/>
+            <el-input type="password" v-model="form.storePass" placeholder="请输入授权库密码（英文）" clearable
+                      show-password @input="storePassInput"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="24" class="mb8" type="flex" align="middle">
         <el-col :span="22">
           <el-form-item label="JSON数据：" prop="jsonData">
-            <el-input type="textarea" v-model="infos.jsonData" maxlength="2500" show-word-limit resize="none" :rows="6"
+            <el-input type="textarea" v-model="form.jsonData" maxlength="2500" show-word-limit resize="none" :rows="6"
                       class="textarea-box"/>
           </el-form-item>
         </el-col>
-          <el-col :span="2" >
-          <el-button @click="doCopy"  icon="el-icon-document-copy" size="small">复制</el-button>
+        <el-col :span="2">
+          <el-button @click="doCopy" icon="el-icon-document-copy" size="small">复制</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -142,7 +144,8 @@
 </template>
 
 <script>
-import {getServerInfos,generateLicense} from "@/api/system/license";
+import {getServerInfos, generater} from "@/api/system/license";
+import {dateFormat, parseTime} from "@/utils/jlkj";
 
 export default {
   name: "License",
@@ -153,13 +156,18 @@ export default {
       isShow: true,
       // 字典表格数据
       infos: {
-        isNoTimeLimit: 'N',
-        userAcount: 10,
-        description: "",
-        privateAlias: "privateKey",
       },
       // 表单参数
-      form: {},
+      form: {
+        isNoTimeLimit: 'N',
+        consumerAmount: 10,
+        description: "",
+        privateAlias: "privateKey",
+        expiryTime: "",
+        licensePath: "",
+        privateKeysStorePath: "",
+        issuedTime: "",
+      },
     };
   },
   created() {
@@ -170,19 +178,22 @@ export default {
     getInfos() {
       this.loading = true;
       getServerInfos().then(response => {
-          this.infos = response.data;
-          this.infos.isNoTimeLimit = 'N';
-          this.infos.userAcount = 10;
-          this.infos.privateAlias = "privateKey";
-          this.infos.consumerType = "User";
-          this.infos.jsonData = JSON.stringify(response.data);
+          this.form = response.data;
+          this.form.isNoTimeLimit = 'N';
+          this.form.consumerAmount = 10;
+          this.form.privateAlias = "privateKey";
+          this.form.consumerType = "User";
+          this.form.licensePath = "";
+          this.form.privateKeysStorePath = "";
+          this.form.issuedTime = dateFormat(new Date());
+          this.form.jsonData = JSON.stringify(response.data);
           this.loading = false;
         }
       );
     },
     //复制授权信息码
     doCopy() {
-      this.$copyText(this.infos.jsonData).then(
+      this.$copyText(this.form.jsonData).then(
         (e) => {
           this.$modal.msgSuccess("内容已复制到剪切板");
         },
@@ -190,15 +201,45 @@ export default {
           this.$modal.msgError("抱歉，复制失败！");
         })
     },
-    select(){
-      this.$set(this.infos,'isNoTimeLimit',this.isShow == true ? 'Y' : 'N');
-      this.infos.jsonData = "";
-      this.infos.jsonData = JSON.stringify(this.infos);
+    select() {
+      this.$set(this.form, 'isNoTimeLimit', this.isShow == true ? 'Y' : 'N');
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
       this.isShow = !this.isShow;
     },
+    dataPickerChange() {
+      this.$set(this.form, 'expiryTime', this.form.expiryTime);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
+    descInput() {
+      this.$set(this.form, 'description', this.form.description);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
+    aliasInput() {
+      this.$set(this.form, 'privateAlias', this.form.privateAlias);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
+    subjectInput() {
+      this.$set(this.form, 'subject', this.form.subject);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
+    keyPassInput() {
+      this.$set(this.form, 'keyPass', this.form.keyPass);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
+    storePassInput() {
+      this.$set(this.form, 'storePass', this.form.storePass);
+      this.form.jsonData = "";
+      this.form.jsonData = JSON.stringify(this.form);
+    },
     // 生成授权
-    generateLicense(){
-      generateLicense(this.infos.jsonData).then(response =>{
+    generateLicense() {
+      generater(this.form).then(response => {
         this.$modal.msgSuccess("授权成功");
       })
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.CardRecordMapper">
+
+    <resultMap type="CardRecord" id="CardRecordResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="cardTime"    column="card_time"    />
+        <result property="macCode"    column="mac_code"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="macName"    column="mac_name"    />
+    </resultMap>
+
+    <select id="selectCardRecordList" parameterType="CardRecord" resultMap="CardRecordResult">
+        select c.id, c.comp_id, c.emp_no, c.card_time, c.mac_code, c.create_date , c.check_time ,d.company_name as company_name,p.full_name as emp_name,e.name as mac_name
+        from human_hd_card_record as c
+        left join sys_dept as d
+        on c.comp_id = d.comp_id and d.if_company = 1
+        left join human_hm_personnel_info as p
+        on c.emp_no = p.emp_no
+        left join human_hd_clockwork as e
+        on c.mac_code = e.code
+        <where>
+            <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
+            <if test="date1 != null ">and c.card_time &gt; #{date1} </if>
+            <if test="date2 != null ">and c.card_time &lt; #{date2} </if>
+        </where>
+    </select>
+
+</mapper>

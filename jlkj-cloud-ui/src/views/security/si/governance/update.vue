@@ -82,6 +82,7 @@
             <el-form-item>
               <el-upload class="upload-demo"
                          :action="action"
+                         :headers="headers"
                          accept=".png,.jpg"
                          multiple
                          :limit="3"
@@ -235,6 +236,7 @@ import { safeGovernanceSave, safeGovernanceUpdate, listProportions } from "@/api
 import { getOrganizationDeptTree, getHumanTree } from "@/api/human/hm/humanResourceTree";
 import { mapGetters } from "vuex";
 import { getUrlArray } from "@/utils/data"
+import {getToken} from "@/utils/auth";
 export default {
   props: {
     type: {
@@ -263,6 +265,9 @@ export default {
     };
     return {
       action: '',
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       form: {
         rectification_before_url: [],
         rectification_after_url: []
@@ -319,7 +324,7 @@ export default {
     }
   },
   created () {
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload'
     this.getOrganizationTree()
     this.getTree()
     if (this.type == 'edit') {

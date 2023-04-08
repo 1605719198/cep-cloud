@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeSiJobCutRoad;
-import com.jlkj.safety.si.entity.SafeJobCutRoadAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobCutRoadAppendix;
 import com.jlkj.safety.si.service.SafeJobCutRoadApprovalService;
 import com.jlkj.safety.si.service.SafeJobCutRoadPersonsService;
 import com.jlkj.safety.si.service.SafeJobCutRoadSafetyMeasuresService;
@@ -365,7 +365,7 @@ public class SafeJobCutRoadController {
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobCutRoadAppendix appendix = new SafeJobCutRoadAppendix();
+                SafeSiJobCutRoadAppendix appendix = new SafeSiJobCutRoadAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(safeSiJobCutRoad.getId());
                 appendix.setAppendixId(listFiles.getString(i));
@@ -473,12 +473,12 @@ public class SafeJobCutRoadController {
                 }
             }
         }
-        tSafeJobCutRoadAppendixService.remove(new QueryWrapper<SafeJobCutRoadAppendix>().lambda()
-                .eq(SafeJobCutRoadAppendix::getJobId, params.get("id").toString()));
+        tSafeJobCutRoadAppendixService.remove(new QueryWrapper<SafeSiJobCutRoadAppendix>().lambda()
+                .eq(SafeSiJobCutRoadAppendix::getJobId, params.get("id").toString()));
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobCutRoadAppendix appendix = new SafeJobCutRoadAppendix();
+                SafeSiJobCutRoadAppendix appendix = new SafeSiJobCutRoadAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(params.get("id").toString());
                 appendix.setAppendixId(listFiles.getString(i));

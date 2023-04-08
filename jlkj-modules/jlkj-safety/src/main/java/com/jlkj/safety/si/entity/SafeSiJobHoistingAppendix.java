@@ -1,24 +1,28 @@
 package com.jlkj.safety.si.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * 抽堵盲板作业票-附件表
- * @TableName safe_si_job_blind_plate_plugging_appendix
- * @author zyf
+ * <p>
+ * 吊装作业票-附件表
+ * </p>
+ *
+ * @author su
+ * @since 2022-06-14
  */
-@TableName(value ="safe_si_job_blind_plate_plugging_appendix")
 @Data
-public class SafeJobBlindPlatePluggingAppendix implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class SafeSiJobHoistingAppendix implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 主键标识;UUID
      */
-    @TableId
     private String id;
 
     /**
@@ -44,7 +48,7 @@ public class SafeJobBlindPlatePluggingAppendix implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改人id
@@ -59,8 +63,7 @@ public class SafeJobBlindPlatePluggingAppendix implements Serializable {
     /**
      * 修改时间
      */
-    private Date modifyTime;
+    private LocalDateTime modifyTime;
 
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+
 }

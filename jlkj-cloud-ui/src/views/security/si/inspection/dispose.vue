@@ -38,6 +38,7 @@
         <el-form-item>
           <el-upload class="upload-demo"
                      :action="action"
+                     :headers="headers"
                      accept=".png,.jpg"
                      multiple
                      :limit="3"
@@ -88,12 +89,15 @@ export default {
       //图片回显列表
       fileList: [],
       submitLoading: false,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       action: ''
     }
   },
   created () {
     // console.log(this.safeCheckId)
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload'
   },
   computed: {
     ...mapGetters(["userInfo"]),

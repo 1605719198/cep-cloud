@@ -14,12 +14,20 @@ spring:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: 10.32.157.51:8848
+        server-addr: 10.32.13.172:8848
       config:
         # 配置中心地址
-        server-addr: 10.32.157.51:8848
+        server-addr: 10.32.13.172:8848
         # 配置文件格式
         file-extension: yml
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+erp-file-upload:
+  download-dir: d:/
+  download-url: http://localhost:9321/neplatform/fileresource/
+  upload-url: http://10.32.102.225/lp/api/si/v1/hdi/module/event/hdiimgaction.do
+
+pdfTemplates:
+  url: d:/templates/

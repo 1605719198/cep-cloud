@@ -7,15 +7,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 高处作业票-附件表
+ * 动火作业票-附件表
  * </p>
  *
  * @author su
- * @since 2022-06-14
+ * @since 2022-06-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SafeJobHighAppendix implements Serializable {
+public class SafeSiJobFireAppendix implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

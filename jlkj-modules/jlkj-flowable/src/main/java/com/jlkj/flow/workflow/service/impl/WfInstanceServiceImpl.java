@@ -190,11 +190,9 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
                 // 获取意见评论内容
                 if (CollUtil.isNotEmpty(commentList)) {
                     List<Comment> comments = new ArrayList<>();
-                    // commentList.stream().filter(comment -> taskInstance.getId().equals(comment.getTaskId())).collect(Collectors.toList());
                     for (Comment comment : commentList) {
                         if (comment.getTaskId().equals(taskInstance.getId())) {
                             comments.add(comment);
-                            // taskVo.setComment(WfCommentDto.builder().type(comment.getType()).comment(comment.getFullMessage()).build());
                         }
                     }
                     taskVo.setCommentList(comments);
@@ -202,13 +200,6 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
                 taskVoList.add(taskVo);
             });
             map.put("flowList", taskVoList);
-//            // 查询当前任务是否完成
-//            List<Task> taskList = taskService.createTaskQuery().processInstanceId(procInsId).list();
-//            if (CollectionUtils.isNotEmpty(taskList)) {
-//                map.put("finished", true);
-//            } else {
-//                map.put("finished", false);
-//            }
         }
         // 第一次申请获取初始化表单
         if (StringUtils.isNotBlank(deployId)) {

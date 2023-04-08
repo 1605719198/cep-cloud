@@ -3,11 +3,15 @@ package com.jlkj.system.controller;
 import com.jlkj.common.core.license.*;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.log.annotation.Log;
+import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.system.api.domain.SysDept;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -34,7 +38,7 @@ public class LicenseCreatorController extends BaseController {
      * 获取服务器硬件信息
      *
      * @param osName 操作系统类型，如果为空则自动判断
-     * @return com.ccx.models.license.LicenseCheckModel
+     * @return AjaxResult
      */
     @RequiresPermissions("system:license:read")
     @RequestMapping(value = "/getServerInfos", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -61,7 +65,7 @@ public class LicenseCreatorController extends BaseController {
      * 生成证书
      *
      * @param param 生成证书需要的参数，
-     * 如：{"subject":"ccx-models","privateAlias":"privateKey",
+     *              如：{"subject":"ccx-models","privateAlias":"privateKey",
      *              "keyPass":"5T7Zz5Y0dJFcqTxvzkH5LDGJJSGMzQ",
      *              "storePass":"3538cef8e7",
      *              "licensePath":"C:/Users/zifangsky/Desktop/license.lic",
@@ -75,24 +79,21 @@ public class LicenseCreatorController extends BaseController {
      *              "macAddress":["00-50-56-C0-00-01","50-7B-9D-F9-18-41"],
      *              "cpuSerial":"BFEBFBFF000406E3",
      *              "mainBoardSerial":"L1HF65E00X9"}}
-     * @return java.util.Map<java.lang.String, java.lang.Object>
+     * @return AjaxResult
      */
-    @RequestMapping(value = "/generateLicense", method = RequestMethod.POST,  produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Log(title = "证书文件生成", businessType = BusinessType.GRANT)
+    @PutMapping
     public AjaxResult generateLicense(@RequestBody LicenseCreatorParam param) {
         Map<String, Object> resultMap = new HashMap<>(2);
 
-        if (StringUtils.isBlank(param.getLicensePath())) {
-            param.setLicensePath(licensePath);
-        }
-
+        param.setLicensePath(licensePath);
         LicenseCreator licenseCreator = new LicenseCreator(param);
         boolean result = licenseCreator.generateLicense();
 
         if (result) {
-            return  AjaxResult.success(param);
+            return AjaxResult.success(param);
         } else {
-            resultMap.put("result", "error");
-            return  AjaxResult.error("证书文件生成失败！");
+            return AjaxResult.error("证书文件生成失败！");
         }
     }
 }

@@ -4,6 +4,7 @@
       <el-upload ref="upload" class="upload-demo" multiple
                  :action="action"
                  :show-file-list="false"
+                 :headers="headers"
                  :on-success="uploadSuccess"
                  :on-error="uploadError">
         <el-button type="primary">新增附件</el-button>
@@ -25,7 +26,7 @@
 
 <script>
   import {req} from "@/api/security/si/common";
-  // import {fileUrl} from '@/config/env';
+  import {getToken} from "@/utils/auth";
 
   export default {
     name: "fileList",
@@ -34,13 +35,16 @@
       return {
         loading: true,
         action: "",
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
         download: "",
         appendixData: [],
       }
     },
     created() {
-      // this.action = this.GLOBAL.fileUrl + '/file/upload';
-      // this.download = this.GLOBAL.fileUrl + '/file/download/';
+      this.action = process.env.VUE_APP_BASE_API + '/file/file/upload';
+      this.download = process.env.VUE_APP_BASE_API + '/file/file/download/';
     },
     mounted() {
       if (this.data.id) {

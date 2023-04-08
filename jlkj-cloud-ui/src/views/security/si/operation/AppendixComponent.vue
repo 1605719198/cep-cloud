@@ -4,6 +4,7 @@
       <el-upload
         class="upload-demo"
         :action="action"
+        :headers="headers"
         :show-file-list="false"
         :before-upload="beforeUpload"
         :on-progress="uploadProgress"
@@ -37,6 +38,7 @@ import {hoistingFileList} from "@/api/security/si/WorkTicketApi";
 import {blindPlatePluggingFileList} from '@/api/security/si/BindPlatePluggingApi'
 import {soilFileList} from "@/api/security/si/GroundBreakingApi";
 import {spaceFileList} from "@/api/security/si/ConfinedSpaceApi";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: "AppendixComponent",
@@ -55,6 +57,9 @@ export default {
         buttonLoading:false
       },
       action : '' ,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       download : ''
     }
   },
@@ -89,6 +94,7 @@ export default {
     //上传成功
     uploadSuccess(info){
       this.event.buttonLoading = false;
+      // console.log(info);
       let appendixInfo = {
         appendix_name:info.data.fileName,
         appendix_id:info.data.id
@@ -145,8 +151,8 @@ export default {
     }
   },
   created() {
-    this.action = process.env.VUE_APP_BASE_API + "/file/file/upload", // 上传的图片服务器地址
-    this.download = this.GLOBAL.fileUrl + '/file/download';
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload', // 上传的图片服务器地址
+    this.download = process.env.VUE_APP_BASE_API + '/file/file/download';
   }
 }
 </script>
