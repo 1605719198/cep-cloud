@@ -13,17 +13,29 @@
         <module>jlkj-gen</module>
         <module>jlkj-job</module>
         <module>jlkj-file</module>
+        <!--    设备    -->
         <module>jlkj-equip</module>
+        <!--    能源    -->
         <module>jlkj-energy</module>
+        <!--    人事    -->
         <module>jlkj-human</module>
+        <!--    物流    -->
         <module>jlkj-logistics</module>
+        <!--    采购    -->
         <module>jlkj-material</module>
+        <!--    生产    -->
         <module>jlkj-product</module>
+        <!--    质量    -->
         <module>jlkj-quality</module>
+        <!--    安全    -->
         <module>jlkj-safety</module>
+        <!--    销售    -->
         <module>jlkj-sales</module>
+        <!--    财务    -->
         <module>jlkj-finance</module>
+        <!--    MQ    -->
         <module>jlkj-rabbit</module>
+        <!--    流程管理    -->
         <module>jlkj-flowable</module>
     </modules>
 
@@ -31,7 +43,6 @@
     <packaging>pom</packaging>
     <description>
         jlkj-modules业务模块
-
     </description>
 
 </project>
