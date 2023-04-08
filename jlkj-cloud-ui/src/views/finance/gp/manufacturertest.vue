@@ -125,7 +125,7 @@
                                   type="date"
                                   value-format="yyyy-MM-dd"
                                   placeholder="选择关联日期"
-                                  style="width: 100%;">
+                                  style="width: 200px">
                   </el-date-picker>
 
                 </el-form-item>
@@ -148,7 +148,7 @@
 
               <el-col :span="12">
                 <el-form-item label="资本额:" prop="capital">
-                  <el-input maxlength="18" v-model="dataForm.capital" :disabled="currencyDisabled" style="width: 100px"></el-input>
+                  <el-input maxlength="18" v-model="dataForm.capital" :disabled="currencyDisabled" style="width: 88px"></el-input>
                 </el-form-item>
                   <el-form-item prop="capitalCurrencyCode">
                   <el-select v-model="dataForm.capitalCurrencyCode" :disabled="currencyDisabled" style="width: 100px"
@@ -187,7 +187,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="状态:" prop="status">
-                  <el-select v-model="dataForm.status" :disabled="currencyDisabled" placeholder="请选择状态">
+                  <el-select v-model="dataForm.status" :disabled="currencyDisabled" placeholder="请选择状态" style="width: 200px">
                     <el-option
                       v-for="dict in dict.type.cost_stuscode_name"
                       :key="dict.value"
@@ -222,7 +222,6 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="建立日期:" prop="recordCrtDate">
-
                   {{dataForm.recordCrtDate}}
                 </el-form-item>
               </el-col>
@@ -620,6 +619,12 @@ export default {
       getBase1(id).then(response => {
         this.dataForm = response.data
         this.ChineseNameUpdate=this.dataForm.manufacturerChineseName
+        if ( this.dataForm.recordCrtDate!=null){
+          this.dataForm.recordCrtDate=this.dataForm.recordCrtDate.substring(0,10)
+        }
+        if ( this.dataForm.updateTime!=null){
+          this.dataForm.updateTime=this.dataForm.updateTime.substring(0,10)
+        }
         queryRelations(id).then(response => {
           this.relationsForm = response.data
           this.flagForm = {}
