@@ -1,20 +1,20 @@
-package com.jlkj.safety.si.entity;
+package com.jlkj.file.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * 临时用电作业票-附件表
- * @TableName safe_si_job_temporary_electricity_appendix
- * @author zyf
+ * 文件资源表
+ * @TableName t_sys_fileresource
  */
-@TableName(value ="safe_si_job_temporary_electricity_appendix")
+@TableName(value ="sys_fileresource")
 @Data
-public class SafeJobTemporaryElectricityAppendix implements Serializable {
+public class SysFileresource implements Serializable {
     /**
      * 主键标识;UUID
      */
@@ -22,14 +22,24 @@ public class SafeJobTemporaryElectricityAppendix implements Serializable {
     private String id;
 
     /**
-     * 作业票id
+     * 转换文件名
      */
-    private String jobId;
+    private String targetName;
 
     /**
-     * 附件id
+     * 文件位置
      */
-    private String appendixId;
+    private String filePath;
+
+    /**
+     * 原始文件名
+     */
+    private String fileName;
+
+    /**
+     * 文件后缀
+     */
+    private String suffix;
 
     /**
      * 创建人
@@ -60,6 +70,11 @@ public class SafeJobTemporaryElectricityAppendix implements Serializable {
      * 修改时间
      */
     private Date modifyTime;
+
+    /**
+     * 服务器相对路径
+     */
+    private String relativePath;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

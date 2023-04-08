@@ -83,6 +83,7 @@
         <el-form-item>
           <el-upload class="upload-demo"
                      :action="action"
+                     :headers="headers"
                      accept=".png,.jpg"
                      multiple
                      :limit="4"
@@ -113,6 +114,7 @@ import { getSafetyArea, checktype } from "@/api/security/si/WorkTicketApi"
 import { safeCheckInsert } from "@/api/security/si/inspection/index";
 import { mapGetters } from "vuex";
 import { dateFormat } from '@/utils/date'
+import {getToken} from "@/utils/auth";
 export default {
   data () {
     return {
@@ -153,13 +155,16 @@ export default {
       //图片回显列表
       fileList: [],
       submitLoading: false,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       action: ''
     }
   },
   created () {
     this.getSafeArea()
     this.getChecktype()
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload'
   },
   computed: {
     ...mapGetters(["userInfo"]),

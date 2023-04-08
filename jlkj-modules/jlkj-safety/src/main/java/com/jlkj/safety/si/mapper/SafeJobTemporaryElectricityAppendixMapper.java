@@ -1,6 +1,6 @@
 package com.jlkj.safety.si.mapper;
 
-import com.jlkj.safety.si.entity.SafeJobTemporaryElectricityAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobTemporaryElectricityAppendix;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 * @createDate 2022-06-15 11:09:16
 * @Entity com.jlkj.safety.si.entity.TSafeJobTemporaryElectricityAppendix
 */
-public interface SafeJobTemporaryElectricityAppendixMapper extends BaseMapper<SafeJobTemporaryElectricityAppendix> {
+public interface SafeJobTemporaryElectricityAppendixMapper extends BaseMapper<SafeSiJobTemporaryElectricityAppendix> {
 
     /**
      * 临时用电安全作业证-附件列表

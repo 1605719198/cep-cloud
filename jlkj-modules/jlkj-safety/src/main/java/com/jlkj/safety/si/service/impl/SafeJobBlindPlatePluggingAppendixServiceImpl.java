@@ -1,7 +1,7 @@
 package com.jlkj.safety.si.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.safety.si.entity.SafeJobBlindPlatePluggingAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobBlindPlatePluggingAppendix;
 import com.jlkj.safety.si.service.SafeJobBlindPlatePluggingAppendixService;
 import com.jlkj.safety.si.mapper.SafeJobBlindPlatePluggingAppendixMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-06-14 14:08:25
 */
 @Service
-public class SafeJobBlindPlatePluggingAppendixServiceImpl extends ServiceImpl<SafeJobBlindPlatePluggingAppendixMapper, SafeJobBlindPlatePluggingAppendix>
+public class SafeJobBlindPlatePluggingAppendixServiceImpl extends ServiceImpl<SafeJobBlindPlatePluggingAppendixMapper, SafeSiJobBlindPlatePluggingAppendix>
     implements SafeJobBlindPlatePluggingAppendixService {
 
 }

@@ -36,6 +36,7 @@
           <el-upload v-if="type!='view'"
                      class="upload-demo"
                      :action="action"
+                     :headers="headers"
                      multiple
                      :show-file-list="false"
                      :before-upload="handleBeforeUpload"
@@ -135,6 +136,9 @@ export default {
       showProcess: false,
       submitLoading: false,
       action: '',
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       download: ''
     }
   },
@@ -144,8 +148,8 @@ export default {
     }
   },
   created () {
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
-    this.download = this.GLOBAL.fileUrl + '/file/download/'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload', // 上传的图片服务器地址
+    this.download = process.env.VUE_APP_BASE_API + '/file/file/download/';
     // console.log(this.type, "this.type")
     this.getknowledgecategoryTreeData()
     if (this.type == 'edit' || this.type == 'view') {

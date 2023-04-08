@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobTemporaryElectricity;
-import com.jlkj.safety.si.entity.SafeJobTemporaryElectricityAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobTemporaryElectricityAppendix;
 import com.jlkj.safety.si.service.SafeJobTemporaryElectricityApprovalService;
 import com.jlkj.safety.si.service.SafeJobTemporaryElectricityPersonsService;
 import com.jlkj.safety.si.service.SafeJobTemporaryElectricitySafetyMeasuresService;
@@ -16,23 +16,13 @@ import com.jlkj.safety.si.service.SafeJobTemporaryElectricityService;
 import com.jlkj.safety.si.service.impl.SafeJobTemporaryElectricityAppendixServiceImpl;
 import com.jlkj.safety.si.utils.ResponseUtil;
 import io.swagger.annotations.*;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -366,7 +356,7 @@ public class SafeJobTemporaryElectricityController {
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobTemporaryElectricityAppendix appendix = new SafeJobTemporaryElectricityAppendix();
+                SafeSiJobTemporaryElectricityAppendix appendix = new SafeSiJobTemporaryElectricityAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(safeJobTemporaryElectricity.getId());
                 appendix.setAppendixId(listFiles.getString(i));
@@ -463,12 +453,12 @@ public class SafeJobTemporaryElectricityController {
                 }
             }
         }
-        tSafeJobTemporaryElectricityAppendixService.remove(new QueryWrapper<SafeJobTemporaryElectricityAppendix>().lambda()
-                .eq(SafeJobTemporaryElectricityAppendix::getJobId, params.get("id").toString()));
+        tSafeJobTemporaryElectricityAppendixService.remove(new QueryWrapper<SafeSiJobTemporaryElectricityAppendix>().lambda()
+                .eq(SafeSiJobTemporaryElectricityAppendix::getJobId, params.get("id").toString()));
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobTemporaryElectricityAppendix appendix = new SafeJobTemporaryElectricityAppendix();
+                SafeSiJobTemporaryElectricityAppendix appendix = new SafeSiJobTemporaryElectricityAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(params.get("id").toString());
                 appendix.setAppendixId(listFiles.getString(i));

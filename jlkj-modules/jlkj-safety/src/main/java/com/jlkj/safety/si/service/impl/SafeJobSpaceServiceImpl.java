@@ -564,16 +564,16 @@ public class SafeJobSpaceServiceImpl extends ServiceImpl<SafeJobSpaceMapper, Saf
         jsonObject.put("data", data);
         log.info("send mq message:{}:{} => {}", SAFETY_EXCHANGE, SAFETY_SPACE_ROUTE_KEY, jsonObject.toJSONString());
         rabbitTemplate.convertAndSend(SAFETY_EXCHANGE, SAFETY_SPACE_ROUTE_KEY, jsonObject.toJSONString());
-        List<SafeJobSpaceAppendix> appList = safeJobSpaceAppendixMapper.selectList(new LambdaQueryWrapper<SafeJobSpaceAppendix>()
-                .eq(SafeJobSpaceAppendix::getJobId, jobSpace.getId()));
+        List<SafeSiJobSpaceAppendix> appList = safeJobSpaceAppendixMapper.selectList(new LambdaQueryWrapper<SafeSiJobSpaceAppendix>()
+                .eq(SafeSiJobSpaceAppendix::getJobId, jobSpace.getId()));
         if (appList.size() > 0) {
-            appList.forEach(safeJobSpaceAppendix -> {
+            appList.forEach(safeSiJobSpaceAppendix -> {
                 HumanresourcePersonnel appUser = humanresourcePersonnelService.getOne(new LambdaQueryWrapper<HumanresourcePersonnel>()
                         .eq(HumanresourcePersonnel::getId, jobSpace.getApplyPersonId()));
                 SysFileresource file = fileresourceMapper.selectOne(new LambdaQueryWrapper<SysFileresource>()
-                        .eq(SysFileresource::getId, safeJobSpaceAppendix.getAppendixId()));
+                        .eq(SysFileresource::getId, safeSiJobSpaceAppendix.getAppendixId()));
                 String tmpFile = downloadDir + IdUtil.randomUUID() + '.' + file.getSuffix();
-                HttpUtil.downloadFile(downloadUrl + safeJobSpaceAppendix.getAppendixId(), tmpFile);
+                HttpUtil.downloadFile(downloadUrl + safeSiJobSpaceAppendix.getAppendixId(), tmpFile);
                 HashMap<String, Object> paramMap = new HashMap<>(1);
                 paramMap.put("sijcAppr", "SI");
                 paramMap.put("uuid", approvalList.get(0).getId());

@@ -1,6 +1,6 @@
 package com.jlkj.safety.si.service;
 
-import com.jlkj.safety.si.entity.SafeJobSpaceAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobSpaceAppendix;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author su
  * @since 2022-06-15
  */
-public interface SafeJobSpaceAppendixService extends IService<SafeJobSpaceAppendix> {
+public interface SafeJobSpaceAppendixService extends IService<SafeSiJobSpaceAppendix> {
 
     /**
      * 受限空间安全作业证-新增附件

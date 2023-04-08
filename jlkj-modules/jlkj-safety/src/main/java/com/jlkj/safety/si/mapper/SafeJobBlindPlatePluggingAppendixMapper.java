@@ -1,6 +1,6 @@
 package com.jlkj.safety.si.mapper;
 
-import com.jlkj.safety.si.entity.SafeJobBlindPlatePluggingAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobBlindPlatePluggingAppendix;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 * @createDate 2022-06-14 14:08:25
 * @Entity com.jlkj.safety.si.entity.TSafeJobBlindPlatePluggingAppendix
 */
-public interface SafeJobBlindPlatePluggingAppendixMapper extends BaseMapper<SafeJobBlindPlatePluggingAppendix> {
+public interface SafeJobBlindPlatePluggingAppendixMapper extends BaseMapper<SafeSiJobBlindPlatePluggingAppendix> {
 
     /**
      * 附件列表

@@ -92,7 +92,9 @@
           <el-col :span="8">
             <el-form-item label="断路示意图" prop="url">
               <el-upload class="upload-demo" :action="action" :show-file-list="false"
-                         :on-success="uploadSuccess" :on-error="uploadError"
+                         :on-success="uploadSuccess"
+                         :headers="headers"
+                         :on-error="uploadError"
                          accept="image/png,image/gif,image/jpg,image/jpeg">
                 <el-button size="small" type="primary" v-if="!isDisabled">点击上传</el-button>
               </el-upload>
@@ -239,7 +241,10 @@
         deptData: [],
         deptForm: {value: '', label: ''},
         isDisabled: false,
-        action: this.GLOBAL.fileUrl + '/file/upload',
+        action: process.env.VUE_APP_BASE_API + '/file/file/upload',
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
         imgUrl: '',
         dialogVisibleImg: false,
       }
