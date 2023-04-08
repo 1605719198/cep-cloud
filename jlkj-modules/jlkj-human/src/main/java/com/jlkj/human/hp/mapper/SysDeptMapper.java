@@ -1,9 +1,11 @@
 package com.jlkj.human.hp.mapper;
 
 import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.dto.CopySysDept;
-import com.jlkj.human.hp.dto.DeptUnionPost;
+import com.jlkj.human.hp.dto.CopySysDeptDTO;
+import com.jlkj.human.hp.dto.DeptUnionPostDTO;
+import com.jlkj.human.hp.dto.FirstDeptDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +47,30 @@ public interface SysDeptMapper
     public List<SysDept> selectSysDeptList(SysDept sysDept);
 
     /**
+     * 通过部门Id查一级部门
+     *
+     * @param empId 部门ID
+     * @return 一级部门信息
+     */
+    public FirstDeptDTO getFirstDeptByDept(String empId);
+
+    /**
+     * 通过员工工号查一级部门
+     *
+     * @param empId 员工工号
+     * @return 一级部门信息
+     */
+    public  FirstDeptDTO getFirstDeptByPerson(String empId);
+
+    /**
+     * 通过部门差员工工号
+     *
+     * @param deptId 员工工号
+     * @return 一级部门信息
+     */
+    public ArrayList<FirstDeptDTO> getPersonByDept(String deptId);
+
+    /**
      * 查询公司资料列表
      *
      * @return 部门公司资料集合
@@ -57,7 +83,7 @@ public interface SysDeptMapper
      * @param deptpost 部门岗位资料维护
      * @return 部门岗位资料维护集合
      */
-    public List<DeptUnionPost> selectDeptUnionPost(DeptUnionPost deptpost);
+    public List<DeptUnionPostDTO> selectDeptUnionPost(DeptUnionPostDTO deptpost);
 
     /**
      * 新增部门资料维护
@@ -70,10 +96,10 @@ public interface SysDeptMapper
     /**
      * 复制组织机构
      *
-     * @param copySysDept 组织机构复制设定
+     * @param copySysDeptDTO 组织机构复制设定
      * @return 结果
      */
-    public int copySysDept (CopySysDept copySysDept);
+    public int copySysDept (CopySysDeptDTO copySysDeptDTO);
 
     /**
      * 修改部门资料维护

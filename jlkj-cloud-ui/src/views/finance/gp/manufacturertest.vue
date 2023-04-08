@@ -7,9 +7,8 @@
       <el-tabs tab-position="left"  @tab-click="handleClick">
         <el-tab-pane label="基础资料">
           <el-form :rules="rules" :model="dataForm" ref="dataForm" size="small" :inline="true" v-show="showSearch"
-                   label-width="144px"
-          >
-            <el-row>
+                   label-width="144px">
+            <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="国别:" prop="countryId">
                   <el-select v-model="dataForm.countryId" :disabled="currencyDisabled" placeholder="请选择国别"
@@ -23,6 +22,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+
               <el-col :span="12">
                 <el-form-item label="厂商编号:" prop="manufacturerId">
                   {{dataForm.manufacturerId}}
@@ -675,5 +675,8 @@ export default {
 <style scoped>
 /deep/ .el-form-item--small .el-form-item__label {
   line-height: 47px !important;
+}
+/deep/ .el-form-item--small .el-form-item__content {
+  line-height: 51px!important;
 }
 </style>

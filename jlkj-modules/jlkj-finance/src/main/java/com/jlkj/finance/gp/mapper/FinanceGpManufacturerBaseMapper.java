@@ -2,7 +2,7 @@ package com.jlkj.finance.gp.mapper;
 
 import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
-import org.apache.ibatis.annotations.Param;
+
 
 /**
  * 销售管理-厂商基本资料Mapper接口
@@ -23,16 +23,10 @@ public interface FinanceGpManufacturerBaseMapper
     /**
      * 查询销售管理-厂商基本资料列表
      *
-     * @param mainAreaId
-     * @param detailAreaId
-     * @param originalManufacturerChineseName
-     * @param startDate
-     * @param endDate
+     * @param financeGpManufacturerBase 销售管理-厂商基本资料
      * @return 销售管理-厂商基本资料集合
      */
-    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseList(@Param("mainAreaId")String mainAreaId, @Param("detailAreaId")String detailAreaId,
-                                                                               @Param("originalManufacturerChineseName")   String originalManufacturerChineseName,
-                                                                               @Param("startDate") String startDate, @Param("endDate")  String endDate);
+    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseList(FinanceGpManufacturerBase financeGpManufacturerBase);
 
     /**
      * 新增销售管理-厂商基本资料

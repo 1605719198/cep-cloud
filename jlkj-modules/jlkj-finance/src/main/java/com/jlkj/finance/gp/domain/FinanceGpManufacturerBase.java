@@ -143,7 +143,10 @@ public class FinanceGpManufacturerBase extends BaseEntity
 
     /** 上层节点id */
     private String parentId;
-
+    /** 起始时间 */
+    private  String startDate;
+    /** 结束时间 */
+    private  String endDate;
     /** 逻辑删除标识 */
     private Long delFlag;
 
@@ -155,6 +158,24 @@ public class FinanceGpManufacturerBase extends BaseEntity
     public String getId()
     {
         return id;
+    }
+    public void setStartDate(String startDate)
+    {
+        this.startDate = startDate;
+    }
+
+    public String getStartDate()
+    {
+        return startDate;
+    }
+    public void setEndDate(String startDate)
+    {
+        this.endDate = endDate;
+    }
+
+    public String getEndDate()
+    {
+        return endDate;
     }
     public void setCompId(String compId)
     {
@@ -531,6 +552,8 @@ public class FinanceGpManufacturerBase extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("compId", getCompId())
+            .append("startDate", getStartDate())
+            .append("endDate", getEndDate())
             .append("manufacturerId", getManufacturerId())
             .append("countryId", getCountryId())
             .append("countryName", getCountryName())

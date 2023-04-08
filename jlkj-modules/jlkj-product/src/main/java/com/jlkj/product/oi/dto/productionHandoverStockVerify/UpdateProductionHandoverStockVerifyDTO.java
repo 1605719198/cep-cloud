@@ -1,4 +1,4 @@
-package com.jlkj.product.oi.dto.productionHandoverStockVerify;
+package com.jlkj.product.oi.dto.productionhandoverstockverify;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

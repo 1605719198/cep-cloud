@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.PersonColockOrgMapper">
+    
+    <resultMap type="PersonColockOrg" id="PersonColockOrgResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="checkcard"    column="checkcard"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="status"    column="status"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonColockOrgVo">
+        select id, comp_id, dept_id, checkcard, effect_date, status, creator, creator_id, create_date from human_hd_org_colock
+    </sql>
+
+    <select id="selectPersonColockOrgList" parameterType="PersonColockOrg" resultMap="PersonColockOrgResult">
+        <include refid="selectPersonColockOrgVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="effectDate != null"> and effect_date = #{effectDate}</if>
+        </where>
+    </select>
+
+    <select id="queryLastEffectData" parameterType="PersonColockOrg" resultMap="PersonColockOrgResult">
+        select id, comp_id, dept_id, checkcard, effect_date, status, creator, creator_id, create_date from human_hd_org_colock
+        WHERE dept_id = #{deptId} AND effect_date &lt;= CURDATE()
+        ORDER BY effect_date desc
+            LIMIT 1
+    </select>
+    
+    <select id="selectPersonColockOrgById" parameterType="String" resultMap="PersonColockOrgResult">
+        <include refid="selectPersonColockOrgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonColockOrg" parameterType="PersonColockOrg">
+        insert into human_hd_org_colock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="checkcard != null">checkcard,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="status != null">status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="checkcard != null">#{checkcard},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonColockOrg" parameterType="PersonColockOrg">
+        update human_hd_org_colock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="checkcard != null">checkcard = #{checkcard},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonColockOrgById" parameterType="String">
+        delete from human_hd_org_colock where id = #{id}
+    </delete>
+
+    <delete id="deletePersonColockOrgByIds" parameterType="String">
+        delete from human_hd_org_colock where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

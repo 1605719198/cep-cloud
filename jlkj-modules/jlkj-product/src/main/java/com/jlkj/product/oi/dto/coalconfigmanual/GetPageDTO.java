@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class GetPageDTO extends BasePage {
-    private int tower;
+    private Integer tower;
 
     private String tower_id;
 }

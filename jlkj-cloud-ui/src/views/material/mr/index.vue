@@ -541,7 +541,7 @@ export default {
     //获取产量库存
     getProductionStock(){
       getCokeStock({start_date:this.start_date}).then(res => {
-        if (res.data.code === "0"){
+        if (res.code == 200){
           let productionArray = [];
           let inventoryArray = [];
           res.data.forEach(i => {
@@ -565,7 +565,7 @@ export default {
     //上煤仓余量
     getMaterialsCoalWarehouseStock(){
       getMaterialsCoalWarehouseStock().then(res => {
-        if (res.data.code === "0"){
+        if (res.code == 200){
           let coalNameArray = [];
           let coalStockArray = [];
           res.data.forEach(i => {

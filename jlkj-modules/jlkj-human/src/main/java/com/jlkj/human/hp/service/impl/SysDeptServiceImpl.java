@@ -5,8 +5,9 @@ import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysDeptVersion;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
-import com.jlkj.human.hp.dto.CopySysDept;
-import com.jlkj.human.hp.dto.DeptUnionPost;
+import com.jlkj.human.hp.dto.CopySysDeptDTO;
+import com.jlkj.human.hp.dto.DeptUnionPostDTO;
+import com.jlkj.human.hp.dto.FirstDeptDTO;
 import com.jlkj.human.hp.mapper.SysDeptMapper;
 import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
 import com.jlkj.human.hp.service.ISysDeptService;
@@ -195,13 +196,13 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 复制组织机构设定
      *
-     * @param copySysDept 假别参数复制设定
+     * @param copySysDeptDTO 假别参数复制设定
      * @return 结果
      */
     @Override
-    public int copySysDept (CopySysDept copySysDept) throws Exception{
-        int olddept = sysDeptMapper.querycopybyOldCompId(copySysDept.getOldCompId());
-        int newdept = sysDeptMapper.querycopybyNewCompId(copySysDept.getNewCompId());
+    public int copySysDept (CopySysDeptDTO copySysDeptDTO) throws Exception{
+        int olddept = sysDeptMapper.querycopybyOldCompId(copySysDeptDTO.getOldCompId());
+        int newdept = sysDeptMapper.querycopybyNewCompId(copySysDeptDTO.getNewCompId());
         if(olddept==0){
             throw new Exception("来源公司下无组织机构数据");
         }else if(newdept>0){
@@ -210,17 +211,19 @@ public class SysDeptServiceImpl implements ISysDeptService
         String onlydept = "0";
         SysDept oldsysDept = new SysDept();
         oldsysDept.setIfCompany(onlydept);
-        oldsysDept.setCompId(copySysDept.getOldCompId());
-        int firstLevel = 2; //一级部门逗号数
-        int ancestorsLevel =firstLevel;//部门组级逗号数
+        oldsysDept.setCompId(copySysDeptDTO.getOldCompId());
+        //一级部门逗号数
+        int firstLevel = 2;
+        //部门组级逗号数
+        int ancestorsLevel =firstLevel;
         SysDept newCompany = new SysDept();
         SysDept oldCompany = new SysDept();
-        newCompany.setCompId(copySysDept.getNewCompId());
+        newCompany.setCompId(copySysDeptDTO.getNewCompId());
         newCompany = sysDeptMapper.selectSysDeptList(newCompany).get(0);
-        oldCompany.setCompId(copySysDept.getOldCompId());
+        oldCompany.setCompId(copySysDeptDTO.getOldCompId());
         oldCompany.setIfCompany("1");
         oldCompany = sysDeptMapper.selectSysDeptList(oldCompany).get(0);
-        HashMap<String, String> idchange = new HashMap<String, String>();//部门id转换哈希表
+        HashMap<String, String> idchange = new HashMap<String, String>(16);
         idchange.put(oldCompany.getDeptId().toString(),newCompany.getDeptId().toString());
         while (true){
             oldsysDept.setAncestorsLevel(ancestorsLevel);
@@ -236,30 +239,23 @@ public class SysDeptServiceImpl implements ISysDeptService
                     newDeptchild.setPhone(null);
                     newDeptchild.setFax(null);
                     newDeptchild.setEmail(null);
-                    newDeptchild.setCreateBy(copySysDept.getCreateBy());
-                    newDeptchild.setUpdateBy(copySysDept.getUpdateBy());
-                    newDeptchild.setCreateTime(copySysDept.getCreateTime());
-                    newDeptchild.setUpdateTime(copySysDept.getUpdateTime());
-                    newDeptchild.setEffectDate(copySysDept.getEffectDate());
-                    newDeptchild.setCompId(copySysDept.getNewCompId());
+                    newDeptchild.setCreateBy(copySysDeptDTO.getCreateBy());
+                    newDeptchild.setUpdateBy(copySysDeptDTO.getUpdateBy());
+                    newDeptchild.setCreateTime(copySysDeptDTO.getCreateTime());
+                    newDeptchild.setUpdateTime(copySysDeptDTO.getUpdateTime());
+                    newDeptchild.setEffectDate(copySysDeptDTO.getEffectDate());
+                    newDeptchild.setCompId(copySysDeptDTO.getNewCompId());
                     newDeptchild.setVersionNo("1");
                         for (String h : idchange.keySet()) {
                             newDeptchild.setParentId(Long.valueOf(newDeptchild.getParentId().toString().replace(h,idchange.get(h))));
                             newDeptchild.setParentName(newDeptchild.getDeptName().replace(h,idchange.get(h)));
                             newDeptchild.setAncestors(newDeptchild.getAncestors().replace(h,idchange.get(h)));
                         }
-//                        newDeptchild.setParentId(newCompany.getDeptId());
-//                        newDeptchild.setParentName(newCompany.getDeptName());
-//                        String  ancestors = newCompany.getAncestors()+','+newCompany.getDeptId();
-//                        newDeptchild.setAncestors(ancestors);
-
                     sysDeptMapper.insertSysDept(newDeptchild);
                     System.out.println(oldid+':'+newDeptchild.getDeptId().toString());
                     idchange.put(oldid,newDeptchild.getDeptId().toString());
                 }
                 ancestorsLevel++;
-//                break;
-//                System.out.println(newsysDept);
             }
         }
 
@@ -281,7 +277,6 @@ public class SysDeptServiceImpl implements ISysDeptService
         SysDept oldDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getDeptId());
         SysDept newParentDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getParentId());
         String newAncestors = newParentDept.getAncestors()+","+newParentDept.getDeptId();
-//        String oldAncestors = oldDept.getAncestors();
         sysDept.setAncestors(newAncestors);
         int updateOk=sysDeptMapper.updateSysDept(sysDept);
         if(updateOk==1){
@@ -324,7 +319,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 部门岗位资料集合
      */
     @Override
-    public List<DeptUnionPost> selectDeptPostList(DeptUnionPost deptpost){
+    public List<DeptUnionPostDTO> selectDeptPostList(DeptUnionPostDTO deptpost){
         return sysDeptMapper.selectDeptUnionPost(deptpost);
     }
 
@@ -335,11 +330,11 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 树结构列表
      */
     @Override
-    public List<DeptUnionPost> buildDeptPostTree(List<DeptUnionPost> deptpostList)
+    public List<DeptUnionPostDTO> buildDeptPostTree(List<DeptUnionPostDTO> deptpostList)
     {
-        List<DeptUnionPost> returnList = new ArrayList<DeptUnionPost>();
-        List<Long> tempList = deptpostList.stream().map(DeptUnionPost::getDeptId).collect(Collectors.toList());
-        for (DeptUnionPost deptpost : deptpostList)
+        List<DeptUnionPostDTO> returnList = new ArrayList<DeptUnionPostDTO>();
+        List<Long> tempList = deptpostList.stream().map(DeptUnionPostDTO::getDeptId).collect(Collectors.toList());
+        for (DeptUnionPostDTO deptpost : deptpostList)
         {
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(deptpost.getParentId()))
@@ -362,20 +357,20 @@ public class SysDeptServiceImpl implements ISysDeptService
      */
     @Override
 
-    public List<TreeSelect> buildDeptPostTreeSelect(List<DeptUnionPost> deptpostList)
+    public List<TreeSelect> buildDeptPostTreeSelect(List<DeptUnionPostDTO> deptpostList)
     {
-        List<DeptUnionPost> deptpostTrees = buildDeptPostTree(deptpostList);
+        List<DeptUnionPostDTO> deptpostTrees = buildDeptPostTree(deptpostList);
         return deptpostTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
     }
     /**
      * 递归列表
      */
-    private void recursionFn(List<DeptUnionPost> list, DeptUnionPost t)
+    private void recursionFn(List<DeptUnionPostDTO> list, DeptUnionPostDTO t)
     {
         // 得到子节点列表
-        List<DeptUnionPost> childList = getChildList(list, t);
+        List<DeptUnionPostDTO> childList = getChildList(list, t);
         t.setChildren(childList);
-        for (DeptUnionPost tChild : childList)
+        for (DeptUnionPostDTO tChild : childList)
         {
             if (hasChild(list, tChild))
             {
@@ -386,13 +381,13 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 得到子节点列表
      */
-    private List<DeptUnionPost> getChildList(List<DeptUnionPost> list, DeptUnionPost t)
+    private List<DeptUnionPostDTO> getChildList(List<DeptUnionPostDTO> list, DeptUnionPostDTO t)
     {
-        List<DeptUnionPost> tlist = new ArrayList<DeptUnionPost>();
-        Iterator<DeptUnionPost> it = list.iterator();
+        List<DeptUnionPostDTO> tlist = new ArrayList<DeptUnionPostDTO>();
+        Iterator<DeptUnionPostDTO> it = list.iterator();
         while (it.hasNext())
         {
-            DeptUnionPost n = (DeptUnionPost) it.next();
+            DeptUnionPostDTO n = (DeptUnionPostDTO) it.next();
             if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getDeptId().longValue())
             {
                 tlist.add(n);
@@ -404,12 +399,35 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 判断是否有子节点
      */
-    private boolean hasChild(List<DeptUnionPost> list, DeptUnionPost t)
+    private boolean hasChild(List<DeptUnionPostDTO> list, DeptUnionPostDTO t)
     {
         return getChildList(list, t).size() > 0 ? true : false;
     }
 
+    /**
+     * 通过部门id查一级部门
+     */
+    @Override
+    public FirstDeptDTO getFirstDeptByDept(String empId){
 
+        return sysDeptMapper.getFirstDeptByDept(empId);
+    }
+
+    /**
+     * 通过员工工号查一级部门
+     */
+    @Override
+    public FirstDeptDTO getFirstDeptByPerson(String empId){
+        return sysDeptMapper.getFirstDeptByPerson(empId);
+    }
+
+    /**
+     * 通过部门查下属员工工号
+     */
+    @Override
+    public ArrayList<FirstDeptDTO> getPersonByDept(String deptId){
+        return sysDeptMapper.getPersonByDept(deptId);
+    }
 
 
 }

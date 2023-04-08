@@ -86,3 +86,28 @@ export function selectCompany() {
   })
 }
 
+//通过员工工号查询一级机构
+export function queryFirstdeptByPerson(empId){
+  return request({
+    url: 'human/deptMaintenance/queryFirstDeptByPerson/' + empId,
+    method: 'get'
+  })
+}
+
+//通过机构ID查询一级机构
+export function queryFirstdeptByDept(deptId){
+  return request({
+    url: 'human/deptMaintenance/queryFirstDeptByDept/' + deptId,
+    method: 'get'
+  })
+}
+
+//通过岗位id查用户
+export function queryPersonByPost(query){
+  return request({
+    url:'human/personnel/base/getPostLevelEmployee',
+    method:'get',
+    params:query
+  })
+}
+

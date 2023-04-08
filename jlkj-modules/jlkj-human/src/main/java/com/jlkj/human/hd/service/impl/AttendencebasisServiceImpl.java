@@ -2,6 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.human.hd.domain.Attendencebasis;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hd.mapper.AttendencebasisMapper;
 import com.jlkj.human.hd.service.IAttendencebasisService;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
@@ -141,10 +142,11 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     @Override
     public int insertAttendencebasis(Attendencebasis attendencebasis) throws Exception
     {
-
-        int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
-        if(i>0){
-            throw new Exception("资料编码已存在，请重新输入");
+        if(attendencebasis.getParentid()==0){
+            int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
+            if(i>0){
+                throw new Exception("资料编码已存在，请重新输入");
+            }
         }
         return attendencebasisMapper.insertAttendencebasis(attendencebasis);
     }
@@ -200,10 +202,9 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
      * @return 结果
      */
     @Override
-    public List<Attendencebasis> selectBasisOptions(String code) {
-
-        Long parentid = attendencebasisMapper.selectAttendencebasisByCode(code).get(0).getId();
-        List<Attendencebasis> list = attendencebasisMapper.selectAttendencebasisByParentid(parentid);
+    public List<BasisOptionsDTO> selectBasisOptions(String code) {
+        Long parentid = attendencebasisMapper.selectAttendencebasisParentByCode(code).getId();
+        List<BasisOptionsDTO> list = attendencebasisMapper.selectAttendencebasisByParentid(parentid);
         return list;
     }
 }

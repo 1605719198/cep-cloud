@@ -225,8 +225,8 @@ export default {
           delete_user_id: this.$store.state.user.userInfo.userName,
           delete_user_name: '姓名',
         }).then(res => {
-          if (res.data.code == 0) {
-            this.$message({ type: 'success', message: res.data.msg });
+          if (res.code == 200) {
+            this.$message({ type: 'success', message: res.msg });
             this.onLoad();
           }
         }, error => {

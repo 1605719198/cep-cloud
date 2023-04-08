@@ -68,6 +68,7 @@
 import { safeCheckDispose } from "@/api/security/si/inspection/index";
 import { mapGetters } from "vuex";
 import { dateFormat } from '@/utils/date'
+import {getToken} from "@/utils/auth";
 export default {
   props: ['safeCheckId'],
   data () {

@@ -9,8 +9,9 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysDeptVersion;
-import com.jlkj.human.hp.dto.CopySysDept;
-import com.jlkj.human.hp.dto.DeptUnionPost;
+import com.jlkj.human.hp.dto.CopySysDeptDTO;
+import com.jlkj.human.hp.dto.DeptUnionPostDTO;
+import com.jlkj.human.hp.dto.FirstDeptDTO;
 import com.jlkj.human.hp.service.ISysDeptService;
 import com.jlkj.human.hp.service.ISysDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,9 +96,9 @@ public class SysDeptController extends BaseController
     @RequiresPermissions("human:deptMaintenance:copy")
     @Log(title = "组织机构复制", businessType = BusinessType.INSERT)
     @PostMapping("/copySysDept")
-    public AjaxResult copy(@RequestBody CopySysDept copySysDept) throws Exception
+    public AjaxResult copy(@RequestBody CopySysDeptDTO copySysDeptDTO) throws Exception
     {
-        return toAjax(sysDeptService.copySysDept(copySysDept));
+        return toAjax(sysDeptService.copySysDept(copySysDeptDTO));
     }
 
     /**
@@ -135,9 +136,9 @@ public class SysDeptController extends BaseController
      * 获取部门岗位下拉树列表
      */
     @GetMapping("/deptpostTree")
-    public AjaxResult deptpostTree(DeptUnionPost deptpost)
+    public AjaxResult deptpostTree(DeptUnionPostDTO deptpost)
     {
-        List<DeptUnionPost> deptPostList = sysDeptService.selectDeptPostList(deptpost);
+        List<DeptUnionPostDTO> deptPostList = sysDeptService.selectDeptPostList(deptpost);
         return AjaxResult.success(sysDeptService.buildDeptPostTree(deptPostList));
     }
 
@@ -150,4 +151,24 @@ public class SysDeptController extends BaseController
         List<SysDept> companyList = sysDeptService.selectCompanyList();
         return AjaxResult.success(companyList);
     }
+    /**
+     * 通过员工工号查询一级机构
+     */
+    @GetMapping("/queryFirstDeptByPerson/{empId}")
+    public AjaxResult queryFirstDeptByPerson(@PathVariable("empId") String empId)
+    {
+        FirstDeptDTO firstDept = sysDeptService.getFirstDeptByPerson(empId);
+        return AjaxResult.success(firstDept);
+    }
+
+    /**
+     * 通过部门ID查询一级机构
+     */
+    @GetMapping("/queryFirstDeptByDept/{deptId}")
+    public AjaxResult queryFirstDeptByDept(@PathVariable("deptId") String deptId)
+    {
+        FirstDeptDTO firstDept = sysDeptService.getFirstDeptByDept(deptId);
+        return AjaxResult.success(firstDept);
+    }
+    
 }

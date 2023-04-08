@@ -33,19 +33,13 @@ public class FinanceGpManufacturerBaseServiceImpl implements IFinanceGpManufactu
     }
     /**
      * 查询销售管理-厂商基本资料列表
-     *
-     * @param mainAreaId
-     * @param detailAreaId
-     * @param originalManufacturerChineseName
-     * @param startDate
-     * @param endDate
+     * @param financeGpManufacturerBase 销售管理-厂商基本资料
      * @return 销售管理-厂商基本资料
      */
     @Override
-    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseList(String mainAreaId, String detailAreaId,
-                                                                               String originalManufacturerChineseName,String startDate, String endDate)
+    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseList(FinanceGpManufacturerBase financeGpManufacturerBase)
     {
-        return financeGpManufacturerBaseMapper.selectFinanceGpManufacturerBaseList(mainAreaId,detailAreaId,originalManufacturerChineseName,startDate,endDate);
+        return financeGpManufacturerBaseMapper.selectFinanceGpManufacturerBaseList(financeGpManufacturerBase);
     }
 
     /**

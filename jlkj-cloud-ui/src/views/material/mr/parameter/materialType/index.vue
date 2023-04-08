@@ -213,7 +213,7 @@ export default {
       }).then(() => {
         deleteMaterialsCategory({ id: row.id }).then(res => {
           this.onLoad();
-          this.$message({ type: 'success', message: res.data.msg });
+          this.$message({ type: 'success', message: res.msg });
         }, error => {
           window.console.log(error);
         });

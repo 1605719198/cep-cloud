@@ -128,9 +128,9 @@
             this.submitLoading = true
             // this.$emit('submitSave')
             updateStorageSpaces(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({type: "success", message: res.data.msg});
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({type: "success", message: res.msg});
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {

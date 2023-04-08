@@ -1,7 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.Holidaysetting;
-import com.jlkj.human.hd.dto.CopyHolidaysetting;
+import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
 
 import java.util.List;
 
@@ -65,10 +65,10 @@ public interface HolidaysettingMapper
     /**
      * 复制假别参数设定
      *
-     * @param copyHolidaysetting 假别参数复制设定
+     * @param copyHolidaysettingDTO 假别参数复制设定
      * @return 结果
      */
-    public int copyHolidaysetting(CopyHolidaysetting copyHolidaysetting);
+    public int copyHolidaysetting(CopyHolidaysettingDTO copyHolidaysettingDTO);
 
     /**
      * 修改假别参数设定

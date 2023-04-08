@@ -1,7 +1,7 @@
 package com.jlkj.human.hd.service;
 
 import com.jlkj.human.hd.domain.Holidaysetting;
-import com.jlkj.human.hd.dto.CopyHolidaysetting;
+import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
 
 import java.util.List;
 
@@ -34,22 +34,25 @@ public interface IHolidaysettingService
      *
      * @param holidaysetting 假别参数设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int insertHolidaysetting(Holidaysetting holidaysetting) throws Exception;
 
     /**
      * 复制假别参数设定
      *
-     * @param copyHolidaysetting 假别参数复制设定
+     * @param copyHolidaysettingDTO 假别参数复制设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
-    public int copyHolidaysetting(CopyHolidaysetting copyHolidaysetting) throws Exception;
+    public int copyHolidaysetting(CopyHolidaysettingDTO copyHolidaysettingDTO) throws Exception;
 
     /**
      * 修改假别参数设定
      *
      * @param holidaysetting 假别参数设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int updateHolidaysetting(Holidaysetting holidaysetting) throws Exception;
 
