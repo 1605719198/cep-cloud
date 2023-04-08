@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -320,6 +321,7 @@ public class ManufacturerBaseController {
             manufacturerRelation.setManufacturerId(manufacturerBaseDTO.getManufacturerId());
             manufacturerRelation.setRelation(relation[i]);
             manufacturerRelation.setId("");
+
             QueryWrapper<ManufacturerRelation> wrapperRelation = new QueryWrapper<>();
             wrapperRelation.eq("manufacturer_id",manufacturerRelation.getManufacturerId())
             .eq("relation",manufacturerRelation.getRelation());
@@ -336,8 +338,10 @@ public class ManufacturerBaseController {
         financeGpCorrelation.setCorrelationDate( manufacturerBaseDTO.getCorrelationDate());
         financeGpCorrelation.setManufacturerId(manufacturerBaseDTO.getManufacturerId());
         financeGpCorrelation.setPreStatus("3");
+        financeGpCorrelation.setCreateTime(DateUtils.getNowDate());
         financeGpCorrelation.setCurrentStatus(manufacturerBaseDTO.getRelatedParty());
         financeGpCorrelationService.insertFinanceGpCorrelation(financeGpCorrelation);
+        manufacturerBase.setCreateTime(DateUtils.getNowDate());
         boolean save = manufacturerBaseService.save(manufacturerBase);
         return AjaxResult.success(save);
     }
@@ -398,6 +402,7 @@ public class ManufacturerBaseController {
             manufacturerRelation.setManufacturerId(manufacturerBaseDTO.getManufacturerId());
             manufacturerRelation.setRelation(relation[i]);
             manufacturerRelation.setId("");
+
             QueryWrapper<ManufacturerRelation> wrapperRelation = new QueryWrapper<>();
             wrapperRelation.eq("manufacturer_id",manufacturerRelation.getManufacturerId())
                     .eq("relation",manufacturerRelation.getRelation());
@@ -407,6 +412,7 @@ public class ManufacturerBaseController {
             }
         }
         BeanUtils.copyProperties(manufacturerBaseDTO,manufacturerBase);
+        manufacturerBase.setUpdateTime(DateUtils.getNowDate());
         boolean result = manufacturerBaseService.updateById(manufacturerBase);
         return AjaxResult.success(result);
     }
