@@ -31,7 +31,6 @@ public class FinanceGpManufacturerBaseServiceImpl implements IFinanceGpManufactu
     {
         return financeGpManufacturerBaseMapper.selectFinanceGpManufacturerBaseById(id);
     }
-
     /**
      * 查询销售管理-厂商基本资料列表
      *

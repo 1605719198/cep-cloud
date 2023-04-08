@@ -32,8 +32,7 @@ public class FinanceGpManufacturerBaseController extends BaseController
      * 查询销售管理-厂商基本资料列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(
-            @RequestParam(defaultValue = "") String mainAreaId,
+    public TableDataInfo list(@RequestParam(defaultValue = "") String mainAreaId,
             @RequestParam(defaultValue = "") String detailAreaId,
             @RequestParam(defaultValue = "") String originalManufacturerChineseName,
                               @RequestParam(defaultValue = "") String startDate,
