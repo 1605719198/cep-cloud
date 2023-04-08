@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.service;
 
 import com.jlkj.human.hd.domain.Attendencebasis;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public interface IAttendencebasisService
      * 
      * @param attendencebasis 员工出勤基本资料维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int insertAttendencebasis(Attendencebasis attendencebasis) throws Exception;
 
@@ -58,6 +60,7 @@ public interface IAttendencebasisService
      * 
      * @param attendencebasis 员工出勤基本资料维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int updateAttendencebasis(Attendencebasis attendencebasis) throws Exception;
 
@@ -74,6 +77,7 @@ public interface IAttendencebasisService
      * 
      * @param id 员工出勤基本资料维护主键
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int deleteAttendencebasisById(Long id) throws Exception;
 
@@ -84,6 +88,6 @@ public interface IAttendencebasisService
      * @param code 员工出勤基本资料维护编码
      * @return 结果
      */
-    public List<Attendencebasis> selectBasisOptions(String code) ;
+    public List<BasisOptionsDTO> selectBasisOptions(String code) ;
 
 }

@@ -41,6 +41,7 @@ public interface IHumanHpJobTitleService
      * 
      * @param humanHpJobTitle 职位名称数据维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int insertHumanHpJobTitle (HumanHpJobTitle humanHpJobTitle)throws Exception;
 
@@ -49,6 +50,7 @@ public interface IHumanHpJobTitleService
      * 
      * @param humanHpJobTitle 职位名称数据维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int updateHumanHpJobTitle(HumanHpJobTitle humanHpJobTitle) throws Exception;
 

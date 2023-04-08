@@ -60,8 +60,7 @@ public class SysPostServiceImpl implements ISysPostService
     public int insertSysPost(SysPost sysPost) throws Exception
     {
         
-//        sysPost.setCreateTime(DateUtils.getNowDate());
-//        return sysPostMapper.insertSysPost(sysPost);
+
 
         SysPost oldsysPost = sysPostMapper.selectSysPostByPostCode(sysPost.getPostCode());
         if(oldsysPost!=null){
@@ -70,11 +69,6 @@ public class SysPostServiceImpl implements ISysPostService
         SysPostVersion sysPostVersion = new SysPostVersion();
         sysPost.setCreateTime(DateUtils.getNowDate());
         sysPost.setUpdateTime(DateUtils.getNowDate());
-        // 如果父节点不为正常状态,则不允许新增子节点
-//        if (!UserConstants.DEPT_NORMAL.equals(info.getStatus()))
-//        {
-//            throw new ServiceException("部门停用，不允许新增");
-//        }
         int insertOk=sysPostMapper.insertSysPost(sysPost);
         if(insertOk>=1){
             BeanUtils.copyProperties(sysPost,sysPostVersion);

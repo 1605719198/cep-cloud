@@ -13,5 +13,7 @@ export function getDateTime(e){
     return time;
   }else if(e==1){
     return date;
+  }else if(e=='year'){
+    return yyyy
   }
 }

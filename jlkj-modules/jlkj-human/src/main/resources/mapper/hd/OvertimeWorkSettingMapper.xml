@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.OvertimeWorkSettingMapper">
+
+    <resultMap type="OvertimeWorkSetting" id="OvertimeWorkSettingResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="isTranMon"    column="is_tran_mon"    />
+        <result property="isTranQua"    column="is_tran_qua"    />
+        <result property="isTranYear"    column="is_tran_year"    />
+        <result property="holUnit"    column="hol_unit"    />
+        <result property="oveUnit"    column="ove_unit"    />
+        <result property="monthOve"    column="month_ove"    />
+        <result property="resvAttr3"    column="resv_attr3"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectOvertimeWorkSettingVo">
+        select id, comp_id, is_tran_mon, is_tran_qua, is_tran_year, hol_unit, ove_unit, month_ove, resv_attr3, resv_attr1, resv_attr2, creator, creator_id, create_date from human_hd_overtimeworksetting
+    </sql>
+
+    <select id="selectOvertimeWorkSettingList" parameterType="OvertimeWorkSetting" resultMap="OvertimeWorkSettingResult">
+        <include refid="selectOvertimeWorkSettingVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+
+    <select id="selectOvertimeWorkSettingById" parameterType="String" resultMap="OvertimeWorkSettingResult">
+        <include refid="selectOvertimeWorkSettingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOvertimeWorkSetting" parameterType="OvertimeWorkSetting">
+        insert into human_hd_overtimeworksetting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="isTranMon != null">is_tran_mon,</if>
+            <if test="isTranQua != null">is_tran_qua,</if>
+            <if test="isTranYear != null">is_tran_year,</if>
+            <if test="holUnit != null">hol_unit,</if>
+            <if test="oveUnit != null">ove_unit,</if>
+            <if test="monthOve != null">month_ove,</if>
+            <if test="resvAttr3 != null">resv_attr3,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="isTranMon != null">#{isTranMon},</if>
+            <if test="isTranQua != null">#{isTranQua},</if>
+            <if test="isTranYear != null">#{isTranYear},</if>
+            <if test="holUnit != null">#{holUnit},</if>
+            <if test="oveUnit != null">#{oveUnit},</if>
+            <if test="monthOve != null">#{monthOve},</if>
+            <if test="resvAttr3 != null">#{resvAttr3},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOvertimeWorkSetting" parameterType="OvertimeWorkSetting">
+        update human_hd_overtimeworksetting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="isTranMon != null">is_tran_mon = #{isTranMon},</if>
+            <if test="isTranQua != null">is_tran_qua = #{isTranQua},</if>
+            <if test="isTranYear != null">is_tran_year = #{isTranYear},</if>
+            <if test="holUnit != null">hol_unit = #{holUnit},</if>
+            <if test="oveUnit != null">ove_unit = #{oveUnit},</if>
+            <if test="monthOve != null">month_ove = #{monthOve},</if>
+            <if test="resvAttr3 != null">resv_attr3 = #{resvAttr3},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOvertimeWorkSettingById" parameterType="String">
+        delete from human_hd_overtimeworksetting where id = #{id}
+    </delete>
+
+    <delete id="deleteOvertimeWorkSettingByIds" parameterType="String">
+        delete from human_hd_overtimeworksetting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

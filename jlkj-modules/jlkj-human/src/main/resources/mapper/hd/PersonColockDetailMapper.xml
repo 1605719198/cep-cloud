@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.PersonColockDetailMapper">
+
+    <resultMap type="PersonColockDetail" id="PersonColockDetailResult">
+        <result property="id"    column="id"    />
+        <result property="personColockId"    column="person_colock_id"    />
+        <result property="macId"    column="mac_id"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonColockDetailVo">
+        select id, person_colock_id, mac_id, creator, creator_id, create_date from human_hd_person_colock_detail
+    </sql>
+
+    <select id="selectPersonColockDetailList" parameterType="PersonColockDetail" resultMap="PersonColockDetailResult">
+        <include refid="selectPersonColockDetailVo"/>
+        <where>
+            <if test="personColockId != null  and personColockId != ''"> and person_colock_id = #{personColockId}</if>
+        </where>
+    </select>
+
+    <select id="selectPersonColockDetailById" parameterType="String" resultMap="PersonColockDetailResult">
+        <include refid="selectPersonColockDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPersonColockDetail" parameterType="PersonColockDetail">
+        insert into human_hd_person_colock_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="personColockId != null">person_colock_id,</if>
+            <if test="macId != null">mac_id,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="personColockId != null">#{personColockId},</if>
+            <if test="macId != null">#{macId},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePersonColockDetail" parameterType="PersonColockDetail">
+        update human_hd_person_colock_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personColockId != null">person_colock_id = #{personColockId},</if>
+            <if test="macId != null">mac_id = #{macId},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonColockDetailById" parameterType="String">
+        delete from human_hd_person_colock_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePersonColockDetailByPersonColockId" parameterType="String">
+        delete from human_hd_person_colock_detail where person_colock_id = #{personColockId}
+    </delete>
+
+    <delete id="deletePersonColockDetailByIds" parameterType="String">
+        delete from human_hd_person_colock_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

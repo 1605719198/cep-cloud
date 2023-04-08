@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.Attendencebasis;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface AttendencebasisMapper
      * @param code 员工出勤基本资料维护编码
      * @return 员工出勤基本资料维护
      */
-    public List<Attendencebasis> selectAttendencebasisByCode(String  code);
+    public Attendencebasis selectAttendencebasisParentByCode(String  code);
 
     /**
      * 查询是否有重复编码数据
@@ -42,7 +43,7 @@ public interface AttendencebasisMapper
      * @param parentid 员工出勤基本资料维护编码
      * @return 员工出勤基本资料维护
      */
-    public List<Attendencebasis> selectAttendencebasisByParentid(Long  parentid);
+    public List<BasisOptionsDTO> selectAttendencebasisByParentid(Long  parentid);
 
     /**
      * 查询员工出勤基本资料维护列表

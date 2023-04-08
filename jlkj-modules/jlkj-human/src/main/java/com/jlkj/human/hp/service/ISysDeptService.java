@@ -2,9 +2,11 @@ package com.jlkj.human.hp.service;
 
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
-import com.jlkj.human.hp.dto.CopySysDept;
-import com.jlkj.human.hp.dto.DeptUnionPost;
+import com.jlkj.human.hp.dto.CopySysDeptDTO;
+import com.jlkj.human.hp.dto.DeptUnionPostDTO;
+import com.jlkj.human.hp.dto.FirstDeptDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public interface ISysDeptService
      * @param deptpost 部门岗位资料维护
      * @return 部门岗位资料集合
      */
-    public List<DeptUnionPost> selectDeptPostList(DeptUnionPost deptpost);
+    public List<DeptUnionPostDTO> selectDeptPostList(DeptUnionPostDTO deptpost);
 
     /**
      * 查询公司列表
@@ -67,7 +69,7 @@ public interface ISysDeptService
      * @param deptpostList 部门列表
      * @return 树结构列表
      */
-    public List<DeptUnionPost> buildDeptPostTree(List<DeptUnionPost> deptpostList);
+    public List<DeptUnionPostDTO> buildDeptPostTree(List<DeptUnionPostDTO> deptpostList);
 
     /**
      * 构建前端所需要下拉树结构
@@ -75,7 +77,7 @@ public interface ISysDeptService
      * @param deptpostList 部门列表
      * @return 下拉树结构列表
      */
-    public List<TreeSelect> buildDeptPostTreeSelect(List<DeptUnionPost> deptpostList);
+    public List<TreeSelect> buildDeptPostTreeSelect(List<DeptUnionPostDTO> deptpostList);
 
     /**
      * 根据部门ID查询信息
@@ -91,6 +93,7 @@ public interface ISysDeptService
      * 
      * @param sysDept 部门资料维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
 
     public int insertSysDept(SysDept sysDept)throws Exception;
@@ -98,16 +101,18 @@ public interface ISysDeptService
     /**
      * 复制组织机构设定
      *
-     * @param copySysDept 假别参数复制设定
+     * @param copySysDeptDTO 假别参数复制设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
-    public int copySysDept (CopySysDept copySysDept) throws Exception;
+    public int copySysDept (CopySysDeptDTO copySysDeptDTO) throws Exception;
 
     /**
      * 修改部门资料维护
      * 
      * @param sysDept 部门资料维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int updateSysDept(SysDept sysDept) throws Exception;
 
@@ -126,4 +131,26 @@ public interface ISysDeptService
      * @return 结果
      */
     public int deleteSysDeptByDeptId(Long deptId);
+
+    /**
+     * 通过部门id查一级部门
+     * @param empId 部门id
+     * @return 结果
+     */
+    public FirstDeptDTO getFirstDeptByDept(String empId);
+
+    /**
+     * 通过员工工号查一级部门
+     * @param empId 员工工号
+     * @return 结果
+     */
+    public FirstDeptDTO getFirstDeptByPerson(String empId);
+
+
+    /**
+     * 通过部门查员工
+     * @param deptId 员工工号
+     * @return 结果
+     */
+    public ArrayList<FirstDeptDTO> getPersonByDept(String deptId);
 }

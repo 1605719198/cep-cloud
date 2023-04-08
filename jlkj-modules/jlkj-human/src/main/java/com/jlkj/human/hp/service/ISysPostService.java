@@ -33,6 +33,7 @@ public interface ISysPostService
      * 
      * @param sysPost 岗位信息数据维护
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int insertSysPost(SysPost sysPost) throws Exception;
 

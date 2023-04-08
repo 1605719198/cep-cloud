@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="companyName"    column="company_name"    />
     </resultMap>
 
-    <resultMap type="DeptUnionPost" id="DeptUnionPostResult">
+    <resultMap type="DeptUnionPostDTO" id="DeptUnionPostResult">
         <result property="deptId"    column="dept_id"    />
         <result property="name"    column="name"    />
         <result property="parentId"    column="parent_id"    />
@@ -44,9 +44,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="postId"    column="post_id"    />
     </resultMap>
 
+    <resultMap type="FirstDeptDTO" id="FirstDeptResult">
+        <result property="firstDeptId"    column="first_dept_id"    />
+        <result property="firstDeptName"    column="first_dept_name"    />
+        <result property="childPersonId"    column="child_person_id"    />
+        <result property="childDeptId"    column="child_dept_id"    />
+        <result property="compId"    column="comp_id"    />
+    </resultMap>
+
     <sql id="selectSysDeptVo">
         select dept_id, dept_code, dept_name, board_id, parent_id, parent_name, parent_full_name, ancestors, org_tier_id, order_num, leader, email, del_flag, cost_center_id, fax, phone, change_reason, effect_date, version_no, if_company, comp_id, if_display, create_by, status, create_time, update_by, update_time, is_new, company_name from sys_dept
     </sql>
+
+    <select id="getFirstDeptByDept" parameterType="String" resultMap="FirstDeptResult">
+        select first_dept_id,first_dept_name,comp_id from human_first_dept
+        where child_dept_id= #{empId}
+        group by first_dept_id
+    </select>
+
+    <select id="getFirstDeptByPerson" parameterType="String" resultMap="FirstDeptResult">
+        select first_dept_id,first_dept_name,comp_id from human_first_dept
+        where child_person_id= #{empId}
+        group by first_dept_id
+    </select>
+
+    <select id="getPersonByDept" parameterType="String" resultMap="FirstDeptResult">
+        select child_person_id from human_first_dept
+        where child_dept_id= #{deptId}
+        group by child_person_id
+    </select>
 
     <select id="selectSysDeptList" parameterType="SysDept" resultMap="SysDeptResult">
         <include refid="selectSysDeptVo"/>
@@ -61,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptCode != null  and deptCode != ''"> and dept_code = #{deptCode}</if>
             <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName} ,'%') </if>
         </where>
-        order by order_num asc
+        order by dept_id asc
     </select>
 
     <select id="selectCompanyList" resultMap="SysDeptResult">
@@ -73,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="selectDeptUnionPost" parameterType="DeptUnionPost" resultMap="DeptUnionPostResult">
+    <select id="selectDeptUnionPost" parameterType="DeptUnionPostDTO" resultMap="DeptUnionPostResult">
         SELECT 20230101 AS dept_id,dept_id AS parent_id,post_name AS name,comp_id,post_id FROM sys_post WHERE comp_id=#{compId}
         UNION ALL
         SELECT dept_id,parent_id,dept_name AS name,comp_id,'' AS post_id FROM sys_dept WHERE comp_id=#{compId}
@@ -154,7 +180,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <insert id="copySysDept" parameterType="CopySysDept" >
+    <insert id="copySysDept" parameterType="CopySysDeptDTO" >
         insert into sys_dept
         (dept_code, dept_name, board_id, parent_id, parent_name, parent_full_name, ancestors, org_tier_id, order_num, leader, email, del_flag, cost_center_id, fax, phone, change_reason, effect_date, version_no, if_company, comp_id, if_display, create_by, status, create_time, update_by, update_time, is_new, company_name)
         select dept_code, dept_name, board_id, parent_id, parent_name, parent_full_name, ancestors, org_tier_id, order_num,'' AS leader,'' AS email, del_flag, cost_center_id,'' AS fax,'' AS phone,change_reason, effect_date,1 AS version_no, if_company,#{newCompId} AS comp_id, if_display,#{createBy} AS create_by, status,#{createTime} AS create_time,#{updateBy} AS update_by, #{updateTime} as update_time, is_new, company_name

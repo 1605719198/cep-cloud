@@ -8,7 +8,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.Holidaysetting;
-import com.jlkj.human.hd.dto.CopyHolidaysetting;
+import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
 import com.jlkj.human.hd.service.IHolidaysettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -82,9 +82,9 @@ public class HolidaysettingController extends BaseController
     @RequiresPermissions("human:holidaysetting:copy")
     @Log(title = "假别参数复制", businessType = BusinessType.INSERT)
     @PostMapping("/copyholidaysetting")
-    public AjaxResult copy(@RequestBody CopyHolidaysetting copyHolidaysetting) throws Exception
+    public AjaxResult copy(@RequestBody CopyHolidaysettingDTO copyHolidaysettingDTO) throws Exception
     {
-        return toAjax(holidaysettingService.copyHolidaysetting(copyHolidaysetting));
+        return toAjax(holidaysettingService.copyHolidaysetting(copyHolidaysettingDTO));
     }
 
     /**
