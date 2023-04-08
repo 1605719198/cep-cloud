@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.FinanceGpManufacturerBaseMapper">
+    
+    <resultMap type="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase" id="FinanceGpManufacturerBaseResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="countryName"    column="country_name"    />
+        <result property="catalog"    column="catalog"    />
+        <result property="catalogName"    column="catalog_name"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="manufacturerChineseName"    column="manufacturer_chinese_name"    />
+        <result property="manufacturerEnglishName"    column="manufacturer_english_name"    />
+        <result property="manufacturerShortName"    column="manufacturer_short_name"    />
+        <result property="taxNo"    column="tax_no"    />
+        <result property="owner"    column="owner"    />
+        <result property="ownerTitle"    column="owner_title"    />
+        <result property="capital"    column="capital"    />
+        <result property="capitalCurrencyCode"    column="capital_currency_code"    />
+        <result property="turnover"    column="turnover"    />
+        <result property="turnoverCurrencyCode"    column="turnover_currency_code"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="originaManufacturerId"    column="origina_manufacturer_id"    />
+        <result property="billAddress"    column="bill_address"    />
+        <result property="billZipCode"    column="bill_zip_code"    />
+        <result property="billZipDesc"    column="bill_zip_desc"    />
+        <result property="web"    column="web"    />
+        <result property="status"    column="status"    />
+        <result property="corelation"    column="corelation"    />
+        <result property="professional"    column="professional"    />
+        <result property="mainAreaId"    column="main_area_id"    />
+        <result property="mainAreaDesc"    column="main_area_desc"    />
+        <result property="detailAreaId"    column="detail_area_id"    />
+        <result property="detailAreaDesc"    column="detail_area_desc"    />
+        <result property="groupClass"    column="group_class"    />
+        <result property="relatedParty"    column="related_party"    />
+        <result property="relatedPartyItem"    column="related_party_item"    />
+        <result property="departmentCode"    column="department_code"    />
+        <result property="clearStatus"    column="clear_status"    />
+        <result property="isCentralizedPurchase"    column="is_centralized_purchase"    />
+        <result property="originalManufacturerChineseName"    column="original_manufacturer_chinese_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectFinanceGpManufacturerBaseVo">
+        select id, comp_id, manufacturer_id, country_id, country_name, catalog, catalog_name, area_id, area_name, manufacturer_chinese_name, manufacturer_english_name, manufacturer_short_name, tax_no, owner, owner_title, capital, capital_currency_code, turnover, turnover_currency_code, create_user, update_user, origina_manufacturer_id, bill_address, bill_zip_code, bill_zip_desc, web, status, corelation, professional, main_area_id, main_area_desc, detail_area_id, detail_area_desc, group_class, related_party, related_party_item, department_code, clear_status, is_centralized_purchase, original_manufacturer_chinese_name, create_time, update_time, parent_id, del_flag from finance_gp_manufacturer_base
+    </sql>
+
+    <select id="selectFinanceGpManufacturerBaseList" parameterType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase" resultMap="FinanceGpManufacturerBaseResult">
+        <include refid="selectFinanceGpManufacturerBaseVo"/>
+        <where>
+            <if test="mainAreaId != null  and mainAreaId != ''"> and main_area_id = #{mainAreaId}</if>
+            <if test="detailAreaId != null  and detailAreaId != ''"> and detail_area_id = #{detailAreaId}</if>
+            <if test="originalManufacturerChineseName != null  and originalManufacturerChineseName != ''"> and original_manufacturer_chinese_name <![CDATA[ != ]]> ''</if>
+            <if test="startDate != '' and endDate != ''"> and create_time between #{startDate} and #{endDate}</if>
+
+        </where>
+    </select>
+    
+    <select id="selectFinanceGpManufacturerBaseById" parameterType="String" resultMap="FinanceGpManufacturerBaseResult">
+        <include refid="selectFinanceGpManufacturerBaseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceGpManufacturerBase" parameterType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase">
+        insert into finance_gp_manufacturer_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="countryId != null">country_id,</if>
+            <if test="countryName != null">country_name,</if>
+            <if test="catalog != null">catalog,</if>
+            <if test="catalogName != null">catalog_name,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="areaName != null">area_name,</if>
+            <if test="manufacturerChineseName != null">manufacturer_chinese_name,</if>
+            <if test="manufacturerEnglishName != null">manufacturer_english_name,</if>
+            <if test="manufacturerShortName != null">manufacturer_short_name,</if>
+            <if test="taxNo != null">tax_no,</if>
+            <if test="owner != null">owner,</if>
+            <if test="ownerTitle != null">owner_title,</if>
+            <if test="capital != null">capital,</if>
+            <if test="capitalCurrencyCode != null">capital_currency_code,</if>
+            <if test="turnover != null">turnover,</if>
+            <if test="turnoverCurrencyCode != null">turnover_currency_code,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="originaManufacturerId != null">origina_manufacturer_id,</if>
+            <if test="billAddress != null">bill_address,</if>
+            <if test="billZipCode != null">bill_zip_code,</if>
+            <if test="billZipDesc != null">bill_zip_desc,</if>
+            <if test="web != null">web,</if>
+            <if test="status != null">status,</if>
+            <if test="corelation != null">corelation,</if>
+            <if test="professional != null">professional,</if>
+            <if test="mainAreaId != null">main_area_id,</if>
+            <if test="mainAreaDesc != null">main_area_desc,</if>
+            <if test="detailAreaId != null">detail_area_id,</if>
+            <if test="detailAreaDesc != null">detail_area_desc,</if>
+            <if test="groupClass != null">group_class,</if>
+            <if test="relatedParty != null">related_party,</if>
+            <if test="relatedPartyItem != null">related_party_item,</if>
+            <if test="departmentCode != null">department_code,</if>
+            <if test="clearStatus != null">clear_status,</if>
+            <if test="isCentralizedPurchase != null">is_centralized_purchase,</if>
+            <if test="originalManufacturerChineseName != null">original_manufacturer_chinese_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="countryId != null">#{countryId},</if>
+            <if test="countryName != null">#{countryName},</if>
+            <if test="catalog != null">#{catalog},</if>
+            <if test="catalogName != null">#{catalogName},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="areaName != null">#{areaName},</if>
+            <if test="manufacturerChineseName != null">#{manufacturerChineseName},</if>
+            <if test="manufacturerEnglishName != null">#{manufacturerEnglishName},</if>
+            <if test="manufacturerShortName != null">#{manufacturerShortName},</if>
+            <if test="taxNo != null">#{taxNo},</if>
+            <if test="owner != null">#{owner},</if>
+            <if test="ownerTitle != null">#{ownerTitle},</if>
+            <if test="capital != null">#{capital},</if>
+            <if test="capitalCurrencyCode != null">#{capitalCurrencyCode},</if>
+            <if test="turnover != null">#{turnover},</if>
+            <if test="turnoverCurrencyCode != null">#{turnoverCurrencyCode},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="originaManufacturerId != null">#{originaManufacturerId},</if>
+            <if test="billAddress != null">#{billAddress},</if>
+            <if test="billZipCode != null">#{billZipCode},</if>
+            <if test="billZipDesc != null">#{billZipDesc},</if>
+            <if test="web != null">#{web},</if>
+            <if test="status != null">#{status},</if>
+            <if test="corelation != null">#{corelation},</if>
+            <if test="professional != null">#{professional},</if>
+            <if test="mainAreaId != null">#{mainAreaId},</if>
+            <if test="mainAreaDesc != null">#{mainAreaDesc},</if>
+            <if test="detailAreaId != null">#{detailAreaId},</if>
+            <if test="detailAreaDesc != null">#{detailAreaDesc},</if>
+            <if test="groupClass != null">#{groupClass},</if>
+            <if test="relatedParty != null">#{relatedParty},</if>
+            <if test="relatedPartyItem != null">#{relatedPartyItem},</if>
+            <if test="departmentCode != null">#{departmentCode},</if>
+            <if test="clearStatus != null">#{clearStatus},</if>
+            <if test="isCentralizedPurchase != null">#{isCentralizedPurchase},</if>
+            <if test="originalManufacturerChineseName != null">#{originalManufacturerChineseName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceGpManufacturerBase" parameterType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase">
+        update finance_gp_manufacturer_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="countryId != null">country_id = #{countryId},</if>
+            <if test="countryName != null">country_name = #{countryName},</if>
+            <if test="catalog != null">catalog = #{catalog},</if>
+            <if test="catalogName != null">catalog_name = #{catalogName},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="areaName != null">area_name = #{areaName},</if>
+            <if test="manufacturerChineseName != null">manufacturer_chinese_name = #{manufacturerChineseName},</if>
+            <if test="manufacturerEnglishName != null">manufacturer_english_name = #{manufacturerEnglishName},</if>
+            <if test="manufacturerShortName != null">manufacturer_short_name = #{manufacturerShortName},</if>
+            <if test="taxNo != null">tax_no = #{taxNo},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="ownerTitle != null">owner_title = #{ownerTitle},</if>
+            <if test="capital != null">capital = #{capital},</if>
+            <if test="capitalCurrencyCode != null">capital_currency_code = #{capitalCurrencyCode},</if>
+            <if test="turnover != null">turnover = #{turnover},</if>
+            <if test="turnoverCurrencyCode != null">turnover_currency_code = #{turnoverCurrencyCode},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="originaManufacturerId != null">origina_manufacturer_id = #{originaManufacturerId},</if>
+            <if test="billAddress != null">bill_address = #{billAddress},</if>
+            <if test="billZipCode != null">bill_zip_code = #{billZipCode},</if>
+            <if test="billZipDesc != null">bill_zip_desc = #{billZipDesc},</if>
+            <if test="web != null">web = #{web},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="corelation != null">corelation = #{corelation},</if>
+            <if test="professional != null">professional = #{professional},</if>
+            <if test="mainAreaId != null">main_area_id = #{mainAreaId},</if>
+            <if test="mainAreaDesc != null">main_area_desc = #{mainAreaDesc},</if>
+            <if test="detailAreaId != null">detail_area_id = #{detailAreaId},</if>
+            <if test="detailAreaDesc != null">detail_area_desc = #{detailAreaDesc},</if>
+            <if test="groupClass != null">group_class = #{groupClass},</if>
+            <if test="relatedParty != null">related_party = #{relatedParty},</if>
+            <if test="relatedPartyItem != null">related_party_item = #{relatedPartyItem},</if>
+            <if test="departmentCode != null">department_code = #{departmentCode},</if>
+            <if test="clearStatus != null">clear_status = #{clearStatus},</if>
+            <if test="isCentralizedPurchase != null">is_centralized_purchase = #{isCentralizedPurchase},</if>
+            <if test="originalManufacturerChineseName != null">original_manufacturer_chinese_name = #{originalManufacturerChineseName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceGpManufacturerBaseById" parameterType="String">
+        delete from finance_gp_manufacturer_base where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceGpManufacturerBaseByIds" parameterType="String">
+        delete from finance_gp_manufacturer_base where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
