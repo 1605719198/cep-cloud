@@ -106,6 +106,7 @@ import { knowledgelibraryInsert, knowledgelibraryUpdate, fileList } from "@/api/
 import { getknowledgecategoryTree } from "@/api/security/si/WorkTicketApi";
 import { treeDataformat } from "@/utils/data"
 import { mapGetters } from "vuex";
+import {getToken} from "@/utils/auth";
 export default {
   props: {
     type: {

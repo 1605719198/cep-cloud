@@ -161,6 +161,7 @@
   import {mapGetters} from "vuex";
   import operator from "./common/operator";
   import fileList from "./common/fileList";
+  import {getToken} from "@/utils/auth";
 
   export default {
     name: "roadBreakingInfoApplication",
