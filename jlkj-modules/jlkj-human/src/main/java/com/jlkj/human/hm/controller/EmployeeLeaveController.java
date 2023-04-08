@@ -10,7 +10,7 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.Leave;
 import com.jlkj.human.hm.service.ILeaveService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-23 13:42
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/employeeLeave")
 public class EmployeeLeaveController extends BaseController {
 
-    @Autowired
-    ILeaveService iLeaveService;
+    private final ILeaveService iLeaveService;
 
     /**
      * 查询人员离职信息列表

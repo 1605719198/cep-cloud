@@ -1,6 +1,7 @@
 package com.jlkj.material.mr.dto.materialsstoragespaces;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -50,6 +51,15 @@ public class UpdateMaterialsStorageSpacesDTO {
     private String storageSpacesName;
 
     /**
+     * 小煤种代码
+     */
+    @NotNull(message = "小煤种代码为必填项")
+    @NotEmpty(message = "小煤种代码不能为空")
+    @Schema(description = "小煤种代码")
+    @JsonProperty("materials_small_code")
+    private String materialsSmallCode;
+
+    /**
      * 修改人id
      */
     @NotNull(message = "修改人id为必填项")
@@ -67,5 +77,11 @@ public class UpdateMaterialsStorageSpacesDTO {
     @JsonProperty("modify_user_name")
     private String modifyUserName;
 
+    /**
+     * 煤排
+     */
+    @NotNull(message = "煤排为必填项")
+    @JsonProperty("coal_sort")
+    private Integer coalSort;
 }
 

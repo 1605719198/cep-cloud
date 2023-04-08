@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="query" ref="query" :inline="true"  label-width="68px">
-      <el-form-item prop="shift_name" label="班次">
-        <el-select placeholder="选择班次" v-model="query.shift_name" clearable :popper-append-to-body="false"
+      <el-form-item prop="shiftName" label="班次">
+        <el-select placeholder="选择班次" v-model="query.shiftName" clearable :popper-append-to-body="false"
                    class="customSelectStyle">
           <el-option v-for="item in shiftOptions" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="class_name" label="班别">
-        <el-select placeholder="选择班别" v-model="query.class_name" clearable :popper-append-to-body="false"
+      <el-form-item prop="className" label="班别">
+        <el-select placeholder="选择班别" v-model="query.className" clearable :popper-append-to-body="false"
                    class="customSelectStyle">
           <el-option v-for="item in classTypeOptions" :key="item.value" :label="item.label"
                      :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="coke_materials_code" label="料号名称">
+      <el-form-item prop="cokeMaterialsCode" label="料号名称">
         <el-select :popper-append-to-body="false" class="customSelectStyle"
-                   v-model="query.coke_materials_code" clearable filterable placeholder="选择煤的料号名称">
+                   v-model="query.cokeMaterialsCode" clearable filterable placeholder="选择煤的料号名称">
           <el-option v-for="item in gradeOptions" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
@@ -81,9 +81,9 @@ export default {
         { value: "00", label: "休息" }
       ],
       query: {
-        class_name: null,
-        shift_name: null,
-        coke_materials_code: null
+        className: null,
+        shiftName: null,
+        cokeMaterialsCode: null
       },
       table: {
         border: true,
@@ -115,7 +115,7 @@ export default {
       listMaterialsBoxM(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.materials_code,
             name: item.materials_name

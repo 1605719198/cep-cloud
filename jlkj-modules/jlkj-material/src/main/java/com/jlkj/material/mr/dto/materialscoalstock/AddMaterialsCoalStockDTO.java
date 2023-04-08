@@ -28,6 +28,17 @@ public class AddMaterialsCoalStockDTO {
     @JsonProperty("materials_name")
     private String materialName;
 
+    /**
+     * 小煤种代码
+     */
+    @NotNull(message = "小煤种为必填项")
+    @NotEmpty(message = "小煤种不能为空")
+    @JsonProperty("materials_small_code")
+    private String materialsSmallCode;
+
+    @JsonProperty("materials_small_name")
+    private String materialsSmallName;
+
     @JsonProperty("storage_spaces_id")
     private String storageSpaceId;
 

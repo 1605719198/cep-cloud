@@ -10,7 +10,7 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.Contract;
 import com.jlkj.human.hm.service.IContractService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-28 13:42
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/laborContract")
 public class LaborContractController extends BaseController {
     
-    @Autowired
-    IContractService iContractService;
+    private final IContractService iContractService;
 
     /**
      * 查询劳动合同信息列表

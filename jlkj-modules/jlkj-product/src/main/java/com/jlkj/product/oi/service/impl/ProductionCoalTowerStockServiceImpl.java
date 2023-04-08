@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.resp.PageResult;
 import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.coalconfigmanual.*;
 import com.jlkj.product.oi.feignclients.LogisticsFeignService;

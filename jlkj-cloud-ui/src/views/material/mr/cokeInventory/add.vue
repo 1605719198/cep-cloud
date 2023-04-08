@@ -109,7 +109,7 @@ export default {
           listMaterialsCategoryBox().then(res => {
                   // console.log(res)
                   this.options = []
-                  let data = res.data
+                  let data = res
                   data.map(i => {
                       if (i.mtrlType == '01') {
                           this.options.push(i)
@@ -122,7 +122,7 @@ export default {
 
           listMaterialsBoxJ().then((res) => {
               let options = []
-              res.data.forEach(item => {
+              res.forEach(item => {
                   let i = {
                     id: item.materials_code,
                     name: item.materials_name,
@@ -131,7 +131,7 @@ export default {
                   options.push(i)
               });
               this.materialsOptions = options
-              // console.log(this.materialsOptions);
+              console.log(this.materialsOptions);
           })
     },
   cancel () {

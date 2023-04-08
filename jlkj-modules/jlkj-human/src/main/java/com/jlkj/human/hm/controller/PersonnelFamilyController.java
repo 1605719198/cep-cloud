@@ -10,7 +10,7 @@ import com.jlkj.human.hm.domain.PersonnelFamily;
 import com.jlkj.human.hm.dto.PersonnelFamilyDTO;
 import com.jlkj.human.hm.service.IPersonnelFamilyService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/family")
 public class PersonnelFamilyController {
 
-    @Autowired
-    private IPersonnelFamilyService iPersonnelFamilyService;
+    private final IPersonnelFamilyService iPersonnelFamilyService;
 
     /**
      * 新增家属信息

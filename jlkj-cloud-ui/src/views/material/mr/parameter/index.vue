@@ -13,6 +13,7 @@
           <storeLocation v-else-if="tabPosition==='cwwh'" />
           <materialType v-else-if="tabPosition==='type'" />
           <materialCode v-else-if="tabPosition==='whcode'" />
+          <materialCodeSmall v-else-if="tabPosition==='xmz'" />
           <div v-else></div>
         </div>
       </el-col>
@@ -25,13 +26,15 @@ import materialCode from './materialCode/index.vue'
 import materialType from './materialType/index.vue'
 import stockMaintain from './stockMaintain/index.vue'
 import storeLocation from './storeLocation/index.vue'
+import materialCodeSmall from './materialCodeSmall/index.vue'
 
 export default {
   components: {
     materialCode,
     materialType,
     stockMaintain,
-    storeLocation
+    storeLocation,
+    materialCodeSmall,
   },
   data () {
     return {
@@ -55,6 +58,11 @@ export default {
           title: '物料代码',
           code: 'whcode',
           icon: 'el-icon-question'
+        },
+        {
+          title: '物料小煤种',
+          code: 'xmz',
+          icon: 'el-icon-s-cooperation'
         }
       ],
       tabPosition: 'lcwh'

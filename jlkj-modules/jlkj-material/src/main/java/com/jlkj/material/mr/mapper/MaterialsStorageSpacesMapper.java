@@ -7,6 +7,7 @@ import com.jlkj.material.mr.dto.materialsstoragespaces.ListMaterialsStorageSpace
 import com.jlkj.material.mr.dto.materialsstoragespaces.PageMaterialsStorageSpacesDTO;
 import com.jlkj.material.mr.domain.MaterialsStorageSpaces;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public interface MaterialsStorageSpacesMapper extends BaseMapper<MaterialsStorag
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getPageData(Page<?> page, PageMaterialsStorageSpacesDTO condition);
+    IPage<Map<String, String>> getPageData(Page<?> page, @Param("condition") PageMaterialsStorageSpacesDTO condition);
 
     /**
      * 查询-列表-储位

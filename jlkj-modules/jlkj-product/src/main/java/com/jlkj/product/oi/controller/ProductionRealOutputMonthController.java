@@ -1,8 +1,7 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -66,10 +65,10 @@ public class ProductionRealOutputMonthController {
         log.info("params => " + pageProductionRealOutputMonthDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionRealOutputMonthDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionRealOutputMonthDTO);
-        return PageResult.success(productionRealOutputMonthService.getPageData(pageProductionRealOutputMonthDTO));
+        return AjaxResult.success(productionRealOutputMonthService.getPageData(pageProductionRealOutputMonthDTO));
     }
 
     @Operation(summary = "生产管理-指标跟踪-图表-指标项(月实际)",
@@ -90,7 +89,7 @@ public class ProductionRealOutputMonthController {
         log.info("params => " + listProductionRealOutputMonthTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(listProductionRealOutputMonthTargetItemDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionRealOutputMonthTargetItemDTO);
         return productionRealOutputMonthService.getProductionRealOutputMonthTargetItemChartData(listProductionRealOutputMonthTargetItemDTO);
@@ -114,7 +113,7 @@ public class ProductionRealOutputMonthController {
         log.info("params => " + listProductionRealOutputMonthRangeDTO);
         String errorMsg = ValidUtil.checkValid(listProductionRealOutputMonthRangeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionRealOutputMonthRangeDTO);
         return productionRealOutputMonthService.getProductionRealOutputMonthRangeChartData(listProductionRealOutputMonthRangeDTO);

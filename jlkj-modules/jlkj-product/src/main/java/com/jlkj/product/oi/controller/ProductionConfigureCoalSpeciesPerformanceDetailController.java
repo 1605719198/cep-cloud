@@ -1,8 +1,6 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;

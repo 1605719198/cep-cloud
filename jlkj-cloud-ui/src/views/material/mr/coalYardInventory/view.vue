@@ -20,7 +20,7 @@
         </el-form-item> -->
       </el-form>
     </div>
-    <div style="width:100%;text-align: right;">
+    <div style="width:100%;text-align: right;padding-top: 45px;">
       <el-button @click="cancel">取消</el-button>
       <!-- <el-button type="primary"
                  @click="submitForm('form')">提交</el-button> -->

@@ -35,9 +35,13 @@
             a.modify_user_name,
             case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
             b.silo_name,
-            a.material_category_id
+            a.material_category_id,
+            a.materials_small_code,
+            c.materials_small_name,
+            coal_sort
         from materials_mr_storage_spaces a
         INNER JOIN materials_mr_silo b ON a.silo_id = b.id
+        LEFT JOIN materials_mr_code_small c ON a.materials_small_code = c.materials_small_code
         where 1=1
         and (#{condition.siloId} = '' or a.silo_id = #{condition.siloId})
         order by ${condition.order} ${condition.orderby}
@@ -55,19 +59,36 @@
             a.modify_user_name,
             case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time,
             b.silo_name,
-            a.material_category_id
+            a.material_category_id,
+            a.materials_small_code,
+            c.materials_small_name,
+            coal_sort
         from materials_mr_storage_spaces a
         INNER JOIN materials_mr_silo b ON a.silo_id = b.id
+        LEFT JOIN materials_mr_code_small c ON a.materials_small_code = c.materials_small_code
         where 1=1
         and (#{siloId} = '' or a.silo_id = #{siloId})
+        <if test="coalSort != null and coalSort != ''">
+            and coal_sort = #{coalSort}
+        </if>
         order by a.create_time
     </select>
 
     <select id="getListDataBox" resultType="java.util.Map">
         select
             a.id,
-            a.storage_spaces_name
+            a.storage_spaces_name,
+            d.category_code,
+            d.category_name,
+            e.materials_code,
+            e.materials_name,
+            a.materials_small_code,
+            c.materials_small_name,
+            coal_sort
         from materials_mr_storage_spaces a
+        LEFT JOIN materials_mr_code_small c ON a.materials_small_code = c.materials_small_code
+        LEFT JOIN materials_mr_category d ON c.category_code = d.category_code AND d.delete_flag = 0
+        LEFT JOIN materials_mr_code e on c.materials_code =e.materials_code AND e.delete_flag = 0
         order by a.create_time
     </select>
 </mapper>

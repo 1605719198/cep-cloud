@@ -1,7 +1,6 @@
 package com.jlkj.product.oi.controller;
 
-import com.jlkj.common.core.web.resp.PageResult;
-import com.jlkj.common.core.web.resp.Result;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
@@ -87,10 +86,10 @@ public class DispatchLogController {
         log.info("params => " + pageDispatchLogDTO);
         String errorMsg = ValidUtil.checkValid(pageDispatchLogDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageDispatchLogDTO);
-        return PageResult.success(dispatchLogService.getPageData(pageDispatchLogDTO));
+        return AjaxResult.success(dispatchLogService.getPageData(pageDispatchLogDTO));
     }
 
     @Operation(summary = "新增-调度日志",

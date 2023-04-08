@@ -1,7 +1,7 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -61,7 +61,7 @@ public class ProductionSteamPerformanceController {
         log.info("params => " + listHomeProductionSteamPerformanceYieldDTO);
         String errorMsg = ValidUtil.checkValid(listHomeProductionSteamPerformanceYieldDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listHomeProductionSteamPerformanceYieldDTO);
         return productionSteamPerformanceService.getHomeProductionSteamPerformanceYieldListData(listHomeProductionSteamPerformanceYieldDTO);

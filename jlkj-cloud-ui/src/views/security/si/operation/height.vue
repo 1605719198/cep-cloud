@@ -98,7 +98,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;right: 0" class="avue-crud__pagination">
+        <div style="margin-top: 10px;padding: 25px 0px 20px 20px;float: right;" class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"

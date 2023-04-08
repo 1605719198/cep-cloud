@@ -13,6 +13,7 @@ import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,10 @@ import java.util.List;
  * @since 2022-04-29
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/base")
 public class PersonnelController extends BaseController {
-    @Autowired
-    private IPersonnelService personnelService;
+    private final IPersonnelService personnelService;
 
     /**
      * Mq新增人员资料

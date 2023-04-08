@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
-
+import VueClipboard from 'vue-clipboard2'
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/jlkj.scss' // jlkj css
 import App from './App'
@@ -88,6 +88,7 @@ Vue.use(directive)
 // Vue.use(hljs.vuePlugin);
 Vue.use(plugins)
 Vue.use(VueMeta)
+Vue.use(VueClipboard)
 
 //注册全局组件(人员选择器)
 import personnelSelection from './components/personnel-selection/index.vue'

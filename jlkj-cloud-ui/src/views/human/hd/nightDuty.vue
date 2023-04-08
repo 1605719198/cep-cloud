@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" :rules="rules" label-width="80px">
-          <el-form-item label="公司别" prop="compId">
+          <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
                 v-for="dict in companyName"

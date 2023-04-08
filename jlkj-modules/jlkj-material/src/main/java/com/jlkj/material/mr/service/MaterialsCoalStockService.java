@@ -24,6 +24,7 @@ public interface MaterialsCoalStockService extends IService<MaterialsCoalStock> 
     IPage<Map<String, String>> getListPage(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO);
     /**
      * 分类汇总
+     * @param dto 查询条件dto
      * @return
      */
     List<Map<String, String>> getCoalStock(GetCoalStockDTO dto);
@@ -36,13 +37,15 @@ public interface MaterialsCoalStockService extends IService<MaterialsCoalStock> 
 
     /**
      * 煤场库存 - 上煤记录 - 查询
+     * @param pageMaterialsCoalStockDTO 查询条件dto
      * @return 分页列表
      */
     IPage<Map<String, String>> getConveyingCoalList(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO);
 
     /**
      * 煤场库存 - 卸煤记录 - 查询
+     * @param pageMaterialsCoalStockDTO 查询条件dto
      * @return 分页列表
      */
-    IPage<Map<String, String>> getHCoalUnloadingList(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO);
+    IPage<Map<String, String>> getCoalUnloadingList(PageMaterialsCoalStockDTO pageMaterialsCoalStockDTO);
 }

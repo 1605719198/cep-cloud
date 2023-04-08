@@ -93,7 +93,7 @@ export default {
       const param = {}
       listMaterialsStorageSpacesBox(param).then((res) => {
         // console.log(res)
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.id,
             name: item.storage_spaces_name

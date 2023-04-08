@@ -13,7 +13,7 @@ import java.util.Date;
  * @author sudeyou
  * @since 2022-09-21 10:57:59
  */
-@TableName(value ="t_change_log")
+@TableName(value ="change_log")
 @Data
 public class ChangeLog implements Serializable {
     /**

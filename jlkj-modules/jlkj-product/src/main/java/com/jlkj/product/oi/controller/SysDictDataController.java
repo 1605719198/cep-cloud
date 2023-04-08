@@ -1,9 +1,9 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.product.oi.dto.sysdictdata.ListSysDictDataDTO;
 import com.jlkj.product.oi.service.SysDictDataService;
@@ -62,10 +62,10 @@ public class SysDictDataController {
         log.info("params => " + listSysDictDataDTO);
         String errorMsg = ValidUtil.checkValid(listSysDictDataDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listSysDictDataDTO);
-        return Result.success(sysDictDataService.getSysDictDataListData(listSysDictDataDTO));
+        return AjaxResult.success(sysDictDataService.getSysDictDataListData(listSysDictDataDTO));
     }
 }
 

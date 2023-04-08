@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.material.mr.dto.materialssiloareahistory.PageMaterialsSiloAreaHistoryDTO;
 import com.jlkj.material.mr.domain.MaterialsSiloAreaHistory;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -22,6 +23,6 @@ public interface MaterialsSiloAreaHistoryMapper extends BaseMapper<MaterialsSilo
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getPageData(Page<?> page, PageMaterialsSiloAreaHistoryDTO condition);
+    IPage<Map<String, String>> getPageData(Page<?> page,@Param("condition")  PageMaterialsSiloAreaHistoryDTO condition);
 }
 

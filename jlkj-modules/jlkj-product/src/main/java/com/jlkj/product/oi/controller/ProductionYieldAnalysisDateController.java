@@ -1,7 +1,7 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
-import com.jlkj.common.core.web.resp.Result;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -70,7 +70,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + listProductionYieldAnalysisDateDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisDateDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisDateDTO);
         return productionYieldAnalysisDateService.getProductionYieldAnalysisDateList(listProductionYieldAnalysisDateDTO);
@@ -94,7 +94,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + listProductionYieldAnalysisDateMaterialDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisDateMaterialDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisDateMaterialDTO);
         return productionYieldAnalysisDateService.getProductionYieldAnalysisChartDate(listProductionYieldAnalysisDateMaterialDTO);
@@ -117,7 +117,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
         return productionYieldAnalysisDateService.getProductionHomeYieldChartData(homeDTO);
@@ -141,7 +141,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
         return productionYieldAnalysisDateService.getProductionHomeYieldStatisticsData(homeDTO);
@@ -165,7 +165,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
         return productionYieldAnalysisDateService.getProductionHomePowerStatisticsData(homeDTO);
@@ -189,7 +189,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
         return productionYieldAnalysisDateService.getProductionHomePowerMeterChartData(homeDTO);
@@ -213,7 +213,7 @@ public class ProductionYieldAnalysisDateController {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
-            return Result.validatedFailure(errorMsg);
+            return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
         return productionYieldAnalysisDateService.getProductionHomeStatisticsData(homeDTO);

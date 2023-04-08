@@ -23,6 +23,7 @@ public interface MaterialsCokeStockService extends IService<MaterialsCokeStock> 
     IPage<Map<String, String>> getListPage(PageMaterialsCokeStockDTO pageMaterialsCokeStockDTO);
     /**
      * 分类汇总
+     * @param dto 查询条件dto
      * @return
      */
     List<Map<String, String>> getCokeStock(GetCokeStockDTO dto);

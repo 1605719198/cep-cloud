@@ -7,6 +7,7 @@ import com.jlkj.material.mr.dto.materialscokestock.GetCokeStockDTO;
 import com.jlkj.material.mr.dto.materialscokestock.PageMaterialsCokeStockDTO;
 import com.jlkj.material.mr.domain.MaterialsCokeStock;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public interface MaterialsCokeStockMapper extends BaseMapper<MaterialsCokeStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, PageMaterialsCokeStockDTO condition);
+    IPage<Map<String, String>> getListPage(Page<Map<String, String>> page, @Param("condition") PageMaterialsCokeStockDTO condition);
     /**
      * 分类汇总
      * @param condition
@@ -43,7 +44,7 @@ public interface MaterialsCokeStockMapper extends BaseMapper<MaterialsCokeStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getCokePutStorageList(Page<Map<String, String>> page, PageMaterialsCokeStockDTO condition);
+    IPage<Map<String, String>> getCokePutStorageList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCokeStockDTO condition);
     /**
      * 焦炭出库 查询
      * @param page
@@ -51,7 +52,7 @@ public interface MaterialsCokeStockMapper extends BaseMapper<MaterialsCokeStock>
      * @return
      */
     @MapKey("id")
-    IPage<Map<String, String>> getCokeOutStorageList(Page<Map<String, String>> page, PageMaterialsCokeStockDTO condition);
+    IPage<Map<String, String>> getCokeOutStorageList(Page<Map<String, String>> page, @Param("condition") PageMaterialsCokeStockDTO condition);
 }
 
 

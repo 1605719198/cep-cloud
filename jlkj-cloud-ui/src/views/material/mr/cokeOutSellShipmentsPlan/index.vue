@@ -15,10 +15,10 @@
         <el-input v-model="query.carrierNo"
                   placeholder="车号" />
       </el-form-item>
-      <el-form-item prop="carrier_type" label="运输方式">
+      <el-form-item prop="carrierType" label="运输方式">
         <el-select class="customSelectStyle"
                    :popper-append-to-body="false"
-                   v-model="query.carrier_type"
+                   v-model="query.carrierType"
                    clearable
                    placeholder="运输方式">
           <el-option v-for="item in shippingOptions"

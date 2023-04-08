@@ -42,7 +42,7 @@
               select DATE_FORMAT(a.unloading_time, '%m-%d') as stat_date,
                      0 as inventory,
                      sum(material_weight) as material_weight
-              from t_production_material_unloading_performance a
+              from product_oi_material_unloading_performance a
               where 1=1
                 and (#{startDate} = '' or a.unloading_time &gt;= case when #{startDate} = '' then null else concat(#{startDate},' 00:00:00') end)
                 and (#{endDate} = '' or a.unloading_time &lt;= case when #{endDate} = '' then null else concat(#{endDate},' 23:59:59') end)

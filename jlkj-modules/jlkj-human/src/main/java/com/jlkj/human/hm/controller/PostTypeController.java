@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.PostType;
 import com.jlkj.human.hm.service.IPostTypeService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-19
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/post/type")
 public class PostTypeController {
 
-    @Autowired
-    private IPostTypeService humanresourcePostTypeService;
+    private final IPostTypeService humanresourcePostTypeService;
     /**
      * 新增岗位类别数据
      */

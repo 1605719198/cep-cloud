@@ -8,8 +8,8 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.human.hm.domain.Speciality;
 import com.jlkj.human.hm.service.ISpecialityService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-05-05
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/humanresource/speciality/base")
 public class SpecialityController {
-    @Autowired
-    private ISpecialityService humanresourceSpecialityService;
+    private final ISpecialityService humanresourceSpecialityService;
     /**
      * 新增专长数据资料
      */

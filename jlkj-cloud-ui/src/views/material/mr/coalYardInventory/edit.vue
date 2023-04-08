@@ -23,8 +23,14 @@
                         placeholder="输入内容"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="50">
+          <el-col :span="12">
+            <el-form-item prop="materials_small_name"
+                          label="小煤种">
+              <el-input v-model="form.materials_small_name"
+                        disabled
+                        placeholder="输入内容"></el-input>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item prop="storage_spaces_name"
                           label="储位名称">
@@ -109,8 +115,8 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.form.modify_user_id = '123456'
-          this.form.modify_user_name = '姓名';
+          this.form.modify_user_id = this.$store.getters.userInfo.userId;
+          this.form.modify_user_name = this.$store.getters.userInfo.nickName;
           this.submitLoading = true
           // this.$emit('submitSave')
           adjust(this.form).then(res => {

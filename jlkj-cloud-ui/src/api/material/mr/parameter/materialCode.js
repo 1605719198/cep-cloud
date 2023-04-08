@@ -66,3 +66,36 @@ export const delMaterialsCode = (ids) => {
     data: ids
   })
 };
+
+
+
+//查询物料小煤种
+export const listSmallMaterials = (page, query) => {
+  return request({
+    url: '/material/materialsCodeSmall/list',
+    method: 'get',
+    params: {
+      ...page,
+      ...query,
+    }
+  })
+};
+//修改物料小煤种
+export const updateSmallMaterials = (data) => {
+  return request({
+    url: '/material/materialsCodeSmall/update',
+    method: 'post',
+    data: data
+  })
+};
+
+//查询-列表-物料小煤种-下拉
+export const getMaterialsCodeSmallDic = (params) => {
+  return request({
+    url: '/material/materialsCodeSmall/getMaterialsCodeSmallDic',
+    method: 'get',
+    params
+  })
+};
+
+

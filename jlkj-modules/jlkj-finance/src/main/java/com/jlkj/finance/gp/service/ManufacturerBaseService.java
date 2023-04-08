@@ -1,5 +1,6 @@
 package com.jlkj.finance.gp.service;
 import com.jlkj.common.dto.finance.gp.ManufacturerBaseDTO;
+
 import com.jlkj.finance.gp.domain.ManufacturerBase;
 import com.baomidou.mybatisplus.extension.service.IService;
 /**
@@ -13,6 +14,5 @@ public interface ManufacturerBaseService extends IService<ManufacturerBase> {
      * @return ManufacturerBaseDTO createTreeData(ManufacturerBaseDTO manufacturerBaseDTO);
      */
     ManufacturerBaseDTO createTreeData(ManufacturerBaseDTO manufacturerBaseDTO);
-
 
 }

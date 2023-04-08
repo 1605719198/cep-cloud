@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.material.mr.mapper.MaterialsCodeSmallMapper">
+
+    <select id="getListPage" parameterType="com.jlkj.material.mr.dto.materialscodesmall.PageMaterialsCodeSmallDTO" resultType="java.util.Map">
+        select
+            a.id,
+            a.category_code,
+            b.category_name,
+            a.materials_code,
+            c.materials_name,
+            a.materials_small_code,
+            a.materials_small_name,
+            a.vendor_no,
+            a.vendor_name,
+            a.send_vendor_no,
+            a.send_vendor_name,
+            a.measurement_unit,
+            a.mtrl_type,
+            a.delete_flag,
+            a.create_user_id,
+            a.create_user_name,
+            a.create_time,
+            a.modify_user_id,
+            a.modify_user_name,
+            a.modify_time
+        FROM materials_mr_code_small a
+        INNER JOIN materials_mr_category b ON a.category_code = b.category_code AND b.delete_flag = 0
+        INNER JOIN materials_mr_code c on a.materials_code =c.materials_code AND c.delete_flag = 0
+        WHERE a.delete_flag = 0
+        <if test="condition.materialsCode != null and condition.materialsCode != ''">
+            AND a.materials_code like concat('%',#{condition.materialsCode},'%')
+        </if>
+        <if test="condition.materialsName != null and condition.materialsName != ''">
+            AND c.materials_name like concat('%',#{condition.materialsName},'%')
+        </if>
+        <if test="condition.vendorName != null and condition.vendorName != ''">
+            AND a.vendor_name like concat('%',#{condition.vendorName},'%')
+        </if>
+        <if test="condition.sendVendorName != null and condition.sendVendorName != ''">
+            AND a.send_vendor_name like concat('%',#{condition.sendVendorName},'%')
+        </if>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getMaterialsCodeSmallDic" resultType="java.util.Map">
+        select a.id,
+               b.id AS category_id,
+               c.id AS materials_id,
+               a.category_code,
+               b.category_name,
+               a.materials_code,
+               c.materials_name,
+               a.materials_small_code,
+               a.materials_small_name,
+               a.vendor_no,
+               a.vendor_name,
+               a.send_vendor_no,
+               a.send_vendor_name,
+               a.measurement_unit
+        FROM materials_mr_code_small a
+        INNER JOIN materials_mr_category b ON a.category_code = b.category_code AND b.delete_flag = 0
+        INNER JOIN materials_mr_code c on a.materials_code = c.materials_code AND c.delete_flag = 0
+        WHERE a.delete_flag = 0
+    </select>
+</mapper>
+

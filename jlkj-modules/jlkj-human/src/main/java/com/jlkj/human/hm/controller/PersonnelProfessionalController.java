@@ -10,7 +10,7 @@ import com.jlkj.human.hm.domain.PersonnelProfessional;
 import com.jlkj.human.hm.dto.PersonnelProfessionalDTO;
 import com.jlkj.human.hm.service.IPersonnelProfessionalService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  * @create 2023-03-14 17:47
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/personnel/professional")
 public class PersonnelProfessionalController {
 
-    @Autowired
-    private IPersonnelProfessionalService iPersonnelProfessionalService;
+    private final IPersonnelProfessionalService iPersonnelProfessionalService;
 
     /**
      * 新增职称信息

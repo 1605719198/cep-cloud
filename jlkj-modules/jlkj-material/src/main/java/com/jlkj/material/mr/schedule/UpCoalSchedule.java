@@ -29,7 +29,12 @@ public class UpCoalSchedule {
     @Resource
     private RabbitTemplate rabbitTemplate;
 
-//    @Scheduled(cron = "* 0/10 * * * *")
+
+///    @Scheduled(cron = "* 0/10 * * * *")
+    /**
+     * 测试-redis
+     * @return
+     */
     public void test() {
         RLock rLock = redissonClient.getLock(getLock("MaterialConsumptionMessage"));
         if (rLock.tryLock()) {
