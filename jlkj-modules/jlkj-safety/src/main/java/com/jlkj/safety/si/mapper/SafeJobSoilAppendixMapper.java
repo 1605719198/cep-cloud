@@ -1,6 +1,6 @@
 package com.jlkj.safety.si.mapper;
 
-import com.jlkj.safety.si.entity.SafeJobSoilAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobSoilAppendix;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 * @createDate 2022-06-16 14:56:23
 * @Entity com.jlkj.safety.si.entity.TSafeJobSoilAppendix
 */
-public interface SafeJobSoilAppendixMapper extends BaseMapper<SafeJobSoilAppendix> {
+public interface SafeJobSoilAppendixMapper extends BaseMapper<SafeSiJobSoilAppendix> {
 
     /**
      * 动土安全作业证-附件列表

@@ -47,6 +47,23 @@
             <artifactId>fastdfs-client</artifactId>
         </dependency>
 
+        <!-- Mysql Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- JLKJ Common DataSource -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-datasource</artifactId>
+        </dependency>
+
+        <!-- JLKJ Common DataScope -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-datascope</artifactId>
+        </dependency>
         <!-- Minio -->
         <dependency>
             <groupId>io.minio</groupId>
@@ -64,6 +81,11 @@
         <dependency>
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-common-core</artifactId>
         </dependency>
 
     </dependencies>

@@ -31,6 +31,7 @@
         <el-form-item v-if="formData.type=='check'">
           <el-upload class="upload-demo"
                      :action="action"
+                     :headers="headers"
                      accept=".png,.jpg"
                      multiple
                      :limit="4"
@@ -70,6 +71,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { dangerAcceptance } from "@/api/security/si/hiddenDanger/index";
+import {getToken} from "@/utils/auth";
 export default {
   inject: ['fatherClose', 'fatherSubmitSave'],
   props: {
@@ -87,11 +89,14 @@ export default {
       fileList: [],
       srcList: [],
       submitLoading: false,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
       action: ''
     }
   },
   created () {
-    this.action = this.GLOBAL.fileUrl + '/file/upload'
+    this.action = process.env.VUE_APP_BASE_API + '/file/file/upload'
     this.form = { ...this.formData }
     if (this.form.acceptance_image1) {
       this.srcList.push(this.GLOBAL.serveAddress + this.form.acceptance_image1)

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobSoil;
-import com.jlkj.safety.si.entity.SafeJobSoilAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobSoilAppendix;
 import com.jlkj.safety.si.service.*;
 import com.jlkj.safety.si.service.impl.SafeJobSoilAppendixServiceImpl;
 import com.jlkj.safety.si.utils.ResponseUtil;
@@ -352,7 +352,7 @@ public class SafeJobSoilController {
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobSoilAppendix appendix = new SafeJobSoilAppendix();
+                SafeSiJobSoilAppendix appendix = new SafeSiJobSoilAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(safeJobSoil.getId());
                 appendix.setAppendixId(listFiles.getString(i));
@@ -450,12 +450,12 @@ public class SafeJobSoilController {
                 }
             }
         }
-        safeJobSoilAppendixService.remove(new QueryWrapper<SafeJobSoilAppendix>().lambda()
-                .eq(SafeJobSoilAppendix::getJobId, params.get("id").toString()));
+        safeJobSoilAppendixService.remove(new QueryWrapper<SafeSiJobSoilAppendix>().lambda()
+                .eq(SafeSiJobSoilAppendix::getJobId, params.get("id").toString()));
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobSoilAppendix appendix = new SafeJobSoilAppendix();
+                SafeSiJobSoilAppendix appendix = new SafeSiJobSoilAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(params.get("id").toString());
                 appendix.setAppendixId(listFiles.getString(i));

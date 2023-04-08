@@ -1,7 +1,7 @@
 package com.jlkj.safety.si.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.jlkj.safety.si.entity.SafeJobHighAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobHighAppendix;
 import com.jlkj.safety.si.mapper.SafeJobHighAppendixMapper;
 import com.jlkj.safety.si.service.SafeJobHighAppendixService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,15 +19,15 @@ import java.util.Map;
  * @since 2022-06-14
  */
 @Service
-public class SafeJobHighAppendixServiceImpl extends ServiceImpl<SafeJobHighAppendixMapper, SafeJobHighAppendix> implements SafeJobHighAppendixService {
+public class SafeJobHighAppendixServiceImpl extends ServiceImpl<SafeJobHighAppendixMapper, SafeSiJobHighAppendix> implements SafeJobHighAppendixService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean insertSafeJobHighFile(Map<String, Object> params) {
-        SafeJobHighAppendix safeJobHighAppendix = new SafeJobHighAppendix();
-        safeJobHighAppendix.setId(IdUtil.randomUUID());
-        safeJobHighAppendix.setJobId(params.get("job_id").toString());
-        safeJobHighAppendix.setAppendixId(params.get("appendix_id").toString());
-        return save(safeJobHighAppendix);
+        SafeSiJobHighAppendix safeSiJobHighAppendix = new SafeSiJobHighAppendix();
+        safeSiJobHighAppendix.setId(IdUtil.randomUUID());
+        safeSiJobHighAppendix.setJobId(params.get("job_id").toString());
+        safeSiJobHighAppendix.setAppendixId(params.get("appendix_id").toString());
+        return save(safeSiJobHighAppendix);
     }
 }

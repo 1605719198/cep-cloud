@@ -23,3 +23,9 @@ spring:
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+file:
+  # 文件存储路径
+  target-disk: D:\serverfiles\
+  save-path: file-manager\
+  max-size: 1073741824

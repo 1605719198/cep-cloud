@@ -1,22 +1,21 @@
 package com.jlkj.safety.si.entity;
 
+import java.time.LocalDateTime;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
  * <p>
- * 吊装作业票-附件表
+ * 有限空间作业票-附件表
  * </p>
  *
  * @author su
- * @since 2022-06-14
+ * @since 2022-06-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SafeJobHoistingAppendix implements Serializable {
+public class SafeSiJobSpaceAppendix implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobBlindPlatePlugging;
-import com.jlkj.safety.si.entity.SafeJobBlindPlatePluggingAppendix;
+import com.jlkj.safety.si.entity.SafeSiJobBlindPlatePluggingAppendix;
 import com.jlkj.safety.si.service.SafeJobBlindPlatePluggingApprovalService;
 import com.jlkj.safety.si.service.SafeJobBlindPlatePluggingPersonsService;
 import com.jlkj.safety.si.service.SafeJobBlindPlatePluggingSafetyMeasuresService;
@@ -391,7 +391,7 @@ public class SafeJobBlindPlatePluggingController {
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobBlindPlatePluggingAppendix appendix = new SafeJobBlindPlatePluggingAppendix();
+                SafeSiJobBlindPlatePluggingAppendix appendix = new SafeSiJobBlindPlatePluggingAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(safeJobBlindPlatePlugging.getId());
                 appendix.setAppendixId(listFiles.getString(i));
@@ -512,12 +512,12 @@ public class SafeJobBlindPlatePluggingController {
                 }
             }
         }
-        safeJobBlindPlatePluggingAppendixService.remove(new QueryWrapper<SafeJobBlindPlatePluggingAppendix>().lambda()
-                .eq(SafeJobBlindPlatePluggingAppendix::getJobId, params.get("id").toString()));
+        safeJobBlindPlatePluggingAppendixService.remove(new QueryWrapper<SafeSiJobBlindPlatePluggingAppendix>().lambda()
+                .eq(SafeSiJobBlindPlatePluggingAppendix::getJobId, params.get("id").toString()));
         if (!"".equals(params.get(UPLOAD_FILE_LIST).toString())) {
             JSONArray listFiles = JSONObject.parseArray(params.get(UPLOAD_FILE_LIST).toString());
             for (int i = 0; i < listFiles.size(); i++) {
-                SafeJobBlindPlatePluggingAppendix appendix = new SafeJobBlindPlatePluggingAppendix();
+                SafeSiJobBlindPlatePluggingAppendix appendix = new SafeSiJobBlindPlatePluggingAppendix();
                 appendix.setId(IdUtil.randomUUID());
                 appendix.setJobId(params.get("id").toString());
                 appendix.setAppendixId(listFiles.getString(i));

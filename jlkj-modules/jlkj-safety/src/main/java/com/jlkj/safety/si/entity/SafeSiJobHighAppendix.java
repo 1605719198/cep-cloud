@@ -1,24 +1,27 @@
 package com.jlkj.safety.si.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 动土作业票-附件表
- * @TableName safe_si_job_soil_appendix
- * @author zyf
+ * <p>
+ * 高处作业票-附件表
+ * </p>
+ *
+ * @author su
+ * @since 2022-06-14
  */
-@TableName(value ="safe_si_job_soil_appendix")
 @Data
-public class SafeJobSoilAppendix implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class SafeSiJobHighAppendix implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 主键标识;UUID
      */
-    @TableId
     private String id;
 
     /**
@@ -44,7 +47,7 @@ public class SafeJobSoilAppendix implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改人id
@@ -59,8 +62,7 @@ public class SafeJobSoilAppendix implements Serializable {
     /**
      * 修改时间
      */
-    private Date modifyTime;
+    private LocalDateTime modifyTime;
 
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+
 }
