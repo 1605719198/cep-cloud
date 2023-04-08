@@ -15,6 +15,14 @@ export function updateManufacturerBasics(data) {
     data: data
   })
 }
+// 查询销售管理-厂商基本资料列表
+export function listBase(query) {
+  return request({
+    url: `/finance/finance/manufacturer/list`,
+    method: 'get',
+    params: query
+  })
+}
 
 // 删除厂商基础资料
 export function delManufacturerBasics(id) {
