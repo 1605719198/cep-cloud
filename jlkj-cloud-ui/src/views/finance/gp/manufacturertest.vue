@@ -221,8 +221,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="建立日期:" prop="recordCrtDate">
-                  {{dataForm.recordCrtDate}}
+                <el-form-item label="建立日期:" prop="createTime">
+                  {{dataForm.createTime}}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -316,7 +316,7 @@ export default {
       dataForm: {
         countryId: '',
         catalog: '',
-        recordCrtDate: '',
+        createTime: '',
         clearStatus: '',
         mainAreaId: '',
         detailAreaId: '',
@@ -619,8 +619,8 @@ export default {
       getBase1(id).then(response => {
         this.dataForm = response.data
         this.ChineseNameUpdate=this.dataForm.manufacturerChineseName
-        if ( this.dataForm.recordCrtDate!=null){
-          this.dataForm.recordCrtDate=this.dataForm.recordCrtDate.substring(0,10)
+        if ( this.dataForm.createTime!=null){
+          this.dataForm.createTime=this.dataForm.createTime.substring(0,10)
         }
         if ( this.dataForm.updateTime!=null){
           this.dataForm.updateTime=this.dataForm.updateTime.substring(0,10)
