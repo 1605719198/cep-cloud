@@ -3,7 +3,7 @@ package com.jlkj.human.hp.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.dto.DeptUnionPost;
+import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,22 +43,31 @@ public class TreeSelect implements Serializable
 
     public TreeSelect(SysDept dept)
     {
-        this.id = dept.getDeptId();         // 节点ID
-        this.label = dept.getDeptName();    // 部门名称
-        this.label2 = dept.getCompId();     // 公司编码
-        this.label3 = dept.getIfCompany();  // 是否是公司
-        this.label4 = dept.getStatus();     //状态正常/作废
-        this.label5 = dept.getAncestors();  //祖级列表
+        // 节点ID
+        this.id = dept.getDeptId();
+        // 部门名称
+        this.label = dept.getDeptName();
+        // 公司编码
+        this.label2 = dept.getCompId();
+        // 是否是公司
+        this.label3 = dept.getIfCompany();
+        //状态正常/作废
+        this.label4 = dept.getStatus();
+        //祖级列表
+        this.label5 = dept.getAncestors();
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
-    public TreeSelect(DeptUnionPost deptunionpost)
+    public TreeSelect(DeptUnionPostDTO deptunionpost)
     {
-        this.id = deptunionpost.getDeptId();          // 部门ID
-//        this.label = deptunionpost.getParentId();   // 部门名称
-        this.label2 = deptunionpost.getCompId();      // 公司编码
-        this.label3 = deptunionpost.getName();        // 名称
-        this.label6 = deptunionpost.getPostId();      // 岗位id
+        // 部门ID
+        this.id = deptunionpost.getDeptId();
+        // 公司编码
+        this.label2 = deptunionpost.getCompId();
+        // 名称
+        this.label3 = deptunionpost.getName();
+        // 岗位id
+        this.label6 = deptunionpost.getPostId();
         this.children = deptunionpost.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 

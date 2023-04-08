@@ -7,7 +7,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeptUnionPost extends BaseEntity {
+/**
+ *
+ * @author 266861
+ * @date 2023-03-08
+ */
+
+public class DeptUnionPostDTO extends BaseEntity {
 
     /** 部门id */
     private Long deptId;
@@ -25,7 +31,7 @@ public class DeptUnionPost extends BaseEntity {
     private Long postId;
 
     /** 子部门 */
-    private List<DeptUnionPost> children = new ArrayList<DeptUnionPost>();
+    private List<DeptUnionPostDTO> children ;
 
     public void setDeptId(Long deptId)
     {
@@ -72,11 +78,11 @@ public class DeptUnionPost extends BaseEntity {
         return postId;
     }
 
-    public List<DeptUnionPost> getChildren()
+    public List<DeptUnionPostDTO> getChildren()
     {
         return children;
     }
-    public void setChildren(List<DeptUnionPost> children)
+    public void setChildren(List<DeptUnionPostDTO> children)
     {
         this.children = children;
     }

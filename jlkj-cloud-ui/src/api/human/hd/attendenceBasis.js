@@ -53,9 +53,10 @@ export function treeselect(query) {
 }
 
 //获取基础选单
-export function getBasisOptions(code) {
+export function getAttendenceOptions(data) {
   return request({
-    url: '/human/attendenceBasis/getBasisOptions/'+ code,
+    url: '/human/attendenceBasis/getBasisOptions',
     method: 'get',
+    params: data
   })
 }

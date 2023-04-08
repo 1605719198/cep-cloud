@@ -33,6 +33,7 @@ public interface IClockworkService
      * 
      * @param clockwork 公司卡钟设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int insertClockwork(Clockwork clockwork) throws Exception;
 
@@ -41,6 +42,7 @@ public interface IClockworkService
      * 
      * @param clockwork 公司卡钟设定
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
     public int updateClockwork(Clockwork clockwork) throws Exception;
 

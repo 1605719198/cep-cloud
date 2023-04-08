@@ -30,7 +30,7 @@ public class SysPostController extends BaseController
     @Autowired
     private ISysPostService sysPostService;
     @Autowired
-    private ISysPostVersionService SysPostVersionService;
+    private ISysPostVersionService sysPostVersionService;
 
     /**
      * 查询岗位信息数据维护列表
@@ -48,10 +48,10 @@ public class SysPostController extends BaseController
      * 查询部门资料变更版本列表
      */
     @GetMapping("/getHistory")
-    public TableDataInfo list(SysPostVersion SysPostVersion)
+    public TableDataInfo list(SysPostVersion sysPostVersion)
     {
         startPage();
-        List<SysPostVersion> list = SysPostVersionService.selectSysPostVersionList(SysPostVersion);
+        List<SysPostVersion> list = sysPostVersionService.selectSysPostVersionList(sysPostVersion);
         return getDataTable(list);
     }
 

@@ -8,11 +8,14 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.Attendencebasis;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
+import com.jlkj.human.hd.dto.OptinonTypeDTO;
 import com.jlkj.human.hd.service.IAttendencebasisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -108,11 +111,15 @@ public class AttendencebasisController extends BaseController
     /**
      * 获取出勤作业下拉选单列表
      */
-    @GetMapping(value = "/getBasisOptions/{code}")
-//    public Object getBasisOptions(AttendencebasisDTO attendencebasisDTO)
-    public TableDataInfo getBasisOptions(@PathVariable("code") String code)
+    @GetMapping(value = "/getBasisOptions")
+    public Object getBasisOptions(OptinonTypeDTO optinonType)
     {
-            List<Attendencebasis> list = attendencebasisService.selectBasisOptions(code);
-            return getDataTable(list);
+        List<String> optionsType = optinonType.getOptionsType();
+        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
+        for (String item : optionsType) {
+            List<BasisOptionsDTO> list = attendencebasisService.selectBasisOptions(item);
+            map.put(item, list);
+        }
+        return AjaxResult.success(map);
     }
 }

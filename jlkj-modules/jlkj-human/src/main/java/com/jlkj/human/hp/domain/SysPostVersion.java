@@ -19,7 +19,7 @@ public class SysPostVersion extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    private Long Id;
+    private Long id;
 
     /** 主键 */
     private Long postId;
@@ -194,14 +194,14 @@ public class SysPostVersion extends BaseEntity
     /** 职业化行为 */
     private String proAct;
 
-    public void setId(Long Id)
+    public void setId(Long id)
     {
-        this.Id = Id;
+        this.id = id;
     }
 
     public Long getId()
     {
-        return Id;
+        return id;
     }
 
     public void setPostId(Long postId)

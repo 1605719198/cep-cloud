@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <insert id="copyHolidaysetting" parameterType="CopyHolidaysetting" >
+    <insert id="copyHolidaysetting" parameterType="CopyHolidaysettingDTO" >
         insert into human_hd_holidaysetting
         (holiday_type_code , comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, creator, creator_id,create_date)
         select holiday_type_code ,#{newCompId} AS comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, #{creator} AS creator,#{creatorId} AS creator_id, #{createDate} AS create_date

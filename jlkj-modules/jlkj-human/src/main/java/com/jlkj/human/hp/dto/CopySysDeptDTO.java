@@ -13,7 +13,7 @@ import java.util.Date;
  * @author jlkj
  * @date 2023-03-08
  */
-public class CopySysDept extends BaseEntity {
+public class CopySysDeptDTO extends BaseEntity {
     /** 来源公司别 */
     private String oldCompId;
 

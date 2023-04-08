@@ -2,7 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.Holidaysetting;
-import com.jlkj.human.hd.dto.CopyHolidaysetting;
+import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
 import com.jlkj.human.hd.mapper.HolidaysettingMapper;
 import com.jlkj.human.hd.service.IHolidaysettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,27 +59,26 @@ public class HolidaysettingServiceImpl implements IHolidaysettingService
         if(i>0){
             throw new Exception("该公司对应的假别类型已存在，请重新输入");
         }
-        holidaysetting.setId(UUID.randomUUID().toString().substring(0, 32));
         return holidaysettingMapper.insertHolidaysetting(holidaysetting);
     }
 
     /**
      * 复制假别参数设定
      *
-     * @param copyHolidaysetting 假别参数复制设定
+     * @param copyHolidaysettingDTO 假别参数复制设定
      * @return 结果
      */
     @Override
-    public int copyHolidaysetting(CopyHolidaysetting copyHolidaysetting) throws Exception
+    public int copyHolidaysetting(CopyHolidaysettingDTO copyHolidaysettingDTO) throws Exception
     {
-        int i = holidaysettingMapper.querycopybyOldCompId(copyHolidaysetting.getOldCompId());
-        int j = holidaysettingMapper.querycopybyNewCompId(copyHolidaysetting.getNewCompId());
+        int i = holidaysettingMapper.querycopybyOldCompId(copyHolidaysettingDTO.getOldCompId());
+        int j = holidaysettingMapper.querycopybyNewCompId(copyHolidaysettingDTO.getNewCompId());
         if(i==0){
             throw new Exception("来源公司下无假别参数设定数据");
         }else if(j>0){
             throw new Exception("目标公司下已有假别参数设定数据");
         }
-        return holidaysettingMapper.copyHolidaysetting(copyHolidaysetting);
+        return holidaysettingMapper.copyHolidaysetting(copyHolidaysettingDTO);
     }
 
     /**

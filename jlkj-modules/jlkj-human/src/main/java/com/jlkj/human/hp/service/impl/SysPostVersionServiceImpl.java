@@ -19,79 +19,67 @@ import java.util.List;
 public class SysPostVersionServiceImpl implements ISysPostVersionService
 {
     @Autowired
-    private SysPostVersionMapper SysPostVersionMapper;
+    private SysPostVersionMapper sysPostVersionMapper;
 
     /**
      * 查询岗位信息版本数据维护
      *
-     * @param Id 岗位信息版本数据维护主键
+     * @param id 岗位信息版本数据维护主键
      * @return 岗位信息版本数据维护
      */
     @Override
-    public SysPostVersion selectSysPostVersionById(Long Id)
+    public SysPostVersion selectSysPostVersionById(Long id)
     {
-        return SysPostVersionMapper.selectSysPostVersionById(Id);
+        return sysPostVersionMapper.selectSysPostVersionById(id);
     }
 
     /**
      * 查询岗位信息版本数据维护列表
      *
-     * @param SysPostVersion 岗位信息版本数据维护
+     * @param sysPostVersion 岗位信息版本数据维护
      * @return 岗位信息版本数据维护
      */
     @Override
-    public List<SysPostVersion> selectSysPostVersionList(SysPostVersion SysPostVersion)
+    public List<SysPostVersion> selectSysPostVersionList(SysPostVersion sysPostVersion)
     {
-        return SysPostVersionMapper.selectSysPostVersionList(SysPostVersion);
+        return sysPostVersionMapper.selectSysPostVersionList(sysPostVersion);
     }
 
     /**
      * 新增岗位信息版本数据维护
      *
-     * @param SysPostVersion 岗位信息版本数据维护
+     * @param sysPostVersion 岗位信息版本数据维护
      * @return 结果
      */
     @Override
-    public int insertSysPostVersion(SysPostVersion SysPostVersion)
+    public int insertSysPostVersion(SysPostVersion sysPostVersion)
     {
-        SysPostVersion.setCreateTime(DateUtils.getNowDate());
-        return SysPostVersionMapper.insertSysPostVersion(SysPostVersion);
+        sysPostVersion.setCreateTime(DateUtils.getNowDate());
+        return sysPostVersionMapper.insertSysPostVersion(sysPostVersion);
     }
 
     /**
      * 修改岗位信息版本数据维护
      *
-     * @param SysPostVersion 岗位信息版本数据维护
+     * @param sysPostVersion 岗位信息版本数据维护
      * @return 结果
      */
     @Override
-    public int updateSysPostVersion(SysPostVersion SysPostVersion)
+    public int updateSysPostVersion(SysPostVersion sysPostVersion)
     {
-        SysPostVersion.setUpdateTime(DateUtils.getNowDate());
-        return SysPostVersionMapper.updateSysPostVersion(SysPostVersion);
-    }
-
-    /**
-     * 批量删除岗位信息版本数据维护
-     *
-     * @param Ids 需要删除的岗位信息版本数据维护主键
-     * @return 结果
-     */
-    @Override
-    public int deleteSysPostVersionByIds(Long[] Ids)
-    {
-        return SysPostVersionMapper.deleteSysPostVersionByIds(Ids);
+        sysPostVersion.setUpdateTime(DateUtils.getNowDate());
+        return sysPostVersionMapper.updateSysPostVersion(sysPostVersion);
     }
 
     /**
      * 删除岗位信息版本数据维护信息
      *
-     * @param Id 岗位信息版本数据维护主键
+     * @param id 岗位信息版本数据维护主键
      * @return 结果
      */
     @Override
-    public int deleteSysPostVersionById(Long Id)
+    public int deleteSysPostVersionById(Long id)
     {
-        return SysPostVersionMapper.deleteSysPostVersionById(Id);
+        return sysPostVersionMapper.deleteSysPostVersionById(id);
     }
 }
