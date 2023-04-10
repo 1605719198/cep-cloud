@@ -8,7 +8,7 @@
         <el-tab-pane label="基础资料">
           <el-form :rules="rules" :model="dataForm" ref="dataForm" size="small" :inline="true" v-show="showSearch"
                    label-width="144px">
-            <el-row :gutter="20">
+            <el-row >
               <el-col :span="12">
                 <el-form-item label="国别:" prop="countryId">
                   <el-select v-model="dataForm.countryId" :disabled="currencyDisabled" placeholder="请选择国别"
@@ -22,7 +22,6 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-
               <el-col :span="12">
                 <el-form-item label="厂商编号:" prop="manufacturerId">
                   {{dataForm.manufacturerId}}
@@ -30,17 +29,15 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="统一社会信用代码:" prop="taxNo">
-                  <el-input v-model="dataForm.taxNo" :disabled="currencyDisabled" style="width: 200px"></el-input>
+                  <el-input v-model="dataForm.taxNo" :disabled="currencyDisabled" ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="中文名称:" prop="manufacturerChineseName">
-                  <el-input v-model="dataForm.manufacturerChineseName" :disabled="currencyDisabled"
-                  ></el-input>
+                  <el-input v-model="dataForm.manufacturerChineseName" :disabled="currencyDisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-
                 <el-form-item label="法定代表人/责任人:" prop="owner">
                   <el-input v-model="dataForm.owner" :disabled="currencyDisabled" style="width: 200px"></el-input>
                 </el-form-item>
@@ -143,9 +140,6 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-
-
-
               <el-col :span="12">
                 <el-form-item label="资本额:" prop="capital">
                   <el-input maxlength="18" v-model="dataForm.capital" :disabled="currencyDisabled" style="width: 88px"></el-input>
@@ -161,27 +155,9 @@
                     />
                   </el-select>
                   </el-form-item>
-
               </el-col>
-<!--              <el-col :span="12">
-                <el-form-item label="营业额:" prop="turnover">
-                  <el-input v-model="dataForm.turnover" :disabled="currencyDisabled" style="width: 100px"></el-input>
-                </el-form-item>
-                <el-form-item prop="turnoverCurrencyCode">
-                  <el-select v-model="dataForm.turnoverCurrencyCode" :disabled="currencyDisabled" style="width: 100px"
-                             placeholder="请选择币别">
-                    <el-option
-                      v-for="dict in dict.type.gp_currency_type"
-                      :key="dict.value"
-                      :label="dict.value+'_'+dict.label"
-                      :value="dict.value"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>-->
               <el-col :span="12">
                 <el-form-item label="发票地址:" prop="billAddress">
-
                   <el-input v-model="dataForm.billAddress" :disabled="currencyDisabled" ></el-input>
                 </el-form-item>
               </el-col>
@@ -197,11 +173,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-<!--              <el-col :span="24">
-                <el-form-item label="网址:" prop="web">
-                  <el-input v-model="dataForm.web" :disabled="currencyDisabled" style="width: 735px"></el-input>
-                </el-form-item>
-              </el-col>-->
+
               <el-col :span="24">
                 <el-form-item label="业务关系:" prop="relation">
                   <el-select multiple v-model="dataForm.relation" :disabled="currencyDisabled" placeholder="请选择业务关系">
@@ -216,7 +188,6 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="建立者:" prop="createUser">
-
                   {{dataForm.createUser}}
                 </el-form-item>
               </el-col>
@@ -537,7 +508,7 @@ export default {
             addManufacturerBasics(this.dataForm).then(response => {
               this.$modal.msgSuccess("基础资料新增成功");
               this.$emit('getLists');
-              this.revise(this.dataForm.manufacturerId,this.dataForm.manufacturerChineseName,this.dataForm.taxNo)
+              this.visible = false
               this.statusTabs=true
             });
           }
@@ -561,6 +532,7 @@ export default {
       this.flagForm.MP = false
       this.flagForm.SO = false
       this.flagForm.ST = false
+      this.ChineseNameUpdate = ''
     },
     init(id, manufacturerChineseName,taxNo) {
       this.mainAreaIdIf = false
@@ -616,6 +588,7 @@ export default {
       this.statusTabsMp=false
       this.statusTabsSo=false
       this.statusTabsSt=false
+
       getBase1(id).then(response => {
         this.dataForm = response.data
         this.ChineseNameUpdate=this.dataForm.manufacturerChineseName
