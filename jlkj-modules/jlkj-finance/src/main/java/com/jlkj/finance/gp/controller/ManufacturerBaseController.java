@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 /**
@@ -309,8 +307,24 @@ public class ManufacturerBaseController {
             manufacturerIdList =  manufacturerBase.getMainAreaId()+manufacturerBase.getDetailAreaId()+0000;
         }
         String manufacturerId = String.valueOf(Integer.parseInt(manufacturerIdList.substring(3, 7)) + 1);
-        manufacturerBase.setManufacturerId(manufacturerIdList.substring(0, 6)+manufacturerId);
-        manufacturerBaseDTO.setManufacturerId(manufacturerIdList.substring(0, 6)+manufacturerId);
+        int manufacturerIdInt = Integer.parseInt(manufacturerIdList.substring(3, 7)) + 1;
+        int manufacturerIdInt10 = 10;
+        int manufacturerIdInt100 = 100;
+        int manufacturerIdInt1000 = 1000;
+        if (manufacturerIdInt10 > manufacturerIdInt){
+            manufacturerBase.setManufacturerId(manufacturerIdList.substring(0, 6)+manufacturerId);
+            manufacturerBaseDTO.setManufacturerId(manufacturerIdList.substring(0, 6)+manufacturerId);
+        }else if (manufacturerIdInt100 > manufacturerIdInt){
+            manufacturerBase.setManufacturerId(manufacturerIdList.substring(0, 5)+manufacturerId);
+            manufacturerBaseDTO.setManufacturerId(manufacturerIdList.substring(0, 5)+manufacturerId);
+        }else if (manufacturerIdInt1000 > manufacturerIdInt){
+            manufacturerBase.setManufacturerId(manufacturerIdList.substring(0, 4)+manufacturerId);
+            manufacturerBaseDTO.setManufacturerId(manufacturerIdList.substring(0, 4)+manufacturerId);
+        }else {
+            manufacturerBase.setManufacturerId(manufacturerIdList.substring(0, 3)+manufacturerId);
+            manufacturerBaseDTO.setManufacturerId(manufacturerIdList.substring(0, 3)+manufacturerId);
+        }
+
         wrapper.eq("tax_no",manufacturerBase.getTaxNo());
         List<ManufacturerBase> listSave = manufacturerBaseService.list(wrapper);
         if (listSave.size() >= 1) {
@@ -519,7 +533,7 @@ public class ManufacturerBaseController {
                 }
             }
             QueryWrapper<ManufacturerTree> wrapperTree = new QueryWrapper<>();
-            wrapperTree.eq("manufacturer_id",one.getManufacturerId())
+            wrapperTree.eq("node_no",one.getManufacturerId())
                     .eq("parentId",one.getParentId())
             .eq("node_name",one.getManufacturerChineseName());
             manufacturerTreeMapper.delete(wrapperTree);
