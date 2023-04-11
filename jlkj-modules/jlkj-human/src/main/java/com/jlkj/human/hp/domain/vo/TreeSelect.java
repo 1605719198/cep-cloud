@@ -32,6 +32,9 @@ public class TreeSelect implements Serializable
 
     private Long label6;
 
+    private String label7;
+
+
     /** 子节点 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TreeSelect> children;
@@ -55,6 +58,9 @@ public class TreeSelect implements Serializable
         this.label4 = dept.getStatus();
         //祖级列表
         this.label5 = dept.getAncestors();
+        //公司简称
+        this.label7 = dept.getCompanyName();
+        //子列表
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
@@ -140,6 +146,16 @@ public class TreeSelect implements Serializable
     public void setLabel5(String label5)
     {
         this.label5 = label5;
+    }
+
+    public String getLabel7()
+    {
+        return label7;
+    }
+
+    public void setLabel7(String label7)
+    {
+        this.label7 = label7;
     }
 
     public Long getLabel6()

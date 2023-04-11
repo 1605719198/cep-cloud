@@ -92,11 +92,9 @@
 
         <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
           <el-table-column type="selection" width="55" align="center" show-overflow-tooltip />
-          <el-table-column label="机构id" align="center" width="120" prop="deptId" show-overflow-tooltip />
           <el-table-column label="机构编码" align="center" width="120" prop="deptCode" show-overflow-tooltip />
           <el-table-column label="机构名称" align="center" width="300" prop="deptName" show-overflow-tooltip />
           <el-table-column label="排序序号" align="center" prop="orderNum" show-overflow-tooltip />
-          <el-table-column label="部门负责人" align="center" prop="leader" show-overflow-tooltip />
           <el-table-column label="创建人" align="center" prop="createBy" show-overflow-tooltip />
           <el-table-column label="状态" align="center" prop="status">
             <template v-slot="scope">
@@ -144,12 +142,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="机构编码" prop="deptCode">
-              <el-input maxlength="20" v-model="form.deptCode" placeholder="请输入机构编码" />
+              <el-input maxlength="8" v-model="form.deptCode" placeholder="请输入机构编码" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称" prop="deptName">
-              <el-input maxlength="30" v-model="form.deptName" placeholder="请输入机构名称" />
+              <el-input maxlength="200" v-model="form.deptName" placeholder="请输入机构名称" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -188,34 +186,6 @@
           <el-col :span="12">
             <el-form-item label="排序序号" prop="orderNum">
               <el-input maxlength="22" v-model="form.orderNum" type="number" placeholder="请输入排序序号" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="部门负责人" prop="leader">
-              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入部门负责人" >
-                <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="电话" prop="phone">
-              <el-input maxlength="11" v-model="form.phone" placeholder="请输入电话" type="number" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input maxlength="50" v-model="form.email" placeholder="请输入邮箱" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="传真" prop="fax">
-              <el-input maxlength="30" v-model="form.fax" placeholder="请输入传真" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -345,7 +315,7 @@
 import { getDateTime } from "@/api/human/hd/ahumanutils"
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect, listDeptversion,copySysDept,selectCompany } from "@/api/human/hp/deptMaintenance";
+import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect, listDeptversion,copySysDeptDTO,selectCompany } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getAvatorByUserName } from "@/api/system/user";
@@ -537,8 +507,6 @@ export default {
         this.form.phone = val[0].phonenumber;
         this.form.email = val[0].email;
       }
-      //   this.form.jobNumber = val[0].userName
-      //   this.form.jobName = val[0].nickName
     },
     /** 用户选单事件 */
     inputClick() {
@@ -752,7 +720,7 @@ export default {
           if(this.formcopy.newCompId==this.formcopy.oldCompId){
             this.$modal.msgError("请选择两个不同的公司");
           }else{
-            copySysDept(this.formcopy).then(response =>{
+            copySysDeptDTO(this.formcopy).then(response =>{
               this.$modal.msgSuccess("复制成功");
               this.opencopy = false;
               this.getList();

@@ -83,11 +83,9 @@
     </el-row>
     <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange" height="67vh" v-show="treeandtable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="机构id" align="center" width="120" prop="deptId" />
       <el-table-column label="机构编码" align="center" width="120" prop="deptCode" />
       <el-table-column label="机构名称" align="center" width="300" prop="deptName" />
       <el-table-column label="排序序号" align="center" prop="orderNum" />
-      <el-table-column label="法人" align="center" prop="leader" />
       <el-table-column label="创建人" align="center" prop="createBy" />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
@@ -135,7 +133,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司编码" prop="deptCode">
-              <el-input maxlength="20" v-model="form.deptCode" placeholder="请输入公司编码" />
+              <el-input maxlength="8" v-model="form.deptCode" placeholder="请输入公司编码" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -197,34 +195,6 @@
                   :label="dict.dicNo"
                 >{{dict.dicName}}</el-radio>
               </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="法人" prop="leader">
-              <el-input maxlength="20"  v-model="form.leader" placeholder="请输入法人" >
-                <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="电话" prop="phone">
-              <el-input maxlength="11" v-model="form.phone" placeholder="请输入电话" type="number"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input maxlength="50" v-model="form.email" placeholder="请输入邮箱" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="传真" prop="fax">
-              <el-input maxlength="30" v-model="form.fax" placeholder="请输入传真" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -388,7 +358,7 @@ export default {
       form: {},
       defaultProps: {
         children: "children",
-        label: "label",
+        label: "label7",
         ancestors: "ancestors"
       },
       //是否修改
