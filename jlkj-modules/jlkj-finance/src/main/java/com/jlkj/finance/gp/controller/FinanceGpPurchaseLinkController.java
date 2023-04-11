@@ -38,7 +38,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 查询厂商采购关系联系人列表
      */
-    @RequiresPermissions("finance:link:list")
+
     @GetMapping("/list")
     public TableDataInfo list(FinanceGpPurchaseLink financeGpPurchaseLink)
     {
@@ -50,7 +50,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 导出厂商采购关系联系人列表
      */
-    @RequiresPermissions("finance:link:export")
+
     @Log(title = "厂商采购关系联系人", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceGpPurchaseLink financeGpPurchaseLink)
@@ -63,7 +63,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 获取厂商采购关系联系人详细信息
      */
-    @RequiresPermissions("finance:link:query")
+
     @GetMapping(value = "/{uuid}")
     public AjaxResult getInfo(@PathVariable("uuid") String uuid)
     {
@@ -73,7 +73,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 新增厂商采购关系联系人
      */
-    @RequiresPermissions("finance:link:add")
+
     @Log(title = "厂商采购关系联系人", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceGpPurchaseLink financeGpPurchaseLink)
@@ -84,7 +84,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 修改厂商采购关系联系人
      */
-    @RequiresPermissions("finance:link:edit")
+
     @Log(title = "厂商采购关系联系人", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceGpPurchaseLink financeGpPurchaseLink)
@@ -95,7 +95,7 @@ public class FinanceGpPurchaseLinkController extends BaseController
     /**
      * 删除厂商采购关系联系人
      */
-    @RequiresPermissions("finance:link:remove")
+
     @Log(title = "厂商采购关系联系人", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uuids}")
     public AjaxResult remove(@PathVariable String[] uuids)

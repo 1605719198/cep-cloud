@@ -41,7 +41,7 @@ public class FinanceGpCorrelationController extends BaseController
     /**
      * 查询是否关联方更新记录列表
      */
-    @RequiresPermissions("finance:correlation:list")
+
     @GetMapping("/list")
     public TableDataInfo list(FinanceGpCorrelation financeGpCorrelation)
     {
@@ -53,7 +53,7 @@ public class FinanceGpCorrelationController extends BaseController
     /**
      * 导出是否关联方更新记录列表
      */
-    @RequiresPermissions("finance:correlation:export")
+
     @Log(title = "是否关联方更新记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceGpCorrelation financeGpCorrelation)
@@ -66,7 +66,7 @@ public class FinanceGpCorrelationController extends BaseController
     /**
      * 获取是否关联方更新记录详细信息
      */
-    @RequiresPermissions("finance:correlation:query")
+
     @GetMapping(value = "/{uuid}")
     public AjaxResult getInfo(@PathVariable("uuid") String uuid)
     {
@@ -76,7 +76,7 @@ public class FinanceGpCorrelationController extends BaseController
     /**
      * 新增是否关联方更新记录
      */
-    @RequiresPermissions("finance:correlation:add")
+
     @Log(title = "是否关联方更新记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceGpCorrelation financeGpCorrelation)

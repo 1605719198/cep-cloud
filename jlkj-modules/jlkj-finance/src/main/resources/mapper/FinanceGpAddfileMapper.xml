@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.FinanceGpAddfileMapper">
+    
+    <resultMap type="com.jlkj.finance.gp.domain.FinanceGpAddfile" id="FinanceGpAddfileResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="applyType"    column="apply_type"    />
+        <result property="filetype"    column="fileType"    />
+        <result property="filebase64"    column="fileBase64"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceGpAddfileVo">
+        select uuid, comp_id, apply_id, apply_type, fileType, fileBase64,file_name, file_url, data_type,
+               update_date, update_user, create_user, create_time, update_time, update_user_name, create_user_name from finance_gp_addfile
+    </sql>
+
+    <select id="selectFinanceGpAddfileList" parameterType="com.jlkj.finance.gp.domain.FinanceGpAddfile" resultMap="FinanceGpAddfileResult">
+        SELECT
+        b.STATUS AS STATUS,
+        b.manufacturer_name AS manufacturer_name,
+        a.apply_id AS apply_id,
+        a.data_type AS data_type,
+        a.file_name AS file_name,
+               a.uuid AS uuid
+        FROM
+        finance_gp_addfile a
+
+        LEFT JOIN finance_gp_add b ON a.apply_id = b.apply_id
+        <where>  
+
+            <if test="applyId != null  and applyId != ''"> and a.apply_id = #{applyId}</if>
+            <if test="manufacturerName != null  and manufacturerName != ''"> and b.manufacturer_name  like concat('%',#{manufacturerName},'%')</if>
+            <if test="applyType != null  and applyType != ''"> and a.apply_type = #{applyType}</if>
+            <if test="filetype != null  and filetype != ''"> and a.fileType = #{filetype}</if>
+            <if test="dataType != null  and dataType != ''"> and a.data_type = #{dataType}</if>
+        </where>
+
+    </select>
+    
+    <select id="selectFinanceGpAddfileByUuid" parameterType="String" resultMap="FinanceGpAddfileResult">
+        <include refid="selectFinanceGpAddfileVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceGpAddfile" parameterType="com.jlkj.finance.gp.domain.FinanceGpAddfile">
+        insert into finance_gp_addfile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="applyType != null">apply_type,</if>
+            <if test="filetype != null">fileType,</if>
+            <if test="filebase64 != null">fileBase64,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="applyType != null">#{applyType},</if>
+            <if test="filetype != null">#{filetype},</if>
+            <if test="filebase64 != null">#{filebase64},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceGpAddfile" parameterType="com.jlkj.finance.gp.domain.FinanceGpAddfile">
+        update finance_gp_addfile
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="applyType != null">apply_type = #{applyType},</if>
+            <if test="filetype != null">fileType = #{filetype},</if>
+            <if test="filebase64 != null">fileBase64 = #{filebase64},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceGpAddfileByUuid" parameterType="String">
+        delete from finance_gp_addfile where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceGpAddfileByUuids" parameterType="String">
+        delete from finance_gp_addfile where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>
