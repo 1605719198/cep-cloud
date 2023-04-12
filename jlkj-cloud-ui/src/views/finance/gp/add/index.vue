@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick"  >
       <el-tab-pane label="增加用户申请" name="first">
         <index @change="changeData"></index>
       </el-tab-pane>
@@ -25,15 +25,34 @@ export default {
     return {
       activeName: 'first',
       applyId: null,
-      Verify:null
+      Verify:null,
+      applyIdIf:false
     };
   },
   methods: {
     handleClick(tab, event) {
-      this.activeName = tab.name
+      console.log(this.applyIdIf);
+      if (this.applyIdIf!=false){
+        this.activeName = tab.name
+      }
+
     },
+/*
+    // tab切换前判断
+     beforeTabLeave() {
+      if (this.applyId = null){
+        this.applyIdIf = false
+      }else {
+
+      }
+      console.log(this.applyId);
+      console.log(this.applyIdIf);
+      return this.applyIdIf;
+    },
+*/
+
     changeData(tabName,args){
-      console.log(tabName, args);
+
       this.activeName = tabName;
       this.applyId = args;
     }

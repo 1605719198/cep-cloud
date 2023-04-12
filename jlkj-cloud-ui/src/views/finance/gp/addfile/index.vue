@@ -192,15 +192,20 @@
     <el-dialog :visible.sync="dialogVisibleImage">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
+    <!--删除调用刷新 -->
+
   </div>
 </template>
 
 <script>
 import { listAddfile, getAddfile, delAddfile, addAddfile, updateAddfile } from "@/api/finance/gp/addfile";
 import {getToken} from "@/utils/auth";
+
+
 export default {
   name: "Addfile",
   dicts: ['finance_gp_datatype'],
+
   data() {
     return {
       dialogVisibleImage: false,
@@ -276,6 +281,7 @@ export default {
     this.getList();
   },
   methods: {
+
     // 分页数据
     handleSizeChange(val) {
       this.queryParams.pageSize = val
@@ -348,9 +354,12 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
+      if(this.queryParams.applyId!=null){
+        this.open = true;
+      }
+      this.imageList = []
+      this.fileUrlList = []
       this.form.applyId = this.fromApplyid
-
       this.title = "添加厂商增户证照资料";
     },
     /** 修改按钮操作 */
@@ -494,7 +503,8 @@ export default {
         }
       }
       return strs != '' ? strs.substr(0, strs.length - 1) : '';
-    }
+    },
+
   }
 };
 </script>

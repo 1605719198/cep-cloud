@@ -472,6 +472,7 @@ export default {
       const applyIds = row.applyId || this.ids;
       this.$modal.confirm('是否确认删除厂商增户申请编号为"' + applyIds + '"的数据项？').then(function() {
         return delAdd(applyIds);
+
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
