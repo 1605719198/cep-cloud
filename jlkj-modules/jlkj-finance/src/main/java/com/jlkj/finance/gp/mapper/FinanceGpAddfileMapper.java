@@ -50,6 +50,13 @@ public interface FinanceGpAddfileMapper
      * @return 结果
      */
     public int deleteFinanceGpAddfileByUuid(String uuid);
+    /**
+     * 删除厂商增户证照资料
+     *
+     * @param applyId 厂商增户证照资料申请单号
+     * @return 结果
+     */
+    public int deleteFinanceGpAddfileByApplyId(String applyId);
 
     /**
      * 批量删除厂商增户证照资料
