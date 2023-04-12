@@ -54,7 +54,7 @@ public class NightDutyController extends BaseController {
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 
-    @Log(title = "夜班查询", businessType = BusinessType.IMPORT)
+    @Log(title = "夜班资料导入", businessType = BusinessType.IMPORT)
     @RequiresPermissions("human:nightDuty:import")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
@@ -67,7 +67,7 @@ public class NightDutyController extends BaseController {
     }
 
     /**
-     * 导入夜班数据
+     * 导入夜班资料数据
      * @param response
      * @throws IOException
      */
@@ -75,6 +75,6 @@ public class NightDutyController extends BaseController {
     public void importTemplate(HttpServletResponse response) throws IOException
     {
         ExcelUtil<NightDuty> util = new ExcelUtil<NightDuty>(NightDuty.class);
-        util.importTemplateExcel(response, "夜班数据");
+        util.importTemplateExcel(response, "夜班资料数据");
     }
 }

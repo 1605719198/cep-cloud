@@ -50,11 +50,9 @@ public class BaseInfoController extends BaseController {
     public Object getChildrenList(BaseInfoDTO baseInfoDTO) {
         try {
             startPage();
-            String uuid = baseInfoDTO.getUuid();
-            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(uuid), Baseinfo::getParentId, uuid)
-                        .orderByAsc(Baseinfo::getDicNo);
-            List<Baseinfo> list = baseinfoService.list(queryWrapper);
+            List<Baseinfo> list = baseinfoService.query()
+                    .eq(StringUtils.isNotBlank(baseInfoDTO.getUuid()), "parent_id", baseInfoDTO.getUuid())
+                    .orderByAsc("dic_no+1").list();
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {

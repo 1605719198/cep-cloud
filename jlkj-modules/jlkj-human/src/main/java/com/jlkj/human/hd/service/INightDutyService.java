@@ -13,7 +13,7 @@ import java.util.List;
 public interface INightDutyService extends IService<NightDuty> {
 
     /**
-     * 导入用户数据
+     * 导入夜班资料数据
      *
      * @param nightDutyList 夜班数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据

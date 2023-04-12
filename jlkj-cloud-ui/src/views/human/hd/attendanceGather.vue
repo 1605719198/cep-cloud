@@ -86,9 +86,11 @@
 <script>
 import { listAttendanceGather } from "@/api/human/hd/attendanceGather";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 
 export default {
   name: "AttendanceGather",
+  components: {selectUser},
   data() {
     return {
       // 遮罩层
@@ -113,7 +115,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: 'J00',
         empNo: null,
       },
       // 表单参数

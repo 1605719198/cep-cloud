@@ -93,7 +93,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: 'J00',
         empNo: null,
         slotCardDate: '',
         startTime: '',

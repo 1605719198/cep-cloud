@@ -3,7 +3,7 @@ package com.jlkj.human.config;
 import net.sourceforge.pinyin4j.PinyinHelper;
 
 /**
- * @author 111191
+ * @author 265675
  * @version 1.0
  * @className PinYinApi
  * @description TODO

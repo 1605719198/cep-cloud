@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.OvertimeRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.OvertimeRecord">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+            <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+            <result property="overtimeTypeId" column="overtime_type_id" jdbcType="VARCHAR"/>
+            <result property="overtimeReaId" column="overtime_rea_id" jdbcType="VARCHAR"/>
+            <result property="overtimeDays" column="overtime_days" jdbcType="VARCHAR"/>
+            <result property="overtimeHours" column="overtime_hours" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="resultlt" column="resultlt" jdbcType="VARCHAR"/>
+            <result property="cardTime" column="card_time" jdbcType="TIMESTAMP"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="disposeId" column="dispose_id" jdbcType="VARCHAR"/>
+            <result property="resvAttr1" column="resv_attr1" jdbcType="VARCHAR"/>
+            <result property="resvAttr2" column="resv_attr2" jdbcType="VARCHAR"/>
+            <result property="resvAttr3" column="resv_attr3" jdbcType="VARCHAR"/>
+            <result property="resvAttr4" column="resv_attr4" jdbcType="VARCHAR"/>
+            <result property="resvAttr5" column="resv_attr5" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,emp_id,
+        emp_name,emp_no,post_id,
+        post_name,start_date,end_date,
+        overtime_type_id,overtime_rea_id,overtime_days,
+        overtime_hours,description,status,
+        resultlt,card_time,creator,
+        creator_id,create_date,dispose_id,
+        resv_attr1,resv_attr2,resv_attr3,
+        resv_attr4,resv_attr5
+    </sql>
+</mapper>
