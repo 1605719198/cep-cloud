@@ -475,6 +475,7 @@ export default {
 
       }).then(() => {
         this.getList();
+        this.$emit('change', 'third', null);
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },

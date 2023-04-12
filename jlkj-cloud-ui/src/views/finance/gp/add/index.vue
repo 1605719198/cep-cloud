@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick"  >
+    <el-tabs v-model="activeName" @tab-click="handleClick" :before-leave="leaveTab" >
       <el-tab-pane label="增加用户申请" name="first">
         <index @change="changeData"></index>
       </el-tab-pane>
@@ -31,30 +31,35 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(this.applyIdIf);
+
       if (this.applyIdIf!=false){
         this.activeName = tab.name
       }
 
     },
-/*
+
     // tab切换前判断
-     beforeTabLeave() {
-      if (this.applyId = null){
+    leaveTab() {
+
+      if (this.applyId == null){
         this.applyIdIf = false
+        this.$message({
+          message: '请从行点击进入折页',
+          type: 'warning'
+        });
+        return this.applyIdIf;
       }else {
 
+        this.applyIdIf = true
+        return this.applyIdIf;
       }
-      console.log(this.applyId);
-      console.log(this.applyIdIf);
-      return this.applyIdIf;
     },
-*/
+
 
     changeData(tabName,args){
-
       this.activeName = tabName;
       this.applyId = args;
+
     }
   }
 };
