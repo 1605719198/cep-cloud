@@ -181,6 +181,7 @@
           <span slot="footer" class="dialog-footer">
                 <el-button type="primary"
                            @click="submitForm('mpForm')" >确 定</el-button>
+           <el-button @click="cancel">取 消</el-button>
           </span>
   </div>
 </div>
@@ -290,7 +291,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.$emit('getLists');
+      this.$emit('getLists',false);
+      this.reset()
     },
     /** 提交按钮 */
     submitForm(formName) {

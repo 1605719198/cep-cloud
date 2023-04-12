@@ -196,6 +196,7 @@
           <span slot="footer" class="dialog-footer">
                 <el-button type="primary"
                            @click="submitForm('soForm')" >确 定</el-button>
+               <el-button @click="cancel">取 消</el-button>
           </span>
     </div>
   </div>
@@ -281,6 +282,10 @@ export default {
 
   },
   methods: {
+    cancel() {
+      this.$emit('getLists',false);
+      this.reset()
+    },
     /** 提交按钮 */
     submitForm(formName) {
       this.$refs[formName].validate(valid => {

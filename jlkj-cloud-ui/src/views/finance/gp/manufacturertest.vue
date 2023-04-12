@@ -212,6 +212,7 @@
           <span slot="footer" class="dialog-footer">
                 <el-button type="primary"
                            @click="submitForm('dataForm')" v-if="defineIf">确 定</el-button>
+                <el-button @click="cancel">取 消</el-button>
           </span>
           </div>
         </el-tab-pane>
@@ -467,20 +468,24 @@ export default {
     },
 
     getQueryFc(val) {
+      this.visible = false;
       this.statusTabsFc = val
 
       // this.beforeLeave()
     },
 
     getQueryMp(val) {
+      this.visible = false;
      this.statusTabsMp = val
      // this.beforeLeave()
     },
     getQuerySo(val) {
+      this.visible = false;
       this.statusTabSo = val
      // this.beforeLeave()
     },
     getQuerySt(val) {
+      this.visible = false;
       this.statusTabsSt = val
      // this.beforeLeave()
     },

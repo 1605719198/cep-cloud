@@ -297,7 +297,8 @@ export default {
       }).then(() => {//点击确定，执行then方法
         //调用删除的方法
         delManufacturerBasics(id).then(response => {
-          if (response.data.code === "0") {
+
+          if (response.msg === "操作成功") {
             this.getList();
           }
         })
