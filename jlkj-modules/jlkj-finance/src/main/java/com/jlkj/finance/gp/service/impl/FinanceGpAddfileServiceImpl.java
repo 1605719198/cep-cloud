@@ -21,6 +21,7 @@ public class FinanceGpAddfileServiceImpl implements IFinanceGpAddfileService
     @Autowired
     private FinanceGpAddfileMapper financeGpAddfileMapper;
 
+
     /**
      * 查询厂商增户证照资料
      *
@@ -95,6 +96,7 @@ public class FinanceGpAddfileServiceImpl implements IFinanceGpAddfileService
     @Override
     public int deleteFinanceGpAddfileByUuid(String uuid)
     {
+
         return financeGpAddfileMapper.deleteFinanceGpAddfileByUuid(uuid);
     }
 }

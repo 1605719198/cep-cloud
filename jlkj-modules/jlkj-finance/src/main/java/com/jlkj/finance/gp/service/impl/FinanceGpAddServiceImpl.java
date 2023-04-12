@@ -5,6 +5,7 @@ import java.util.List;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.gp.domain.ManufacturerBase;
+import com.jlkj.finance.gp.mapper.FinanceGpAddfileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.finance.gp.mapper.FinanceGpAddMapper;
@@ -22,6 +23,8 @@ public class FinanceGpAddServiceImpl implements IFinanceGpAddService
 {
     @Autowired
     private FinanceGpAddMapper financeGpAddMapper;
+    @Autowired
+    private FinanceGpAddfileMapper financeGpAddfileMapper;
 
     /**
      * 查询厂商增户申请
@@ -99,6 +102,13 @@ public class FinanceGpAddServiceImpl implements IFinanceGpAddService
     public int updateFinanceGpAdd(FinanceGpAdd financeGpAdd)
     {
         financeGpAdd.setUpdateTime(DateUtils.getNowDate());
+        FinanceGpAdd financeGpAddSelect = new FinanceGpAdd();
+        financeGpAddSelect.setManufacturerName(financeGpAdd.getManufacturerName());
+        financeGpAddSelect.setOwner(financeGpAdd.getOwner());
+        List<FinanceGpAdd> financeGpAdds = financeGpAddMapper.selectFinanceGpAddList(financeGpAddSelect);
+        if (financeGpAdds.size()>0){
+            throw new ServiceException("该公司已存在增户申请资料！");
+        }
         return financeGpAddMapper.updateFinanceGpAdd(financeGpAdd);
     }
 
@@ -111,6 +121,10 @@ public class FinanceGpAddServiceImpl implements IFinanceGpAddService
     @Override
     public int deleteFinanceGpAddByApplyIds(String[] applyIds)
     {
+        for (String applyId :applyIds){
+            financeGpAddfileMapper.deleteFinanceGpAddfileByApplyId(applyId);
+        }
+
         return financeGpAddMapper.deleteFinanceGpAddByApplyIds(applyIds);
     }
 
@@ -123,6 +137,7 @@ public class FinanceGpAddServiceImpl implements IFinanceGpAddService
     @Override
     public int deleteFinanceGpAddByApplyId(String applyId)
     {
+
         return financeGpAddMapper.deleteFinanceGpAddByApplyId(applyId);
     }
 }

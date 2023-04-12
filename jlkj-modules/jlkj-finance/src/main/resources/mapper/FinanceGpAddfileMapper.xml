@@ -121,7 +121,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteFinanceGpAddfileByUuid" parameterType="String">
         delete from finance_gp_addfile where uuid = #{uuid}
     </delete>
-
+    <delete id="deleteFinanceGpAddfileByApplyId" parameterType="String">
+        delete from finance_gp_addfile where apply_id =  #{applyId}.
+    </delete>
     <delete id="deleteFinanceGpAddfileByUuids" parameterType="String">
         delete from finance_gp_addfile where uuid in 
         <foreach item="uuid" collection="array" open="(" separator="," close=")">
