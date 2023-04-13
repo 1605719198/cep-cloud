@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * @author zyf
  * 物料代码维护表
- * @TableName t_materials_code
+ * @TableName materials_mr_code
  */
 @TableName(value ="materials_mr_code")
 @Data

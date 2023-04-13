@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
 * @author zyf
-* @description 针对表【t_materials_code(物料代码维护表)】的数据库操作Service实现
+* @description 针对表【materials_mr_code(物料代码维护表)】的数据库操作Service实现
 * @createDate 2022-08-18 15:16:25
 */
 @Service
