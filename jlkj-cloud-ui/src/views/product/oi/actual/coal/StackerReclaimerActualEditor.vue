@@ -156,7 +156,7 @@ export default {
     getSpacesOptions() {
       listMaterialsStorageSpacesBox({}).then((res) => {
         let options = []
-        res.data.forEach((item) => {
+        res.forEach((item) => {
           let i = {
             id: item.id,
             name: item.materials_small_name,
@@ -218,15 +218,15 @@ export default {
     //获取班别班次
     getUserSchedulingInfo() {
       let params = {
-        job_number: this.$store.state.user.userInfo.userName,
-        due_attendance_time_work: this.formData.start_time,
+        jobNumber: this.$store.state.user.userInfo.userName,
+        dueAttendanceTimeWork: this.formData.start_time,
       }
       getUserSchedulingInfo(params).then(
         (res) => {
           if (res.code === 200) {
-            if (res.data != null) {
-              this.formData.class_name = res.data.class_type
-              this.formData.shift_name = res.data.shift
+            if (res != null) {
+              this.formData.class_name = res.classType
+              this.formData.shift_name = res.shift
             }
           }
         },

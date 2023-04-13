@@ -86,7 +86,7 @@ export default {
       listMaterialsBoxJ(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.id,
             name: item.materials_name

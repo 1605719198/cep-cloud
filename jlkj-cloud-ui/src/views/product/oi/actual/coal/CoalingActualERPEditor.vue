@@ -158,8 +158,8 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           send(this.erpForm).then(res => {
-            if (res.data.code === "0"){
-              this.$message.success(res.data.msg);
+            if (res.code == 200){
+              this.$message.success(res.msg);
               setTimeout(()=>{
                 this.$emit("close");
               },1000);
@@ -198,7 +198,7 @@ export default {
       listMaterialsStorageSpacesBox(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.id,
             name: item.storage_spaces_name

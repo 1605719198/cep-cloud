@@ -43,7 +43,7 @@
     data() {
       return {
         page: {size: 10000, current: 1, total: 1, order: "create_time", orderby: "asc",},
-        query: {plan_id:this.data.id},
+        query: {planId:this.data.id},
         table: {border: true, loading: true,},
         tableData: [],
       }

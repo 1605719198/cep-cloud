@@ -143,7 +143,7 @@
           if (res.data.code === '0') {
             this.$message({
               type: 'success',
-              message: res.data.msg
+              message: res.msg
             });
             done();
             this.onLoad(this.page);
@@ -165,7 +165,7 @@
           if (res.data.code === '0') {
             this.$message({
               type: 'success',
-              message: res.data.msg
+              message: res.msg
             });
             done();
             this.onLoad(this.page);
@@ -189,7 +189,7 @@
             if (res.data.code === '0') {
               this.$message({
                 type: 'success',
-                message: res.data.msg
+                message: res.msg
               });
               this.onLoad(this.page);
             }

@@ -115,9 +115,9 @@ export default {
             this.form.create_user_name = this.userInfo.userName;
             this.submitLoading = true
             insertProductionCoalConsume(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {
@@ -130,9 +130,9 @@ export default {
             // this.$emit('submitSave')
             this.submitLoading = true
             updateProductionCoalConsume(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {

@@ -115,7 +115,7 @@ export default {
         req('post', 'changeProductionPlanCfgCokeConfirm', {
           id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.userInfo.userName,
         }).then(res => {
-          if (res.data.code === "0") {
+          if (res.code == 200) {
             this.$message({
               type: "success", message: "操作成功！", duration: 1000,
               onClose: () => {

@@ -89,9 +89,11 @@
 
 <script>
 import { addYa, upYa } from '@/api/production/oi/YA.js';
+import {mapGetters} from "vuex";
 
 export default {
   computed: {
+    ...mapGetters(["userInfo"]),
   },
   mounted() {
     this.form = { ...this.data }
@@ -188,9 +190,9 @@ export default {
               departmentId: '',
               accidentReportFile: this.form.accident_report_file//事故报告
             }).then(res => {
-              if (res.data.code === "0") {
+              if (res.code == 200) {
                 this.$message({ type: "success", message: "增加成功" });
-                this.$emit('submitSave', res.data.msg)
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {
@@ -198,6 +200,7 @@ export default {
               window.console.log(error);
             });
           } else if (this.type === 'edit') {
+            console.log(this.userInfo);
             this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.userInfo.userName;
             upYa({
@@ -215,9 +218,9 @@ export default {
               modifyUserName: this.form.modify_user_name,
               accidentReportFile: this.form.accident_report_file//事故报告
             }).then(res => {
-              if (res.data.code === "0") {
+              if (res.code == 200) {
                 this.$message({ type: "success", message: "更新成功" });
-                this.$emit('submitSave', res.data.msg)
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {

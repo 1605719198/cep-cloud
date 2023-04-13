@@ -304,7 +304,7 @@ export default {
           delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           this.onLoad();
-          this.$message({ type: 'success', message: res.data.msg });
+          this.$message({ type: 'success', message: res.msg });
         }, error => {
           window.console.log(error);
         });

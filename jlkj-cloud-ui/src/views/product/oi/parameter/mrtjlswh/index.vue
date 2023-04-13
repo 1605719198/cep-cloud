@@ -230,7 +230,7 @@ export default {
       listMaterialsBoxJ(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.materials_code,
             name: item.materials_name
@@ -329,7 +329,7 @@ export default {
           delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           this.onLoad();
-          this.$message({ type: 'success', message: res.data.msg });
+          this.$message({ type: 'success', message: res.msg });
         }, error => {
           window.console.log(error);
         });

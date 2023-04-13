@@ -61,9 +61,9 @@ export default {
             this.form.create_user_id = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.userInfo.userName;
             addProductionSingleHoleYield(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false;
             }, error => {
@@ -74,9 +74,9 @@ export default {
             this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.userInfo.userName;
             editProductionSingleHoleYield(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false;
             }, error => {

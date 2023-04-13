@@ -346,7 +346,7 @@ export default {
           deleteUserId: this.$store.state.user.userInfo.userName,
           deleteUserName: this.$store.state.user.userInfo.nickName,
         }).then(res => {
-          if (res.data.code === "0") {
+          if (res.code == 200) {
             this.$message({
               type: "success", message: "操作成功！", duration: 1000,
               onClose: () => {

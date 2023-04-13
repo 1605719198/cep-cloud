@@ -566,9 +566,9 @@ export default {
             //             if (res.data.code === '0') {
             //                 this.$message({
             //                     type: 'success',
-            //                     message: res.data.msg,
+            //                     message: res.msg,
             //                 })
-            //                 this.$emit('submitSave', res.data.msg)
+            //                 this.$emit('submitSave', res.msg)
             //             }
             //             this.submitLoading = false
             //         },
@@ -597,9 +597,9 @@ export default {
                   if (res.data.code === '0') {
                     this.$message({
                       type: 'success',
-                      message: res.data.msg,
+                      message: res.msg,
                     })
-                    this.$emit('submitSave', res.data.msg)
+                    this.$emit('submitSave', res.msg)
                   }
                   this.submitLoading = false
                 },

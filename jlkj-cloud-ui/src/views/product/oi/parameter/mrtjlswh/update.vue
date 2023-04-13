@@ -117,7 +117,7 @@ export default {
       listMaterialsBoxJ(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           let i = {
             id: item.materials_code,
             name: item.materials_name
@@ -147,9 +147,9 @@ export default {
             this.form.create_user_name = this.userInfo.userName;
             this.submitLoading = true
             insertProductionCokeOvens(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {
@@ -161,9 +161,9 @@ export default {
             this.form.modify_user_name = this.userInfo.userName;
             this.submitLoading = true
             updateProductionCokeOvens(this.form).then(res => {
-              if (res.data.code === "0") {
-                this.$message({ type: "success", message: res.data.msg });
-                this.$emit('submitSave', res.data.msg)
+              if (res.code == 200) {
+                this.$message({ type: "success", message: res.msg });
+                this.$emit('submitSave', res.msg)
               }
               this.submitLoading = false
             }, error => {

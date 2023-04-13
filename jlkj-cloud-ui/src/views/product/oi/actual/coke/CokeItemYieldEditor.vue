@@ -109,7 +109,7 @@ export default {
       }
       insertCokeItemYieldList(params).then(res => {
         this.submitLoading = false;
-        if (res.data.code === "0") {
+        if (res.code == 200) {
           this.$message.success("保存成功");
           this.$emit("close");
         } else {
@@ -137,7 +137,7 @@ export default {
       }
       updateCokeItemYieldList(params).then(res => {
         this.submitLoading = false;
-        if (res.data.code === "0") {
+        if (res.code == 200) {
           this.$message.success("修改成功");
           this.$emit("close");
         } else {
@@ -154,7 +154,7 @@ export default {
       listMaterialsBoxJ(param).then((res) => {
         console.log(res)
         let options = []
-        res.data.forEach(item => {
+        res.forEach(item => {
           if (item.materials_code === "0150201" || item.materials_code === "0150301"){
             let i = {
               value: item.materials_code,
