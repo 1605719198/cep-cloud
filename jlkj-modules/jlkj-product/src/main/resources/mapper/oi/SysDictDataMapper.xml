@@ -40,7 +40,7 @@
         select
             a.dict_label,
             a.dict_value
-        from t_sys_dict_data a
+        from sys_dict_data a
         where 1=1
         and (#{dictType} = '' or a.dict_type = #{dictType})
     </select>

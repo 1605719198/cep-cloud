@@ -22,35 +22,16 @@ public class ProductionPowerYieldListPerformanceDTO extends BasePage {
      * 开始日期
      */
     @NotNull(message = "开始日期")
-    @NotEmpty(message = "开始日期不能为空")
     @Schema(description = "开始日期")
-    @JsonProperty("start_date")
+    @JsonProperty("startDate")
     private String startDate ;
 
     /**
      * 结束日期
      */
     @NotNull(message = "结束日期")
-    @NotEmpty(message = "结束日期不能为空")
     @Schema(description = "结束日期")
-    @JsonProperty("end_date")
+    @JsonProperty("endDate")
     private String endDate ;
 
-    /**
-     * 班别
-     */
-    @NotNull(message = "班别")
-    @NotEmpty(message = "班别不能为空")
-    @Schema(description = "班别")
-    @JsonProperty("classes")
-    private String classes ;
-
-    /**
-     * 班次
-     */
-    @NotNull(message = "班次")
-    @NotEmpty(message = "班次不能为空")
-    @Schema(description = "班次")
-    @JsonProperty("shift")
-    private String shift ;
 }

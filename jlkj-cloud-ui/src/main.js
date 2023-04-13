@@ -93,7 +93,9 @@ Vue.use(VueClipboard)
 //注册全局组件(人员选择器)
 import personnelSelection from './components/personnel-selection/index.vue'
 Vue.component('personnel-selection', personnelSelection)
-
+//注册全局组件(设备选择器)
+import equipmentSelection from './components/equipment-selection/index.vue'
+Vue.component('equipment-selection', equipmentSelection)
 
 DictData.install()
 

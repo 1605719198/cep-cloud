@@ -18,7 +18,7 @@ export const getProductionCokeFactoryPerformancePage = (params) => {
 //获取物料代码 00：煤   01：焦炭
 export const getMaterialsCodeListByType = (type) => {
   return request({
-    url:'/api/neplatform/material/parameter/getMaterialsCodeListByType?mtrlType='+ type,
+    url:'/material/parameter/getMaterialsCodeListByType?mtrlType='+ type,
     method:'get'
   });
 }

@@ -123,7 +123,7 @@ export default {
         if (valid) {
           this.submitLoading = true;
           if (this.type === 'add') {
-            this.form.create_user_id = this.$store.state.user.userInfo.userName;
+            this.form.create_user_id = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.$store.state.user.userInfo.nickName;
             addProductionTargetItem(this.form).then(res => {
               if (res.code === 200) {
@@ -136,7 +136,7 @@ export default {
               window.console.log(error);
             });
           } else if (this.type === 'edit') {
-            this.form.modify_user_id = this.$store.state.user.userInfo.userName;
+            this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.$store.state.user.userInfo.nickName;
             editProductionTargetItem(this.form).then(res => {
               if (res.code === 200) {

@@ -109,7 +109,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+      <div style="margin-top: 10px;text-align: right;padding: 25px 0px 20px 20px;"
            class="avue-crud__pagination">
         <el-pagination v-show="page.total > 0"
                        background
@@ -250,8 +250,8 @@ export default {
       }).then(() => {
         delManualConfigCoal({
           id: row.id,
-          user_id: this.$store.state.user.userInfo.userName,
-          user_name: this.$store.state.user.userInfo.nickName,
+          user_id: this.$store.getters.userInfo.userId,
+          user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           if (res.code === 200) {
             this.onLoad();

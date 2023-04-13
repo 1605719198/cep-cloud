@@ -95,8 +95,8 @@
               real_start_date: this.form.real_start_date,
               real_end_date: this.form.real_end_date,
               remark: this.form.remark,
-              complete_user_id: this.$store.state.user.userInfo.userName,
-              complete_user_name: this.$store.state.user.userInfo.nickName,
+              complete_user_id: this.$store.getters.userInfo.userId,
+              complete_user_name: this.$store.getters.userInfo.nickName,
             }).then(res => {
               if (res.code === 200) {
                 this.$message({

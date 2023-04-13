@@ -73,7 +73,7 @@
         INNER JOIN (
             select b.materials_code,a.quenching_method,a.single_consumption
             from product_oi_information_configuration a
-            INNER JOIN t_materials_code b ON a.materials_code = b.id
+            INNER JOIN materials_mr_code b ON a.materials_code = b.id
         ) c ON a.materials_code = c.materials_code and a.coke_type = c.quenching_method, (
             select a.materials_code,a.materials_name,case when a.coal_tower_weight = 0 then 0 else a.material_weight / a.coal_tower_weight * 100 end as proportion
             from (
@@ -83,7 +83,7 @@
                 INNER JOIN (
                     select max(start_time) as start_time
                     from product_oi_configure_coal_species_performance a,
-                    (select convert(dict_value,SIGNED) as dict_value from t_sys_dict_data where dict_label='倒推时间') as b
+                    (select convert(dict_value,SIGNED) as dict_value from sys_dict_data where dict_label='倒推时间') as b
                     where a.start_time &gt;= concat(DATE_FORMAT(date_add(date_add(now(),interval -1 day), interval -1 * b.dict_value hour),'%Y-%m-%d'),' 20:00:00')
                     and a.start_time &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
                 ) as b ON c.start_time = b.start_time
@@ -92,13 +92,13 @@
         ) b, (
             select b.materials_code,b.materials_name,a.proportion
             from product_oi_plan_config_coke_detail a
-            INNER JOIN t_materials_code b ON a.coal_type_id = b.id
+            INNER JOIN materials_mr_code b ON a.coal_type_id = b.id
             INNER JOIN (
                 select a.id
                 from product_oi_plan_config_coke a
                 INNER JOIN (
                     select max(plan_start_time) as plan_start_time from product_oi_plan_config_coke a,
-                    (select convert(dict_value,SIGNED) as dict_value from t_sys_dict_data where dict_label='倒推时间') as b
+                    (select convert(dict_value,SIGNED) as dict_value from sys_dict_data where dict_label='倒推时间') as b
                     where a.plan_start_time &gt;= concat(DATE_FORMAT(date_add(date_add(now(),interval -1 day), interval -1 * b.dict_value hour),'%Y-%m-%d'),' 20:00:00')
                       and a.plan_start_time &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
                 ) as b ON a.plan_start_time = b.plan_start_time
@@ -154,13 +154,13 @@
                           from (
                               select sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                      0 as production_performance_jf
-                              from t_logistics_trans_actual_nut a
+                              from logistics_wv_trans_actual_nut a
                               where a.car_send_date &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
                                 and a.car_send_date &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
                               union all
                               select 0 as production_performance_jd,
                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                              from t_logistics_trans_actual_fines a
+                              from logistics_wv_trans_actual_fines a
                               where a.car_send_date &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
                                 and a.car_send_date &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
                           ) as a
@@ -178,7 +178,7 @@
                      sum(case when materials_id = '0150201' then inventory else 0 end) as coFinesStore,
                      0 as waterCoFinesStore,
                      0 as sulgaoStore
-                 from t_materials_coke_stock
+                 from materials_mr_coke_stock
              ) as b
     </select>
 </mapper>

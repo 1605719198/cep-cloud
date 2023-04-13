@@ -79,12 +79,12 @@
         SELECT IFNULL(SUM(weight), 0) / 1000 AS weight
         FROM (
                  SELECT SUM(complete_pound_num) weight
-                 FROM t_logistics_trans_actual_nut
+                 FROM logistics_wv_trans_actual_nut
                  WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
                    AND pound_date &lt; concat(curdate(), ' 20:00:00')
                  UNION ALL
                  SELECT SUM(complete_pound_num) weight
-                 FROM t_logistics_trans_actual_fines
+                 FROM logistics_wv_trans_actual_fines
                  WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
                    AND pound_date &lt; concat(curdate(), ' 20:00:00')
              ) a
@@ -121,7 +121,7 @@
         SELECT
             *
         FROM
-            t_materials_coke_stock
+            materials_mr_coke_stock
     </select>
 
 
@@ -129,7 +129,7 @@
         select
             a.materials_code,
             a.materials_name
-        from t_materials_code a
+        from materials_mr_code a
         where a.delete_flag = 0 AND mtrlType = '01'
         order by materials_code
     </select>
@@ -138,21 +138,21 @@
         SELECT complete_pound_num AS weight,
                goods_no           AS material_code,
                goods_name         AS materials_name
-        FROM t_logistics_trans_actual_coke
+        FROM logistics_wv_trans_actual_coke
         WHERE compute_flag &lt; 0
           AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
         UNION ALL
         SELECT complete_pound_num,
                goods_no,
                goods_name
-        FROM t_logistics_trans_actual_nut
+        FROM logistics_wv_trans_actual_nut
         WHERE compute_flag &lt; 0
           AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
         UNION ALL
         SELECT complete_pound_num,
                goods_no,
                goods_name
-        FROM t_logistics_trans_actual_fines
+        FROM logistics_wv_trans_actual_fines
         WHERE compute_flag &lt; 0
           AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
     </select>
@@ -171,7 +171,7 @@
         FROM v_energy_board_ems_data a
                  LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
         WHERE a.engy_type IN
-              (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气')
+              (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气')
           and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
         UNION ALL
         SELECT '回收量',
@@ -179,7 +179,7 @@
         FROM v_energy_board_ems_data a
                  LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
         WHERE a.engy_type IN
-              (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸汽回收量')
+              (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸汽回收量')
           and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
     </select>
 

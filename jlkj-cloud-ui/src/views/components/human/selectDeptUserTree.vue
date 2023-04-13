@@ -200,7 +200,8 @@
   .selectTreeOption {
     overflow: auto;
     background-color: #fff;
-    min-height: 32px;
+    height: auto;
+  /*min-height: 32px;*/
   }
 
   .custom-tree-node {

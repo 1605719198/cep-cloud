@@ -325,8 +325,8 @@ export default {
       }).then(() => {
         deleteProductionCokeOvens({
           id: row.id,
-          delete_user_id: this.$store.state.user.userInfo.userName,
-          delete_user_name: this.$store.state.user.userInfo.nickName,
+          delete_user_id: this.$store.getters.userInfo.userId,
+          delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           this.onLoad();
           this.$message({ type: 'success', message: res.data.msg });

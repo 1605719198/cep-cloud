@@ -30,7 +30,7 @@
             b.energy_code_name
         FROM v_energy_board_ems_data a
         LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
-        WHERE a.engy_type IN (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气' )
+        WHERE a.engy_type IN (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气' )
         <if test="condition.startDate != null and condition.startDate != ''">
             and STR_TO_DATE(e_count_date, '%Y%m%d') &gt;= #{condition.startDate}
         </if>

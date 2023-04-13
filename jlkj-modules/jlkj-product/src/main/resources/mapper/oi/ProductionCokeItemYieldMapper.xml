@@ -22,15 +22,15 @@
     </select>
 
     <select id="getMaterialsCokeStockOneByMaterialName" resultType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
-        select * from t_materials_coke_stock where materials_name = #{materialsName}
+        select * from materials_mr_coke_stock where materials_name = #{materialsName}
     </select>
 
     <update id="updateMaterialsCokeStockById"  parameterType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
-        update t_materials_coke_stock set inventory = #{inventory} where id = #{id}
+        update materials_mr_coke_stock set inventory = #{inventory} where id = #{id}
     </update>
 
     <select id="getMaterialsCokeStockMultipleByMaterialName" resultType="com.jlkj.product.oi.domain.ProductionMaterialsCokeStock">
-        select * from t_materials_coke_stock where
+        select * from materials_mr_coke_stock where
         <if test="nameList != null and nameList.size()>0">
             <foreach collection="nameList" item="name" separator=" or ">
                 materials_name = #{name}
@@ -42,9 +42,9 @@
         select
         DATE_FORMAT(a.pound_date,'%Y-%m-%d %H:%i:%s') AS pound_date,goods_no,goods_name,complete_pound_num
         from (
-        select * from t_logistics_trans_actual_nut where compute_flag > 0
+        select * from logistics_wv_trans_actual_nut where compute_flag > 0
         UNION ALL
-        select * from t_logistics_trans_actual_fines where compute_flag > 0
+        select * from logistics_wv_trans_actual_fines where compute_flag > 0
         ) a
         <where>
             <if test="condition.startTime != null and condition.startTime != ''">

@@ -1,23 +1,22 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
+      <el-form :inline="true">
       <el-row :gutter="20">
-        <el-col :span="3">
           <div class="el-form-item el-form-item--small">
+            <label class="el-form-item__label">起始日期</label>
             <div class="el-form-item__content">
               <el-date-picker v-model="query.start_time" type="date" placeholder="选择起始日期" value-format="yyyy-MM-dd " />
             </div>
           </div>
-        </el-col>
-        <el-col :span="3">
           <div class="el-form-item el-form-item--small">
+            <label class="el-form-item__label">结束日期</label>
             <div class="el-form-item__content">
               <el-date-picker v-model="query.end_time" type="date" placeholder="选择结束日期" value-format="yyyy-MM-dd " />
             </div>
           </div>
-        </el-col>
-        <el-col :span="3">
           <div class="el-form-item el-form-item--small">
+            <label class="el-form-item__label">类别</label>
             <div class="el-form-item__content">
               <el-select v-model="query.category" placeholder="类别" clearable>
                 <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -25,15 +24,13 @@
               </el-select>
             </div>
           </div>
-        </el-col>
-        <el-col :span="10">
           <div class="el-form-item__content" style="margin-left: 0px;">
-            <el-button v-hasPermi="['getCokeItemYieldList']" size="medium" type="primary" icon="el-icon-search"
-              @click="handleQuery">搜 索</el-button>
-            <el-button size="medium" type="default" icon="el-icon-refresh-left" @click="handleResetting">重 置</el-button>
+            <el-button v-hasPermi="['getCokeItemYieldList']" size="mini" type="primary" icon="el-icon-search"
+              @click="handleQuery">搜索</el-button>
+            <el-button size="mini" type="default" icon="el-icon-refresh-left" @click="handleResetting">重置</el-button>
           </div>
-        </el-col>
       </el-row>
+      </el-form>
     </div>
     <div>
       <el-table height="66vh" size="small" :data="tableData" stripe  @sort-change="handleSort" style="width: 100%" v-loading="loading">
@@ -45,7 +42,7 @@
         </el-table-column>
         <el-table-column prop="pound_date" label="时间" min-width="140px"></el-table-column>
       </el-table>
-      <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+      <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
           :current-page="page.current" :page-sizes="[20, 50, 100, 200]" :page-size="page.size"
           layout="total, sizes, prev, pager, next, jumper" :total="page.total">
@@ -108,9 +105,9 @@ export default {
   methods: {
     handleQuery() {
       let params = {
-        start_time: this.query.start_time,
-        end_time: this.query.end_time,
-        materials_code: this.query.category,
+        startTime: this.query.start_time,
+        endTime: this.query.end_time,
+        materialsCode: this.query.category,
         current: this.page.current,
         size: this.page.size,
         order: this.page.order,
@@ -172,8 +169,8 @@ export default {
       }).then(() => {
         deleteCokeItemYieldList({
           id: rows[index].id,
-          delete_user_id: this.$store.state.user.userInfo.userName,
-          delete_user_name: this.$store.state.user.userInfo.nickName,
+          delete_user_id: this.$store.getters.userInfo.userId,
+          delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           if (res.code === 200) {
             rows.splice(index, 1);

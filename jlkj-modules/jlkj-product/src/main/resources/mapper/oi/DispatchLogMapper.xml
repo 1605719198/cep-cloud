@@ -41,7 +41,7 @@
             case when ISNULL(a.create_time) then '' else DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') end as create_time,
             case when ISNULL(a.dispath_time) then '' else DATE_FORMAT(a.dispath_time,'%Y-%m-%d %H:%i:%s') end as dispath_time,
             case when ISNULL(a.dispose_time) then '' else DATE_FORMAT(a.dispose_time,'%Y-%m-%d %H:%i:%s') end as dispose_time
-        from t_dispatch_log a
+        from product_dispatch_log a
         where 1=1
           and (#{condition.id} = '' or a.id = #{condition.id})
         and (#{condition.workContent} = '' or a.work_content like concat('%',#{condition.workContent},'%'))

@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 物料管理-物料煤场库存表
- * @TableName t_materials_coal_stock
+ * @TableName materials_mr_coal_stock
  */
 @TableName(value ="materials_mr_coal_stock")
 @Data

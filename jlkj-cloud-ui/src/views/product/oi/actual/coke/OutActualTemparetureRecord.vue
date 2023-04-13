@@ -4,18 +4,17 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
-      <el-form>
+      <el-form :inline="true">
         <el-row :gutter="20">
-          <el-col :span="4">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">日期</label>
               <div class="el-form-item__content">
                 <el-date-picker v-model="query.daterange" type="daterange" range-separator="至" start-placeholder="开始日期"
                   end-placeholder="结束日期" value-format="yyyy-MM-dd" />
               </div>
             </div>
-          </el-col>
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">班别</label>
               <div class="el-form-item__content">
                 <el-select v-model="query.class_name" placeholder="选择班别" clearable>
                   <el-option v-for="item in classTypeOptions" :key="item.value" :label="item.label" :value="item.label">
@@ -23,10 +22,8 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
-
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">班次</label>
               <div class="el-form-item__content">
                 <el-select v-model="query.shift_name" placeholder="班次" clearable>
                   <el-option v-for="item in shiftOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -34,17 +31,13 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
-
-          <el-col :span="10">
             <div class="el-form-item__content" style="margin-left: 0px;">
-              <el-button v-hasPermi="['getProductionOutputPerformanceTemperaturePage']" size="medium" type="primary"
+              <el-button v-hasPermi="['getProductionOutputPerformanceTemperaturePage']" size="mini" type="primary"
                 icon="el-icon-search" @click="handleQuery">搜 索
               </el-button>
-              <el-button size="medium" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置
+              <el-button size="mini" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置
               </el-button>
             </div>
-          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -58,7 +51,7 @@
           </template>
         </el-table>
 
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
           <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
             layout="total, sizes, prev, pager, next, jumper" :current-page="page.currentPage"
             :page-sizes="[20, 50, 100, 200]" :page-size="page.pageSize" :total="page.total">
@@ -170,10 +163,10 @@ export default {
       let starDate = query.daterange === "" ? "" : query.daterange[0] + " 00:00:00";
       let endDate = query.daterange === "" ? "" : query.daterange[1] + " 23:59:59";
       let params = {
-        "class_name": query.class_name,
-        "shift_name": query.shift_name,
-        "start_time": starDate,
-        "end_time": endDate,
+        "className": query.class_name,
+        "shiftName": query.shift_name,
+        "startTime": starDate,
+        "endTime": endDate,
         "size": page.pageSize,
         "current": page.currentPage,
         // "order": "measure_time",
@@ -222,9 +215,10 @@ export default {
     // 清空
     handleEmpty() {
       this.query = {
-        shift_name: '',
-        class_name: '',
         daterange: '',
+        class_name: '',
+        shift_name: '',
+        measure_time: '',
       }
       this.handleQuery();
     },

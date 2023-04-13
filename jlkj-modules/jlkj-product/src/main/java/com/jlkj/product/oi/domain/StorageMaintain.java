@@ -13,7 +13,7 @@ import java.util.Date;
  * 料仓储位维护表
  * @TableName t_storage_maintain
  */
-@TableName(value ="t_storage_maintain")
+@TableName(value ="product_oi_storage_maintain")
 @Data
 public class StorageMaintain implements Serializable {
     /**

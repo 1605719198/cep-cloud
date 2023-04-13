@@ -44,7 +44,7 @@
             a.modify_user_name,
             case when ISNULL(a.modify_time) then '' else DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') end as modify_time
         from product_oi_plan_config_coke_detail a
-        LEFT JOIN t_materials_code_small c ON a.materials_small_code = c.materials_small_code
+        LEFT JOIN materials_mr_code_small c ON a.materials_small_code = c.materials_small_code
         where 1=1
         and (a.plan_id = #{condition.planId})
         order by ${condition.order} ${condition.orderby}
@@ -62,8 +62,8 @@
             d.materials_small_name
         from product_oi_plan_config_coke_detail a
         INNER JOIN product_oi_plan_config_coke b ON a.plan_id = b.id
-        INNER JOIN t_materials_code c ON a.coal_type_id = c.id
-        LEFT JOIN t_materials_code_small d ON a.materials_small_code = d.materials_small_code
+        INNER JOIN materials_mr_code c ON a.coal_type_id = c.id
+        LEFT JOIN materials_mr_code_small d ON a.materials_small_code = d.materials_small_code
         where 1=1
           and a.warehouse_number = #{warehouseNumber}
           and a.plan_id = #{planId}

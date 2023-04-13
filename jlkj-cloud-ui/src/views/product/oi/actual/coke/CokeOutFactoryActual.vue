@@ -6,91 +6,84 @@
        style="width: 98%;border: 0">
     <div class="avue-crud__search"
          style="border: 0">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="3">
-            <div class="el-form-item el-form-item--small">
-              <div class="el-form-item__content">
-                <el-date-picker v-model="query.start_time"
-                                type="date"
-                                placeholder="选择起始日期"
-                                value-format="yyyy-MM-dd" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="el-form-item el-form-item--small">
-              <div class="el-form-item__content">
-                <el-date-picker v-model="query.end_time"
-                                type="date"
-                                placeholder="选择结束日期"
-                                value-format="yyyy-MM-dd" />
-              </div>
-            </div>
-          </el-col>
-          <!--          <el-col :span="3">-->
-          <!--            <div class="el-form-item el-form-item&#45;&#45;small">-->
-          <!--              <div class="el-form-item__content">-->
-          <!--                <el-select v-model="query.classType"-->
-          <!--                           placeholder="选择班别"-->
-          <!--                           clearable>-->
-          <!--                  <el-option v-for="item in classTypeOptions"-->
-          <!--                             :key="item.value"-->
-          <!--                             :label="item.label"-->
-          <!--                             :value="item.value">-->
-          <!--                  </el-option>-->
-          <!--                </el-select>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--          </el-col>-->
+      <el-form :inline="true">
+        <div class="el-form-item el-form-item--small">
+          <label class="el-form-item__label">起始日期</label>
+          <div class="el-form-item__content">
+            <el-date-picker v-model="query.start_time"
+                            type="date"
+                            placeholder="选择起始日期"
+                            value-format="yyyy-MM-dd" />
+          </div>
+        </div>
+        <div class="el-form-item el-form-item--small">
+          <label class="el-form-item__label">结束日期</label>
+          <div class="el-form-item__content">
+            <el-date-picker v-model="query.end_time"
+                            type="date"
+                            placeholder="选择结束日期"
+                            value-format="yyyy-MM-dd" />
+          </div>
+        </div>
+      <!--          <el-col :span="3">-->
+      <!--            <div class="el-form-item el-form-item&#45;&#45;small">-->
+      <!--              <div class="el-form-item__content">-->
+      <!--                <el-select v-model="query.classType"-->
+      <!--                           placeholder="选择班别"-->
+      <!--                           clearable>-->
+      <!--                  <el-option v-for="item in classTypeOptions"-->
+      <!--                             :key="item.value"-->
+      <!--                             :label="item.label"-->
+      <!--                             :value="item.value">-->
+      <!--                  </el-option>-->
+      <!--                </el-select>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--          </el-col>-->
 
-          <!--          <el-col :span="3">-->
-          <!--            <div class="el-form-item el-form-item&#45;&#45;small">-->
-          <!--              <div class="el-form-item__content">-->
-          <!--                <el-select v-model="query.shift"-->
-          <!--                           placeholder="班次"-->
-          <!--                           clearable>-->
-          <!--                  <el-option v-for="item in shiftOptions"-->
-          <!--                             :key="item.value"-->
-          <!--                             :label="item.label"-->
-          <!--                             :value="item.value">-->
-          <!--                  </el-option>-->
-          <!--                </el-select>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--          </el-col>-->
+      <!--          <el-col :span="3">-->
+      <!--            <div class="el-form-item el-form-item&#45;&#45;small">-->
+      <!--              <div class="el-form-item__content">-->
+      <!--                <el-select v-model="query.shift"-->
+      <!--                           placeholder="班次"-->
+      <!--                           clearable>-->
+      <!--                  <el-option v-for="item in shiftOptions"-->
+      <!--                             :key="item.value"-->
+      <!--                             :label="item.label"-->
+      <!--                             :value="item.value">-->
+      <!--                  </el-option>-->
+      <!--                </el-select>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--          </el-col>-->
 
-          <el-col :span="3">
-            <div class="el-form-item el-form-item--small">
-              <div class="el-form-item__content">
-                <el-select v-model="query.material_code"
-                           placeholder="物料代码"
-                           clearable>
-                  <el-option v-for="item in materialsOptions"
-                             :key="item.materials_code"
-                             :label="item.materials_name"
-                             :value="item.materials_code">
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-          </el-col>
+        <div class="el-form-item el-form-item--small">
+          <label class="el-form-item__label">物料代码</label>
+          <div class="el-form-item__content">
+            <el-select v-model="query.material_code"
+                       placeholder="物料代码"
+                       clearable>
+              <el-option v-for="item in materialsOptions"
+                         :key="item.materials_code"
+                         :label="item.materials_name"
+                         :value="item.materials_code">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
 
-          <el-col :span="7">
-            <div class="el-form-item__content"
-                 style="margin-left: 0px;">
-              <el-button v-hasPermi="['getProductionCokeFactoryPerformancePage']"
-                         size="medium"
-                         type="primary"
-                         icon="el-icon-search"
-                         @click="handleQuery">搜 索</el-button>
-              <el-button size="medium"
-                         type="default"
-                         icon="el-icon-refresh-left"
-                         @click="handleEmpty">重 置</el-button>
-            </div>
-          </el-col>
-        </el-row>
+        <div class="el-form-item__content"
+             style="margin-left: 0px;">
+          <el-button v-hasPermi="['getProductionCokeFactoryPerformancePage']"
+                     size="mini"
+                     type="primary"
+                     icon="el-icon-search"
+                     @click="handleQuery">搜 索</el-button>
+          <el-button size="mini"
+                     type="default"
+                     icon="el-icon-refresh-left"
+                     @click="handleEmpty">重 置</el-button>
+        </div>
       </el-form>
     </div>
     <div>
@@ -156,7 +149,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;"
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;"
              class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
@@ -212,12 +205,12 @@ export default {
   },
   created () {
     // getDicts("sys_classtype").then(response => {
-    //   this.classTypeOptions = response.data.data.map((i)=>{
+    //   this.classTypeOptions = response.data.map((i)=>{
     //     return { value: i.dictLabel, label:  i.dictLabel };
     //   });
     // });
     // getDicts("sys_shift_no").then(response => {
-    //   this.shiftOptions = response.data.data.map((i)=>{
+    //   this.shiftOptions = response.data.map((i)=>{
     //     return { value: i.dictValue, label:  i.dictLabel };
     //   });
     // });
@@ -236,11 +229,11 @@ export default {
         // "orderby": "",
         "order": page.order,
         "orderby": page.orderby,
-        "shift_name": query.shift,
-        "start_time": query.start_time === null ? "" : query.start_time + " 00:00:00",
-        "end_time": query.end_time === null ? "" : query.end_time + " 23:59:59",
-        "class_name": query.classType,
-        "material_code": query.material_code === null ? "" : query.material_code
+        "shiftName": query.shift,
+        "startTime": query.start_time === null ? "" : query.start_time + " 00:00:00",
+        "endTime": query.end_time === null ? "" : query.end_time + " 23:59:59",
+        "className": query.classType,
+        "materialCode": query.material_code === null ? "" : query.material_code
       }
       this.table.loading = true;
       getProductionCokeFactoryPerformancePage(params).then(response => {
@@ -275,10 +268,11 @@ export default {
     handleEmpty () {
       this.page.currentPage = 1
       this.query = {
-        shift: '',
-        classType: '',
         start_time: null,
         end_time: null,
+        classType: '',
+        shift: '',
+        material_code: ''
       }
       this.getProductionCokeFactoryPerformancePage();
     },

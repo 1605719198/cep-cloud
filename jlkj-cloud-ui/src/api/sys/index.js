@@ -155,4 +155,11 @@ export const updateHumanresourcePersonnelSignature = (params) => {
   })
 };
 
-
+//通过开始时间获取排班信息
+export const getHumanresourceSchedule = (params) => {
+  return request({
+    url: '/system/humanresourceSchedule/list',
+    method: 'get',
+    params
+  })
+};

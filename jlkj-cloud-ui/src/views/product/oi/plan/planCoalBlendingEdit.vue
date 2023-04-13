@@ -308,8 +308,8 @@ export default {
           materials_small_name: '',
           proportion: '',
           delete_flag: 0,
-          create_user_id: this.$store.state.user.userInfo.userName,
-          create_user_name: this.$store.state.user.userInfo.nickName,
+          create_user_id: this.$store.getters.userInfo.userId,
+          create_user_name: this.$store.getters.userInfo.nickName,
         });
         // this.selectCoalTypeByCategoryId = [...this.selectCoalType];
       } else {
@@ -383,8 +383,8 @@ export default {
               material_id: this.form.material_id,
               material_name: this.form.material_name,
               // tower_number: this.form.tower_number,
-              create_user_id: this.$store.state.user.userInfo.userName,
-              create_user_name: this.$store.state.user.userInfo.nickName,
+              create_user_id: this.$store.getters.userInfo.userId,
+              create_user_name: this.$store.getters.userInfo.nickName,
               detail_list: this.form.tableData,
             }).then(res => {
               if (res.code === 200) {
@@ -407,8 +407,8 @@ export default {
               material_id: this.form.material_id,
               material_name: this.form.material_name,
               // tower_number: this.form.tower_number,
-              modify_user_id: this.$store.state.user.userInfo.userName,
-              modify_user_name: this.$store.state.user.userInfo.nickName,
+              modify_user_id: this.$store.getters.userInfo.userId,
+              modify_user_name: this.$store.getters.userInfo.nickName,
               detail_list: [...this.form.tableData, ...this.form.tableDelData],
             }).then(res => {
               if (res.code === 200) {

@@ -113,7 +113,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         req('post', 'changeProductionPlanCfgCokeConfirm', {
-          id: row.id, receive_user_id: this.userInfo.userId, receive_user_name: this.userInfo.userName,
+          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.userInfo.userName,
         }).then(res => {
           if (res.data.code === "0") {
             this.$message({

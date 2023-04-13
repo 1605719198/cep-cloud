@@ -39,7 +39,7 @@
                      sum(a.qty) as performance_yield
                  FROM v_energy_board_ems_data a
                           LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
-                 WHERE a.engy_type IN (SELECT dict_value FROM t_sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '电力' )
+                 WHERE a.engy_type IN (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '电力' )
                    and (#{startDate} = '' or
                         STR_TO_DATE(e_count_date, '%Y%m%d') &gt;= case when #{startDate} = '' then null else concat(#{startDate}, ' 00:00:00') end)
                    and (#{endDate} = '' or

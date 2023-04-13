@@ -30,7 +30,7 @@
         select
             a.shift,
             a.class_type
-        from t_humanresource_personnel_scheduling a
+        from human_hm_personnel_scheduling a
         where a.job_number = #{jobNumber} and #{dueAttendanceTimeWork} &gt;= a.due_attendance_time_work and #{dueAttendanceTimeWork} &lt;= a.due_attendance_time_offduty
         limit 1
     </select>

@@ -92,8 +92,8 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.form.modify_user_id = '123456'
-          this.form.modify_user_name = '姓名';
+          this.form.modify_user_id = this.$store.getters.userInfo.userId;
+          this.form.modify_user_name = this.$store.getters.userInfo.nickName;
           this.submitLoading = true
           // this.$emit('submitSave')
           materialsCokeStockAdjust(this.form).then(res => {

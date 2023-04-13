@@ -164,7 +164,7 @@
         FROM product_oi_plan_config_coke AS a
         INNER JOIN product_oi_plan_config_coke_detail AS b on a.id = b.plan_id
         INNER JOIN product_oi_configure_coal_species_performance AS c on a.id = c.plan_id
-        INNER JOIN t_materials_code e on b.coal_type_id=e.id
+        INNER JOIN materials_mr_code e on b.coal_type_id=e.id
         WHERE plan_state &gt;= 2
         <choose>
             <when test="year != null and year != ''">

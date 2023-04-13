@@ -1,29 +1,23 @@
 <!--卸车实绩-->
 <template>
   <div class="app-container">
-    <el-form :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :inline="true" v-show="showSearch">
       <el-form-item label="起始日期" prop="unloadingStart">
         <el-date-picker v-model="query.unloadingStart"
                         type="date"
-                        size="small"
                         placeholder="选择卸车起始日期"
-                        value-format="yyyy-MM-dd"
-        style="width: 150px;"/>
+                        value-format="yyyy-MM-dd"/>
       </el-form-item>
       <el-form-item label="结束日期" prop="unloadingEnd">
         <el-date-picker v-model="query.unloadingEnd"
                         type="date"
-                        size="small"
                         placeholder="选择卸车结束日期"
-                        value-format="yyyy-MM-dd"
-                        style="width: 150px;"/>
+                        value-format="yyyy-MM-dd"/>
       </el-form-item>
       <el-form-item label="班别" prop="classType">
         <el-select v-model="query.classType"
                    placeholder="选择班别"
-                   clearable
-                   size="small"
-                   style="width: 120px;">
+                   clearable>
           <el-option v-for="item in classTypeOptions"
                      :key="item.value"
                      :label="item.label"
@@ -34,9 +28,7 @@
       <el-form-item label="班次" prop="shift">
         <el-select v-model="query.shift"
                    placeholder="班次"
-                   clearable
-                   size="small"
-                   style="width: 120px;">
+                   clearable>
           <el-option v-for="item in shiftOptions"
                      :key="item.value"
                      :label="item.label"
@@ -47,9 +39,7 @@
       <el-form-item label="运输方式" prop="transportModel">
         <el-select v-model="query.transportModel"
                    placeholder="选择运输方式"
-                   clearable
-                   size="small"
-                   style="width: 120px;">
+                   clearable>
           <el-option v-for="item in transportModelOption"
                      :key="item.value"
                      :label="item.label"
@@ -59,9 +49,7 @@
       <el-form-item label="状态" prop="status">
         <el-select v-model="query.status"
                    placeholder="状态"
-                   clearable
-                   size="small"
-                   style="width: 120px;">
+                   clearable>
           <el-option v-for="item in status"
                      :key="item.value"
                      :label="item.label"

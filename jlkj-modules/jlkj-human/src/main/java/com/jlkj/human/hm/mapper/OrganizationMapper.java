@@ -22,6 +22,6 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * 查询所有机构资料
      * @return
      */
-    @Select("SELECT id, organization_name, parent_id, parent_name FROM t_humanresource_organization WHERE 1=1")
+    @Select("SELECT id, organization_name, parent_id, parent_name FROM human_hm_organization WHERE 1=1")
     List<Organization> listAll();
 }

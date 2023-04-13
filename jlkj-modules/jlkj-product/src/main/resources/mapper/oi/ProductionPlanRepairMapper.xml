@@ -77,7 +77,7 @@
             DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') as modify_time,
             b.organization_name
         from product_oi_plan_repair a
-        INNER JOIN t_humanresource_organization b ON a.department_id = b.id
+        INNER JOIN human_hm_organization b ON a.department_id = b.id
         where (#{condition.departmentId} = '' or a.department_id = #{condition.departmentId})
         and (#{condition.equipmentNumber} = '' or a.equipment_number = #{condition.equipmentNumber})
         and (#{condition.startDate} = '' or a.plan_start_date &gt;= case when #{condition.startDate} = '' then null else #{condition.startDate} end)

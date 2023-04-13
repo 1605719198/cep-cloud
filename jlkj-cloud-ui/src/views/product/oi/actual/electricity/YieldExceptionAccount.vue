@@ -7,10 +7,9 @@
     <!-- 操作 -->
     <div class="avue-crud__search"
          style="border: 0">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-form-item>
+      <el-form :inline="true">
+        <el-row>
+            <el-form-item label="日期">
               <el-date-picker v-model="query.daterange"
                               type="daterange"
                               unlink-panels
@@ -21,41 +20,35 @@
               <!-- 年-月-日 -->
               <!-- unlink-panels ————>左右独立选择年月日 -->
             </el-form-item>
-          </el-col>
 
-          <el-col :span="3">
-            <el-form-item prop="department_name">
+            <el-form-item prop="department_name" label="主体单位">
               <el-input v-model="query.department_name"
                         placeholder="主体单位">
               </el-input>
             </el-form-item>
-          </el-col>
 
-          <el-col :span="12">
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button v-hasPermi="['getProductionAbnormalLedger']"
-                         size="medium"
+                         size="mini"
                          type="primary"
+                         icon="el-icon-search"
                          @click="handleQuery">搜 索</el-button>
-              <el-button size="medium"
+              <el-button size="mini"
                          type="default"
+                         icon="el-icon-refresh"
                          @click="handleEmpty">重 置</el-button>
             </div>
-          </el-col>
-
-          <el-col :span="4">
-            <div class="el-form-item__content"
-                 style="float: right">
-              <el-button v-hasPermi="['addProductionAbnormalLedger']"
-                         type="primary"
-                         size="medium"
-                         icon="el-icon-plus"
-                         @click="handleOpenWindow('add')">新增
-              </el-button>
-            </div>
-          </el-col>
         </el-row>
+        <div class="el-form-item__content">
+          <el-button v-hasPermi="['addProductionAbnormalLedger']"
+                     type="primary"
+                     size="mini"
+                     plain
+                     icon="el-icon-plus"
+                     @click="handleOpenWindow('add')">新增
+          </el-button>
+        </div>
       </el-form>
     </div>
     <!-- 内容 -->
@@ -84,30 +77,27 @@
             <template slot-scope="scope">
               <el-button v-hasPermi="['updateProductionAbnormalLedger']"
                          size="mini"
-                         plain
                          icon="el-icon-edit"
-                         type="primary"
+                         type="text"
                          @click="handleOpenWindow('edit',scope.$index, scope.row)">编辑
               </el-button>
               <el-button v-hasPermi="['delProductionAbnormalLedger']"
                          v-if="scope.row.measures_implementation === '未完成'"
                          size="mini"
-                         plain
                          icon="el-icon-delete"
-                         type="danger"
+                         type="text"
                          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
 
               <el-button v-hasPermi="['delProductionAbnormalLedger']"
                          v-if="scope.row.measures_implementation === '已完成'"
                          size="mini"
-                         plain
                          icon="el-icon-delete"
-                         type="info"
+                         type="text"
                          disabled>删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;"
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;"
              class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
@@ -231,7 +221,7 @@ export default {
         planStartTime: this.page.planStartTime,
         planEndTime: this.page.planEndTime
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.tableData = res.data.records;
         this.page.total = res.data.total;
         if (this.tableData.length === 0) {
@@ -334,8 +324,8 @@ export default {
       }).then(() => {
         delYa({
           id: row.id,
-          delete_user_id: this.$store.state.user.userInfo.userName,
-          delete_user_name: this.$store.state.user.userInfo.nickName,
+          delete_user_id: this.$store.getters.userInfo.userId,
+          delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           this.onLoad();
           this.$message({ type: 'success', message: "删除成功" });

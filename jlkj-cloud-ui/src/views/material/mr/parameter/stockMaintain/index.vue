@@ -223,7 +223,7 @@ export default {
         deleteSilos({
           id: row.id,
           delete_user_id: this.$store.state.user.userInfo.userName,
-          delete_user_name: '姓名',
+          delete_user_name: this.$store.getters.userInfo.nickName,
         }).then(res => {
           if (res.code == 200) {
             this.$message({ type: 'success', message: res.msg });

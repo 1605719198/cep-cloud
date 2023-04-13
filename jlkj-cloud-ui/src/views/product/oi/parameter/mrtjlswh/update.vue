@@ -143,7 +143,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.type == 'add') {
-            this.form.create_user_id = this.userInfo.userId;
+            this.form.create_user_id = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.userInfo.userName;
             this.submitLoading = true
             insertProductionCokeOvens(this.form).then(res => {
@@ -157,7 +157,7 @@ export default {
               window.console.log(error);
             });
           } else {
-            this.form.modify_user_id = this.userInfo.userId;
+            this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.userInfo.userName;
             this.submitLoading = true
             updateProductionCokeOvens(this.form).then(res => {

@@ -1,55 +1,41 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
-      <el-form :model="query" ref="query">
-        <el-row :gutter="20">
-          <el-col :span="3">
-            <el-form-item label="" prop="planNumber">
+      <el-form :model="query" ref="query" :inline="true">
+            <el-form-item label="计划编号" prop="planNumber">
               <el-input type="text" placeholder="计划编号" v-model="query.planNumber" clearable/>
             </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="" prop="planDate">
+            <el-form-item label="计划日期" prop="planDate">
               <el-date-picker v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
                               end-placeholder="计划结束日期"/>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item label="" prop="plan_state">
+            <el-form-item label="状态" prop="planState">
               <el-select v-model="planState" placeholder="选择状态" clearable>
                 <el-option v-for="item in selectStates" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item label="" prop="materialId">
+            <el-form-item label="焦炭等级" prop="materialId">
               <el-select v-model="query.materialId" placeholder="选择焦炭等级" clearable>
                 <el-option v-for="item in selectCokeType" :key="item.id" :label="item.materials_name" :value="item.id"/>
               </el-select>
             </el-form-item>
-          </el-col>
 
-          <el-col :span="6">
             <div class="el-form-item__content" style="margin-left: 0px;">
               <el-button v-hasPermi="['listProductionCfgCokePlans']"
-                         size="medium" type="primary" icon="el-icon-search" @click="handleQuery">搜 索
+                         size="mini" type="primary" icon="el-icon-search" @click="handleQuery">搜 索
               </el-button>
-              <el-button size="medium" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置
+              <el-button size="mini" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置
               </el-button>
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="el-form-item__content" style="float: right">
+            <el-row class="mb8">
               <el-button v-hasPermi="['addProductionPlanCfgCoke']"
-                         type="primary" size="medium" icon="el-icon-plus" @click="handleOpenWindow('add')">新增
+                         type="primary" size="mini" plain icon="el-icon-plus" @click="handleOpenWindow('add')">新增
               </el-button>
-              <el-button v-hasPermi="['addProductionPlanCfgCoke']" type="primary" size="medium"
+              <el-button v-hasPermi="['addProductionPlanCfgCoke']" type="primary" size="mini"
                          @click="handleOpenWindow('changePlanCoal')">手动切配煤计划
               </el-button>
-            </div>
-          </el-col>
-        </el-row>
+            </el-row>
       </el-form>
     </div>
     <div>
@@ -117,7 +103,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
@@ -167,7 +153,7 @@ export default {
     return {
       openDialog: {open: false, type: '', title: '', width: '500px', data: {},},
       page: {size: 20, current: 1, total: 1, order: "create_time", orderby: "desc",},
-      query: {plan_start_time: '', plan_end_time: '', plan_state: 0, materialId: '', planNumber: ''},
+      query: {planStartTime: '', planEndTime: '', planState: 0, materialId: '', planNumber: ''},
       table: {border: true, loading: true,},
       planState: "", planDate: [],
       selectStates: [
@@ -200,7 +186,7 @@ export default {
   created() {
     listMaterialsBoxJ().then(res => {
       // this.selectCokeType = res.data;//表格数据
-      this.selectCokeType = res.data.filter(item => {
+      this.selectCokeType = res.filter(item => {
         return item.materials_code.substring(0, 5) === '01501';
       });
     }, error => {
@@ -215,8 +201,8 @@ export default {
       let data = {...this.page, ...this.query};
       req('get', 'listProductionCfgCokePlans', data).then(res => {
         this.table.loading = false;
-        this.tableData = res.data.data.records;//表格数据
-        this.page.total = res.data.data.total;
+        this.tableData = res.data.records;//表格数据
+        this.page.total = res.data.total;
 
       }, error => {
         this.table.loading = false;
@@ -254,7 +240,7 @@ export default {
     // 清空
     handleEmpty() {
       this.planDate = [];
-      this.query = {plan_start_time: '', plan_end_time: '', plan_state: 0,};
+      this.query = {planStartTime: '', planEndTime: '', planState: 0,};
       this.planState = '';
       this.onLoad();
     },
@@ -288,7 +274,7 @@ export default {
       }).then(() => {
         req('post', 'delProductionPlanCfgCoke', {
           id: row.id,
-          deleteUserId: this.userInfo.userId,
+          deleteUserId: this.$store.getters.userInfo.userId,
           deleteUserName: this.userInfo.userName,
         }).then(res => {
           if (res.data.code === "0") {
@@ -317,7 +303,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         req('post', 'updateProductionPlanCfgCokeConfirm', {
-          id: row.id, receive_user_id: this.userInfo.userId, receive_user_name: this.userInfo.userName,
+          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.userInfo.userName,
         }).then(res => {
           if (res.data.code === "0") {
             this.$message({
@@ -343,18 +329,18 @@ export default {
   watch: {
     planDate(newValue) {
       if (newValue !== null && newValue.length > 0) {
-        this.query.plan_start_time = this.$moment(newValue[0]).format('YYYY-MM-DD');
-        this.query.plan_end_time = this.$moment(newValue[1]).format('YYYY-MM-DD');
+        this.query.planStartTime = this.$moment(newValue[0]).format('YYYY-MM-DD');
+        this.query.planEndTime = this.$moment(newValue[1]).format('YYYY-MM-DD');
       } else {
-        this.query.plan_start_time = "";
-        this.query.plan_end_time = "";
+        this.query.planStartTime = "";
+        this.query.planEndTime = "";
       }
     },
     planState(newValue) {
       if (newValue === '') {
-        this.query.plan_state = 0;
+        this.query.planState = 0;
       } else {
-        this.query.plan_state = newValue;
+        this.query.planState = newValue;
       }
 
     }

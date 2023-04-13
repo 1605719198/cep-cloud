@@ -73,14 +73,14 @@
 
                                          sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                          0 as production_performance_jf
-                                  from t_logistics_trans_actual_nut a
+                                  from logistics_wv_trans_actual_nut a
                                   group by year,month
                                   union all
                                   select year(car_send_date) as year,
                                          month(car_send_date) as month,
                                          0 as production_performance_jd,
                                          sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                                  from t_logistics_trans_actual_fines a
+                                  from logistics_wv_trans_actual_fines a
                                   group by year,month
                          ) as a
                          group by year,month
@@ -153,14 +153,14 @@
 
                                                      sum(ifnull(a.complete_pound_num, 0)) as production_performance_jd,
                                                      0                                    as production_performance_jf
-                                              from t_logistics_trans_actual_nut a
+                                              from logistics_wv_trans_actual_nut a
                                               group by year, month
                                               union all
                                               select year(car_send_date)                  as year,
                                                      month(car_send_date)                 as month,
                                                      0                                    as production_performance_jd,
                                                      sum(ifnull(a.complete_pound_num, 0)) as production_performance_jf
-                                              from t_logistics_trans_actual_fines a
+                                              from logistics_wv_trans_actual_fines a
                                               group by year, month) as a
                                         group by year, month) b ON a.year = b.year and a.month = b.month) as a
               where year = #{year}

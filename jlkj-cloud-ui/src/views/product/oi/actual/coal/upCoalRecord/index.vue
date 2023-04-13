@@ -14,9 +14,9 @@
                         value-format="yyyy-MM-dd">
         </el-date-picker>
       </el-form-item>
-      <el-form-item prop="shift_name" label="班次">
+      <el-form-item prop="shiftName" label="班次">
         <el-select placeholder="选择班次"
-                   v-model="query.shift_name"
+                   v-model="query.shiftName"
                    clearable
                    :popper-append-to-body="false"
                    class="customSelectStyle">
@@ -27,9 +27,9 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="class_name" label="班别">
+      <el-form-item prop="className" label="班别">
         <el-select placeholder="选择班别"
-                   v-model="query.class_name"
+                   v-model="query.className"
                    clearable
                    :popper-append-to-body="false"
                    class="customSelectStyle">
@@ -40,10 +40,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="coke_materials_code" label="料号名称">
+      <el-form-item prop="cokeMaterialsCode" label="料号名称">
         <el-select :popper-append-to-body="false"
                    class="customSelectStyle"
-                   v-model="query.coke_materials_code"
+                   v-model="query.cokeMaterialsCode"
                    clearable
                    filterable
                    placeholder="选择煤的料号名称">
@@ -59,26 +59,23 @@
         <el-button @click="handleQuery"
                    type="primary"
                    icon="el-icon-search"
-                   size="medium">搜 索</el-button>
+                   size="mini">搜 索</el-button>
         <el-button @click="handleReset"
                    icon="el-icon-refresh-left"
-                   size="medium">重 置</el-button>
+                   size="mini">重 置</el-button>
       </el-form-item>
     </el-form>
 
 
     <div class="avue-crud__search"
          style="border: 0">
-      <el-row>
-        <el-col :span="4">
-          <div style="text-align: right;">
-            <el-button type="primary"
-                       size="medium"
-                       icon="el-icon-plus"
-                       @click="handleAdd('add')">新增
-            </el-button>
-          </div>
-        </el-col>
+      <el-row class="mb8">
+        <el-button type="primary"
+                   size="mini"
+                   plain
+                   icon="el-icon-plus"
+                   @click="handleAdd('add')">新增
+        </el-button>
       </el-row>
     </div>
     <div>
@@ -185,7 +182,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top: 10px;right: 0;padding: 25px 0px 20px 20px;"
+      <div style="margin-top: 10px;float: right;padding: 25px 0px 20px 20px;"
            class="avue-crud__pagination">
         <el-pagination v-show="page.total > 0"
                        background
@@ -251,9 +248,9 @@ export default {
       },
       query: {
         timeArr: null,
-        class_name: null,
-        shift_name: null,
-        coke_materials_code: null,
+        className: null,
+        shiftName: null,
+        cokeMaterialsCode: null,
       },
       table: {
         border: true,
@@ -269,12 +266,12 @@ export default {
   created() {
     this.userId = this.$store.state.user.userInfo.userName
     getDicts('sys_classtype').then((response) => {
-      this.classOptions = response.data.data.map((i) => {
+      this.classOptions = response.data.map((i) => {
         return { id: i.dictLabel, name: i.dictLabel }
       })
     })
     getDicts('sys_shift_no').then((response) => {
-      this.shiftOptions = response.data.data.map((i) => {
+      this.shiftOptions = response.data.map((i) => {
         return { value: i.dictValue, label: i.dictLabel }
       })
     })
@@ -290,7 +287,7 @@ export default {
       listMaterialsBoxM(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach((item) => {
+        res.forEach((item) => {
           let i = {
             id: item.materials_code,
             name: item.materials_name,
@@ -303,11 +300,11 @@ export default {
     //载入数据
     onLoad() {
       if (this.query.timeArr && this.query.timeArr[0]) {
-        this.query.start_time = this.query.timeArr[0] + ' ' + '00:00:00'
-        this.query.end_time = this.query.timeArr[1] + ' ' + '23:59:59'
+        this.query.startTime = this.query.timeArr[0] + ' ' + '00:00:00'
+        this.query.endTime = this.query.timeArr[1] + ' ' + '23:59:59'
       } else {
-        this.query.start_time = ''
-        this.query.end_time = ''
+        this.query.startTime = ''
+        this.query.endTime = ''
       }
       this.table.loading = true //加载状态
       getProductionConveyingCoalRecordPage(this.page, this.query).then(
@@ -379,8 +376,8 @@ export default {
         .then(() => {
           deleteProductionConveyingCoalRecord({
             id: row.id,
-            delete_user_id: this.$store.state.user.userInfo.userName,
-            delete_user_name: this.$store.state.user.userInfo.nickName,
+            delete_user_id: this.$store.getters.userInfo.userId,
+            delete_user_name: this.$store.getters.userInfo.nickName,
           }).then(
             (res) => {
               if (res.code === 200) {

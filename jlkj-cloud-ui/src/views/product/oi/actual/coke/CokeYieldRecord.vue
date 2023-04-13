@@ -6,10 +6,10 @@
        style="width: 98%;border: 0">
     <div class="avue-crud__search"
          style="border: 0">
-      <el-form>
+      <el-form :inline="true">
         <el-row :gutter="20">
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">起始日期</label>
               <div class="el-form-item__content">
                 <el-date-picker v-model="query.startTime"
                                 type="date"
@@ -17,21 +17,19 @@
                                 value-format="yyyy-MM-dd"/>
               </div>
             </div>
-          </el-col>
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">结束日期</label>
               <div class="el-form-item__content">
-                <el-date-picker v-model="query.endTime"
+                <el-date-picker v-model="query.end_time"
                                 type="date"
                                 placeholder="选择结束日期"
                                 value-format="yyyy-MM-dd"/>
               </div>
             </div>
-          </el-col>
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">班别</label>
               <div class="el-form-item__content">
-                <el-select v-model="query.class_name"
+                <el-select v-model="query.className"
                            placeholder="选择班别"
                            clearable>
                   <el-option v-for="item in classTypeOptions"
@@ -42,12 +40,10 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
-
-          <el-col :span="3">
             <div class="el-form-item el-form-item--small">
+              <label class="el-form-item__label">班次</label>
               <div class="el-form-item__content">
-                <el-select v-model="query.shift_name"
+                <el-select v-model="query.shiftName"
                            placeholder="班次"
                            clearable>
                   <el-option v-for="item in shiftOptions"
@@ -58,24 +54,20 @@
                 </el-select>
               </div>
             </div>
-          </el-col>
-
-          <el-col :span="10">
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button v-hasPermi="['getCokeItemYieldList']"
-                         size="medium"
+                         size="mini"
                          type="primary"
                          icon="el-icon-search"
                          @click="handleQuery">搜 索
               </el-button>
-              <el-button size="medium"
+              <el-button size="mini"
                          type="default"
                          icon="el-icon-refresh-left"
                          @click="handleEmpty">重 置
               </el-button>
             </div>
-          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -94,7 +86,7 @@
                              :key="column.prop"/>
           </template>
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;"
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;"
              class="avue-crud__pagination">
           <el-pagination background
                          @size-change="handleSizeChange"
@@ -135,8 +127,8 @@
         query: {
           startTime: '',
           endTime: '',
-          class_name: '',
-          shift_name: ''
+          className: '',
+          shiftName: ''
         },
         table: {
           border: true,
@@ -193,8 +185,8 @@
         let query = this.query;
         let page = this.page;
         let params = {
-          "shift_name": query.shift_name,
-          "class_name": query.class_name,
+          "shiftName": query.shiftName,
+          "className": query.className,
           "startTime": query.startTime === "" ? "" : query.startTime,
           "endTime": query.endTime === "" ? "" : query.endTime,
           "size": page.pageSize,
@@ -217,7 +209,7 @@
         this.query = {
           startTime: '',
           endTime: '',
-          classType: '',
+          className: '',
           shift: '',
         }
         this.handleQuery();

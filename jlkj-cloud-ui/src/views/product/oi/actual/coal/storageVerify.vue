@@ -5,9 +5,7 @@
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <!--表单筛选 -->
     <div class="avue-crud__search" style="border: 0">
-      <el-form>
-        <el-row :gutter="20">
-          <el-col :span="6">
+      <el-form :inline="true">
             <!-- <div class="el-form-item el-form-item--small">
               <div class="el-form-item__content">
                 <el-date-picker v-model="query.daterange"
@@ -17,12 +15,11 @@
                                 end-placeholder="结束日期" />
               </div>
             </div> -->
-            <el-form-item prop="timeArr">
+            <el-form-item prop="timeArr" label="账务日期">
               <el-date-picker v-model="query.timeArr" type="daterange" range-separator="至" start-placeholder="账务开始日期"
                 end-placeholder="账务结束日期" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
-          </el-col>
           <!-- <el-col :span="3">
             <div class="el-form-item el-form-item--small">
               <div class="el-form-item__content">
@@ -55,14 +52,11 @@
             </div>
           </el-col> -->
 
-          <el-col :span="10">
             <div class="el-form-item__content" style="margin-left: 0px;">
-              <el-button v-hasPermi="['productionHandoverStockVerify_list']" size="medium" type="primary"
+              <el-button v-hasPermi="['productionHandoverStockVerify_list']" size="mini" type="primary"
                 @click="handleQuery" icon="el-icon-search">搜 索</el-button>
-              <el-button size="medium" type="default" @click="handleEmpty" icon="el-icon-refresh-left">重 置</el-button>
+              <el-button size="mini" type="default" @click="handleEmpty" icon="el-icon-refresh-left">重 置</el-button>
             </div>
-          </el-col>
-        </el-row>
       </el-form>
     </div>
     <!-- 表单数据 -->
@@ -387,7 +381,7 @@
             </template>
           </el-table-column> -->
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
           <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
             :current-page="page.current" :page-sizes="[20, 50, 100, 200]" :page-size="page.size" :layout="page.layout"
             :total="page.total">
@@ -877,7 +871,7 @@ export default {
     submitForm(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          this.form.modify_user_id = this.$store.state.user.userInfo.userName;
+          this.form.modify_user_id = this.$store.getters.userInfo.userId;
           this.form.modify_user_name = this.$store.state.user.userInfo.nickName;
           updateproductionHandoverStockVerify(this.form).then((res) => {
             if (res.code === 200) {

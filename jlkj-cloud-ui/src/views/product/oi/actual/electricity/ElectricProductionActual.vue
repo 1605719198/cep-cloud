@@ -4,22 +4,18 @@
 <template>
   <div class="avue-crud el-card__body" style="width: 98%;border: 0">
     <div class="avue-crud__search" style="border: 0">
-      <el-form>
+      <el-form :inline="true">
         <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item prop="">
+            <el-form-item prop="" label="日期">
               <el-date-picker v-model="query.daterange" type="daterange" value-format="yyyy-MM-dd" clearable
                               start-placeholder="开始日期" range-separator="至" end-placeholder="结束日期"/>
             </el-form-item>
-          </el-col>
-          <el-col :span="10">
             <el-form-item prop="">
               <el-button v-hasPermi="['getProductionPowerYieldListPerformanceList']"
-                         size="medium" type="primary" icon="el-icon-search" @click="handleQuery">搜 索
+                         size="mini" type="primary" icon="el-icon-search" @click="handleQuery">搜 索
               </el-button>
-              <el-button size="medium" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置</el-button>
+              <el-button size="mini" type="default" icon="el-icon-refresh-left" @click="handleEmpty">重 置</el-button>
             </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -38,7 +34,7 @@
                                :key="column.prop"/>
             </template>
           </el-table>
-          <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
+          <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;" class="avue-crud__pagination">
             <el-pagination background
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
@@ -75,7 +71,7 @@
           layout: "total, sizes, prev, pager, next, jumper",
         },
         query: {
-          daterange: [],
+          daterange: '',
           classType: '',
           shift: ''
         },
@@ -101,16 +97,16 @@
         let query = this.query;
         let page = this.page;
         let param = {
-          "size": page.size,
-          "current": page.current,
+          size: page.size,
+          current: page.current,
           // "order": "id",
           // "orderby": "asc",
           order: page.order,
           orderby: page.orderby,
-          "shift": query.shift,
-          "classes": query.classType,
-          "start_date": query.daterange === null || query.daterange[0] === '' ? '' : this.query.daterange[0],
-          "end_date": query.daterange === null || query.daterange[1] === '' ? '' : this.query.daterange[1]
+          shift: query.shift,
+          classes: query.classType,
+          startDate: query.daterange === '' ? '' : query.daterange[0],
+          endDate: query.daterange === '' ? '' : query.daterange[1],
         }
         this.table.loading = true;
         getProductionPowerYieldListPerformanceList(param).then(response => {

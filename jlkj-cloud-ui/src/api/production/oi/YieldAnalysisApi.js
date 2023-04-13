@@ -21,7 +21,7 @@ export const getProductionYieldAnalysisDate = (params) => {
 //获取物料名称和ID
 export const listMaterialsBox = () => {
   return request({
-    url:'/api/neplatform/material/parameter/listMaterialsBox',
+    url:'/material/parameter/listMaterialsBox',
     method:'get'
   });
 }

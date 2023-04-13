@@ -114,7 +114,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.type == 'add') {
-            this.form.create_user_id = this.$store.state.user.userInfo.userName;
+            this.form.create_user_id = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.$store.state.user.userInfo.nickName;
             this.submitLoading = true
             insertProductionCokeShedOutput(this.form).then(res => {
@@ -128,7 +128,7 @@ export default {
               window.console.log(error);
             });
           } else {
-            this.form.modify_user_id = this.$store.state.user.userInfo.userName;
+            this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.$store.state.user.userInfo.nickName;
             this.submitLoading = true
             updateProductionCokeShedOutput(this.form).then(res => {

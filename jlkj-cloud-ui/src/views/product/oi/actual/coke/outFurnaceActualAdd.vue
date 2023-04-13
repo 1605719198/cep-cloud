@@ -72,6 +72,7 @@
                               value-format="yyyy-MM-dd"
                               placeholder="选择时间"
                               v-model="form.production_date"
+                              @change="changeStartDate"
                               style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
@@ -88,7 +89,8 @@
                               v-model="form.actual_production_time"
                               format="HH:mm"
                               value-format="HH:mm:ss"
-                              placeholder="选择时间">
+                              placeholder="选择时间"
+                              @change="changeStartDate">
               </el-time-picker>
             </el-form-item>
           </el-col>
@@ -177,7 +179,7 @@
 <script>
 import { insertProductionOutputPerformanceManualBake } from "@/api/production/oi/actual/coke/OutputPerformanceApi";
 import { dateFormat } from '@/utils/date'
-
+import { getHumanresourceSchedule } from '@/api/sys/index'
 export default {
   props: {
     type: {
@@ -255,14 +257,15 @@ export default {
         { id: 1, name: '干熄焦' },
         { id: 2, name: '湿熄焦' },
       ],
-      submitLoading: false
+      submitLoading: false,
+      teamData: null,
     }
   },
-  created () {
-    console.log(this.userInfo)
-    this.form.shift_text = this.userInfo.team.shift_text;
-    this.form.shift_name = this.userInfo.team.shift;
-    this.form.class_name = this.userInfo.team.class_type;
+  created() {
+    // console.log(this.userInfo)
+    // this.form.shift_text = this.userInfo.team.shift_text
+    // this.form.shift_name = this.userInfo.team.shift
+    // this.form.class_name = this.userInfo.team.class_type
   },
   computed: {
   },
@@ -276,59 +279,119 @@ export default {
       //   this.form[name] = this.form[name].replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')
       // }
       //限制正整数
-      this.form[name] = this.form[name].replace(/[^\d]/g, "")
+      this.form[name] = this.form[name].replace(/[^\d]/g, '')
+    },
+    changeStartDate() {
+      if (this.form.production_date && this.form.actual_production_time) {
+        // console.log(
+        //     this.form.production_date +
+        //         ' ' +
+        //         this.form.actual_production_time
+        // )
+        let startTime =
+          this.form.production_date +
+          ' ' +
+          this.form.actual_production_time
+        getHumanresourceSchedule({ startTime: startTime }).then(
+          (res) => {
+            // console.log(res, '班组信息')
+            if (res.data.code == 0) {
+              this.teamData = res.data.data[0]
+              this.form.shift_text = this.teamData.shift_name
+              this.form.shift_name = this.teamData.shift_no
+              this.form.class_name = this.teamData.class_name
+            }
+            // console.log(this.teamData, ' this.teamData ')
+          }
+        )
+      }
     },
     // 比较两个日期
-    compareDate (start, end) {
-      return new Date(end).getTime() - new Date(start).getTime();
+    compareDate(start, end) {
+      return new Date(end).getTime() - new Date(start).getTime()
     },
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         // console.log(this.form, 'this.form')
         if (valid) {
-          if (this.userInfo.isTeam) {
+          if (this.userInfo.isTeam && this.teamData.start_time) {
+            let outFurnaceDate =
+              this.form.production_date +
+              ' ' +
+              this.form.actual_production_time
+            let coalingDate =
+              this.form.production_date +
+              ' ' +
+              this.form.actual_load_coal_time
 
-            let outFurnaceDate = this.form.production_date + " " + this.form.actual_production_time
-            let coalingDate = this.form.production_date + " " + this.form.actual_load_coal_time
+            let outFurnaceStartTime = this.compareDate(
+              outFurnaceDate,
+              this.userInfo.team.due_attendance_time_work
+            )
+            let outFurnaceEndTime = this.compareDate(
+              outFurnaceDate,
+              this.userInfo.team.due_attendance_time_offduty
+            )
 
-            let outFurnaceStartTime = this.compareDate(outFurnaceDate, this.userInfo.team.due_attendance_time_work)
-            let outFurnaceEndTime = this.compareDate(outFurnaceDate, this.userInfo.team.due_attendance_time_offduty)
-
-            let coalingStartTime = this.compareDate(coalingDate, this.userInfo.team.due_attendance_time_work)
-            let coalingEndTime = this.compareDate(coalingDate, this.userInfo.team.due_attendance_time_offduty)
+            let coalingStartTime = this.compareDate(
+              coalingDate,
+              this.userInfo.team.due_attendance_time_work
+            )
+            let coalingEndTime = this.compareDate(
+              coalingDate,
+              this.userInfo.team.due_attendance_time_offduty
+            )
 
             // console.log(outFurnaceDate, outFurnaceStartTime, outFurnaceEndTime)
 
             if (outFurnaceStartTime > 0 || outFurnaceEndTime < 0) {
-              this.$message.error('出炉时间非当前用户工作时间，请重新选择！')
+              this.$message.error(
+                '出炉时间非当前用户工作时间，请重新选择！'
+              )
               return false
             }
 
             if (coalingStartTime > 0 || coalingEndTime < 0) {
-              this.$message.error('装煤时间非当前用户工作时间，请重新选择！')
+              this.$message.error(
+                '装煤时间非当前用户工作时间，请重新选择！'
+              )
               return false
             }
 
-            this.form.class_start_time = this.userInfo.team.due_attendance_time_work;
-            this.form.class_end_time = this.userInfo.team.due_attendance_time_offduty;
+            this.form.class_start_time =
+              // this.userInfo.team.due_attendance_time_work
+              this.teamData.start_time
+            this.form.class_end_time =
+              // this.userInfo.team.due_attendance_time_offduty
+              this.teamData.end_time
             // this.form.production_date = this.form.actual_production_time.substring(0, 10);
-            this.form.create_user_id = this.userInfo.userId;
-            this.form.create_user_name = this.userInfo.userName;
-            insertProductionOutputPerformanceManualBake(this.form).then(res => {
-              if (res.code === 200) {
-                this.$message({ type: "success", message: res.msg });
-                this.$emit('submitSave', res.msg)
+            this.form.create_user_id = this.$store.getters.userInfo.userId
+            this.form.create_user_name = this.userInfo.userName
+            insertProductionOutputPerformanceManualBake(
+              this.form
+            ).then(
+              (res) => {
+                if (res.code == 200) {
+                  this.$message({
+                    type: 'success',
+                    message: res.msg,
+                  })
+                  this.$emit('submitSave', res.msg)
+                }
+                this.submitLoading = false
+              },
+              (error) => {
+                this.submitLoading = false
+                window.console.log(error)
               }
-              this.submitLoading = false
-            }, error => {
-              this.submitLoading = false
-              window.console.log(error);
-            });
+            )
           } else {
-            this.$message.error('当前用户非当班用户！');
+            this.$message.error(
+              '当前用户非当班用户或未获取到排班信息！'
+            )
           }
         }
-      });
+      })
     },
     cancel () {
       this.$emit('close')

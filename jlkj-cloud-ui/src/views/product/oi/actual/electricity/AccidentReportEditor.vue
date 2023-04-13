@@ -172,7 +172,7 @@ export default {
         if (valid) {
           this.submitLoading = true
           if (this.type === 'add') {
-            this.form.create_user_id = this.userInfo.userId;
+            this.form.create_user_id = this.$store.getters.userInfo.userId;
             this.form.create_user_name = this.userInfo.userName;
             addYa({
               accidentName: this.form.accident_name,//事故名称
@@ -198,7 +198,7 @@ export default {
               window.console.log(error);
             });
           } else if (this.type === 'edit') {
-            this.form.modify_user_id = this.userInfo.userId;
+            this.form.modify_user_id = this.$store.getters.userInfo.userId;
             this.form.modify_user_name = this.userInfo.userName;
             upYa({
               id: this.form.id,
@@ -234,7 +234,7 @@ export default {
     //   console.log(this.form);
     //   this.$refs[formName].validate((valid) => {
     //     if (valid) {
-    //       this.form.create_user_id = this.userInfo.userId;
+    //       this.form.create_user_id = this.$store.getters.userInfo.userId;
     //       this.form.create_user_name = this.userInfo.userName;
     //       // this.$emit('submitSave')
     //       this.submitLoading = true

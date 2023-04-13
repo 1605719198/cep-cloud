@@ -6,108 +6,97 @@
          style="width: 98%;border: 0">
         <div class="avue-crud__search"
              style="border: 0">
-            <el-form>
-                <el-row :gutter="20">
-                    <el-col :span="4">
-                        <div class="el-form-item el-form-item--small">
-                            <div class="el-form-item__content">
-                                <el-date-picker v-model="query.daterange"
-                                                type="daterange"
-                                                range-separator="至"
-                                                start-placeholder="开始日期"
-                                                end-placeholder="结束日期"
-                                                value-format="yyyy-MM-dd" />
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="3">
-                        <div class="el-form-item el-form-item--small">
-                            <div class="el-form-item__content">
-                                <el-select v-model="query.className"
-                                           placeholder="选择班别"
-                                           clearable>
-                                    <el-option v-for="item in classTypeOptions"
-                                               :key="item.value"
-                                               :label="item.label"
-                                               :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </div>
-                        </div>
-                    </el-col>
+            <el-form :inline="true">
+              <div class="el-form-item el-form-item--small">
+                <label class="el-form-item__label">日期</label>
+                  <div class="el-form-item__content">
+                      <el-date-picker v-model="query.daterange"
+                                      type="daterange"
+                                      range-separator="至"
+                                      start-placeholder="开始日期"
+                                      end-placeholder="结束日期"
+                                      value-format="yyyy-MM-dd" />
+                  </div>
+              </div>
+              <div class="el-form-item el-form-item--small">
+                <label class="el-form-item__label">班别</label>
+                  <div class="el-form-item__content">
+                      <el-select v-model="query.className"
+                                 placeholder="选择班别"
+                                 clearable>
+                          <el-option v-for="item in classTypeOptions"
+                                     :key="item.value"
+                                     :label="item.label"
+                                     :value="item.value">
+                          </el-option>
+                      </el-select>
+                  </div>
+              </div>
+              <div class="el-form-item el-form-item--small">
+                <label class="el-form-item__label">班次</label>
+                  <div class="el-form-item__content">
+                      <el-select v-model="query.shiftName"
+                                 placeholder="班次"
+                                 clearable>
+                          <el-option v-for="item in shiftOptions"
+                                     :key="item.value"
+                                     :label="item.label"
+                                     :value="item.value">
+                          </el-option>
+                      </el-select>
+                  </div>
+              </div>
+              <el-form-item prop="cokeOvenNumber"
+                            label="炉号">
+                  <el-select :popper-append-to-body="false"
+                             v-model="query.cokeOvenNumber"
+                             clearable
+                             filterable
+                             placeholder="选择炉号">
+                      <el-option v-for="i in 16"
+                                 :key="i"
+                                 :label="i+'号'"
+                                 :value="i" />
+                  </el-select>
+              </el-form-item>
+              <el-form-item prop="carbonizationChamberNumber"
+                            label="炭化室号">
+                  <el-select :popper-append-to-body="false"
+                             v-model="query.carbonizationChamberNumber"
+                             clearable
+                             filterable
+                             placeholder="选择炭化室号">
+                      <el-option v-for="i in 17"
+                                 :key="i"
+                                 :label="i+'号'"
+                                 :value="i" />
+                  </el-select>
+              </el-form-item>
 
-                    <el-col :span="3">
-                        <div class="el-form-item el-form-item--small">
-                            <div class="el-form-item__content">
-                                <el-select v-model="query.shiftName"
-                                           placeholder="班次"
-                                           clearable>
-                                    <el-option v-for="item in shiftOptions"
-                                               :key="item.value"
-                                               :label="item.label"
-                                               :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="3">
-                        <el-form-item prop="coke_oven_number"
-                                      label="">
-                            <el-select :popper-append-to-body="false"
-                                       v-model="query.coke_oven_number"
-                                       clearable
-                                       filterable
-                                       placeholder="选择炉号">
-                                <el-option v-for="i in 16"
-                                           :key="i"
-                                           :label="i+'号'"
-                                           :value="i" />
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="3">
-                        <el-form-item prop="carbonization_chamber_number"
-                                      label="">
-                            <el-select :popper-append-to-body="false"
-                                       v-model="query.carbonization_chamber_number"
-                                       clearable
-                                       filterable
-                                       placeholder="选择炭化室号">
-                                <el-option v-for="i in 17"
-                                           :key="i"
-                                           :label="i+'号'"
-                                           :value="i" />
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-
-                    <el-col :span="6">
-                        <div class="el-form-item__content"
-                             style="margin-left: 0px;">
-                            <el-button v-hasPermi="['listOutputPerformance']"
-                                       size="medium"
-                                       type="primary"
-                                       icon="el-icon-search"
-                                       @click="handleQuery">搜 索
-                            </el-button>
-                            <el-button size="medium"
-                                       type="default"
-                                       icon="el-icon-refresh-left"
-                                       @click="handleEmpty">重 置
-                            </el-button>
-                        </div>
-                    </el-col>
-                    <el-col :span="2">
-                        <el-button v-hasPermi="['listOutputPerformance']"
-                                   icon="el-icon-plus"
-                                   size="medium"
-                                   type="primary"
-                                   @click="handleAdd('add')">新增
-                        </el-button>
-                    </el-col>
-                </el-row>
+              <div class="el-form-item__content"
+                   style="margin-left: 0px;">
+                  <el-button v-hasPermi="['listOutputPerformance']"
+                             size="mini"
+                             type="primary"
+                             icon="el-icon-search"
+                             @click="handleQuery">搜索
+                  </el-button>
+                  <el-button size="mini"
+                             type="default"
+                             icon="el-icon-refresh-left"
+                             @click="handleEmpty">重置
+                  </el-button>
+              </div>
             </el-form>
+            <el-button v-hasPermi="['listOutputPerformance']"
+                       icon="el-icon-plus"
+                       size="mini"
+                       plain
+                       type="primary"
+                       style="margin: 5px 0;"
+                       @click="handleAdd('add')">新增
+            </el-button>
+
         </div>
         <div>
             <el-form>
@@ -143,15 +132,14 @@
                                      align="center">
                         <template slot-scope="scope">
                             <el-button size="mini"
-                                       plain
                                        icon="el-icon-delete"
-                                       type="danger"
+                                       type="text"
                                        @click="handleDelete(scope.$index, scope.row)">删除
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div style="margin-top: 10px;right: 0;padding:0px 0 20px 20px ;"
+                <div style="margin-top: 10px;float: right;padding:0px 0 20px 20px ;"
                      class="avue-crud__pagination">
                     <el-pagination background
                                    @size-change="handleSizeChange"
@@ -217,8 +205,8 @@ export default {
                 daterange: '',
                 className: '',
                 shiftName: '',
-                coke_oven_number: '',
-                carbonization_chamber_number: '',
+                cokeOvenNumber: '',
+                carbonizationChamberNumber: '',
             },
             table: {
                 border: true,
@@ -397,12 +385,12 @@ export default {
             let starDate = query.daterange === '' ? '' : query.daterange[0]
             let endDate = query.daterange === '' ? '' : query.daterange[1]
 
-            let coke_oven_number =
-                query.coke_oven_number === '' ? 0 : query.coke_oven_number
-            let carbonization_chamber_number =
-                query.carbonization_chamber_number === ''
+            let cokeOvenNumber =
+                query.cokeOvenNumber === '' ? 0 : query.cokeOvenNumber
+            let carbonizationChamberNumber =
+                query.carbonizationChamberNumber === ''
                     ? 0
-                    : query.carbonization_chamber_number
+                    : query.carbonizationChamberNumber
             // let param = {
             //   "shiftName": query.shiftName,
             //   "className": query.className,
@@ -424,12 +412,12 @@ export default {
             // })
 
             let param = {
-                shift_name: query.shiftName,
-                class_name: query.className,
-                coke_oven_number: coke_oven_number,
-                carbonization_chamber_number: carbonization_chamber_number,
-                start_date: starDate,
-                end_date: endDate,
+                shiftName: query.shiftName,
+                className: query.className,
+                cokeOvenNumber: cokeOvenNumber,
+                carbonizationChamberNumber: carbonizationChamberNumber,
+                startDate: starDate,
+                endDate: endDate,
                 size: page.pageSize,
                 current: page.currentPage,
                 // "order": "production_date",
@@ -471,6 +459,8 @@ export default {
                 daterange: '',
                 className: '',
                 shiftName: '',
+              cokeOvenNumber: '',
+              carbonizationChamberNumber: '',
             }
             this.handleQuery()
         },

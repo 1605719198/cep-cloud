@@ -71,7 +71,7 @@
                                 day(car_send_date) as date,
                                 sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                 0 as production_performance_jf
-                         from t_logistics_trans_actual_nut a
+                         from logistics_wv_trans_actual_nut a
                          group by year,month,date
                          union all
                          select year(car_send_date) as year,
@@ -79,7 +79,7 @@
                                 day(car_send_date) as date,
                                 0 as production_performance_jd,
                                 sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                         from t_logistics_trans_actual_fines a
+                         from logistics_wv_trans_actual_fines a
                          group by year,month,date
                      ) as a
                 group by year,month,date
@@ -149,7 +149,7 @@
                                      day(car_send_date) as date,
                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                      0 as production_performance_jf
-                              from t_logistics_trans_actual_nut a
+                              from logistics_wv_trans_actual_nut a
                               group by year,month,date
                               union all
                               select year(car_send_date) as year,
@@ -157,7 +157,7 @@
                                      day(car_send_date) as date,
                                      0 as production_performance_jd,
                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                              from t_logistics_trans_actual_fines a
+                              from logistics_wv_trans_actual_fines a
                               group by year,month,date
                           ) as a
                      group by year,month,date
@@ -189,7 +189,7 @@
                                      day(car_send_date) as date,
                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                      0 as production_performance_jf
-                              from t_logistics_trans_actual_nut a
+                              from logistics_wv_trans_actual_nut a
                               group by year,month,date
                               union all
                               select year(car_send_date) as year,
@@ -197,7 +197,7 @@
                                      day(car_send_date) as date,
                                      0 as production_performance_jd,
                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                              from t_logistics_trans_actual_fines a
+                              from logistics_wv_trans_actual_fines a
                               group by year,month,date
                           ) as a
                      where a.year = #{year}
@@ -230,7 +230,7 @@
                             day(car_send_date) as date,
                             sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                             0 as production_performance_jf
-                     from t_logistics_trans_actual_nut a
+                     from logistics_wv_trans_actual_nut a
                      group by year,month,date
                      union all
                      select year(car_send_date) as year,
@@ -238,7 +238,7 @@
                             day(car_send_date) as date,
                             0 as production_performance_jd,
                             sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                     from t_logistics_trans_actual_fines a
+                     from logistics_wv_trans_actual_fines a
                      group by year,month,date
                  ) as a
             where a.year = #{year}
@@ -324,7 +324,7 @@
                                 day(a.car_send_date)    as date,
                                 sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
                                 0 as production_performance_jf
-                         from t_logistics_trans_actual_nut a
+                         from logistics_wv_trans_actual_nut a
                          group by year,month,date
                          union all
                          select year(car_send_date) as year,
@@ -332,7 +332,7 @@
                                 day(a.car_send_date)    as date,
                                 0 as production_performance_jd,
                                 sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                         from t_logistics_trans_actual_fines a
+                         from logistics_wv_trans_actual_fines a
                          group by year,month,date
                      ) as a
                 group by year,month,date

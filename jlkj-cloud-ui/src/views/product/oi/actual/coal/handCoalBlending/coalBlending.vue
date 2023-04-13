@@ -110,7 +110,8 @@ import {
   addManualConfigCoal,
   getBlendWareDetailList,
 } from '@/api/production/oi/handCoalBlending'
-import { mapGetters } from 'vuex'
+import { getHumanresourceSchedule } from '@/api/sys/index'
+
 export default {
   props: {
     type: {
@@ -344,6 +345,7 @@ export default {
       },
       submitLoading: false,
       isDisabled: false,
+      teamData: null,
     }
   },
   created() {
@@ -357,7 +359,6 @@ export default {
     // if (this.type == 'edit') { }
   },
   computed: {
-    ...mapGetters(['userInfo']),
   },
   methods: {
     //详情
@@ -435,6 +436,13 @@ export default {
           })
         }
       })
+      getHumanresourceSchedule({ startTime: val }).then((res) => {
+        // console.log(res, '班组信息')
+        if (res.code == 200) {
+          this.teamData = res.data[0]
+        }
+        // console.log(this.teamData, ' this.teamData ')
+      })
       this.calculateDuration()
     },
     //结束时间
@@ -490,15 +498,43 @@ export default {
             Number(this.form.coal_weight_befor) +
             Number(this.form.coal_weight)
           // this.form.department_id = this.userInfo.alternateField14;
-          this.form.user_id = this.$store.state.user.userInfo.userName
+          this.form.user_id = this.$store.getters.userInfo.userId
           this.form.user_name = this.$store.state.user.userInfo.nickName
-          if (this.userInfo.isTeam) {
-            this.form.shift_start_time =
-              this.userInfo.team.due_attendance_time_work
-            this.form.shift_end_time =
-              this.userInfo.team.due_attendance_time_offduty
-            this.form.shift_name = this.userInfo.team.shift
-            this.form.class_name = this.userInfo.team.class_type
+          // if (this.userInfo.isTeam) {
+          //     this.form.shift_start_time =
+          //         this.userInfo.team.due_attendance_time_work
+          //     this.form.shift_end_time =
+          //         this.userInfo.team.due_attendance_time_offduty
+          //     this.form.shift_name = this.userInfo.team.shift
+          //     this.form.class_name = this.userInfo.team.class_type
+          //     // console.log(this.form, "this.form")
+          //     this.submitLoading = true
+          //     addManualConfigCoal(this.form).then(
+          //         (res) => {
+          //             if (res.data.code === '0') {
+          //                 this.$message({
+          //                     type: 'success',
+          //                     message: res.data.msg,
+          //                 })
+          //                 this.$emit('submitSave', res.data.msg)
+          //                 this.grandpaOnLoad()
+          //             }
+          //             this.submitLoading = false
+          //         },
+          //         (error) => {
+          //             this.submitLoading = false
+          //             window.console.log(error)
+          //         }
+          //     )
+          // } else {
+          //     this.$message.error('当前用户非当班用户！')
+          // }
+          // console.log(this.teamData);
+          if (this.teamData != undefined) {
+            this.form.shift_start_time = this.teamData.start_time
+            this.form.shift_end_time = this.teamData.end_time
+            this.form.shift_name = this.teamData.shift_no
+            this.form.class_name = this.teamData.class_name
             // console.log(this.form, "this.form")
             this.submitLoading = true
             addManualConfigCoal(this.form).then(
@@ -519,7 +555,7 @@ export default {
               }
             )
           } else {
-            this.$message.error('当前用户非当班用户！')
+            this.$message.error('未获取到排班信息！')
           }
         }
       })

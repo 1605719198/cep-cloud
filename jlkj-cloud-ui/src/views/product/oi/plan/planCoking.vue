@@ -135,7 +135,7 @@
       handleRowSave(row, done, loading) {
         row = {
           ...row,
-          create_user_id: this.$store.state.user.userInfo.userName,
+          create_user_id: this.$store.getters.userInfo.userId,
           create_user_name: this.userInfo.userName
         };
         add(row).then((res) => {
@@ -156,7 +156,7 @@
       rowUpdate(row, index, done, loading) {
         row = {
           ...row,
-          modify_user_id: this.$store.state.user.userInfo.userName,
+          modify_user_id: this.$store.getters.userInfo.userId,
           modify_user_name: this.userInfo.userName
         };
         update(row).then((res) => {

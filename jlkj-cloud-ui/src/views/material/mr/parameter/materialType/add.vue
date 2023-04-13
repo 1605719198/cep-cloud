@@ -56,8 +56,8 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.form.create_user_id = '123456';
-          this.form.create_user_name = '姓名';
+          this.form.create_user_id = this.$store.getters.userInfo.userId;;
+          this.form.create_user_name = this.$store.getters.userInfo.nickName;
           this.submitLoading = true
           // this.$emit('submitSave')
           saveMaterialsCategory(this.form).then(res => {

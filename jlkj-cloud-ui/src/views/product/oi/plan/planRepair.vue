@@ -8,8 +8,8 @@
                             range-separator="-"
                             end-placeholder="计划结束日期" />
           </el-form-item>
-          <el-form-item label="部门" prop="department_id">
-          <selectDeptUserTree v-model="query.department_id"
+          <el-form-item label="部门" prop="departmentId">
+          <selectDeptUserTree v-model="query.departmentId"
                               :selectForm="deptForm"
                               :isSelectNode="true"
                               :isOnlyDept="true"
@@ -18,21 +18,21 @@
                               placeholder="请选择部门"
                               @change="getDept" />
           </el-form-item>
-          <el-form-item label="设备" prop="equipment_name">
+          <el-form-item label="设备" prop="equipmentName">
             <el-input readonly="readonly"
-                      v-model="query.equipment_name"
+                      v-model="query.equipmentName"
                       @click.native="treeOpen=true"
                       placeholder="请选择设备" />
           </el-form-item>
-          <el-form-item label="维修内容" prop="repair_content">
+          <el-form-item label="维修内容" prop="repairContent">
             <el-input type="text"
                       :rows="5"
                       placeholder="请输入维修内容"
-                      v-model="query.repair_content" />
+                      v-model="query.repairContent" />
           </el-form-item>
           <el-form-item label="完成状态"
-                        prop="plan_state">
-            <el-select v-model="query.plan_state"
+                        prop="planState">
+            <el-select v-model="query.planState"
                        placeholder="计划完成状态"
                        clearable>
               <el-option v-for="item in selectStates"
@@ -41,18 +41,19 @@
                          :value="item.value" />
             </el-select>
           </el-form-item>
-      <el-form-item>
-        <el-button size="mini"
-                   type="primary"
-                   icon="el-icon-search"
-                   @click="handleQuery">搜索</el-button>
-        <el-button size="mini"
-                   icon="el-icon-refresh-left"
-                   @click="handleEmpty">重置</el-button>
-      </el-form-item>
+          <div class="el-form-item__content"
+               style="margin-left: 0px;">
+            <el-button size="mini"
+                       type="primary"
+                       icon="el-icon-search"
+                       @click="handleQuery">搜索</el-button>
+            <el-button size="mini"
+                       icon="el-icon-refresh-left"
+                       @click="handleEmpty">重置</el-button>
+          </div>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
+    <div class="el-form-item__content">
       <el-button type="primary"
                  size="mini"
                  plain
@@ -60,7 +61,7 @@
                  @click="handleOpenWindow('add')">新增
       </el-button>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="handleQuery"></right-toolbar>
-    </el-row>
+    </div>
 
     <el-table v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort">
       <template v-for="(column, index) in columns">
@@ -206,7 +207,7 @@ export default {
       openDialog: { open: false, type: '', title: '', width: '500px', data: {}, },
       page: { size: 10, current: 1, total: 0, order: "create_time", orderby: "desc", },
       query: {
-        start_date: '', end_date: '', department_id: '', equipment_number: '', equipment_name: '', repair_content: '', plan_state: ''
+        startDate: '', endDate: '', departmentId: '', equipmentNumber: '', equipmentName: '', repairContent: '', planState: ''
       },
       table: { border: true, loading: true, },
       tableData: [],
@@ -263,10 +264,11 @@ export default {
     onLoad () {
       this.table.loading = true;//加载状态
       let data = { ...this.page, ...this.query };
-      if (this.query.plan_state === '') {
-        data.plan_state = -1;
+      if (this.query.planState === '') {
+        data.planState = -1;
       }
       req('get', 'RepairPlan/list', data).then(res => {
+        console.log(res);
         this.table.loading = false;
         this.tableData = res.data.records;//表格数据
       }, error => {
@@ -306,7 +308,7 @@ export default {
     handleEmpty () {
       this.planDate = [];
       this.query = {
-        start_date: '', end_date: '', department_id: '', equipment_number: '', repair_content: '', plan_state: ''
+        startDate: '', endDate: '', departmentId: '', equipmentNumber: '', repairContent: '', planState: ''
       };
       this.deptForm = { value: '', label: '' };
       this.onLoad();
@@ -366,12 +368,12 @@ export default {
       this.onLoad();
     },
     getDept (obj) {
-      this.query.department_id = obj.value;
+      this.query.departmentId = obj.value;
     },
     handleNodeClick (data) {
       // console.log(data)
-      this.query.equipment_number = data.id;
-      this.query.equipment_name = data.equipmentName;
+      this.query.equipmentNumber = data.id;
+      this.query.equipmentName = data.equipmentName;
       this.treeOpen = false;
     },
   },
@@ -379,11 +381,11 @@ export default {
   watch: {
     planDate (newValue) {
       if (newValue.length > 0) {
-        this.query.start_date = this.$moment(newValue[0]).format('YYYY-MM-DD');
-        this.query.end_date = this.$moment(newValue[1]).format('YYYY-MM-DD');
+        this.query.startDate = this.$moment(newValue[0]).format('YYYY-MM-DD');
+        this.query.endDate = this.$moment(newValue[1]).format('YYYY-MM-DD');
       } else {
-        this.query.start_date = "";
-        this.query.end_date = "";
+        this.query.startDate = "";
+        this.query.endDate = "";
       }
     },
   }

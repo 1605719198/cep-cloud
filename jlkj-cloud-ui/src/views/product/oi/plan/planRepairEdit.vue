@@ -233,8 +233,8 @@
             if (this.type === 'add') {
               req('post', 'RepairPlan/add', {
                 ...data,
-                create_user_id: this.$store.state.user.userInfo.userName,
-                create_user_name: this.$store.state.user.userInfo.nickName,
+                create_user_id: this.$store.getters.userInfo.userId,
+                create_user_name: this.$store.getters.userInfo.nickName,
               }).then(res => {
                 if (res.code === 200) {
                   this.$message({
@@ -253,8 +253,8 @@
               req('post', 'RepairPlan/edit', {
                 id: this.form.id,
                 ...data,
-                modify_user_id: this.$store.state.user.userInfo.userName,
-                modify_user_name: this.$store.state.user.userInfo.nickName,
+                modify_user_id: this.$store.getters.userInfo.userId,
+                modify_user_name: this.$store.getters.userInfo.nickName,
               }).then(res => {
                 if (res.code === 200) {
                   this.$message({

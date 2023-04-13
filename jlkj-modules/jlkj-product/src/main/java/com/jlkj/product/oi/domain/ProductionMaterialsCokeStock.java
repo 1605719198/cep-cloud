@@ -14,7 +14,7 @@ import java.util.Date;
  * @Description 物料焦场库存
  * @create 2022年6月10日 10:12:26
  */
-@TableName(value ="t_materials_coke_stock")
+@TableName(value ="materials_mr_coke_stock")
 @Data
 public class ProductionMaterialsCokeStock implements Serializable{
     /** 主键标识;UUID */

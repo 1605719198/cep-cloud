@@ -7,6 +7,7 @@
     <div class="avue-crud__search"
          style="border: 0">
       <el-form :model="query"
+               :inline="true"
                ref="query">
         <el-row :gutter="20">
           <!-- <el-col :span="3">
@@ -60,10 +61,9 @@
     </div>
   </div>
 </el-col> -->
-          <el-col :span="3">
-            <el-form-item prop="shift_name">
+            <el-form-item prop="shiftName" label="班次">
               <el-select placeholder="选择班次"
-                         v-model="query.shift_name"
+                         v-model="query.shiftName"
                          clearable
                          :popper-append-to-body="false"
                          class="customSelectStyle">
@@ -74,11 +74,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item prop="class_name">
+            <el-form-item prop="className" label="班别">
               <el-select placeholder="选择班别"
-                         v-model="query.class_name"
+                         v-model="query.className"
                          clearable
                          :popper-append-to-body="false"
                          class="customSelectStyle">
@@ -89,12 +87,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item prop="coke_materials_code">
+            <el-form-item prop="cokeMaterialsCode" label="料号名称">
               <el-select :popper-append-to-body="false"
                          class="customSelectStyle"
-                         v-model="query.coke_materials_code"
+                         v-model="query.cokeMaterialsCode"
                          clearable
                          filterable
                          placeholder="选择煤的料号名称">
@@ -105,22 +101,19 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
 
-          <el-col :span="13">
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
               <el-button v-hasPermi="['listMaterialLoadingPerformance']"
-                         size="medium"
+                         size="mini"
                          type="primary"
                          icon="el-icon-search"
                          @click="handleQuery">搜 索</el-button>
-              <el-button size="medium"
+              <el-button size="mini"
                          type="default"
                          icon="el-icon-refresh-left"
                          @click="handleEmpty">重 置</el-button>
             </div>
-          </el-col>
           <!--          <el-col :span="2">-->
           <!--            <div class="el-form-item__content">-->
           <!--              <el-button v-hasPermi="['listMaterialLoadingPerformance']"-->
@@ -206,7 +199,7 @@
                            prop="create_time"
                            sortable />
         </el-table>
-        <div style="margin-top: 10px;right: 0;padding:25px 0 20px 20px ;"
+        <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;"
              class="avue-crud__pagination">
           <!-- <el-pagination background
                @size-change="handleSizeChange"
@@ -277,9 +270,9 @@ export default {
         // endTime: '',
         // classType: '',
         // shift: '',
-        class_name: null,
-        shift_name: null,
-        coke_materials_code: null,
+        className: null,
+        shiftName: null,
+        cokeMaterialsCode: null,
       },
       table: {
         border: true,
@@ -335,12 +328,12 @@ export default {
   },
   mounted() {
     getDicts('sys_classtype').then((response) => {
-      this.classTypeOptions = response.data.data.map((i) => {
+      this.classTypeOptions = response.data.map((i) => {
         return { value: i.dictLabel, label: i.dictLabel }
       })
     })
     getDicts('sys_shift_no').then((response) => {
-      this.shiftOptions = response.data.data.map((i) => {
+      this.shiftOptions = response.data.map((i) => {
         return { value: i.dictValue, label: i.dictLabel }
       })
     })
@@ -354,7 +347,7 @@ export default {
       listMaterialsBoxM(param).then((res) => {
         // console.log(res)
         let options = []
-        res.data.forEach((item) => {
+        res.forEach((item) => {
           let i = {
             id: item.materials_code,
             name: item.materials_name,

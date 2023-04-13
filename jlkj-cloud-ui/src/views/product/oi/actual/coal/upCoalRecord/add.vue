@@ -89,6 +89,7 @@
                               value-format="yyyy-MM-dd HH:mm:ss"
                               placeholder="选择时间"
                               v-model="form.start_time"
+                              @change="changeStartDate"
                               style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
@@ -155,6 +156,7 @@ import {
   getProductionPlanConfigCokeDetailInfoByWarehouseNumber,
   insertProductionConveyingCoalRecord,
 } from '@/api/production/oi/upCoalRecord'
+import { getHumanresourceSchedule } from '@/api/sys/index'
 
 export default {
   props: {
@@ -417,6 +419,7 @@ export default {
         // { id: 10, name: '10号' },
       ],
       submitLoading: false,
+      teamData: null,
     }
   },
   created() {
@@ -516,6 +519,17 @@ export default {
         }
       )
     },
+    //开始时间
+    changeStartDate(val) {
+      // console.log(val, 'val')
+      getHumanresourceSchedule({ startTime: val }).then((res) => {
+        // console.log(res, '班组信息')
+        if (res.data.code == 0) {
+          this.teamData = res.data.data[0]
+        }
+        // console.log(this.teamData, ' this.teamData ')
+      })
+    },
     // 比较两个日期
     compareDate(start, end) {
       return new Date(end).getTime() - new Date(start).getTime()
@@ -535,17 +549,48 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.type === 'add') {
-            if (this.userInfo.isTeam) {
+            // if (this.userInfo.isTeam) {
+            //     this.form.due_attendance_time_work =
+            //         this.userInfo.team.due_attendance_time_work
+            //     this.form.due_attendance_time_offduty =
+            //         this.userInfo.team.due_attendance_time_offduty
+            //     this.form.department_id =
+            //         this.userInfo.alternateField14
+            //     this.form.create_user_id = this.$store.getters.userInfo.userId
+            //     this.form.create_user_name = this.userInfo.userName
+            //     this.form.shift_name = this.userInfo.team.shift
+            //     this.form.class_name = this.userInfo.team.class_type
+            //     this.submitLoading = true
+            //     insertProductionConveyingCoalRecord(this.form).then(
+            //         (res) => {
+            //             if (res.data.code === '0') {
+            //                 this.$message({
+            //                     type: 'success',
+            //                     message: res.data.msg,
+            //                 })
+            //                 this.$emit('submitSave', res.data.msg)
+            //             }
+            //             this.submitLoading = false
+            //         },
+            //         (error) => {
+            //             this.submitLoading = false
+            //             window.console.log(error)
+            //         }
+            //     )
+            // } else {
+            //     this.$message.error('当前用户非当班用户！')
+            // }
+
+            if (this.teamData.start_time) {
               this.form.due_attendance_time_work =
-                this.userInfo.team.due_attendance_time_work
+                this.teamData.start_time
               this.form.due_attendance_time_offduty =
-                this.userInfo.team.due_attendance_time_offduty
-              this.form.department_id =
-                this.userInfo.alternateField14
-              this.form.create_user_id = this.userInfo.userId
-              this.form.create_user_name = this.userInfo.userName
-              this.form.shift_name = this.userInfo.team.shift
-              this.form.class_name = this.userInfo.team.class_type
+                this.teamData.end_time
+              this.form.shift_name = this.teamData.shift_no
+              this.form.class_name = this.teamData.class_name
+              this.form.department_id = this.$store.getters.userInfo.dept.deptId
+              this.form.create_user_id = this.$store.getters.userInfo.userId
+              this.form.create_user_name = this.$store.state.user.userInfo.nickName
               this.submitLoading = true
               insertProductionConveyingCoalRecord(this.form).then(
                 (res) => {
@@ -564,7 +609,7 @@ export default {
                 }
               )
             } else {
-              this.$message.error('当前用户非当班用户！')
+              this.$message.error('未获取到排班信息！')
             }
           }
         }
