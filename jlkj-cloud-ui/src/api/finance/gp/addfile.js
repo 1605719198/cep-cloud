@@ -8,6 +8,14 @@ export function listAddfile(query) {
     params: query
   })
 }
+// 查询厂商异动证照资料列表
+export function listAddfileChange(query) {
+  return request({
+    url: '/finance/finance/addfile/list/Change',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询厂商增户证照资料详细
 export function getAddfile(uuid) {

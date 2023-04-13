@@ -159,6 +159,7 @@ export default {
         this.queryParams.originalManufacturerChineseName =''
       }
       listBase(this.queryParams).then(response => {
+
         this.baseList = response.rows;
         this.total = response.total;
         this.loading = false;

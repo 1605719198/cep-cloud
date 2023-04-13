@@ -208,7 +208,7 @@ export default {
     /** 查询厂商基本资料列表 */
     getList() {
       queryAll(this.queryParams).then(response => {
-
+        console.log(response);
         this.loading = false;
         if (response == null) {
           this.base1List = []
