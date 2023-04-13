@@ -26,6 +26,13 @@ public interface IFinanceGpAddfileService
      * @return 厂商增户证照资料集合
      */
     public List<FinanceGpAddfile> selectFinanceGpAddfileList(FinanceGpAddfile financeGpAddfile);
+    /**
+     * 查询厂商异动证照资料列表
+     *
+     * @param financeGpAddfile 查询厂商异动证照资料列表
+     * @return 查询厂商异动证照资料列表
+     */
+    public List<FinanceGpAddfile> selectFinanceGpChangeFileList(FinanceGpAddfile financeGpAddfile);
 
     /**
      * 新增厂商增户证照资料

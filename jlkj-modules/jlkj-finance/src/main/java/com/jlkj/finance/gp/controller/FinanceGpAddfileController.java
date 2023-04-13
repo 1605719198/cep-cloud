@@ -50,6 +50,19 @@ public class FinanceGpAddfileController extends BaseController
     }
 
     /**
+     * 查询厂商异动证照资料列表
+     */
+    @RequiresPermissions("gp:addfile:list")
+    @GetMapping("/list/Change")
+    public TableDataInfo listChange(FinanceGpAddfile financeGpAddfile)
+    {
+        startPage();
+        List<FinanceGpAddfile> list = financeGpAddfileService.selectFinanceGpChangeFileList(financeGpAddfile);
+        return getDataTable(list);
+    }
+
+
+    /**
      * 导出厂商增户证照资料列表
      */
     @RequiresPermissions("gp:addfile:export")

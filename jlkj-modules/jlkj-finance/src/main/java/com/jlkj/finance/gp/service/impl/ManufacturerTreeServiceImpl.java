@@ -48,20 +48,7 @@ public class ManufacturerTreeServiceImpl extends ServiceImpl<ManufacturerTreeMap
                 treeDTO.setNodeNo(item.getNodeNo());
                 treeDTO.setNodeName(item.getNodeName());
                 treeDTO.setParentid(item.getParentid());
-                String parentId = treeDTO.getId();
-                LambdaQueryWrapper<ManufacturerBase> queryWrapper = new LambdaQueryWrapper<>();
-                queryWrapper.eq(StringUtils.isNotBlank(parentId), ManufacturerBase::getParentId, parentId);
-                ManufacturerBase manufacturerBase = manufacturerBaseService.getOne(queryWrapper);
-                if(manufacturerBase != null){
-                    treeDTO.setManufacturerId(manufacturerBase.getManufacturerId());
-                    treeDTO.setManufacturerChineseName(manufacturerBase.getManufacturerChineseName());
-                    treeDTO.setManufacturerShortName(manufacturerBase.getManufacturerShortName());
-                    treeDTO.setManufacturerEnglishName(manufacturerBase.getManufacturerEnglishName());
-                    treeDTO.setDetailAreaId(manufacturerBase.getDetailAreaId());
-                    treeDTO.setMainAreaId(manufacturerBase.getMainAreaId());
-                    treeDTO.setBillAddress(manufacturerBase.getBillAddress());
 
-                }
                 treeDTOList.add(treeDTO);
                 tempList.add(item.getId());
             }

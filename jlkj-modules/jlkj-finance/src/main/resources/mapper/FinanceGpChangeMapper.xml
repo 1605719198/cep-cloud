@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.gp.mapper.FinanceGpChangeMapper">
+    
+    <resultMap type="com.jlkj.finance.gp.domain.FinanceGpChange" id="FinanceGpChangeResult">
+        <result property="applyId"    column="apply_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="manufacturerName"    column="manufacturer_name"    />
+        <result property="auditor"    column="auditor"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUserName"    column="update_user_name"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="status"    column="status"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="remarkAdd"    column="remark_add"    />
+    </resultMap>
+
+    <sql id="selectFinanceGpChangeVo">
+        select apply_id, comp_id, manufacturer_name, auditor, update_date, update_user, create_user, create_time, update_time,
+               update_user_name, create_user_name, status, manufacturer_id, remark_add from finance_gp_change
+    </sql>
+
+    <select id="selectFinanceGpChangeList" parameterType="com.jlkj.finance.gp.domain.FinanceGpChange" resultMap="FinanceGpChangeResult">
+        <include refid="selectFinanceGpChangeVo"/>
+        <where>  
+            <if test="manufacturerName != null  and manufacturerName != ''"> and manufacturer_name like concat('%', #{manufacturerName}, '%')</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="startDate != '' and endDate != ''"> and create_time between #{startDate} and #{endDate}</if>
+            <if test="updateUserName != null  and updateUserName != ''"> and update_user_name like concat('%', #{updateUserName}, '%')</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="manufacturerId != null  and manufacturerId != ''"> and manufacturer_id = #{manufacturerId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceGpChangeByApplyId" parameterType="String" resultMap="FinanceGpChangeResult">
+        <include refid="selectFinanceGpChangeVo"/>
+        where apply_id = #{applyId}
+    </select>
+    <select id="selectFinanceGpChangeDateList" resultType="com.jlkj.finance.gp.domain.FinanceGpChange">
+        <include refid="selectFinanceGpChangeVo"/>
+        <where>
+            <if test="applyId != null  and applyId != ''"> and apply_id  like concat('%',#{applyId},'%') </if>
+        </where>
+    </select>
+
+    <insert id="insertFinanceGpChange" parameterType="com.jlkj.finance.gp.domain.FinanceGpChange">
+        insert into finance_gp_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">apply_id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="manufacturerName != null">manufacturer_name,</if>
+            <if test="auditor != null">auditor,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="status != null">status,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="remarkAdd != null">remark_add,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">#{applyId},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="manufacturerName != null">#{manufacturerName},</if>
+            <if test="auditor != null">#{auditor},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="remarkAdd != null">#{remarkAdd},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceGpChange" parameterType="com.jlkj.finance.gp.domain.FinanceGpChange">
+        update finance_gp_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="manufacturerName != null">manufacturer_name = #{manufacturerName},</if>
+            <if test="auditor != null">auditor = #{auditor},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="remarkAdd != null">remark_add = #{remarkAdd},</if>
+        </trim>
+        where apply_id = #{applyId}
+    </update>
+
+    <delete id="deleteFinanceGpChangeByApplyId" parameterType="String">
+        delete from finance_gp_change where apply_id = #{applyId}
+    </delete>
+
+    <delete id="deleteFinanceGpChangeByApplyIds" parameterType="String">
+        delete from finance_gp_change where apply_id in 
+        <foreach item="applyId" collection="array" open="(" separator="," close=")">
+            #{applyId}
+        </foreach>
+    </delete>
+</mapper>

@@ -45,6 +45,17 @@ public class FinanceGpAddfileServiceImpl implements IFinanceGpAddfileService
     {
         return financeGpAddfileMapper.selectFinanceGpAddfileList(financeGpAddfile);
     }
+    /**
+     * 查询厂商异动证照资料列表
+     *
+     * @param financeGpAddfile 查询厂商异动证照资料列表
+     * @return 查询厂商异动证照资料列表
+     */
+    @Override
+    public List<FinanceGpAddfile> selectFinanceGpChangeFileList(FinanceGpAddfile financeGpAddfile)
+    {
+        return financeGpAddfileMapper.selectFinanceGpChangeFileList(financeGpAddfile);
+    }
 
     /**
      * 新增厂商增户证照资料

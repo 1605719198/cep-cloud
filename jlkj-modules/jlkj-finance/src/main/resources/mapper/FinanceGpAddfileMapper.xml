@@ -40,8 +40,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         finance_gp_addfile a
 
         LEFT JOIN finance_gp_add b ON a.apply_id = b.apply_id
-        <where>  
+        <where>
+            <if test="applyId != null  and applyId != ''"> and a.apply_id = #{applyId}</if>
+            <if test="manufacturerName != null  and manufacturerName != ''"> and b.manufacturer_name  like concat('%',#{manufacturerName},'%')</if>
+            <if test="applyType != null  and applyType != ''"> and a.apply_type = #{applyType}</if>
+            <if test="filetype != null  and filetype != ''"> and a.fileType = #{filetype}</if>
+            <if test="dataType != null  and dataType != ''"> and a.data_type = #{dataType}</if>
+        </where>
 
+    </select>
+
+    <select id="selectFinanceGpChangeFileList" parameterType="com.jlkj.finance.gp.domain.FinanceGpAddfile" resultMap="FinanceGpAddfileResult">
+        SELECT
+        b.STATUS AS STATUS,
+        b.manufacturer_name AS manufacturer_name,
+        a.apply_id AS apply_id,
+        a.data_type AS data_type,
+        a.file_name AS file_name,
+        a.uuid AS uuid
+        FROM
+        finance_gp_addfile a
+
+        LEFT JOIN finance_gp_change b ON a.apply_id = b.apply_id
+        <where>
             <if test="applyId != null  and applyId != ''"> and a.apply_id = #{applyId}</if>
             <if test="manufacturerName != null  and manufacturerName != ''"> and b.manufacturer_name  like concat('%',#{manufacturerName},'%')</if>
             <if test="applyType != null  and applyType != ''"> and a.apply_type = #{applyType}</if>
