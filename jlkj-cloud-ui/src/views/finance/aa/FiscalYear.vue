@@ -1,137 +1,109 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="24"
-              style="padding:0 10px">
-        <!--        table主体-->
-        <div class="plan_main">
-          <div class="avue-crud el-card__body"
-               style="width: 98%;border: 0">
-            <!--           条件搜索 -->
-            <div class="avue-crud__search"
-                 style="border: 0">
-              <el-form :model="queryParams"
-                       ref="queryForm">
-                <el-row :gutter="20">
-                  <el-col :span="2">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-button v-hasPermi="['account_period_queryAll']"
-                                   style="width: 120px"
-                                   size="medium"
-                                   type="warning"
-                                   icon="el-icon-caret-left"
-                                   @click="LastYear()">上一年度
-                        </el-button>
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="2">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-button v-hasPermi="['account_period_queryAll']"
-                                   style="width: 120px"
-                                   size="medium"
-                                   type="warning"
-                                   @click="NextYear()">下一年度<i class="el-icon-arrow-right el-icon-caret-right"></i></el-button>
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="4">
-                    <div class="el-form-item el-form-item--small">
-                      <div class="el-form-item__content">
-                        <el-date-picker v-model="queryParams.accountPeriodDate"
-                                        type="year"
-                                        format="yyyy"
-                                        value-format="yyyy"
-                                        placeholder="选择年"
-                                        :picker-options="pickerOptions"
-                                        @change="accountPeriodDateChange">
-                        </el-date-picker>
-                      </div>
-                    </div>
-                  </el-col>
-                  <el-col :span="9">
-                    <div class="el-form-item__content"
-                         style="margin-left: 0px;">
-                      <el-button v-hasPermi="['account_period_queryAll']"
-                                 type="primary"
-                                 size="mini"
-                                 @click="handleQuery"
-                                 icon="el-icon-search">搜索</el-button>
-                      <el-button size="mini"
-                                 type="default"
-                                 @click="resetQuery"
-                                 icon="el-icon-refresh-left">重置
-                      </el-button>
-                      <el-button v-hasPermi="['account_period_delete']"
-                                 type="danger"
-                                 size="mini"
-                                 @click="handleDelete"
-                                 icon="el-icon-delete">删除会计年度
-                      </el-button>
-                      <el-button v-hasPermi="['account_period_doEdit']"
-                                 size="mini"
-                                 plain
-                                 icon="el-icon-caret-left"
-                                 type="primary"
-                                 @click="handleDetails">
-                        开启
-                      </el-button>
-                    </div>
-                  </el-col>
-                  <el-col :span="7">
-                    <div class="el-form-item__content"
-                         style="float: right">
-                      <el-button v-hasPermi="['account_period_doAdd']"
-                                 type="primary"
-                                 size="mini"
-                                 plain
-                                 icon="el-icon-plus"
-                                 @click="AddleUpdate()">新增会计年度
-                      </el-button>
-                    </div>
-                  </el-col>
-                </el-row>
+  <div class="app-container">
+              <el-form :model="queryParams" ref="queryForm"
+                       :rules="rulesQuery"  size="small" :inline="true" v-show="showSearch" label-width="97px">
+
+                <el-form-item label="公司" prop="compId">
+                  <el-input v-model="queryParams.compId"
+                            placeholder="请输入公司"
+                            style="width: 190px"
+                            clearable
+                            @keyup.enter.native="handleQuery"/>
+                </el-form-item>
+                <el-form-item label="会计年度" prop="accountPeriodDate">
+                  <el-date-picker v-model="queryParams.accountPeriodDate"
+                                  type="year"
+                                  format="yyyy"
+                                  value-format="yyyy"
+                                  placeholder="选择年"
+                                  :picker-options="pickerOptions"
+                                  @change="accountPeriodDateChange">
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                  <el-button v-hasPermi="['account_period_queryAll']"
+                             type="primary"
+                             size="mini"
+                             @click="handleQuery"
+                             icon="el-icon-search">搜索
+                  </el-button>
+                  <el-button size="mini"
+                             type="default"
+                             @click="resetQuery"
+                             icon="el-icon-refresh-left">重置
+                  </el-button>
+                  <el-button v-hasPermi="['account_period_queryAll']"
+                             style="width: 120px"
+                             size="mini"
+                             type="warning"
+                             icon="el-icon-caret-left"
+                             @click="LastYear()">上一年度
+                  </el-button>
+                  <el-button v-hasPermi="['account_period_queryAll']"
+                             style="width: 120px"
+                             size="mini"
+                             type="warning"
+                             @click="NextYear()">下一年度<i class="el-icon-arrow-right el-icon-caret-right"></i></el-button>
+                  <el-button v-hasPermi="['account_period_doAdd']"
+                             type="primary"
+                             size="mini"
+                             plain
+                             icon="el-icon-plus"
+                             @click="AddleUpdate()">新增会计年度
+                  </el-button>
+                  <el-button v-hasPermi="['account_period_delete']"
+                             type="danger"
+                             size="mini"
+                             @click="handleDelete"
+                             icon="el-icon-delete">删除会计年度
+                  </el-button>
+                </el-form-item>
               </el-form>
-            </div>
             <!--            表单数据-->
-            <div>
-              <el-form>
                 <el-table height="67vh"
                           @selection-change="handleSelectionChange"
                           stripe
                           v-loading="loading"
                           :data="financetestList"
                           :header-cell-style="{background:'#FAFAFA'}">
-                  <el-table-column type="selection"
+<!--                  <el-table-column type="selection"
                                    width="55"
-                                   align="center" />
+                                   align="center"/>-->
                   <el-table-column label="会计周期"
                                    sortable
                                    align="center"
-                                   prop="accountPeriod" />
+                                   prop="accountPeriod"/>
                   <el-table-column label="起始日期"
                                    sortable
                                    align="center"
-                                   prop="startDate" />
+                                   prop="startDate"/>
                   <el-table-column label="终止日期"
                                    sortable
                                    align="center"
-                                   prop="endDate" />
+                                   prop="endDate"/>
                   <el-table-column label="状态"
                                    align="center"
                                    prop="isClosed">
                     <template slot-scope="scope">
                       <dict-tag :options="dict.type.finance_year_status"
-                                :value="scope.row.isClosed" />
+                                :value="scope.row.isClosed"/>
                     </template>
                   </el-table-column>
+                  <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                    <template slot-scope="scope">
+                      <el-button v-hasPermi="['account_period_doEdit']"
+                                 size="mini"
+                                 plain
+                                 icon="el-icon-caret-left"
+                                 type="text"
+                                 @click="handleDetails(scope.row)">
+                        开启
+                      </el-button>
 
+                    </template>
+                  </el-table-column>
                 </el-table>
                 <!--                分页-->
-                <div style="margin-top: 10px;right: 0"
-                     class="avue-crud__pagination">
                   <el-pagination background
                                  :total="total"
                                  :current-page="queryParams.pageNum"
@@ -142,13 +114,10 @@
                                  @current-change="handleCurrentChange"
                                  style="float: right;">
                   </el-pagination>
-                </div>
-              </el-form>
-            </div>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+
+
+
+
     <!-- 添加或修改测试对话框 -->
     <fiscalYearCost @getLists="getListHandle"
                     :visible.sync="CostCenterCostVisible"
@@ -158,7 +127,7 @@
 </template>
 
 <script>
-import { listFinancetest, delFinancetest, addFinancetest, updatecloseYn } from "@/api/finance/aa/fiscalYear";
+import {listFinancetest, delFinancetest, addFinancetest, updatecloseYn} from "@/api/finance/aa/fiscalYear";
 import fiscalYearCost from './FiscalYearCost'
 
 export default {
@@ -168,7 +137,7 @@ export default {
   },
   dicts: ['finance_year_status'],
   financeattritestList: [],
-  data () {
+  data() {
     return {
       // 日期函数
       pickerOptions: {},
@@ -222,35 +191,43 @@ export default {
       form: {},
       // 表单校验
       rules: {},
-
+      // 搜索校验
+      rulesQuery: {
+        compId: [
+          {required: true, message: '请输入公司', trigger: 'blur'}
+        ]
+      },
     };
   },
-  created () {
+  created() {
+
     this.getList();
   },
   methods: {
     // 年度日期切换
-    accountPeriodDateChange (val) {
+    accountPeriodDateChange(val) {
+
       this.accountPeriodSub = val
       this.queryParams.accountPeriod = val
     },
     // 分页数据
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.queryParams.pageSize = val
       this.getList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.queryParams.pageNum = val
       this.getList()
     },
     /** 查询测试列表 */
-    getList () {
+    getList() {
       this.loading = false;
-      console.log(this.queryParams);
       listFinancetest(this.queryParams).then(response => {
-        if (response.data == null) {
+
+        if (response.data.length == 0) {
           this.financetestList = []
           this.queryParams.accountPeriodDate = new Date()
+          this.accountPeriodSub = new Date().getFullYear().toString()
           this.total = 0;
         } else {
           this.financetestList = response.data.list;
@@ -262,10 +239,11 @@ export default {
       });
     },
     /** 查询测试列表 */
-    getList1 () {
+    getList1() {
       this.loading = false;
+
       listFinancetest(this.queryParams).then(response => {
-        if (response.data == null) {
+        if (response.data.length == 0) {
           this.financetestList = []
           this.total = 0;
         } else {
@@ -277,17 +255,17 @@ export default {
 
     },
     // 表单重置
-    reset () {
+    reset() {
       this.form = {};
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
-    handleQuery () {
+    handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
     /** 重置按钮操作 */
-    resetQuery () {
+    resetQuery() {
       this.queryParams = {
         pageNum: 1,
         pageSize: 10,
@@ -297,10 +275,11 @@ export default {
         ccType: null,
         compId: 'J00',
       }
+      this.queryParams.accountPeriodDate = new Date()
+      this.accountPeriodSub = new Date().getFullYear().toString()
       listFinancetest(this.queryParams).then(response => {
-        if (response.data == null) {
+        if (response.data.length == 0) {
           this.financetestList = []
-          this.queryParams.accountPeriodDate = new Date()
           this.total = 0;
         } else {
           this.financetestList = response.data.list;
@@ -315,7 +294,7 @@ export default {
 
     },
     /** 添加按钮操作 */
-    AddleUpdate () {
+    AddleUpdate() {
       this.CostCenterCostVisible = true
       this.$nextTick(() => {
         this.$refs.CostCenterCostVisible.AddPage()
@@ -329,22 +308,24 @@ export default {
       this.getList1()
     },
     /** 下一年度按钮操作 */
-    NextYear () {
+    NextYear() {
       this.accountPeriodSub++
       this.queryParams.accountPeriod = this.accountPeriodSub.toString();
       this.queryParams.accountPeriodDate = new Date(this.accountPeriodSub.toString());
       this.getList1()
     },
     /** 修改按钮操作 */
-    handleSee (row) {
+    handleSee(row) {
       this.CostCenterCostVisible = true
       this.$nextTick(() => {
         this.$refs.CostCenterCostVisible.See(row.accountPeriod, row.startDate, row.endDate, row.id)
       })
     },
     /** 开启按钮 */
-    handleDetails () {
-      for (let i = 0; i < this.isClosed.length; i++) {
+    handleDetails(row) {
+      updatecloseYn("N", row.id)
+      this.getList();
+ /*     for (let i = 0; i < this.isClosed.length; i++) {
         this.isClosed = this.isClosed[i]
         this.id = this.ids[i]
         if (this.isClosed === "N") {
@@ -359,11 +340,11 @@ export default {
         updatecloseYn("N", this.id)
         this.opentest = false
         this.Updatetest = true
-      }
+      }*/
 
     },
     /** 提交按钮 */
-    submitForm () {
+    submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           addFinancetest(this.form).then(response => {
@@ -378,7 +359,7 @@ export default {
       });
     },
     // 多选框选中数据
-    handleSelectionChange (selection) {
+    handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.isClosed = selection.map(item => item.isClosed)
       this.single = selection.length !== 1

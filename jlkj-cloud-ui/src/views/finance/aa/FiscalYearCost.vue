@@ -2,18 +2,28 @@
   <div v-if="visible">
     <el-dialog class="customDialogStyle" custom-class="saveAsDialog" :title="title" :visible.sync="visible"
                @close="cancel"  >
-      <el-form v-if="AddYear" :model="ruleForm" :rules="rules" ref="ruleForm" style="height:400px" label-width="150px">
+      <el-form v-if="AddYear" :model="ruleForm" :rules="rules" ref="ruleForm" style="height:150px" label-width="84px">
         <el-row style="height:100px">
-          <el-col>
+<!--          <el-col>
             <span style="color: red">
               重要说明：
                </span><br>
             <span style="color: red">1、会计周期以月为单位，起始日期为每月1日，终止日期为每月最后一日；</span><br>
             <span style="color: red"> 2、输入会计年度，点击确定后，将一次性新增 从起始年月到年末最后一个月（12月）的所有周期</span>
+          </el-col>-->
+          <el-col :span="24" style="height:80px">
+            <el-form-item label="公司:" prop="compId">
+              <el-input v-model="ruleForm.compId"
+                        placeholder="请输入公司"
+                        style="width: 190px"
+                        clearable
+                      />
+            </el-form-item>
           </el-col>
           <el-col :span="24" style="height:80px">
             <el-form-item label="会计年度:" prop="accountYear">
               <el-date-picker
+                style="width: 195px"
                 v-model="ruleForm.accountYear"
                 type="year"
                 format="yyyy"
@@ -22,7 +32,7 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="24" style="height:80px">
+<!--          <el-col :span="24" style="height:80px">
             <el-form-item label="月份:" prop="stMonth">
               <el-select v-model="ruleForm.stMonth" placeholder="请选择月份" style="width: 220px">
                 <el-option
@@ -33,7 +43,7 @@
                 />
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col>-->
         </el-row>
       </el-form>
       <el-form v-if="UpdateYear" :model="ruleForm" :rules="rules" ref="ruleForm" style="height:200px"
@@ -248,7 +258,7 @@ export default {
 }
 
 ::v-deep .saveAsDialog {
-  width: 1250px !important;
+  width: 500px !important;
 }
 
 .dialog-wrap {
