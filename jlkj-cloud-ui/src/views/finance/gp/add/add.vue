@@ -120,16 +120,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination background
-                :total="total"
-                :current-page="queryParams.pageNum"
-                :page-sizes="[20, 50, 100, 200]"
-                :page-size="queryParams.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                style="float: right;">
-    </pagination>
+     <pagination
+    v-show="total>0"
+    :total="total"
+    :page.sync="queryParams.pageNum"
+    :limit.sync="queryParams.pageSize"
+    @pagination="getList"
+  />
 
 
     <!-- 添加或修改厂商增户申请对话框 -->
