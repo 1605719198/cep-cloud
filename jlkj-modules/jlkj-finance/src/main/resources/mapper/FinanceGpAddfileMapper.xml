@@ -35,7 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.apply_id AS apply_id,
         a.data_type AS data_type,
         a.file_name AS file_name,
-               a.uuid AS uuid
+        a.fileType AS fileType,
+        a.uuid AS uuid
         FROM
         finance_gp_addfile a
 
@@ -57,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.apply_id AS apply_id,
         a.data_type AS data_type,
         a.file_name AS file_name,
+        a.fileType AS fileType,
         a.uuid AS uuid
         FROM
         finance_gp_addfile a

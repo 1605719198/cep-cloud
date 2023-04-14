@@ -22,8 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author HuangBing
@@ -66,7 +65,14 @@ public class OvertimeRecordController extends BaseController {
     @Log(title = "根据uuid查询劳动合同详细信息", businessType = BusinessType.OTHER)
     public Object getOvertimeRecord(@PathVariable String uuid) {
         OvertimeRecord overtimeRecord = iOvertimeRecordService.lambdaQuery().eq(OvertimeRecord::getId, uuid).one();
-        return AjaxResult.success("查询成功", overtimeRecord);
+        OvertimeRecordDTO overtimeRecordDTO = new OvertimeRecordDTO();
+        BeanUtils.copyProperties(overtimeRecord, overtimeRecordDTO);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<String> resultList = new ArrayList<>();
+        resultList.add(simpleDateFormat.format(overtimeRecord.getStartDate()));
+        resultList.add(simpleDateFormat.format(overtimeRecord.getEndDate()));
+        overtimeRecordDTO.setWorkOvertimeDate(resultList);
+        return AjaxResult.success("查询成功", overtimeRecordDTO);
     }
 
     /**
@@ -124,8 +130,8 @@ public class OvertimeRecordController extends BaseController {
         OvertimeRecord overtimeRecord = new OvertimeRecord();
         BeanUtils.copyProperties(overtimeRecordDTO, overtimeRecord);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        overtimeRecord.setStartDate(simpleDateFormat.parse(overtimeRecordDTO.getStartTime()));
-        overtimeRecord.setEndDate(simpleDateFormat.parse(overtimeRecordDTO.getEndTime()));
+        overtimeRecord.setStartDate(simpleDateFormat.parse(overtimeRecordDTO.getWorkOvertimeDate().get(0)));
+        overtimeRecord.setEndDate(simpleDateFormat.parse(overtimeRecordDTO.getWorkOvertimeDate().get(1)));
         String nickName = SecurityUtils.getNickName();
         if (nickName.equals(overtimeRecord.getCreator())) {
             String strStartTime = "8:00";

@@ -5,6 +5,8 @@ import java.util.List;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.gp.domain.FinanceGpAdd;
+import com.jlkj.finance.gp.domain.FinanceGpAddfile;
+import com.jlkj.finance.gp.mapper.FinanceGpAddfileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.finance.gp.mapper.FinanceGpChangeMapper;
@@ -22,6 +24,8 @@ public class FinanceGpChangeServiceImpl implements IFinanceGpChangeService
 {
     @Autowired
     private FinanceGpChangeMapper financeGpChangeMapper;
+    @Autowired
+    private FinanceGpAddfileMapper financeGpAddfileMapper;
 
     /**
      * 查询厂商异动申请
@@ -110,7 +114,17 @@ public class FinanceGpChangeServiceImpl implements IFinanceGpChangeService
      */
     @Override
     public int deleteFinanceGpChangeByApplyIds(String[] applyIds)
+
     {
+        FinanceGpAddfile financeGpAddfile = new FinanceGpAddfile();
+        for (String applyId :applyIds){
+            financeGpAddfile.setApplyId(applyId);
+            List<FinanceGpAddfile> financeGpAddfiles = financeGpAddfileMapper.selectFinanceGpChangeFileList(financeGpAddfile);
+            if (financeGpAddfiles.size()>0){
+                financeGpAddfileMapper.deleteFinanceGpAddfileByApplyId(applyId);
+            }
+
+        }
         return financeGpChangeMapper.deleteFinanceGpChangeByApplyIds(applyIds);
     }
 

@@ -116,6 +116,7 @@
           >下载
           </el-button>
           <el-button
+            v-if="scope.row.filetype ==='png'||scope.row.filetype ==='jpg'||scope.row.filetype ==='jpeg'"
             size="mini"
             type="text"
             icon="el-icon-view"

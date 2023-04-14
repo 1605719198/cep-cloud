@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 加班记录表
+ * 补休记录表
  * @author HuangBing
- * @TableName human_hd_overtime_record
+ * @TableName human_hd_comptime
  */
-@TableName(value ="human_hd_overtime_record")
+@TableName(value ="human_hd_comptime")
 @Data
-public class OvertimeRecordDTO implements Serializable {
+public class ComptimeDTO implements Serializable {
     /**
      * 主键
      */
@@ -55,34 +55,24 @@ public class OvertimeRecordDTO implements Serializable {
     private String postName;
 
     /**
-     * 加班开始日期
+     * 补休开始日期
      */
-    private String startDate;
+    private List startDate;
 
     /**
-     * 加班结束日期
+     * 补休结束日期
      */
-    private String endDate;
+    private List endDate;
 
     /**
-     * 加班类别ID
+     * 存班小时数
      */
-    private String overtimeTypeId;
+    private String saveHours;
 
     /**
-     * 加班原因ID
+     * 补休小时数
      */
-    private String overtimeReaId;
-
-    /**
-     * 加班天数
-     */
-    private String overtimeDays;
-
-    /**
-     * 加班小时数
-     */
-    private String overtimeHours;
+    private String compHours;
 
     /**
      * 辅助说明
@@ -93,16 +83,6 @@ public class OvertimeRecordDTO implements Serializable {
      * 审核状态
      */
     private String status;
-
-    /**
-     * 是否有加班费
-     */
-    private String resultlt;
-
-    /**
-     * 刷卡时间
-     */
-    private Date cardTime;
 
     /**
      * 输入人
@@ -119,11 +99,6 @@ public class OvertimeRecordDTO implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
-
-    /**
-     * 处理情况
-     */
-    private String disposeId;
 
     /**
      * 预留属性1
@@ -146,11 +121,6 @@ public class OvertimeRecordDTO implements Serializable {
     private String resvAttr4;
 
     /**
-     * 预留属性5
-     */
-    private String resvAttr5;
-
-    /**
      * 开始时间
      */
     private String startTime;
@@ -161,7 +131,7 @@ public class OvertimeRecordDTO implements Serializable {
     private String endTime;
 
     /**
-     * 展示时间
+     * 结束时间
      */
     private List<String> workOvertimeDate;
 

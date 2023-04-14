@@ -114,5 +114,6 @@ public class FinanceGpPurchaseLinkServiceImpl implements IFinanceGpPurchaseLinkS
             list.add(financeGpPurchaseLink);
         }
         financeGpPurchaseLinkMapper.batchFinanceGpPurchaseLink(list);
+
     }
 }

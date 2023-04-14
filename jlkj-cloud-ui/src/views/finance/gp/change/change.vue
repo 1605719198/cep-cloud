@@ -416,7 +416,7 @@ export default {
         return delChange(applyIds);
       }).then(() => {
         this.getList();
-        this.$emit('change', 'third', null);
+
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },

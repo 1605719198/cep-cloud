@@ -116,6 +116,7 @@
           >下载
           </el-button>
           <el-button
+            v-if="scope.row.filetype ==='png'"
             size="mini"
             type="text"
             icon="el-icon-view"
@@ -297,6 +298,7 @@ export default {
     },
     //图片预览
     previewImgFile(row) {
+
       window.open(this.views + row.uuid);
     },
     /** 查询厂商增户证照资料列表 */
@@ -364,6 +366,7 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      console.log(row.filetype);
       this.reset();
       this.imageList = []
       this.fileUrlList = []

@@ -161,6 +161,10 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      //选框选中
+      manufacturerChineseName:'',
+      //选框选中
+      taxNo:'',
       // 非单个禁用
       single: true,
       //添加-修改熟悉
@@ -262,6 +266,9 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.manufacturerId)
+      this.manufacturerChineseName = selection[0].manufacturerChineseName.toString();
+      this.taxNo = selection[0].taxNo.toString();
+      console.log(this.taxNo);
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
@@ -282,15 +289,20 @@ export default {
     },*/
     /** 查看修改按钮操作 */
     handleUpdate(row) {
+      const id = row.manufacturerId || this.ids;
+      const name = row.manufacturerChineseName || this.manufacturerChineseName;
+      const tax = row.taxNo || this.taxNo;
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.revise(row.manufacturerId, row.manufacturerChineseName,row.taxNo)
+
+        this.$refs.addOrUpdate.revise(id.toString(), name,tax)
       })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       const id = row.id || this.ids;
-      this.$confirm('此操作将永久删除'+row.manufacturerShortName+'数据记录，是否继续？', '提示', {
+      const name = row.manufacturerChineseName || this.manufacturerChineseName;
+      this.$confirm('此操作将永久删除'+name+'数据记录，是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

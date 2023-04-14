@@ -209,7 +209,7 @@ export default {
             updateManufacturerBasicSt(this.stForm).then(response => {
               this.$modal.msgSuccess("承运关系修改成功");
               this.statusTabs=true
-              this.$emit('getLists',this.statusTabs);
+
             });
           }
       });

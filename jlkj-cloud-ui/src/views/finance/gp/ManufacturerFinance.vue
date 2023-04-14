@@ -396,8 +396,6 @@ export default {
             updateManufacturerBasicFc(this.fcForm).then(response => {
               this.$modal.msgSuccess("报支关系修改成功");
               this.statusTabsFc=true
-
-              this.$emit('getLists',this.statusTabsFc);
             });
           }
       });

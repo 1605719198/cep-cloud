@@ -320,7 +320,7 @@ export default {
         catalog: [{required: true, message: '请输入厂商类别', trigger: 'blur'},
           {max: 10, message: '最大长度为10个字符', trigger: 'blur'}],
         owner: [
-          { required: true, validator: checkRealName, trigger: "blur" },
+          { required: true, message: "请输入正确的法定代表人/责任人", trigger: "blur" },
           {max: 30, message: '最大长度为30个字符', trigger: 'blur'}],
         manufacturerShortName: [
           { required: true, validator: validateContacts, trigger: "blur" },
@@ -333,14 +333,11 @@ export default {
           {max: 2, message: '最大长度为2个字符', trigger: 'blur'}],
         isCentralizedPurchase: [{max: 1, message: '最大长度为1个字符', trigger: 'blur'}],
         manufacturerChineseName: [
-          { required: true, validator: validateContacts, trigger: "blur" },
-          { message: '请输入中文名称', trigger: 'blur'},
+          { required: true,message: '请输入中文名称', trigger: "blur" },
           {max: 100, message: '最大长度为100个字符', trigger: 'blur'}],
         originalManufacturerChineseName: [
-          { pattern:/^[\u0391-\uFFE5]+$/, message: "请输入正确的原中文名称", trigger: "blur"},
           {max: 1000, message: '最大长度为1000个字符', trigger: 'blur'}],
         manufacturerEnglishName: [
-          {required: true, message: '请输入英文名称', trigger: 'blur'},
          { pattern: /^[A-Za-z]+$/, message: "请输入英文", trigger: "blur"},
           {max: 100, message: '最大长度为100个字符', trigger: 'blur'}],
         capital: [
@@ -391,51 +388,7 @@ export default {
     },
     handleClick(tab, event) {
 
-/*      if (tab.label=="基础资料"){
-        if (this.statusTabs==false){
-          this.$message({
-            message: '基础资料未保存，请先报存基础资料',
-            type: 'warning'
-          });
-        }
-
-      }else if (tab.label=="报支关系"){
-        if (this.statusTabsFc==false){
-          this.$message({
-            message: '报支关系未保存，请先报存报支关系',
-            type: 'warning'
-          });
-        }
-        ;
-      }
-      else if (tab.label=="采购关系"){
-        if (this.statusTabsMp==false){
-          this.$message({
-            message: '采购关系未保存，请先报存采购关系',
-            type: 'warning'
-          });
-        }
-
-      }
-      else if (tab.label=="客户关系"){
-        if (this.statusTabsSo==false){
-          this.$message({
-            message: '客户关系未保存，请先报存客户关系',
-            type: 'warning'
-          });
-        }
-
-      }
-      else if (tab.label=="承运关系"){
-        if (this.statusTabsSt==false){
-          this.$message({
-            message: '承运关系未保存，请先报存承运关系',
-            type: 'warning'
-          });
-        }
-
-      }*/
-      if (tab.label=="基础资料"|| this.statusTabs==false){
+    /*  if (tab.label=="基础资料"|| this.statusTabs==false){
         this.$message({
           message: '基础资料未保存，请先报存基础资料',
           type: 'warning'
@@ -464,7 +417,7 @@ export default {
           message: '承运关系未保存，请先报存承运关系',
           type: 'warning'
         });
-      }
+      }*/
     },
 
     getQueryFc(val) {
@@ -500,7 +453,7 @@ export default {
 
       this.$refs[formName].validate(valid => {
         this.dataForm.originalManufacturerChineseName = this.ChineseNameUpdate
-        console.log(this.dataForm.originalManufacturerChineseName);
+
         if (valid) {
           if (this.dataForm.manufacturerId != null) {
             updateManufacturerBasics(this.dataForm).then(response => {
@@ -593,7 +546,7 @@ export default {
       this.statusTabsMp=false
       this.statusTabsSo=false
       this.statusTabsSt=false
-
+      console.log(id);
       getBase1(id).then(response => {
         this.dataForm = response.data
         this.ChineseNameUpdate=this.dataForm.manufacturerChineseName
