@@ -54,7 +54,7 @@
 
     <el-table v-loading="loading" :data="baseList" @selection-change="handleSelectionChange">
       <el-table-column label="厂商编码" align="center" prop="manufacturerId" />
-      <el-table-column label="中文名称" align="center" prop="manufacturerChineseName" />
+      <el-table-column label="中文名称" align="center" prop="manufacturerChineseName"  :show-overflow-tooltip='true'/>
       <el-table-column label="英文名称" align="center" prop="manufacturerEnglishName" />
       <el-table-column label="厂商简称" align="center" prop="manufacturerShortName" />
       <el-table-column label="状态" align="center" prop="status" />

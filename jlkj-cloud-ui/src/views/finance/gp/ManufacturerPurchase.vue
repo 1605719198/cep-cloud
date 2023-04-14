@@ -306,7 +306,7 @@ export default {
             updateManufacturerBasicsMp(this.mpForm).then(response => {
               this.$modal.msgSuccess("采购关系修改成功");
               this.statusTabs=true
-              this.$emit('getLists',this.statusTabs);
+
             });
           }
 

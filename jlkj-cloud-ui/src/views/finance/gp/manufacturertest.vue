@@ -388,51 +388,7 @@ export default {
     },
     handleClick(tab, event) {
 
-/*      if (tab.label=="基础资料"){
-        if (this.statusTabs==false){
-          this.$message({
-            message: '基础资料未保存，请先报存基础资料',
-            type: 'warning'
-          });
-        }
-
-      }else if (tab.label=="报支关系"){
-        if (this.statusTabsFc==false){
-          this.$message({
-            message: '报支关系未保存，请先报存报支关系',
-            type: 'warning'
-          });
-        }
-        ;
-      }
-      else if (tab.label=="采购关系"){
-        if (this.statusTabsMp==false){
-          this.$message({
-            message: '采购关系未保存，请先报存采购关系',
-            type: 'warning'
-          });
-        }
-
-      }
-      else if (tab.label=="客户关系"){
-        if (this.statusTabsSo==false){
-          this.$message({
-            message: '客户关系未保存，请先报存客户关系',
-            type: 'warning'
-          });
-        }
-
-      }
-      else if (tab.label=="承运关系"){
-        if (this.statusTabsSt==false){
-          this.$message({
-            message: '承运关系未保存，请先报存承运关系',
-            type: 'warning'
-          });
-        }
-
-      }*/
-      if (tab.label=="基础资料"|| this.statusTabs==false){
+    /*  if (tab.label=="基础资料"|| this.statusTabs==false){
         this.$message({
           message: '基础资料未保存，请先报存基础资料',
           type: 'warning'
@@ -461,7 +417,7 @@ export default {
           message: '承运关系未保存，请先报存承运关系',
           type: 'warning'
         });
-      }
+      }*/
     },
 
     getQueryFc(val) {

@@ -266,8 +266,9 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.manufacturerId)
-      this.manufacturerChineseName = selection[0].manufacturerChineseName;
-      this.taxNo = selection[0].taxNo;
+      this.manufacturerChineseName = selection[0].manufacturerChineseName.toString();
+      this.taxNo = selection[0].taxNo.toString();
+      console.log(this.taxNo);
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
@@ -293,8 +294,8 @@ export default {
       const tax = row.taxNo || this.taxNo;
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
-        console.log(id, name,tax);
-        this.$refs.addOrUpdate.revise(id, name,tax)
+
+        this.$refs.addOrUpdate.revise(id.toString(), name,tax)
       })
     },
     /** 删除按钮操作 */
