@@ -151,8 +151,7 @@ public class ManufacturerBaseController {
         ManufacturerBaseInterfaceDTO manufacturerBaseInterfaceDTO =new  ManufacturerBaseInterfaceDTO();
         QueryWrapper<ManufacturerBase> wrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(manufacturerId)) {
-            wrapper.like("manufacturer_id", manufacturerId)
-                    ;
+            wrapper.like("manufacturer_id", manufacturerId);
         }
         ManufacturerBase manufacturerBase = manufacturerBaseService.getOne(wrapper);
         BeanUtils.copyProperties(manufacturerBase, manufacturerBaseInterfaceDTO);
@@ -201,8 +200,7 @@ public class ManufacturerBaseController {
             }
         }
         if (!StringUtils.isEmpty(manufacturerId)) {
-            wrapper.eq("manufacturer_id", manufacturerId)
-                   ;
+            wrapper.eq("manufacturer_id", manufacturerId);
         }
         ManufacturerFinance queryFin = manufacturerFinanceService.getOne(wrapper);
 
@@ -254,8 +252,7 @@ public class ManufacturerBaseController {
         }
         QueryWrapper<ManufacturerRelation> wrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(manufacturerId)) {
-            wrapper.eq("manufacturer_id", manufacturerId)
-                   ;
+            wrapper.eq("manufacturer_id", manufacturerId);
         }
         List<ManufacturerRelation> list = manufacturerRelationService.list(wrapper);
         return AjaxResult.success(list);
@@ -329,13 +326,13 @@ public class ManufacturerBaseController {
         wrapper.eq("tax_no",manufacturerBaseDTO.getTaxNo());
         List<ManufacturerBase> listSave = manufacturerBaseService.list(wrapper);
         if (listSave.size() >= 1) {
-            return AjaxResult.error("您输入的厂商基本资料税系统中税号已存在，请重新输入！");
+            return AjaxResult.error("您输入的厂商基本资料税号已存在，请重新输入！");
         }
         QueryWrapper<ManufacturerBase> wrapperName = new QueryWrapper<>();
         wrapperName.eq("manufacturer_chinese_name",manufacturerBaseDTO.getManufacturerChineseName());
         List<ManufacturerBase> listSaveName = manufacturerBaseService.list(wrapperName);
         if (listSaveName.size() >= 1) {
-            return AjaxResult.error("您输入的厂商基本资料税系统中税号已存在，请重新输入！");
+            return AjaxResult.error("您输入的厂商基本资料中文名称已存在，请重新输入！");
         }
         ManufacturerRelation manufacturerRelation = new ManufacturerRelation();
         for (int i = 0;i<relation.length;i++) {
@@ -468,7 +465,7 @@ public class ManufacturerBaseController {
         ManufacturerPurchase one = manufacturerPurchaseService.getOne(wrapper);
         boolean result;
         List<FinanceGpPurchaseLink> financeGpPurchaseLinkList = manufacturerPurchase.getFinanceGpPurchaseLinkList();
-        if (financeGpPurchaseLinkList != null) {
+        if (financeGpPurchaseLinkList.size()>0) {
             financeGpPurchaseLinkService.insertCapitalDetail(financeGpPurchaseLinkList,manufacturerPurchase.getManufacturerId());
         }
 

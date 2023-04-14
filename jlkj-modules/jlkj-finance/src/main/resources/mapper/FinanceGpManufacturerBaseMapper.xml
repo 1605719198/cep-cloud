@@ -62,8 +62,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="detailAreaId != null  and detailAreaId != ''"> and detail_area_id = #{detailAreaId}</if>
             <if test="originalManufacturerChineseName != null  and originalManufacturerChineseName != ''"> and original_manufacturer_chinese_name <![CDATA[ != ]]> ''</if>
             <if test="startDate != '' and endDate != ''"> and create_time between #{startDate} and #{endDate}</if>
-
         </where>
+        order by manufacturer_id
     </select>
     
     <select id="selectFinanceGpManufacturerBaseById" parameterType="String" resultMap="FinanceGpManufacturerBaseResult">
