@@ -241,10 +241,6 @@ public class ManufacturerBase implements Serializable {
      */
     private String parentId;
 
-    /**
-     * 逻辑删除标识
-     */
-    private Integer delFlag;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

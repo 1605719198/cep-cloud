@@ -249,10 +249,7 @@ public class ManufacturerBaseDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "关联日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date correlationDate;
-    /**
-     * 逻辑删除标识
-     */
-    private Integer delFlag;
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

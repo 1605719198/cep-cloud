@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.finance.gp.domain.FinanceGpAddfile;
 import com.jlkj.finance.gp.domain.ManufacturerBase;
 import com.jlkj.finance.gp.mapper.FinanceGpAddfileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,8 +122,14 @@ public class FinanceGpAddServiceImpl implements IFinanceGpAddService
     @Override
     public int deleteFinanceGpAddByApplyIds(String[] applyIds)
     {
+        FinanceGpAddfile financeGpAddfile = new FinanceGpAddfile();
         for (String applyId :applyIds){
-            financeGpAddfileMapper.deleteFinanceGpAddfileByApplyId(applyId);
+            financeGpAddfile.setApplyId(applyId);
+            List<FinanceGpAddfile> financeGpAddfiles = financeGpAddfileMapper.selectFinanceGpAddfileList(financeGpAddfile);
+            if (financeGpAddfiles.size()>0){
+                financeGpAddfileMapper.deleteFinanceGpAddfileByApplyId(applyId);
+            }
+
         }
 
         return financeGpAddMapper.deleteFinanceGpAddByApplyIds(applyIds);
