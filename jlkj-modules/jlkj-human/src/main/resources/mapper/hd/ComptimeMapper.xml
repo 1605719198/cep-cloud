@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.ComptimeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.Comptime">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+            <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+            <result property="saveHours" column="save_hours" jdbcType="VARCHAR"/>
+            <result property="compHours" column="comp_hours" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="resvAttr1" column="resv_attr1" jdbcType="VARCHAR"/>
+            <result property="resvAttr2" column="resv_attr2" jdbcType="VARCHAR"/>
+            <result property="resvAttr3" column="resv_attr3" jdbcType="VARCHAR"/>
+            <result property="resvAttr4" column="resv_attr4" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,emp_id,
+        emp_name,emp_no,post_id,
+        post_name,start_date,end_date,
+        save_hours,comp_hours,description,
+        status,creator,creator_id,
+        create_date,resv_attr1,resv_attr2,
+        resv_attr3,resv_attr4
+    </sql>
+</mapper>

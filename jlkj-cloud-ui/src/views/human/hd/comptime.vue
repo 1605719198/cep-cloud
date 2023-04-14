@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" :rules="rules" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
@@ -43,7 +43,7 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-              v-hasPermi="['human:overtimeRecord:add']"
+              v-hasPermi="['human:comptime:add']"
             >新增</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -53,35 +53,30 @@
               icon="el-icon-upload2"
               size="mini"
               @click="handleImport"
-              v-hasPermi="['human:overtimeRecord:import']"
+              v-hasPermi="['human:comptime:import']"
             >导入
             </el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="overtimeRecordList">
-          <el-table-column label="姓名" align="center" prop="empName" />
+        <el-table v-loading="loading" :data="comptimeList">
           <el-table-column label="工号" align="center" prop="empNo" />
-          <el-table-column label="加班开始日期" align="center" prop="startDate" width="180">
+          <el-table-column label="姓名" align="center" prop="empName" />
+          <el-table-column label="补休开始日期" align="center" prop="startDate" width="180">
             <template v-slot="scope">
               <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="加班结束日期" align="center" prop="endDate" width="180">
+          <el-table-column label="补休结束日期" align="center" prop="endDate" width="180">
             <template v-slot="scope">
               <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="加班类别" align="center" prop="overtimeTypeId" >
-            <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.OvertimeType" :value="scope.row.overtimeTypeId"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="加班时数" align="center" prop="overtimeHours" />
+          <el-table-column label="补休小时数" align="center" prop="compHours" />
           <el-table-column label="审核状态" align="center" prop="status" />
           <el-table-column label="输入人" align="center" prop="creator" />
-          <el-table-column label="输入日期" align="center" prop="createDate">
+          <el-table-column label="输入日期" align="center" prop="createDate" width="180">
             <template v-slot="scope">
               <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
             </template>
@@ -93,30 +88,28 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                :disabled="isShow(scope.row.status)"
-                v-hasPermi="['human:overtimeRecord:edit']"
+                v-hasPermi="['human:comptime:edit']"
               >修改</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-right"
                 @click="handleUpdate(scope.row)"
-                v-hasPermi="['human:overtimeRecord:edit']"
+                v-hasPermi="['human:comptime:edit']"
               >送出</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-back"
                 @click="handleUpdate(scope.row)"
-                v-hasPermi="['human:overtimeRecord:edit']"
+                v-hasPermi="['human:comptime:edit']"
               >撤回</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-                :disabled="isShow(scope.row.status)"
-                v-hasPermi="['human:overtimeRecord:remove']"
+                v-hasPermi="['human:comptime:remove']"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -130,7 +123,7 @@
           @pagination="getList"
         />
 
-        <!-- 添加或修改加班记录对话框 -->
+        <!-- 添加或修改补休记录对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
           <el-form ref="form" :model="form" :rules="rules" label-width="110px">
             <el-row>
@@ -142,72 +135,46 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="姓名" prop="empName">
+                <el-form-item label="申请人姓名" prop="empName">
                   {{form.empName}}
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="岗位" prop="postName">
+                <el-form-item label="申请人岗位名称" prop="postName">
                   {{form.postName}}
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="16">
-                <el-form-item label="加班日期" prop="workOvertimeDate">
+                <el-form-item label="补休开始日期" prop="workOvertimeDate">
                   <el-date-picker
                     v-model="form.workOvertimeDate"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetimerange"
                     range-separator="~"
-                    start-placeholder="加班开始时间"
-                    end-placeholder="加班结束时间"
+                    start-placeholder="补休开始时间"
+                    end-placeholder="补休结束时间"
                     :default-time="['08:00:00', '17:00:00']"
                     @change="dateFormat1">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="加班时数" prop="overtimeHours">
-                  <el-input v-model="form.overtimeHours" placeholder="请输入加班时数" />
+                <el-form-item label="补休小时数" prop="compHours">
+                  <el-input v-model="form.compHours" placeholder="请输入补休小时数" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="加班类别">
-                  <el-select v-model="form.overtimeTypeId" style="width: 100%">
-                    <el-option
-                      v-for="dict in baseInfoData.OvertimeType"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
+                <el-form-item label="存班小时数" prop="saveHours">
+                  {{form.saveHours}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-form-item label="加班原因">
-                  <el-select v-model="form.overtimeReaId" style="width: 100%">
-                    <el-option
-                      v-for="dict in baseInfoData.OvertimeReason"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
+              <el-col :span="16">
                 <el-form-item label="辅助说明" prop="description">
-                  <el-input v-model="form.description" autosize type="textarea" placeholder="请输入辅助说明" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="刷卡时间" prop="cardTime">
-                  {{form.cardTime}}
+                  <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -237,8 +204,7 @@
         <select-user ref="select" @ok="getJobNumber"/>
       </el-col>
     </el-row>
-
-    <!-- 加班资料导入对话框 -->
+    <!-- 补休资料导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -274,17 +240,17 @@
 </template>
 
 <script>
-import { listOvertimeRecord, getOvertimeRecord, delOvertimeRecord, addOvertimeRecord, updateOvertimeRecord } from "@/api/human/hd/overtimeRecord";
+import { listComptime, getComptime, delComptime, addComptime, updateComptime } from "@/api/human/hd/comptime";
+import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {validateNumber} from "@/utils/jlkj";
+import {getBaseInfo} from "@/api/human/hm/baseInfo";
+import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
-import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
-import {getToken} from "@/utils/auth";
+import {validateNumber} from "@/utils/jlkj";
 
 export default {
-  name: "OvertimeRecord",
+  name: "Comptime",
   components: {selectUser,DictTagHuman},
   data() {
     return {
@@ -298,8 +264,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 加班记录表格数据
-      overtimeRecordList: [],
+      // 补休记录表格数据
+      comptimeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -323,17 +289,11 @@ export default {
           { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
         ],
         workOvertimeDate: [
-          { required: true, message: "加班开始日期不能为空", trigger: "blur" }
+          { required: true, message: "补休日期不能为空", trigger: "blur" }
         ],
-        endDate: [
-          { required: true, message: "加班结束日期不能为空", trigger: "blur" }
+        compHours: [
+          { required: true, message: "补休小时数不能为空", trigger: "blur" }
         ],
-        overtimeHours: [
-          { required: true, message: "加班时数不能为空", trigger: "blur" }
-        ],
-        overtimeTypeId: [
-          { required: true, message: "加班类别不能为空", trigger: "blur" }
-        ]
       },
       // 公司别数据
       companyName: [],
@@ -344,11 +304,11 @@ export default {
           'OvertimeType',
           'OvertimeReason']
       },
-      // 加班资料导入参数
+      // 补休资料导入参数
       upload: {
-        // 是否显示弹出层（加班资料导入）
+        // 是否显示弹出层（补休资料导入）
         open: false,
-        // 弹出层标题（加班资料导入）
+        // 弹出层标题（补休资料导入）
         title: "",
         // 是否禁用上传
         isUploading: false,
@@ -357,7 +317,7 @@ export default {
         // 设置上传的请求头部
         headers: {Authorization: "Bearer " + getToken()},
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/human/overtimeRecord/importData"
+        url: process.env.VUE_APP_BASE_API + "/human/comptime/importData"
       },
     };
   },
@@ -370,11 +330,11 @@ export default {
     });
   },
   methods: {
-    /** 查询加班记录列表 */
+    /** 查询补休记录列表 */
     getList() {
       this.loading = true;
-      listOvertimeRecord(this.queryParams).then(response => {
-        this.overtimeRecordList = response.data.rows;
+      listComptime(this.queryParams).then(response => {
+        this.comptimeList = response.data.rows;
         this.total = response.data.total;
         this.loading = false;
       });
@@ -396,26 +356,17 @@ export default {
         postName: null,
         startDate: null,
         endDate: null,
-        overtimeTypeId: null,
-        overtimeReaId: null,
-        overtimeDays: null,
-        overtimeHours: '0',
+        saveHours: '0',
+        compHours: '0',
         description: null,
         status: null,
-        resultlt: null,
-        cardTime: null,
         creator: null,
         creatorId: null,
         createDate: null,
-        disposeId: null,
         resvAttr1: null,
         resvAttr2: null,
         resvAttr3: null,
-        resvAttr4: null,
-        resvAttr5: null,
-        workOvertimeDate: null,
-        startTime: null,
-        endTime: null
+        resvAttr4: null
       };
       this.resetForm("form");
     },
@@ -433,16 +384,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加加班记录";
+      this.title = "新增补休资料";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id
-      getOvertimeRecord(id).then(response => {
+      getComptime(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改加班记录";
+        this.title = "修改补休资料";
       });
     },
     /** 提交按钮 */
@@ -450,14 +401,14 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateOvertimeRecord(this.form).then(response => {
+            updateComptime(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             this.form.compId = this.queryParams.compId
-            addOvertimeRecord(this.form).then(response => {
+            addComptime(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -469,8 +420,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const id = row.id;
-      this.$modal.confirm('是否确认删除加班记录编号为"' + id + '"的数据项？').then(function() {
-        return delOvertimeRecord(id);
+      this.$modal.confirm('是否确认删除补休记录编号为"' + id + '"的数据项？').then(function() {
+        return delComptime(id);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -498,9 +449,9 @@ export default {
       this.form.startTime=picker[0]
       this.form.endTime=picker[1]
       if (this.form.startTime.substring(11, 13) === '08') {
-        this.form.overtimeHours = '8'
+        this.form.compHours = '8'
       } else {
-        this.form.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+        this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
       }
     },
     /**是否显示按钮 */
@@ -513,12 +464,12 @@ export default {
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = "加班资料导入";
+      this.upload.title = "补休资料导入";
       this.upload.open = true;
     },
     /** 下载模板操作 */
     importTemplate() {
-      this.download('human/overtimeRecord/importTemplate', {}, `overtimeRecord_template_${new Date().getTime()}.xlsx`)
+      this.download('human/comptime/importTemplate', {}, `comptime_template_${new Date().getTime()}.xlsx`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
