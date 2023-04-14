@@ -70,7 +70,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceGpManufacturerBaseVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectFinanceGpManufacturerBaseListSelect"
+            resultType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase">
+        <include refid="selectFinanceGpManufacturerBaseVo"/>
+        <where>
+            <if test="manufacturerId != null  and manufacturerId != ''"> and manufacturer_id like concat('%',#{manufacturerId},'%')</if>
+            <if test="manufacturerChineseName != null  and manufacturerChineseName != ''"> and manufacturer_chinese_name  like concat('%',#{manufacturerChineseName},'%')</if>
+        </where>
+        order by manufacturer_id
+    </select>
+
     <insert id="insertFinanceGpManufacturerBase" parameterType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase">
         insert into finance_gp_manufacturer_base
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -41,6 +41,16 @@ public class FinanceGpManufacturerBaseServiceImpl implements IFinanceGpManufactu
     {
         return financeGpManufacturerBaseMapper.selectFinanceGpManufacturerBaseList(financeGpManufacturerBase);
     }
+    /**
+     * 弹窗查询厂商基本资料列表
+     * @param financeGpManufacturerBase 销售管理-厂商基本资料
+     * @return 销售管理-厂商基本资料
+     */
+    @Override
+    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseListBaseSelect(FinanceGpManufacturerBase financeGpManufacturerBase)
+    {
+        return financeGpManufacturerBaseMapper.selectFinanceGpManufacturerBaseListSelect(financeGpManufacturerBase);
+    }
 
     /**
      * 新增销售管理-厂商基本资料

@@ -29,6 +29,13 @@ public interface FinanceGpManufacturerBaseMapper
     public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseList(FinanceGpManufacturerBase financeGpManufacturerBase);
 
     /**
+     * 查询销售管理-厂商基本资料列表
+     *
+     * @param financeGpManufacturerBase 销售管理-厂商基本资料
+     * @return 销售管理-厂商基本资料集合
+     */
+    public List<FinanceGpManufacturerBase> selectFinanceGpManufacturerBaseListSelect(FinanceGpManufacturerBase financeGpManufacturerBase);
+    /**
      * 新增销售管理-厂商基本资料
      * 
      * @param financeGpManufacturerBase 销售管理-厂商基本资料
