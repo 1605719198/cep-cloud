@@ -40,7 +40,6 @@ export default {
 
     // tab切换前判断
     leaveTab() {
-
       if (this.applyId == null){
         this.applyIdIf = false
         this.$message({
