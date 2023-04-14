@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaParaMapper">
+
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaPara" id="FinanceAaParaResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="parameterKey"    column="parameter_key"    />
+        <result property="parameterDesc"    column="parameter_desc"    />
+        <result property="parameterValue"    column="parameter_value"    />
+        <result property="status"    column="status"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="createName"    column="create_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaParaVo">
+        select id, company_id, parameter_key, parameter_desc, parameter_value, status, update_by, create_by, create_time, update_time, update_name, create_name from finance_aa_para
+    </sql>
+
+    <select id="selectFinanceAaParaList" parameterType="com.jlkj.finance.aa.domain.FinanceAaPara" resultMap="FinanceAaParaResult">
+        <include refid="selectFinanceAaParaVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="parameterKey != null  and parameterKey != ''"> and parameter_key = #{parameterKey}</if>
+            <if test="parameterDesc != null  and parameterDesc != ''"> and parameter_desc = #{parameterDesc}</if>
+        </where>
+
+    </select>
+
+    <select id="selectFinanceAaParaById" parameterType="String" resultMap="FinanceAaParaResult">
+        <include refid="selectFinanceAaParaVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFinanceAaPara" parameterType="com.jlkj.finance.aa.domain.FinanceAaPara">
+        insert into finance_aa_para
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="parameterKey != null">parameter_key,</if>
+            <if test="parameterDesc != null">parameter_desc,</if>
+            <if test="parameterValue != null">parameter_value,</if>
+            <if test="status != null">status,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="createName != null">create_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="parameterKey != null">#{parameterKey},</if>
+            <if test="parameterDesc != null">#{parameterDesc},</if>
+            <if test="parameterValue != null">#{parameterValue},</if>
+            <if test="status != null">#{status},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="createName != null">#{createName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFinanceAaPara" parameterType="com.jlkj.finance.aa.domain.FinanceAaPara">
+        update finance_aa_para
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="parameterKey != null">parameter_key = #{parameterKey},</if>
+            <if test="parameterDesc != null">parameter_desc = #{parameterDesc},</if>
+            <if test="parameterValue != null">parameter_value = #{parameterValue},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaParaById" parameterType="String">
+        delete from finance_aa_para where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaParaByIds" parameterType="String">
+        delete from finance_aa_para where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
