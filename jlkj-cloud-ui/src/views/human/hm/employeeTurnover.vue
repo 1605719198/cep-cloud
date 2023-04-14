@@ -4,7 +4,7 @@
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" label-width="40px" :inline="true" v-show="showSearch">
           <el-form-item label="公司">
-            <el-select v-model="queryParams.compId" placeholder="请选择公司">
+            <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
               <el-option
                 v-for="dict in companyName"
                 :key="dict.compId"
@@ -590,5 +590,8 @@ export default {
 }
 .aa >>> .el-form-item__content {
   margin-left:0px !important;
+}
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
 }
 </style>

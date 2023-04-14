@@ -996,7 +996,6 @@ export default {
     }
   },
   created() {
-    this.form.compId = this.compId;
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
@@ -1019,6 +1018,7 @@ export default {
     handleSave() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.compId = this.compId;
           addPersonnelData(this.form).then(response => {
             if (response.code == 200) {
               this.$message({

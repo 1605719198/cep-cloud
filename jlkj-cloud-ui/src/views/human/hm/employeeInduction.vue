@@ -470,7 +470,8 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id;
+      this.queryParams.deptId = data.id
+      this.addJsonForm.departmentName = data.label
       this.handleQuery();
     },
     handleQuery() {

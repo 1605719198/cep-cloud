@@ -15,7 +15,6 @@ import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -120,9 +119,11 @@ public class PersonnelController extends BaseController {
             startPage();
             String compId = humanresourcePersonnelInfoDTO.getCompId();
             String empNo = humanresourcePersonnelInfoDTO.getEmpNo();
+            String departmentId = humanresourcePersonnelInfoDTO.getDepartmentId();
             LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
-                    .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo);
+                    .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo)
+                    .eq(Personnel::getDepartmentId, departmentId);
             List<Personnel> list = personnelService.list(queryWrapper);
             return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {
