@@ -94,7 +94,7 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         productionPlanConfigCoke.setMaterialId(addProductionPlanConfigCokeDTO.getMaterialId());
         productionPlanConfigCoke.setMaterialName(addProductionPlanConfigCokeDTO.getMaterialName());
         productionPlanConfigCoke.setMaterialCode(materialsCode.getMaterialsCode());
-//        productionPlanConfigCoke.setTowerNumber(addProductionPlanConfigCokeDTO.getTowerNumber());
+///        productionPlanConfigCoke.setTowerNumber(addProductionPlanConfigCokeDTO.getTowerNumber());
         save(productionPlanConfigCoke);
         for (AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO : addProductionPlanConfigCokeDTO.getDetailList()) {
             addProductionPlanConfigCokeDetailDTO.setPlanId(productionPlanConfigCoke.getId());
@@ -144,9 +144,9 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         if (!productionPlanConfigCoke.getMaterialName().equals(updateProductionPlanConfigCokeDTO.getMaterialName())) {
             content.append("[焦炭等级：").append(productionPlanConfigCoke.getMaterialName()).append("->").append(updateProductionPlanConfigCokeDTO.getMaterialName()).append("],");
         }
-//        if (!productionPlanConfigCoke.getTowerNumber().equals(updateProductionPlanConfigCokeDTO.getTowerNumber())) {
-//            content.append("[储煤塔号：").append(productionPlanConfigCoke.getTowerNumber()).append("->").append(updateProductionPlanConfigCokeDTO.getTowerNumber()).append("],");
-//        }
+///        if (!productionPlanConfigCoke.getTowerNumber().equals(updateProductionPlanConfigCokeDTO.getTowerNumber())) {
+///            content.append("[储煤塔号：").append(productionPlanConfigCoke.getTowerNumber()).append("->").append(updateProductionPlanConfigCokeDTO.getTowerNumber()).append("],");
+///        }
         StringBuilder contentDetail = new StringBuilder();
         for (UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO : updateProductionPlanConfigCokeDTO.getDetailList()) {
             if ("".equals(updateProductionPlanConfigCokeDetailDTO.getId())) {
@@ -223,7 +223,7 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                 productionPlanConfigCoke.setMaterialId(updateProductionPlanConfigCokeDTO.getMaterialId());
                 productionPlanConfigCoke.setMaterialName(updateProductionPlanConfigCokeDTO.getMaterialName());
                 productionPlanConfigCoke.setMaterialCode(materialsCode.getMaterialsCode());
-//                productionPlanConfigCoke.setTowerNumber(updateProductionPlanConfigCokeDTO.getTowerNumber());
+///                productionPlanConfigCoke.setTowerNumber(updateProductionPlanConfigCokeDTO.getTowerNumber());
                 updateById(productionPlanConfigCoke);
                 for (UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO : updateProductionPlanConfigCokeDTO.getDetailList()) {
                     if ("".equals(updateProductionPlanConfigCokeDetailDTO.getId())) {

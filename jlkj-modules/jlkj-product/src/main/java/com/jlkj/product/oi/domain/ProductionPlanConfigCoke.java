@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * 计划管理--配煤计划主表
  * @TableName product_oi_plan_config_coke
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_plan_config_coke")
 @Data

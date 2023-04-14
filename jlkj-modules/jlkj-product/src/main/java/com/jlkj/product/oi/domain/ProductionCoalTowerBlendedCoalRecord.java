@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * 生产实绩-储煤塔配煤记录
  * @TableName product_oi_coal_tower_blended_coal_record
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_coal_tower_blended_coal_record")
 @Data

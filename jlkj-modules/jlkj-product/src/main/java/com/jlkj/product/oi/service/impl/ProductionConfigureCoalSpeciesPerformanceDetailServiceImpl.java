@@ -91,11 +91,13 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailServiceImpl extends 
                 .eq(ProductionConfigureCoalSpeciesPerformanceDetail::getMainId, mainId));
         BigDecimal coalWeight = new BigDecimal("0.00");
         BigDecimal duration = new BigDecimal("0.00");
-        if (map.containsKey("material_weight") && ObjectUtil.isNotNull(map.get("material_weight"))) {
-            coalWeight = new BigDecimal(map.get("material_weight").toString());
+        String materialWeight = "material_weight";
+        if (map.containsKey(materialWeight) && ObjectUtil.isNotNull(map.get(materialWeight))) {
+            coalWeight = new BigDecimal(map.get(materialWeight).toString());
         }
-        if (map.containsKey("duration") && ObjectUtil.isNotNull(map.get("duration"))) {
-            duration = new BigDecimal(map.get("duration").toString());
+        String durationStr = "duration";
+        if (map.containsKey(durationStr) && ObjectUtil.isNotNull(map.get(durationStr))) {
+            duration = new BigDecimal(map.get(durationStr).toString());
         }
         ProductionConfigureCoalSpeciesPerformance performance = configureCoalSpeciesPerformanceMapper.selectById(mainId);
         performance.setCoalTowerWeight(coalWeight);

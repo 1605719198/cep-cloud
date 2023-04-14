@@ -13,6 +13,11 @@ import java.util.Map;
 * @Entity com.jlkj.product.oi.entity.ProductionMaterialUnloadingPerformance
 */
 public interface ProductionMaterialUnloadingPerformanceMapper extends BaseMapper<ProductionMaterialUnloadingPerformance> {
+    /**
+     * 物料卸车实绩查询
+     * @param condition
+     * @return
+     */
     @Select(
             "select post_name, scheduling_date, case shift when '2201' then '白班' else '夜班' end as shift,\n" +
             "class_type, due_attendance_time_work, due_attendance_time_offduty \n" +

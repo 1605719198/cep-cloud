@@ -19,15 +19,42 @@ import java.util.Map;
  */
 public interface ProductionCokeItemYieldMapper extends BaseMapper<ProductionCokeItemYieldEntity> {
 
+
+    /**
+     * 焦炭分项产量-查询
+     * @param datetime
+     * @return
+     */
     List<Object> getProductionCokeMaterialsNameByTime(@Param("datetime") String datetime);
 
+    /**
+     * 焦炭分项产量-查询
+     * @param materialsName
+     * @return
+     */
     ProductionMaterialsCokeStock getMaterialsCokeStockOneByMaterialName(@Param("materialsName") String materialsName);
 
+    /**
+     * 焦炭分项产量-查询
+     * @param stock
+     * @return
+     */
     boolean updateMaterialsCokeStockById(ProductionMaterialsCokeStock stock);
 
+    /**
+     * 焦炭分项产量-查询
+     * @param nameList
+     * @return
+     */
     List<ProductionMaterialsCokeStock> getMaterialsCokeStockMultipleByMaterialName(@Param("nameList") List<Object> nameList);
 
 
+    /**
+     * 焦炭分项产量-查询-分页
+     * @param page
+     * @param condition
+     * @return
+     */
     @MapKey("id")
     IPage<Map<String, Object>> getCokeItemYieldList2(Page<?> page,@Param("condition") CokeItemYieldQueryDTO condition);
 

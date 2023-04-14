@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 /**
  * 生产管理-统计分析-指标分析-年产量指标跟踪
  * @TableName product_oi_real_output_year
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_real_output_year")
 @Data

@@ -408,19 +408,19 @@ public class ProductionCoalTowerStockServiceImpl extends ServiceImpl<ProductionC
                         .eq(ProductionConfigureCoalSpeciesPerformance::getShiftEndTime, blendedCoalRecord.getShiftEndTime()));
         BigDecimal weightPerformance = configureCoalSpeciesPerformance.getAfterStock().subtract(blendedCoalRecord.getCoalWeight());
         BigDecimal towerWeightPerformance = configureCoalSpeciesPerformance.getCoalTowerWeight().subtract(blendedCoalRecord.getCoalWeight());
-//        BigDecimal sumLevel = blendedCoalRecord.getCoalMaterialLevelAfter().subtract(blendedCoalRecord.getCoalMaterialLevelBefor());
-//        BigDecimal towerLevelPerformance = configureCoalSpeciesPerformance.getAfterMaterialLevel().subtract(sumLevel);
+///        BigDecimal sumLevel = blendedCoalRecord.getCoalMaterialLevelAfter().subtract(blendedCoalRecord.getCoalMaterialLevelBefor());
+///        BigDecimal towerLevelPerformance = configureCoalSpeciesPerformance.getAfterMaterialLevel().subtract(sumLevel);
         configureCoalSpeciesPerformance.setAfterStock(weightPerformance);
         configureCoalSpeciesPerformance.setCoalTowerWeight(towerWeightPerformance);
-//        configureCoalSpeciesPerformance.setAfterMaterialLevel(towerLevelPerformance);
+///        configureCoalSpeciesPerformance.setAfterMaterialLevel(towerLevelPerformance);
         configureCoalSpeciesPerformanceMapper.updateById(configureCoalSpeciesPerformance);
 
         ProductionCoalTowerStock coalTowerStock = getOne(new LambdaQueryWrapper<ProductionCoalTowerStock>()
                 .eq(ProductionCoalTowerStock::getCoalTowerNumber, blendedCoalRecord.getCoalTowerNumber()));
         BigDecimal towerWeight = coalTowerStock.getCoalSurplus().subtract(blendedCoalRecord.getCoalWeight());
-//        BigDecimal towerLevel = coalTowerStock.getMaterialLevel().subtract(towerLevelPerformance);
+///        BigDecimal towerLevel = coalTowerStock.getMaterialLevel().subtract(towerLevelPerformance);
         coalTowerStock.setCoalSurplus(towerWeight);
-//        coalTowerStock.setMaterialLevel(towerLevel);
+///        coalTowerStock.setMaterialLevel(towerLevel);
         updateById(coalTowerStock);
 
         coalTowerBlendedCoalRecordMapper.deleteById(blendedCoalRecord);

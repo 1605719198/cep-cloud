@@ -29,7 +29,6 @@ public class ProductionMessageQueueServiceImpl implements ProductionMessageQueue
     private RabbitTemplate rabbitTemplate;
 
     @Override
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokeOvenOperationRecordMessageQueue(){
         Map<String, Object> outMap = new HashMap<>(8);
         outMap.put("class", "com.icsc.oi.mq.oijcC05Listener");
@@ -78,7 +77,6 @@ public class ProductionMessageQueueServiceImpl implements ProductionMessageQueue
 
 
     @Override
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokeDryQuenchingOperationRecordMessageQueue(){
         Map<String, Object> outMap = new HashMap<>(8);
         outMap.put("class", "com.icsc.oi.mq.oijcC12Listener");
@@ -104,7 +102,6 @@ public class ProductionMessageQueueServiceImpl implements ProductionMessageQueue
     }
 
     @Override
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendBoilerProcessIndexMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(8);
         outMap.put("class", "com.icsc.oi.mq.oijcC20Listener");
@@ -143,7 +140,6 @@ public class ProductionMessageQueueServiceImpl implements ProductionMessageQueue
     }
 
     @Override
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokeWarehouseStockRecordMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(8);
         outMap.put("class", "com.icsc.oi.mq.oijcC21Listener");

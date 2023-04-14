@@ -12,6 +12,7 @@ import java.util.Date;
 /**
  * 物料管理-物料煤场库存表
  * @TableName materials_mr_coal_stock
+ * @author Liukuiyan
  */
 @TableName(value ="materials_mr_coal_stock")
 @Data

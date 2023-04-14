@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * 生产管理-日志维护
  * @TableName product_oi_log_maintain
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_log_maintain")
 @Data

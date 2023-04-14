@@ -21,7 +21,6 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 账务日期[开始]
      */
-//    @NotNull(message = "账务日期[开始]为必填项")
     @Schema(description = "账务日期[开始]")
     @JsonProperty("start_date")
     private String startDate;
@@ -29,7 +28,6 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 账务日期[结束]
      */
-//    @NotNull(message = "账务日期[结束]为必填项")
     @Schema(description = "账务日期[结束]")
     @JsonProperty("end_date")
     private String endDate;
@@ -37,7 +35,6 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 物料代码
      */
-//    @NotNull(message = "物料代码为必填项")
     @Size(max = 36, message = "物料代码长度不能超过36")
     @Schema(description = "物料代码")
     @JsonProperty("materials_code")
@@ -45,7 +42,6 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 当前页
      */
-//    @NotNull(message = "当前页current为必填项")
     @Min(value = 1, message = "当前页current不能小于1")
     @Schema(description = "当前页")
     private Long current;
@@ -53,7 +49,6 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 每页行数
      */
-//    @NotNull(message = "每页行数size为必填项")
     @Min(value = 1, message = "每页行数size不能小于1")
     @Schema(description = "第页行数")
     private Long size;
@@ -61,15 +56,12 @@ public class PageProductionCokeShedOutputDTO {
     /**
      * 排序字段
      */
-//    @NotNull(message = "排序字段order为必填项")
-//    @NotEmpty(message = "排序字段order不能为空")
     @Schema(description = "排序字段")
     private String order;
 
     /**
      * 排序规则
      */
-//    @NotNull(message = "排序规则orderby为必填项")
     @Schema(description = "排序规则")
     private String orderby;
 }

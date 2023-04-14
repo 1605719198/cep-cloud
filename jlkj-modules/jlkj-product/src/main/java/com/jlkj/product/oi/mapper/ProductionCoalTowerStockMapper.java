@@ -15,6 +15,11 @@ import java.util.Map;
 */
 public interface ProductionCoalTowerStockMapper extends BaseMapper<ProductionCoalTowerStock> {
 
+    /**
+     * 指标项查询
+     * @param param
+     * @return
+     */
     @MapKey("id")
     List<Map<String, Object>> getWaterRate(Map<String, Object> param);
 }

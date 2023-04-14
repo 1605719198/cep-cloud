@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 /**
  * 生产实绩-储煤塔存量
  * @TableName product_oi_coal_tower_stock
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_coal_tower_stock")
 @Data

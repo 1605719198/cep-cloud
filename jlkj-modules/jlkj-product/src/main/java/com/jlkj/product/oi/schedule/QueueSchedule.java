@@ -28,7 +28,6 @@ public class QueueSchedule {
     /**
      * 焦化产出与外发同步
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokingOutputAndOutsourcingMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         outMap.put("class", "com.icsc.oi.mq.oijcC01Listener");
@@ -72,7 +71,6 @@ public class QueueSchedule {
     /**
      * 焦化主要经济指标
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokingMainEconomicIndicatorsMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         outMap.put("class", "com.icsc.oi.mq.oijcC02Listener");
@@ -96,7 +94,6 @@ public class QueueSchedule {
     /**
      * 焦化能源消耗记录
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCokingEnergyConsumptionRecordMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         outMap.put("class", "com.icsc.oi.mq.oijcC03Listener");
@@ -119,7 +116,6 @@ public class QueueSchedule {
     /**
      * 配煤槽作业
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCoalBlendingTankOperationMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         outMap.put("class", "com.icsc.oi.mq.oijcC19Listener");
@@ -178,7 +174,6 @@ public class QueueSchedule {
     /**
      * 配合煤配比及耗量
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendProportioningAndConsumptionOfBlendedCoalMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         List<Map<String, Object>> coalDataList = new ArrayList<>();
@@ -210,7 +205,6 @@ public class QueueSchedule {
     /**
      * 煤塔作业
      */
-//    @Scheduled(cron = "0 20 20 1/1 * ? ")
     public void sendCoalTowerOperationMessageQueue() {
         Map<String, Object> outMap = new HashMap<>(1);
         List<Map<String, Object>> stoveDataList = new ArrayList<>();

@@ -12,6 +12,7 @@ import java.util.Date;
 /**
  * 生产管理-煤焦实绩-配煤实绩主记录
  * @TableName product_oi_configure_coal_species_performance
+ * @author Liukuiyan
  */
 @TableName(value ="product_oi_configure_coal_species_performance")
 @Data

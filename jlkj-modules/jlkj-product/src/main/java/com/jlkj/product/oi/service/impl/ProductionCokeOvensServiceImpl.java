@@ -241,10 +241,10 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
 
     private void sendCoalData() {
         String waterRate = "-1";
-//        CoalWaterRateVO coalWaterRateVO = getBaseMapper().getCoalWaterRateData();
-//        if(null != coalWaterRateVO) {
-//            waterRate = coalWaterRateVO.getMt();
-//        }
+///        CoalWaterRateVO coalWaterRateVO = getBaseMapper().getCoalWaterRateData();
+///        if(null != coalWaterRateVO) {
+///            waterRate = coalWaterRateVO.getMt();
+///        }
         int no = 1;
         List<ListProductionCoalConsumeVO> listProductionCoalConsume = getBaseMapper().getProductionCoalConsumeListData();
         for (ListProductionCoalConsumeVO productionCoalConsume: listProductionCoalConsume) {
