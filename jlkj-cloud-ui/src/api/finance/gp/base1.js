@@ -23,6 +23,15 @@ export function listBase(query) {
     params: query
   })
 }
+// 弹窗查询厂商基本资料列表
+export function listBaseSelect(query) {
+  return request({
+    url: `/finance/finance/manufacturer/listBaseSelect`,
+    method: 'get',
+    params: query
+  })
+}
+
 
 // 删除厂商基础资料
 export function delManufacturerBasics(id) {

@@ -11,12 +11,11 @@
         />
       </el-form-item>
       <el-form-item label="往来公司代码" prop="manufacturerId">
-        <el-input
-          v-model="queryParams.manufacturerId"
-          placeholder="请输往来公司代码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.manufacturerId" placeholder="请输入厂商编号"   @keyup.enter.native="handleQuery" >
+          <el-button slot="append" icon="el-icon-search" @click="inputClick"
+          ></el-button>
+        </el-input>
+
       </el-form-item>
       <el-form-item label="新增加人" prop="createUser">
         <el-input
@@ -153,7 +152,8 @@
           <el-col :span="12">
             <el-form-item label="厂商编号" prop="manufacturerId">
               <el-input v-model="form.manufacturerId" placeholder="请输入厂商编号"  style="width: 220px" >
-<!--                <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>-->
+                <el-button slot="append" icon="el-icon-search" @click="inputClick"
+                ></el-button>
               </el-input>
 <!--              <el-popover
                 placement="right"
@@ -194,12 +194,13 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <selectManufacturer ref="select" @ok="getJobNumber"/>
   </div>
 </template>
 
 <script>
-import { listChange, getChange, delChange, addChange, updateChange }
-  from "@/api/finance/gp/change";
+import selectManufacturer from "@/views/components/finance/selectManufacturer";
+import { listChange, getChange, delChange, addChange, updateChange } from "@/api/finance/gp/change";
 import FinanceTree from "@/components/finance-manufacturer-tree/FinanceTree";
 import {
   getTreeTestNode
@@ -208,10 +209,12 @@ export default {
   name: "change",
 
   components: {
-    FinanceTree
+    FinanceTree,
+    selectManufacturer
   },
   data() {
     return {
+      selectManufacturer:false,
       productCodeTree:true,
       // 遮罩层
       loading: true,
@@ -265,6 +268,7 @@ export default {
 
   mounted() {
     this.getTreeTestNodeList();
+
     this.getList();
   },
   methods: {
@@ -278,8 +282,17 @@ export default {
       })
 
     },
+    getJobNumber(val,userName) {
+          this.queryParams.manufacturerId = val
+          this.form.manufacturerId = val
+          this.form.manufacturerName = userName
+          this.selectManufacturer = false
+          this.getList();
+    },
+    /** 工号点击事件 */
     inputClick(){
-      this.productCodeTree=true;
+      this.selectManufacturer = true
+      this.$refs.select.show();
     },
 
     getThirdUst(data) {
