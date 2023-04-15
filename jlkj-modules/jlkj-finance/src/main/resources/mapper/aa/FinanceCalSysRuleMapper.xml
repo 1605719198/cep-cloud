@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceCalSysRuleMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceCalSysRule" id="FinanceCalSysRuleResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="calTypeId"    column="cal_type_id"    />
+        <result property="calTypeCode"    column="cal_type_code"    />
+        <result property="sys"    column="sys"    />
+        <result property="className"    column="class_name"    />
+        <result property="sqlString"    column="sql_string"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceCalSysRuleVo">
+        select id, company_id, cal_type_id, cal_type_code, sys, class_name, sql_string, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_cal_sysrule
+    </sql>
+
+    <select id="selectFinanceCalSysRuleList" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule" resultMap="FinanceCalSysRuleResult">
+        <include refid="selectFinanceCalSysRuleVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceCalSysRuleById" parameterType="String" resultMap="FinanceCalSysRuleResult">
+        <include refid="selectFinanceCalSysRuleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceCalSysRule" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule">
+        insert into finance_aa_cal_sysrule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="calTypeId != null">cal_type_id,</if>
+            <if test="calTypeCode != null">cal_type_code,</if>
+            <if test="sys != null">sys,</if>
+            <if test="className != null">class_name,</if>
+            <if test="sqlString != null">sql_string,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="calTypeId != null">#{calTypeId},</if>
+            <if test="calTypeCode != null">#{calTypeCode},</if>
+            <if test="sys != null">#{sys},</if>
+            <if test="className != null">#{className},</if>
+            <if test="sqlString != null">#{sqlString},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceCalSysRule" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule">
+        update finance_aa_cal_sysrule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="calTypeId != null">cal_type_id = #{calTypeId},</if>
+            <if test="calTypeCode != null">cal_type_code = #{calTypeCode},</if>
+            <if test="sys != null">sys = #{sys},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="sqlString != null">sql_string = #{sqlString},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceCalSysRuleById" parameterType="String">
+        delete from finance_aa_cal_sysrule where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceCalSysRuleByIds" parameterType="String">
+        delete from finance_aa_cal_sysrule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

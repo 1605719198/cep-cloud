@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceVoucherTypeMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceVoucherType" id="FinanceVoucherTypeResult">
+        <result property="id"    column="id"    />
+        <result property="voucherType"    column="voucher_type"    />
+        <result property="voucherTypeName"    column="voucher_type_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceVoucherTypeVo">
+        select id, voucher_type, voucher_type_name, remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_voucher_type
+    </sql>
+
+    <select id="selectFinanceVoucherTypeList" parameterType="com.jlkj.finance.aa.domain.FinanceVoucherType" resultMap="FinanceVoucherTypeResult">
+        <include refid="selectFinanceVoucherTypeVo"/>
+        <where>  
+            <if test="voucherType != null  and voucherType != ''"> and voucher_type = #{voucherType}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceVoucherTypeById" parameterType="String" resultMap="FinanceVoucherTypeResult">
+        <include refid="selectFinanceVoucherTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceVoucherType" parameterType="com.jlkj.finance.aa.domain.FinanceVoucherType">
+        insert into finance_aa_voucher_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="voucherType != null">voucher_type,</if>
+            <if test="voucherTypeName != null">voucher_type_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="voucherType != null">#{voucherType},</if>
+            <if test="voucherTypeName != null">#{voucherTypeName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceVoucherType" parameterType="com.jlkj.finance.aa.domain.FinanceVoucherType">
+        update finance_aa_voucher_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="voucherType != null">voucher_type = #{voucherType},</if>
+            <if test="voucherTypeName != null">voucher_type_name = #{voucherTypeName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceVoucherTypeById" parameterType="String">
+        delete from finance_aa_voucher_type where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceVoucherTypeByIds" parameterType="String">
+        delete from finance_aa_voucher_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
