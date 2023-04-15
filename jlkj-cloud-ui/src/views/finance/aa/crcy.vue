@@ -56,7 +56,7 @@
           plain
           icon="el-icon-edit"
           size="mini"
-          :disabled="ture"
+          :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['finance:crcy:edit']"
         >修改</el-button>
@@ -67,7 +67,7 @@
           plain
           icon="el-icon-delete"
           size="mini"
-          :disabled="ture"
+          :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['finance:crcy:remove']"
         >删除</el-button>
@@ -155,32 +155,20 @@
           </el-col>
         </el-row>
 
-<!--        <el-form-item label="货币代码" prop="crcyCode">-->
-<!--          <el-input v-model="form.crcyCode" placeholder="请输入货币代码" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="货币英文全名" prop="crcyEngName">-->
-<!--          <el-input v-model="form.crcyEngName" placeholder="请输入货币英文全名" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="货币中文名称" prop="crcyLocalName">-->
-<!--          <el-input v-model="form.crcyLocalName" placeholder="请输入货币中文名称" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="货币符号" prop="crcySymbol">-->
-<!--          <el-input v-model="form.crcySymbol" placeholder="请输入货币符号" />-->
-<!--        </el-form-item>-->
         <el-form-item label="图档" prop="crcyPath">
 
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
+<!--          <el-upload-->
+<!--            class="upload-demo"-->
+<!--            action="https://jsonplaceholder.typicode.com/posts/"-->
+<!--            :on-preview="handlePreview"-->
+<!--            :on-remove="handleRemove"-->
+<!--            :before-remove="beforeRemove"-->
+<!--            multiple-->
+<!--            :limit="3"-->
+<!--            :on-exceed="handleExceed"-->
+<!--            :file-list="fileList">-->
+<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--          </el-upload>-->
 
           <image-upload v-model="form.crcyPath"/>
         </el-form-item>
@@ -233,18 +221,18 @@ export default {
       rules: {
         crcyCode: [
           {required: true, trigger: 'blur',message: "货币代码不能为空"},
-          {max: 5 ,trigger: 'blur',message: "货币代码最大不超过5个字符"}
+          {max: 5 ,trigger: 'blur',message: "最大不超过5个字符"}
         ],
         crcyEngName: [
           {required: true, trigger: 'blur',message: "货币英文全名不能为空"},
-          {max: 60 ,trigger: 'blur',message: "货币英文全名最大不超过60个字符"}
+          {max: 60 ,trigger: 'blur',message: "最大不超过60个字符"}
         ],
         crcyLocalName: [
           {required: true, trigger: 'blur',message: "货币中文名称不能为空"},
-          {max: 60 ,trigger: 'blur',message: "货币中文名称最大不超过60个字符"}
+          {max: 60 ,trigger: 'blur',message: "最大不超过60个字符"}
         ],
         crcySymbol: [
-          {max: 10 ,trigger: 'blur',message: "货币符号最大不超过10个字符"}
+          {max: 10 ,trigger: 'blur',message: "最大不超过10个字符"}
         ],
         startDate: [
           {required: true, trigger: 'blur',message: "开始日期不能为空"},
@@ -259,18 +247,18 @@ export default {
    this.getList()
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
-    },
+    // handleRemove(file, fileList) {
+    //   console.log(file, fileList);
+    // },
+    // handlePreview(file) {
+    //   console.log(file);
+    // },
+    // handleExceed(files, fileList) {
+    //   this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    // },
+    // beforeRemove(file, fileList) {
+    //   return this.$confirm(`确定移除 ${ file.name }？`);
+    // },
 
     /** 查询币别管理列表 */
     getList() {
