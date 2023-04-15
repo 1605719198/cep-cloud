@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCrcyMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCrcy" id="FinanceAaCrcyResult">
+        <result property="id"    column="id"    />
+        <result property="crcyCode"    column="crcy_code"    />
+        <result property="crcyAbbr"    column="crcy_abbr"    />
+        <result property="crcyEngName"    column="crcy_eng_name"    />
+        <result property="crcyLocalName"    column="crcy_local_name"    />
+        <result property="crcySymbol"    column="crcy_symbol"    />
+        <result property="crcyPath"    column="crcy_path"    />
+        <result property="defaultCrcy"    column="default_crcy"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaCrcyVo">
+        select id, crcy_code, crcy_abbr, crcy_eng_name, crcy_local_name, crcy_symbol, crcy_path, default_crcy, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_crcy
+    </sql>
+
+    <select id="selectFinanceAaCrcyList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCrcy" resultMap="FinanceAaCrcyResult">
+        <include refid="selectFinanceAaCrcyVo"/>
+        <where>  
+            <if test="crcyCode != null  and crcyCode != ''"> and crcy_code = #{crcyCode}</if>
+            <if test="crcyAbbr != null  and crcyAbbr != ''"> and crcy_abbr = #{crcyAbbr}</if>
+            <if test="crcyLocalName != null  and crcyLocalName != ''"> and crcy_local_name like concat('%', #{crcyLocalName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaCrcyById" parameterType="String" resultMap="FinanceAaCrcyResult">
+        <include refid="selectFinanceAaCrcyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaCrcy" parameterType="com.jlkj.finance.aa.domain.FinanceAaCrcy">
+        insert into finance_aa_crcy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="crcyCode != null">crcy_code,</if>
+            <if test="crcyAbbr != null">crcy_abbr,</if>
+            <if test="crcyEngName != null">crcy_eng_name,</if>
+            <if test="crcyLocalName != null">crcy_local_name,</if>
+            <if test="crcySymbol != null">crcy_symbol,</if>
+            <if test="crcyPath != null">crcy_path,</if>
+            <if test="defaultCrcy != null">default_crcy,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="crcyCode != null">#{crcyCode},</if>
+            <if test="crcyAbbr != null">#{crcyAbbr},</if>
+            <if test="crcyEngName != null">#{crcyEngName},</if>
+            <if test="crcyLocalName != null">#{crcyLocalName},</if>
+            <if test="crcySymbol != null">#{crcySymbol},</if>
+            <if test="crcyPath != null">#{crcyPath},</if>
+            <if test="defaultCrcy != null">#{defaultCrcy},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaCrcy" parameterType="com.jlkj.finance.aa.domain.FinanceAaCrcy">
+        update finance_aa_crcy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="crcyCode != null">crcy_code = #{crcyCode},</if>
+            <if test="crcyAbbr != null">crcy_abbr = #{crcyAbbr},</if>
+            <if test="crcyEngName != null">crcy_eng_name = #{crcyEngName},</if>
+            <if test="crcyLocalName != null">crcy_local_name = #{crcyLocalName},</if>
+            <if test="crcySymbol != null">crcy_symbol = #{crcySymbol},</if>
+            <if test="crcyPath != null">crcy_path = #{crcyPath},</if>
+            <if test="defaultCrcy != null">default_crcy = #{defaultCrcy},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaCrcyById" parameterType="String">
+        delete from finance_aa_crcy where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaCrcyByIds" parameterType="String">
+        delete from finance_aa_crcy where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
