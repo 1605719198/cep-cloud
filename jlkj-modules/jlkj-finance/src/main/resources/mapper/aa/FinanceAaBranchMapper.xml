@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaBranchMapper">
+    
+    <resultMap type="FinanceAaBranch" id="FinanceAaBranchResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="bankNo"    column="bank_no"    />
+        <result property="branchNo"    column="branch_no"    />
+        <result property="branchchnname"    column="branchChnName"    />
+        <result property="branchengname"    column="branchEngName"    />
+        <result property="branchchnabbr"    column="branchChnAbbr"    />
+        <result property="branchengabbr"    column="branchEngAbbr"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaBranchVo">
+        select id, main_id, bank_no, branch_no, branchChnName, branchEngName, branchChnAbbr, branchEngAbbr, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_branch
+    </sql>
+
+    <select id="selectFinanceAaBranchList" parameterType="FinanceAaBranch" resultMap="FinanceAaBranchResult">
+        <include refid="selectFinanceAaBranchVo"/>
+        <where>  
+            <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
+            <if test="branchNo != null  and branchNo != ''"> and branch_no = #{branchNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaBranchById" parameterType="String" resultMap="FinanceAaBranchResult">
+        <include refid="selectFinanceAaBranchVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaBranch" parameterType="FinanceAaBranch">
+        insert into finance_aa_branch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="mainId != null">main_id,</if>
+            <if test="bankNo != null">bank_no,</if>
+            <if test="branchNo != null">branch_no,</if>
+            <if test="branchchnname != null">branchChnName,</if>
+            <if test="branchengname != null">branchEngName,</if>
+            <if test="branchchnabbr != null">branchChnAbbr,</if>
+            <if test="branchengabbr != null">branchEngAbbr,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="mainId != null">#{mainId},</if>
+            <if test="bankNo != null">#{bankNo},</if>
+            <if test="branchNo != null">#{branchNo},</if>
+            <if test="branchchnname != null">#{branchchnname},</if>
+            <if test="branchengname != null">#{branchengname},</if>
+            <if test="branchchnabbr != null">#{branchchnabbr},</if>
+            <if test="branchengabbr != null">#{branchengabbr},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaBranch" parameterType="FinanceAaBranch">
+        update finance_aa_branch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="bankNo != null">bank_no = #{bankNo},</if>
+            <if test="branchNo != null">branch_no = #{branchNo},</if>
+            <if test="branchchnname != null">branchChnName = #{branchchnname},</if>
+            <if test="branchengname != null">branchEngName = #{branchengname},</if>
+            <if test="branchchnabbr != null">branchChnAbbr = #{branchchnabbr},</if>
+            <if test="branchengabbr != null">branchEngAbbr = #{branchengabbr},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaBranchById" parameterType="String">
+        delete from finance_aa_branch where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaBranchByIds" parameterType="String">
+        delete from finance_aa_branch where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
