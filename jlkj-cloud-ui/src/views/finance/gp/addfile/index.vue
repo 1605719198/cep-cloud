@@ -512,6 +512,9 @@ export default {
 </script>
 
 <style scoped>
+
+
+
 .link-type {
   color: #337ab7;
   cursor: pointer;
