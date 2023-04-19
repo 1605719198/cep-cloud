@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCashflowCodeMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCashflowCode" id="FinanceAaCashflowCodeResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="cashFlowCode"    column="cash_flow_code"    />
+        <result property="cashFlowName"    column="cash_flow_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentCode"    column="parent_code"    />
+        <result property="isunabl"    column="isunabl"    />
+        <result property="inorout"    column="inorout"    />
+        <result property="quedataway"    column="queDataWay"    />
+
+        <result property="parentName"    column="parent_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaCashflowCodeVo">
+        select id, company_id, cash_flow_code, cash_flow_name, parent_id, parent_name,parent_code, isunabl, inorout, queDataWay,  create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_cashflow_code
+    </sql>
+
+    <select id="selectFinanceAaCashflowCodeList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode" resultMap="FinanceAaCashflowCodeResult">
+        <include refid="selectFinanceAaCashflowCodeVo"/>
+        <where>  
+            <if test="cashFlowName != null  and cashFlowName != ''"> and cash_flow_name like concat('%', #{cashFlowName}, '%')</if>
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+        </where>
+        order by cash_flow_code
+    </select>
+    
+    <select id="selectFinanceAaCashflowCodeById" parameterType="String" resultMap="FinanceAaCashflowCodeResult">
+        <include refid="selectFinanceAaCashflowCodeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaCashflowCode" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode">
+        insert into finance_aa_cashflow_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="cashFlowCode != null">cash_flow_code,</if>
+            <if test="cashFlowName != null">cash_flow_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="parentCode != null">parent_code,</if>
+            <if test="isunabl != null">isunabl,</if>
+            <if test="inorout != null">inorout,</if>
+            <if test="quedataway != null">queDataWay,</if>
+
+            <if test="parentName != null">parent_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="cashFlowCode != null">#{cashFlowCode},</if>
+            <if test="cashFlowName != null">#{cashFlowName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="parentCode != null">#{parentCode},</if>
+            <if test="isunabl != null">#{isunabl},</if>
+            <if test="inorout != null">#{inorout},</if>
+            <if test="quedataway != null">#{quedataway},</if>
+
+            <if test="parentName != null">#{parentName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaCashflowCode" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode">
+        update finance_aa_cashflow_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="cashFlowCode != null">cash_flow_code = #{cashFlowCode},</if>
+            <if test="cashFlowName != null">cash_flow_name = #{cashFlowName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="parentCode != null">parent_code = #{parentCode},</if>
+            <if test="isunabl != null">isunabl = #{isunabl},</if>
+            <if test="inorout != null">inorout = #{inorout},</if>
+            <if test="quedataway != null">queDataWay = #{quedataway},</if>
+
+            <if test="parentName != null">parent_name = #{parentName},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaCashflowCodeById" parameterType="String">
+        delete from finance_aa_cashflow_code where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaCashflowCodeByIds" parameterType="String">
+        delete from finance_aa_cashflow_code where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

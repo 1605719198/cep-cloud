@@ -34,6 +34,15 @@ public class FinanceGpManufacturerBaseController extends BaseController
         List<FinanceGpManufacturerBase> list = financeGpManufacturerBaseService.selectFinanceGpManufacturerBaseList(financeGpManufacturerBase);
         return getDataTable(list);
     }
-
+    /**
+     * 弹窗查询厂商基本资料列表
+     */
+    @GetMapping("/listBaseSelect")
+    public TableDataInfo listBaseSelect( FinanceGpManufacturerBase financeGpManufacturerBase)
+    {
+        startPage();
+        List<FinanceGpManufacturerBase> list = financeGpManufacturerBaseService.selectFinanceGpManufacturerBaseListBaseSelect(financeGpManufacturerBase);
+        return getDataTable(list);
+    }
 
 }
