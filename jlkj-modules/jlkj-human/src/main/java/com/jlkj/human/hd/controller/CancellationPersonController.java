@@ -7,6 +7,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.config.OrgPersonUtils;
 import com.jlkj.human.hd.domain.AttendanceAbnormal;
 import com.jlkj.human.hd.domain.CancellationPerson;
@@ -20,6 +21,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -69,11 +72,15 @@ public class CancellationPersonController extends BaseController {
     @Operation(summary = "添加人事注销信息")
     @PostMapping
     @Log(title = "添加人事注销信息", businessType = BusinessType.INSERT)
-    public Object addCancellationPerson(@RequestBody CancellationPersonDTO cancellationPersonDTO){
+    public Object addCancellationPerson(@RequestBody CancellationPersonDTO cancellationPersonDTO) throws ParseException {
         CancellationPerson cancellationPerson = new CancellationPerson();
         BeanUtils.copyProperties(cancellationPersonDTO, cancellationPerson);
         Personnel personnel = new Personnel();
         BeanUtils.copyProperties(cancellationPersonDTO, personnel);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cancellationPerson.setCheckStartDate(simpleDateFormat.parse(cancellationPersonDTO.getStartTime()));
+        cancellationPerson.setCheckEndDate(simpleDateFormat.parse(cancellationPersonDTO.getEndTime()));
+        cancellationPerson.setCreator(SecurityUtils.getNickName());
         String user = "user";
         String org = "org";
         List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, cancellationPerson.getEmpNo()).list();
@@ -101,12 +108,12 @@ public class CancellationPersonController extends BaseController {
                             .update();
                     if (update) {
                         iCancellationPersonService.save(cancellationPerson);
-                        iAttendanceAbnormalService.lambdaUpdate()
-                                .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
-                                .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
-                                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
-                                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
-                                .remove();
+//                        iAttendanceAbnormalService.lambdaUpdate()
+//                                .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
+//                                .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+//                                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+//                                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+//                                .remove();
                     }
                 }
             } else if (org.equals(cancellationPerson.getType())) {
@@ -130,12 +137,12 @@ public class CancellationPersonController extends BaseController {
                                 .update();
                         if (update) {
                             iCancellationPersonService.save(cancellationPerson);
-                            iAttendanceAbnormalService.lambdaUpdate()
-                                    .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
-                                    .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
-                                    .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
-                                    .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
-                                    .remove();
+//                            iAttendanceAbnormalService.lambdaUpdate()
+//                                    .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
+//                                    .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+//                                    .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+//                                    .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+//                                    .remove();
                         }
                     } else {
                         return AjaxResult.error("已处理不能注销");

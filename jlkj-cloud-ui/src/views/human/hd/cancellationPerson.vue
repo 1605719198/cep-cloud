@@ -23,12 +23,12 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="this.type === '1'">
+          <el-form-item v-if="this.type === 'org'">
             <el-input v-model="queryParams.orgId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else-if="this.type === '2'">
+          <el-form-item v-else-if="this.type === 'user'">
             <el-input v-model="queryParams.empNo" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
@@ -75,7 +75,11 @@
         </el-row>
 
         <el-table v-loading="loading" :data="cancellationPersonList">
-          <el-table-column label="类别" align="center" prop="type" />
+          <el-table-column label="类别" align="center" prop="type" >
+            <template v-slot="scope">
+              <dict-tag-human :options="baseInfoData.CancellationPersonType" :value="scope.row.type"/>
+            </template>
+          </el-table-column>
           <el-table-column
             v-for="item in tableColumns" :key="item.key"
             :prop="item.key"
@@ -185,10 +189,11 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import selectOrgPerson from "@/views/components/human/selectUser/selectOrgPerson";
 import selectUser from "@/views/components/human/selectUser/selectUser";
+import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 
 export default {
   name: "CancellationPerson",
-  components: {selectUser,selectOrgPerson},
+  components: {selectUser,selectOrgPerson,DictTagHuman},
   data() {
     return {
       // 遮罩层
@@ -213,7 +218,7 @@ export default {
         pageSize: 10,
         companyId: 'J00',
         checkStartDate: null,
-        type: '1',
+        type: 'org',
         orgId: null
       },
       // 表单参数
@@ -229,7 +234,7 @@ export default {
         baseInfoList: [
           'CancellationPersonType']
       },
-      type: '1',
+      type: 'org',
       tableColumns: [],
     };
   },
@@ -246,11 +251,11 @@ export default {
     getList() {
       this.loading = true;
       listCancellationPerson(this.queryParams).then(response => {
-        if (response.empNo) {
+        if (response.data.rows.empNo!=='') {
           this.tableColumns.push({ key: 'empNo', name: '工号', align: 'center'})
-        } else if (response.companyName) {
-          this.tableColumns.push({ key: 'companyName', name: '机构', align: 'center'})
-        } else if (response.clockWorkId) {
+        } else if (response.data.rows.orgId!=='') {
+          this.tableColumns.push({ key: 'orgId', name: '机构', align: 'center'})
+        } else if (response.data.rows.clockWorkId!=='') {
           this.tableColumns.push({ key: 'clockWorkId', name: '刷卡钟', align: 'center'})
         }
         this.cancellationPersonList = response.data.rows;
@@ -351,12 +356,12 @@ export default {
       this.form.endTime=picker[1]
     },
     changeType(val) {
-      if (val === '1'){
-        this.type = '1'
-      } else if (val === '2'){
-        this.type = '2'
+      if (val === 'org'){
+        this.type = 'org'
+      } else if (val === 'user'){
+        this.type = 'user'
       } else {
-        this.type = '3'
+        this.type = 'mac'
       }
     },
     openOrgPop() {
