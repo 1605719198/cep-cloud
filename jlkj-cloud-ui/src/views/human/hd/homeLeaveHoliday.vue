@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="companyId">
-        <el-select v-model="queryParams.companyId" placeholder="请选择公司别" clearable>
+        <el-select v-model="queryParams.companyId" placeholder="请选择公司别" :popper-append-to-body="false">
           <el-option
             v-for="dict in companyList"
             :key="dict.deptCode"
@@ -12,13 +12,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="empno">
-        <el-input
-          v-model="queryParams.empno"
-          placeholder="请输入工号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-
+        <el-input v-model="queryParams.empno" placeholder="请输入工号" :disabled="true">
+          <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -61,6 +57,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <select-user ref="select" @ok="getJobNumber"/>
 
     <!-- 添加或修改探亲假天数设定对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
@@ -137,7 +134,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入人" prop="creator">
-              {{form.creator}}
+              {{ form.creatorId }} {{form.creator}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -160,14 +157,19 @@
 <script>
 import { listHoliday, getHoliday, delHoliday, addHoliday, updateHoliday } from "@/api/human/hd/homeLeaveHoliday";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import selectUser from "@/views/components/human/selectUser/selectUser";
+import {getDateTime} from "@/api/human/hd/ahumanutils";
 
 export default {
   name: "Holiday",
   dicts: ['sys_classtype'],
+  components:{selectUser},
   data() {
     return {
-      //
+      //年度
       year:2023,
+      //用户公司别
+      userCompId: this.$store.state.user.userInfo.compId,
       //公司列表
       companyList:[],
       // 遮罩层
@@ -192,7 +194,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        companyId: null,
+        companyId: this.$store.state.user.userInfo.compId,
         empno: null,
       },
       // 表单参数
@@ -207,7 +209,7 @@ export default {
   },
   computed:{
     preHomeDays(){
-      return this.form.dueHomeDays - this.form.restHomeDays;
+      return  parseInt(this.form.dueHomeDays) -  parseInt(this.form.restHomeDays);
     }
   },
   created() {
@@ -261,14 +263,30 @@ export default {
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+    handleQuery(e) {
+      if(e===0){
+        this.queryParams.pageNum = 1;
+        this.getList();
+      }else{
+        if(this.judgeQuery()){
+          this.queryParams.pageNum = 1;
+          this.getList();
+        }
+      }
+    },
+    /** 查询条件判定 */
+    judgeQuery(){
+      if(this.queryParams.empno===null||this.queryParams.empno===''){
+        this.$modal.msgError("请输入工号")
+        return false;
+      }else{
+        return true;
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.handleQuery(0);
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -282,6 +300,9 @@ export default {
       const id = row.id || this.ids
       getHoliday(id).then(response => {
         this.form = response.data;
+        this.form.creator = this.$store.state.user.userInfo.nickName ;
+        this.form.createDate = getDateTime(1) ;
+        this.form.creatorId = this.$store.state.user.name;
         this.open = true;
         this.title = "修改探亲假天数设定";
       });
@@ -309,11 +330,22 @@ export default {
         }
       });
     },
+    /** 工号点击事件 */
+    inputClick() {
+      this.$refs.select.show();
+    },
+    /** 获取工号 */
+    getJobNumber(empId,userName,compId) {
+      this.queryParams.empno = empId;
+    }
   }
 };
 </script>
 <style scoped>
 .inputInner {
   width: 70%;
+}
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
 }
 </style>
