@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaDetailMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaDetail" id="FinanceAaDetailResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="leafId"    column="leaf_id"    />
+        <result property="itema"    column="itemA"    />
+        <result property="itemb"    column="itemB"    />
+        <result property="itemc"    column="itemC"    />
+        <result property="itemd"    column="itemD"    />
+        <result property="iteme"    column="itemE"    />
+        <result property="dataa"    column="dataA"    />
+        <result property="datab"    column="dataB"    />
+        <result property="datac"    column="dataC"    />
+        <result property="datad"    column="dataD"    />
+        <result property="datae"    column="dataE"    />
+        <result property="dataf"    column="dataF"    />
+        <result property="datag"    column="dataG"    />
+        <result property="dataSeq"    column="data_seq"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createName"    column="create_name"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaDetailVo">
+        select id, company_id, leaf_id, itemA, itemB, itemC, itemD, itemE, dataA, dataB, dataC, dataD, dataE, dataF, dataG, data_seq, status, create_by, create_date, update_by, update_date, create_time, update_time, create_name, update_name from finance_aa_detail
+    </sql>
+
+    <select id="selectFinanceAaDetailList" parameterType="com.jlkj.finance.aa.domain.FinanceAaDetail" resultMap="FinanceAaDetailResult">
+        <include refid="selectFinanceAaDetailVo"/>
+        <where>  
+            <if test="leafId != null  and leafId != ''"> and leaf_id = #{leafId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaDetailById" parameterType="String" resultMap="FinanceAaDetailResult">
+        <include refid="selectFinanceAaDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaDetail">
+        insert into finance_aa_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="leafId != null">leaf_id,</if>
+            <if test="itema != null">itemA,</if>
+            <if test="itemb != null">itemB,</if>
+            <if test="itemc != null">itemC,</if>
+            <if test="itemd != null">itemD,</if>
+            <if test="iteme != null">itemE,</if>
+            <if test="dataa != null">dataA,</if>
+            <if test="datab != null">dataB,</if>
+            <if test="datac != null">dataC,</if>
+            <if test="datad != null">dataD,</if>
+            <if test="datae != null">dataE,</if>
+            <if test="dataf != null">dataF,</if>
+            <if test="datag != null">dataG,</if>
+            <if test="dataSeq != null">data_seq,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="leafId != null">#{leafId},</if>
+            <if test="itema != null">#{itema},</if>
+            <if test="itemb != null">#{itemb},</if>
+            <if test="itemc != null">#{itemc},</if>
+            <if test="itemd != null">#{itemd},</if>
+            <if test="iteme != null">#{iteme},</if>
+            <if test="dataa != null">#{dataa},</if>
+            <if test="datab != null">#{datab},</if>
+            <if test="datac != null">#{datac},</if>
+            <if test="datad != null">#{datad},</if>
+            <if test="datae != null">#{datae},</if>
+            <if test="dataf != null">#{dataf},</if>
+            <if test="datag != null">#{datag},</if>
+            <if test="dataSeq != null">#{dataSeq},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaDetail">
+        update finance_aa_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="leafId != null">leaf_id = #{leafId},</if>
+            <if test="itema != null">itemA = #{itema},</if>
+            <if test="itemb != null">itemB = #{itemb},</if>
+            <if test="itemc != null">itemC = #{itemc},</if>
+            <if test="itemd != null">itemD = #{itemd},</if>
+            <if test="iteme != null">itemE = #{iteme},</if>
+            <if test="dataa != null">dataA = #{dataa},</if>
+            <if test="datab != null">dataB = #{datab},</if>
+            <if test="datac != null">dataC = #{datac},</if>
+            <if test="datad != null">dataD = #{datad},</if>
+            <if test="datae != null">dataE = #{datae},</if>
+            <if test="dataf != null">dataF = #{dataf},</if>
+            <if test="datag != null">dataG = #{datag},</if>
+            <if test="dataSeq != null">data_seq = #{dataSeq},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaDetailById" parameterType="String">
+        delete from finance_aa_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaDetailByIds" parameterType="String">
+        delete from finance_aa_detail where leaf_id in
+        <foreach item="leafId" collection="array" open="(" separator="," close=")">
+            #{leafId}
+        </foreach>
+    </delete>
+</mapper>
