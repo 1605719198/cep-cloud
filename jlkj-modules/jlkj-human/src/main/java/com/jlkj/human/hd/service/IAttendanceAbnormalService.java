@@ -1,7 +1,7 @@
 package com.jlkj.human.hd.service;
 
-import com.jlkj.human.hd.domain.AttendanceAbnormal;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hd.domain.AttendanceAbnormal;
 
 /**
 * @author HuangBing

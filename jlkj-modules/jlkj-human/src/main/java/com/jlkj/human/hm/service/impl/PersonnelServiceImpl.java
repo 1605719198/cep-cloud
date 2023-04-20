@@ -6,6 +6,7 @@ import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.human.hm.domain.PerorgTree;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.domain.Staff;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.mapper.PersonnelMapper;
 import com.jlkj.human.hm.service.IPerorgTreeService;
 import com.jlkj.human.hm.service.IPersonnelService;
@@ -13,6 +14,8 @@ import com.jlkj.human.hm.service.IStaffService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +34,8 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     private IPerorgTreeService humanresourcePerorgTreeService;
     @Autowired
     private IStaffService humanresourceStaffService;
+    @Autowired
+    private PersonnelMapper personnelMapper;
     /**
      * 新增人员资料
      * @param personnelDTO
@@ -101,5 +106,16 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
         baseMapper.deleteById(personnel);
         humanresourcePerorgTreeService.removeById(personnel.getId());
         humanresourceStaffService.removeById(staff.getId());
+    }
+
+    /**
+     * 根据条件分页查询用户列表
+     *
+     * @param deptId 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    public List<HumanresourcePersonnelInfoDTO> selectOrgPerson(String deptId) {
+        return personnelMapper.selectOrgPerson(deptId);
     }
 }

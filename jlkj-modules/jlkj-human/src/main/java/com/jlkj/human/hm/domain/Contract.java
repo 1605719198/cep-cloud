@@ -67,10 +67,10 @@ public class Contract implements Serializable {
     private Date startDate;
 
     /**
-     * 入企时间
+     * 合同期限
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date enterDate;
+    private Date conPeriId;
 
     /**
      * 合同到期日期

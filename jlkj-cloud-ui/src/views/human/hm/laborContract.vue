@@ -106,8 +106,11 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="所在机构" prop="deptName">
-                  {{form.deptName}}
+                <el-form-item label="所在机构" prop="deptName" >
+                  <el-tooltip :disabled="disabledTooltip" effect="dark"
+                              :content="form.deptName" placement="top" class="content">
+                    <span v-text="form.deptName"></span>
+                  </el-tooltip>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -152,13 +155,15 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="入企时间" prop="enterDate">
-                  <el-date-picker clearable
-                                  v-model="form.enterDate"
-                                  type="date"
-                                  value-format="yyyy-MM-dd"
-                                  placeholder="请选择入企时间">
-                  </el-date-picker>
+                <el-form-item label="合同期限" prop="conPeriId">
+                  <el-select v-model="form.conPeriId">
+                    <el-option
+                      v-for="dict in baseInfoData.ContractPeriod"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -294,9 +299,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="16">
                 <el-form-item label="变更原因补充说明" prop="chaReaDesc">
-                  <el-input v-model="form.chaReaDesc" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.chaReaDesc" type="textarea" placeholder="请输入内容" maxlength="1000" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -313,9 +318,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="16">
                 <el-form-item label="协议补充说明" prop="protDesc1">
-                  <el-input v-model="form.protDesc1" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.protDesc1" type="textarea" placeholder="请输入内容" maxlength="1000" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -332,9 +337,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="16">
                 <el-form-item label="协议补充说明" prop="protDesc2">
-                  <el-input v-model="form.protDesc2" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.protDesc2" type="textarea" placeholder="请输入内容" maxlength="1000" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -351,16 +356,16 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="16">
                 <el-form-item label="协议补充说明" prop="protDesc3">
-                  <el-input v-model="form.protDesc3" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.protDesc3" type="textarea" placeholder="请输入内容" maxlength="1000" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="解除合同的有关说明" prop="releseDesc">
-                  <el-input v-model="form.releseDesc" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.releseDesc" type="textarea" placeholder="请输入内容" maxlength="1000" show-word-limit/>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -427,9 +432,6 @@ export default {
         relStatus: [
           { required: true, message: "劳动关系状态不能为空", trigger: "change" }
         ],
-        enterDate: [
-          { required: true, message: "入企时间不能为空", trigger: "blur" }
-        ],
         relTypeId: [
           { required: true, message: "劳动关系类型不能为空", trigger: "change" }
         ],
@@ -450,9 +452,11 @@ export default {
           'laborRelationType',
           'probationPeriod',
           'changeReason',
-          'agreementType']
+          'agreementType',
+          'ContractPeriod']
       },
-      companyName: []
+      companyName: [],
+      disabledTooltip: false,
     };
   },
   created() {
@@ -493,7 +497,7 @@ export default {
         contractNo: null,
         signDate: null,
         startDate: null,
-        enterDate: null,
+        conPeriId: null,
         endDate: null,
         workAddrId: null,
         empFeaId: null,
@@ -610,5 +614,12 @@ export default {
 <style scoped>
 .el-input-group {
   width: 220px;
+}
+.content {
+  width: 58px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 32px;
 }
 </style>

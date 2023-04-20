@@ -2,6 +2,7 @@ package com.jlkj.human.hm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,13 @@ public interface PersonnelMapper extends BaseMapper<Personnel> {
      */
     @Select(" SELECT id, job_number, full_name, department_name, alternate_field14 FROM t_humanresource_personnel WHERE status = 2 ")
     List<Personnel> listAll();
+
+    /**
+     * 根据条件分页查询用户列表
+     *
+     * @param deptId 用户信息
+     * @return 用户信息集合信息
+     */
+    List<HumanresourcePersonnelInfoDTO> selectOrgPerson(String deptId);
 
 }
