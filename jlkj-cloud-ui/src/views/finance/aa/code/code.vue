@@ -89,7 +89,8 @@
                   <el-form ref="form" :model="form" :rules="rules">
                     <el-table v-loading="loading" :data="form.tCodeList"
                               @selection-change="handleSelectionChange"
-                              @row-dblclick="rowClick" :row-class-name="rowTCapitalDetailIndex" ref="tCapitalDetail">
+                              @row-dblclick="rowClick"
+                              :row-class-name="rowTCapitalDetailIndex" ref="tCapitalDetail">
                       <el-form-item  >
                       <el-table-column type="selection" width="55" align="center"/>
                       </el-form-item>
