@@ -1,9 +1,8 @@
 <template>
   <div class="app-container">
-
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司" clearable>
+        <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
           <el-option
             v-for="dict in companyList"
             :key="dict.deptCode"
@@ -13,12 +12,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="empNo">
-        <el-input
-          v-model="queryParams.empNo"
-          placeholder="请输入工号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
+          <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+        </el-input>
       </el-form-item>
       <el-form-item label="刷卡日期" prop="cardTime">
         <el-date-picker
@@ -59,20 +55,25 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <select-user ref="select" @ok="getJobNumber"/>
   </div>
 </template>
 
 <script>
 import { listCardRecord } from "@/api/human/hd/cardRecord";
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
+import selectUser from "@/views/components/human/selectUser/selectUser";
 
 export default {
   name: "cardRecord",
   dicts: ['sys_classtype'],
+  components:{selectUser},
   data() {
     return {
       //公司列表
       companyList:[],
+      //用户公司别
+      userCompId: this.$store.state.user.userInfo.compId,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -95,7 +96,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: this.$store.state.user.userInfo.compId,
         empNo: null,
         cardTime: null,
         date1:null,
@@ -153,16 +154,46 @@ export default {
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+    handleQuery(e) {
+      if(e===0){
+        this.queryParams.pageNum = 1;
+        this.getList();
+      }else{
+        if(this.judgeQuery()){
+          this.queryParams.pageNum = 1;
+          this.getList();
+        }
+      }
+    },
+    /** 查询条件判定 */
+    judgeQuery(){
+      if(this.queryParams.empNo===null||this.queryParams.empNo===''){
+        this.$modal.msgError("请输入工号")
+        return false;
+      }else{
+        return true;
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.date1 = null;
+      this.queryParams.date2 = null;
+      this.handleQuery(0);
     },
-
+    /** 工号点击事件 */
+    inputClick() {
+      this.$refs.select.show();
+    },
+    /** 获取工号 */
+    getJobNumber(empId,userName,compId) {
+      this.queryParams.empNo = empId;
+    },
   }
 };
 </script>
+<style scoped>
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
+}
+</style>
