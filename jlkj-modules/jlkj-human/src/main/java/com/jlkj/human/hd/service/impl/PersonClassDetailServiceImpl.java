@@ -92,8 +92,9 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
                 insertPersonClassDetail(detail);
             }
         }
-
-//        if(list.get(0).getClassType()=="1"){
+        //类型为组织机构
+        String orgType ="1";
+        if(list.get(0).getClassType()==orgType){
 //            String masterId = list.get(0).getPersonClassMasterId();
 //            PersonClassMaster personClassMaster = new PersonClassMaster();
 //            personClassMaster.setOrgId(masterId);
@@ -118,7 +119,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
 //                    }
 //                }
 //            }
-//        }
+        }
         return 1;
     }
 

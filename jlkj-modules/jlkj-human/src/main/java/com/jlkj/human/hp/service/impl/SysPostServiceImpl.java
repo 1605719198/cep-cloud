@@ -67,9 +67,10 @@ public class SysPostServiceImpl implements ISysPostService
             throw new Exception("岗位编码或名称已存在，请重复输入");
         }
         String serialNumber="";
+        int addZero = 10;
         try {
             int number = Integer.parseInt(sysPostMapper.querySerialNumber(sysPost).getSerialNumber())+1;
-            if(number<10){
+            if(number<addZero){
                 serialNumber  ="0"+number;
             }else{
                 serialNumber = String.valueOf(number);
@@ -102,12 +103,13 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int updateSysPost(SysPost sysPost)
     {
+        int addZero = 10;
         SysPostVersion sysPostVersion = new SysPostVersion();
         sysPost.setUpdateTime(DateUtils.getNowDate());
         String serialNumber="";
         try {
             int number = Integer.parseInt(sysPostMapper.querySerialNumber(sysPost).getSerialNumber())+1;
-            if(number<10){
+            if(number<addZero){
                 serialNumber  ="0"+number;
             }else{
                 serialNumber = String.valueOf(number);

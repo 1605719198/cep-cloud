@@ -95,17 +95,23 @@ public class HolidayTableServiceImpl implements IHolidayTableService
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //周配置
-         int[] Week = {2,1, 1, 1, 1, 1, 2};
-         for (int i = 1; i <  13; i++) {
+        //月配置
+        int months = 13;
+        int elseDay = 0 ;
+         int[] week = {2,1, 1, 1, 1, 1, 2};
+         for (int i = 1; i <  months; i++) {
            int monthDays ;
            Arrays.sort(bigMonth);
            int index = Arrays.binarySearch(bigMonth,i);
-           if (!(index<0)) {
+           if ((index>=0)) {
              monthDays = 32;
            } else if (i == 2) {
-             int o = ((year%400 ==0)||(year % 4 == 0 && year%100 != 0)) ? 1 : 0;
-             monthDays = 29+o;
+
+             boolean o = ((year%400 ==0)||(year % 4 == 0 && year%100 != 0));
+             if(o){
+                 elseDay=1;
+             }
+             monthDays = 29+elseDay;
            } else {
              monthDays = 31;
            }
@@ -116,7 +122,7 @@ public class HolidayTableServiceImpl implements IHolidayTableService
              String day = (j<10)? '0'+String.valueOf(j):String.valueOf(j);
              yearHolidayTable.setMonth(month);
              yearHolidayTable.setDay(day);
-             yearHolidayTable.setDateType(String.valueOf(Week[t]));
+             yearHolidayTable.setDateType(String.valueOf(week[t]));
              String timeString = String.valueOf(year)+'-'+month+'-'+day;
              SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
              Date date = null;
@@ -144,12 +150,12 @@ public class HolidayTableServiceImpl implements IHolidayTableService
         Date parseDate = dateFormat.parse(sdate);
         Calendar c = Calendar.getInstance();
         c.setTime(parseDate);
-        int week_index = c.get(Calendar.DAY_OF_WEEK) - 1;
-        if (week_index < 0) {
-            week_index = 0;
+        int weekIndex = c.get(Calendar.DAY_OF_WEEK) - 1;
+        if (weekIndex < 0) {
+            weekIndex = 0;
         }
-//        return weeks[week_index];
-        return week_index;
+//        return weeks[weekIndex];
+        return weekIndex;
     }
     /**
      * 修改假日设定

@@ -10,9 +10,13 @@ import java.util.Date;
 
 @Data
 public class PersonShiftCodeDTO {
-    //工号
+    /**
+     * 工号
+     */
     private String empId;
 
-    //时间
+    /**
+     * 时间
+     */
     private Date date;
 }
