@@ -146,19 +146,15 @@ export default {
       for (const item of this.baseForm.cultivateExperienceList) {
         item.empId = this.empId
       }
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          addCultivateExperienceData(this.baseForm).then(res => {
-            if (res.code == 200) {
-              this.$message({
-                type: 'success',
-                message: res.msg
-              })
-            }
-            this.getList();
+      addCultivateExperienceData(this.baseForm).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            type: 'success',
+            message: res.msg
           })
         }
-      });
+        this.getList();
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {

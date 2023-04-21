@@ -154,19 +154,10 @@ export default {
       for (const item of this.baseForm.workExperienceList) {
         item.empId = this.empId
       }
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          addWorkExperienceData(this.baseForm).then(res => {
-            if (res.code == 200) {
-              this.$message({
-                type: 'success',
-                message: res.msg
-              })
-            }
-            this.getList()
-          })
-        }
-      });
+      addWorkExperienceData(this.baseForm).then(res => {
+        this.$modal.msgSuccess("保存成功");
+        this.getList();
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {

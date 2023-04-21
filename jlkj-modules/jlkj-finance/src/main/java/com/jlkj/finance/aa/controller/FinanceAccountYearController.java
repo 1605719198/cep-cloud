@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.FinanceAccountYear;
 import com.jlkj.finance.aa.domain.FinanceAccountYearPost;
 import com.jlkj.finance.aa.dto.FinanceAccountYearDTO;
@@ -35,6 +36,7 @@ public class FinanceAccountYearController {
      * 根据会计周期
      */
     @Operation(summary = "根据会计周期", description =" ")
+    @RequiresPermissions("aa:period:queryAll")
     @GetMapping("/queryAll")
     @Log(title = "会计公司查询", businessType = BusinessType.OTHER)
     public Object queryAll(FinanceAccountYearDTO financeAccountYearDTO) {
@@ -72,6 +74,7 @@ public class FinanceAccountYearController {
      * 会计公司新增
      */
     @Operation(summary = "会计公司新增", description = " ")
+    @RequiresPermissions("aa:period:doAdd")
     @PostMapping("/doAdd")
     @Log(title = "会计公司新增", businessType = BusinessType.INSERT)
     public Object addFinanceCost(@RequestBody FinanceAccountYearDTO financeAccountYearDTO) {
@@ -124,6 +127,7 @@ public class FinanceAccountYearController {
      * 删除会计公司
      */
     @Operation(summary = "删除会计公司")
+    @RequiresPermissions("aa:period:delete")
     @DeleteMapping("/delete")
     @Log(title = "会计公司删除", businessType = BusinessType.DELETE)
     public Object delete(@RequestParam String accountPeriodDelete, String compId){
@@ -148,6 +152,7 @@ public class FinanceAccountYearController {
      *
      */
     @Operation(summary = "状态修改")
+    @RequiresPermissions("aa:period:doEditYn")
     @PostMapping("/doEditYn")
     @Log(title = "状态修改", businessType = BusinessType.UPDATE)
     public Object updateEnergyCode(@RequestParam String isClosed ,String id) {

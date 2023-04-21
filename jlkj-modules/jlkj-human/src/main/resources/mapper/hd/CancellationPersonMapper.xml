@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.CancellationPersonMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.CancellationPerson">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="companyId" column="company_id" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="orgName" column="org_name" jdbcType="VARCHAR"/>
+            <result property="orgId" column="org_id" jdbcType="VARCHAR"/>
+            <result property="clockWorkId" column="clock_work_id" jdbcType="VARCHAR"/>
+            <result property="checkStartDate" column="check_start_date" jdbcType="TIMESTAMP"/>
+            <result property="checkEndDate" column="check_end_date" jdbcType="TIMESTAMP"/>
+            <result property="reason" column="reason" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,company_id,emp_no,
+        emp_id,emp_name,post_name,
+        post_id,org_name,org_id,
+        clock_work_id,check_start_date,check_end_date,
+        reason,type,creator,
+        creator_id,create_date
+    </sql>
+</mapper>

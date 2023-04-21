@@ -174,13 +174,8 @@ export default {
         item.empId = this.empId
       }
       addEducationExperienceData(this.baseForm).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            type: 'success',
-            message: res.msg
-          })
-        }
-        this.getList()
+        this.$modal.msgSuccess("保存成功");
+        this.getList();
       })
     },
     /** 删除按钮操作 */

@@ -967,10 +967,10 @@ export default {
           }
         ],
         officeTelephone: [
-          { required: true, validator: validatePhoneTwo, trigger: "blur" }
+          { required: false, validator: validatePhoneTwo, trigger: "blur" }
         ],
         insideLine: [
-          { required: true, validator: validatePhoneTwo, trigger: "blur" }
+          { required: false, validator: validatePhoneTwo, trigger: "blur" }
         ],
         emergencyContactPersonEmail: [
           { required: true, validator: validateEMail, trigger: "blur" }

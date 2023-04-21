@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaBankMapper">
+    
+    <resultMap type="FinanceAaBank" id="FinanceAaBankResult">
+        <result property="id"    column="id"    />
+        <result property="bankNo"    column="bank_no"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="bankType"    column="bank_type"    />
+        <result property="banknoSrc"    column="bankno_src"    />
+        <result property="bankuniformNo"    column="bankUniform_no"    />
+        <result property="bankchnName"    column="bankChn_name"    />
+        <result property="bankengName"    column="bankEng_Name"    />
+        <result property="bankChnabbr"    column="bank_ChnAbbr"    />
+        <result property="bankEngabbr"    column="bank_EngAbbr"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaBankVo">
+        select id, bank_no, country_id, bank_type, bankno_src, bankUniform_no, bankChn_name, bankEng_Name, bank_ChnAbbr, bank_EngAbbr, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_bank
+    </sql>
+
+    <select id="selectFinanceAaBankList" parameterType="FinanceAaBank" resultMap="FinanceAaBankResult">
+        <include refid="selectFinanceAaBankVo"/>
+        <where>  
+            <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaBankById" parameterType="String" resultMap="FinanceAaBankResult">
+        <include refid="selectFinanceAaBankVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaBank" parameterType="FinanceAaBank">
+        insert into finance_aa_bank
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="bankNo != null and bankNo != ''">bank_no,</if>
+            <if test="countryId != null and countryId != ''">country_id,</if>
+            <if test="bankType != null and bankType != ''">bank_type,</if>
+            <if test="banknoSrc != null and banknoSrc != ''">bankno_src,</if>
+            <if test="bankuniformNo != null and bankuniformNo != ''">bankUniform_no,</if>
+            <if test="bankchnName != null and bankchnName != ''">bankChn_name,</if>
+            <if test="bankengName != null">bankEng_Name,</if>
+            <if test="bankChnabbr != null and bankChnabbr != ''">bank_ChnAbbr,</if>
+            <if test="bankEngabbr != null">bank_EngAbbr,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="bankNo != null and bankNo != ''">#{bankNo},</if>
+            <if test="countryId != null and countryId != ''">#{countryId},</if>
+            <if test="bankType != null and bankType != ''">#{bankType},</if>
+            <if test="banknoSrc != null and banknoSrc != ''">#{banknoSrc},</if>
+            <if test="bankuniformNo != null and bankuniformNo != ''">#{bankuniformNo},</if>
+            <if test="bankchnName != null and bankchnName != ''">#{bankchnName},</if>
+            <if test="bankengName != null">#{bankengName},</if>
+            <if test="bankChnabbr != null and bankChnabbr != ''">#{bankChnabbr},</if>
+            <if test="bankEngabbr != null">#{bankEngabbr},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaBank" parameterType="FinanceAaBank">
+        update finance_aa_bank
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bankNo != null and bankNo != ''">bank_no = #{bankNo},</if>
+            <if test="countryId != null and countryId != ''">country_id = #{countryId},</if>
+            <if test="bankType != null and bankType != ''">bank_type = #{bankType},</if>
+            <if test="banknoSrc != null and banknoSrc != ''">bankno_src = #{banknoSrc},</if>
+            <if test="bankuniformNo != null and bankuniformNo != ''">bankUniform_no = #{bankuniformNo},</if>
+            <if test="bankchnName != null and bankchnName != ''">bankChn_name = #{bankchnName},</if>
+            <if test="bankengName != null">bankEng_Name = #{bankengName},</if>
+            <if test="bankChnabbr != null and bankChnabbr != ''">bank_ChnAbbr = #{bankChnabbr},</if>
+            <if test="bankEngabbr != null">bank_EngAbbr = #{bankEngabbr},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaBankById" parameterType="String">
+        delete from finance_aa_bank where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaBankByIds" parameterType="String">
+        delete from finance_aa_bank where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

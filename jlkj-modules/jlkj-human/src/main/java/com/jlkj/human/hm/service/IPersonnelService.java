@@ -3,6 +3,9 @@ package com.jlkj.human.hm.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
 import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,4 +32,12 @@ public interface IPersonnelService extends IService<Personnel> {
      * @param personnelDTO
      */
     void removeData(PersonnelDTO personnelDTO);
+
+    /**
+     * 查询机构下所有人员
+     *
+     * @param deptId 人事注销信息
+     * @return 人员信息集合
+     */
+    List<HumanresourcePersonnelInfoDTO> selectOrgPerson(String deptId);
 }

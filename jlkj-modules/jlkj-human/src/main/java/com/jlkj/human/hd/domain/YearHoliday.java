@@ -85,7 +85,7 @@ public class YearHoliday extends BaseEntity
     private String creatorId;
 
     /** 输入日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 
     public void setId(String id)

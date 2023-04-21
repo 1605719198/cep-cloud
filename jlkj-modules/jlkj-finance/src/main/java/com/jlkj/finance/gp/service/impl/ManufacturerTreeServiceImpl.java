@@ -1,5 +1,5 @@
 package com.jlkj.finance.gp.service.impl;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
@@ -10,12 +10,12 @@ import com.jlkj.finance.gp.domain.ManufacturerTree;
 import com.jlkj.finance.gp.service.ManufacturerBaseService;
 import com.jlkj.finance.gp.service.ManufacturerTreeService;
 import com.jlkj.finance.gp.mapper.ManufacturerTreeMapper;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-import com.jlkj.finance.gp.dto.ManufacturerBaseDTO;
-import com.jlkj.finance.gp.domain.ManufacturerBase;
+
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +64,8 @@ public class ManufacturerTreeServiceImpl extends ServiceImpl<ManufacturerTreeMap
         if (returnList.isEmpty()) {
             returnList = treeDTOList;
         }
-        return returnList.stream().map(ManufacturerTreeDTO::new).collect(Collectors.toList());
+        return returnList.stream().map(ManufacturerTreeDTO::new)
+                .collect(Collectors.toList());
     }
     /**
      * 递归列表

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaIndexMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaIndex" id="FinanceAaIndexResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="parentNo"    column="parent_no"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="nodeNo"    column="node_no"    />
+        <result property="nodeType"    column="node_type"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="useDesc"    column="use_desc"    />
+        <result property="dataSeq"    column="data_seq"    />
+        <result property="nodeAuthgrp"    column="node_authgrp"    />
+        <result property="dataAuthgrp"    column="data_authgrp"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createName"    column="create_name"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaIndexVo">
+        select id, company_id, parent_no, parent_id, node_no, node_type, node_name, use_desc, data_seq, node_authgrp, data_authgrp, create_by, create_date, update_by, update_date, create_time, update_time, create_name, update_name from finance_aa_index
+    </sql>
+
+    <select id="selectFinanceAaIndexList" parameterType="com.jlkj.finance.aa.domain.FinanceAaIndex" resultMap="FinanceAaIndexResult">
+        <include refid="selectFinanceAaIndexVo"/>
+        <where>  
+            <if test="nodeName != null  and nodeName != ''"> and node_name like concat('%', #{nodeName}, '%')</if>
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="nodeNo != null  and nodeNo != ''"> and node_no = #{nodeNo}</if>
+        </where>
+        order by  data_Seq
+    </select>
+    
+    <select id="selectFinanceAaIndexById" parameterType="String" resultMap="FinanceAaIndexResult">
+        <include refid="selectFinanceAaIndexVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaIndex" parameterType="com.jlkj.finance.aa.domain.FinanceAaIndex">
+        insert into finance_aa_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="parentNo != null">parent_no,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="nodeNo != null">node_no,</if>
+            <if test="nodeType != null">node_type,</if>
+            <if test="nodeName != null">node_name,</if>
+            <if test="useDesc != null">use_desc,</if>
+            <if test="dataSeq != null">data_seq,</if>
+            <if test="nodeAuthgrp != null">node_authgrp,</if>
+            <if test="dataAuthgrp != null">data_authgrp,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="parentNo != null">#{parentNo},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="nodeNo != null">#{nodeNo},</if>
+            <if test="nodeType != null">#{nodeType},</if>
+            <if test="nodeName != null">#{nodeName},</if>
+            <if test="useDesc != null">#{useDesc},</if>
+            <if test="dataSeq != null">#{dataSeq},</if>
+            <if test="nodeAuthgrp != null">#{nodeAuthgrp},</if>
+            <if test="dataAuthgrp != null">#{dataAuthgrp},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaIndex" parameterType="com.jlkj.finance.aa.domain.FinanceAaIndex">
+        update finance_aa_index
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="parentNo != null">parent_no = #{parentNo},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="nodeNo != null">node_no = #{nodeNo},</if>
+            <if test="nodeType != null">node_type = #{nodeType},</if>
+            <if test="nodeName != null">node_name = #{nodeName},</if>
+            <if test="useDesc != null">use_desc = #{useDesc},</if>
+            <if test="dataSeq != null">data_seq = #{dataSeq},</if>
+            <if test="nodeAuthgrp != null">node_authgrp = #{nodeAuthgrp},</if>
+            <if test="dataAuthgrp != null">data_authgrp = #{dataAuthgrp},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaIndexById" parameterType="String">
+        delete from finance_aa_index where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaIndexByIds" parameterType="String">
+        delete from finance_aa_index where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

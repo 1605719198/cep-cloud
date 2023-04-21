@@ -21,7 +21,7 @@
                   </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                  <el-button v-hasPermi="['account_period_queryAll']"
+                  <el-button
                              type="primary"
                              size="mini"
                              @click="handleQuery"
@@ -32,26 +32,26 @@
                              @click="resetQuery"
                              icon="el-icon-refresh-left">重置
                   </el-button>
-                  <el-button v-hasPermi="['account_period_queryAll']"
+                  <el-button v-hasPermi="['aa:period:queryAll']"
                              style="width: 120px"
                              size="mini"
                              type="warning"
                              icon="el-icon-caret-left"
                              @click="LastYear()">上一年度
                   </el-button>
-                  <el-button v-hasPermi="['account_period_queryAll']"
+                  <el-button v-hasPermi="['aa:period:queryAll']"
                              style="width: 120px"
                              size="mini"
                              type="warning"
                              @click="NextYear()">下一年度<i class="el-icon-arrow-right el-icon-caret-right"></i></el-button>
-                  <el-button v-hasPermi="['account_period_doAdd']"
+                  <el-button v-hasPermi="['aa:period:doAdd']"
                              type="primary"
                              size="mini"
                              plain
                              icon="el-icon-plus"
                              @click="AddleUpdate()">新增会计年度
                   </el-button>
-                  <el-button v-hasPermi="['account_period_delete']"
+                  <el-button v-hasPermi="['aa:period:delete']"
                              type="danger"
                              size="mini"
                              @click="handleDelete"
@@ -91,7 +91,7 @@
                   </el-table-column>
                   <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                     <template slot-scope="scope">
-                      <el-button v-hasPermi="['account_period_doEdit']"
+                      <el-button v-hasPermi="['aa:period:doEditYn']"
                                  size="mini"
                                  plain
                                  icon="el-icon-caret-left"
