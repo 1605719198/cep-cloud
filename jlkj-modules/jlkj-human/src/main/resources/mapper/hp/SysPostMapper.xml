@@ -157,7 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="postName != null and postName != ''">#{postName},</if>
             <if test="deptId != null">#{deptId},</if>
             <if test="specialityTypeId != null and specialityTypeId != ''">#{specialityTypeId},</if>
-            <if test="deptType != null and ddeptType != ''">#{deptType},</if>
+            <if test="deptType != null and deptType != ''">#{deptType},</if>
             <if test="specialityId != null and specialityId != ''">#{specialityId},</if>
             <if test="postSequenceId != null and postSequenceId != ''">#{postSequenceId},</if>
             <if test="postTypeId != null and postTypeId != ''">#{postTypeId},</if>

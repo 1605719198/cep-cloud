@@ -196,9 +196,6 @@ export default {
         compId: null,
         postName: null,
       },
-      queryParams2: {
-        postId:null,
-      },
       queryParams3: {
         compId:null,
       },
@@ -267,7 +264,7 @@ export default {
     compId(val) {
       // this.$refs.tree.filter(val);
       this.queryParams.compId = val;
-      this.queryParams.deptId = null;
+      this.queryParams.orgId = null;
       this.queryParams3.compId =val;
       if(val){
         this.treeandtable=true
@@ -442,6 +439,8 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.compId = this.logincompId;
+      this.queryParams.orgId = null;
+      this.getList();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

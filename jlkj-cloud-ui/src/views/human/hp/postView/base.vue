@@ -387,14 +387,14 @@ export default {
       formHistory:[],
       // 表单校验
       rules: {
+        orgId: [
+          { required: true, message: "所属公司/机构不能为空", trigger: "blur" }
+        ],
         jobTitleId: [
           { required: true, message: "职位名称不能为空", trigger: "blur" }
         ],
         postName: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" }
-        ],
-        deptId: [
-          { required: true, message: "所属公司/机构不能为空", trigger: "blur" }
         ],
         specialityTypeId: [
           { required: true, message: "专长类别不能为空", trigger: "change" }
