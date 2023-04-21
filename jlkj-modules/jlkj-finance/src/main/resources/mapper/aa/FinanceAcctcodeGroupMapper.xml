@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAcctcodeGroupMapper">
+
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup" id="FinanceAcctcodeGroupResult">
+        <result property="groupAcctId"    column="group_acct_id"    />
+        <result property="groupAcctCode"    column="group_acct_code"    />
+        <result property="groupAcctName"    column="group_acct_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentAcctCode"    column="parent_acct_code"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="isVoucher"    column="is_voucher"    />
+        <result property="drOrCr"    column="dr_or_cr"    />
+        <result property="isCash"    column="is_cash"    />
+        <result property="level"    column="level"    />
+        <result property="disabledCode"    column="disabled_code"    />
+        <result property="disabledDate"    column="disabled_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAcctcodeGroupVo">
+        select group_acct_id, group_acct_code, group_acct_name, parent_id, parent_acct_code, ancestors, is_voucher, dr_or_cr, is_cash, level, disabled_code, disabled_date, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_group_acctcode
+    </sql>
+
+    <select id="selectFinanceAcctcodeGroupList" parameterType="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup" resultMap="FinanceAcctcodeGroupResult">
+        <include refid="selectFinanceAcctcodeGroupVo"/>
+        <where>
+            <if test="groupAcctCode != null  and groupAcctCode != ''">
+                AND (group_acct_code = #{groupAcctCode} OR group_acct_code IN ( SELECT t.group_acct_code FROM finance_aa_group_acctcode t WHERE find_in_set(#{groupAcctCode}, ancestors) ))
+            </if>
+            <if test="groupAcctName != null and groupAcctName != ''"> and group_acct_name like concat('%', #{groupAcctName}, '%')</if>
+
+        </where>
+        order by group_acct_code,group_acct_name
+    </select>
+
+    <select id="selectFinanceAcctcodeGroupByGroupAcctId" parameterType="String" resultMap="FinanceAcctcodeGroupResult">
+        <include refid="selectFinanceAcctcodeGroupVo"/>
+        where group_acct_id = #{groupAcctId}
+    </select>
+
+    <insert id="insertFinanceAcctcodeGroup" parameterType="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup">
+        insert into finance_aa_group_acctcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupAcctId != null">group_acct_id,</if>
+            <if test="groupAcctCode != null">group_acct_code,</if>
+            <if test="groupAcctName != null">group_acct_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="parentAcctCode != null">parent_acct_code,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="isVoucher != null">is_voucher,</if>
+            <if test="drOrCr != null">dr_or_cr,</if>
+            <if test="isCash != null">is_cash,</if>
+            <if test="level != null">level,</if>
+            <if test="disabledCode != null">disabled_code,</if>
+            <if test="disabledDate != null">disabled_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupAcctId != null">#{groupAcctId},</if>
+            <if test="groupAcctCode != null">#{groupAcctCode},</if>
+            <if test="groupAcctName != null">#{groupAcctName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="parentAcctCode != null">#{parentAcctCode},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="isVoucher != null">#{isVoucher},</if>
+            <if test="drOrCr != null">#{drOrCr},</if>
+            <if test="isCash != null">#{isCash},</if>
+            <if test="level != null">#{level},</if>
+            <if test="disabledCode != null">#{disabledCode},</if>
+            <if test="disabledDate != null">#{disabledDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFinanceAcctcodeGroup" parameterType="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup">
+        update finance_aa_group_acctcode
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupAcctCode != null">group_acct_code = #{groupAcctCode},</if>
+            <if test="groupAcctName != null">group_acct_name = #{groupAcctName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="parentAcctCode != null">parent_acct_code = #{parentAcctCode},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="isVoucher != null">is_voucher = #{isVoucher},</if>
+            <if test="drOrCr != null">dr_or_cr = #{drOrCr},</if>
+            <if test="isCash != null">is_cash = #{isCash},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="disabledCode != null">disabled_code = #{disabledCode},</if>
+            <if test="disabledDate != null">disabled_date = #{disabledDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where group_acct_id = #{groupAcctId}
+    </update>
+
+    <delete id="deleteFinanceAcctcodeGroupByGroupAcctId" parameterType="String">
+        delete from finance_aa_group_acctcode where group_acct_id = #{groupAcctId}
+    </delete>
+
+    <delete id="deleteFinanceAcctcodeGroupByGroupAcctIds" parameterType="String">
+        delete from finance_aa_group_acctcode where group_acct_id in
+        <foreach item="groupAcctId" collection="array" open="(" separator="," close=")">
+            #{groupAcctId}
+        </foreach>
+    </delete>
+
+
+    <select id="selectFinanceAcctcodeGroupByGroupAcctCode" parameterType="String" resultMap="FinanceAcctcodeGroupResult">
+        <include refid="selectFinanceAcctcodeGroupVo"/>
+        where group_acct_code = #{groupAcctCode}
+    </select>
+
+    <select id="selectFinancAcctcodeChildrenList" parameterType="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup" resultMap="FinanceAcctcodeGroupResult">
+        <include refid="selectFinanceAcctcodeGroupVo"/>
+        <where>
+            <if test="groupAcctCode != null  and groupAcctCode != ''">
+                AND group_acct_code != #{groupAcctCode} and group_acct_code IN ( SELECT t.group_acct_code FROM finance_aa_group_acctcode t WHERE find_in_set(#{groupAcctCode}, ancestors) )
+            </if>
+        </where>
+        order by group_acct_code,group_acct_name
+    </select>
+
+    <delete id="deleteFinanceAcctcodeGroupByGroupAcctCode" parameterType="String">
+        delete from finance_aa_group_acctcode where group_acct_code = #{groupAcctCode}
+    </delete>
+
+
+    <select id="selectCodeGroupList" parameterType="String" resultMap="FinanceAcctcodeGroupResult">
+        select group_acct_id, group_acct_code, group_acct_name, parent_id, parent_acct_code, ancestors, is_voucher, dr_or_cr, is_cash, level, disabled_code from finance_aa_group_acctcode t1
+        <where>
+            <if test="groupAcctCode != null  and groupAcctCode != ''">
+                and parent_acct_code = #{acctCode} and group_acct_code not in (select acct_code from finance_aa_acctcode where parent_acct_code = #{acctCode})
+            </if>
+        </where>
+        order by group_acct_code,group_acct_name
+    </select>
+
+
+</mapper>
