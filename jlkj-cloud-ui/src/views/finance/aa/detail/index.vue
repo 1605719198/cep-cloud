@@ -201,8 +201,6 @@ export default {
           this.tableColumns=[]
           this.$message.error('请至少保存一笔基本资料');
         }
-
-
       });
     },
     // 取消按钮
