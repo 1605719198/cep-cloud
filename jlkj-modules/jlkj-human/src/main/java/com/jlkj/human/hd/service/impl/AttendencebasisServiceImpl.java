@@ -142,7 +142,7 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     @Override
     public int insertAttendencebasis(Attendencebasis attendencebasis) throws Exception
     {
-        if(attendencebasis.getParentid()==0){
+        if(attendencebasis.getParentid()==1){
             int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
             if(i>0){
                 throw new Exception("资料编码已存在，请重新输入");
@@ -160,9 +160,11 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     @Override
     public int updateAttendencebasis(Attendencebasis attendencebasis) throws Exception
     {
-        int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
-        if(i>0){
-            throw new Exception("资料编码已存在，请重新输入");
+        if(attendencebasis.getParentid()==1) {
+            int i = attendencebasisMapper.queryRepetitivedata(attendencebasis);
+            if (i > 0) {
+                throw new Exception("资料编码已存在，请重新输入");
+            }
         }
         return attendencebasisMapper.updateAttendencebasis(attendencebasis);
     }

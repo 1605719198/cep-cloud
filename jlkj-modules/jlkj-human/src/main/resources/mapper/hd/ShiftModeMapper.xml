@@ -30,6 +30,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
         </where>
     </select>
+
+    <select id="selectShiftModeListAll" parameterType="ShiftMode" resultMap="ShiftModeResult">
+        <include refid="selectShiftModeVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            and status = '0'
+        </where>
+    </select>
     
     <select id="selectShiftModeById" parameterType="String" resultMap="ShiftModeResult">
         <include refid="selectShiftModeVo"/>

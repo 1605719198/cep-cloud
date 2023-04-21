@@ -86,7 +86,8 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
         oldPersonColockOrg.setEffectDate(personColockOrg.getEffectDate());
         oldPersonColockOrg.setDeptId(personColockOrg.getDeptId());
         List<PersonColockOrg> oldList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
-        if(oldList.size()==0){
+        Boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColockOrg.getId()));
+        if(bool){
             PersonColockOrg lastEffectData = personColockOrgMapper.queryLastEffectData(personColockOrg);
             if(lastEffectData == null || personColockOrg.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
                 personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));

@@ -138,7 +138,7 @@ import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";
-import selectDept from "@/views/human/hp/selectUser/selectDept";
+import selectDept from "@/views/components/human/selectView/selectDept";
 
 export default {
   name: "Clockwork",

@@ -70,7 +70,7 @@
     </delete>
 
     <delete id="deletePersonColockDetailByIds" parameterType="String">
-        delete from human_hd_person_colock_detail where id in
+        delete from human_hd_person_colock_detail where person_class_master_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

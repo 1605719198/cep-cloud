@@ -1,212 +1,194 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="资料名称" prop="name">
-        <el-input maxlength="200"
-                  v-model="queryParams.name"
-                  placeholder="请输入资料名称"
-        />
-      </el-form-item>
-      <el-form-item label="资料编码" prop="code">
-        <el-input maxlength="10"
-                  v-model="queryParams.code"
-                  placeholder="请输入资料编码"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['human:attendenceBasis:add']"
-        >新增</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="attendenceBasisList" @selection-change="handleSelectionChange" height="67vh" row-key="id" :default-expand-all="isExpandAll" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="资料名称" align="center" prop="name" />
-      <el-table-column label="资料编码" align="center" prop="code" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template v-slot="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="输入人" align="center" prop="creator" />
-      <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template v-slot="scope">
-          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:attendenceBasis:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-plus"
-            @click="handlechild(scope.row)"
-          >添加下级</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['human:attendenceBasis:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 修改员工出勤基本资料维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+  <div style="padding: 0px 10px;">
+    <div class="main">
+      <div class="avue-crud el-card__body " style="width: 98%;border: 0;">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <!-- 左侧选单配置树 -->
+          <el-col :span="4" class="left_tree">
+            <div class="head-container" style="height: 75vh;width: 100%;">
+              <el-scrollbar style="height: 100%;">
+                <el-tree ref="tree"
+                         class="filter-tree"
+                         node-key="id"
+                         :props="defaultProps"
+                         :data="menuData"
+                         :expand-on-click-node="false"
+                         :default-expanded-keys="defaultShowNodes"
+                         @node-click="handleNodeClick">
+                </el-tree>
+              </el-scrollbar>
+            </div>
+          </el-col>
+          <!-- 右侧列表 -->
+          <el-col :span="20">
+            <div>
+              <div class="avue-crud__search" style="border: 0">
+                <el-row>
+                  <el-col :span="20">
+                    <el-form :inline="true">
+                      <!-- 操作按钮 -->
+                      <el-form-item>
+                        <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini">新增
+                        </el-button>
+                      </el-form-item>
+                    </el-form>
+                  </el-col>
+                </el-row>
+              </div>
+              <div>
+                <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
+                  <el-table-column label="资料代号" minWidth="150" align="center" prop="code"/>
+                  <el-table-column label="资料名称" minWidth="150" align="center" prop="name"/>
+                  <el-table-column label="状态" minWidth="150" align="center" prop="status">
+                    <template v-slot="scope">
+                      <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="输入人" minWidth="150" align="center" prop="creator"/>
+                  <el-table-column label="输入日期" minWidth="150" align="center" prop="createDate"/>
+                  <el-table-column label="操作" align="center" min-width="160px">
+                    <template slot-scope="scope">
+                      <el-button size="mini" type="text" icon="el-icon-edit"
+                                 @click="handleUpdate(scope.row)">
+                        修改
+                      </el-button>
+                      <el-button size="mini" type="text" icon="el-icon-delete"
+                                 @click="handleDelete(scope.row)">
+                        删除
+                      </el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <pagination
+                  v-show="total>0"
+                  :total="total"
+                  :page.sync="queryParams.pageNum"
+                  :limit.sync="queryParams.pageSize"
+                  @pagination="onLoad"
+                />
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <!-- 修改员工出勤基本资料维护对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="资料编码" prop="code">
+                  <el-input v-model="form.code" placeholder="请输入资料编码" maxlength="30" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="资料名称" prop="name">
+                  <el-input v-model="form.name" placeholder="请输入资料名称" maxlength="200" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="状态" prop="status">
+                  <el-radio-group v-model="form.status">
+                    <el-radio
+                      v-for="dict in dict.type.sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+<!--              <el-col :span="12">-->
+<!--                <el-form-item label="排序序号" prop="orderNum">-->
+<!--                  <el-input v-model="form.orderNum" placeholder="请输入排序序号" type="number"/>-->
+<!--                </el-form-item>-->
+<!--              </el-col>-->
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="输入人" prop="creator">
+                  {{form.creator}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="输入日期" prop="createDate">
+                  {{form.createDate}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <!--        <el-form-item label="是否显示编码" prop="isShowno">-->
+            <!--          <el-input v-model="form.isShowno" placeholder="请输入是否显示编码" />-->
+            <!--        </el-form-item>-->
+            <!--        <el-form-item label="输入人id" prop="creatorId">-->
+            <!--          <el-input v-model="form.creatorId" placeholder="请输入输入人id" />-->
+            <!--        </el-form-item>-->
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
+
+        <!-- 添加员工出勤基本资料维护对话框 -->
+        <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="资料编码" prop="code">
-              <el-input v-model="form.code" placeholder="请输入资料编码" maxlength="10" />
+              <el-input v-model="form.code" placeholder="请输入资料编码" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="资料名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入资料名称" maxlength="200" />
+              <el-input v-model="form.name" placeholder="请输入资料名称" />
             </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="状态" prop="status">
-              <el-radio-group v-model="form.status">
-                <el-radio
-                  v-for="dict in dict.type.sys_normal_disable"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="排序序号" prop="orderNum">
-              <el-input v-model="form.orderNum" placeholder="请输入排序序号" type="number"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="输入人" prop="creator">
-              {{form.creator}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="输入日期" prop="createDate">
-             {{form.createDate}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-<!--        <el-form-item label="是否显示编码" prop="isShowno">-->
-<!--          <el-input v-model="form.isShowno" placeholder="请输入是否显示编码" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="输入人id" prop="creatorId">-->
-<!--          <el-input v-model="form.creatorId" placeholder="请输入输入人id" />-->
-<!--        </el-form-item>-->
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
       </div>
-    </el-dialog>
-
-    <!-- 添加员工出勤基本资料维护对话框 -->
-    <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="资料编码" prop="code">
-          <el-input v-model="form.code" placeholder="请输入资料编码" />
-        </el-form-item>
-        <el-form-item label="资料名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入资料名称" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
-import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis } from "@/api/human/hd/attendenceBasis";
-import { getAvatorByUserName } from "@/api/system/user";
+import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis, treeselect } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from '@/api/human/hd/ahumanutils'
 export default {
-  name: "AttendenceBasis",
+  name: "BaseInfo",
   dicts: ['sys_normal_disable'],
   data() {
     return {
-      //登录人姓名
-      nickName:null,
-      //登录人公司
-      logincompId:null,
-      //出勤树数据
-      attendenceOptions:[],
-      // 遮罩层
-      loading: true,
-      //是否展开出勤树
-      isExpandAll: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 显示搜索条件
-      showSearch: true,
-      // 总条数
-      total: 0,
-      // 员工出勤基本资料维护表格数据
-      attendenceBasisList: [],
-      // 弹出层标题
-      title: "",
       // 是否显示修改弹出层
       open: false,
       //是否显示新增弹出层
       opencreate: false,
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        name:null,
-        code:null,
+      //选单树数据转化
+      defaultProps: {
+        children: 'children',
+        label: 'label2'
       },
+      //选单目录数据
+      menuData: [],
       // 表单参数
       form: {},
+      //弹出窗标题
+      title: '',
+      //查询参数
+      queryParams: {
+        pageSize: 10,
+        pageNum: 1,
+        id: null,
+      },
+      // 总条数
+      total: 0,
+      table: {
+        border: true,
+        loading: false,
+      },
+      tableData: [],
+      //默认显示id
+      defaultShowNodes: [],
       // 表单校验
       rules: {
         code: [
@@ -216,59 +198,47 @@ export default {
           { required: true, message: "资料名称不能为空", trigger: "blur" }
         ],
       }
-    };
+    }
+  },
+  watch: {
+    // 监听数据 设置默认展示第一层数据
+    menuData: {
+      handler(val) {
+        val.forEach(item => {
+          this.defaultShowNodes.push(item.id);
+        })
+      },
+      deep: true,
+    }
   },
   created() {
-    this.getName();
-    this.getList();
+    this.getBaseInfoTree();
   },
   methods: {
-    // 获取当前登录用户名称/信息
-    getName(){
-      getAvatorByUserName(this.$store.state.user.name).then( response => {
-        this.nickName=response.data.nickName
-        this.logincompId=response.data.compId
+    //获取选单配置树
+    getBaseInfoTree() {
+      treeselect().then(response => {
+        this.menuData = response.data;
+        this.loading = false;
       })
     },
-    /** 查询员工出勤基本资料维护列表 */
-    getList() {
-      this.loading = true;
+    //点击节点方法
+    handleNodeClick(data) {
+      this.queryParams.id = data.id;
+      this.tableData = []
+      this.onLoad()
+    },
+    //载入数据
+    onLoad() {
+      this.table.loading = true;//加载状态
       listAttendenceBasis(this.queryParams).then(response => {
-        this.attendenceBasisList = response.rows;
-        this.attendenceBasisList = this.handleTree(response.rows, "id","parentid");
         this.total = response.total;
-        this.loading = false;
+        this.tableData = response.rows;//表格数据
+        this.table.loading = false;
+      }, error => {
+        this.table.loading = false;
+        window.console.log(error);
       });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.opencreate = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        code: null,
-        name: null,
-        status: '0',
-        compId: null,
-        isShowno: null,
-        isChecked: null,
-        orderNum: null,
-        parentid: null,
-        parents: null,
-        creator: null,
-        creatorId: null,
-        createDate: null
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
     },
     /** 添加下级操作 */
     handlechild(row){
@@ -293,12 +263,17 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset();
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1)
-      this.opencreate = true;
-      this.title = "新增窗口";
+      if(this.queryParams.id!=null){
+        this.reset();
+        this.form.parentid = this.queryParams.id;
+        this.form.creator = this.nickName;
+        this.form.creatorId = this.$store.state.user.name;
+        this.form.createDate = getDateTime(1)
+        this.open = true;
+        this.title = "新增窗口";
+      }else{
+        this.$modal.msgWarning("请先选择父菜单");
+      }
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -306,7 +281,7 @@ export default {
       const id = row.id || this.ids
       getAttendenceBasis(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.nickName;
+        this.form.creator = this.$store.state.user.userInfo.nickName;
         this.form.creatorId = this.$store.state.user.name;
         this.form.createDate = getDateTime(1)
         this.open = true;
@@ -321,14 +296,14 @@ export default {
             updateAttendenceBasis(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.opencreate = false;
+              this.open = false;
               this.getList();
             });
           } else {
             addAttendenceBasis(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.opencreate = false;
+              this.open = false;
               this.getList();
             });
           }
@@ -345,17 +320,45 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/attendenceBasis/export', {
-        ...this.queryParams
-      }, `attendenceBasis_${new Date().getTime()}.xlsx`)
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        code: null,
+        name: null,
+        status: '0',
+        compId: null,
+        isShowno: null,
+        isChecked: null,
+        orderNum: null,
+        parentid: null,
+        parents: null,
+        creator: null,
+        creatorId: null,
+        createDate: null
+      };
+      this.resetForm("form");
+    },
+    //获取列表数据
+    getList(){
+      this.getBaseInfoTree();
+      this.onLoad();
     }
   }
-};
+}
 </script>
-<style scoped>
-.maxWidth {
-  width: 100%;
+
+<style>
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
 }
 </style>

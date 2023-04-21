@@ -13,7 +13,7 @@ export function listJobTitle(query) {
 // 查询职位名称数据idname
 export function listJobTitleidname(compId) {
   return request({
-    url: '/human/jobTitle/getidname',
+    url: '/human/jobTitle/getIdname',
     method: 'get',
     params: compId
   })

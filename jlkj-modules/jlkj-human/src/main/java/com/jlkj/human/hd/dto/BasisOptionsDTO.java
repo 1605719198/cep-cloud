@@ -32,30 +32,30 @@ public class BasisOptionsDTO {
     /** 公司别 */
     private String compId;
 
-    /** 是否显示编码 */
-    private String isShowno;
-
-    /** 默认值 */
-    private String isChecked;
-
-    /** 排序序号 */
-    private Long orderNum;
-
-    /** 父节点ID */
-    private Long parentid;
-
-    /** 祖籍关系 */
-    private String parents;
-
-    /** 输入人 */
-    private String creator;
-
-    /** 输入人id */
-    private String creatorId;
-
-    /** 输入日期 */
-    private Date createDate;
-
-    /** 子部门 */
-    private List<Attendencebasis> children ;
+//    /** 是否显示编码 */
+//    private String isShowno;
+//
+//    /** 默认值 */
+//    private String isChecked;
+//
+//    /** 排序序号 */
+//    private Long orderNum;
+//
+//    /** 父节点ID */
+//    private Long parentid;
+//
+//    /** 祖籍关系 */
+//    private String parents;
+//
+//    /** 输入人 */
+//    private String creator;
+//
+//    /** 输入人id */
+//    private String creatorId;
+//
+//    /** 输入日期 */
+//    private Date createDate;
+//
+//    /** 子部门 */
+//    private List<Attendencebasis> children ;
 }

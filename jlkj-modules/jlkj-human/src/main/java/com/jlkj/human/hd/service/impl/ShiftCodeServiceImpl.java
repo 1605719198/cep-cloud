@@ -3,6 +3,7 @@ package com.jlkj.human.hd.service.impl;
 import java.util.List;
 
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.human.hd.mapper.ShiftCodeMapper;
@@ -24,6 +25,17 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
     /**
      * 查询班次数据
      *
+     * @param personShiftCodedto 排班人员工号时间
+     * @return 班次数据
+     */
+    @Override
+    public ShiftCode selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto){
+        return shiftCodeMapper.selectShiftCodeByPerson(personShiftCodedto);
+    }
+
+    /**
+     * 查询班次数据
+     *
      * @param id 班次数据主键
      * @return 班次数据
      */
@@ -32,6 +44,7 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
     {
         return shiftCodeMapper.selectShiftCodeById(id);
     }
+
 
     /**
      * 查询班次数据列表

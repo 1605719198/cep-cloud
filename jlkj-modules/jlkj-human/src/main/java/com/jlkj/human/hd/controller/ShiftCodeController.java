@@ -3,6 +3,8 @@ package com.jlkj.human.hd.controller;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +73,16 @@ public class ShiftCodeController extends BaseController
     }
 
     /**
+     * 通过人员日期及工号获取班次详细信息
+     */
+    @PostMapping("/getShiftData")
+    public AjaxResult getShiftData(PersonShiftCodeDTO personShiftCodeDTO){
+        System.out.println(personShiftCodeDTO.toString());
+        return success(shiftCodeService.selectShiftCodeByPerson(personShiftCodeDTO));
+    }
+
+
+    /**
      * 新增班次数据
      */
     @RequiresPermissions("human:shiftCode:add")
@@ -102,4 +114,6 @@ public class ShiftCodeController extends BaseController
     {
         return toAjax(shiftCodeService.deleteShiftCodeByIds(ids));
     }
+
+
 }

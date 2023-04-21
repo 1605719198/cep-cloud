@@ -150,7 +150,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         oldPersonColock.setEffectDate(personColock.getEffectDate());
         oldPersonColock.setEmpId(personColock.getEmpId());
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
-        Boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColock.getId()));
+        Boolean bool = oldList.size()==0;
         if(bool){
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() >= lastEffectData.getEffectDate().getTime()){
@@ -161,7 +161,7 @@ public class PersonColockServiceImpl implements IPersonColockService
                 throw new Exception("该人员新的生效日期必须大于等于"+ymddate.format(lastEffectData.getEffectDate()));
             }
         }else{
-            if(personColock.getOrgColockId()!=null){
+            if(personColock.getOrgColockId()!=null && oldList.size()==1 && !oldList.get(0).getId().equals(personColock.getId())){
                 deletePersonColockById(oldList.get(0).getId());
                 return updatePersonColock(personColock);
             }else{

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.ArrangeClassMapper">
+    
+    <resultMap type="ArrangeClass" id="ArrangeClassResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="arrangeClassMasterId"    column="arrange_class_master_id"    />
+        <result property="shiftmodeId"    column="shiftmode_id"    />
+        <result property="classId"    column="class_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="shiftCode"    column="shift_code"    />
+        <result property="arrShiDate"    column="arr_shi_date"    />
+        <result property="shiftDesc"    column="shift_desc"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectArrangeClassVo">
+        select id, comp_id, arrange_class_master_id, shiftmode_id, class_id, shift_id, shift_code, arr_shi_date, shift_desc, creator, creator_id, create_date from human_hd_arrange_class
+    </sql>
+
+    <select id="selectArrangeClassList" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
+        <include refid="selectArrangeClassVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
+            <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
+            <if test="arrShiDate != null "> and  year(arr_shi_date)  = year(#{arrShiDate}) </if>
+        </where>
+    </select>
+
+    <select id="quertArrangeClass" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
+        <include refid="selectArrangeClassVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
+            <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
+            <if test="arrShiDate != null "> and  arr_shi_date  = #{arrShiDate} </if>
+        </where>
+    </select>
+    
+    <select id="selectArrangeClassById" parameterType="String" resultMap="ArrangeClassResult">
+        <include refid="selectArrangeClassVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectArrangeClassByClass" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
+        <include refid="selectArrangeClassVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
+            <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
+            <if test="arrShiDate != null "> and arr_shi_date = #{arrShiDate}</if>
+        </where>
+        limit 1
+    </select>
+        
+    <insert id="insertArrangeClass" parameterType="ArrangeClass">
+        insert into human_hd_arrange_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="arrangeClassMasterId != null">arrange_class_master_id,</if>
+            <if test="shiftmodeId != null">shiftmode_id,</if>
+            <if test="classId != null">class_id,</if>
+            <if test="shiftId != null">shift_id,</if>
+            <if test="shiftCode != null">shift_code,</if>
+            <if test="arrShiDate != null">arr_shi_date,</if>
+            <if test="shiftDesc != null">shift_desc,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="arrangeClassMasterId != null">#{arrangeClassMasterId},</if>
+            <if test="shiftmodeId != null">#{shiftmodeId},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="shiftId != null">#{shiftId},</if>
+            <if test="shiftCode != null">#{shiftCode},</if>
+            <if test="arrShiDate != null">#{arrShiDate},</if>
+            <if test="shiftDesc != null">#{shiftDesc},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrangeClass" parameterType="ArrangeClass">
+        update human_hd_arrange_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="arrangeClassMasterId != null">arrange_class_master_id = #{arrangeClassMasterId},</if>
+            <if test="shiftmodeId != null">shiftmode_id = #{shiftmodeId},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
+            <if test="shiftCode != null">shift_code = #{shiftCode},</if>
+            <if test="arrShiDate != null">arr_shi_date = #{arrShiDate},</if>
+            <if test="shiftDesc != null">shift_desc = #{shiftDesc},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteArrangeClassById" parameterType="String">
+        delete from human_hd_arrange_class where id = #{id}
+    </delete>
+
+    <delete id="deleteArrangeClassByIds" parameterType="String">
+        delete from human_hd_arrange_class where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

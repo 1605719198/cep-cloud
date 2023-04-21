@@ -48,6 +48,17 @@ public class ShiftModeController extends BaseController
     }
 
     /**
+     * 查询轮班方式数据列表(所有)
+     */
+    @RequiresPermissions("human:shiftMode:list")
+    @GetMapping("/listAll")
+    public TableDataInfo listAll(ShiftMode shiftMode)
+    {
+        List<ShiftMode> list = shiftModeService.selectShiftModeListAll(shiftMode);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出轮班方式数据列表
      */
     @RequiresPermissions("human:shiftMode:export")

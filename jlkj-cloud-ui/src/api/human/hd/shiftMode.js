@@ -9,6 +9,15 @@ export function listShiftMode(query) {
   })
 }
 
+// 查询轮班方式数据列表
+export function listShiftModeAll(query) {
+  return request({
+    url: '/human/shiftMode/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询轮班方式数据详细
 export function getShiftMode(id) {
   return request({

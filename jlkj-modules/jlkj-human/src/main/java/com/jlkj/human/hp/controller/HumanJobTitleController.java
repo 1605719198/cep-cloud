@@ -7,8 +7,8 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.human.hp.domain.HumanHpJobTitle;
-import com.jlkj.human.hp.service.IHumanHpJobTitleService;
+import com.jlkj.human.hp.domain.HumanJobTitle;
+import com.jlkj.human.hp.service.HumanJobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,31 +23,30 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/jobTitle")
-public class HumanHpJobTitleController extends BaseController
+public class HumanJobTitleController extends BaseController
 {
     @Autowired
-    private IHumanHpJobTitleService humanHpJobTitleService;
+    private HumanJobTitleService humanHpHumanJobTitleService;
 
     /**
      * 查询职位名称数据维护列表
      */
     @RequiresPermissions("human:jobTitle:list")
     @GetMapping("/list")
-    public TableDataInfo list(HumanHpJobTitle humanHpJobTitle)
+    public TableDataInfo list(HumanJobTitle humanJobTitle)
     {
         startPage();
-        List<HumanHpJobTitle> list = humanHpJobTitleService.selectHumanHpJobTitleList(humanHpJobTitle);
+        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleList(humanJobTitle);
         return getDataTable(list);
     }
 
     /**
      * 查询职位名称idname列表
      */
-    @GetMapping("/getidname")
+    @GetMapping("/getIdname")
     public TableDataInfo list(String compId)
     {
-        startPage();
-        List<HumanHpJobTitle> list = humanHpJobTitleService.selectHumanHpJobTitleidname(compId);
+        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleidname(compId);
         return getDataTable(list);
     }
 
@@ -57,10 +56,10 @@ public class HumanHpJobTitleController extends BaseController
     @RequiresPermissions("human:jobTitle:export")
     @Log(title = "职位名称数据维护", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HumanHpJobTitle humanHpJobTitle)
+    public void export(HttpServletResponse response, HumanJobTitle humanJobTitle)
     {
-        List<HumanHpJobTitle> list = humanHpJobTitleService.selectHumanHpJobTitleList(humanHpJobTitle);
-        ExcelUtil<HumanHpJobTitle> util = new ExcelUtil<HumanHpJobTitle>(HumanHpJobTitle.class);
+        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleList(humanJobTitle);
+        ExcelUtil<HumanJobTitle> util = new ExcelUtil<HumanJobTitle>(HumanJobTitle.class);
         util.exportExcel(response, list, "职位名称数据维护数据");
     }
 
@@ -71,7 +70,7 @@ public class HumanHpJobTitleController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
-        return success(humanHpJobTitleService.selectHumanHpJobTitleById(id));
+        return success(humanHpHumanJobTitleService.selectHumanJobTitleById(id));
     }
 
     /**
@@ -80,9 +79,9 @@ public class HumanHpJobTitleController extends BaseController
     @RequiresPermissions("human:jobTitle:add")
     @Log(title = "职位名称数据维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HumanHpJobTitle humanHpJobTitle)throws Exception
+    public AjaxResult add(@RequestBody HumanJobTitle humanJobTitle)throws Exception
     {
-        return toAjax(humanHpJobTitleService.insertHumanHpJobTitle(humanHpJobTitle));
+        return toAjax(humanHpHumanJobTitleService.insertHumanJobTitle(humanJobTitle));
     }
 
     /**
@@ -91,9 +90,9 @@ public class HumanHpJobTitleController extends BaseController
     @RequiresPermissions("human:jobTitle:edit")
     @Log(title = "职位名称数据维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HumanHpJobTitle humanHpJobTitle) throws Exception
+    public AjaxResult edit(@RequestBody HumanJobTitle humanJobTitle) throws Exception
     {
-        return toAjax(humanHpJobTitleService.updateHumanHpJobTitle(humanHpJobTitle));
+        return toAjax(humanHpHumanJobTitleService.updateHumanJobTitle(humanJobTitle));
     }
 
     /**
@@ -104,6 +103,6 @@ public class HumanHpJobTitleController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
     {
-        return toAjax(humanHpJobTitleService.deleteHumanHpJobTitleByIds(ids));
+        return toAjax(humanHpHumanJobTitleService.deleteHumanJobTitleByIds(ids));
     }
 }

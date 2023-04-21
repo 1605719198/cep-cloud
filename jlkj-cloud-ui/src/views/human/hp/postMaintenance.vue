@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
+          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司" >
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -31,7 +31,7 @@
       <el-col :span="20" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
           <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
+            <el-select :popper-append-to-body="false" v-model="queryParams.status" placeholder="请选择状态" clearable>
               <el-option
                 v-for="dict in baseInfoData.dept_status"
                 :key="dict.dicNo"
@@ -73,7 +73,7 @@
               :disabled="multiple"
               @click="handleDelete"
               v-hasPermi="['human:postMaintenance:remove']"
-            >删除</el-button>
+            >作废</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
@@ -104,13 +104,13 @@
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['human:postMaintenance:edit']"
               >修改</el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-                v-hasPermi="['human:postMaintenance:remove']"
-              >删除</el-button>
+<!--              <el-button-->
+<!--                size="mini"-->
+<!--                type="text"-->
+<!--                icon="el-icon-delete"-->
+<!--                @click="handleDelete(scope.row)"-->
+<!--                v-hasPermi="['human:postMaintenance:remove']"-->
+<!--              >删除</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -152,7 +152,6 @@ export default {
       baseInfo: {
         uuid: '',
         baseInfoList: [
-          'comp_id',
           'dept_status'
         ]
       },
@@ -195,7 +194,7 @@ export default {
         status: '2',
         orgId: null,
         compId: null,
-        deptId:null,
+        postName: null,
       },
       queryParams2: {
         postId:null,
@@ -350,7 +349,7 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-        this.queryParams.deptId = data.id;
+        this.queryParams.orgId = data.id;
         this.handleQuery();
     },
     /** 查询岗位信息数据维护列表 */
@@ -381,6 +380,7 @@ export default {
         jobTitleId: null,
         serialNumber: null,
         shiftWorkId: null,
+        deptType: null,
         employmentNatureId: null,
         workAddressId: null,
         workAddress: null,
@@ -473,14 +473,14 @@ export default {
         })
       });
     },
-    /** 删除按钮操作 */
+    /** 作废按钮操作 */
     handleDelete(row) {
       const postIds = row.postId || this.ids;
-      this.$modal.confirm('是否确认删除岗位信息数据维护编号为"' + postIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认作废岗位信息数据维护编号为"' + postIds + '"的数据项？').then(function() {
         return delPostMaintenance(postIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("作废");
       }).catch(() => {});
     },
   }
@@ -493,5 +493,10 @@ export default {
 .treeScrollbar {
   height: 100%;
 }
-
+.el-select {
+  width: 100%;
+}
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
+}
 </style>

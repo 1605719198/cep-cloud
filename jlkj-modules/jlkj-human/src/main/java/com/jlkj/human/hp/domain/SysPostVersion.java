@@ -712,7 +712,7 @@ public class SysPostVersion extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("Id", getId())
+                .append("id", getId())
                 .append("postId", getPostId())
                 .append("postCode", getPostCode())
                 .append("postName", getPostName())

@@ -13,7 +13,7 @@ import java.util.Date;
  * @author 266861
  * @date 2023-03-13
  */
-public class HumanHpJobTitle extends BaseEntity
+public class HumanJobTitle extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

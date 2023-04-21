@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.HolidayTableMapper">
+    
+    <resultMap type="HolidayTable" id="HolidayTableResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="year"    column="year"    />
+        <result property="month"    column="month"    />
+        <result property="day"    column="day"    />
+        <result property="dateType"    column="date_type"    />
+        <result property="holDay"    column="hol_day"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectHolidayTableVo">
+        select id, comp_id, year, month, day, date_type, hol_day, creator, creator_id, create_date from human_hd_holiday
+    </sql>
+
+    <select id="selectHolidayTableList" parameterType="HolidayTable" resultMap="HolidayTableResult">
+        <include refid="selectHolidayTableVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+    </select>
+    
+    <select id="selectHolidayTableById" parameterType="String" resultMap="HolidayTableResult">
+        <include refid="selectHolidayTableVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectHolidayTableByData" parameterType="HolidayTable" resultMap="HolidayTableResult">
+        <include refid="selectHolidayTableVo"/>
+        <where>
+            <if test="holDay != null "> and hol_day = #{holDay}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+        
+    <insert id="insertHolidayTable" parameterType="HolidayTable">
+        insert into human_hd_holiday
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="year != null">year,</if>
+            <if test="month != null">month,</if>
+            <if test="day != null">day,</if>
+            <if test="dateType != null">date_type,</if>
+            <if test="holDay != null">hol_day,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="month != null">#{month},</if>
+            <if test="day != null">#{day},</if>
+            <if test="dateType != null">#{dateType},</if>
+            <if test="holDay != null">#{holDay},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHolidayTable" parameterType="HolidayTable">
+        update human_hd_holiday
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="dateType != null">date_type = #{dateType},</if>
+            <if test="holDay != null">hol_day = #{holDay},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHolidayTableById" parameterType="String">
+        delete from human_hd_holiday where id = #{id}
+    </delete>
+
+    <delete id="deleteHolidayTableByIds" parameterType="String">
+        delete from human_hd_holiday where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

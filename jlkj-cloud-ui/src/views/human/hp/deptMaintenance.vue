@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-select v-model="compId" placeholder="请选择公司名称" clearable size="small">
+          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司名称" clearable size="small">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -159,7 +159,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构层级" prop="orgTierId">
-              <el-select v-model="form.orgTierId" placeholder="请选择机构层级" clearable size="small" class="maxWidth">
+              <el-select :popper-append-to-body="false" v-model="form.orgTierId" placeholder="请选择机构层级" clearable size="small" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.HP002"
                   :key="dict.dicNo"
@@ -282,7 +282,7 @@
     <el-dialog :title="titlecopy" :visible.sync="opencopy" width="500px" append-to-body>
       <el-form ref="formcopy" :model="formcopy" :rules="rulescopy" label-width="150px">
         <el-form-item label="来源公司" prop="oldCompId">
-          <el-select v-model="formcopy.oldCompId" placeholder="请选择来源公司" clearable>
+          <el-select :popper-append-to-body="false" v-model="formcopy.oldCompId" placeholder="请选择来源公司" clearable>
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -292,7 +292,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="目标公司" prop="newCompId">
-          <el-select v-model="formcopy.newCompId" placeholder="请选择目标公司" clearable>
+          <el-select :popper-append-to-body="false" v-model="formcopy.newCompId" placeholder="请选择目标公司" clearable>
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -307,7 +307,6 @@
         <el-button @click="cancelcopy">取 消</el-button>
       </div>
     </el-dialog>
-    <select-user ref="select" @ok="getJobNumber"></select-user>
   </div>
 </template>
 
@@ -319,11 +318,10 @@ import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmai
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getAvatorByUserName } from "@/api/system/user";
-import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
   dicts: ['sys_normal_disable'],
-  components: {Treeselect,selectUser,DictTagHumanBase},
+  components: {Treeselect,DictTagHumanBase},
   data() {
     return {
       //公司数据

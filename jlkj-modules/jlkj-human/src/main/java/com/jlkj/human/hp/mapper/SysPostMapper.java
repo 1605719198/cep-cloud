@@ -37,12 +37,20 @@ public interface SysPostMapper
     public int insertSysPost(SysPost sysPost);
 
     /**
+     * 查询流水号
+     *
+     * @param sysPost 岗位信息数据维护
+     * @return 结果
+     */
+    public SysPost querySerialNumber(SysPost sysPost);
+
+    /**
      * 根据部门编码查询信息
      *
-     * @param postCode 部门编码
+     * @param sysPost 部门
      * @return 部门信息
      */
-    public SysPost selectSysPostByPostCode(String postCode);
+    public SysPost selectSysPostByPostCode(SysPost sysPost);
 
     /**
      * 修改岗位信息数据维护

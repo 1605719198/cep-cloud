@@ -5,7 +5,7 @@
 <mapper namespace="com.jlkj.human.hp.mapper.SysPostVersionMapper">
 
     <resultMap type="SysPostVersion" id="SysPostVersionResult">
-        <result property="Id"    column="id"    />
+        <result property="id"    column="id"    />
         <result property="postId"    column="post_id"    />
         <result property="postCode"    column="post_code"    />
         <result property="postName"    column="post_name"    />

@@ -14,10 +14,10 @@
       <el-form-item label="假别名称" prop="holidayTypeCode">
         <el-select v-model="queryParams.holidayTypeCode" placeholder="请选择假别名称" clearable>
           <el-option
-            v-for="dict in humanOptions"
-            :key="dict.code"
-            :label="dict.name"
-            :value="dict.code"
+            v-for="dict in attendenceOptions.HD001"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
           />
         </el-select>
       </el-form-item>
@@ -55,7 +55,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="假别名称" align="center" prop="holidayTypeCode">
         <template v-slot="scope">
-          <dict-tag-human-basis :options="humanOptions" :value="scope.row.holidayTypeCode"/>
+          <dict-tag-human-basis :options="attendenceOptions.HD001" :value="scope.row.holidayTypeCode"/>
         </template>
       </el-table-column>
       <el-table-column label="是否含假日" align="center" prop="isIncHol">
@@ -121,10 +121,10 @@
             <el-form-item label="假别名称" prop="holidayTypeCode">
               <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id">
                 <el-option
-                  v-for="dict in humanOptions"
-                  :key="dict.code"
-                  :label="dict.name"
-                  :value="dict.code"
+                  v-for="dict in attendenceOptions"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 />
               </el-select>
             </el-form-item>
@@ -217,7 +217,7 @@
 </template>
 
 <script>
-import DictTagHumanBasis from "@/views/components/human/dictTag/humanBasis"
+import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getBasisOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanutils"
@@ -248,8 +248,6 @@ export default {
       },
       //选单数据
       baseInfoData: [],
-      //人事出勤选单
-      humanOptions:[],
       //登录人姓名
       nickName: undefined,
       //登录人公司
@@ -303,7 +301,14 @@ export default {
         newCompId:[
           { required: true, message: "目标公司不能为空", trigger: "change" }
         ]
-      }
+      },
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['HD001']
+      },
+      //出勤选单选项列表
+      attendenceOptions: {}
     };
   },
   watch: {
@@ -327,9 +332,8 @@ export default {
   created() {
     this.getCompanyList();
     //假别类型查询
-    var code = 'HD001'
-    getBasisOptions(code).then(response=> {
-      this.humanOptions=response.rows
+    getBasisOptions(this.attendenceOptionType).then(response=> {
+      this.attendenceOptions=response.rows
     })
     this.getHumandisc();
     this.getName();

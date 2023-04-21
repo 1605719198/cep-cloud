@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hp.mapper.HumanHpJobTitleMapper">
+<mapper namespace="com.jlkj.human.hp.mapper.HumanJobTitleMapper">
     
-    <resultMap type="HumanHpJobTitle" id="HumanHpJobTitleResult">
+    <resultMap type="HumanJobTitle" id="HumanJobTitleResult">
         <result property="id"    column="id"    />
         <result property="jobTitleNo"    column="job_title_no"    />
         <result property="jobTitleName"    column="job_title_name"    />
@@ -18,14 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="number"    column="number"    />
     </resultMap>
 
-    <sql id="selectHumanHpJobTitleVo">
+    <sql id="selectHumanJobTitleVo">
         select h.id, h.job_title_no, h.job_title_name, h.job_title_name_eng, h.over_time, h.kind, h.title_level, h.status, h.creator, h.create_date, COUNT( s.dept_id ) AS number
         from human_hp_job_title h
         LEFT JOIN sys_dept s ON h.job_title_no = s.comp_id
         GROUP BY h.id
     </sql>
 
-    <select id="selectHumanHpJobTitleList" parameterType="HumanHpJobTitle" resultMap="HumanHpJobTitleResult">
+    <select id="selectHumanJobTitleList" parameterType="HumanJobTitle" resultMap="HumanJobTitleResult">
         select h.id, h.job_title_no, h.job_title_name, h.job_title_name_eng, h.over_time, h.kind, h.title_level, h.status, h.creator, h.create_date, COUNT( s.dept_id ) AS number
         from human_hp_job_title h
         LEFT JOIN sys_dept s ON h.job_title_no = s.comp_id
@@ -34,32 +34,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and h.status = #{status}</if>
         </where>
         GROUP BY h.id
+        order by job_title_no
     </select>
 
-    <select id="selectHumanHpJobTitleByNoName" parameterType="HumanHpJobTitle" resultMap="HumanHpJobTitleResult">
+    <select id="selectHumanJobTitleByNoName" parameterType="HumanJobTitle" resultMap="HumanJobTitleResult">
         select h.id, h.job_title_no, h.job_title_name, h.job_title_name_eng, h.over_time, h.kind, h.title_level, h.status, h.creator, h.create_date
         from human_hp_job_title h
         where  h.job_title_no = #{jobTitleNo}  or h.job_title_name = #{jobTitleName}
     </select>
     
-    <select id="selectHumanHpJobTitleById" parameterType="String" resultMap="HumanHpJobTitleResult">
+    <select id="selectHumanJobTitleById" parameterType="String" resultMap="HumanJobTitleResult">
         select h.id, h.job_title_no, h.job_title_name, h.job_title_name_eng, h.over_time, h.kind, h.title_level, h.status, h.creator, h.create_date, COUNT( s.dept_id ) AS number
         from human_hp_job_title h
                  LEFT JOIN sys_dept s ON h.job_title_no = s.comp_id
         where h.id = #{id}
     </select>
 
-    <select id="selectHumanHpJobTitleidname" parameterType="String" resultMap="HumanHpJobTitleResult">
+    <select id="selectHumanJobTitleidname" parameterType="String" resultMap="HumanJobTitleResult">
         select job_title_no,job_title_name
         from human_hp_job_title h
         where 1 = 1
         <!--        <where>-->
         <!--            <if test="compID != null  and compID != ''"> and comp_id = #{compId}</if>-->
         <!--        </where>-->
+        order by job_title_no
     </select>
 
         
-    <insert id="insertHumanHpJobTitle" parameterType="HumanHpJobTitle">
+    <insert id="insertHumanJobTitle" parameterType="HumanJobTitle">
         insert into human_hp_job_title
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -87,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateHumanHpJobTitle" parameterType="HumanHpJobTitle">
+    <update id="updateHumanJobTitle" parameterType="HumanJobTitle">
         update human_hp_job_title
         <trim prefix="SET" suffixOverrides=",">
             <if test="jobTitleNo != null">job_title_no = #{jobTitleNo},</if>
@@ -103,11 +105,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteHumanHpJobTitleById" parameterType="String">
+    <delete id="deleteHumanJobTitleById" parameterType="String">
         delete from human_hp_job_title where id = #{id}
     </delete>
 
-    <delete id="deleteHumanHpJobTitleByIds" parameterType="String">
+    <delete id="deleteHumanJobTitleByIds" parameterType="String">
         delete from human_hp_job_title where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}

@@ -43,6 +43,9 @@ public class SysPost extends BaseEntity
     /** 岗位类别id */
     private String postTypeId;
 
+    /** 职位类别 */
+    private String deptType;
+
     /** 职位名称id */
     private String jobTitleId;
 
@@ -289,6 +292,15 @@ public class SysPost extends BaseEntity
     public String getShiftWorkId()
     {
         return shiftWorkId;
+    }
+    public void setDeptType(String deptType)
+    {
+        this.deptType = deptType;
+    }
+
+    public String getDeptType()
+    {
+        return deptType;
     }
     public void setEmploymentNatureId(String employmentNatureId)
     {
@@ -704,6 +716,7 @@ public class SysPost extends BaseEntity
             .append("postName", getPostName())
             .append("deptId", getDeptId())
             .append("specialityTypeId", getSpecialityTypeId())
+            .append("deptType", getDeptType())
             .append("specialityId", getSpecialityId())
             .append("postSequenceId", getPostSequenceId())
             .append("postTypeId", getPostTypeId())

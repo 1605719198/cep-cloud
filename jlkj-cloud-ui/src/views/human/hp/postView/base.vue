@@ -13,15 +13,15 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="岗位编码" prop="postCode">
-                  <el-input v-model="form.postCode" placeholder="请输入岗位编码" maxlength="100"/>
+                  <el-input v-model="form.postCode" placeholder="请输入岗位编码" maxlength="100" disabled/>
                 </el-form-item>
               </el-col>
             </el-row>
 
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="所属公司/机构" prop="deptId">
-                  <treeselect v-model="form.deptId" :options="allDeptOptions" :show-count="true" placeholder="请选择所属公司/机构" :normalizer="normalizer" @select="deptChange"/>
+                <el-form-item label="所属公司/机构" prop="orgId">
+                  <treeselect v-model="form.orgId" :options="allDeptOptions" :show-count="true" placeholder="请选择所属公司/机构" :normalizer="normalizer" @select="deptChange"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -40,7 +40,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="专长类别" prop="specialityTypeId">
-                  <el-select v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  class="maxWidth" >
+                  <el-select :popper-append-to-body="false" v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  class="maxWidth" >
                     <el-option
                       v-for="dict in baseInfoData.HP013"
                       :key="dict.uuid"
@@ -52,7 +52,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="专长" prop="specialityId">
-                  <el-select v-model="form.specialityId" placeholder="请选择专长" class="maxWidth" >
+                  <el-select :popper-append-to-body="false" v-model="form.specialityId" placeholder="请选择专长" class="maxWidth" >
                     <el-option
                       v-for="dict in deepOptions1"
                       :key="dict.dicNo"
@@ -67,7 +67,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="岗位序列" prop="postSequenceId">
-                  <el-select v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP003"
                       :key="dict.uuid"
@@ -79,7 +79,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="岗位类别" prop="postTypeId">
-                  <el-select v-model="form.postTypeId" placeholder="请选择岗位类别" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.postTypeId" placeholder="请选择岗位类别" class="maxWidth">
                     <el-option
                       v-for="dict in deepOptions2"
                       :key="dict.dicNo"
@@ -94,29 +94,19 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="职位名称" prop="jobTitleId">
-                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" class="maxWidth">
                     <el-option
-                      v-for="dict in jobTitle"
+                      v-for="dict in humanJobTitle"
                       :key="dict.jobTitleNo"
-                      :label="dict.jobTitleName"
+                      :label="dict.jobTitleNo+'-'+ dict.jobTitleName"
                       :value="dict.jobTitleNo"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-<!--                <el-form-item label="职位名称" prop="jobTitleId" >-->
-<!--                  <el-select v-model="form.jobTitleId" placeholder="请选择职位名称" class="maxWidth">-->
-<!--                    <el-option-->
-<!--                      v-for="dict in dict.type.job_title_id"-->
-<!--                      :key="dict.value"-->
-<!--                      :label="dict.label"-->
-<!--                      :value="dict.value"-->
-<!--                    ></el-option>-->
-<!--                  </el-select>-->
-<!--                </el-form-item>-->
               </el-col>
               <el-col :span="12">
                 <el-form-item label="流水号" prop="serialNumber">
-                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="20" />
+                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="20" disabled />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -124,7 +114,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="工作地点" prop="workAddressId">
-                  <el-select v-model="form.workAddressId" placeholder="请选择工作地点" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.workAddressId" placeholder="请选择工作地点" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP004"
                       :key="dict.dicNo"
@@ -136,12 +126,12 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="公司(具体工作地点)" prop="workAddress">
-                  <el-select v-model="form.workAddress" placeholder="请选择公司" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.workAddress" placeholder="请选择公司" class="maxWidth">
                     <el-option
                       v-for="dict in companyList"
-                      :key="dict.comp_id"
+                      :key="dict.compId"
                       :label="dict.companyName"
-                      :value="dict.comp_id"
+                      :value="dict.compId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -149,14 +139,26 @@
             </el-row>
 
             <el-row :gutter="20">
-              <el-col :span="24">
+              <el-col :span="12">
                 <el-form-item label="驻外地点(具体工作地点)" prop="overseasLocations">
                   <el-input v-model="form.overseasLocations" placeholder="请输入驻外地点" maxlength="100"  />
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item label="职位类别" prop="deptType">
+                  <el-select :popper-append-to-body="false" v-model="form.deptType" placeholder="请选择职位类别" class="maxWidth">
+                    <el-option
+                      v-for="dict in baseInfoData.HP020"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
             </el-row>
 
-            <el-row :gutter="20" v-if="this.form.postId!=null">
+            <el-row :gutter="20" >
               <el-col :span="12">
                 <el-form-item label="定员" prop="planCapacity">
                   <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
@@ -164,12 +166,12 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="现员" prop="nowCapacity">
-                  <el-input v-model="form.nowCapacity" placeholder="请输入现员" type="number" maxlength="10" disabled/>
+                  <el-input v-model="form.nowCapacity" placeholder="" type="number" maxlength="10" disabled/>
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" v-if="this.form.postId!=null">
+            <el-row :gutter="20" >
               <el-col :span="12">
                 <el-form-item label="该岗位直接下级定员数" prop="planCapacity" >
                   <el-input v-model="form.planCapacity" disabled/>
@@ -182,23 +184,12 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" v-if="this.form.postId!=null">
-              <el-col :span="12">
-                <el-form-item label="定员" prop="planCapacity">
-                  <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="排序序号" prop="postSort">
-                  <el-input v-model="form.postSort" placeholder="请输入排序序号" type="number" maxlength="5"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="上级岗位名称" prop="parentPostName">
-                  <el-input v-model="form.parentPostName" placeholder="请输入上级岗位名称" maxlength="200" />
+                  <el-input maxlength="200"  v-model="form.parentPostName" placeholder="请选择上级岗位" disabled>
+                    <el-button slot="append" icon="el-icon-search" @click="inputPostClick()"></el-button>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -209,14 +200,18 @@
             </el-row>
 
 
-            <el-form-item label="变更原因" prop="changeReason" v-if="this.form.postId!=null">
-              <el-input v-model="form.changeReason" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="1000" />
-            </el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item label="变更原因" prop="changeReason">
+                  <el-input v-model="form.changeReason" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="1000" />
+                </el-form-item>
+              </el-col>
+            </el-row>
 
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="用工性质" prop="employmentNatureId">
-                  <el-select v-model="form.employmentNatureId" placeholder="请选择用工性质" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.employmentNatureId" placeholder="请选择用工性质" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP006"
                       :key="dict.dicNo"
@@ -228,7 +223,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="职位费用类别" prop="positionExpenseCategory">
-                  <el-select v-model="form.positionExpenseCategory" placeholder="职位费用类别" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.positionExpenseCategory" placeholder="职位费用类别" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP007"
                       :key="dict.dicNo"
@@ -271,34 +266,6 @@
                 </el-form-item>
               </el-col>
             </el-row>
-
-            <!--      <el-form-item label="倒班方式" prop="shiftWorkId">-->
-            <!--        <el-input v-model="form.shiftWorkId" placeholder="请输入倒班方式" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="是否配置专人" prop="ifSpeciallyAssignedPerson">-->
-            <!--        <el-input v-model="form.ifSpeciallyAssignedPerson" placeholder="请输入是否配置专人" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="职级ID" prop="positionsClassId">-->
-            <!--        <el-input v-model="form.positionsClassId" placeholder="请输入职级ID" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="所属公司/机构名称" prop="orgName">-->
-            <!--        <el-input v-model="form.orgName" placeholder="请输入所属公司/机构名称" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="所属公司/机构全称" prop="orgFullName">-->
-            <!--        <el-input v-model="form.orgFullName" placeholder="请输入所属公司/机构全称" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="成本中心名称" prop="costCenterName">-->
-            <!--        <el-input v-model="form.costCenterName" type="textarea"   placeholder="请输入内容" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="版本" prop="versionNo">-->
-            <!--        <el-input v-model="form.versionNo" placeholder="请输入版本" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="是否新增" prop="ifNew">-->
-            <!--        <el-input v-model="form.ifNew" placeholder="请输入是否新增" />-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label="公司别" prop="compId">-->
-            <!--        <el-input v-model="form.compId" placeholder="请输入公司别" />-->
-            <!--      </el-form-item>-->
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="岗位职责设置">
@@ -358,6 +325,8 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+
+    <select-post ref="selectPost" @ok="getPost"/>
   </div>
 </template>
 
@@ -370,12 +339,14 @@ import duty from './duty'
 import qualification from './qualification'
 import { listPostVersion, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
 import { getBaseInfo, getDegreeMajorSpecialization } from "@/api/human/hm/baseInfo"
+import selectPost from "@/views/components/human/selectView/selectPost";
 export default {
   name: 'AddOrUpdate',
   components: {
     duty,
     qualification,
-    Treeselect
+    Treeselect,
+    selectPost
   },
   dicts: ['sys_normal_disable'],
   data(){
@@ -392,7 +363,8 @@ export default {
           'HP013',
           'HP004',
           'HP006',
-          'HP007'
+          'HP007',
+          'HP020'
         ]
       },
       //部门选单数据
@@ -410,13 +382,13 @@ export default {
       //表单参数
       form: {},
       //职位名称id列表
-      jobTitle:[],
+      humanJobTitle:[],
       //历史表单
       formHistory:[],
       // 表单校验
       rules: {
-        postCode: [
-          { required: true, message: "岗位编码不能为空", trigger: "blur" }
+        jobTitleId: [
+          { required: true, message: "职位名称不能为空", trigger: "blur" }
         ],
         postName: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" }
@@ -435,9 +407,6 @@ export default {
         ],
         postTypeId: [
           { required: true, message: "岗位类别不能为空", trigger: "change" }
-        ],
-        serialNumber: [
-          { required: true, message: "流水号不能为空", trigger: "blur" }
         ],
         workAddress: [
           { required: true, message: "公司不能为空", trigger: "change" }
@@ -465,6 +434,16 @@ export default {
     }
   },
   methods:{
+    //岗位弹窗打开事件
+    inputPostClick() {
+      var compId= this.form.compId;
+      this.$refs.selectPost.show(compId);
+    },
+    //岗位弹窗确定事件
+    getPost(postData) {
+      this.form.parentPostId = postData.postId;
+      this.form.parentPostName = postData.postName
+    },
     //获取公司列表
     getCompanyList(){
       selectCompany().then(response=>{
@@ -474,7 +453,7 @@ export default {
     init(form) {
       this.getCompanyList();
       listJobTitleidname('J00').then(response =>{
-        this.jobTitle = response.rows;
+        this.humanJobTitle = response.rows;
       })
       treeselect().then(response => {
         this.allDeptOptions = response.data;
@@ -492,6 +471,8 @@ export default {
           this.formHistory = response.rows;
         });
       }
+      this.deepOptions1 =[];
+      this.deepOptions2 =[];
       if(this.form.specialityTypeId){
         this.handleChangeA(this.form.specialityTypeId)
       }
@@ -522,6 +503,7 @@ export default {
     deptChange(val) {
       this.form.orgName = val.label
       this.form.deptId = val.id
+      this.form.orgId = val.id
       this.form.compId = val.label2
     },
     /** 提交按钮 */
@@ -568,8 +550,6 @@ export default {
     },
     //职位名称选择
     handleChangeC(value,label){
-      // alert(value)
-      // alert(label)
     },
     //取消操作
     cancel() {
@@ -583,5 +563,11 @@ export default {
 <style scoped>
 .maxWidth{
   width: 100%;
+}
+.el-select {
+  width: 100%;
+}
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
 }
 </style>

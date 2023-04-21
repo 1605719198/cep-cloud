@@ -28,6 +28,14 @@ public interface IShiftModeService
     public List<ShiftMode> selectShiftModeList(ShiftMode shiftMode);
 
     /**
+     * 查询轮班方式数据列表
+     *
+     * @param shiftMode 轮班方式数据
+     * @return 轮班方式数据集合
+     */
+    public List<ShiftMode> selectShiftModeListAll(ShiftMode shiftMode);
+
+    /**
      * 新增轮班方式数据
      * 
      * @param shiftMode 轮班方式数据

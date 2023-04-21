@@ -41,6 +41,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="PersonShiftCodeDTO" id="PersonShiftCodeResult">
+        <result property="empId"    column="emp_id"    />
+        <result property="date"    column="date"    />
+    </resultMap>
+
     <sql id="selectShiftCodeVo">
         select id, comp_id, shiftmode_id, shift_code, start_hour, start_min, con_hour, con_min, end_hour, end_min, is_noon, rest_count, big_sma_night, status, description, is_used, rest_start_hour, rest_start_min, rest_con_min, rest_end_hour, rest_end_min, rest_start_hour2, rest_start_min2, rest_con_min2, rest_end_hour2, rest_end_min2, rest_start_hour3, rest_start_min3, rest_con_min3, rest_end_hour3, rest_end_min3, creator, creator_id, create_date from human_hd_shift_code
     </sql>
@@ -56,6 +61,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectShiftCodeById" parameterType="String" resultMap="ShiftCodeResult">
         <include refid="selectShiftCodeVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectShiftCodeByPerson" parameterType="PersonShiftCodeDTO" resultMap="ShiftCodeResult">
+        select id, comp_id, shiftmode_id, shift_code, start_hour, start_min, con_hour, con_min, end_hour, end_min, is_noon, rest_count, big_sma_night, status, description, is_used, rest_start_hour, rest_start_min, rest_con_min, rest_end_hour, rest_end_min, rest_start_hour2, rest_start_min2, rest_con_min2, rest_end_hour2, rest_end_min2, rest_start_hour3, rest_start_min3, rest_con_min3, rest_end_hour3, rest_end_min3, creator, creator_id, create_date from human_hd_shift_code
+        where shift_code = (select fir_shift_code
+                            from human_hd_person_class_detail
+                            where emp_id = #{empId} and arr_shi_date = #{date})
+
     </select>
         
     <insert id="insertShiftCode" parameterType="ShiftCode">
