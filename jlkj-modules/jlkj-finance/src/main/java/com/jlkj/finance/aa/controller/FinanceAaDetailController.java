@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jlkj.finance.aa.domain.FinanceAaBase;
+import com.jlkj.finance.aa.dto.FinanceAaDetailDTO;
 import com.jlkj.finance.aa.service.IFinanceAaBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,9 +82,9 @@ public class FinanceAaDetailController extends BaseController
     @RequiresPermissions("aa:detail:add")
     @Log(title = "系统选单-明细设定", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody FinanceAaDetail financeAaDetail)
+    public AjaxResult add(@RequestBody FinanceAaDetailDTO financeAaDetailDTO)
     {
-        List<FinanceAaDetail> detailList = financeAaDetail.getDetailList();
+        List<FinanceAaDetailDTO> detailList = financeAaDetailDTO.getFinanceDetailList();
         return toAjax(financeAaDetailService.insertFinanceAaDetail(detailList));
     }
 
@@ -104,9 +105,9 @@ public class FinanceAaDetailController extends BaseController
      */
     @RequiresPermissions("aa:detail:remove")
     @Log(title = "系统选单-明细设定", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{leafId}")
-    public AjaxResult remove(@PathVariable String[] leafId)
+	@DeleteMapping("/{id}")
+    public AjaxResult remove(@PathVariable String[] id)
     {
-        return toAjax(financeAaDetailService.deleteFinanceAaDetailByIds(leafId));
+        return toAjax(financeAaDetailService.deleteFinanceAaDetailByIds(id));
     }
 }

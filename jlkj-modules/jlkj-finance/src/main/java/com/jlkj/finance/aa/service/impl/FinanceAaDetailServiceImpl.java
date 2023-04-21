@@ -5,6 +5,8 @@ import java.util.List;
 import cn.hutool.core.util.IdUtil;
 import com.jlkj.common.core.utils.DateUtils;
 
+import com.jlkj.finance.aa.dto.FinanceAaDetailDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.finance.aa.mapper.FinanceAaDetailMapper;
@@ -56,14 +58,15 @@ public class FinanceAaDetailServiceImpl implements IFinanceAaDetailService
      * @return 结果
      */
     @Override
-    public int insertFinanceAaDetail( List<FinanceAaDetail> detailList)
+    public int insertFinanceAaDetail( List<FinanceAaDetailDTO> detailList)
     {
         int insertFinanceAaCashflowCode = 0;
-        for ( FinanceAaDetail financeAaDetail:detailList){
-
-                financeAaDetail.setCreateTime(DateUtils.getNowDate());
-                financeAaDetail.setCreateBy(getUsername());
-                financeAaDetail.setId(IdUtil.randomUUID());
+        for ( FinanceAaDetailDTO financeAaDetailDTO:detailList){
+            FinanceAaDetail financeAaDetail = new FinanceAaDetail();
+            financeAaDetailDTO.setCreateTime(DateUtils.getNowDate());
+            financeAaDetailDTO.setCreateBy(getUsername());
+            financeAaDetailDTO.setId(IdUtil.randomUUID());
+            BeanUtils.copyProperties(financeAaDetailDTO,financeAaDetail);
                 insertFinanceAaCashflowCode = financeAaDetailMapper.insertFinanceAaDetail(financeAaDetail);
             }
 
@@ -88,13 +91,13 @@ public class FinanceAaDetailServiceImpl implements IFinanceAaDetailService
     /**
      * 批量删除系统选单-明细设定
      *
-     * @param leafId 需要删除的系统选单-明细设定主键
+     * @param id 需要删除的系统选单-明细设定主键
      * @return 结果
      */
     @Override
-    public int deleteFinanceAaDetailByIds(String[] leafId)
+    public int deleteFinanceAaDetailByIds(String[] id)
     {
-        return financeAaDetailMapper.deleteFinanceAaDetailByIds(leafId);
+        return financeAaDetailMapper.deleteFinanceAaDetailByIds(id);
     }
 
     /**
