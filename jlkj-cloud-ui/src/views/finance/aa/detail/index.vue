@@ -46,18 +46,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['aa:detail:remove']"
-        >删除</el-button>
-      </el-col>
-
-      <el-col :span="1.5">
-        <el-button
           type="success"
           plain
           icon="el-icon-edit"
@@ -70,8 +58,9 @@
     </el-row>
 
     <el-form ref="form" :model="form" :rules="rules">
-    <el-table v-loading="loading" :data="detailList"
+    <el-table v-loading="loading" :data="form.detailList"
               @selection-change="handleSelectionChange"
+              :row-class-name="rowTCapitalDetailIndex"
              >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="dataSeq" >
@@ -149,7 +138,7 @@ export default {
       tableColumns: [
 
       ],
-
+      tdetailList:[],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -162,7 +151,7 @@ export default {
         nodeName:null,
       },
       // 表单参数
-      form: {},
+      form: {detailList:[]},
       // 表单校验
       rules: {
       },
@@ -176,6 +165,7 @@ export default {
     this.$watch('nodeNo', function (newVal) {
       this.queryParams.leafId = newVal;
       this.leafId = newVal;
+      this.form.leafId = newVal;
     })
     this.$watch('nodeName', function (newVal) {
       this.queryParams.nodeName = newVal;
@@ -195,7 +185,7 @@ export default {
     getList() {
       this.loading = true;
       listDetail(this.queryParams).then(response => {
-        this.detailList = response.rows;
+        this.form.detailList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -261,16 +251,25 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    /** 序号 */
+    rowTCapitalDetailIndex({row, rowIndex}) {
+      row.index = rowIndex + 1;
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
-
+      this.checkedTCapitalDetail = selection.map(item => item.index)
+      console.log(this.checkedTCapitalDetail);
       this.leafId = selection.map(item => item.leafId)
+      this.tdetailList=selection
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
     /** 细项维护添加按钮操作 */
     handleAddTCapitalDetail() {
       let item = {
+        id: null,
+        companyId: null,
+        leafId: null,
         itema: null,
         itemb: null,
         itemc: null,
@@ -283,44 +282,48 @@ export default {
         datae: null,
         dataf: null,
         datag: null,
+        dataSeq: null,
+        status: null,
+        createBy: null,
+        createDate: null,
+        updateBy: null,
+        updateDate: null,
+        createTime: null,
+        updateTime: null,
+        createName: null,
+        updateName: null
       };
 
-      this.detailList.push(item);
+      this.form.detailList.push(item);
     },
-    /** 资金细项维护删除按钮操作 */
-    handleDeleteTCapitalDetail() {
-      if (this.checkedTCapitalDetail.length == 0) {
-        this.$modal.msgError("请先选择要删除的资金细项维护数据");
-      } else {
-        const detailList = this.detailList;
-        const checkedTCapitalDetail = this.checkedTCapitalDetail;
-        this.detailList = detailList.filter(function (item) {
-          return checkedTCapitalDetail.indexOf(item.index) == -1
-        });
+
+    detailGet(leafId,nodeName,companyId){
+      if (leafId !=null){
+        this.queryParams.leafId=leafId
+        this.queryParams.nodeName=nodeName
+        this.form.leafId=leafId
+        this.form.companyId=companyId
       }
-    },
-    detailGet(){
       this.getList()
       this.getListBase();
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.form.id = ""
-      this.form.detailList = this.detailList
-      for (let i = 0; i < this.detailList.length; i++) {
-        this.detailList[i].companyId = this.companyid
-        this.detailList[i].leafId = this.leafId
-        this.form.detailList = this.detailList
+      if (this.tdetailList.length == 0) {
+        this.$modal.msgError("请至少勾选一笔数据");
+        return
       }
-      if (this.form.detailList.length>0){
-        addDetail(this.form).then(response => {
+      for (let i = 0; i < this.tdetailList.length; i++) {
+        this.tdetailList[i].companyId = this.companyid
+        this.tdetailList[i].leafId = this.form.leafId
+        this.form.financeDetailList = this.tdetailList
+      }
+      console.log(this.form.financeDetailList);
+      addDetail(this.form).then(response => {
           this.$modal.msgSuccess("新增成功");
           this.open = false;
           this.getList();
         });
-      }else {
-        this.$modal.msgSuccess("不能增加空数据");
-      }
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -355,13 +358,36 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const leafId = this.leafId;
+      console.log(row.id);
+      if (row.id == null||row.id==''||row.id==undefined){
+        if (this.checkedTCapitalDetail.length == 0) {
+          this.$modal.msgError("请先选择要删除的数据");
+        } else {
+          console.log(this.checkedTCapitalDetail);
+          const detailList = this.form.detailList;
+          const checkedTCapitalDetail = this.checkedTCapitalDetail;
+          this.form.detailList = detailList.filter(function (item) {
+            return checkedTCapitalDetail.indexOf(item.index) == -1
+          });
+        }
+      }else {
+        const ids = row.id;
+        this.$modal.confirm('是否确认删除现金流量代码编号为"' + row.cashFlowName + '"的数据项？').then(function () {
+          return delDetail(ids);
+        }).then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {
+        });
+      }
+
+    /*  const leafId = this.leafId;
       this.$modal.confirm('是否确认删除系统选单-明细设定编号为"' +leafId + '"的数据项？').then(function() {
         return delDetail(leafId);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {});*/
     },
     /** 导出按钮操作 */
     handleExport() {

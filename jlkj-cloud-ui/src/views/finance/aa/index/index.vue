@@ -38,7 +38,8 @@ export default {
     handleClick(tab, event) {
       if (this.applyIdIf!=false){
         this.activeName =tab.name
-        if(tab.name=='third'){
+        console.log(this.activeName+"shou");
+        if(tab.name=='third'||    this.activeName=='third'){
           this.$refs.detail.detailGet()
         }
 
@@ -68,6 +69,9 @@ export default {
     },
     changeData(tabName,nodeNo,nodeName,companyId){
       this.activeName = tabName;
+      if( this.activeName=='third'){
+        this.$refs.detail.detailGet(nodeNo,nodeName,companyId)
+      }
       this.nodeNo = nodeNo;
       this.nodeName = nodeName;
       this.companyId = companyId

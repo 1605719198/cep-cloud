@@ -36,9 +36,9 @@ export function updateDetail(data) {
 }
 
 // 删除系统选单-明细设定
-export function delDetail(leafId) {
+export function delDetail(id) {
   return request({
-    url: '/finance/detail/' + leafId,
+    url: '/finance/detail/' + id,
     method: 'delete'
   })
 }
