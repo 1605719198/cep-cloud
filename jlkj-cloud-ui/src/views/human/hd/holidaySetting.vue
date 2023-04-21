@@ -55,7 +55,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="假别名称" align="center" prop="holidayTypeCode">
         <template v-slot="scope">
-          <dict-tag-human-base :options="attendenceOptions.HD001" :value="scope.row.holidayTypeCode"/>
+          <dict-tag-human-basis :options="attendenceOptions.HD001" :value="scope.row.holidayTypeCode"/>
         </template>
       </el-table-column>
       <el-table-column label="是否含假日" align="center" prop="isIncHol">
@@ -121,7 +121,7 @@
             <el-form-item label="假别名称" prop="holidayTypeCode">
               <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id">
                 <el-option
-                  v-for="dict in attendenceOptions.HD001"
+                  v-for="dict in attendenceOptions"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -217,26 +217,20 @@
 </template>
 
 <script>
+import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
+import { getBasisOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanutils"
-import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
-import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
+import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
-import { listHolidaysetting, getHolidaysetting, delHolidaysetting, addHolidaysetting, updateHolidaysetting, copyHolidaysettingDTO } from "@/api/human/hd/holidaysetting";
+import { listHolidaysetting, getHolidaysetting, delHolidaysetting, addHolidaysetting, updateHolidaysetting, copyHolidaysetting } from "@/api/human/hd/holidaysetting";
 
 export default {
   name: "Holidaysetting",
   dicts: ['sys_yes_no'],
-  components: {DictTagHumanBase},
+  components: {DictTagHumanBasis},
   data() {
     return {
-      //出勤选单类型查询
-      attendenceOptionType:{
-        id:'',
-        optionsType:['ColockType','HD001']
-      },
-      //出勤选单选项列表
-      attendenceOptions:{},
       //公司数据
       companyList:[],
       //复制弹出层标题
@@ -245,6 +239,13 @@ export default {
       opencopy:false,
       //复制表单
       formcopy:{},
+      //选单列表
+      baseInfo: {
+        uuid: '',
+        baseInfoList: [
+          'comp_id',
+        ]
+      },
       //选单数据
       baseInfoData: [],
       //登录人姓名
@@ -300,7 +301,14 @@ export default {
         newCompId:[
           { required: true, message: "目标公司不能为空", trigger: "change" }
         ]
-      }
+      },
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['HD001']
+      },
+      //出勤选单选项列表
+      attendenceOptions: {}
     };
   },
   watch: {
@@ -323,21 +331,25 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getDisc();
+    //假别类型查询
+    getBasisOptions(this.attendenceOptionType).then(response=> {
+      this.attendenceOptions=response.rows
+    })
+    this.getHumandisc();
     this.getName();
   },
   methods: {
-    //获取出勤字典
-    getDisc(){
-      getAttendenceOptions(this.attendenceOptionType).then(response=> {
-        this.attendenceOptions=response.data
-      })
-    },
     //获取公司列表
     getCompanyList(){
       selectCompany().then(response=>{
         this.companyList = response.data
       })
+    },
+    //获取人事选单字典
+    getHumandisc(){
+      getBaseInfo(this.baseInfo).then(response => {
+        this.baseInfoData = response.data;
+      });
     },
     // 获取当前登录用户名称/信息
     getName(){
@@ -465,7 +477,7 @@ export default {
           if(this.formcopy.newCompId==this.formcopy.oldCompId){
             this.$modal.msgError("请选择两个不同的公司");
           }else{
-            copyHolidaysettingDTO(this.formcopy).then(response =>{
+            copyHolidaysetting(this.formcopy).then(response =>{
               this.$modal.msgSuccess("复制成功");
               this.opencopy = false;
               this.getList();
