@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.human.hd.domain.CancellationPerson;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -125,6 +126,11 @@ public class CancellationPersonDTO implements Serializable {
      * 部门
      */
     private String departmentId;
+
+    /**
+     * 批量注销人员信息
+     */
+    private List<CancellationPerson> userInfo;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

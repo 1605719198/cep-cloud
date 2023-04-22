@@ -64,6 +64,40 @@ public class FinanceAaBaseServiceImpl implements IFinanceAaBaseService
         List<JSONObject> financeAaBasesString = new ArrayList<>();
 
         for (FinanceAaBase financeAaBase1:financeAaBases){
+            if (financeAaBase1.getItema()!=null){
+                JSONObject rtJson = new JSONObject();
+                rtJson.put("name",financeAaBase1.getItema());
+                rtJson.put("nameEn","itema");
+                rtJson.put("value"," ");
+                financeAaBasesString.add(rtJson);
+            } if (financeAaBase1.getItemb()!=null){
+                JSONObject rtJson = new JSONObject();
+                rtJson.put("name",financeAaBase1.getItemb());
+                rtJson.put("nameEn","itemb");
+                rtJson.put("value"," ");
+                financeAaBasesString.add(rtJson);
+            }
+            if (financeAaBase1.getItemc()!=null){
+                JSONObject rtJson = new JSONObject();
+                rtJson.put("name",financeAaBase1.getItemc());
+                rtJson.put("nameEn","itemc");
+                rtJson.put("value","");
+                financeAaBasesString.add(rtJson);
+            } if (financeAaBase1.getItemd()!=null){
+                JSONObject rtJson = new JSONObject();
+                rtJson.put("name",financeAaBase1.getItemd());
+                rtJson.put("nameEn","itemd");
+                rtJson.put("value","");
+                financeAaBasesString.add(rtJson);
+            }
+            if (financeAaBase1.getIteme()!=null){
+                JSONObject rtJson = new JSONObject();
+                rtJson.put("name",financeAaBase1.getIteme());
+                rtJson.put("nameEn","iteme");
+                rtJson.put("value","");
+                financeAaBasesString.add(rtJson);
+            }
+
             if (financeAaBase1.getDataa()!=null){
                 JSONObject rtJson = new JSONObject();
                 rtJson.put("name",financeAaBase1.getDataa());
@@ -108,40 +142,7 @@ public class FinanceAaBaseServiceImpl implements IFinanceAaBaseService
                 rtJson.put("nameEn","datag");
                 rtJson.put("value"," ");
                 financeAaBasesString.add(rtJson);
-            } if (financeAaBase1.getItema()!=null){
-                JSONObject rtJson = new JSONObject();
-                rtJson.put("name",financeAaBase1.getItema());
-                rtJson.put("nameEn","itema");
-                rtJson.put("value"," ");
-                financeAaBasesString.add(rtJson);
-            } if (financeAaBase1.getItemb()!=null){
-                JSONObject rtJson = new JSONObject();
-                rtJson.put("name",financeAaBase1.getItemb());
-                rtJson.put("nameEn","itemb");
-                rtJson.put("value"," ");
-                financeAaBasesString.add(rtJson);
             }
-             if (financeAaBase1.getItemc()!=null){
-                 JSONObject rtJson = new JSONObject();
-                rtJson.put("name",financeAaBase1.getItemc());
-                rtJson.put("nameEn","itemc");
-                 rtJson.put("value","");
-                 financeAaBasesString.add(rtJson);
-            } if (financeAaBase1.getItemd()!=null){
-                JSONObject rtJson = new JSONObject();
-                rtJson.put("name",financeAaBase1.getItemd());
-                rtJson.put("nameEn","itemd");
-                rtJson.put("value","");
-                financeAaBasesString.add(rtJson);
-            }
-             if (financeAaBase1.getIteme()!=null){
-                 JSONObject rtJson = new JSONObject();
-                rtJson.put("name",financeAaBase1.getIteme());
-                rtJson.put("nameEn","iteme");
-                 rtJson.put("value","");
-                 financeAaBasesString.add(rtJson);
-            }
-
 
         }
         return  financeAaBasesString;

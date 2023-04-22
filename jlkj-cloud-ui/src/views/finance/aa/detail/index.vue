@@ -63,9 +63,9 @@
               :row-class-name="rowTCapitalDetailIndex"
              >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="dataSeq" >
+      <el-table-column label="序号" align="center" prop="dataSeq" width="80">
         <template slot-scope="scope">
-            <el-input v-model="scope.row.dataSeq" placeholder="请输入序号"/>
+            <el-input v-model="scope.row.dataSeq"  placeholder="请输入序号"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -201,8 +201,6 @@ export default {
           this.tableColumns=[]
           this.$message.error('请至少保存一笔基本资料');
         }
-
-
       });
     },
     // 取消按钮
@@ -258,7 +256,6 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.checkedTCapitalDetail = selection.map(item => item.index)
-      console.log(this.checkedTCapitalDetail);
       this.leafId = selection.map(item => item.leafId)
       this.tdetailList=selection
       this.single = selection.length!==1
@@ -318,7 +315,6 @@ export default {
         this.tdetailList[i].leafId = this.form.leafId
         this.form.financeDetailList = this.tdetailList
       }
-      console.log(this.form.financeDetailList);
       addDetail(this.form).then(response => {
           this.$modal.msgSuccess("新增成功");
           this.open = false;
@@ -358,7 +354,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row.id);
+
       if (row.id == null||row.id==''||row.id==undefined){
         if (this.checkedTCapitalDetail.length == 0) {
           this.$modal.msgError("请先选择要删除的数据");
@@ -372,7 +368,7 @@ export default {
         }
       }else {
         const ids = row.id;
-        this.$modal.confirm('是否确认删除现金流量代码编号为"' + row.cashFlowName + '"的数据项？').then(function () {
+        this.$modal.confirm('是否确认删除序号为"' + row.dataSeq + '"的数据项？').then(function () {
           return delDetail(ids);
         }).then(() => {
           this.getList();
