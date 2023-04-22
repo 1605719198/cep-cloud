@@ -162,10 +162,10 @@
               <dict-tag-human-base :options="attendenceOptions.ColockType" :value="formcolockType"/>
             </el-form-item>
             <el-form-item label="机构ID"   v-if="this.formcolockType==2"  style="width: 200px;" >
-                {{form.deptId}}
+              {{form.deptId}}
             </el-form-item>
             <el-form-item label="员工工号"  v-if="this.formcolockType==1"  style="width: 200px;" >
-                {{form.empId}}
+              {{form.empId}}
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -321,8 +321,8 @@ export default {
   watch:{
     colockType(val){
       this.queryParams.empId=null,
-      this.queryParams.deptId=null,
-      this.getList();
+        this.queryParams.deptId=null,
+        this.getList();
     },
     'queryParams.compId':{
       deep:true,
@@ -592,7 +592,7 @@ export default {
             });
           } else {
             this.form.status = '0',
-            this.form.compId = this.queryParams.compId;
+              this.form.compId = this.queryParams.compId;
             addPersonColock(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
@@ -613,7 +613,7 @@ export default {
               this.getList();
             });
           } else {
-              this.form.status = '0',
+            this.form.status = '0',
               this.form.compId = this.queryParams.compId;
             addPersonColockOrg(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");

@@ -135,7 +135,6 @@
 <script>
 import { getDateTime } from "@/api/human/hd/ahumanutils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
-import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";
 import selectDept from "@/views/components/human/selectView/selectDept";
@@ -147,15 +146,6 @@ export default {
     return {
       //公司数据
       companyList:[],
-      //选单列表
-      baseInfo: {
-        uuid: '',
-        baseInfoList: [
-          'comp_id',
-        ]
-      },
-      //选单数据
-      baseInfoData: [],
       //一级部门选单部门号
       firstDeptId:'',
       //登录人姓名
@@ -207,7 +197,6 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getHumandisc();
     this.getName();
   },
   methods: {
@@ -239,12 +228,6 @@ export default {
         this.form.firstDeptName = firstDeptName;
         this.form.firstDeptId = firstDeptId.toString()
       })
-    },
-    //获取人事选单字典
-    getHumandisc(){
-      getBaseInfo(this.baseInfo).then(response => {
-        this.baseInfoData = response.data;
-      });
     },
     // 获取当前登录用户名称/信息
     getName(){

@@ -51,7 +51,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="holidaysettingList" @selection-change="handleSelectionChange" height="67vh">
+    <el-table v-loading="loading" :data="holidaysettingList" @selection-change="handleSelectionChange" height="67vh" >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="假别名称" align="center" prop="holidayTypeCode">
         <template v-slot="scope">
@@ -121,7 +121,7 @@
             <el-form-item label="假别名称" prop="holidayTypeCode">
               <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id">
                 <el-option
-                  v-for="dict in attendenceOptions"
+                  v-for="dict in attendenceOptions.HD001"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -219,9 +219,8 @@
 <script>
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
-import { getBasisOptions } from "@/api/human/hd/attendenceBasis";
+import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanutils"
-import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { listHolidaysetting, getHolidaysetting, delHolidaysetting, addHolidaysetting, updateHolidaysetting, copyHolidaysetting } from "@/api/human/hd/holidaysetting";
 
@@ -239,15 +238,6 @@ export default {
       opencopy:false,
       //复制表单
       formcopy:{},
-      //选单列表
-      baseInfo: {
-        uuid: '',
-        baseInfoList: [
-          'comp_id',
-        ]
-      },
-      //选单数据
-      baseInfoData: [],
       //登录人姓名
       nickName: undefined,
       //登录人公司
@@ -303,9 +293,9 @@ export default {
         ]
       },
       //出勤选单类型查询
-      attendenceOptionType: {
-        id: '',
-        optionsType: ['HD001']
+      attendenceOptionType:{
+        id:'',
+        optionsType:['HD001']
       },
       //出勤选单选项列表
       attendenceOptions: {}
@@ -332,9 +322,6 @@ export default {
   created() {
     this.getCompanyList();
     //假别类型查询
-    getBasisOptions(this.attendenceOptionType).then(response=> {
-      this.attendenceOptions=response.rows
-    })
     this.getHumandisc();
     this.getName();
   },
@@ -347,8 +334,8 @@ export default {
     },
     //获取人事选单字典
     getHumandisc(){
-      getBaseInfo(this.baseInfo).then(response => {
-        this.baseInfoData = response.data;
+      getAttendenceOptions(this.attendenceOptionType).then(response=> {
+        this.attendenceOptions=response.data;
       });
     },
     // 获取当前登录用户名称/信息
