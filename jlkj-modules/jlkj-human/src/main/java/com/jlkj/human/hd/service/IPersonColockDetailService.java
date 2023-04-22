@@ -5,6 +5,7 @@ import java.util.List;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
+import com.jlkj.human.hd.dto.ClockworkPersonDTO;
 
 /**
  * 人员卡钟明细Service接口
@@ -21,6 +22,14 @@ public interface IPersonColockDetailService
      * @return 人员卡钟明细
      */
     public PersonColockDetail selectPersonColockDetailById(String id);
+
+    /**
+     * 通过卡钟编号查询人员
+     *
+     * @param macId 人员卡钟编号
+     * @return 人员卡钟明细
+     */
+    public List<ClockworkPersonDTO> queryPersonByColock(String macId);
 
     /**
      * 查询人员卡钟明细列表

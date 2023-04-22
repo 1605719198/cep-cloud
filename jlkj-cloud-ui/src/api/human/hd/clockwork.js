@@ -17,6 +17,16 @@ export function getClockwork(id) {
   })
 }
 
+// 通过公司查询公司卡钟设定
+export function getCompClockwork(compId) {
+  return request({
+    url: '/human/clockwork/listByComp/' + compId,
+    method: 'get'
+  })
+}
+
+
+
 // 新增公司卡钟设定
 export function addClockwork(data) {
   return request({

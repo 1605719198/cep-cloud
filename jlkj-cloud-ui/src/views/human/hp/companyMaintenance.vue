@@ -421,6 +421,7 @@ export default {
     }
   },
   created() {
+
     this.getHumandisc();
     this.getName();
     this.getTreeselect();

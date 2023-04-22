@@ -3,6 +3,8 @@ package com.jlkj.human.hd.controller;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.human.hd.dto.ClockworkPersonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +46,16 @@ public class PersonColockDetailController extends BaseController
     {
         startPage();
         List<PersonColockDetail> list = personColockDetailService.selectPersonColockDetailList(personColockDetail);
+        return getDataTable(list);
+    }
+
+    /**
+     * 通过卡钟查询人员
+     */
+    @GetMapping("/listPerson/{macId}")
+    public TableDataInfo listPerson(@PathVariable("macId") String macId)
+    {
+        List<ClockworkPersonDTO> list = personColockDetailService.queryPersonByColock(macId);
         return getDataTable(list);
     }
 

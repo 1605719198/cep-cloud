@@ -227,7 +227,7 @@ import { treeselect,selectCompany,queryFirstdeptByPerson,queryFirstdeptByDept } 
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanutils";
-import { listClockwork } from "@/api/human/hd/clockwork";
+import { getCompClockwork } from "@/api/human/hd/clockwork";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {
   name: "PersonColock",
@@ -347,10 +347,7 @@ export default {
     },
     //获取公司卡钟设定
     getAllcolock(compId){
-      var param = {
-        compId:compId,
-      }
-      listClockwork(param).then(response => {
+      getCompClockwork(compId).then(response => {
         this.clockworkList = response.rows;
         this.open = true;
       });

@@ -17,6 +17,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="firstDeptId"    column="first_dept_id"    />
     </resultMap>
 
+    <resultMap type="ClockworkDTO" id="ClockworkDTOResult">
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="firstDeptName"    column="first_dept_name"    />
+        <result property="firstDeptId"    column="first_dept_id"    />
+    </resultMap>
+
+
     <sql id="selectClockworkVo">
         select id, code, name, comp_id, first_dept_name, first_dept_id, note, creator, creator_id, create_date from human_hd_clockwork
     </sql>
@@ -26,6 +35,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
         </where>
+    </select>
+
+    <select id="selectClockworkListByCompId" parameterType="String" resultMap="ClockworkDTOResult">
+        select code, name, comp_id, first_dept_id ,first_dept_name from human_hd_clockwork
+        where comp_id = #{compId}
+    </select>
+
+    <select id="queryPersonByColockwork" parameterType="String" resultMap="ClockworkDTOResult">
+        select code, name, comp_id, first_dept_id ,first_dept_name from human_hd_clockwork
+        where comp_id = #{compId}
     </select>
 
     <select id="queryRepetitivedata" resultType="Int" parameterType="Clockwork">

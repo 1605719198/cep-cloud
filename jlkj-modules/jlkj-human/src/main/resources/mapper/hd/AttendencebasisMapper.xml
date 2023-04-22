@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAttendencebasisVo">
-        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendenceBasis
+        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendence_basis
     </sql>
 
     <select id="selectAttendencebasisList" parameterType="Attendencebasis" resultMap="AttendencebasisResult">
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="queryRepetitivedata" resultType="Int" parameterType="Attendencebasis">
-        select count(*) from human_hd_attendenceBasis
+        select count(*) from human_hd_attendence_basis
         <where>
             <if test="code!=null and code!=''"> and code =#{code}</if>
             <if test="id!=null and id!=''"> and id !=#{id}</if>
@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectAttendencebasisParentByCode" parameterType="String" resultMap="AttendencebasisResult">
-        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendenceBasis
+        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendence_basis
         where code = #{code}
     </select>
 
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertAttendencebasis" parameterType="Attendencebasis" useGeneratedKeys="true" keyProperty="id">
-        insert into human_hd_attendenceBasis
+        insert into human_hd_attendence_basis
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="code != null and code != ''">code,</if>
             <if test="name != null and name != ''">name,</if>
@@ -107,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateAttendencebasis" parameterType="Attendencebasis">
-        update human_hd_attendenceBasis
+        update human_hd_attendence_basis
         <trim prefix="SET" suffixOverrides=",">
             <if test="code != null and code != ''">code = #{code},</if>
             <if test="name != null and name != ''">name = #{name},</if>
@@ -126,11 +126,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteAttendencebasisById" parameterType="Long">
-        delete from human_hd_attendenceBasis where id = #{id}
+        delete from human_hd_attendence_basis where id = #{id}
     </delete>
 
     <delete id="deleteAttendencebasisByIds" parameterType="String">
-        delete from human_hd_attendenceBasis where id in
+        delete from human_hd_attendence_basis where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

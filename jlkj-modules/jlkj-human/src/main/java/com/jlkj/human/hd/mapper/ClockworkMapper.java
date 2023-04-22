@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.Clockwork;
+import com.jlkj.human.hd.dto.ClockworkDTO;
 
 import java.util.List;
 
@@ -27,6 +28,14 @@ public interface ClockworkMapper
      * @return 公司卡钟设定集合
      */
     public List<Clockwork> selectClockworkList(Clockwork clockwork);
+
+    /**
+     * 查询公司卡钟设定列表
+     *
+     * @param compId 卡钟公司
+     * @return 公司卡钟设定集合
+     */
+    public List<ClockworkDTO> selectClockworkListByCompId(String compId);
 
     /**
      * 查询公司卡钟重复编码数

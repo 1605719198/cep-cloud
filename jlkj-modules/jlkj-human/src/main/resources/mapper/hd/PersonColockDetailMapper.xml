@@ -13,6 +13,12 @@
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="ClockworkPersonDTO" id="ClockworkPersonDTOResult">
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="compId"    column="comp_id"    />
+    </resultMap>
+
     <sql id="selectPersonColockDetailVo">
         select id, person_colock_id, mac_id, creator, creator_id, create_date from human_hd_person_colock_detail
     </sql>
@@ -27,6 +33,13 @@
     <select id="selectPersonColockDetailById" parameterType="String" resultMap="PersonColockDetailResult">
         <include refid="selectPersonColockDetailVo"/>
         where id = #{id}
+    </select>
+
+    <select id="queryPersonByColock" parameterType="String" resultMap="ClockworkPersonDTOResult">
+        select emp_no , full_name as emp_name, comp_id from human_hm_personnel_info
+        where emp_no in (select emp_id from human_hd_person_colock
+                         where id in (select person_colock_id from human_hd_person_colock_detail where mac_id = #{macId})
+                         group by emp_id)
     </select>
 
     <insert id="insertPersonColockDetail" parameterType="PersonColockDetail">
