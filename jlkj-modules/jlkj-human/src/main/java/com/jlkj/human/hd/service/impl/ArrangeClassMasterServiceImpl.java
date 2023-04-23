@@ -1,16 +1,16 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.ArrangeClass;
+import com.jlkj.human.hd.domain.ArrangeClassMaster;
+import com.jlkj.human.hd.mapper.ArrangeClassMasterMapper;
+import com.jlkj.human.hd.service.IArrangeClassMasterService;
 import com.jlkj.human.hd.service.IArrangeClassService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.ArrangeClassMasterMapper;
-import com.jlkj.human.hd.domain.ArrangeClassMaster;
-import com.jlkj.human.hd.service.IArrangeClassMasterService;
+
+import java.util.List;
 
 /**
  * 排班记录Service业务层处理

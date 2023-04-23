@@ -163,6 +163,12 @@ export default {
       open: false,
       //是否显示新增弹出层
       opencreate: false,
+      //登录人工号
+      userEmpId: null,
+      //登录人姓名
+      nickName: null,
+      //登录人公司
+      logincompId: null,
       //选单树数据转化
       defaultProps: {
         children: 'children',
@@ -212,9 +218,25 @@ export default {
     }
   },
   created() {
+    this.initData();
     this.getBaseInfoTree();
   },
   methods: {
+    //初始化数据
+    initData(){
+      this.userEmpId= this.$store.state.user.name;
+      this.nickName= this.$store.state.user.userInfo.nickName;
+      this.logincompId= this.$store.state.user.userInfo.compId;
+    },
+    //表单值设置
+    setForm(e){
+      this.form.creator = this.nickName;
+      this.form.creatorId = this.userEmpId;
+      this.form.createDate = getDateTime(1)
+      if(e===0){
+        this.form.parentid = this.queryParams.id;
+      }
+    },
     //获取选单配置树
     getBaseInfoTree() {
       treeselect().then(response => {
@@ -265,10 +287,7 @@ export default {
     handleAdd() {
       if(this.queryParams.id!=null){
         this.reset();
-        this.form.parentid = this.queryParams.id;
-        this.form.creator = this.nickName;
-        this.form.creatorId = this.$store.state.user.name;
-        this.form.createDate = getDateTime(1)
+        this.setForm(0);
         this.open = true;
         this.title = "新增窗口";
       }else{
@@ -281,9 +300,6 @@ export default {
       const id = row.id || this.ids
       getAttendenceBasis(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.$store.state.user.userInfo.nickName;
-        this.form.creatorId = this.$store.state.user.name;
-        this.form.createDate = getDateTime(1)
         this.open = true;
         this.title = "修改窗口";
       });
@@ -293,6 +309,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
+            this.setForm();
             updateAttendenceBasis(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;

@@ -1,13 +1,11 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.OrgClassMaster;
 import com.jlkj.human.hd.domain.PersonClassDetail;
 import com.jlkj.human.hd.domain.PersonClassMaster;
-import com.jlkj.human.hd.domain.PersonColock;
+import com.jlkj.human.hd.mapper.OrgClassMasterMapper;
+import com.jlkj.human.hd.service.IOrgClassMasterService;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
 import com.jlkj.human.hd.service.IPersonClassMasterService;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
@@ -15,9 +13,10 @@ import com.jlkj.human.hp.service.ISysDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.OrgClassMasterMapper;
-import com.jlkj.human.hd.domain.OrgClassMaster;
-import com.jlkj.human.hd.service.IOrgClassMasterService;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 出勤身份Service业务层处理

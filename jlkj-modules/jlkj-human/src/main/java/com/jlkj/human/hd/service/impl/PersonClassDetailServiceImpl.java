@@ -1,24 +1,19 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.ArrangeClass;
+import com.jlkj.human.hd.domain.PersonClassDetail;
+import com.jlkj.human.hd.mapper.PersonClassDetailMapper;
+import com.jlkj.human.hd.service.IArrangeClassService;
+import com.jlkj.human.hd.service.IPersonClassDetailService;
+import com.jlkj.human.hp.service.ISysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import com.jlkj.common.core.utils.uuid.UUID;
-import com.jlkj.human.hd.domain.ArrangeClass;
-import com.jlkj.human.hd.domain.PersonClassMaster;
-import com.jlkj.human.hd.service.IArrangeClassService;
-import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.service.ISysDeptService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.PersonClassDetailMapper;
-import com.jlkj.human.hd.domain.PersonClassDetail;
-import com.jlkj.human.hd.service.IPersonClassDetailService;
 
 /**
  * 人员排班明细Service业务层处理

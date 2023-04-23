@@ -1,23 +1,21 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alibaba.fastjson.JSON;
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
+import com.jlkj.human.hd.mapper.PersonColockMapper;
 import com.jlkj.human.hd.service.IPersonColockDetailService;
+import com.jlkj.human.hd.service.IPersonColockService;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
 import com.jlkj.human.hp.service.ISysDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.PersonColockMapper;
-import com.jlkj.human.hd.domain.PersonColock;
-import com.jlkj.human.hd.service.IPersonColockService;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 人员卡钟Service业务层处理

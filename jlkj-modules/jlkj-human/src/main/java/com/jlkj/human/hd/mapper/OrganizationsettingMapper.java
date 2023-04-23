@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.Organizationsetting;
+
+import java.util.List;
 
 /**
  * 机构参数Mapper接口

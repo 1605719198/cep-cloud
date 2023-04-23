@@ -24,6 +24,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="personHolidayClassDTO" id="personHolidayClassDTOResult">
+        <result property="empId"    column="emp_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="classNumber"    column="class_number"    />
+    </resultMap>
+
     <sql id="selectPersonClassDetailVo">
         select id, person_class_master_id, comp_id, class_type, emp_id, dept_id, arr_shi_date, fir_shift_id, fir_shift_code, sec_shift_id, sec_shift_code, shift_mode_id, class_id, is_join_shift, creator, creator_id, create_date from human_hd_person_class_detail
     </sql>
@@ -38,6 +45,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectPersonClassDetailById" parameterType="String" resultMap="PersonClassDetailResult">
         <include refid="selectPersonClassDetailVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectClassDays" parameterType="personHolidayClassDTO" resultMap="personHolidayClassDTOResult" >
+        select COUNT(*) as class_number from human_hd_holiday
+        where date_type = 1
+        and startDate &lt;= hol_day
+        and endDate   &gt;= hol_day
     </select>
         
     <insert id="insertPersonClassDetail" parameterType="PersonClassDetail">

@@ -46,29 +46,29 @@
           <el-table-column label="轮班方式编码" align="center" prop="turnTypeCode"/>
           <el-table-column label="轮班方式名称" align="center" prop="turnTypeName"/>
           <el-table-column label="排班内是否计算加班" align="center" prop="resvAttr1a0">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.resvAttr1a0"/>
             </template>
           </el-table-column>
           <el-table-column label="备注" align="center" prop="description"/>
           <el-table-column label="是否倒班" align="center" prop="isTurn">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isTurn"/>
             </template>
           </el-table-column>
           <el-table-column label="状态" align="center" prop="status">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
             </template>
           </el-table-column>
           <el-table-column label="输入人" align="center" prop="creator"/>
           <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-button
                 size="mini"
                 type="text"

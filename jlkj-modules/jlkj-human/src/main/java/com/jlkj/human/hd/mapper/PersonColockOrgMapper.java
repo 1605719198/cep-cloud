@@ -1,9 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
-
-import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockOrg;
+
+import java.util.List;
 
 /**
  * 人员卡钟组织机构Mapper接口

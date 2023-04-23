@@ -1,15 +1,14 @@
 package com.jlkj.human.hd.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.human.hp.domain.SysDept;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
 
 /**
  * 排班记录对象 human_hd_arrange_class_master

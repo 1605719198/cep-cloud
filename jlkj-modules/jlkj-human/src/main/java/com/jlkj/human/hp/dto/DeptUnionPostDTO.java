@@ -4,7 +4,6 @@ import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

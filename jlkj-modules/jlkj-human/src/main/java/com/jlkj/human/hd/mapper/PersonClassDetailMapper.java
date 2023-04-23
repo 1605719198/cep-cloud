@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.PersonClassDetail;
+
+import java.util.List;
 
 /**
  * 人员排班明细Mapper接口
@@ -58,4 +59,5 @@ public interface PersonClassDetailMapper
      * @return 结果
      */
     public int deletePersonClassDetailByIds(String[] ids);
+
 }

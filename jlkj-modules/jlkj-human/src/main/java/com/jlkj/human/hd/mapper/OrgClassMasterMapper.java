@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.OrgClassMaster;
+
+import java.util.List;
 
 /**
  * 出勤身份Mapper接口

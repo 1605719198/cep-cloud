@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ArrangeClass;
+
+import java.util.List;
 
 /**
  * 排班明细Mapper接口

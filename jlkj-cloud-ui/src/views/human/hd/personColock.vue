@@ -75,7 +75,7 @@
       <el-table-column label="机构id" align="center" prop="deptId" v-else-if="this.colockType==2" />
       <el-table-column label="一级机构" align="center" prop="firstDeptName" />
       <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
@@ -91,12 +91,12 @@
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"

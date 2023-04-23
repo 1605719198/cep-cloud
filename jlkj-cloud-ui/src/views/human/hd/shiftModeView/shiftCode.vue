@@ -39,18 +39,18 @@
       <el-table-column label="班次开始时间_时" align="center" prop="startHour" />
       <el-table-column label="班次工作时间_时" align="center" prop="conHour" />
       <el-table-column label="是否中午打卡" align="center" prop="isNoon">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isNoon"/>
         </template>
       </el-table-column>
       <el-table-column label="中间休息次数" align="center" prop="restCount" />
       <el-table-column label="大小夜" align="center" prop="bigSmaNight">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.bigSmaNight"/>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
@@ -58,12 +58,12 @@
       <el-table-column label="一次休息时长" align="center" prop="restConMin" />
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"

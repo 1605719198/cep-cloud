@@ -1,16 +1,16 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.PersonClassDetail;
+import com.jlkj.human.hd.domain.PersonClassMaster;
+import com.jlkj.human.hd.mapper.PersonClassMasterMapper;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
+import com.jlkj.human.hd.service.IPersonClassMasterService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.PersonClassMasterMapper;
-import com.jlkj.human.hd.domain.PersonClassMaster;
-import com.jlkj.human.hd.service.IPersonClassMasterService;
+
+import java.util.List;
 
 /**
  * 出勤身份Service业务层处理

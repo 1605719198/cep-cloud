@@ -51,12 +51,12 @@
       <el-table-column label="轮班方式" align="center" prop="shiftmodeName" width="180" />
       <el-table-column label="班别" align="center" prop="className" />
       <el-table-column label="开始日期" align="center" prop="startDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="结束日期" align="center" prop="endDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
@@ -67,12 +67,12 @@
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"

@@ -1,14 +1,14 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
+import com.jlkj.human.hd.mapper.ShiftCodeMapper;
+import com.jlkj.human.hd.service.IShiftCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.ShiftCodeMapper;
-import com.jlkj.human.hd.domain.ShiftCode;
-import com.jlkj.human.hd.service.IShiftCodeService;
+
+import java.util.List;
 
 /**
  * 班次数据Service业务层处理

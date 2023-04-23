@@ -1,13 +1,13 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.Organizationsetting;
+import com.jlkj.human.hd.mapper.OrganizationsettingMapper;
+import com.jlkj.human.hd.service.IOrganizationsettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.OrganizationsettingMapper;
-import com.jlkj.human.hd.domain.Organizationsetting;
-import com.jlkj.human.hd.service.IOrganizationsettingService;
+
+import java.util.List;
 
 /**
  * 机构参数Service业务层处理

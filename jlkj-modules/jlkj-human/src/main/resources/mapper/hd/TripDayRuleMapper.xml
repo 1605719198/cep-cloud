@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.TripDayRuleMapper">
+    
+    <resultMap type="TripDayRule" id="TripDayRuleResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="titleKind"    column="title_kind"    />
+        <result property="nation"    column="nation"    />
+        <result property="area"    column="area"    />
+        <result property="lodgAllow"    column="lodg_allow"    />
+        <result property="trafficAllow"    column="traffic_allow"    />
+        <result property="foodAllow"    column="food_allow"    />
+        <result property="status"    column="status"    />
+        <result property="isInternal"    column="is_internal"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectTripDayRuleVo">
+        select id, comp_id, title_kind, nation, area, lodg_allow, traffic_allow, food_allow, status, is_internal, creator, creator_id, create_date from human_hd_trip_day_rule
+    </sql>
+
+    <select id="selectTripDayRuleList" parameterType="TripDayRule" resultMap="TripDayRuleResult">
+        <include refid="selectTripDayRuleVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="titleKind != null  and titleKind != ''"> and title_kind = #{titleKind}</if>
+            <if test="nation != null  and nation != ''"> and nation = #{nation}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+        </where>
+    </select>
+    
+    <select id="selectTripDayRuleById" parameterType="String" resultMap="TripDayRuleResult">
+        <include refid="selectTripDayRuleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTripDayRule" parameterType="TripDayRule">
+        insert into human_hd_trip_day_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null and compId != ''">comp_id,</if>
+            <if test="titleKind != null">title_kind,</if>
+            <if test="nation != null">nation,</if>
+            <if test="area != null">area,</if>
+            <if test="lodgAllow != null">lodg_allow,</if>
+            <if test="trafficAllow != null">traffic_allow,</if>
+            <if test="foodAllow != null">food_allow,</if>
+            <if test="status != null">status,</if>
+            <if test="isInternal != null">is_internal,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null and compId != ''">#{compId},</if>
+            <if test="titleKind != null">#{titleKind},</if>
+            <if test="nation != null">#{nation},</if>
+            <if test="area != null">#{area},</if>
+            <if test="lodgAllow != null">#{lodgAllow},</if>
+            <if test="trafficAllow != null">#{trafficAllow},</if>
+            <if test="foodAllow != null">#{foodAllow},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isInternal != null">#{isInternal},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTripDayRule" parameterType="TripDayRule">
+        update human_hd_trip_day_rule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null and compId != ''">comp_id = #{compId},</if>
+            <if test="titleKind != null">title_kind = #{titleKind},</if>
+            <if test="nation != null">nation = #{nation},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="lodgAllow != null">lodg_allow = #{lodgAllow},</if>
+            <if test="trafficAllow != null">traffic_allow = #{trafficAllow},</if>
+            <if test="foodAllow != null">food_allow = #{foodAllow},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isInternal != null">is_internal = #{isInternal},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTripDayRuleById" parameterType="String">
+        delete from human_hd_trip_day_rule where id = #{id}
+    </delete>
+
+    <delete id="deleteTripDayRuleByIds" parameterType="String">
+        delete from human_hd_trip_day_rule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

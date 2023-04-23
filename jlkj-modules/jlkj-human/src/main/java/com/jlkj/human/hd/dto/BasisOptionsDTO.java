@@ -1,12 +1,6 @@
 package com.jlkj.human.hd.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.human.hd.domain.Attendencebasis;
 import lombok.Data;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 人事出勤选单

@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ShiftMode;
+
+import java.util.List;
 
 /**
  * 轮班方式数据Mapper接口

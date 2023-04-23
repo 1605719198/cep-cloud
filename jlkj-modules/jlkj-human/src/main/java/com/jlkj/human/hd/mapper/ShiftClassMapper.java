@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ShiftClass;
+
+import java.util.List;
 
 /**
  * 班别数据Mapper接口

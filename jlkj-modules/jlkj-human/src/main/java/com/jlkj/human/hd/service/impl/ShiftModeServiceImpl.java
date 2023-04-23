@@ -1,14 +1,13 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-import java.util.Random;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.ShiftMode;
+import com.jlkj.human.hd.mapper.ShiftModeMapper;
+import com.jlkj.human.hd.service.IShiftModeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.ShiftModeMapper;
-import com.jlkj.human.hd.domain.ShiftMode;
-import com.jlkj.human.hd.service.IShiftModeService;
+
+import java.util.List;
 
 /**
  * 轮班方式数据Service业务层处理

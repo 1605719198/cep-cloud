@@ -1,8 +1,9 @@
 package com.jlkj.human.hd.service;
 
+import com.jlkj.human.hd.domain.PersonClassDetail;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.jlkj.human.hd.domain.PersonClassDetail;
 
 /**
  * 人员排班明细Service接口
