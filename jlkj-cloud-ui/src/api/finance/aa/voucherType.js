@@ -42,3 +42,11 @@ export function delVoucherType(id) {
     method: 'delete'
   })
 }
+
+// 查询凭证类别列表(下拉选单用)
+export function selectVoucherTypeList() {
+  return request({
+    url: '/finance/voucherType/voucherTypeList',
+    method: 'get',
+  })
+}

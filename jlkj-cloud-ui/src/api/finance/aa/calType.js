@@ -42,3 +42,11 @@ export function delCalType(id) {
     method: 'delete'
   })
 }
+
+// 查询核算项目类别(下拉选单用)
+export function selectCalTypeList() {
+  return request({
+    url: '/finance/calType/calTypeList',
+    method: 'get',
+  })
+}
