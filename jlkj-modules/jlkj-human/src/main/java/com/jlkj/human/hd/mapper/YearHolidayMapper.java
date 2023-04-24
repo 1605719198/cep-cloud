@@ -21,6 +21,22 @@ public interface YearHolidayMapper
     public YearHoliday selectYearHolidayById(String id);
 
     /**
+     * 查询员工年休假
+     *
+     * @param yearHoliday 员工年休假设定
+     * @return 设定值
+     */
+    public YearHoliday selectYearHolidayByempNo(YearHoliday yearHoliday);
+
+    /**
+     * 查询员工年休假
+     *
+     * @param yearHoliday 员工年休假设定
+     * @return 设定值
+     */
+    public YearHoliday selectYearHolidayByEmpNo(YearHoliday yearHoliday);
+
+    /**
      * 查询年休假天数设定列表
      * 
      * @param yearHoliday 年休假天数设定
@@ -39,6 +55,14 @@ public interface YearHolidayMapper
     /**
      * 修改年休假天数设定
      * 
+     * @param yearHoliday 年休假天数设定
+     * @return 结果
+     */
+    public int updateYearHolidayByEmpNo(YearHoliday yearHoliday);
+
+    /**
+     * 修改年休假天数设定
+     *
      * @param yearHoliday 年休假天数设定
      * @return 结果
      */
