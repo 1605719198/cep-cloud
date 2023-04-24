@@ -1,6 +1,8 @@
 package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.jlkj.finance.aa.domain.FinanceCaltype;
 
 /**
@@ -58,4 +60,10 @@ public interface FinanceCaltypeMapper
      * @return 结果
      */
     public int deleteFinanceCaltypeByIds(String[] ids);
+
+    /**
+     * 查询核算项目类别(下拉选单用)
+     * @return
+     */
+    public List<Map<String,String>> selectCalTypeList();
 }
