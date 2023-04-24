@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.PersonClassDetailMapper">
+    
+    <resultMap type="PersonClassDetail" id="PersonClassDetailResult">
+        <result property="id"    column="id"    />
+        <result property="personClassMasterId"    column="person_class_master_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="classType"    column="class_type"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="arrShiDate"    column="arr_shi_date"    />
+        <result property="firShiftId"    column="fir_shift_id"    />
+        <result property="firShiftCode"    column="fir_shift_code"    />
+        <result property="secShiftId"    column="sec_shift_id"    />
+        <result property="secShiftCode"    column="sec_shift_code"    />
+        <result property="shiftModeId"    column="shift_mode_id"    />
+        <result property="classId"    column="class_id"    />
+        <result property="isJoinShift"    column="is_join_shift"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="personHolidayClassDTO" id="personHolidayClassDTOResult">
+        <result property="empId"    column="emp_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="classNumber"    column="class_number"    />
+    </resultMap>
+
+    <sql id="selectPersonClassDetailVo">
+        select id, person_class_master_id, comp_id, class_type, emp_id, dept_id, arr_shi_date, fir_shift_id, fir_shift_code, sec_shift_id, sec_shift_code, shift_mode_id, class_id, is_join_shift, creator, creator_id, create_date from human_hd_person_class_detail
+    </sql>
+
+    <select id="selectPersonClassDetailList" parameterType="PersonClassDetail" resultMap="PersonClassDetailResult">
+        <include refid="selectPersonClassDetailVo"/>
+        <where>  
+            <if test="personClassMasterId != null  and personClassMasterId != ''"> and person_class_master_id = #{personClassMasterId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPersonClassDetailById" parameterType="String" resultMap="PersonClassDetailResult">
+        <include refid="selectPersonClassDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectClassDays" parameterType="personHolidayClassDTO" resultMap="personHolidayClassDTOResult" >
+        select COUNT(*) as class_number from human_hd_holiday
+        where date_type = 1
+        and startDate &lt;= hol_day
+        and endDate   &gt;= hol_day
+    </select>
+        
+    <insert id="insertPersonClassDetail" parameterType="PersonClassDetail">
+        insert into human_hd_person_class_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="personClassMasterId != null">person_class_master_id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="classType != null">class_type,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="arrShiDate != null">arr_shi_date,</if>
+            <if test="firShiftId != null">fir_shift_id,</if>
+            <if test="firShiftCode != null">fir_shift_code,</if>
+            <if test="secShiftId != null">sec_shift_id,</if>
+            <if test="secShiftCode != null">sec_shift_code,</if>
+            <if test="shiftModeId != null">shift_mode_id,</if>
+            <if test="classId != null">class_id,</if>
+            <if test="isJoinShift != null">is_join_shift,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="personClassMasterId != null">#{personClassMasterId},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="classType != null">#{classType},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="arrShiDate != null">#{arrShiDate},</if>
+            <if test="firShiftId != null">#{firShiftId},</if>
+            <if test="firShiftCode != null">#{firShiftCode},</if>
+            <if test="secShiftId != null">#{secShiftId},</if>
+            <if test="secShiftCode != null">#{secShiftCode},</if>
+            <if test="shiftModeId != null">#{shiftModeId},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="isJoinShift != null">#{isJoinShift},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonClassDetail" parameterType="PersonClassDetail">
+        update human_hd_person_class_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personClassMasterId != null">person_class_master_id = #{personClassMasterId},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="classType != null">class_type = #{classType},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="arrShiDate != null">arr_shi_date = #{arrShiDate},</if>
+            <if test="firShiftId != null">fir_shift_id = #{firShiftId},</if>
+            <if test="firShiftCode != null">fir_shift_code = #{firShiftCode},</if>
+            <if test="secShiftId != null">sec_shift_id = #{secShiftId},</if>
+            <if test="secShiftCode != null">sec_shift_code = #{secShiftCode},</if>
+            <if test="shiftModeId != null">shift_mode_id = #{shiftModeId},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="isJoinShift != null">is_join_shift = #{isJoinShift},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonClassDetailById" parameterType="String">
+        delete from human_hd_person_class_detail where person_class_master_id = #{id}
+    </delete>
+
+    <delete id="deletePersonClassDetailByIds" parameterType="String">
+        delete from human_hd_person_class_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

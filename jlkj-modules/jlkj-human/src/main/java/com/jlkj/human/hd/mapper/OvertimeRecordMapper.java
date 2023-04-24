@@ -1,7 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
-import com.jlkj.human.hd.domain.OvertimeRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.hd.domain.OvertimeRecord;
 
 /**
 * @author 89373

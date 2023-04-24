@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-            <el-select v-model="treestatus" placeholder="请选择公司状态" clearable size="small">
+            <el-select :popper-append-to-body="false" v-model="treestatus" placeholder="请选择公司状态" clearable size="small">
               <el-option
                 v-for="dict in baseInfoData.dept_status"
                 :key="dict.dicNo"
@@ -150,7 +150,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属板块类别" prop="boardId">
-              <el-select v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" class="maxWidth">
+              <el-select :popper-append-to-body="false" v-model="form.boardId" placeholder="请选择板块类别" clearable size="small" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.HP001"
                   :key="dict.dicNo"
@@ -273,7 +273,6 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-user ref="select" @ok="getJobNumber"></select-user>
   </div>
 </template>
 
@@ -284,11 +283,10 @@ import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmai
 import Treeselect from "@riophae/vue-treeselect";
 import { getAvatorByUserName } from "@/api/system/user";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import selectUser from "@/views/human/hp/selectUser/selectUser";
 export default {
   name: "Deptmaintenance",
   dicts: ['sys_normal_disable'],
-  components: {Treeselect,selectUser},
+  components: {Treeselect},
   data() {
     return {
       //选单列表
@@ -423,6 +421,7 @@ export default {
     }
   },
   created() {
+
     this.getHumandisc();
     this.getName();
     this.getTreeselect();
@@ -659,5 +658,11 @@ export default {
 }
 .maxWidth{
   width: 100%;
+}
+.el-select {
+  width: 100%;
+}
+/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
+  margin-bottom: 0 !important;
 }
 </style>

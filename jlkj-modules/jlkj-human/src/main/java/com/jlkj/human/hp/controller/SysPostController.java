@@ -50,7 +50,6 @@ public class SysPostController extends BaseController
     @GetMapping("/getHistory")
     public TableDataInfo list(SysPostVersion sysPostVersion)
     {
-        startPage();
         List<SysPostVersion> list = sysPostVersionService.selectSysPostVersionList(sysPostVersion);
         return getDataTable(list);
     }

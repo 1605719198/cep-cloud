@@ -5,6 +5,7 @@ import com.jlkj.human.hp.domain.SysPost;
 import com.jlkj.human.hp.domain.SysPostVersion;
 import com.jlkj.human.hp.mapper.SysPostMapper;
 import com.jlkj.human.hp.mapper.SysPostVersionMapper;
+import com.jlkj.human.hp.service.ISysDeptService;
 import com.jlkj.human.hp.service.ISysPostService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class SysPostServiceImpl implements ISysPostService
     private SysPostMapper sysPostMapper;
     @Autowired
     private SysPostVersionMapper sysPostVersionMapper;
+    @Autowired
+    private ISysDeptService sysDeptService;
 
     /**
      * 查询岗位信息数据维护
@@ -59,13 +62,27 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int insertSysPost(SysPost sysPost) throws Exception
     {
-        
-
-
-        SysPost oldsysPost = sysPostMapper.selectSysPostByPostCode(sysPost.getPostCode());
+        SysPost oldsysPost = sysPostMapper.selectSysPostByPostCode(sysPost);
         if(oldsysPost!=null){
-            throw new Exception("岗位编码已存在，请重复输入");
+            throw new Exception("岗位编码或名称已存在，请重复输入");
         }
+        String serialNumber="";
+        int addZero = 10;
+        try {
+            int number = Integer.parseInt(sysPostMapper.querySerialNumber(sysPost).getSerialNumber())+1;
+            if(number<addZero){
+                serialNumber  ="0"+number;
+            }else{
+                serialNumber = String.valueOf(number);
+            }
+        } catch (Exception e) {
+            serialNumber= "01";
+        }
+        sysPost.setSerialNumber(serialNumber);
+        String deptCode= (sysDeptService.selectSysDeptByDeptId(sysPost.getOrgId())).getDeptCode();
+        String postCode = sysPost.getCompId()+"-"+deptCode+"-"+sysPost.getJobTitleId()+"-"+sysPost.getSpecialityId()+"-"+serialNumber;
+        sysPost.setPostCode(postCode);
+
         SysPostVersion sysPostVersion = new SysPostVersion();
         sysPost.setCreateTime(DateUtils.getNowDate());
         sysPost.setUpdateTime(DateUtils.getNowDate());
@@ -86,8 +103,25 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int updateSysPost(SysPost sysPost)
     {
+        int addZero = 10;
         SysPostVersion sysPostVersion = new SysPostVersion();
         sysPost.setUpdateTime(DateUtils.getNowDate());
+        String serialNumber="";
+        try {
+            int number = Integer.parseInt(sysPostMapper.querySerialNumber(sysPost).getSerialNumber())+1;
+            if(number<addZero){
+                serialNumber  ="0"+number;
+            }else{
+                serialNumber = String.valueOf(number);
+            }
+        } catch (Exception e) {
+            serialNumber= "01";
+        }
+        sysPost.setSerialNumber(serialNumber);
+        String deptCode= (sysDeptService.selectSysDeptByDeptId(sysPost.getOrgId())).getDeptCode();
+        String postCode = sysPost.getCompId()+"-"+deptCode+"-"+sysPost.getJobTitleId()+"-"+sysPost.getSpecialityId()+"-"+serialNumber;
+        sysPost.setPostCode(postCode);
+
         int updateOk=sysPostMapper.updateSysPost(sysPost);
         if(updateOk==1){
             BeanUtils.copyProperties(sysPost,sysPostVersion);

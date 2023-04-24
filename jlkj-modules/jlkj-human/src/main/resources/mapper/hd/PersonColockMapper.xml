@@ -18,6 +18,7 @@
         <result property="orgColockId"    column="org_colock_id"    />
     </resultMap>
 
+
     <sql id="selectPersonColockVo">
         select id, comp_id , emp_id, checkcard, effect_date, status, creator, creator_id, create_date,org_colock_id from human_hd_person_colock
     </sql>
@@ -43,7 +44,6 @@
         ORDER BY effect_date desc
         LIMIT 1
     </select>
-
 
     <insert id="insertPersonColock" parameterType="PersonColock">
         insert into human_hd_person_colock

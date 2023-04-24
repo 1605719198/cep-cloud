@@ -1,7 +1,9 @@
 package com.jlkj.human.hd.service;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ShiftCode;
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
+
+import java.util.List;
 
 /**
  * 班次数据Service接口
@@ -11,6 +13,14 @@ import com.jlkj.human.hd.domain.ShiftCode;
  */
 public interface IShiftCodeService 
 {
+    /**
+     * 查询班次数据
+     *
+     * @param personShiftCodedto 排班人员工号时间
+     * @return 班次数据
+     */
+    public ShiftCode selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto);
+
     /**
      * 查询班次数据
      * 

@@ -1,23 +1,22 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.lang.reflect.Array;
+import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.PersonColock;
+import com.jlkj.human.hd.domain.PersonColockDetail;
+import com.jlkj.human.hd.domain.PersonColockOrg;
+import com.jlkj.human.hd.mapper.PersonColockOrgMapper;
+import com.jlkj.human.hd.service.IPersonColockDetailService;
+import com.jlkj.human.hd.service.IPersonColockOrgService;
+import com.jlkj.human.hd.service.IPersonColockService;
+import com.jlkj.human.hp.dto.FirstDeptDTO;
+import com.jlkj.human.hp.service.ISysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import com.jlkj.common.core.utils.uuid.UUID;
-import com.jlkj.human.hd.domain.PersonColock;
-import com.jlkj.human.hd.domain.PersonColockDetail;
-import com.jlkj.human.hd.service.IPersonColockDetailService;
-import com.jlkj.human.hd.service.IPersonColockService;
-import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.service.ISysDeptService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.PersonColockOrgMapper;
-import com.jlkj.human.hd.domain.PersonColockOrg;
-import com.jlkj.human.hd.service.IPersonColockOrgService;
 
 /**
  * 人员卡钟组织机构Service业务层处理
@@ -86,7 +85,8 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
         oldPersonColockOrg.setEffectDate(personColockOrg.getEffectDate());
         oldPersonColockOrg.setDeptId(personColockOrg.getDeptId());
         List<PersonColockOrg> oldList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
-        if(oldList.size()==0){
+        Boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColockOrg.getId()));
+        if(bool){
             PersonColockOrg lastEffectData = personColockOrgMapper.queryLastEffectData(personColockOrg);
             if(lastEffectData == null || personColockOrg.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
                 personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));

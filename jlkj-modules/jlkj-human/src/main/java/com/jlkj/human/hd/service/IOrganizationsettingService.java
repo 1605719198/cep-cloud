@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.service;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.Organizationsetting;
+
+import java.util.List;
 
 /**
  * 机构参数Service接口

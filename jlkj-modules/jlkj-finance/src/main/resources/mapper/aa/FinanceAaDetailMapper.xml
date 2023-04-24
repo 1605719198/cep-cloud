@@ -142,9 +142,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteFinanceAaDetailByIds" parameterType="String">
-        delete from finance_aa_detail where leaf_id in
-        <foreach item="leafId" collection="array" open="(" separator="," close=")">
-            #{leafId}
+        delete from finance_aa_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 </mapper>

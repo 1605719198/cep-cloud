@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.service;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaDetail;
+import com.jlkj.finance.aa.dto.FinanceAaDetailDTO;
 
 /**
  * 系统选单-明细设定Service接口
@@ -33,7 +34,7 @@ public interface IFinanceAaDetailService
      * @param detailList 系统选单-明细设定
      * @return 结果
      */
-    public int insertFinanceAaDetail( List<FinanceAaDetail> detailList);
+    public int insertFinanceAaDetail( List<FinanceAaDetailDTO> detailList);
 
     /**
      * 修改系统选单-明细设定
@@ -46,10 +47,10 @@ public interface IFinanceAaDetailService
     /**
      * 批量删除系统选单-明细设定
      * 
-     * @param leafId 需要删除的系统选单-明细设定主键集合
+     * @param id 需要删除的系统选单-明细设定主键集合
      * @return 结果
      */
-    public int deleteFinanceAaDetailByIds(String[] leafId);
+    public int deleteFinanceAaDetailByIds(String[] id);
 
     /**
      * 删除系统选单-明细设定信息

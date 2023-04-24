@@ -1,7 +1,9 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ShiftCode;
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
+
+import java.util.List;
 
 /**
  * 班次数据Mapper接口
@@ -14,6 +16,14 @@ public interface ShiftCodeMapper
     /**
      * 查询班次数据
      * 
+     * @param personShiftCodedto 排班人员工号时间
+     * @return 班次数据
+     */
+    public ShiftCode selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto);
+
+    /**
+     * 查询班次数据
+     *
      * @param id 班次数据主键
      * @return 班次数据
      */

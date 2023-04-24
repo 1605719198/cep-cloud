@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.Holidaysetting;
 import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
 import com.jlkj.human.hd.mapper.HolidaysettingMapper;

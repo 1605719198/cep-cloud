@@ -1,13 +1,13 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.ShiftClass;
+import com.jlkj.human.hd.mapper.ShiftClassMapper;
+import com.jlkj.human.hd.service.IShiftClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.ShiftClassMapper;
-import com.jlkj.human.hd.domain.ShiftClass;
-import com.jlkj.human.hd.service.IShiftClassService;
+
+import java.util.List;
 
 /**
  * 班别数据Service业务层处理

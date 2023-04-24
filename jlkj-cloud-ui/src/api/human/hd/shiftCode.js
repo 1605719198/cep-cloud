@@ -17,6 +17,15 @@ export function getShiftCode(id) {
   })
 }
 
+// 查询人员班次数据详细
+export function getShiftCodeByPerson(data) {
+  return request({
+    url: '/human/shiftCode/getShiftData',
+    method: 'post',
+    params: data
+  })
+}
+
 // 新增班次数据
 export function addShiftCode(data) {
   return request({

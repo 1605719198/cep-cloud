@@ -2,6 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.Clockwork;
+import com.jlkj.human.hd.dto.ClockworkDTO;
 import com.jlkj.human.hd.mapper.ClockworkMapper;
 import com.jlkj.human.hd.service.IClockworkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,18 @@ public class ClockworkServiceImpl implements IClockworkService
     public List<Clockwork> selectClockworkList(Clockwork clockwork)
     {
         return clockworkMapper.selectClockworkList(clockwork);
+    }
+
+    /**
+     * 查询公司卡钟设定列表
+     *
+     * @param compId 卡钟公司
+     * @return 公司卡钟设定
+     */
+    @Override
+    public List<ClockworkDTO> selectClockworkListByCompId(String compId)
+    {
+        return clockworkMapper.selectClockworkListByCompId(compId);
     }
 
     /**

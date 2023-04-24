@@ -425,7 +425,6 @@ export default {
           } else {
             addInfo(this.form).then(response => {
               this.states = false;
-              console.log(response.data);
               if (response.code == '0') {
                 this.$modal.msgSuccess(response.msg)
               }

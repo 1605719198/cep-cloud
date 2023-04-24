@@ -1,23 +1,21 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alibaba.fastjson.JSON;
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
+import com.jlkj.human.hd.mapper.PersonColockMapper;
 import com.jlkj.human.hd.service.IPersonColockDetailService;
+import com.jlkj.human.hd.service.IPersonColockService;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
 import com.jlkj.human.hp.service.ISysDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.PersonColockMapper;
-import com.jlkj.human.hd.domain.PersonColock;
-import com.jlkj.human.hd.service.IPersonColockService;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 人员卡钟Service业务层处理
@@ -150,7 +148,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         oldPersonColock.setEffectDate(personColock.getEffectDate());
         oldPersonColock.setEmpId(personColock.getEmpId());
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
-        Boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColock.getId()));
+        Boolean bool = oldList.size()==0;
         if(bool){
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() >= lastEffectData.getEffectDate().getTime()){
@@ -161,7 +159,7 @@ public class PersonColockServiceImpl implements IPersonColockService
                 throw new Exception("该人员新的生效日期必须大于等于"+ymddate.format(lastEffectData.getEffectDate()));
             }
         }else{
-            if(personColock.getOrgColockId()!=null){
+            if(personColock.getOrgColockId()!=null && oldList.size()==1 && !oldList.get(0).getId().equals(personColock.getId())){
                 deletePersonColockById(oldList.get(0).getId());
                 return updatePersonColock(personColock);
             }else{

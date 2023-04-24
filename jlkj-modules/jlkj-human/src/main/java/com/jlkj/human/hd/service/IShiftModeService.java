@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.service;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.ShiftMode;
+
+import java.util.List;
 
 /**
  * 轮班方式数据Service接口
@@ -26,6 +27,14 @@ public interface IShiftModeService
      * @return 轮班方式数据集合
      */
     public List<ShiftMode> selectShiftModeList(ShiftMode shiftMode);
+
+    /**
+     * 查询轮班方式数据列表
+     *
+     * @param shiftMode 轮班方式数据
+     * @return 轮班方式数据集合
+     */
+    public List<ShiftMode> selectShiftModeListAll(ShiftMode shiftMode);
 
     /**
      * 新增轮班方式数据

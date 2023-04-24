@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import { listCancellationPerson, getCancellationPerson, delCancellationPerson, addCancellationPerson, updateCancellationPerson } from "@/api/human/hd/cancellationPerson";
+import { listCancellationPerson, addCancellationPerson } from "@/api/human/hd/cancellationPerson";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import selectOrgPerson from "@/views/components/human/selectUser/selectOrgPerson";
@@ -198,10 +198,6 @@ export default {
     return {
       // 遮罩层
       loading: false,
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -307,45 +303,18 @@ export default {
       this.open = true;
       this.title = "添加人事注销记录";
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id
-      getCancellationPerson(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改人事注销记录";
-      });
-    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.id != null) {
-            updateCancellationPerson(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
+            console.log(this.form);
             addCancellationPerson(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
-          }
         }
       });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const id = row.id;
-      this.$modal.confirm('是否确认删除人事注销记录编号为"' + id + '"的数据项？').then(function() {
-        return delCancellationPerson(id);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
     },
     dateFormat(picker) {
       this.queryParams.startTime=picker[0]

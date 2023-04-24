@@ -54,22 +54,22 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
-          <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange"
-                    height="360px">
-            <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column label="用户工号" prop="empNo" :show-overflow-tooltip="true"/>
-            <el-table-column label="用户姓名" prop="fullName" :show-overflow-tooltip="true"/>
-            <el-table-column label="部门" prop="departmentName" :show-overflow-tooltip="true"/>
-            <el-table-column label="邮箱" prop="officeEmail" :show-overflow-tooltip="true"/>
-            <el-table-column label="手机" prop="myMobilePhone" :show-overflow-tooltip="true"/>
-          </el-table>
-          <pagination
-            v-show="total>0"
-            :total="total"
-            :page.sync="queryParams.pageNum"
-            :limit.sync="queryParams.pageSize"
-            @pagination="getList"
-          />
+        <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange"
+                  height="360px">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column label="用户工号" prop="empNo" :show-overflow-tooltip="true"/>
+          <el-table-column label="用户姓名" prop="fullName" :show-overflow-tooltip="true"/>
+          <el-table-column label="部门" prop="departmentName" :show-overflow-tooltip="true"/>
+          <el-table-column label="邮箱" prop="officeEmail" :show-overflow-tooltip="true"/>
+          <el-table-column label="手机" prop="myMobilePhone" :show-overflow-tooltip="true"/>
+        </el-table>
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
       </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">

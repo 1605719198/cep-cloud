@@ -11,7 +11,7 @@
         />
       </el-form-item>
       <el-form-item label="状态码" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态码" clearable>
+        <el-select :popper-append-to-body="false" v-model="queryParams.status" placeholder="请选择状态码" clearable>
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
             :key="dict.value"
@@ -34,7 +34,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['human:jobTitle:add']"
+          v-hasPermi="['human:humanJobTitle:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -45,7 +45,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['human:jobTitle:remove']"
+          v-hasPermi="['human:humanJobTitle:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -84,14 +84,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:jobTitle:edit']"
+            v-hasPermi="['human:humanJobTitle:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:jobTitle:remove']"
+            v-hasPermi="['human:humanJobTitle:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -128,7 +128,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="人员层级" prop="titleLevel">
-              <el-select v-model="form.titleLevel" placeholder="请选择人员层级" class="maxWidth">
+              <el-select :popper-append-to-body="false" v-model="form.titleLevel" placeholder="请选择人员层级" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.people_hierarchy"
                   :key="dict.dicNo"
@@ -143,7 +143,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="申请加班" prop="overTime">
-              <el-select v-model="form.overTime" placeholder="请选择申请加班" class="maxWidth">
+              <el-select :popper-append-to-body="false" v-model="form.overTime" placeholder="请选择申请加班" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.if_overtime"
                   :key="dict.dicNo"
@@ -155,7 +155,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="人员类别" prop="kind">
-              <el-select v-model="form.kind" placeholder="请选择人员类别" class="maxWidth">
+              <el-select :popper-append-to-body="false" v-model="form.kind" placeholder="请选择人员类别" class="maxWidth">
                 <el-option
                   v-for="dict in baseInfoData.personnel_category"
                   :key="dict.dicNo"
@@ -384,7 +384,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('human/jobTitle/export', {
+      this.download('human/humanJobTitle/export', {
         ...this.queryParams
       }, `jobTitle_${new Date().getTime()}.xlsx`)
     }

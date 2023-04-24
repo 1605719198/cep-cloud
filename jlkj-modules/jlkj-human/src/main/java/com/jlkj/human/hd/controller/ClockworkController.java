@@ -8,6 +8,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.Clockwork;
+import com.jlkj.human.hd.dto.ClockworkDTO;
 import com.jlkj.human.hd.service.IClockworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,17 @@ public class ClockworkController extends BaseController
     {
         startPage();
         List<Clockwork> list = clockworkService.selectClockworkList(clockwork);
+        return getDataTable(list);
+    }
+
+    /**
+     * 公司查询卡钟设定列表
+     */
+    @RequiresPermissions("human:clockwork:list")
+    @GetMapping("/listByComp/{compId}")
+    public TableDataInfo listByCompId(@PathVariable("compId") String compId)
+    {
+        List<ClockworkDTO> list = clockworkService.selectClockworkListByCompId(compId);
         return getDataTable(list);
     }
 
@@ -95,4 +107,6 @@ public class ClockworkController extends BaseController
     {
         return toAjax(clockworkService.deleteClockworkByIds(ids));
     }
+
+
 }

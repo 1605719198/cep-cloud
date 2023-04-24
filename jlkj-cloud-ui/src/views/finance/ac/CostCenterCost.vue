@@ -455,7 +455,6 @@ export default {
             this.ruleForm.createUser = '123456'
             this.ruleForm.createUserName = '姓名'
             this.lisetloading = false
-            console.log(this.ruleForm);
             addFinancetest(this.ruleForm).then(response => {
               this.pagedata.propertydata = this.financeattritestList;
               this.pagedata.parentId = response.data[0].id;

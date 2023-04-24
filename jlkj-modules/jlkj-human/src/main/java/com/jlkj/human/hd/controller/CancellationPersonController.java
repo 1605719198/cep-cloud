@@ -2,6 +2,7 @@ package com.jlkj.human.hd.controller;
 
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
+import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
@@ -20,7 +21,10 @@ import com.jlkj.human.hm.service.IPersonnelService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -154,5 +158,78 @@ public class CancellationPersonController extends BaseController {
             }
         }
         return null;
+    }
+
+    /**
+     * 添加人事批量注销信息
+     */
+    @RequiresPermissions("human:cancellationPerson:add")
+    @Operation(summary = "添加人事批量注销信息")
+    @PostMapping("/addBatchCancellationPerson")
+    @Log(title = "添加人事批量注销信息", businessType = BusinessType.INSERT)
+    public Object addBatchCancellationPerson(@RequestBody CancellationPersonDTO cancellationPersonDTO) throws ParseException {
+        CancellationPerson cancellationPerson = new CancellationPerson();
+        BeanUtils.copyProperties(cancellationPersonDTO, cancellationPerson);
+        Personnel personnel = new Personnel();
+        BeanUtils.copyProperties(cancellationPersonDTO, personnel);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cancellationPerson.setCheckStartDate(simpleDateFormat.parse(cancellationPersonDTO.getStartTime()));
+        cancellationPerson.setCheckEndDate(simpleDateFormat.parse(cancellationPersonDTO.getEndTime()));
+        cancellationPerson.setCreator(SecurityUtils.getNickName());
+        for (CancellationPerson item : cancellationPersonDTO.getUserInfo()){
+            List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, item.getEmpNo()).list();
+            if (personnelList.isEmpty()) {
+                return AjaxResult.error("工号:" + item.getEmpNo() + "不存在，不能注销");
+            } else {
+                List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
+                        .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())
+                        .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+                        .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+                        .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+                        .list();
+                if (attendanceAbnormalList.isEmpty()) {
+                    return AjaxResult.error("工号:" + item.getEmpNo() + "已处理不能注销");
+                } else {
+                    boolean update = iAttendanceAbnormalService.lambdaUpdate()
+                            .set(AttendanceAbnormal::getStatus, "05")
+                            .set(AttendanceAbnormal::getDisposeId, "03")
+                            .set(AttendanceAbnormal::getExcReaId, "03")
+                            .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())
+                            .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+                            .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+                            .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+                            .update();
+                    if (update) {
+                        iCancellationPersonService.save(cancellationPerson);
+                    }
+                }
+            }
+        }
+        return AjaxResult.success("注销成功");
+    }
+
+
+    @Log(title = "基于表格注销", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("human:cancellationPerson:import")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<CancellationPerson> util = new ExcelUtil<CancellationPerson>(CancellationPerson.class);
+        List<CancellationPerson> cancellationPersonList = util.importExcel(file.getInputStream());
+        String operName = SecurityUtils.getUsername();
+        String message = iCancellationPersonService.importUser(cancellationPersonList, updateSupport, operName);
+        return success(message);
+    }
+
+    /**
+     * 下载注销模板
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException
+    {
+        ExcelUtil<CancellationPerson> util = new ExcelUtil<CancellationPerson>(CancellationPerson.class);
+        util.importTemplateExcel(response, "注销模板");
     }
 }

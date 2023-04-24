@@ -26,19 +26,11 @@ export function addCancellationPerson(data) {
   })
 }
 
-// 修改人事注销记录
-export function updateCancellationPerson(data) {
+// 新增人事批量注销记录
+export function addBatchCancellationPerson(data) {
   return request({
-    url: '/human/cancellationPerson',
-    method: 'put',
+    url: '/human/cancellationPerson/addBatchCancellationPerson',
+    method: 'post',
     data: data
-  })
-}
-
-// 删除人事注销记录
-export function delCancellationPerson(id) {
-  return request({
-    url: '/human/cancellationPerson/' + id,
-    method: 'delete'
   })
 }

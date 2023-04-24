@@ -20,7 +20,7 @@ public class FinanceAaDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
     /** 现金流量代码 */
-    private List<FinanceAaDetail> detailList;
+    private List<FinanceAaDetail> financeDetailList;
     /** id */
     private String id;
 

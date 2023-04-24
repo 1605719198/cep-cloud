@@ -16,6 +16,13 @@ export function getPersonColockDetail(id) {
     method: 'get'
   })
 }
+// 通过卡钟查员工
+export function getColockPerson(macId) {
+  return request({
+    url: '/human/personColockDetail/listPerson/' + macId,
+    method: 'get'
+  })
+}
 
 // 新增人员卡钟明细
 export function addPersonColockDetail(data) {
