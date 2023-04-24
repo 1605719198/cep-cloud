@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.jlkj.common.core.utils.DateUtils;
@@ -107,4 +108,11 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
     {
         return financeCaltypeMapper.deleteFinanceCaltypeById(id);
     }
+
+    /**
+     * 查询核算项目类别(下拉选单用)
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectCalTypeList() { return financeCaltypeMapper.selectCalTypeList(); }
 }

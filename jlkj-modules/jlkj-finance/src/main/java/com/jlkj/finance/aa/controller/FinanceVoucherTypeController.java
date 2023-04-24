@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.controller;
 
 import java.util.List;
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,5 +102,14 @@ public class FinanceVoucherTypeController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(financeVoucherTypeService.deleteFinanceVoucherTypeByIds(ids));
+    }
+
+    /**
+     * 查询凭证类别列表(下拉选单用)
+     */
+    @GetMapping("/voucherTypeList")
+    public List<Map<String,String>> selectVoucherTypeList()
+    {
+        return financeVoucherTypeService.selectVoucherTypeList();
     }
 }

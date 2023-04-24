@@ -21,11 +21,9 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 会计科目主键 */
-    @Excel(name = "会计科目主键")
     private String acctId;
 
     /** 会计公司id */
-    @Excel(name = "会计公司id")
     private String companyId;
 
     /** 集团会计科目主键 */
@@ -46,13 +44,15 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     private String parentAcctCode;
 
     /** 传票性科目 */
-    @Excel(name = "传票性科目")
+    @Excel(name = "传票性科目",readConverterExp = "Y=是,N=否")
     private String isVoucher;
 
     /** 借/贷方会计科目 */
+    @Excel(name = "借贷方",readConverterExp = "D=借方,C=贷方")
     private String drOrCr;
 
     /** 现金科目 */
+    @Excel(name = "现金科目",readConverterExp = "Y=是,N=否")
     private String isCash;
 
     /** 级别 */
@@ -60,10 +60,6 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
 
     /** 祖级列表 */
     private String ancestors;
-
-    /** 数量金额辅助核算（单位） */
-    @Excel(name = "数量金额辅助核算", readConverterExp = "单=位")
-    private String isUnit;
 
     /** 核算项目一id */
     private String calTypeIda;
@@ -94,19 +90,26 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     private String calTypeCoded;
 
     /** 到期日 */
+    @Excel(name = "到期日核算",readConverterExp = "Y=是,N=否")
     private String isDueDate;
+
+    /** 数量金额辅助核算（单位） */
+    @Excel(name = "数量金额辅助核算", readConverterExp = "Y=是,N=否")
+    private String isUnit;
 
     /** 悬计帐 */
     private String isLqdt;
 
     /** 外币核算（币别） */
+    @Excel(name = "外币核算", readConverterExp = "Y=是,N=否")
     private String isFrnCrcy;
 
     /** 机器专用 */
+    @Excel(name = "机器专用", readConverterExp = "Y=是,N=否")
     private String isPrvlg;
 
     /** 禁用标识 */
-    @Excel(name = "禁用标识")
+    @Excel(name = "状态",readConverterExp = "Y=启用,N=禁用")
     private String disabledCode;
 
     /** 禁用日期 */
@@ -116,7 +119,13 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     private String createName;
 
     /** 异动人名称 */
+    @Excel(name = "修改人")
     private String updateName;
+
+
+    /** 修改时间 */
+    @Excel(name = "修改时间",dateFormat="yyyy-MM-dd")
+    private Date updateTime;
 
     /** 子节点 */
     private List<FinanceAaAcctcodeCorp> children = new ArrayList<FinanceAaAcctcodeCorp>();
@@ -382,6 +391,12 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     {
         return updateName;
     }
+
+    @Override
+    public Date getUpdateTime() { return updateTime; }
+
+    @Override
+    public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
     public List<FinanceAaAcctcodeCorp> getChildren() { return children; }
 

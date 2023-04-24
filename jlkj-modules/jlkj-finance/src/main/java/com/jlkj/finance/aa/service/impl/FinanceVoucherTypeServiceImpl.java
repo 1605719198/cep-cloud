@@ -2,6 +2,8 @@ package com.jlkj.finance.aa.service.impl;
 
 import java.security.Security;
 import java.util.List;
+import java.util.Map;
+
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -100,5 +102,14 @@ public class FinanceVoucherTypeServiceImpl implements IFinanceVoucherTypeService
     public int deleteFinanceVoucherTypeById(String id)
     {
         return financeVoucherTypeMapper.deleteFinanceVoucherTypeById(id);
+    }
+
+    /**
+     * 查询凭证类别列表(下拉选单用)
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectVoucherTypeList(){
+        return financeVoucherTypeMapper.selectVoucherTypeList();
     }
 }

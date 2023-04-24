@@ -249,8 +249,8 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
      * @return
      */
     @Override
-    public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode) {
+    public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode, String companyId) {
         acctCode = StringUtils.isEmpty(acctCode) ? "0" :acctCode;
-        return financeAcctcodeGroupMapper.selectCodeGroupList(acctCode);
+        return financeAcctcodeGroupMapper.selectCodeGroupList(acctCode,companyId);
     }
 }

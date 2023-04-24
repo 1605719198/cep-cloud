@@ -1,6 +1,8 @@
 package com.jlkj.finance.aa.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.jlkj.finance.aa.domain.FinanceVoucherType;
 
 /**
@@ -58,4 +60,10 @@ public interface IFinanceVoucherTypeService
      * @return 结果
      */
     public int deleteFinanceVoucherTypeById(String id);
+
+    /**
+     * 查询凭证类别列表(下拉选单用)
+     * @return
+     */
+    public List<Map<String,String>> selectVoucherTypeList();
 }

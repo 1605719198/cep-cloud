@@ -99,5 +99,5 @@ public interface IFinanceAcctcodeGroupService
      * @param acctCode
      * @return
      */
-    public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode);
+    public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode, String companyId);
 }

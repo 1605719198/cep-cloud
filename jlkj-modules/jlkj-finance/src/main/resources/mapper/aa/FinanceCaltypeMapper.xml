@@ -92,4 +92,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectCalTypeList" parameterType="String" resultType="map">
+        select cal_type_code value, cal_type_name label from finance_aa_calType ORDER BY cal_type_code
+    </select>
+
 </mapper>

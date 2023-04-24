@@ -145,12 +145,12 @@
         delete from finance_aa_group_acctcode where group_acct_code = #{groupAcctCode}
     </delete>
 
-
+    <!-- 根据上一层级科目编号查询下一层级科目数据 -->
     <select id="selectCodeGroupList" parameterType="String" resultMap="FinanceAcctcodeGroupResult">
         select group_acct_id, group_acct_code, group_acct_name, parent_id, parent_acct_code, ancestors, is_voucher, dr_or_cr, is_cash, level, disabled_code from finance_aa_group_acctcode t1
         <where>
-            <if test="groupAcctCode != null  and groupAcctCode != ''">
-                and parent_acct_code = #{acctCode} and group_acct_code not in (select acct_code from finance_aa_acctcode where parent_acct_code = #{acctCode})
+            <if test="acctCode != null  and acctCode != ''">
+                and parent_acct_code = #{acctCode} and group_acct_code not in (select acct_code from finance_aa_acctcode where parent_acct_code = #{acctCode} and company_id = #{companyId})
             </if>
         </where>
         order by group_acct_code,group_acct_name
