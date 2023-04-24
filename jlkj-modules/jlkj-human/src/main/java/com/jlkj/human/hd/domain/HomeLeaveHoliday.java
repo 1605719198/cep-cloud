@@ -3,6 +3,7 @@ package com.jlkj.human.hd.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author jiangbingchen
  * @date 2023-04-08
  */
+@Data
 public class HomeLeaveHoliday extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -34,21 +36,21 @@ public class HomeLeaveHoliday extends BaseEntity
 
     /** 工号 */
     @Excel(name = "工号")
-    private String empno;
+    private String empNo;
 
     /** 工号ID */
-    private String empld;
+    private String empId;
 
     /** 姓名 */
     @Excel(name = "姓名")
-    private String empname;
+    private String empName;
 
     /** 岗位名称 */
     @Excel(name = "岗位名称")
-    private String postname;
+    private String postName;
 
     /** 岗位ID */
-    private String postid;
+    private String postId;
 
     /** 本年度可休探亲假天数 */
     @Excel(name = "本年度可休探亲假天数")
@@ -124,50 +126,50 @@ public class HomeLeaveHoliday extends BaseEntity
     {
         return year;
     }
-    public void setEmpno(String empno)
+    public void setEmpNo(String empNo)
     {
-        this.empno = empno;
+        this.empNo = empNo;
     }
 
-    public String getEmpno()
+    public String getEmpNo()
     {
-        return empno;
+        return empNo;
     }
-    public void setEmpld(String empld)
+    public void setEmpId(String empId)
     {
-        this.empld = empld;
-    }
-
-    public String getEmpld()
-    {
-        return empld;
-    }
-    public void setEmpname(String empname)
-    {
-        this.empname = empname;
+        this.empId = empId;
     }
 
-    public String getEmpname()
+    public String getEmpId()
     {
-        return empname;
+        return empId;
     }
-    public void setPostname(String postname)
+    public void setEmpName(String empName)
     {
-        this.postname = postname;
-    }
-
-    public String getPostname()
-    {
-        return postname;
-    }
-    public void setPostid(String postid)
-    {
-        this.postid = postid;
+        this.empName = empName;
     }
 
-    public String getPostid()
+    public String getEmpName()
     {
-        return postid;
+        return empName;
+    }
+    public void setPostName(String postName)
+    {
+        this.postName = postName;
+    }
+
+    public String getPostName()
+    {
+        return postName;
+    }
+    public void setPostId(String postId)
+    {
+        this.postId = postId;
+    }
+
+    public String getPostId()
+    {
+        return postId;
     }
     public void setDueHomeDays(BigDecimal dueHomeDays)
     {
@@ -263,25 +265,26 @@ public class HomeLeaveHoliday extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("companyId", getCompanyId())
+                .append("id", getId())
+                .append("companyId", getCompanyId())
                 .append("companyName",getCompanyName())
-            .append("year", getYear())
-            .append("empno", getEmpno())
-            .append("empld", getEmpld())
-            .append("empname", getEmpname())
-            .append("postname", getPostname())
-            .append("postid", getPostid())
-            .append("dueHomeDays", getDueHomeDays())
-            .append("offHomeDays", getOffHomeDays())
-            .append("restHomeDays", getRestHomeDays())
-            .append("restFhomeNums", getRestFhomeNums())
-            .append("restFhomeDays", getRestFhomeDays())
-            .append("preHomeDays", getPreHomeDays())
-            .append("restHomeNums", getRestHomeNums())
-            .append("creator", getCreator())
-            .append("creatorId", getCreatorId())
-            .append("createDate", getCreateDate())
-            .toString();
+                .append("year", getYear())
+                .append("empNo", getEmpNo())
+                .append("empId", getEmpId())
+                .append("empName", getEmpName())
+                .append("postName", getPostName())
+                .append("postId", getPostId())
+                .append("dueHomeDays", getDueHomeDays())
+                .append("offHomeDays", getOffHomeDays())
+                .append("restHomeDays", getRestHomeDays())
+                .append("restFhomeNums", getRestFhomeNums())
+                .append("restFhomeDays", getRestFhomeDays())
+                .append("preHomeDays", getPreHomeDays())
+                .append("restHomeNums", getRestHomeNums())
+                .append("creator", getCreator())
+                .append("creatorId", getCreatorId())
+                .append("createDate", getCreateDate())
+                .toString();
     }
 }
+

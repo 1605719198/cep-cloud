@@ -147,11 +147,11 @@ public class HomeLeaveHolidayServiceImpl implements IHomeLeaveHolidayService
                     homeLeaveHoliday.setRestHomeDays(BigDecimal.valueOf(0));
                     homeLeaveHoliday.setPreHomeDays(BigDecimal.valueOf(0));
                 }
-                    BeanValidators.validateWithException(validator, homeLeaveHoliday);
-                    homeLeaveHoliday.setCreator(operName);
-                    homeLeaveHolidayMapper.updateHomeLeaveHolidayByEmpNo(homeLeaveHoliday);
-                    successNum++;
-                    successMsg.append("<br/>" + successNum + "、工号 " + homeLeaveHoliday.getEmpNo() + " 导入成功");
+                BeanValidators.validateWithException(validator, homeLeaveHoliday);
+                homeLeaveHoliday.setCreator(operName);
+                homeLeaveHolidayMapper.updateHomeLeaveHolidayByEmpNo(homeLeaveHoliday);
+                successNum++;
+                successMsg.append("<br/>" + successNum + "、工号 " + homeLeaveHoliday.getEmpNo() + " 导入成功");
                 if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, homeLeaveHoliday);
@@ -181,3 +181,4 @@ public class HomeLeaveHolidayServiceImpl implements IHomeLeaveHolidayService
         return successMsg.toString();
     }
 }
+

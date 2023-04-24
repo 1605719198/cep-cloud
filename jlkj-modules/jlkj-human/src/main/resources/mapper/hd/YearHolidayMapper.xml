@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.human.hd.mapper.YearHolidayMapper">
-    
+
     <resultMap type="YearHoliday" id="YearHolidayResult">
         <result property="id"    column="id"    />
         <result property="compId"    column="comp_id"    />
@@ -34,12 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectYearHolidayList" parameterType="YearHoliday" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
-        <where>  
+        <where>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
         </where>
     </select>
-    
+
     <select id="selectYearHolidayById" parameterType="String" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
         where id = #{id}
@@ -47,9 +47,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectYearHolidayByempNo" parameterType="YearHoliday" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
---         where emp_no = #{empNo}
---         and comp_id = #{compId}
---         and year = #{year}
+        --         where emp_no = #{empNo}
+        --         and comp_id = #{compId}
+        --         and year = #{year}
         where id = #{id}
     </select>
 
@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="createDate != null">create_date,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="compId != null">#{compId},</if>
@@ -99,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="createDate != null">#{createDate},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateYearHoliday" parameterType="YearHoliday">
@@ -154,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteYearHolidayByIds" parameterType="String">
-        delete from human_hd_year_holiday where id in 
+        delete from human_hd_year_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

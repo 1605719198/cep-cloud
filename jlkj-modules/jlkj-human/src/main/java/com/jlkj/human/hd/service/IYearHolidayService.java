@@ -6,31 +6,31 @@ import java.util.List;
 
 /**
  * 年休假天数设定Service接口
- * 
+ *
  * @author jiangbingchen
  * @date 2023-04-12
  */
-public interface IYearHolidayService 
+public interface IYearHolidayService
 {
     /**
      * 查询年休假天数设定
-     * 
+     *
      * @param id 年休假天数设定主键
      * @return 年休假天数设定
      */
     public YearHoliday selectYearHolidayById(String id);
 
     /**
-     * 通过工号查询年休假天数设定
+     * 查询年休假天数设定
      *
-     * @param yearHoliday 年休假天数查询条件
+     * @param yearHoliday 年休假天数设定
      * @return 年休假天数设定
      */
     public YearHoliday selectYearHolidayByempNo(YearHoliday yearHoliday);
 
     /**
      * 查询年休假天数设定列表
-     * 
+     *
      * @param yearHoliday 年休假天数设定
      * @return 年休假天数设定集合
      */
@@ -38,7 +38,7 @@ public interface IYearHolidayService
 
     /**
      * 新增年休假天数设定
-     * 
+     *
      * @param yearHoliday 年休假天数设定
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface IYearHolidayService
 
     /**
      * 修改年休假天数设定
-     * 
+     *
      * @param yearHoliday 年休假天数设定
      * @return 结果
      */
@@ -54,7 +54,7 @@ public interface IYearHolidayService
 
     /**
      * 批量删除年休假天数设定
-     * 
+     *
      * @param ids 需要删除的年休假天数设定主键集合
      * @return 结果
      */
@@ -62,7 +62,7 @@ public interface IYearHolidayService
 
     /**
      * 删除年休假天数设定信息
-     * 
+     *
      * @param id 年休假天数设定主键
      * @return 结果
      */
@@ -78,3 +78,4 @@ public interface IYearHolidayService
      */
     public String importUser(List<YearHoliday> yearHolidayList, Boolean isUpdateSupport, String operName);
 }
+

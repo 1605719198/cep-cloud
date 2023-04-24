@@ -34,21 +34,21 @@ public class YearHoliday extends BaseEntity
 
     /** 工号 */
     @Excel(name = "工号")
-    private String empno;
+    private String empNo;
 
     /** 工号ID */
-    private String empld;
+    private String empId;
 
     /** 姓名 */
     @Excel(name = "姓名")
-    private String empname;
+    private String empName;
 
     /** 岗位名称 */
     @Excel(name = "岗位名称")
-    private String postname;
+    private String postName;
 
     /** 岗位ID */
-    private String postid;
+    private String postId;
 
     /** 本年度可休年休假天数 */
     @Excel(name = "本年度可休年休假天数")
@@ -124,50 +124,50 @@ public class YearHoliday extends BaseEntity
     {
         return year;
     }
-    public void setEmpno(String empno)
+    public void setEmpNo(String empNo)
     {
-        this.empno = empno;
+        this.empNo = empNo;
     }
 
-    public String getEmpno()
+    public String getEmpNo()
     {
-        return empno;
+        return empNo;
     }
-    public void setEmpld(String empld)
+    public void setEmpId(String empId)
     {
-        this.empld = empld;
-    }
-
-    public String getEmpld()
-    {
-        return empld;
-    }
-    public void setEmpname(String empname)
-    {
-        this.empname = empname;
+        this.empId = empId;
     }
 
-    public String getEmpname()
+    public String getEmpId()
     {
-        return empname;
+        return empId;
     }
-    public void setPostname(String postname)
+    public void setEmpName(String empName)
     {
-        this.postname = postname;
-    }
-
-    public String getPostname()
-    {
-        return postname;
-    }
-    public void setPostid(String postid)
-    {
-        this.postid = postid;
+        this.empName = empName;
     }
 
-    public String getPostid()
+    public String getEmpName()
     {
-        return postid;
+        return empName;
+    }
+    public void setPostName(String postName)
+    {
+        this.postName = postName;
+    }
+
+    public String getPostName()
+    {
+        return postName;
+    }
+    public void setPostId(String postId)
+    {
+        this.postId = postId;
+    }
+
+    public String getPostId()
+    {
+        return postId;
     }
     public void setTotalDays(BigDecimal totalDays)
     {
@@ -263,25 +263,27 @@ public class YearHoliday extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("compId", getCompId())
+                .append("id", getId())
+                .append("compId", getCompId())
                 .append("companyName",getCompanyName())
-            .append("year", getYear())
-            .append("empno", getEmpno())
-            .append("empld", getEmpld())
-            .append("empname", getEmpname())
-            .append("postname", getPostname())
-            .append("postid", getPostid())
-            .append("totalDays", getTotalDays())
-            .append("curYearDays", getCurYearDays())
-            .append("preYearDays", getPreYearDays())
-            .append("restDays", getRestDays())
-            .append("giveupDays", getGiveupDays())
-            .append("gotoDays", getGotoDays())
-            .append("overtimePay", getOvertimePay())
-            .append("creator", getCreator())
-            .append("creatorId", getCreatorId())
-            .append("createDate", getCreateDate())
-            .toString();
+                .append("year", getYear())
+                .append("empNo", getEmpNo())
+                .append("empId", getEmpId())
+                .append("empName", getEmpName())
+                .append("postName", getPostName())
+                .append("postId", getPostId())
+                .append("totalDays", getTotalDays())
+                .append("curYearDays", getCurYearDays())
+                .append("preYearDays", getPreYearDays())
+                .append("restDays", getRestDays())
+                .append("giveupDays", getGiveupDays())
+                .append("gotoDays", getGotoDays())
+                .append("overtimePay", getOvertimePay())
+                .append("creator", getCreator())
+                .append("creatorId", getCreatorId())
+                .append("createDate", getCreateDate())
+                .toString();
     }
 }
+
+

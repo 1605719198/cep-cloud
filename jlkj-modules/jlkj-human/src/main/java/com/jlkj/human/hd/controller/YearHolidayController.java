@@ -44,15 +44,6 @@ public class YearHolidayController extends BaseController
     }
 
     /**
-     * 查询员工年休假数据
-     */
-    @GetMapping("/year")
-    public AjaxResult year( YearHoliday yearHoliday)
-    {
-        return success(yearHolidayService.selectYearHolidayByempNo(yearHoliday));
-    }
-
-    /**
      * 导出年休假天数设定列表
      */
     @RequiresPermissions("human:yearHoliday:export")
@@ -81,11 +72,19 @@ public class YearHolidayController extends BaseController
     @RequiresPermissions("human:yearHoliday:add")
     @Log(title = "年休假天数设定", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody YearHoliday yearHoliday)
+    public AjaxResult add( YearHoliday yearHoliday)
     {
         return toAjax(yearHolidayService.insertYearHoliday(yearHoliday));
     }
 
+    /**
+     * 新增年休假天数设定
+     */
+    @GetMapping("/year")
+    public AjaxResult year( YearHoliday yearHoliday)
+    {
+        return success(yearHolidayService.selectYearHolidayByempNo(yearHoliday));
+    }
 
     /**
      * 修改年休假天数设定
@@ -103,7 +102,7 @@ public class YearHolidayController extends BaseController
      */
     @RequiresPermissions("human:yearHoliday:remove")
     @Log(title = "年休假天数设定", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(yearHolidayService.deleteYearHolidayByIds(ids));

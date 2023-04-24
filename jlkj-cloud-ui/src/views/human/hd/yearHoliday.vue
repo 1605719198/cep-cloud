@@ -11,8 +11,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="工号" prop="empno">
-        <el-input v-model="queryParams.empno" placeholder="请输入工号" :disabled="true">
+      <el-form-item label="工号" prop="empNo">
+        <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
           <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
         </el-input>
       </el-form-item>
@@ -22,14 +22,27 @@
       </el-form-item>
     </el-form>
 
-
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="info"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleImport"
+          v-hasPermi="['human:yearHoliday:import']"
+        >导入
+        </el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
 
     <el-table v-loading="loading" :data="holidayList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="年度" align="center" prop="year" />
-      <el-table-column label="工号" align="center" prop="empno" />
-      <el-table-column label="姓名" align="center" prop="empname" />
-      <el-table-column label="岗位名称" align="center" prop="postname" />
+      <el-table-column label="工号" align="center" prop="empNo" />
+      <el-table-column label="姓名" align="center" prop="empName" />
+      <el-table-column label="岗位名称" align="center" prop="postName" />
       <el-table-column label="本年度可休年休假天数" align="center" prop="totalDays" />
       <el-table-column label="上年度剩余可休年休假天数" align="center" prop="curYearDays" />
       <el-table-column label="累计可休年休假天数" align="center" prop="preYearDays" />
@@ -40,11 +53,10 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="scope.row.year === '2023'"
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:holiday:edit']"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-edit"
+                     @click="handleUpdate(scope.row)"
           >修改</el-button>
         </template>
       </el-table-column>
@@ -65,16 +77,16 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="人员编码" prop="empno">
-              <el-input v-model="form.empno" placeholder="请输入人员编码" maxlength="10" :disabled="this.form.id!=null" class="inputInner"/>{{form.empname}}
+            <el-form-item label="人员编码" prop="empNo">
+              <el-input v-model="form.empNo" placeholder="请输入人员编码" maxlength="10" :disabled="this.form.id!=null" class="inputInner"/>{{form.empName}}
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="岗位" prop="postname">
-              <el-input v-model="form.postname" placeholder="请输入岗位" maxlength="200" :disabled="this.form.id!=null"/>
+            <el-form-item label="岗位" prop="postName">
+              <el-input v-model="form.postName" placeholder="请输入岗位" maxlength="200" :disabled="this.form.id!=null"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -152,6 +164,40 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 年休假资料导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <div class="el-upload__tip" slot="tip">
+            <el-checkbox v-model="upload.updateSupport"/>
+            是否更新已经存在的用户数据
+          </div>
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
+                   @click="importTemplate">下载模板
+          </el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -160,6 +206,7 @@ import { listHolidayYear, getHoliday, delHoliday, addHoliday, updateHoliday } fr
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getDateTime} from "@/api/human/hd/ahumanutils";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: "Holiday",
@@ -196,7 +243,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        empno: null,
+        empNo: null,
       },
       // 表单参数
       form: {},
@@ -205,7 +252,22 @@ export default {
         totalDays:[
           {required:true,message:'不能为空',trigger: "change"}
         ]
-      }
+      },
+      // 年休假资料导入参数
+      upload: {
+        // 是否显示弹出层（年休假资料导入）
+        open: false,
+        // 弹出层标题（年休假资料导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: {Authorization: "Bearer " + getToken()},
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/human/holiday/year/importData"
+      },
     };
   },
   computed:{
@@ -235,13 +297,13 @@ export default {
         this.loading = false;
       });
     },
-      /** 查询公司列表 */
-      getCompanyList(){
-        selectCompany().then(response =>{
-            this.companyList = response.data
-          }
-        )
-      },
+    /** 查询公司列表 */
+    getCompanyList(){
+      selectCompany().then(response =>{
+          this.companyList = response.data
+        }
+      )
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -253,11 +315,11 @@ export default {
         id: null,
         compId: null,
         year: null,
-        empno: null,
-        empld: null,
-        empname: null,
-        postname: null,
-        postid: null,
+        empNo: null,
+        empId: null,
+        empName: null,
+        postName: null,
+        postId: null,
         totalDays: null,
         curYearDays: null,
         preYearDays: null,
@@ -285,7 +347,7 @@ export default {
     },
     /** 查询条件判定 */
     judgeQuery(){
-      if(this.queryParams.empno===null||this.queryParams.empno===''){
+      if(this.queryParams.empNo===null||this.queryParams.empNo===''){
         this.$modal.msgError("请输入工号")
         return false;
       }else{
@@ -356,6 +418,11 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "年休假资料导入";
+      this.upload.open = true;
+    },
     /** 导出按钮操作 */
     handleExport() {
       this.download('human/holiday/export', {
@@ -368,7 +435,27 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(empId,userName,compId) {
-      this.queryParams.empno = empId;
+      this.queryParams.empNo = empId;
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      this.download('human/holiday/year/importTemplate', {}, `yearHoliday_template_${new Date().getTime()}.xlsx`)
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit();
     },
   }
 };
@@ -381,3 +468,4 @@ export default {
   margin-bottom: 0 !important;
 }
 </style>
+
