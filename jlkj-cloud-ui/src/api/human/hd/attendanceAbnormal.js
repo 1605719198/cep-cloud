@@ -43,3 +43,12 @@ export function recallAttendanceAbnormal(data) {
     data: data
   })
 }
+
+// 查询出勤异常列表
+export function listAttendanceAnomalyConfirmationList(query) {
+  return request({
+    url: '/human/attendanceAbnormal/attendanceAnomalyConfirmationList',
+    method: 'get',
+    params: query
+  })
+}

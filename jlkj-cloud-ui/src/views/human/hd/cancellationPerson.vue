@@ -307,7 +307,6 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-            console.log(this.form);
             addCancellationPerson(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

@@ -42,9 +42,8 @@ public class AttendanceAbnormalController extends BaseController {
         List<AttendanceAbnormal> list = iAttendanceAbnormalService.lambdaQuery()
                 .eq(StringUtils.isNotBlank(attendanceAbnormal.getCompId()), AttendanceAbnormal::getCompId, attendanceAbnormal.getCompId())
                 .eq(AttendanceAbnormal::getEmpNo, attendanceAbnormal.getEmpNo())
-                .between(AttendanceAbnormal::getSlotCardOnduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime())
-                .or()
-                .between(AttendanceAbnormal::getSlotCardOffduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime()).list();
+                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getStartTime())
+                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 
@@ -107,6 +106,25 @@ public class AttendanceAbnormalController extends BaseController {
         } else {
             return AjaxResult.success("审批状态为审核中时，才允许撤回！");
         }
+    }
 
+    /**
+     * 查询出勤异常确认列表
+     */
+    @RequiresPermissions("human:attendanceAnomalyConfirmation:list")
+    @Log(title = "查询出勤异常确认列表",businessType = BusinessType.OTHER)
+    @Operation(summary = "查询出勤异常确认列表")
+    @GetMapping("/attendanceAnomalyConfirmationList")
+    public Object listAttendanceAnomalyConfirmation(AttendanceAbnormalDTO attendanceAbnormalDTO) {
+        startPage();
+        AttendanceAbnormal attendanceAbnormal = new AttendanceAbnormal();
+        BeanUtils.copyProperties(attendanceAbnormalDTO, attendanceAbnormal);
+        List<AttendanceAbnormal> list = iAttendanceAbnormalService.lambdaQuery()
+                .eq(StringUtils.isNotBlank(attendanceAbnormal.getCompId()), AttendanceAbnormal::getCompId, attendanceAbnormal.getCompId())
+                .eq(AttendanceAbnormal::getEmpNo, attendanceAbnormal.getEmpNo())
+                .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "08")).or().eq(AttendanceAbnormal::getDisposeId, "09")
+                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getStartTime())
+                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getEndTime()).list();
+        return AjaxResult.success("查询成功", getDataTable(list));
     }
 }

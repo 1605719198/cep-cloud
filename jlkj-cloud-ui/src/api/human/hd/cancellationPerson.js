@@ -34,3 +34,12 @@ export function addBatchCancellationPerson(data) {
     data: data
   })
 }
+
+// 出勤异常确认作业确认旷工
+export function confirmAttendanceAnomaly(data) {
+  return request({
+    url: '/human/cancellationPerson/confirm',
+    method: 'post',
+    data: data
+  })
+}
