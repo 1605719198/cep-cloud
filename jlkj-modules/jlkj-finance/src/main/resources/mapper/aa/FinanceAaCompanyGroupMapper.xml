@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCompanyGroupMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup" id="FinanceAaCompanyGroupResult">
+        <result property="id"    column="id"    />
+        <result property="companyNo"    column="company_no"    />
+        <result property="companySname"    column="company_sname"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="crcyId"    column="crcy_id"    />
+        <result property="crcyCode"    column="crcy_code"    />
+        <result property="deptCode"    column="dept_code"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="manufacturerNo"    column="manufacturer_no"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaCompanyGroupVo">
+        select id, company_no, company_sname, company_name, crcy_id, crcy_code, dept_code, manufacturer_id, manufacturer_no, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_company
+    </sql>
+
+    <select id="selectFinanceAaCompanyGroupList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup" resultMap="FinanceAaCompanyGroupResult">
+        <include refid="selectFinanceAaCompanyGroupVo"/>
+        <where>  
+            <if test="companyNo != null  and companyNo != ''"> and company_no = #{companyNo}</if>
+            <if test="companySname != null  and companySname != ''"> and company_sname like concat('%', #{companySname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaCompanyGroupById" parameterType="String" resultMap="FinanceAaCompanyGroupResult">
+        <include refid="selectFinanceAaCompanyGroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaCompanyGroup" parameterType="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup">
+        insert into finance_aa_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyNo != null">company_no,</if>
+            <if test="companySname != null">company_sname,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="crcyId != null">crcy_id,</if>
+            <if test="crcyCode != null">crcy_code,</if>
+            <if test="deptCode != null">dept_code,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="manufacturerNo != null">manufacturer_no,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyNo != null">#{companyNo},</if>
+            <if test="companySname != null">#{companySname},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="crcyId != null">#{crcyId},</if>
+            <if test="crcyCode != null">#{crcyCode},</if>
+            <if test="deptCode != null">#{deptCode},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="manufacturerNo != null">#{manufacturerNo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaCompanyGroup" parameterType="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup">
+        update finance_aa_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyNo != null">company_no = #{companyNo},</if>
+            <if test="companySname != null">company_sname = #{companySname},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="crcyId != null">crcy_id = #{crcyId},</if>
+            <if test="crcyCode != null">crcy_code = #{crcyCode},</if>
+            <if test="deptCode != null">dept_code = #{deptCode},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="manufacturerNo != null">manufacturer_no = #{manufacturerNo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaCompanyGroupById" parameterType="String">
+        delete from finance_aa_company where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaCompanyGroupByIds" parameterType="String">
+        delete from finance_aa_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCompanyList" parameterType="String" resultType="map">
+        SELECT company_no value, company_sname label, company_name fullname FROM finance_aa_company
+    </select>
+</mapper>
