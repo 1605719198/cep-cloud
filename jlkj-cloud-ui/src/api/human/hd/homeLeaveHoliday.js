@@ -9,6 +9,15 @@ export function listHoliday(query) {
   })
 }
 
+// 查询探亲假天数
+export function homeLeaveHoliday(query) {
+  return request({
+    url: '/human/homeLeaveHoliday/home',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询探亲假天数设定详细
 export function getHoliday(id) {
   return request({

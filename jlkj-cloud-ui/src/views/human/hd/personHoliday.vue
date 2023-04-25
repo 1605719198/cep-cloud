@@ -373,6 +373,8 @@ export default {
   components: {DictTagHumanBasis, selectUser},
   data() {
     return {
+      //员工年休假数组
+      yearHoliday:[],
       //状态
       status: '01',
       //出勤选单类型查询
@@ -449,6 +451,8 @@ export default {
     this.getCompanyList();
     this.getList();
     this.getDisc();
+    this.getYearHolidayList();
+    this.getHomeLeaveHolidayList();
   },
   methods: {
     /** 查询出勤字典 */
@@ -471,6 +475,29 @@ export default {
         this.personHolidayList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    /** 查询员工年休假记录 */
+    getYearHolidayList() {
+      var year={
+        year: 2023,
+        empNo: null,
+        compId: null,
+      }
+      yearHoliday(year).then(response => {
+        this.yearHoliday = response.rows;
+        console.log(JSON.stringify(response.rows))
+      });
+    },
+    /** 查询员工探亲假记录 */
+    getHomeLeaveHolidayList() {
+      var home={
+        empNo: null,
+        compId: null,
+      }
+      homeLeaveHoliday(home).then(response => {
+        this.homeLeaveHoliday = response.rows;
+        console.log(JSON.stringify(response.rows))
       });
     },
     /** 查询条件判定 */

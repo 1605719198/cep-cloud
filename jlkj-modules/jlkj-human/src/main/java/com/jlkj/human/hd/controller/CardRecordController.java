@@ -28,7 +28,7 @@ public class CardRecordController extends BaseController
     /**
      * 查询刷卡记录列表
      */
-    @RequiresPermissions("human:record:list")
+    @RequiresPermissions("human:cardRecord:list")
     @GetMapping("/list")
     public TableDataInfo list(CardRecord cardRecord)
     {

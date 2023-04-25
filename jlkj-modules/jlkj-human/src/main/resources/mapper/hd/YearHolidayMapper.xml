@@ -47,10 +47,10 @@
 
     <select id="selectYearHolidayByempNo" parameterType="YearHoliday" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
-        --         where emp_no = #{empNo}
-        --         and comp_id = #{compId}
-        --         and year = #{year}
-        where id = #{id}
+                where emp_no = #{empNo}
+                and comp_id = #{compId}
+                and year = #{year}
+
     </select>
 
     <select id="selectYearHolidayByEmpNo" parameterType="YearHoliday" resultMap="YearHolidayResult">

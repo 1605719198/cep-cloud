@@ -125,6 +125,7 @@ export default {
     getList() {
       this.loading = true;
       listCardRecord(this.queryParams).then(response => {
+        console.log(response);
         this.recordList = response.rows;
         this.total = response.total;
         this.loading = false;

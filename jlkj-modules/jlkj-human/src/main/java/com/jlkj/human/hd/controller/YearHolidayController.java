@@ -78,7 +78,7 @@ public class YearHolidayController extends BaseController
     }
 
     /**
-     * 新增年休假天数设定
+     * 查询员工年休假信息
      */
     @GetMapping("/year")
     public AjaxResult year( YearHoliday yearHoliday)

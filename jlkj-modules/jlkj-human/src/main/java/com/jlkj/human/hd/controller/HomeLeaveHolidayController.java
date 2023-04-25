@@ -77,10 +77,11 @@ public class HomeLeaveHolidayController extends BaseController
         return toAjax(homeLeaveHolidayService.updateHomeLeaveHoliday(homeLeaveHoliday));
     }
 
-    @RequiresPermissions("human:homeLeaveHoliday:home")
-    @Log(title = "探亲假天数设定", businessType = BusinessType.UPDATE)
-    @PutMapping("/home")
-    public AjaxResult home(@RequestBody HomeLeaveHoliday homeLeaveHoliday)
+    /**
+     * 查询员工探亲假信息
+     */
+    @GetMapping("/home")
+    public AjaxResult home(HomeLeaveHoliday homeLeaveHoliday)
     {
         return success(homeLeaveHolidayService.selectHomeLeaveHolidayByempNo(homeLeaveHoliday));
     }
