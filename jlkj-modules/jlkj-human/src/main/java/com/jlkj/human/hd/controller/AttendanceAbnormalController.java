@@ -48,6 +48,29 @@ public class AttendanceAbnormalController extends BaseController {
     }
 
     /**
+     * 查询个人出勤异常
+     */
+    @RequiresPermissions("human:attendanceAbnormalQuery:list")
+    @Log(title = "查询个人出勤异常",businessType = BusinessType.OTHER)
+    @Operation(summary = "查询个人出勤异常")
+    @GetMapping("/abnormal")
+    public Object listAttendanceAbnormalQuery(AttendanceAbnormalDTO attendanceAbnormalDTO) {
+        startPage();
+        AttendanceAbnormal attendanceAbnormal = new AttendanceAbnormal();
+        BeanUtils.copyProperties(attendanceAbnormalDTO, attendanceAbnormal);
+        List<AttendanceAbnormal> list = iAttendanceAbnormalService.lambdaQuery()
+                .eq(StringUtils.isNotBlank(attendanceAbnormal.getCompId()), AttendanceAbnormal::getCompId, attendanceAbnormal.getCompId())
+                .eq(AttendanceAbnormal::getEmpNo, attendanceAbnormal.getEmpNo())
+                .eq(AttendanceAbnormal::getDisposeId, attendanceAbnormal.getDisposeId())
+                .between(AttendanceAbnormal::getSlotCardOnduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime())
+                .or()
+                .between(AttendanceAbnormal::getSlotCardOffduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime()).list();
+        return AjaxResult.success("查询成功", getDataTable(list));
+    }
+
+
+
+    /**
      * 根据uuid查询出勤异常详细信息
      */
     @RequiresPermissions("human:attendanceAbnormal:query")
