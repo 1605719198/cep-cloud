@@ -64,6 +64,15 @@ public class PersonClassMasterController extends BaseController
     }
 
     /**
+     * 获取某员工出勤身份轮班方式
+     */
+    @GetMapping(value = "/queryPerson")
+    public AjaxResult getClassMaster( PersonClassMaster personClassMaster)
+    {
+        return success(personClassMasterService.selectClassMasterByPerson(personClassMaster));
+    }
+
+    /**
      * 新增出勤身份
      */
     @RequiresPermissions("human:personClassMaster:add")

@@ -94,7 +94,7 @@
 <script>
 import { listShiftCode } from "@/api/human/hd/shiftCode";
 import { listShiftClass} from "@/api/human/hd/shiftClass";
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { addArrangeClassMaster, updateArrangeClassMaster } from '@/api/human/hd/arrangeClassMaster'
 import { listArrangeClass } from '@/api/human/hd/arrangeClass'
 export default {

@@ -9,6 +9,7 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.Holidaysetting;
 import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
+import com.jlkj.human.hd.dto.HolidaySettingDTO;
 import com.jlkj.human.hd.service.IHolidaysettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,15 @@ public class HolidaysettingController extends BaseController
         startPage();
         List<Holidaysetting> list = holidaysettingService.selectHolidaysettingList(holidaysetting);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询公司假别参数设定
+     */
+    @GetMapping("/getSetting")
+    public AjaxResult getSetting(HolidaySettingDTO holidaysetting)
+    {
+        return success(holidaysettingService.getHolidaySetting(holidaysetting));
     }
 
     /**

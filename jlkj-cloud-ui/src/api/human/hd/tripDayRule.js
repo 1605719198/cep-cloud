@@ -9,6 +9,15 @@ export function listTripDayRule(query) {
   })
 }
 
+// 查询出差日标准地区列表
+export function listTripDayArea(query) {
+  return request({
+    url: '/human/tripDayRule/listArea',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询出差日标准维护详细
 export function getTripDayRule(id) {
   return request({

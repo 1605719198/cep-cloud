@@ -41,6 +41,17 @@ public class TripDayRuleController extends BaseController
     }
 
     /**
+     * 查询出差日标准地区列表
+     */
+    @RequiresPermissions("human:tripDayRule:list")
+    @GetMapping("/listArea")
+    public TableDataInfo listArea(TripDayRule tripDayRule)
+    {
+        List<TripDayRule> list = tripDayRuleService.selectTripDayRuleArea(tripDayRule);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出出差日标准维护列表
      */
     @RequiresPermissions("human:tripDayRule:export")

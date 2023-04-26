@@ -39,7 +39,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compId != null  and compId != ''"> and p.comp_id = #{compId}</if>
             <if test="empId != null  and empId != ''"> and p.emp_id = #{empId}</if>
         </where>
-        group by p.id
+        group by p.emp_id
+    </select>
+
+    <select id="selectClassMasterByPerson" parameterType="PersonClassMaster" resultMap="PersonClassMasterResult">
+        select p.comp_id, p.emp_id,  p.shiftmode_id, s.turn_type_code as shiftmode_name, p.class_id
+        from human_hd_person_class_master as p
+        left join human_hd_shift_mode s on p.shiftmode_id = s.id
+        <where>
+            <if test="compId != null  and compId != ''"> and p.comp_id = #{compId}</if>
+            <if test="empId != null  and empId != ''"> and p.emp_id = #{empId}</if>
+        </where>
+        group by p.emp_id
+        order by p.create_date
+        limit 1
     </select>
     
     <select id="selectPersonClassMasterById" parameterType="String" resultMap="PersonClassMasterResult">

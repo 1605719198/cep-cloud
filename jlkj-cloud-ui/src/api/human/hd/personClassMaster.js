@@ -9,6 +9,15 @@ export function listPersonClassMaster(query) {
   })
 }
 
+// 查询员工出勤身份轮班方式
+export function getClassMasterByPerson(query) {
+  return request({
+    url: '/human/personClassMaster/queryPerson',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询出勤身份详细
 export function getPersonClassMaster(id) {
   return request({

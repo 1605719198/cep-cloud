@@ -282,7 +282,7 @@
 
 <script>
 import { getAvatorByUserName } from "@/api/system/user";
-import { getDateTime } from '@/api/human/hd/ahumanutils'
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { listOrganizationSetting, getOrganizationSetting,  addOrganizationSetting, updateOrganizationSetting } from "@/api/human/hd/organizationSetting";
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 export default {

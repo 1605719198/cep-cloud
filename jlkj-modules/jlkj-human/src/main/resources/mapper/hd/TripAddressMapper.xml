@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.TripAddressMapper">
+    
+    <resultMap type="TripAddress" id="TripAddressResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="address"    column="address"    />
+        <result property="simpl"    column="simpl"    />
+        <result property="type"    column="type"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="TripAddressDTO" id="TripAddressDTOResult">
+        <result property="compId"    column="comp_id"    />
+        <result property="dicName"    column="address"    />
+        <result property="dicNo"    column="simpl"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectTripAddressVo">
+        select id, comp_id, address, simpl, type, creator, creator_id, create_date from human_hd_trip_address
+    </sql>
+
+    <select id="selectTripAddressList" parameterType="TripAddress" resultMap="TripAddressResult">
+        <include refid="selectTripAddressVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+
+    <select id="selectTripAddress" parameterType="TripAddressDTO" resultMap="TripAddressDTOResult">
+        select comp_id, address, simpl, type from human_hd_trip_address
+        <where>
+            <if test="compId !=null and compId !=''">and comp_id = #{compId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTripAddressById" parameterType="String" resultMap="TripAddressResult">
+        <include refid="selectTripAddressVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTripAddress" parameterType="TripAddress">
+        insert into human_hd_trip_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="address != null">address,</if>
+            <if test="simpl != null">simpl,</if>
+            <if test="type != null">type,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="address != null">#{address},</if>
+            <if test="simpl != null">#{simpl},</if>
+            <if test="type != null">#{type},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTripAddress" parameterType="TripAddress">
+        update human_hd_trip_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="simpl != null">simpl = #{simpl},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTripAddressById" parameterType="String">
+        delete from human_hd_trip_address where id = #{id}
+    </delete>
+
+    <delete id="deleteTripAddressByIds" parameterType="String">
+        delete from human_hd_trip_address where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

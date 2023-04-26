@@ -206,7 +206,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listJobTitle, getJobTitle, delJobTitle, addJobTitle, updateJobTitle } from "@/api/human/hp/jobTitle";

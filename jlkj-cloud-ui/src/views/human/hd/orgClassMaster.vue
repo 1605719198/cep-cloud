@@ -343,7 +343,7 @@ import { listPersonClassDetail, changePersonClassDetail, addPersonClassDetail } 
 import { treeselect,selectCompany,queryFirstdeptByPerson,queryFirstdeptByDept } from "@/api/human/hp/deptMaintenance";
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
-import { getDateTime } from "@/api/human/hd/ahumanutils";
+import { getDateTime } from "@/api/human/hd/ahumanUtils";
 import { getAvatorByUserName} from "@/api/system/user";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {

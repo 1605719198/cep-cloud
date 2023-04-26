@@ -135,7 +135,7 @@
 
 <script>
 import { getAvatorByUserName } from "@/api/system/user";
-import { getDateTime } from '@/api/human/hd/ahumanutils'
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { listOvertimeWorksetting, getOvertimeWorksetting, delOvertimeWorksetting, addOvertimeWorksetting, updateOvertimeWorksetting } from "@/api/human/hd/overtimeWorksetting";
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 export default {

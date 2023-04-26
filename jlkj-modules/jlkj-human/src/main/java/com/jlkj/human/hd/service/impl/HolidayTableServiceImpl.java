@@ -2,6 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.HolidayTable;
+import com.jlkj.human.hd.dto.HolidayTableDTO;
 import com.jlkj.human.hd.mapper.HolidayTableMapper;
 import com.jlkj.human.hd.service.IHolidayTableService;
 import org.springframework.beans.BeanUtils;
@@ -70,6 +71,17 @@ public class HolidayTableServiceImpl implements IHolidayTableService
             return holidayTableMapper.insertHolidayTable(holidayTable);
         }
 
+    }
+
+    /**
+     * 查询时间段内假日设定
+     *
+     * @param holidayTable 假日设定
+     * @return 假日设定集合
+     */
+    @Override
+    public List<HolidayTableDTO> selectHolidayTable(HolidayTableDTO holidayTable){
+        return holidayTableMapper.selectHolidayTable(holidayTable);
     }
 
     /**

@@ -33,6 +33,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="area != null  and area != ''"> and area = #{area}</if>
         </where>
     </select>
+    <select id="selectTripDayRuleArea" resultMap="TripDayRuleResult" >
+        select id, area from human_hd_trip_day_rule
+        group by area
+    </select>
     
     <select id="selectTripDayRuleById" parameterType="String" resultMap="TripDayRuleResult">
         <include refid="selectTripDayRuleVo"/>

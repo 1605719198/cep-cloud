@@ -18,6 +18,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="HolidaySettingDTO" id="HolidaySettingDTOResult">
+        <result property="holidayTypeCode"    column="holiday_type_code"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="isIncHol"    column="is_inc_hol"    />
+        <result property="isNeedCheck"    column="is_need_check"    />
+        <result property="minUnitDay"    column="min_unit_day"    />
+        <result property="minUnitTurns"    column="min_unit_turns"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
     <sql id="selectHolidaysettingVo">
         select id, holiday_type_code, comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description, creator, creator_id, create_date from human_hd_holidaysetting
     </sql>
@@ -28,6 +38,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="holidayTypeCode != null  and holidayTypeCode != ''"> and holiday_type_code = #{holidayTypeCode}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
         </where>
+    </select>
+
+    <select id="getHolidaySetting" parameterType="HolidaySettingDTO" resultMap="HolidaySettingDTOResult">
+        select  holiday_type_code, comp_id, is_inc_hol, is_need_check, min_unit_day, min_unit_turns, description from human_hd_holidaysetting
+        where holiday_type_code= #{holidayTypeCode}
+        and comp_id = #{compId}
     </select>
 
     <select id="selectHolidaysettingById" parameterType="String" resultMap="HolidaysettingResult">

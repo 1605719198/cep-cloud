@@ -124,10 +124,10 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="工号" prop="empNo">
-              <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
                 <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
               </el-input>
-              {{ form.empName }}{{ form.postname }}
+              {{ form.empName }}:{{ form.postName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -176,7 +176,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="是否包括节假日" prop="isContainHoliday">
-              <el-radio-group v-model="form.isContainHoliday" :disabled="this.form.id!=null">
+              <el-radio-group v-model="form.isContainHoliday" disabled>
                 <el-radio
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
@@ -249,10 +249,10 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="工号" prop="empNo">
-              <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
                 <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
               </el-input>
-              {{ form.empName }}{{ form.postname }}
+              {{ form.empName }}:{{ form.postName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -361,11 +361,13 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getAttendenceOptions} from '@/api/human/hd/attendenceBasis'
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import selectUser from "@/views/components/human/selectUser/selectUser";
-import {getDateTime} from "@/api/human/hd/ahumanutils";
-import {delComptime} from "@/api/human/hd/comptime";
+import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {yearHoliday} from "@/api/human/hd/yearHoliday";
 import {homeLeaveHoliday} from "@/api/human/hd/homeLeaveHoliday";
+import { getClassMasterByPerson } from "@/api/human/hd/personClassMaster";
+import { getCompHolidaySetting } from "@/api/human/hd/holidaysetting";
+import { getHoliday } from "@/api/human/hd/holidayTable";
 
 export default {
   name: "PersonHoliday",
@@ -373,8 +375,6 @@ export default {
   components: {DictTagHumanBasis, selectUser},
   data() {
     return {
-      //员工年休假数组
-      yearHoliday:[],
       //状态
       status: '01',
       //出勤选单类型查询
@@ -388,8 +388,8 @@ export default {
       loading: true,
       //公司列表
       companyList: [],
-      //用户公司别
-      userCompId: this.$store.state.user.userInfo.compId,
+      //登录人信息
+      user: {},
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -418,6 +418,10 @@ export default {
         endDate: '',
         queryDate: '',
       },
+      //员工轮班方式
+      shiftMode: null,
+      //所选假期参数设定
+      holidaySetting:{},
       // 表单参数
       form: {},
       // 表单校验
@@ -428,13 +432,46 @@ export default {
       }
     };
   },
+  watch:{
+    'form.empNo': {
+      handler(val){
+        if(val){
+          // alert(val)
+        }
+      },
+      deep: true,
+      immediate: false,
+    },
+    'form.leaTypeId': {
+      handler(val){
+        if(val){
+          var params ={
+            holidayTypeCode: val,
+            compId: this.form.compId
+          }
+          getCompHolidaySetting(params).then( response => {
+            if(response.data){
+              this.holidaySetting = response.data;
+              this.form.isContainHoliday = this.holidaySetting.isIncHol;
+            }
+          })
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed:{
     leaveShifts(){
-      var startDate = new Date(this.form.startDate);
-      var endDate = new Date(this.form.endDate)
-      var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
-
-      return result;
+      if(this.form.startDate&&this.form.endDate&&this.shiftMode&&this.form.empNo&&this.form.leaTypeId){
+        this.computeManhour();
+        var startDate = new Date(this.form.startDate);
+        var endDate = new Date(this.form.endDate)
+        var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+        return result;
+      }else{
+        return 0;
+      }
     },
     remainingDays(){
       return parseInt(this.form.gotoDays) - parseInt(this.form.leaveShifts);
@@ -448,13 +485,35 @@ export default {
     }
   },
   created() {
+    this.initData();
     this.getCompanyList();
     this.getList();
     this.getDisc();
-    this.getYearHolidayList();
-    this.getHomeLeaveHolidayList();
   },
   methods: {
+    /** 工时计算 */
+    computeManhour(e){
+      //如果是常白班
+      if(this.shiftMode = '01'){
+        var startDate = new Date(this.form.startDate);
+        var endDate = new Date(this.form.endDate)
+        var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+      }
+    },
+    /** 初始化数据 */
+    initData() {
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
+    },
+    /** 表单数据配置 */
+    setForm(e) {
+      this.form.creator = this.user.empName
+      this.form.creatorId = this.user.empNo
+      this.form.createDate = getDateTime(1)
+      this.form.compId = this.queryParams.compId
+    },
     /** 查询出勤字典 */
     getDisc() {
       getAttendenceOptions(this.attendenceOptionType).then(response => {
@@ -480,7 +539,7 @@ export default {
     /** 查询员工年休假记录 */
     getYearHolidayList() {
       var year={
-        year: 2023,
+        year: new Date().getFullYear(),
         empNo: null,
         compId: null,
       }
@@ -492,6 +551,7 @@ export default {
     /** 查询员工探亲假记录 */
     getHomeLeaveHolidayList() {
       var home={
+        year: new Date().getFullYear(),
         empNo: null,
         compId: null,
       }
@@ -509,16 +569,18 @@ export default {
         return true;
       }
     },
+
     // 取消按钮
     cancel() {
       this.open = false;
       this.reset();
     },
+
     // 呈送按钮
     submit() {
-      this.open = false;
-      this.form.status = "03";
-      this.submitForm()
+      // this.open = false;
+      // this.form.status = "03";
+      // this.submitForm()
     },
 
     // 表单重置
@@ -529,7 +591,7 @@ export default {
         empNo: null,
         empId: null,
         empName: null,
-        postname: null,
+        postName: null,
         postid: null,
         orgParentId: null,
         orgId: null,
@@ -560,6 +622,7 @@ export default {
         this.getList();
       }
     },
+    //日期范围转换
     dateFormat(picker) {
       if (picker != null && picker != "") {
         this.queryParams.startDate = picker[0]
@@ -583,9 +646,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1)
+      this.setForm()
       this.open = true;
       this.title = "添加员工请假记录";
     },
@@ -594,6 +655,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
+            this.setForm();
             this.form.leaveShifts=this.leaveShifts
             updatePersonHoliday(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
@@ -617,9 +679,6 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.$store.state.user.userInfo.nickName;
-        this.form.createDate = getDateTime(1);
-        this.form.creatorId = this.$store.state.user.name;
         this.opencreate = true;
         this.title = "员工请假记录详情";
       });
@@ -630,9 +689,6 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.$store.state.user.userInfo.nickName;
-        this.form.createDate = getDateTime(1);
-        this.form.creatorId = this.$store.state.user.name;
         this.open = true;
         this.title = "修改员工请假记录";
       });
@@ -654,13 +710,23 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(empId, userName, compId) {
-      this.queryParams.empNo = empId;
-      this.form.empNo = empId
-      this.form.empName = userName
-      this.getList();
-      queryNewPostNameAndChangeDetail(this.form).then(res => {
-        this.form.postName = res.data.list1[0].newPostName
-      })
+      if(this.open == true){
+        this.form.empNo = empId
+        this.form.empName = userName
+        queryNewPostNameAndChangeDetail(this.form).then(res => {
+          this.form.postName = res.data.list1[0].newPostName
+        })
+        var params = {
+          compId: compId,
+          empId: empId
+        }
+        getClassMasterByPerson(params).then(response => {
+          this.shiftMode = response.data.shiftmodeName;
+        })
+      }else{
+        this.queryParams.empNo = empId;
+        this.getList();
+      }
     }
   }
 };

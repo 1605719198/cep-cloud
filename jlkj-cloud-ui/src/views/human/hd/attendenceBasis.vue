@@ -153,7 +153,7 @@
 
 <script>
 import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis, treeselect } from "@/api/human/hd/attendenceBasis";
-import { getDateTime } from '@/api/human/hd/ahumanutils'
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 export default {
   name: "BaseInfo",
   dicts: ['sys_normal_disable'],

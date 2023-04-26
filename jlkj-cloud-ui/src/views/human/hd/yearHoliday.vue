@@ -205,7 +205,7 @@
 import { listHolidayYear, getHoliday, delHoliday, addHoliday, updateHoliday } from "@/api/human/hd/yearHoliday";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
-import {getDateTime} from "@/api/human/hd/ahumanutils";
+import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getToken} from "@/utils/auth";
 
 export default {
