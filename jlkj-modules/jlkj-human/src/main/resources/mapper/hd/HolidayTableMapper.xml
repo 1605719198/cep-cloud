@@ -39,9 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHolidayTable" parameterType="HolidayTableDTO" resultMap="HolidayTableDTOResult" >
         select comp_id, date_type, hol_day from human_hd_holiday
-        where comp_id= #{compId}
-        and hol_day &gt;= #{startDate}
-        and hol_Day &lt;= #{endDate}
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="startDate != null  "> and hol_day &gt;= #{startDate}</if>
+            <if test="endDate != null  "> and hol_day &lt;= #{endDate}</if>
+        </where>
     </select>
     
     <select id="selectHolidayTableById" parameterType="String" resultMap="HolidayTableResult">

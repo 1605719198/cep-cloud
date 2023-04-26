@@ -30,6 +30,14 @@ public interface IShiftCodeService
     public ShiftCode selectShiftCodeById(String id);
 
     /**
+     * 查询班次信息
+     *
+     * @param shiftCode 班次数据
+     * @return 班次信息
+     */
+    public ShiftCode queryShiftCode(ShiftCode shiftCode);
+
+    /**
      * 查询班次数据列表
      * 
      * @param shiftCode 班次数据

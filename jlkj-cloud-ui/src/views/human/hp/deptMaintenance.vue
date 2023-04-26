@@ -383,7 +383,6 @@ export default {
         pageSize: 10,
         deptId: null,
         compId: null,
-        ifCompany : 0,
         ancestors :null,
         deptCode:null,
         deptName:null,

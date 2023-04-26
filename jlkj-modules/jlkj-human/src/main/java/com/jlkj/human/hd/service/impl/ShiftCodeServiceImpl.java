@@ -45,6 +45,17 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
         return shiftCodeMapper.selectShiftCodeById(id);
     }
 
+    /**
+     * 查询班次信息
+     *
+     * @param shiftCode 班次数据
+     * @return 班次信息
+     */
+    @Override
+    public ShiftCode queryShiftCode(ShiftCode shiftCode){
+        return shiftCodeMapper.queryShiftCode(shiftCode);
+    }
+
 
     /**
      * 查询班次数据列表
