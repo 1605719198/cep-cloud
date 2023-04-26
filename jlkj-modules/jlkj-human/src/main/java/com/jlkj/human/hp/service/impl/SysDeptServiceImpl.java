@@ -429,5 +429,16 @@ public class SysDeptServiceImpl implements ISysDeptService
         return sysDeptMapper.getPersonByDept(deptId);
     }
 
+    /**
+     * 根据部门编码查询信息
+     *
+     * @param deptCode 部门编码
+     * @return 部门信息
+     */
+    @Override
+    public SysDept selectSysDeptByDeptCode(String deptCode){
+        return sysDeptMapper.selectSysDeptByDeptCode(deptCode);
+    }
+
 
 }
