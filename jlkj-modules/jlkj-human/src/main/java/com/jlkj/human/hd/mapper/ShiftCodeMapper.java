@@ -38,6 +38,14 @@ public interface ShiftCodeMapper
     public List<ShiftCode> selectShiftCodeList(ShiftCode shiftCode);
 
     /**
+     * 查询班次信息
+     *
+     * @param shiftCode 班次数据
+     * @return 班次信息
+     */
+    public ShiftCode queryShiftCode(ShiftCode shiftCode);
+
+    /**
      * 新增班次数据
      * 
      * @param shiftCode 班次数据

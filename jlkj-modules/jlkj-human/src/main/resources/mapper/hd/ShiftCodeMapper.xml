@@ -57,6 +57,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
         </where>
     </select>
+
+    <select id="queryShiftCode" parameterType="ShiftCode" resultMap="ShiftCodeResult">
+        select  comp_id, shiftmode_id, shift_code, start_hour, start_min, con_hour, con_min, end_hour, end_min, is_noon, rest_count, big_sma_night, status, description, is_used, rest_start_hour, rest_start_min, rest_con_min, rest_end_hour, rest_end_min, rest_start_hour2, rest_start_min2, rest_con_min2, rest_end_hour2, rest_end_min2, rest_start_hour3, rest_start_min3, rest_con_min3, rest_end_hour3, rest_end_min3  from human_hd_shift_code
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
+            <if test="shiftCode != null  and shiftCode != ''"> and shift_code = #{shiftCode}</if>
+        </where>
+    </select>
     
     <select id="selectShiftCodeById" parameterType="String" resultMap="ShiftCodeResult">
         <include refid="selectShiftCodeVo"/>
@@ -70,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                             where emp_id = #{empId} and arr_shi_date = #{date})
 
     </select>
-        
+
     <insert id="insertShiftCode" parameterType="ShiftCode">
         insert into human_hd_shift_code
         <trim prefix="(" suffix=")" suffixOverrides=",">

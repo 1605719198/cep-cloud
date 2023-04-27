@@ -239,6 +239,7 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
         <el-button @click="submit">呈 送</el-button>
+        <el-button @click="computeManhour">计算</el-button>
       </div>
     </el-dialog>
 
@@ -368,6 +369,7 @@ import {homeLeaveHoliday} from "@/api/human/hd/homeLeaveHoliday";
 import { getClassMasterByPerson } from "@/api/human/hd/personClassMaster";
 import { getCompHolidaySetting } from "@/api/human/hd/holidaysetting";
 import { getHoliday } from "@/api/human/hd/holidayTable";
+import { queryShiftCode } from "@/api/human/hd/shiftCode";
 
 export default {
   name: "PersonHoliday",
@@ -420,8 +422,12 @@ export default {
       },
       //员工轮班方式
       shiftMode: null,
-      //所选假期参数设定
+      //班次数据
+      shiftCodeData:{},
+      //所选假别参数设定
       holidaySetting:{},
+      //公司节假日设定
+      holidayTable:[],
       // 表单参数
       form: {},
       // 表单校验
@@ -436,7 +442,7 @@ export default {
     'form.empNo': {
       handler(val){
         if(val){
-          // alert(val)
+
         }
       },
       deep: true,
@@ -464,9 +470,8 @@ export default {
   computed:{
     leaveShifts(){
       if(this.form.startDate&&this.form.endDate&&this.shiftMode&&this.form.empNo&&this.form.leaTypeId){
-        this.computeManhour();
-        var startDate = new Date(this.form.startDate);
-        var endDate = new Date(this.form.endDate)
+        var startDate = this.form.startDate;
+        var endDate = this.form.endDate
         var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
         return result;
       }else{
@@ -493,12 +498,109 @@ export default {
   methods: {
     /** 工时计算 */
     computeManhour(e){
-      //如果是常白班
-      if(this.shiftMode = '01'){
-        var startDate = new Date(this.form.startDate);
-        var endDate = new Date(this.form.endDate)
-        var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+      //如果轮班方式是常白班：01
+      var cbMode='01'
+      if(this.shiftMode = cbMode){
+        var startDate = this.form.startDate;
+        var endDate = this.form.endDate
+        var days = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+        // 1：全日班，2：休息班，3：法定假日
+        var dateType1 = 1;
+        var dateType2 = 2;
+        var dateType3 = 3;
+        var holidayTable={
+          compId: this.form.compId,
+          startDate: getDateTime(1,this.form.startDate),
+          endDate: getDateTime(1,this.form.endDate),
+        }
+        getHoliday(holidayTable).then( response =>{
+          this.holidayTable = response.rows;
+          //请假天数小于一天
+            //请假未跨天
+            var maxDay = ((new Date(getDateTime(1,endDate))-new Date(getDateTime(1,startDate)))/ (1 * 24 * 60 * 60 * 1000))
+            //休息日最大天数
+            var restDays = Math.floor(maxDay)+1
+            var k=0;
+            //工时数
+            var workHourAll=0
+            var elseHour = parseInt(this.shiftCodeData.conMin)/60
+            var workHourDay = parseInt(this.shiftCodeData.conHour)+ elseHour;
+              this.holidayTable.forEach((value,index,array) => {
+                if(value.dateType!=dateType1){
+                  if(this.form.isContainHoliday=='N'){
+                    k++
+                  }else{
+                    workHourAll += workHourDay;
+                  }
+                }else{
+                  if(value.holDay==getDateTime(1,startDate)){
+                    if(this.shiftCodeData.restCount==1){
+                      var hour1 = String(startDate.getHours()).padStart(2, '0');
+                      var min1 = String(startDate.getMinutes()).padStart(2, '0');
+                      var hour2 = this.shiftCodeData.restStartHour;
+                      var min2 = this.shiftCodeData.restStartMin;
+                      if(this.compareTime(hour1,min1,hour2,min2)>=0){
+                        var minRest = parseInt(min2)+parseInt(this.shiftCodeData.restConMin);
+                        if(this.compareTime(hour1,min1,hour2,minRest)<=0){
+                          var workHour = parseInt(this.shiftCodeData.endHour)-parseInt(this.shiftCodeData.restEndHour)+((parseInt(this.shiftCodeData.endMin)-parseInt(this.shiftCodeData.restEndMin))/60)
+                        }else{
+                          var workHour = parseInt(this.shiftCodeData.endHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.endMin)-parseInt(min1))/60)
+                        }
+                        workHourAll += workHour;
+                      }else{
+                        var workHour = parseInt(this.shiftCodeData.restStartHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.restStartMin)-parseInt(min1))/60)
+                      }
+                    }
+                  }else if(value.holDay==getDateTime(1,endDate)){
+
+                    if(this.shiftCodeData.restCount==1){
+                      var hour1 = String(endDate.getHours()).padStart(2, '0');
+                      var min1 = String(endDate.getMinutes()).padStart(2, '0');
+                      var hour2 = this.shiftCodeData.restStartHour;
+                      var min2 = this.shiftCodeData.restStartMin;
+                      if(this.compareTime(hour1,min1,hour2,min2)<=0){
+                          var workHour = parseInt(hour1)-parseInt(this.shiftCodeData.startHour)+((parseInt(min1)-parseInt(this.shiftCodeData.startMin))/60);
+                        workHourAll += workHour;
+                      }else{
+                        var minRest = parseInt(min2)+parseInt(this.shiftCodeData.restConMin);
+                        if(this.compareTime(hour1,min1,hour2,minRest)<=0){
+                          var workHour = parseInt(hour2)-parseInt(this.shiftCodeData.startHour)+((parseInt(min2)-parseInt(this.shiftCodeData.startMin))/60);
+                        }else{
+                          var workHour = workHourDay-(parseInt(this.shiftCodeData.endHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.endMin)-parseInt(min1))/60))
+                        }
+                      }
+                    }
+
+                  }else{
+                    workHourAll += workHourDay;
+                  }
+                }
+              })
+            if(k==restDays){
+              this.$modal.msgError("请假时间段为休息时间")
+            }else{
+              // this.$modal.msgSuccess("请假时间符合条件")
+            }
+
+        })
       }
+    },
+    /** 时间大小比较 */
+    compareTime(hour1,min1,hour2,min2){
+      var time1 = parseInt(hour1)*60+parseInt(min1);
+      var time2 = parseInt(hour2)*60+parseInt(min2);
+      return time1-time2;
+    },
+    /**获取班次信息 */
+    getShiftCode(e){
+      var shiftCode={
+        shiftCode: e,
+        compId: this.form.compId,
+      }
+      queryShiftCode(shiftCode).then( response => {
+        this.shiftCodeData = response.data
+      })
+
     },
     /** 初始化数据 */
     initData() {
@@ -545,7 +647,6 @@ export default {
       }
       yearHoliday(year).then(response => {
         this.yearHoliday = response.rows;
-        console.log(JSON.stringify(response.rows))
       });
     },
     /** 查询员工探亲假记录 */
@@ -557,7 +658,6 @@ export default {
       }
       homeLeaveHoliday(home).then(response => {
         this.homeLeaveHoliday = response.rows;
-        console.log(JSON.stringify(response.rows))
       });
     },
     /** 查询条件判定 */
@@ -722,6 +822,21 @@ export default {
         }
         getClassMasterByPerson(params).then(response => {
           this.shiftMode = response.data.shiftmodeName;
+
+          //如果轮班方式是常白班：01
+          var cbMode='01'
+          if(this.shiftMode = cbMode){
+            //班次：常白班
+            var cbCode = '01'
+            var shiftCode={
+              shiftCode: cbCode,
+              compId: this.form.compId,
+            }
+            queryShiftCode(shiftCode).then( response => {
+              this.shiftCodeData = response.data
+            })
+          }
+
         })
       }else{
         this.queryParams.empNo = empId;

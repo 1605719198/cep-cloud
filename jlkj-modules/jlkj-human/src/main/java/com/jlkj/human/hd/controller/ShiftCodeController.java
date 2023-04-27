@@ -42,6 +42,15 @@ public class ShiftCodeController extends BaseController
     }
 
     /**
+     * 查询班次信息
+     */
+    @GetMapping("/queryShiftCode")
+    public AjaxResult queryShiftCode(ShiftCode shiftCode)
+    {
+        return success(shiftCodeService.queryShiftCode(shiftCode));
+    }
+
+    /**
      * 导出班次数据列表
      */
     @RequiresPermissions("human:shiftCode:export")
