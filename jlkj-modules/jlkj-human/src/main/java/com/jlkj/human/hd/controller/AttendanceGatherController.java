@@ -522,4 +522,16 @@ public class AttendanceGatherController extends BaseController {
             return AjaxResult.success("反确认（可薪资计算）成功");
         }
     }
+
+//    @Log(title = "出勤汇总导入", businessType = BusinessType.IMPORT)
+//    @RequiresPermissions("human:attendanceGather:import")
+//    @PostMapping("/importData")
+//    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+//    {
+//        ExcelUtil<AttendanceGatherDTO> util = new ExcelUtil<AttendanceGatherDTO>(AttendanceGatherDTO.class);
+//        List<AttendanceGatherDTO> attendanceGatherList = util.importExcel(file.getInputStream(),1);
+//        String operName = SecurityUtils.getUsername();
+//        String message = iAttendanceGatherService.importUser(attendanceGatherList, updateSupport, operName);
+//        return success(message);
+//    }
 }

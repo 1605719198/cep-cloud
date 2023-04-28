@@ -8,6 +8,7 @@ import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hm.domain.ChangeDetail;
 import com.jlkj.human.hm.domain.ChangeMaster;
 import com.jlkj.human.hm.domain.Personnel;
@@ -62,6 +63,7 @@ public class EmployeeTurnoverController extends BaseController {
     /**
      * 添加员工异动信息作业
      */
+    @RequiresPermissions("human:employeeTurnover:add")
     @Log(title = "添加员工异动信息作业", businessType = BusinessType.INSERT)
     @Operation(summary = "添加员工异动信息作业")
     @PostMapping("/addEmployeeTurnover")

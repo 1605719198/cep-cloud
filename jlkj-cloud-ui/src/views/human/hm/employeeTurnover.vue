@@ -31,7 +31,8 @@
         </el-form>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button size="mini"
+            <el-button v-hasPermi="['human:employeeTurnover:add']"
+                       size="mini"
                        type="primary"
                        plain
                        @click="handleAdd"

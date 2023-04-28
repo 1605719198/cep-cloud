@@ -43,17 +43,6 @@
             <el-button
               type="primary"
               plain
-              icon="el-icon-download"
-              size="mini"
-              @click="handleExport"
-              v-hasPermi="['human:attendanceGather:export']"
-            >导出
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
               size="mini"
               @click="handleCancelScheduling"
               v-hasPermi="['human:attendanceGather:cancelScheduling']"
@@ -74,6 +63,7 @@
               type="primary"
               plain
               size="mini"
+              :disabled="isDisabled"
               @click="handleConfirm"
               v-hasPermi="['human:attendanceGather:confirm']"
             >确认</el-button>
@@ -93,8 +83,40 @@
               type="primary"
               plain
               size="mini"
+              :disabled="isDisabledConfirm"
+              @click="handleExport"
+              v-hasPermi="['human:attendanceGather:export']"
+            >导出
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              size="mini"
+              :disabled="isDisabledImport"
+              @click="handleImport"
+              v-hasPermi="['human:attendanceGather:import']"
+            >导入
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              size="mini"
+              @click="handleSumByQuarterYear"
+              v-hasPermi="['human:attendanceGather:sumByQuarterYear']"
+            >按季度/年度统计
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              size="mini"
               @click="handleConfirmSalaryCalculation"
-              v-hasPermi="['human:attendanceGather:add']"
+              v-hasPermi="['human:attendanceGather:confirmSalaryCalculation']"
             >确认（可薪资计算）</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -102,9 +124,9 @@
               type="primary"
               plain
               size="mini"
-              :disabled="isDisabledConfirmSalaryCalculation"
+              :disabled="isDisabledCounterConfirmationSalaryCalculation"
               @click="handleCounterConfirmationSalaryCalculation"
-              v-hasPermi="['human:attendanceGather:add']"
+              v-hasPermi="['human:attendanceGather:counterConfirmationSalaryCalculation']"
             >反确认（薪资计算）</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -161,6 +183,35 @@
         <select-org-person ref="selectOrg" @ok="getOrg"/>
       </el-col>
     </el-row>
+
+    <!-- 出勤汇总导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
+                   @click="importTemplate">下载模板
+          </el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -177,6 +228,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import selectOrgPerson from "@/views/components/human/selectUser/selectOrgPerson";
 import quarter from "@/views/components/human/quarter/quarter";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: "AttendanceSummaryTable",
@@ -217,6 +269,21 @@ export default {
       // 表单校验
       rules: {
       },
+      // 出勤汇总导入参数
+      upload: {
+        // 是否显示弹出层（出勤汇总导入）
+        open: false,
+        // 弹出层标题（出勤汇总导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: {Authorization: "Bearer " + getToken()},
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/human/attendanceGather/importData"
+      },
       // 公司别数据
       companyName: [],
       // 选单数据
@@ -231,7 +298,8 @@ export default {
       tips3: '3、【确认（可薪资计算）】按钮：操作前，需确保这个月考勤汇总已经全部修正完成。一旦该按钮被点后，就不能再导入修正汇总表了！“确认（可薪资计算）” 后方可以计算工资。',
       isDisabled: true,
       isDisabledConfirm: true,
-      isDisabledConfirmSalaryCalculation: true
+      isDisabledImport: true,
+      isDisabledCounterConfirmationSalaryCalculation: true
     };
   },
   created() {
@@ -287,11 +355,37 @@ export default {
     change(value) {
       this.queryParams.includingSubsidiaries = value !== true;
     },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "出勤汇总导入";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      this.download('human/attendanceGather/importTemplate', {}, `attendanceSummary_template_${new Date().getTime()}.xlsx`)
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit();
+    },
     /** 导出按钮操作 */
     handleExport() {
       this.download('human/attendanceGather/export', {
         ...this.queryParams
       }, `attendance_${new Date().getTime()}.xlsx`)
+      this.isDisabledImport = false
     },
     /** 取消排班按钮操作 */
     handleCancelScheduling() {
@@ -324,14 +418,14 @@ export default {
     /** 确认（可薪资计算）按钮操作 */
     handleConfirmSalaryCalculation() {
       confirmSalaryCalculation(this.queryParams).then(response => {
-        this.isDisabledConfirmSalaryCalculation = false
+        this.isDisabledCounterConfirmationSalaryCalculation = false
         this.$modal.msgSuccess("确认（可薪资计算）成功");
       });
     },
     /** 反确认（可薪资计算）按钮操作 */
     handleCounterConfirmationSalaryCalculation() {
       counterConfirmationSalaryCalculation(this.queryParams).then(response => {
-        this.isDisabledConfirmSalaryCalculation = true
+        this.isDisabledCounterConfirmationSalaryCalculation = true
         this.$modal.msgSuccess("反确认（可薪资计算）成功");
       });
     }
