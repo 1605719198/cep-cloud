@@ -151,7 +151,7 @@
 
 <script>
 import { listShiftClass, getShiftClass, delShiftClass, addShiftClass, updateShiftClass } from "@/api/human/hd/shiftClass";
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 export default {
   name: "ShiftClass",
   dicts: ['sys_yes_no', 'sys_normal_disable'],

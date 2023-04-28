@@ -9,6 +9,15 @@ export function listHolidaysetting(query) {
   })
 }
 
+// 查询公司假别参数设定
+export function getCompHolidaySetting(query) {
+  return request({
+    url: '/human/holidaysetting/getSetting',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询假别参数设定详细
 export function getHolidaysetting(id) {
   return request({

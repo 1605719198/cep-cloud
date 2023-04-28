@@ -2,6 +2,7 @@ package com.jlkj.human.hd.service;
 
 import com.jlkj.human.hd.domain.Holidaysetting;
 import com.jlkj.human.hd.dto.CopyHolidaysettingDTO;
+import com.jlkj.human.hd.dto.HolidaySettingDTO;
 
 import java.util.List;
 
@@ -28,6 +29,14 @@ public interface IHolidaysettingService
      * @return 假别参数设定集合
      */
     public List<Holidaysetting> selectHolidaysettingList(Holidaysetting holidaysetting);
+
+    /**
+     * 查询公司假别参数设定
+     *
+     * @param holidaysetting 假别参数设定
+     * @return 公司假别参数设定
+     */
+    public HolidaySettingDTO getHolidaySetting(HolidaySettingDTO holidaysetting);
 
     /**
      * 新增假别参数设定

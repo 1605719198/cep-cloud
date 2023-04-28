@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { getAvatorByUserName} from "@/api/system/user";
 import { treeselect , selectCompany } from "@/api/human/hp/deptMaintenance";

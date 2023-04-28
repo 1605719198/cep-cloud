@@ -232,4 +232,49 @@ public class CancellationPersonController extends BaseController {
         ExcelUtil<CancellationPerson> util = new ExcelUtil<CancellationPerson>(CancellationPerson.class);
         util.importTemplateExcel(response, "注销模板");
     }
+
+    /** 出勤异常确认作业确认旷工 */
+    @RequiresPermissions("human:attendanceAnomalyConfirmation:confirm")
+    @Operation(summary = "出勤异常确认作业确认旷工")
+    @PostMapping("/confirm")
+    @Log(title = "出勤异常确认作业确认旷工", businessType = BusinessType.INSERT)
+    public Object confirmAttendanceAnomaly(@RequestBody CancellationPersonDTO cancellationPersonDTO) throws ParseException {
+        CancellationPerson cancellationPerson = new CancellationPerson();
+        BeanUtils.copyProperties(cancellationPersonDTO, cancellationPerson);
+        Personnel personnel = new Personnel();
+        BeanUtils.copyProperties(cancellationPersonDTO, personnel);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        cancellationPerson.setCheckStartDate(simpleDateFormat.parse(cancellationPersonDTO.getStartTime()));
+        cancellationPerson.setCheckEndDate(simpleDateFormat.parse(cancellationPersonDTO.getEndTime()));
+        cancellationPerson.setCreator(SecurityUtils.getNickName());
+        List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, cancellationPerson.getEmpNo()).list();
+        if (personnelList.isEmpty()) {
+            return AjaxResult.error("工号:" + cancellationPerson.getEmpNo() + "不存在，不能注销");
+        } else {
+            List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
+                    .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
+                    .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+                    .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+                    .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+                    .list();
+            if (attendanceAbnormalList.isEmpty()) {
+                return AjaxResult.error("工号:" + cancellationPerson.getEmpNo() + "已处理不能注销");
+            } else {
+                boolean update = iAttendanceAbnormalService.lambdaUpdate()
+                        .set(AttendanceAbnormal::getStatus, "05")
+                        .set(AttendanceAbnormal::getAuditType, "0")
+                        .set(AttendanceAbnormal::getDisposeId, "12")
+                        .set(AttendanceAbnormal::getExcReaId, "08")
+                        .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
+                        .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+                        .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+                        .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+                        .update();
+                if (update) {
+                    iCancellationPersonService.save(cancellationPerson);
+                }
+            }
+            return AjaxResult.success("已确认旷工");
+        }
+    }
 }

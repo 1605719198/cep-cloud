@@ -17,6 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="HolidayTableDTO" id="HolidayTableDTOResult">
+        <result property="compId"    column="comp_id"    />
+        <result property="startDate" column="start_date"/>
+        <result property="startDate" column="start_date"/>
+        <result property="dateType"    column="date_type"    />
+        <result property="holDay"    column="hol_day"    />
+    </resultMap>
+
     <sql id="selectHolidayTableVo">
         select id, comp_id, year, month, day, date_type, hol_day, creator, creator_id, create_date from human_hd_holiday
     </sql>
@@ -26,6 +34,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+    </select>
+
+    <select id="selectHolidayTable" parameterType="HolidayTableDTO" resultMap="HolidayTableDTOResult" >
+        select comp_id, date_type, hol_day from human_hd_holiday
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="startDate != null  "> and hol_day &gt;= #{startDate}</if>
+            <if test="endDate != null  "> and hol_day &lt;= #{endDate}</if>
         </where>
     </select>
     

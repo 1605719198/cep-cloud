@@ -7,12 +7,15 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.domain.HomeLeaveHoliday;
 import com.jlkj.human.hd.service.IHomeLeaveHolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,7 +25,7 @@ import java.util.List;
  * @date 2023-04-08
  */
 @RestController
-@RequestMapping("/holiday")
+@RequestMapping("/homeLeaveHoliday")
 public class HomeLeaveHolidayController extends BaseController
 {
     @Autowired
@@ -31,7 +34,7 @@ public class HomeLeaveHolidayController extends BaseController
     /**
      * 查询探亲假天数设定列表
      */
-    @RequiresPermissions("human:holiday:list")
+    @RequiresPermissions("human:homeLeaveHoliday:list")
     @GetMapping("/list")
     public TableDataInfo list(HomeLeaveHoliday homeLeaveHoliday)
     {
@@ -40,23 +43,12 @@ public class HomeLeaveHolidayController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出探亲假天数设定列表
-     */
-    @RequiresPermissions("human:holiday:export")
-    @Log(title = "探亲假天数设定", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, HomeLeaveHoliday homeLeaveHoliday)
-    {
-        List<HomeLeaveHoliday> list = homeLeaveHolidayService.selectHomeLeaveHolidayList(homeLeaveHoliday);
-        ExcelUtil<HomeLeaveHoliday> util = new ExcelUtil<HomeLeaveHoliday>(HomeLeaveHoliday.class);
-        util.exportExcel(response, list, "探亲假天数设定数据");
-    }
+
 
     /**
      * 获取探亲假天数设定详细信息
      */
-    @RequiresPermissions("human:holiday:query")
+    @RequiresPermissions("human:homeLeaveHoliday:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +58,7 @@ public class HomeLeaveHolidayController extends BaseController
     /**
      * 新增探亲假天数设定
      */
-    @RequiresPermissions("human:holiday:add")
+    @RequiresPermissions("human:homeLeaveHoliday:add")
     @Log(title = "探亲假天数设定", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HomeLeaveHoliday homeLeaveHoliday)
@@ -77,7 +69,7 @@ public class HomeLeaveHolidayController extends BaseController
     /**
      * 修改探亲假天数设定
      */
-    @RequiresPermissions("human:holiday:edit")
+    @RequiresPermissions("human:homeLeaveHoliday:edit")
     @Log(title = "探亲假天数设定", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody HomeLeaveHoliday homeLeaveHoliday)
@@ -86,13 +78,47 @@ public class HomeLeaveHolidayController extends BaseController
     }
 
     /**
+     * 查询员工探亲假信息
+     */
+    @GetMapping("/home")
+    public AjaxResult home(HomeLeaveHoliday homeLeaveHoliday)
+    {
+        return success(homeLeaveHolidayService.selectHomeLeaveHolidayByempNo(homeLeaveHoliday));
+    }
+
+    /**
      * 删除探亲假天数设定
      */
-    @RequiresPermissions("human:holiday:remove")
+    @RequiresPermissions("human:homeLeaveHoliday:remove")
     @Log(title = "探亲假天数设定", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(homeLeaveHolidayService.deleteHomeLeaveHolidayByIds(ids));
     }
+
+    @Log(title = "探亲假资料导入", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("human:homeLeaveHoliday:import")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<HomeLeaveHoliday> util = new ExcelUtil<HomeLeaveHoliday>(HomeLeaveHoliday.class);
+        List<HomeLeaveHoliday> homeLeaveHolidayList = util.importExcel(file.getInputStream());
+        String operName = SecurityUtils.getUsername();
+        String message = homeLeaveHolidayService.importUser(homeLeaveHolidayList, updateSupport, operName);
+        return success(message);
+    }
+
+    /**
+     * 导入探亲假数据
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException
+    {
+        ExcelUtil<HomeLeaveHoliday> util = new ExcelUtil<HomeLeaveHoliday>(HomeLeaveHoliday.class);
+        util.importTemplateExcel(response, "探亲假数据");
+    }
 }
+

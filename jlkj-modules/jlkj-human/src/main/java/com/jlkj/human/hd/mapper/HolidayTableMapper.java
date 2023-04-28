@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.HolidayTable;
+import com.jlkj.human.hd.dto.HolidayTableDTO;
 
 import java.util.List;
 
@@ -35,6 +36,14 @@ public interface HolidayTableMapper
      * @return 假日设定集合
      */
     public List<HolidayTable> selectHolidayTableList(HolidayTable holidayTable);
+
+    /**
+     * 查询时间段内假日设定
+     *
+     * @param holidayTable 假日设定
+     * @return 假日设定集合
+     */
+    public List<HolidayTableDTO> selectHolidayTable(HolidayTableDTO holidayTable);
 
     /**
      * 新增假日设定

@@ -311,7 +311,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect, listDeptversion,copySysDeptDTO,selectCompany } from "@/api/human/hp/deptMaintenance";
@@ -383,7 +383,6 @@ export default {
         pageSize: 10,
         deptId: null,
         compId: null,
-        ifCompany : 0,
         ancestors :null,
         deptCode:null,
         deptName:null,

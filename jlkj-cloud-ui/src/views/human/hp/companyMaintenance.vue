@@ -133,7 +133,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司编码" prop="deptCode">
-              <el-input maxlength="8" v-model="form.deptCode" placeholder="请输入公司编码" />
+              <el-input maxlength="8" v-model="form.deptCode" placeholder="请输入公司编码" :disabled="this.form.deptId" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -277,7 +277,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { listDeptmaintenance, getDeptmaintenance, delDeptmaintenance, addDeptmaintenance, updateDeptmaintenance, treeselect,listDeptversion } from "@/api/human/hp/deptMaintenance";
 import Treeselect from "@riophae/vue-treeselect";

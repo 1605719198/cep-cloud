@@ -140,6 +140,14 @@ public interface ISysDeptService
     public FirstDeptDTO getFirstDeptByDept(String empId);
 
     /**
+     * 根据部门编码查询信息
+     *
+     * @param deptCode 部门编码
+     * @return 部门信息
+     */
+    public SysDept selectSysDeptByDeptCode(String deptCode);
+
+    /**
      * 通过员工工号查一级部门
      * @param empId 员工工号
      * @return 结果

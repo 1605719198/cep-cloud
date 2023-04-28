@@ -129,7 +129,7 @@ import { listShiftClass } from '@/api/human/hd/shiftClass'
 import { listShiftMode } from '@/api/human/hd/shiftMode'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
-import { getDateTime } from '@/api/human/hd/ahumanutils'
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {
   name: 'batchScheduling',

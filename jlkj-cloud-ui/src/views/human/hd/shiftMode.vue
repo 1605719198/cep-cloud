@@ -176,7 +176,7 @@
 
 <script>
 import { listShiftMode, getShiftMode, delShiftMode, addShiftMode, updateShiftMode, listShiftModeAll } from '@/api/human/hd/shiftMode'
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName} from "@/api/system/user";
 import ShiftCode from '@/views/human/hd/shiftModeView/shiftCode'

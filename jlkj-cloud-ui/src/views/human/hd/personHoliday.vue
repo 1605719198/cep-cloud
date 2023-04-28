@@ -124,10 +124,10 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="工号" prop="empNo">
-              <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
                 <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
               </el-input>
-              {{ form.empName }}{{ form.postname }}
+              {{ form.empName }}:{{ form.postName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -176,7 +176,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="是否包括节假日" prop="isContainHoliday">
-              <el-radio-group v-model="form.isContainHoliday" :disabled="this.form.id!=null">
+              <el-radio-group v-model="form.isContainHoliday" disabled>
                 <el-radio
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
@@ -239,6 +239,7 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
         <el-button @click="submit">呈 送</el-button>
+        <el-button @click="computeManhour">计算</el-button>
       </div>
     </el-dialog>
 
@@ -249,10 +250,10 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="工号" prop="empNo">
-              <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
                 <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
               </el-input>
-              {{ form.empName }}{{ form.postname }}
+              {{ form.empName }}:{{ form.postName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -361,11 +362,14 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getAttendenceOptions} from '@/api/human/hd/attendenceBasis'
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import selectUser from "@/views/components/human/selectUser/selectUser";
-import {getDateTime} from "@/api/human/hd/ahumanutils";
-import {delComptime} from "@/api/human/hd/comptime";
+import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {yearHoliday} from "@/api/human/hd/yearHoliday";
 import {homeLeaveHoliday} from "@/api/human/hd/homeLeaveHoliday";
+import { getClassMasterByPerson } from "@/api/human/hd/personClassMaster";
+import { getCompHolidaySetting } from "@/api/human/hd/holidaysetting";
+import { getHoliday } from "@/api/human/hd/holidayTable";
+import { queryShiftCode } from "@/api/human/hd/shiftCode";
 
 export default {
   name: "PersonHoliday",
@@ -386,8 +390,8 @@ export default {
       loading: true,
       //公司列表
       companyList: [],
-      //用户公司别
-      userCompId: this.$store.state.user.userInfo.compId,
+      //登录人信息
+      user: {},
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -416,6 +420,14 @@ export default {
         endDate: '',
         queryDate: '',
       },
+      //员工轮班方式
+      shiftMode: null,
+      //班次数据
+      shiftCodeData:{},
+      //所选假别参数设定
+      holidaySetting:{},
+      //公司节假日设定
+      holidayTable:[],
       // 表单参数
       form: {},
       // 表单校验
@@ -426,13 +438,45 @@ export default {
       }
     };
   },
+  watch:{
+    'form.empNo': {
+      handler(val){
+        if(val){
+
+        }
+      },
+      deep: true,
+      immediate: false,
+    },
+    'form.leaTypeId': {
+      handler(val){
+        if(val){
+          var params ={
+            holidayTypeCode: val,
+            compId: this.form.compId
+          }
+          getCompHolidaySetting(params).then( response => {
+            if(response.data){
+              this.holidaySetting = response.data;
+              this.form.isContainHoliday = this.holidaySetting.isIncHol;
+            }
+          })
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed:{
     leaveShifts(){
-      var startDate = new Date(this.form.startDate);
-      var endDate = new Date(this.form.endDate)
-      var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
-
-      return result;
+      if(this.form.startDate&&this.form.endDate&&this.shiftMode&&this.form.empNo&&this.form.leaTypeId){
+        var startDate = this.form.startDate;
+        var endDate = this.form.endDate
+        var result = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+        return result;
+      }else{
+        return 0;
+      }
     },
     remainingDays(){
       return parseInt(this.form.gotoDays) - parseInt(this.form.leaveShifts);
@@ -446,11 +490,132 @@ export default {
     }
   },
   created() {
+    this.initData();
     this.getCompanyList();
     this.getList();
     this.getDisc();
   },
   methods: {
+    /** 工时计算 */
+    computeManhour(e){
+      //如果轮班方式是常白班：01
+      var cbMode='01'
+      if(this.shiftMode = cbMode){
+        var startDate = this.form.startDate;
+        var endDate = this.form.endDate
+        var days = (endDate-startDate) / (1 * 24 * 60 * 60 * 1000);
+        // 1：全日班，2：休息班，3：法定假日
+        var dateType1 = 1;
+        var dateType2 = 2;
+        var dateType3 = 3;
+        var holidayTable={
+          compId: this.form.compId,
+          startDate: getDateTime(1,this.form.startDate),
+          endDate: getDateTime(1,this.form.endDate),
+        }
+        getHoliday(holidayTable).then( response =>{
+          this.holidayTable = response.rows;
+          //请假天数小于一天
+            //请假未跨天
+            var maxDay = ((new Date(getDateTime(1,endDate))-new Date(getDateTime(1,startDate)))/ (1 * 24 * 60 * 60 * 1000))
+            //休息日最大天数
+            var restDays = Math.floor(maxDay)+1
+            var k=0;
+            //工时数
+            var workHourAll=0
+            var elseHour = parseInt(this.shiftCodeData.conMin)/60
+            var workHourDay = parseInt(this.shiftCodeData.conHour)+ elseHour;
+              this.holidayTable.forEach((value,index,array) => {
+                if(value.dateType!=dateType1){
+                  if(this.form.isContainHoliday=='N'){
+                    k++
+                  }else{
+                    workHourAll += workHourDay;
+                  }
+                }else{
+                  if(value.holDay==getDateTime(1,startDate)){
+                    if(this.shiftCodeData.restCount==1){
+                      var hour1 = String(startDate.getHours()).padStart(2, '0');
+                      var min1 = String(startDate.getMinutes()).padStart(2, '0');
+                      var hour2 = this.shiftCodeData.restStartHour;
+                      var min2 = this.shiftCodeData.restStartMin;
+                      if(this.compareTime(hour1,min1,hour2,min2)>=0){
+                        var minRest = parseInt(min2)+parseInt(this.shiftCodeData.restConMin);
+                        if(this.compareTime(hour1,min1,hour2,minRest)<=0){
+                          var workHour = parseInt(this.shiftCodeData.endHour)-parseInt(this.shiftCodeData.restEndHour)+((parseInt(this.shiftCodeData.endMin)-parseInt(this.shiftCodeData.restEndMin))/60)
+                        }else{
+                          var workHour = parseInt(this.shiftCodeData.endHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.endMin)-parseInt(min1))/60)
+                        }
+                        workHourAll += workHour;
+                      }else{
+                        var workHour = parseInt(this.shiftCodeData.restStartHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.restStartMin)-parseInt(min1))/60)
+                      }
+                    }
+                  }else if(value.holDay==getDateTime(1,endDate)){
+
+                    if(this.shiftCodeData.restCount==1){
+                      var hour1 = String(endDate.getHours()).padStart(2, '0');
+                      var min1 = String(endDate.getMinutes()).padStart(2, '0');
+                      var hour2 = this.shiftCodeData.restStartHour;
+                      var min2 = this.shiftCodeData.restStartMin;
+                      if(this.compareTime(hour1,min1,hour2,min2)<=0){
+                          var workHour = parseInt(hour1)-parseInt(this.shiftCodeData.startHour)+((parseInt(min1)-parseInt(this.shiftCodeData.startMin))/60);
+                        workHourAll += workHour;
+                      }else{
+                        var minRest = parseInt(min2)+parseInt(this.shiftCodeData.restConMin);
+                        if(this.compareTime(hour1,min1,hour2,minRest)<=0){
+                          var workHour = parseInt(hour2)-parseInt(this.shiftCodeData.startHour)+((parseInt(min2)-parseInt(this.shiftCodeData.startMin))/60);
+                        }else{
+                          var workHour = workHourDay-(parseInt(this.shiftCodeData.endHour)-parseInt(hour1)+((parseInt(this.shiftCodeData.endMin)-parseInt(min1))/60))
+                        }
+                      }
+                    }
+
+                  }else{
+                    workHourAll += workHourDay;
+                  }
+                }
+              })
+            if(k==restDays){
+              this.$modal.msgError("请假时间段为休息时间")
+            }else{
+              // this.$modal.msgSuccess("请假时间符合条件")
+            }
+
+        })
+      }
+    },
+    /** 时间大小比较 */
+    compareTime(hour1,min1,hour2,min2){
+      var time1 = parseInt(hour1)*60+parseInt(min1);
+      var time2 = parseInt(hour2)*60+parseInt(min2);
+      return time1-time2;
+    },
+    /**获取班次信息 */
+    getShiftCode(e){
+      var shiftCode={
+        shiftCode: e,
+        compId: this.form.compId,
+      }
+      queryShiftCode(shiftCode).then( response => {
+        this.shiftCodeData = response.data
+      })
+
+    },
+    /** 初始化数据 */
+    initData() {
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
+    },
+    /** 表单数据配置 */
+    setForm(e) {
+      this.form.creator = this.user.empName
+      this.form.creatorId = this.user.empNo
+      this.form.createDate = getDateTime(1)
+      this.form.compId = this.queryParams.compId
+    },
     /** 查询出勤字典 */
     getDisc() {
       getAttendenceOptions(this.attendenceOptionType).then(response => {
@@ -473,6 +638,28 @@ export default {
         this.loading = false;
       });
     },
+    /** 查询员工年休假记录 */
+    getYearHolidayList() {
+      var year={
+        year: new Date().getFullYear(),
+        empNo: null,
+        compId: null,
+      }
+      yearHoliday(year).then(response => {
+        this.yearHoliday = response.rows;
+      });
+    },
+    /** 查询员工探亲假记录 */
+    getHomeLeaveHolidayList() {
+      var home={
+        year: new Date().getFullYear(),
+        empNo: null,
+        compId: null,
+      }
+      homeLeaveHoliday(home).then(response => {
+        this.homeLeaveHoliday = response.rows;
+      });
+    },
     /** 查询条件判定 */
     judgeQuery() {
       if (this.queryParams.empNo === null || this.queryParams.empNo === '') {
@@ -482,16 +669,18 @@ export default {
         return true;
       }
     },
+
     // 取消按钮
     cancel() {
       this.open = false;
       this.reset();
     },
+
     // 呈送按钮
     submit() {
-      this.open = false;
-      this.form.status = "03";
-      this.submitForm()
+      // this.open = false;
+      // this.form.status = "03";
+      // this.submitForm()
     },
 
     // 表单重置
@@ -502,7 +691,7 @@ export default {
         empNo: null,
         empId: null,
         empName: null,
-        postname: null,
+        postName: null,
         postid: null,
         orgParentId: null,
         orgId: null,
@@ -533,6 +722,7 @@ export default {
         this.getList();
       }
     },
+    //日期范围转换
     dateFormat(picker) {
       if (picker != null && picker != "") {
         this.queryParams.startDate = picker[0]
@@ -556,9 +746,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1)
+      this.setForm()
       this.open = true;
       this.title = "添加员工请假记录";
     },
@@ -567,6 +755,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
+            this.setForm();
             this.form.leaveShifts=this.leaveShifts
             updatePersonHoliday(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
@@ -590,9 +779,6 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.$store.state.user.userInfo.nickName;
-        this.form.createDate = getDateTime(1);
-        this.form.creatorId = this.$store.state.user.name;
         this.opencreate = true;
         this.title = "员工请假记录详情";
       });
@@ -603,9 +789,6 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.$store.state.user.userInfo.nickName;
-        this.form.createDate = getDateTime(1);
-        this.form.creatorId = this.$store.state.user.name;
         this.open = true;
         this.title = "修改员工请假记录";
       });
@@ -627,13 +810,38 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(empId, userName, compId) {
-      this.queryParams.empNo = empId;
-      this.form.empNo = empId
-      this.form.empName = userName
-      this.getList();
-      queryNewPostNameAndChangeDetail(this.form).then(res => {
-        this.form.postName = res.data.list1[0].newPostName
-      })
+      if(this.open == true){
+        this.form.empNo = empId
+        this.form.empName = userName
+        queryNewPostNameAndChangeDetail(this.form).then(res => {
+          this.form.postName = res.data.list1[0].newPostName
+        })
+        var params = {
+          compId: compId,
+          empId: empId
+        }
+        getClassMasterByPerson(params).then(response => {
+          this.shiftMode = response.data.shiftmodeName;
+
+          //如果轮班方式是常白班：01
+          var cbMode='01'
+          if(this.shiftMode = cbMode){
+            //班次：常白班
+            var cbCode = '01'
+            var shiftCode={
+              shiftCode: cbCode,
+              compId: this.form.compId,
+            }
+            queryShiftCode(shiftCode).then( response => {
+              this.shiftCodeData = response.data
+            })
+          }
+
+        })
+      }else{
+        this.queryParams.empNo = empId;
+        this.getList();
+      }
     }
   }
 };

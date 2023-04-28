@@ -7,6 +7,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.HolidayTable;
+import com.jlkj.human.hd.dto.HolidayTableDTO;
 import com.jlkj.human.hd.service.IHolidayTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,15 @@ public class HolidayTableController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 查询时间段内假日设定
+     */
+    @GetMapping("/getHolidayTable")
+    public TableDataInfo getHolidayTable(HolidayTableDTO holidayTable)
+    {
+        List<HolidayTableDTO> list = holidayTableService.selectHolidayTable(holidayTable);
+        return getDataTable(list);
+    }
 
     /**
      * 新增假日设定

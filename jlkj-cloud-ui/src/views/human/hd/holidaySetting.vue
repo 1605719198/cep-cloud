@@ -220,7 +220,7 @@
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { getAvatorByUserName} from "@/api/system/user";
 import { listHolidaysetting, getHolidaysetting, delHolidaysetting, addHolidaysetting, updateHolidaysetting, copyHolidaysetting } from "@/api/human/hd/holidaysetting";
 

@@ -46,6 +46,18 @@ public class TripDayRuleServiceImpl implements ITripDayRuleService
     }
 
     /**
+     * 查询出差日标准地区列表
+     *
+     * @param tripDayRule 出差日标准维护
+     * @return 出差日标准维护
+     */
+    @Override
+    public List<TripDayRule> selectTripDayRuleArea(TripDayRule tripDayRule)
+    {
+        return tripDayRuleMapper.selectTripDayRuleArea(tripDayRule);
+    }
+
+    /**
      * 新增出差日标准维护
      *
      * @param tripDayRule 出差日标准维护

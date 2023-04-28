@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName} from "@/api/system/user";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";

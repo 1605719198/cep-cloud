@@ -226,7 +226,7 @@ import { listPersonColockDetail} from "@/api/human/hd/personColockDetail";
 import { treeselect,selectCompany,queryFirstdeptByPerson,queryFirstdeptByDept } from "@/api/human/hp/deptMaintenance";
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
-import { getDateTime } from "@/api/human/hd/ahumanutils";
+import { getDateTime } from "@/api/human/hd/ahumanUtils";
 import { getCompClockwork } from "@/api/human/hd/clockwork";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {

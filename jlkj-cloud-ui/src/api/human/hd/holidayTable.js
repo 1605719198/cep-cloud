@@ -9,6 +9,15 @@ export function listHolidayTable(query) {
   })
 }
 
+// 查询时间段内假日设定
+export function getHoliday(query) {
+  return request({
+    url: '/human/holidayTable/getHolidayTable',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询假日设定详细
 export function getHolidayTable(id) {
   return request({

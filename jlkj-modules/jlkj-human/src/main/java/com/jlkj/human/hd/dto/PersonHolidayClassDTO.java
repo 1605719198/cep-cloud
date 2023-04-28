@@ -5,6 +5,12 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * 人员排班数据对象
+ *
+ * @author 266861
+ * @date 2023-03-21
+ */
 @Data
 public class PersonHolidayClassDTO {
 

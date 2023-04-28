@@ -269,7 +269,7 @@
 
 <script>
 import { listShiftCode, getShiftCode, delShiftCode, addShiftCode, updateShiftCode ,getShiftCodeByPerson} from "@/api/human/hd/shiftCode";
-import { getDateTime } from "@/api/human/hd/ahumanutils"
+import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 export default {
   name: "ShiftCode",

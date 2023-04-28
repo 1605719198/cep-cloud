@@ -66,7 +66,7 @@ import {
   updateHolidayTable,
   addYearHolidayTable
 } from '@/api/human/hd/holidayTable'
-import { getDateTime } from '@/api/human/hd/ahumanutils'
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import humanCalendar from '@/views/components/human/humanCalendar/src/main'

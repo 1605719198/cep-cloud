@@ -9,6 +9,15 @@ export function listHolidayYear(query) {
   })
 }
 
+// 查询员工年休假信息
+export function yearHoliday(query) {
+  return request({
+    url: '/human/holiday/year/year',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询年休假天数设定详细
 export function getHoliday(id) {
   return request({

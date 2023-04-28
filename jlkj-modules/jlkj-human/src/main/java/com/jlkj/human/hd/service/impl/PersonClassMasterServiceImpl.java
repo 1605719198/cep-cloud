@@ -40,6 +40,17 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
     }
 
     /**
+     * 查询某员工出勤身份
+     *
+     * @param personClassMaster 员工信息
+     * @return 出勤身份
+     */
+    @Override
+    public PersonClassMaster selectClassMasterByPerson(PersonClassMaster personClassMaster){
+        return personClassMasterMapper.selectClassMasterByPerson(personClassMaster);
+    }
+
+    /**
      * 查询出勤身份列表
      *
      * @param personClassMaster 出勤身份

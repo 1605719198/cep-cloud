@@ -29,6 +29,14 @@ public interface TripDayRuleMapper
     public List<TripDayRule> selectTripDayRuleList(TripDayRule tripDayRule);
 
     /**
+     * 查询出差日标准地区维护列表
+     *
+     * @param tripDayRule 出差日标准维护
+     * @return 出差日标准维护集合
+     */
+    public List<TripDayRule> selectTripDayRuleArea(TripDayRule tripDayRule);
+
+    /**
      * 新增出差日标准维护
      * 
      * @param tripDayRule 出差日标准维护
