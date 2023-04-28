@@ -23,12 +23,12 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="this.type === 'org'">
+          <el-form-item v-if="this.queryParams.type === 'org'">
             <el-input v-model="queryParams.orgId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else-if="this.type === 'user'">
+          <el-form-item v-else-if="this.queryParams.type === 'user'">
             <el-input v-model="queryParams.empNo" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
@@ -230,7 +230,6 @@ export default {
         baseInfoList: [
           'CancellationPersonType']
       },
-      type: 'org',
       tableColumns: [],
     };
   },
@@ -322,15 +321,6 @@ export default {
     dateFormat1(picker) {
       this.form.startTime=picker[0]
       this.form.endTime=picker[1]
-    },
-    changeType(val) {
-      if (val === 'org'){
-        this.type = 'org'
-      } else if (val === 'user'){
-        this.type = 'user'
-      } else {
-        this.type = 'mac'
-      }
     },
     openOrgPop() {
       this.$refs.selectOrg.show();

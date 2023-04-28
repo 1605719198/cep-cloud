@@ -27,6 +27,7 @@
             <result property="description" column="description" jdbcType="VARCHAR"/>
             <result property="disposeId" column="dispose_id" jdbcType="VARCHAR"/>
             <result property="auditType" column="audit_type" jdbcType="VARCHAR"/>
+            <result property="undutyType" column="unduty_type" jdbcType="VARCHAR"/>
             <result property="creator" column="creator" jdbcType="VARCHAR"/>
             <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
             <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
@@ -40,6 +41,6 @@
         prove_rea_id,prove_reason,status,
         nor_onduty_begin,nor_onduty_end,slot_card_onduty,
         slot_card_offduty,description,dispose_id,audit_type,
-        creator,creator_id,create_date
+        unduty_type,creator,creator_id,create_date
     </sql>
 </mapper>

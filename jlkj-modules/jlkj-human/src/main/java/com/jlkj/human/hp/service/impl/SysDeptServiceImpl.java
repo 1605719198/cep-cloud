@@ -440,5 +440,13 @@ public class SysDeptServiceImpl implements ISysDeptService
         return sysDeptMapper.selectSysDeptByDeptCode(deptCode);
     }
 
+    /**
+     * 查询父id为此部门编码的数据
+     */
+    @Override
+    public List<SysDept> selectParentIdByDeptCode(Long deptId){
+        return sysDeptMapper.selectParentIdByDeptCode(deptId);
+    }
+
 
 }

@@ -265,6 +265,7 @@ public class CancellationPersonController extends BaseController {
                         .set(AttendanceAbnormal::getAuditType, "0")
                         .set(AttendanceAbnormal::getDisposeId, "12")
                         .set(AttendanceAbnormal::getExcReaId, "08")
+                        .set(AttendanceAbnormal::getUndutyType, "3")
                         .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
                         .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
                         .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())

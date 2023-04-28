@@ -116,6 +116,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dept_code = #{deptCode}
     </select>
 
+    <select id="selectParentIdByDeptCode" parameterType="Long" resultMap="SysDeptResult">
+        <include refid="selectSysDeptVo"/>
+        where parent_id = #{deptId}
+    </select>
+
     <insert id="insertSysDept" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">

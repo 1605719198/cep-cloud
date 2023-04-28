@@ -180,10 +180,10 @@
                   <el-form-item>
                     <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
                       <el-option
-                        v-for="dict in baseInfoData.comp_id"
-                        :key="dict.dicNo"
-                        :label="dict.dicName"
-                        :value="dict.dicNo"
+                        v-for="dict in companyName"
+                        :key="dict.compId"
+                        :label="dict.companyName"
+                        :value="dict.compId"
                       />
                     </el-select>
                     <el-tree
@@ -251,7 +251,7 @@ export default {
       },
       //查询参数
       queryParams: {
-        compId: undefined,
+        compId: 'J00',
         empNo: undefined
       },
       // 列信息
@@ -274,8 +274,7 @@ export default {
         uuid: '',
         baseInfoList: [
           'HP005',
-          'post_type_id',
-          'comp_id']
+          'post_type_id']
       },
       // 表单校验
       rules: {
@@ -470,7 +469,7 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id
+      this.queryParams.orgId = data.id
       this.addJsonForm.departmentName = data.label
       this.handleQuery();
     },

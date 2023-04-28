@@ -134,6 +134,11 @@ public class AttendanceAbnormal implements Serializable {
     private String auditType;
 
     /**
+     * 审核类型
+     */
+    private String undutyType;
+
+    /**
      * 输入人
      */
     private String creator;
