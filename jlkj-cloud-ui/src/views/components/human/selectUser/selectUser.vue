@@ -94,6 +94,8 @@ export default {
       userName: [],
       // 选中公司别数组名称
       compId: [],
+      // 选中id数组名称
+      empId: [],
       companyId: undefined,
       // 总条数
       total: 0,
@@ -198,6 +200,7 @@ export default {
       const userIds = this.userIds.join(",");
       const userName = this.userName.join(",");
       const compId = this.compId.join(",");
+      const id = this.empId.join(",");
       if (userIds == "") {
         this.$modal.msgError("请选择要分配的用户");
         return;
@@ -207,7 +210,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok", userIds, userName, compId);
+      this.$emit("ok", userIds, userName, compId, id);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {

@@ -1,5 +1,38 @@
 package com.jlkj.common.core.utils.poi;
 
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.annotation.Excel.ColumnType;
+import com.jlkj.common.core.annotation.Excel.Type;
+import com.jlkj.common.core.annotation.Excels;
+import com.jlkj.common.core.text.Convert;
+import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.file.FileTypeUtils;
+import com.jlkj.common.core.utils.file.FileUtils;
+import com.jlkj.common.core.utils.file.ImageUtils;
+import com.jlkj.common.core.utils.reflect.ReflectUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,65 +44,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import cn.hutool.core.util.IdUtil;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
-import com.jlkj.common.core.utils.file.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.annotation.Excel.ColumnType;
-import com.jlkj.common.core.annotation.Excel.Type;
-import com.jlkj.common.core.annotation.Excels;
-import com.jlkj.common.core.text.Convert;
-import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.file.FileTypeUtils;
-import com.jlkj.common.core.utils.file.ImageUtils;
-import com.jlkj.common.core.utils.reflect.ReflectUtils;
 
 /**
  * Excel相关处理
@@ -1547,5 +1523,101 @@ public class ExcelUtil<T>
             builder.registerWriteHandler(new CellMergeStrategy(list, true));
         }
         builder.doWrite(list);
+    }
+
+    /**
+     * 创建标题样式
+     * @param wb
+     * @return
+     */
+    public static  HSSFCellStyle createTitleCellStyle(HSSFWorkbook wb){
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        //水平居中
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //垂直对齐
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //背景颜色
+        cellStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+
+        HSSFFont headerFont1 = (HSSFFont) wb.createFont();
+        //字体加粗
+        headerFont1.setBold(true);
+        //字体类型
+        headerFont1.setFontName("黑体");
+        //字体大小
+        headerFont1.setFontHeightInPoints((short)15);
+        cellStyle.setFont(headerFont1);
+        return cellStyle;
+    }
+
+    /**
+     * 创建表头样式
+     * @param wb
+     * @return
+     */
+    public static HSSFCellStyle createHeadCellStyle(HSSFWorkbook wb){
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        //设置自动换行
+        cellStyle.setWrapText(true);
+        //设置背景颜色
+        cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        //水平居中
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //垂直对齐
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setBottomBorderColor(IndexedColors.BLACK.index);
+        //下边框
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        //左边框
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        //右边框
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        //上边框
+        cellStyle.setBorderTop(BorderStyle.THIN);
+
+        //创建字体样式
+        HSSFFont headerFont = (HSSFFont)wb.createFont();
+        //字体加粗
+        headerFont.setBold(true);
+        //字体类型
+        headerFont.setFontName("黑体");
+        //字体大小
+        headerFont.setFontHeightInPoints((short)12);
+        //为标题样式添加字体样式
+        cellStyle.setFont(headerFont);
+
+        return cellStyle;
+    }
+
+    /**
+     *  设置表格内容样式
+     * @param wb
+     * @return
+     */
+    public static HSSFCellStyle createContentCellStyle(HSSFWorkbook wb){
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        //水平居中
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //垂直居中
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        //设置自动换行
+        cellStyle.setWrapText(true);
+        //上边框
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        //下边框
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        //左边框
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        //右边框
+        cellStyle.setBorderRight(BorderStyle.THIN);
+
+        //设置字体
+        HSSFFont font = (HSSFFont)wb.createFont();
+        font.setColor((short)8);
+        font.setFontHeightInPoints((short)12);
+
+        return cellStyle;
     }
 }

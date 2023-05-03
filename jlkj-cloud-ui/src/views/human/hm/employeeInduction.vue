@@ -154,7 +154,7 @@
                     style="text-align: right"
                   >
                     {{scope.row.newPostName}}
-                    <el-button icon="el-icon-search" @click="openPostName = true"></el-button>
+                    <el-button icon="el-icon-search" @click="openPostPop"></el-button>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -174,16 +174,16 @@
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.employeeInductionList" border>
+            <el-table :data="addJsonForm.postPop" border>
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
-                    <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
+                    <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
                       <el-option
-                        v-for="dict in baseInfoData.comp_id"
-                        :key="dict.dicNo"
-                        :label="dict.dicName"
-                        :value="dict.dicNo"
+                        v-for="dict in companyName"
+                        :key="dict.compId"
+                        :label="dict.companyName"
+                        :value="dict.compId"
                       />
                     </el-select>
                     <el-tree
@@ -203,16 +203,9 @@
               </el-table-column>
               <el-table-column  label="选取岗位" align="center">
                 <template v-slot="scope">
-                  <el-form-item>
-                    <el-select v-model="scope.row.postName" placeholder="请选择岗位" clearable @change="changePostName">
-                      <el-option
-                        v-for="dict in postMaintenanceList"
-                        :key="dict.postName"
-                        :label="dict.postName"
-                        :value="dict.postName"
-                      />
-                    </el-select>
-                  </el-form-item>
+                  <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict.postName)">
+                    {{dict.postName}}
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -247,11 +240,17 @@ export default {
             postTypeId: undefined,
             newPostName: undefined,
           }
+        ],
+        postPop: [
+          {
+            postTypeId: undefined,
+            newPostName: undefined,
+          }
         ]
       },
       //查询参数
       queryParams: {
-        compId: undefined,
+        compId: 'J00',
         empNo: undefined
       },
       // 列信息
@@ -274,8 +273,7 @@ export default {
         uuid: '',
         baseInfoList: [
           'HP005',
-          'post_type_id',
-          'comp_id']
+          'post_type_id']
       },
       // 表单校验
       rules: {
@@ -315,7 +313,6 @@ export default {
       label: undefined,
       parentPostName: undefined,
       orgName: undefined,
-      postName: undefined,
       companyName: []
     }
   },
@@ -374,6 +371,12 @@ export default {
         employeeInductionList: [
           {
             postTypeId: '01',
+            newPostName: undefined,
+          }
+        ],
+        postPop: [
+          {
+            postTypeId: undefined,
             newPostName: undefined,
           }
         ]
@@ -470,7 +473,7 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id
+      this.queryParams.orgId = data.id
       this.addJsonForm.departmentName = data.label
       this.handleQuery();
     },
@@ -488,19 +491,15 @@ export default {
         this.newPostNameOptions = response.data;
       });
     },
-    changeLabel(val) {
-      if (val == 'J00') {
-        this.label = '吉林建龙'
-      } else if (val == 'J01') {
-        this.label = '吉林龙翔冷轧新型材料有限公司'
-      } else {
-        this.label = '吉林建龙信息科技'
-      }
-    },
     changePostName(val) {
       this.openPostName = false
       this.postName = val
-      this.addJsonForm.employeeInductionList[this.index].newPostName = this.label + '-' + this.parentPostName + '-' + this.orgName + '-' + this.postName
+      this.addJsonForm.employeeInductionList[this.index].newPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
+    },
+    openPostPop() {
+      this.openPostName = true
+      this.compId = undefined
+      this.postMaintenanceList = []
     }
   }
 }
@@ -515,5 +514,8 @@ export default {
 }
 /deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
   margin-bottom: 0 !important;
+}
+#changeColor:hover{
+  background-color: #7f7f7f;
 }
 </style>

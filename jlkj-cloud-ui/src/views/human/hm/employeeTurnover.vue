@@ -31,7 +31,8 @@
         </el-form>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button size="mini"
+            <el-button v-hasPermi="['human:employeeTurnover:add']"
+                       size="mini"
                        type="primary"
                        plain
                        @click="handleAdd"
@@ -234,10 +235,10 @@
                   <el-form-item>
                     <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
                       <el-option
-                        v-for="dict in baseInfoData.comp_id"
-                        :key="dict.dicNo"
-                        :label="dict.dicName"
-                        :value="dict.dicNo"
+                        v-for="dict in companyName"
+                        :key="dict.compId"
+                        :label="dict.companyName"
+                        :value="dict.compId"
                       />
                     </el-select>
                     <el-tree
@@ -336,7 +337,6 @@ export default {
         baseInfoList: [
           'HP005',
           'post_type_id',
-          'comp_id',
           'ChangeCategory']
       },
       // 表单校验
@@ -539,7 +539,7 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id;
+      this.queryParams.orgId = data.id;
       this.handleQuery();
     },
     handleQuery() {
@@ -547,7 +547,7 @@ export default {
         this.postMaintenanceList = response.rows;
         this.orgName = this.postMaintenanceList[0].orgName
         this.parentPostName = this.postMaintenanceList[0].parentPostName
-        this.addJsonForm.employeeInductionList[this.index].newPostId = this.postMaintenanceList[0].postId
+        this.addJsonForm.employeeTurnoverList[this.index].newPostId = this.postMaintenanceList[0].postId
       });
     },
     /** 查询部门下拉树结构 */

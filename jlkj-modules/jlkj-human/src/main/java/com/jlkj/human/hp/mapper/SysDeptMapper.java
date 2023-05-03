@@ -14,7 +14,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-03-08
  */
-public interface SysDeptMapper 
+public interface SysDeptMapper
 {
     /**
      * 查询部门资料维护
@@ -37,6 +37,14 @@ public interface SysDeptMapper
      * @return 部门信息
      */
     public SysDept selectSysDeptByDeptCode(String deptCode);
+
+    /**
+     * 查询父id为此部门编码的数据
+     *
+     * @param deptId 部门id
+     * @return 部门信息
+     */
+    public List<SysDept> selectParentIdByDeptCode(Long deptId);
 
     /**
      * 查询部门资料维护列表

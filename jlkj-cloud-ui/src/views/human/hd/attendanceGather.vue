@@ -137,8 +137,8 @@ export default {
     getList() {
       this.loading = true;
       listAttendanceGather(this.queryParams).then(response => {
-        this.attendanceGatherList = response.rows;
-        this.total = response.total;
+        this.attendanceGatherList = response.data.rows;
+        this.total = response.data.total;
         this.loading = false;
       });
     },

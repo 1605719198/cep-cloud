@@ -103,13 +103,13 @@
             <if test="isCash != null">is_cash = #{isCash},</if>
             <if test="level != null">level = #{level},</if>
             <if test="disabledCode != null">disabled_code = #{disabledCode},</if>
-            <if test="disabledDate != null">disabled_date = #{disabledDate},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createName != null">create_name = #{createName},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateName != null">update_name = #{updateName},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            disabled_date = #{disabledDate}
         </trim>
         where group_acct_id = #{groupAcctId}
     </update>

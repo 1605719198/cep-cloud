@@ -123,7 +123,7 @@ public class PersonnelController extends BaseController {
             LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
                     .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo)
-                    .eq(Personnel::getDepartmentId, departmentId);
+                    .eq(StringUtils.isNotBlank(departmentId), Personnel::getDepartmentId, departmentId);
             List<Personnel> list = personnelService.list(queryWrapper);
             return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {

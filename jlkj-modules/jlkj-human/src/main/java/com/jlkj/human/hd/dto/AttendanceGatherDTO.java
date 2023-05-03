@@ -222,6 +222,20 @@ public class AttendanceGatherDTO implements Serializable {
      */
     private BigDecimal updActAttHou;
 
+    /**
+     * 日期类别
+     */
+    private String type;
+
+    /**
+     * 是否包含子公司
+     */
+    private String includingSubsidiaries;
+
+    /**
+     * 日期
+     */
+    private String date;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

@@ -18,9 +18,9 @@
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="日期" prop="startDate">
+          <el-form-item label="日期" prop="workOvertimeDate">
             <el-date-picker
-              v-model="queryParams.startDate"
+              v-model="queryParams.workOvertimeDate"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="~"
@@ -310,7 +310,7 @@ export default {
         pageSize: 10,
         compId: 'J00',
         empNo: null,
-        startDate: '',
+        workOvertimeDate: '',
         startTime: '',
         endTime: ''
       },
@@ -324,9 +324,6 @@ export default {
         ],
         workOvertimeDate: [
           { required: true, message: "加班开始日期不能为空", trigger: "blur" }
-        ],
-        endDate: [
-          { required: true, message: "加班结束日期不能为空", trigger: "blur" }
         ],
         overtimeHours: [
           { required: true, message: "加班时数不能为空", trigger: "blur" }
@@ -394,8 +391,6 @@ export default {
         empNo: null,
         postId: null,
         postName: null,
-        startDate: null,
-        endDate: null,
         overtimeTypeId: null,
         overtimeReaId: null,
         overtimeDays: null,

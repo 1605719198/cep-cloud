@@ -82,6 +82,8 @@ export default {
       deptCode: [],
       // 选中数组名称
       deptId: [],
+      // 选中部门名称
+      deptName: [],
       // 选中公司别数组名称
       compId: [],
       companyId: undefined,
@@ -104,7 +106,6 @@ export default {
         pageSize: 10,
         deptId: null,
         compId: null,
-        ifCompany : 0,
         ancestors :null,
         deptCode:null,
         deptName:null,
@@ -133,6 +134,15 @@ export default {
       }
       this.getList();
     },
+    //监听数据 设置默认展示第一层数据
+    deptOptions: {
+      handler (val) {
+        val.forEach(item => {
+          this.expandedKeys.push(item.id);
+        })
+      },
+      deep: true,
+    },
   },
   methods: {
     //获取公司列表
@@ -155,6 +165,7 @@ export default {
     handleSelectionChange(selection) {
       this.deptCode = selection.map(item => item.deptCode);
       this.deptId = selection.map(item => item.deptId);
+      this.deptName = selection.map(item => item.deptName);
     },
     // 查询表数据
     getList() {
@@ -177,7 +188,8 @@ export default {
     handleSelectUser() {
       const deptCode = this.deptCode.join(",");
       const deptId = this.deptId.join(",");
-      if (deptCode == "") {
+      const deptName = this.deptName.join(",");
+      if (deptCode === "") {
         this.$modal.msgError("请选择组织机构");
         return;
       }
@@ -186,7 +198,7 @@ export default {
         return;
       }
       this.visible = false;
-      this.$emit("ok", deptCode, deptId);
+      this.$emit("ok", deptCode, deptId, deptName);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {
