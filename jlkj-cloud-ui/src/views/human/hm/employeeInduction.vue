@@ -174,7 +174,7 @@
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.postPop" border>
+            <el-table :data="addJsonForm.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
@@ -186,22 +186,26 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <el-tree
-                      :data="newPostNameOptions"
-                      :props="defaultProps"
-                      :default-expand-al="false"
-                      :highlight-current="true"
-                      :expand-on-click-node="false"
-                      :default-expanded-keys="expandedKeys"
-                      v-show="tree"
-                      node-key="id"
-                      ref="tree"
-                      @node-click="handleNodeClick"
-                    />
+                    <div class="head-container" style="height: 10vh;width: 100%;">
+                      <el-scrollbar style="height: 100%;">
+                        <el-tree
+                          :data="newPostNameOptions"
+                          :props="defaultProps"
+                          :default-expand-al="false"
+                          :highlight-current="true"
+                          :expand-on-click-node="false"
+                          :default-expanded-keys="expandedKeys"
+                          v-show="tree"
+                          node-key="id"
+                          ref="tree"
+                          @node-click="handleNodeClick"
+                        />
+                      </el-scrollbar>
+                    </div>
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column  label="选取岗位" align="center">
+              <el-table-column label="选取岗位" align="center">
                 <template v-slot="scope">
                   <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict.postName)">
                     {{dict.postName}}
@@ -328,6 +332,15 @@ export default {
       }else{
         this.tree=false
       }
+    },
+    //监听数据 设置默认展示第一层数据
+    newPostNameOptions: {
+      handler(val) {
+        val.forEach(item => {
+          this.expandedKeys.push(item.id);
+        })
+      },
+      deep: true,
     }
   },
   created() {
@@ -515,5 +528,11 @@ export default {
 }
 #changeColor:hover{
   background-color: #7f7f7f;
+}
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
 }
 </style>
