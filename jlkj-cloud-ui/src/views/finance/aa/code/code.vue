@@ -96,7 +96,8 @@
                       </el-form-item>
                       <el-table-column prop="cashFlowCode" label="现金流量表代码">
                         <template slot-scope="scope">
-                          <el-form-item :prop="'tCodeList.' + scope.$index + '.cashFlowCode'" :rules="rules.cashFlowCode">
+                          <el-form-item
+                            :prop="'tCodeList.' + scope.$index + '.cashFlowCode'" :rules="rules.cashFlowCode">
                             <el-input v-model="scope.row.cashFlowCode" placeholder="请输入现金流量表代码"/>
                           </el-form-item>
                         </template>

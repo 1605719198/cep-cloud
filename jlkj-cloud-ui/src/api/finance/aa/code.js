@@ -32,6 +32,14 @@ export function getTreeNode() {
     method: 'get',
   })
 }
+
+// 获取全部树节点FinanceProduct
+export function getTreeNodeCompId(companyId) {
+  return request({
+    url: `/finance/code/treeCompanyId?companyId=${companyId}`,
+    method: 'get',
+  })
+}
 // 修改现金流量代码
 export function updateCode(data) {
   return request({

@@ -296,7 +296,6 @@ export default {
     this.initTree()
   },
   methods: {
-
     initTree() {
       getTreeNode("J00").then(response => {
         this.treeData = response.data

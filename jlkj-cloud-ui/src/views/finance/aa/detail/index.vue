@@ -290,7 +290,6 @@ export default {
         createName: null,
         updateName: null
       };
-
       this.form.detailList.push(item);
     },
 
@@ -354,12 +353,10 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-
       if (row.id == null||row.id==''||row.id==undefined){
         if (this.checkedTCapitalDetail.length == 0) {
           this.$modal.msgError("请先选择要删除的数据");
         } else {
-          console.log(this.checkedTCapitalDetail);
           const detailList = this.form.detailList;
           const checkedTCapitalDetail = this.checkedTCapitalDetail;
           this.form.detailList = detailList.filter(function (item) {
