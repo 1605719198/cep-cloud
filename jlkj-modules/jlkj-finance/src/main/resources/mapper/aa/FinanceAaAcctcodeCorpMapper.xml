@@ -60,7 +60,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaAcctcodeCorpVo"/>
         where group_acct_id = #{groupAcctId}
     </select>
-        
+    <select id="selectAcctId" resultType="com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp">
+        <include refid="selectFinanceAaAcctcodeCorpVo"/>
+        where acct_id = #{acctId}
+    </select>
+
     <insert id="insertFinanceAaAcctcodeCorp" parameterType="com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp">
         insert into finance_aa_acctcode
         <trim prefix="(" suffix=")" suffixOverrides=",">

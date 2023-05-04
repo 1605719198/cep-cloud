@@ -66,6 +66,47 @@ public class FinanceAaCashflowCodeTreeServiceImpl  extends ServiceImpl<FinanceAa
         return returnList.stream().map(FinanceAaCashflowCodeDTO::new)
                 .collect(Collectors.toList());
     }
+    /**
+     * 选单配置树结构列表
+     * @return
+     */
+    @Override
+    public List<FinanceAaCashflowCodeDTO> getBaseInfoTreeCompanyIdList(String companyId) {
+        List<FinanceAaCashflowCodeDTO> returnList = new ArrayList<>();
+        List<String> tempList = new ArrayList<>();
+
+        //查询选单配置资料
+        List<FinanceAaCashflowCode> equipmentDownTypeTrees =
+                baseMapper.selectList(new QueryWrapper<FinanceAaCashflowCode>().eq("company_id",companyId).orderByDesc("cash_flow_code").orderByAsc("cash_flow_name"));
+        //树结构DTO
+        List<FinanceAaCashflowCodeDTO> treeDTOList = new ArrayList<>();
+        //循环取出id值，存入tempList
+        if (StringUtils.isNotNull(equipmentDownTypeTrees)) {
+            for (FinanceAaCashflowCode financeAaCashflowCode : equipmentDownTypeTrees) {
+                FinanceAaCashflowCodeDTO financeAaCashflowCodeDTO = new FinanceAaCashflowCodeDTO();
+                financeAaCashflowCodeDTO.setId(financeAaCashflowCode.getId());
+                financeAaCashflowCodeDTO.setCashFlowCode(financeAaCashflowCode.getCashFlowCode());
+                financeAaCashflowCodeDTO.setCashFlowName(financeAaCashflowCode.getCashFlowName());
+                financeAaCashflowCodeDTO.setParentId(financeAaCashflowCode.getParentId());
+                tempList.add(financeAaCashflowCode.getId());
+                treeDTOList.add(financeAaCashflowCodeDTO);
+            }
+        }
+        for (FinanceAaCashflowCodeDTO typeTree : treeDTOList) {
+            //如果是Root节点，遍历该父节点的所有子节点
+            if (!tempList.contains(typeTree.getParentId())) {
+                //进行递归操作
+                recursionFn(treeDTOList, typeTree);
+                returnList.add(typeTree);
+            }
+        }
+
+        if (returnList.isEmpty()) {
+            returnList = treeDTOList;
+        }
+        return returnList.stream().map(FinanceAaCashflowCodeDTO::new)
+                .collect(Collectors.toList());
+    }
 
     /**
      * 递归列表

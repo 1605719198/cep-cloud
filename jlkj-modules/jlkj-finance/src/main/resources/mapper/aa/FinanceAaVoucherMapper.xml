@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaVoucherMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaVoucher" id="FinanceAaVoucherResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="voucherDate"    column="voucher_date"    />
+        <result property="voucherNo"    column="voucher_no"    />
+        <result property="tradeNo"    column="trade_no"    />
+        <result property="apid"    column="apId"    />
+        <result property="pgrmid"    column="pgrmId"    />
+        <result property="voucherDesc"    column="voucher_desc"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="billUrl"    column="bill_url"    />
+        <result property="printCount"    column="print_count"    />
+        <result property="srlnoCount"    column="srlNo_count"    />
+        <result property="pastuserId"    column="pastuser_id"    />
+        <result property="pastuserName"    column="pastuser_name"    />
+        <result property="moneyuserId"    column="moneyuser_id"    />
+        <result property="moneyuserName"    column="moneyuser_name"    />
+        <result property="potstuserId"    column="potstuser_id"    />
+        <result property="potstuserName"    column="potstuser_name"    />
+        <result property="postDate"    column="post_date"    />
+        <result property="postTime"    column="post_time"    />
+        <result property="drAmt"    column="dr_amt"    />
+        <result property="crAmt"    column="cr_amt"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createName"    column="create_name"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaVoucherVo">
+        select id, company_id, voucher_date, voucher_no, trade_no, apId, pgrmId, voucher_desc, bill_no, bill_url, print_count, srlNo_count, pastuser_id, pastuser_name, moneyuser_id, moneyuser_name, potstuser_id, potstuser_name, post_date, post_time, dr_amt, cr_amt, status, create_by, create_date, update_by, update_date, create_time, update_time, create_name, update_name from finance_aa_voucher
+    </sql>
+
+    <select id="selectFinanceAaVoucherList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucher" resultMap="FinanceAaVoucherResult">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="printCount != null "> and print_count = #{printCount}</if>
+        </where>
+        order by voucher_no
+    </select>
+    <select id="selectFinanceAaVoucherDetailList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        select
+        DISTINCT
+        a.company_id,
+        a.voucher_no,a.voucher_date,a.apId,a.voucher_desc,a.dr_amt,a.cr_amt,a.pastuser_name,a.status
+        from  finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND  b.company_id = a.company_id
+
+        <where>
+            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''"> and b.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="voucherNoStart != '' and voucherNoEnd != ''"> and b.voucher_no between #{voucherNoStart} and #{voucherNoEnd}</if>
+            <if test="acctNameStart != '' and acctNameEnd != ''"> and b.acct_name between #{acctNameStart} and #{acctNameEnd}</if>
+            <if test="calNameaStart != '' and calNameaEnd != ''"> and b.cal_namea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="calNamebStart != '' and calNamebEnd != ''"> and b.cal_nameb between #{calNamebStart} and #{calNamebEnd}</if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtEnd != ''"> and b.qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}</if>
+        </where>
+        order by b.voucher_no
+    </select>
+    <select id="selectFinanceAaVoucherById" parameterType="String" resultMap="FinanceAaVoucherResult">
+        <include refid="selectFinanceAaVoucherVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectFinanceAaVoucherListHeadVoucher"
+            resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="printCount != null "> and print_count = #{printCount}</if>
+        </where>
+        order by voucher_no
+    </select>
+    <select id="selectFinanceAaVoucher" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="printCount != null "> and print_count = #{printCount}</if>
+        </where>
+        order by voucher_no
+    </select>
+    <select id="selectFinanceAaVoucherFront" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ < ]]> #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
+    <select id="selectFinanceAaVoucherOrder" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ > ]]> #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
+    <select id="selectFinanceAaVoucherLast" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ > ]]> #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
+
+    <insert id="insertFinanceAaVoucher" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        insert into finance_aa_voucher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="voucherDate != null">voucher_date,</if>
+            <if test="voucherNo != null">voucher_no,</if>
+            <if test="tradeNo != null">trade_no,</if>
+            <if test="apid != null">apId,</if>
+            <if test="pgrmid != null">pgrmId,</if>
+            <if test="voucherDesc != null">voucher_desc,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="billUrl != null">bill_url,</if>
+            <if test="printCount != null">print_count,</if>
+            <if test="srlnoCount != null">srlNo_count,</if>
+            <if test="pastuserId != null">pastuser_id,</if>
+            <if test="pastuserName != null">pastuser_name,</if>
+            <if test="moneyuserId != null">moneyuser_id,</if>
+            <if test="moneyuserName != null">moneyuser_name,</if>
+            <if test="potstuserId != null">potstuser_id,</if>
+            <if test="potstuserName != null">potstuser_name,</if>
+            <if test="postDate != null">post_date,</if>
+            <if test="postTime != null">post_time,</if>
+            <if test="drAmt != null">dr_amt,</if>
+            <if test="crAmt != null">cr_amt,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="voucherDate != null">#{voucherDate},</if>
+            <if test="voucherNo != null">#{voucherNo},</if>
+            <if test="tradeNo != null">#{tradeNo},</if>
+            <if test="apid != null">#{apid},</if>
+            <if test="pgrmid != null">#{pgrmid},</if>
+            <if test="voucherDesc != null">#{voucherDesc},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="billUrl != null">#{billUrl},</if>
+            <if test="printCount != null">#{printCount},</if>
+            <if test="srlnoCount != null">#{srlnoCount},</if>
+            <if test="pastuserId != null">#{pastuserId},</if>
+            <if test="pastuserName != null">#{pastuserName},</if>
+            <if test="moneyuserId != null">#{moneyuserId},</if>
+            <if test="moneyuserName != null">#{moneyuserName},</if>
+            <if test="potstuserId != null">#{potstuserId},</if>
+            <if test="potstuserName != null">#{potstuserName},</if>
+            <if test="postDate != null">#{postDate},</if>
+            <if test="postTime != null">#{postTime},</if>
+            <if test="drAmt != null">#{drAmt},</if>
+            <if test="crAmt != null">#{crAmt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+    <insert id="batchFinanceAaVoucherDetail">
+        insert into finance_aa_voucher_detail( id, company_id, voucher_id, voucher_date, voucher_no, srlno, drcr, group_acct_id, acct_id, acct_code, acct_name, cal_ida, cal_codea, cal_namea, cal_idb, cal_codeb, cal_nameb, cal_idc, cal_codec, cal_namec, cal_idd, cal_coded, cal_named, crcy_unit, qty_frnAmt, ntAmt, srl_desc) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.companyId}, #{item.voucherId}, #{item.voucherDate}, #{item.voucherNo}, #{item.srlno}, #{item.drcr}, #{item.groupAcctId}, #{item.acctId}, #{item.acctCode}, #{item.acctName}, #{item.calIda}, #{item.calCodea}, #{item.calNamea}, #{item.calIdb}, #{item.calCodeb}, #{item.calNameb}, #{item.calIdc}, #{item.calCodec}, #{item.calNamec}, #{item.calIdd}, #{item.calCoded}, #{item.calNamed}, #{item.crcyUnit}, #{item.qtyFrnamt}, #{item.ntamt}, #{item.srlDesc})
+        </foreach>
+    </insert>
+
+    <update id="updateFinanceAaVoucher" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        update finance_aa_voucher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="voucherDate != null">voucher_date = #{voucherDate},</if>
+            <if test="voucherNo != null">voucher_no = #{voucherNo},</if>
+            <if test="tradeNo != null">trade_no = #{tradeNo},</if>
+            <if test="apid != null">apId = #{apid},</if>
+            <if test="pgrmid != null">pgrmId = #{pgrmid},</if>
+            <if test="voucherDesc != null">voucher_desc = #{voucherDesc},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="billUrl != null">bill_url = #{billUrl},</if>
+            <if test="printCount != null">print_count = #{printCount},</if>
+            <if test="srlnoCount != null">srlNo_count = #{srlnoCount},</if>
+            <if test="pastuserId != null">pastuser_id = #{pastuserId},</if>
+            <if test="pastuserName != null">pastuser_name = #{pastuserName},</if>
+            <if test="moneyuserId != null">moneyuser_id = #{moneyuserId},</if>
+            <if test="moneyuserName != null">moneyuser_name = #{moneyuserName},</if>
+            <if test="potstuserId != null">potstuser_id = #{potstuserId},</if>
+            <if test="potstuserName != null">potstuser_name = #{potstuserName},</if>
+            <if test="postDate != null">post_date = #{postDate},</if>
+            <if test="postTime != null">post_time = #{postTime},</if>
+            <if test="drAmt != null">dr_amt = #{drAmt},</if>
+            <if test="crAmt != null">cr_amt = #{crAmt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaVoucherById" parameterType="String">
+        delete from finance_aa_voucher where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaVoucherByIds" parameterType="String">
+        delete from finance_aa_voucher where voucher_no in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteFinanceAaVoucherDetailByVoucherNos" parameterType="String">
+        delete from finance_aa_voucher_detail where voucher_no in
+        <foreach item="voucherNo" collection="array" open="(" separator="," close=")">
+            #{voucherNo}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFinanceAaVoucherDetailByVoucherNo" parameterType="String">
+        delete from finance_aa_voucher_detail where voucher_no = #{voucherNo}
+    </delete>
+
+</mapper>

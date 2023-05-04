@@ -19,6 +19,13 @@ public interface FinanceAaAcctcodeCorpMapper
      * @return 会计科目-公司级
      */
     public FinanceAaAcctcodeCorp selectFinanceAaAcctcodeCorpByGroupAcctId(String groupAcctId);
+    /**
+     * 查询会计科目-公司级
+     *
+     * @param acctId 会计科目-公司级主键
+     * @return 会计科目-公司级
+     */
+    public FinanceAaAcctcodeCorp selectAcctId(String acctId);
 
     /**
      * 查询会计科目-公司级列表
