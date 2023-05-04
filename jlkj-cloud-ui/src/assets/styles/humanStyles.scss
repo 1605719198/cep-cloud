@@ -1,0 +1,39 @@
+/**
+ * 焦电二期人事系统通用css样式布局处理
+ * @author HuangBing
+ * @date 2023-05-04
+ */
+
+/* 弹窗圆角 */
+.el-dialog {
+  border-radius: 8px;
+}
+
+/* 标题样式 */
+.el-dialog__header {
+  background-color: rgb(245, 245, 245);
+  border-radius: 8px 8px 0 0;
+  padding: 10px 20px 10px;
+}
+
+/* 标题文字样式 */
+.el-dialog__title {
+  font-family: 微软雅黑 Bold, 微软雅黑 Regular, 微软雅黑;
+  letter-spacing: normal;
+  font-size: 14px;
+  font-weight: 700;
+  font-style: normal;
+  text-align: left;
+  line-height: 20px;
+  border-width: 0;
+  color: rgb(102, 102, 102);
+}
+
+/* 关闭符号位置调整 */
+.el-dialog__headerbtn {
+  top: 12px;
+}
+
+.el-dialog__body {
+  padding: 15px 40px;
+}

@@ -4,7 +4,7 @@
       <el-col :span="24" :xs="24">
           <el-form :model="queryParams" ref="queryForm" label-width="40px" :inline="true" v-show="showSearch">
               <el-form-item label="公司">
-                <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
+                <el-select v-model="queryParams.compId" placeholder="请选择公司">
                   <el-option
                     v-for="dict in companyName"
                     :key="dict.compId"
@@ -71,7 +71,7 @@
         <el-dialog
           :title="title"
           :visible.sync="open"
-          width="1200px"
+          width="1300px"
         >
           <el-form
             :model="addJsonForm"
@@ -224,6 +224,7 @@ import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUu
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
 import {checkRealName} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 export default {
   name: "EmployeeInduction",
   components: {selectUser},
@@ -511,9 +512,6 @@ export default {
 }
 .aa >>> .el-form-item__content {
   margin-left:0px !important;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
 }
 #changeColor:hover{
   background-color: #7f7f7f;

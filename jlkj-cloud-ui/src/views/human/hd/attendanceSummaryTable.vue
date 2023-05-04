@@ -12,7 +12,7 @@
             <el-radio v-model="queryParams.includingSubsidiaries" :label="true" @click.native.prevent="change(queryParams.includingSubsidiaries)">包含子公司</el-radio>
           </el-form-item>
           <el-form-item prop="type">
-            <el-select v-model="queryParams.type" :popper-append-to-body="false">
+            <el-select v-model="queryParams.type">
               <el-option
                 v-for="dict in baseInfoData.MonthQuarter"
                 :key="dict.dicNo"
@@ -94,10 +94,10 @@
               type="primary"
               plain
               size="mini"
-              :disabled="isDisabledImport"
               @click="handleImport"
               v-hasPermi="['human:attendanceGather:import']"
             >导入
+<!--              :disabled="isDisabledImport"-->
             </el-button>
           </el-col>
           <el-col :span="1.5">
@@ -433,7 +433,4 @@ export default {
 };
 </script>
 <style scoped>
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
 </style>

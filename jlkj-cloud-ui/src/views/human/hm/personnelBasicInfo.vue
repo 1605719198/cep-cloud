@@ -8,7 +8,7 @@
             <el-row :gutter="20">
               <el-col :span="6">
                 <el-form-item label="公司">
-                  <el-select v-model="query.compId" placeholder="请选择公司" :popper-append-to-body="false">
+                  <el-select v-model="query.compId" placeholder="请选择公司">
                     <el-option
                       v-for="dict in companyName"
                       :key="dict.compId"
@@ -229,8 +229,5 @@ export default {
 <style scoped>
 .el-select {
   width: 100%;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
 }
 </style>

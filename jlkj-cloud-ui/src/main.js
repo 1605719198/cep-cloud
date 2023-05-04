@@ -3,6 +3,8 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 
 import Element from 'element-ui'
+//全局修改默认配置，点击空白处不能关闭弹窗
+Element.Dialog.props.closeOnClickModal.default = false
 import './assets/styles/element-variables.scss'
 import VueClipboard from 'vue-clipboard2'
 import '@/assets/styles/index.scss' // global css

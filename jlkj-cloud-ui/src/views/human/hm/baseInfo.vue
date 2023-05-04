@@ -103,6 +103,7 @@
 <script>
 import {baseInfoTree, getChildrenList, deleteBaseInfo} from "@/api/human/hm/baseInfo"
 import Update from "./update.vue"
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "BaseInfo",

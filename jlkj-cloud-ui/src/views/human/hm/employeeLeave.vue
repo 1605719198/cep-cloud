@@ -4,7 +4,7 @@
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="公司">
-            <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
+            <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
                 v-for="dict in companyName"
                 :key="dict.compId"
@@ -97,7 +97,7 @@
         />
 
         <!-- 添加或修改人员离职信息对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="850px" append-to-body>
+        <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
           <el-form ref="form" :model="form" :rules="rules" label-width="110px">
             <el-row>
               <el-col :span="12">
@@ -223,6 +223,7 @@ import {listEmployeeLeave, getEmployeeLeave, addEmployeeLeave, updateEmployeeLea
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "employeeLeave",
@@ -404,9 +405,6 @@ export default {
 </script>
 <style scoped>
 .aa {
-  width: 295px;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
+  width: 300px;
 }
 </style>
