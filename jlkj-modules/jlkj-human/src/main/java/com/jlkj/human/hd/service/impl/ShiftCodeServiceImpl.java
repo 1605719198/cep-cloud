@@ -23,15 +23,20 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
     private ShiftCodeMapper shiftCodeMapper;
 
     /**
-     * 查询班次数据
+     * 查询某日班次数据
      *
      * @param personShiftCodedto 排班人员工号时间
      * @return 班次数据
      */
     @Override
-    public ShiftCode selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto){
-        return shiftCodeMapper.selectShiftCodeByPerson(personShiftCodedto);
+    public List<ShiftCode> selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto){
+        if(personShiftCodedto.getDate()!=null){
+            return shiftCodeMapper.selectShiftCodeByPerson(personShiftCodedto);
+        }else{
+            return shiftCodeMapper.selectShiftCodeByDates(personShiftCodedto);
+        }
     }
+
 
     /**
      * 查询班次数据

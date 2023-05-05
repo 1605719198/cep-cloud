@@ -12,13 +12,29 @@ import java.util.Date;
 
 @Data
 public class PersonShiftCodeDTO {
+
     /**
      * 工号
      */
     private String empId;
 
     /**
+     * 公司别
+     */
+    private String compId;
+
+    /**
      * 时间
      */
     private Date date;
+
+    /**
+     * 起始时间
+     */
+    private Date startDate;
+
+    /**
+     * 结束时间
+     */
+    private Date endDate;
 }

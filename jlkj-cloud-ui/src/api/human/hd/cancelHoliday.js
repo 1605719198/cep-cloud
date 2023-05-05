@@ -42,3 +42,13 @@ export function delCancelHoliday(id) {
     method: 'delete'
   })
 }
+
+
+// 撤回
+export function withdrawCancelHoliday(id) {
+  return request({
+    url: '/human/cancelHoliday/withdraw',
+    method: 'post',
+    data: id
+  })
+}
