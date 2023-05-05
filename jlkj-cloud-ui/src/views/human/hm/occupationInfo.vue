@@ -95,6 +95,7 @@ export default {
       index: 0,
       //人员基本信息表id
       empId: undefined,
+      compId: undefined,
       baseInfo: {
         uuid: '',
         baseInfoList: [
@@ -118,6 +119,7 @@ export default {
   methods: {
     queryOccupationInfo(query) {
       this.empId = query.empId
+      this.compId = query.compId
       queryOccupationInfo(query).then(res => {
         this.baseForm.occupationList = res.data
       })
@@ -143,6 +145,7 @@ export default {
     handleSave() {
       for (const item of this.baseForm.occupationList) {
         item.empId = this.empId
+        item.compId = this.compId
       }
       addOccupationData(this.baseForm).then(res => {
         if (res.code == 200) {

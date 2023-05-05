@@ -115,6 +115,7 @@ export default {
       index: 0,
       //人员基本信息表id
       empId: undefined,
+      compId: undefined,
       degreeMajorSpecialization: [],
       baseInfo: {
         uuid: '',
@@ -140,6 +141,7 @@ export default {
   methods: {
     queryEducationalExperienceInfo(query) {
       this.empId = query.empId
+      this.compId = query.compId
       queryEducationalExperienceInfo(query).then(res => {
         this.baseForm.educationalExperienceList = res.data
       })
@@ -172,6 +174,7 @@ export default {
     handleSave() {
       for (const item of this.baseForm.educationalExperienceList) {
         item.empId = this.empId
+        item.compId = this.compId
       }
       addEducationExperienceData(this.baseForm).then(res => {
         this.$modal.msgSuccess("保存成功");

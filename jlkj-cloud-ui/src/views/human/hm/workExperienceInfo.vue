@@ -112,6 +112,7 @@ export default {
       ids: [],
       //人员基本信息表id
       empId: '',
+      compId: '',
       rules: {
         startDate: [
           { required: true, message: "请选择", trigger: "blur" }
@@ -122,6 +123,7 @@ export default {
   methods: {
     queryWorkExperienceInfo(query) {
       this.empId = query.empId
+      this.compId = query.compId
       queryWorkExperienceInfo(query).then(res => {
         this.baseForm.workExperienceList = res.data
       })
@@ -153,6 +155,7 @@ export default {
     handleSave() {
       for (const item of this.baseForm.workExperienceList) {
         item.empId = this.empId
+        item.compId = this.compId
       }
       addWorkExperienceData(this.baseForm).then(res => {
         this.$modal.msgSuccess("保存成功");

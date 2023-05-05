@@ -12,6 +12,7 @@ import com.jlkj.human.config.PinYinApi;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
+import com.jlkj.human.hm.service.ISysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequestMapping("/personnel/base")
 public class PersonnelController extends BaseController {
     private final IPersonnelService personnelService;
+    private final ISysUserService userService;;
 
     /**
      * Mq新增人员资料
@@ -69,25 +71,36 @@ public class PersonnelController extends BaseController {
     /**
      * 新增人员基本信息
      */
-    @RequiresPermissions("human:affairsBaseInfo:save")
+    @RequiresPermissions("human:affairsBaseInfo:add")
     @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
     @Operation(summary = "新增人员基本信息")
     @PostMapping("/addPersonnelBasicInfo")
     public Object addPersonnelBasicInfo(@RequestBody Personnel personnel) {
-        // 根据姓名 取得大写首字母
-        personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
-        boolean result = personnelService.saveOrUpdate(personnel);
-        if (result) {
-            return AjaxResult.success("保存成功");
+        List<Personnel> list = personnelService.lambdaQuery().eq(Personnel::getCertificateNumber, personnel.getCertificateNumber()).list();
+        if (list.isEmpty()) {
+            List<Personnel> list1 = personnelService.lambdaQuery().eq(Personnel::getEmpNo, personnel.getEmpNo()).list();
+            if (list1.isEmpty()) {
+                // 根据姓名 取得大写首字母
+                personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
+                personnel.setStatus("1");
+                boolean result = personnelService.saveOrUpdate(personnel);
+                if (result) {
+                    return AjaxResult.success("保存成功");
+                } else {
+                    return AjaxResult.error();
+                }
+            } else {
+                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已被使用");
+            }
         } else {
-            return AjaxResult.error();
+            return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + list.get(0).getCompId() + "公司工号" + list.get(0).getEmpNo() + "使用");
         }
     }
 
     /**
      * 获取人员基本信息查询列表
      */
-    @RequiresPermissions("human:personnelBasicInfo:query")
+//    @RequiresPermissions("human:personnelBasicInfo:query")
     @Log(title = "获取人员基本信息查询列表", businessType = BusinessType.OTHER)
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")

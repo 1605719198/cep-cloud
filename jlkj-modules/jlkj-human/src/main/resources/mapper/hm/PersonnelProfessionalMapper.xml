@@ -13,6 +13,7 @@
             <result property="proTierId" column="pro_tier_id" jdbcType="VARCHAR"/>
             <result property="cerNo" column="cer_no" jdbcType="VARCHAR"/>
             <result property="cerDate" column="cer_date" jdbcType="VARCHAR"/>
+            <result property="ifInComp" column="if_in_comp" jdbcType="VARCHAR"/>
             <result property="cerComp" column="cer_comp" jdbcType="VARCHAR"/>
             <result property="creator" column="creator" jdbcType="VARCHAR"/>
             <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
@@ -27,7 +28,7 @@
         uuid,comp_id,emp_id,
         pro_type_id,pro_spec_id,pro_tier_id,
         cer_no,cer_date,cer_comp,
-        creator,creator_id,create_date,
+        if_in_comp,creator,creator_id,create_date,
         alternate_field1,alternate_field2,alternate_field3,
         alternate_field4
     </sql>
