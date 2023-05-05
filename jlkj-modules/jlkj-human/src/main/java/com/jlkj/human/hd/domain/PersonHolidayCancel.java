@@ -51,12 +51,12 @@ public class PersonHolidayCancel extends BaseEntity
     private String orgId;
 
     /** 实际请假开始日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "实际请假开始日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date startDate;
 
     /** 实际请假结束日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "实际请假结束日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date endDate;
 
@@ -65,9 +65,11 @@ public class PersonHolidayCancel extends BaseEntity
     private BigDecimal leaveDays;
 
     /** 原始请假开始时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date oriStartDate;
 
     /** 原始请假结束时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date oriEndDate;
 
     /** 原始请假天数 */
@@ -91,6 +93,9 @@ public class PersonHolidayCancel extends BaseEntity
 
     /** 批示状态 */
     private String status;
+
+    /** 请假状态 */
+    private String status1;
 
     /** 是否全销 */
     private String isAll;
@@ -123,6 +128,9 @@ public class PersonHolidayCancel extends BaseEntity
     private String creatorId;
 
     /** 输入人日期 */
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
     public void setId(String id)
@@ -323,6 +331,15 @@ public class PersonHolidayCancel extends BaseEntity
     {
         return status;
     }
+    public void setStatus1(String status1)
+    {
+        this.status1 = status1;
+    }
+
+    public String getStatus1()
+    {
+        return status1;
+    }
     public void setIsAll(String isAll)
     {
         this.isAll = isAll;
@@ -448,6 +465,7 @@ public class PersonHolidayCancel extends BaseEntity
             .append("morLeaveHours", getMorLeaveHours())
             .append("morLeaveShifts", getMorLeaveShifts())
             .append("status", getStatus())
+                .append("status", getStatus1())
             .append("isAll", getIsAll())
             .append("description", getDescription())
             .append("isContainHoliday", getIsContainHoliday())
