@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaUnitgroupMapper">
+    
+    <resultMap type="FinanceAaUnitgroup" id="FinanceAaUnitgroupResult">
+        <result property="id"    column="id"    />
+        <result property="groupNo"    column="group_no"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="srlno"    column="srlno"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaUnitgroupVo">
+        select id, group_no, group_name, srlno, remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_unitGroup
+    </sql>
+
+    <select id="selectFinanceAaUnitgroupList" parameterType="FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
+        <include refid="selectFinanceAaUnitgroupVo"/>
+        <where>  
+            <if test="groupNo != null  and groupNo != ''"> and group_no = #{groupNo}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaUnitgroupById" parameterType="String" resultMap="FinanceAaUnitgroupResult">
+        <include refid="selectFinanceAaUnitgroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaUnitgroup" parameterType="FinanceAaUnitgroup">
+        insert into finance_aa_unitGroup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="groupNo != null and groupNo != ''">group_no,</if>
+            <if test="groupName != null and groupName != ''">group_name,</if>
+            <if test="srlno != null">srlno,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="groupNo != null and groupNo != ''">#{groupNo},</if>
+            <if test="groupName != null and groupName != ''">#{groupName},</if>
+            <if test="srlno != null">#{srlno},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaUnitgroup" parameterType="FinanceAaUnitgroup">
+        update finance_aa_unitGroup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupNo != null and groupNo != ''">group_no = #{groupNo},</if>
+            <if test="groupName != null and groupName != ''">group_name = #{groupName},</if>
+            <if test="srlno != null">srlno = #{srlno},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaUnitgroupById" parameterType="String">
+        delete from finance_aa_unitGroup where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaUnitgroupByIds" parameterType="String">
+        delete from finance_aa_unitGroup where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
