@@ -476,7 +476,7 @@ export default {
         this.codeList[i].parentName = this.form.parentName
         this.form.codeList = this.codeList
       }
-      console.log(this.form.companyId, this.form.parentId);
+
       this.$refs["form"].validate(valid => {
         if (valid) {
           addCodecompid(this.form).then(response => {

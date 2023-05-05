@@ -348,7 +348,6 @@ export default {
       this.parentId = data.id
       this.nodeNo= data.nodeNo
       this.companyId = data.companyId
-      console.log(this.parentNo);
       this.getList()
     },
     /** 查询系统选单-索引设定列表 */
@@ -456,7 +455,6 @@ export default {
                } else {
                  this.form.nodeNo = this.nodeNo+ this.form.nodeNo
                  this.form.parentNo =  this.nodeNo
-                 console.log(this.form.parentNo);
                  addIndex(this.form).then(response => {
                    this.$modal.msgSuccess("新增成功");
                    this.open = false;
@@ -473,6 +471,7 @@ export default {
     handleDetail(row) {
       this.$emit('change', 'third', row.nodeNo, row.nodeName,row.companyId);
     },
+
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
