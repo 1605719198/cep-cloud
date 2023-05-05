@@ -77,9 +77,9 @@ public class ShiftCodeController extends BaseController
      * 通过人员日期及工号获取班次详细信息
      */
     @PostMapping("/getShiftData")
-    public AjaxResult getShiftData(PersonShiftCodeDTO personShiftCodeDTO){
-        System.out.println(personShiftCodeDTO.toString());
-        return success(shiftCodeService.selectShiftCodeByPerson(personShiftCodeDTO));
+    public TableDataInfo getShiftData(PersonShiftCodeDTO personShiftCodeDTO){
+        List<ShiftCode> list = shiftCodeService.selectShiftCodeByPerson(personShiftCodeDTO);
+        return getDataTable(list);
     }
 
 

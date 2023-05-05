@@ -43,7 +43,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="PersonShiftCodeDTO" id="PersonShiftCodeResult">
         <result property="empId"    column="emp_id"    />
+        <result property="compId"    column="comp_id"    />
         <result property="date"    column="date"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
     </resultMap>
 
     <sql id="selectShiftCodeVo">
@@ -74,10 +77,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectShiftCodeByPerson" parameterType="PersonShiftCodeDTO" resultMap="ShiftCodeResult">
         select id, comp_id, shiftmode_id, shift_code, start_hour, start_min, con_hour, con_min, end_hour, end_min, is_noon, rest_count, big_sma_night, status, description, is_used, rest_start_hour, rest_start_min, rest_con_min, rest_end_hour, rest_end_min, rest_start_hour2, rest_start_min2, rest_con_min2, rest_end_hour2, rest_end_min2, rest_start_hour3, rest_start_min3, rest_con_min3, rest_end_hour3, rest_end_min3, creator, creator_id, create_date from human_hd_shift_code
-        where shift_code = (select fir_shift_code
+        where id = (select fir_shift_id
                             from human_hd_person_class_detail
-                            where emp_id = #{empId} and arr_shi_date = #{date})
+                            where emp_id = #{empId} and arr_shi_date = #{date}  ) and comp_id= #{compId}
+    </select>
 
+    <select id="selectShiftCodeByDates" parameterType="PersonShiftCodeDTO" resultMap="ShiftCodeResult">
+        select d.arr_shi_date as create_date , c.id , c.comp_id, c.shiftmode_id, c.shift_code, c.start_hour, c.start_min, c.con_hour, c.con_min, c.end_hour, c.end_min, c.is_noon, c.rest_count, c.big_sma_night, c.status, c.description, c.is_used, c.rest_start_hour, c.rest_start_min, c.rest_con_min, c.rest_end_hour, c.rest_end_min, c.rest_start_hour2, c.rest_start_min2, c.rest_con_min2, c.rest_end_hour2, c.rest_end_min2, c.rest_start_hour3, c.rest_start_min3, c.rest_con_min3, c.rest_end_hour3, c.rest_end_min3 from human_hd_person_class_detail d
+        left join human_hd_shift_code c on d.fir_shift_id = c.id
+        where d.emp_id = #{empId} and d.comp_id = #{compId} and d.arr_shi_date &gt;= #{startDate} and d.arr_shi_date &lt;= #{endDate}
     </select>
 
     <insert id="insertShiftCode" parameterType="ShiftCode">

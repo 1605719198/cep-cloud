@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compId != null  and compId != ''"> and p.comp_id = #{compId}</if>
             <if test="empId != null  and empId != ''"> and p.emp_id = #{empId}</if>
         </where>
-        group by p.emp_id
+        group by p.id
     </select>
 
     <select id="selectClassMasterByPerson" parameterType="PersonClassMaster" resultMap="PersonClassMasterResult">
