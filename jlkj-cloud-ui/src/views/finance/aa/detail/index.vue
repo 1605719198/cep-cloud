@@ -113,7 +113,8 @@
 
 <script>
 
-import { listDetail,  delDetail, addDetail, updateDetail } from "@/api/finance/aa/detail";
+import { listDetail,  delDetail, addDetail, updateDetail }
+  from "@/api/finance/aa/detail";
 import { listBaseTab } from "@/api/finance/aa/base";
 export default {
   name: "Detail",
@@ -177,7 +178,7 @@ export default {
   },
   created() {
     this.getList()
-    this.getListBase();
+
   },
   methods: {
 

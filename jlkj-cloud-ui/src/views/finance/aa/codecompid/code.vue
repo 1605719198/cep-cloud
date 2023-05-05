@@ -12,6 +12,16 @@
               <el-col :span="4"
                       :xs="24">
                 <div class="head-container">
+                  <el-select v-model="queryParams.companyId" style="margin-bottom: 20px;    width: 228px;" filterable placeholder="请输入会计公司">
+                    <el-option
+                      v-for="item in companyList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                      @click.native="changCompanyId(item)"
+                      @keyup.enter.native="handleQuery">
+                    </el-option>
+                  </el-select>
                   <el-input placeholder="搜索科目索引"
                             v-model="filterText"
                             style="margin-bottom: 20px">
@@ -57,7 +67,7 @@
                       icon="el-icon-plus"
                       size="mini"
                       @click="handleAdd"
-                      v-hasPermi="['aa:code:add']"
+                      v-hasPermi="['aa:codeCompId:add']"
                     >保存
                     </el-button>
                   </el-col>
@@ -67,9 +77,9 @@
                       plain
                       icon="el-icon-edit"
                       size="mini"
-                      :disabled="single"
+
                       @click="handleExport"
-                      v-hasPermi="['aa:code:export']"
+                      v-hasPermi="['aa:codeCompId:export']"
                     >导出
                     </el-button>
                   </el-col>
@@ -78,7 +88,7 @@
                       type="primary"
                       icon="el-icon-plus"
                       size="mini"
-                      v-hasPermi="['aa:code:Add']"
+                      v-hasPermi="['aa:codeCompId:Add']"
                       @click="handleAddTCapitalDetail">添加
                     </el-button>
                   </el-col>
@@ -161,7 +171,7 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleUpdate(scope.row)"
-                            v-hasPermi="['aa:code:edit']"
+                            v-hasPermi="['aa:codeCompId:edit']"
                           >修改
                           </el-button>
                           <el-button
@@ -169,7 +179,7 @@
                             type="text"
                             icon="el-icon-delete"
                             @click="handleDeleteTCapitalDetail(scope.row)"
-                            v-hasPermi="['aa:code:remove']"
+                            v-hasPermi="['aa:codeCompId:remove']"
                           >删除
                           </el-button>
                           <el-button
@@ -177,7 +187,7 @@
                             type="text"
                             icon="el-icon-s-promotion"
                             @click="handleSkipAddFile(scope.row)"
-                            v-hasPermi="['aa:code:remove']"
+                            v-hasPermi="['aa:codeCompId:remove']"
                           >设置
                           </el-button>
                           </el-form-item>
@@ -205,9 +215,9 @@
 </template>
 
 <script>
-import {listCode, getCode, delCode, addCode, updateCode, getTreeNode} from "@/api/finance/aa/code";
+import {listCodecompid, getCode, delCodecompid, addCodecompid, updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
 import {isPassword, validateContacts} from "../../../../utils/jlkj";
-
+import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 export default {
   name: "Code",
   dicts: ['aa_quedataway', 'aa_in0r0ut', 'sys_yes_no'],
@@ -217,7 +227,8 @@ export default {
         children: 'children',
         label: 'cashFlowName'
       },
-
+      // 会计公司下拉选单
+      companyList: [],
       // 树节点过滤
       filterText: '',
       // 树节点数据
@@ -248,6 +259,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         cashFlowName: null,
+        companyId: null,
       },
       // 表单参数
       form: {tCodeList: []},
@@ -259,9 +271,8 @@ export default {
           {max: 32, message: '最大长度32个字符', trigger: 'blur'}
         ],
         cashFlowName: [
-
           {required: true, message: '请输入现金流量表代码名称', trigger: 'blur'},
-          {max: 150, message: '最大长度150个字符', trigger: 'blur'}
+          {max: 100, message: '最大长度100个字符', trigger: 'blur'}
         ],
         isunabl: [
           {required: true, message: '请输入是否显示', trigger: 'blur'},
@@ -275,7 +286,8 @@ export default {
   created() {
     this.queryParams.parentId = "1"
     this.getList()
-    this.initTree()
+    this.getCompanyList();
+
   },
   watch: {
     filterText(val) {
@@ -283,6 +295,13 @@ export default {
     }
   },
   methods: {
+    getCompanyList() {
+      selectCompanyList().then(response => {
+        this.companyList = response;
+        this.queryParams.companyId = this.companyList[0].value
+        this.initTree()
+      });
+    },
     renderHeaderStar(h, {column}) {
       return h(
         'div',
@@ -294,7 +313,7 @@ export default {
     },
 
     initTree() {
-      getTreeNode().then(response => {
+      getTreeNodeCompId(this.queryParams.companyId).then(response => {
         this.treeData = response.data
       })
     },
@@ -304,19 +323,25 @@ export default {
       if (!value) return true;
       return data.levelName.indexOf(value) !== -1;
     },
+    //公司下拉选单掉用方法
+    changCompanyId(val) {
+      this.queryParams.companyId = val.value
+      this.initTree()
+    },
     // 节点单击事件
     handleNodeClick(data) {
       this.queryParams.parentId = data.id
       this.form.parentId = data.id
       this.form.parentCode = data.cashFlowCode
       this.form.parentName = data.cashFlowName
-
+      this.form.companyId = data.companyId
       this.getList()
     },
     /** 查询现金流量代码列表 */
     getList() {
       this.loading = true;
-      listCode(this.queryParams).then(response => {
+      listCodecompid(this.queryParams).then(response => {
+        console.log(response);
         this.form.tCodeList = response.rows;
         this.total = response.total;
         if (response.rows.length > 0) {
@@ -367,18 +392,18 @@ export default {
       this.handleQuery();
     },
     rowClick(row, column, e) {
-      if (row.quedataway == '01') {
-        this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName,row.id);
+      if (row.quedataway == '02') {
+        this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName, row.id, row.companyId);
       } else {
-        this.$modal.msgError("请将取值方式不是取值，不能进入科目设置");
+        this.$modal.msgError("请将取值方式不是公式，不能进入科目设置");
       }
 
     },
     handleSkipAddFile(row) {
-      if (row.quedataway == '01') {
-        this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName,row.id);
+      if (row.quedataway == '02') {
+        this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName, row.id,row.companyId);
       } else {
-        this.$modal.msgError("请将取值方式不是取值，不能进入科目设置");
+        this.$modal.msgError("请将取值方式不是公式，不能进入科目设置");
       }
 
     },
@@ -400,7 +425,7 @@ export default {
     },
     /** 现金流量代码删除 */
     handleDeleteTCapitalDetail(row) {
-      if (row.id == null||row.id==''||row.id==undefined){
+      if (row.id == null || row.id == '' || row.id == undefined) {
         if (this.checkedTCapitalDetail.length == 0) {
           this.$modal.msgError("请先选择要删除的现金流量代码数据");
         } else {
@@ -411,10 +436,10 @@ export default {
             return checkedTCapitalDetail.indexOf(item.index) == -1
           });
         }
-      }else {
+      } else {
         const ids = row.id;
         this.$modal.confirm('是否确认删除现金流量代码编号为"' + row.cashFlowName + '"的数据项？').then(function () {
-          return delCode(ids);
+          return delCodecompid(ids);
         }).then(() => {
           this.getList();
           this.initTree()
@@ -437,21 +462,24 @@ export default {
 
       if (this.codeList.length == 0) {
         this.$modal.msgError("请至少勾选一笔数据");
+        return
       }
       if (this.form.parentId == null) {
         this.$modal.msgError("请点击树节点进行保存");
         return
       }
-      for (let i = 0; i < this.codeList.length; i++) {
-          this.codeList[i].parentId = this.form.parentId
-          this.codeList[i].parentCode = this.form.parentCode
-          this.codeList[i].parentName = this.form.parentName
-          this.form.codeList = this.codeList
 
+      for (let i = 0; i < this.codeList.length; i++) {
+        this.codeList[i].companyId = this.form.companyId
+        this.codeList[i].parentId = this.form.parentId
+        this.codeList[i].parentCode = this.form.parentCode
+        this.codeList[i].parentName = this.form.parentName
+        this.form.codeList = this.codeList
       }
+      console.log(this.form.companyId, this.form.parentId);
       this.$refs["form"].validate(valid => {
         if (valid) {
-          addCode(this.form).then(response => {
+          addCodecompid(this.form).then(response => {
             this.$modal.msgSuccess("保存成功");
             this.open = false;
             this.getList();
@@ -465,7 +493,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
 
-      updateCode(row).then(response => {
+      updateCodecompid(row).then(response => {
         this.$modal.msgSuccess("修改成功");
         this.open = false;
         this.getList();
@@ -476,13 +504,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateCode(this.form).then(response => {
+            updateCodecompid(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addCode(this.form).then(response => {
+            addCodecompid(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -495,7 +523,7 @@ export default {
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm('是否确认删除现金流量代码编号为"' + ids + '"的数据项？').then(function () {
-        return delCode(ids);
+        return delCodecompid(ids);
       }).then(() => {
         this.getList();
         this.initTree()
@@ -505,9 +533,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      /* this.download('aa/code/export', {
-         ...this.queryParams
-       }, `code_${new Date().getTime()}.xlsx`)*/
+      this.download('finance/codecompid/export', {
+        ...this.queryParams
+      }, `codecompid_${new Date().getTime()}.xlsx`)
     }
   }
 };

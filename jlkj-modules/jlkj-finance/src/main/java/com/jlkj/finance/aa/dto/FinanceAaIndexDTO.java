@@ -72,8 +72,9 @@ public class FinanceAaIndexDTO {
     public FinanceAaIndexDTO() {
     }
 
-    public FinanceAaIndexDTO(String id, String parentId, String nodeNo, String nodeName, List<FinanceAaIndexDTO> children) {
+    public FinanceAaIndexDTO(String id,String companyId, String parentId, String nodeNo, String nodeName, List<FinanceAaIndexDTO> children) {
         this.id = id;
+        this.companyId = companyId;
         this.parentId = parentId;
         this.nodeNo = nodeNo;
         this.nodeName = nodeName;
@@ -82,6 +83,7 @@ public class FinanceAaIndexDTO {
 
     public FinanceAaIndexDTO(FinanceAaIndexDTO financeAaIndexDTO) {
         this.id = financeAaIndexDTO.getId();
+        this.companyId=financeAaIndexDTO.getCompanyId();
         this.parentId = financeAaIndexDTO.getParentId();
         this.nodeName = financeAaIndexDTO.getNodeName();
         this.nodeNo = financeAaIndexDTO.getNodeNo();
