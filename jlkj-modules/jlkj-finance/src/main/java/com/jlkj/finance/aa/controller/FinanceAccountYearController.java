@@ -52,7 +52,8 @@ public class FinanceAccountYearController {
             Long pageSize = financeAccountYearDTO.getPageSize();
             LambdaQueryWrapper<FinanceAccountYear> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.like(StringUtils.isNotBlank(compId), FinanceAccountYear::getCompId, compId)
-                    .likeRight(StringUtils.isNotBlank(accountPeriod), FinanceAccountYear::getAccountPeriod, accountPeriod);
+                    .likeRight(StringUtils.isNotBlank(accountPeriod), FinanceAccountYear::getAccountPeriod, accountPeriod)
+            .orderByAsc(FinanceAccountYear::getAccountPeriod);
             Page<FinanceAccountYear> page = financeAccountYearService.page(new Page<>(pageNum, pageSize), queryWrapper);
 
             long total = page.getTotal();
@@ -81,7 +82,7 @@ public class FinanceAccountYearController {
         try {
             QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
             String accountYear = financeAccountYearDTO.getAccountYear();
-            String stMonth = financeAccountYearDTO.getStMonth();
+            String stMonth ="01";
             String compId = financeAccountYearDTO.getCompId();
             FinanceAccountYear financeAccountYear = new FinanceAccountYear();
             FinanceAccountYearPost financeAccountYearPost = new FinanceAccountYearPost();

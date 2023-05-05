@@ -45,6 +45,7 @@ public class FinanceAaIndexTreeServiceImpl extends ServiceImpl<FinanceAaIndexTre
                 FinanceAaIndexDTO financeAaIndexDTO = new FinanceAaIndexDTO();
                 financeAaIndexDTO.setId(financeAaIndex.getId());
                 financeAaIndexDTO.setNodeNo(financeAaIndex.getNodeNo());
+                financeAaIndexDTO.setCompanyId(financeAaIndex.getCompanyId());
                 financeAaIndexDTO.setParentNo(financeAaIndex.getParentNo());
                 financeAaIndexDTO.setNodeName(financeAaIndex.getNodeName());
                 financeAaIndexDTO.setParentId(financeAaIndex.getParentId());

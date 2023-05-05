@@ -91,8 +91,9 @@ public class FinanceAaCashflowCodeDTO {
     public FinanceAaCashflowCodeDTO() {
     }
 
-    public FinanceAaCashflowCodeDTO(String id, String parentId, String cashFlowCode, String cashFlowName, List<FinanceAaCashflowCodeDTO> children) {
+    public FinanceAaCashflowCodeDTO(String id, String companyId, String parentId, String cashFlowCode, String cashFlowName, List<FinanceAaCashflowCodeDTO> children) {
         this.id = id;
+        this.companyId = companyId;
         this.parentId = parentId;
         this.cashFlowCode = cashFlowCode;
         this.cashFlowName = cashFlowName;
@@ -101,6 +102,7 @@ public class FinanceAaCashflowCodeDTO {
 
     public FinanceAaCashflowCodeDTO(FinanceAaCashflowCodeDTO financeAaCashflowCode) {
         this.id = financeAaCashflowCode.getId();
+        this.companyId= financeAaCashflowCode.getCompanyId();
         this.parentId = financeAaCashflowCode.getParentId();
         this.cashFlowCode = financeAaCashflowCode.getCashFlowCode();
         this.cashFlowName = financeAaCashflowCode.getCashFlowName();
