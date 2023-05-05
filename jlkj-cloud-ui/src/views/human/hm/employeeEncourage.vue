@@ -4,7 +4,7 @@
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="公司">
-            <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
+            <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
                 v-for="dict in companyName"
                 :key="dict.compId"
@@ -189,6 +189,7 @@ import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "employeeEncourage",
@@ -363,10 +364,7 @@ export default {
 </script>
 <style scoped>
 .aa {
-  width: 206px;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
+  width: 193px;
 }
 </style>
 

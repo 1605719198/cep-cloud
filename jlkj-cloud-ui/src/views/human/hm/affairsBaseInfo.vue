@@ -1,6 +1,6 @@
 <template>
   <div>
-  <el-button v-hasPermi="['human:affairsBaseInfo:save']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
+  <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="medium" plain @click="handleSave">保存</el-button>
   <el-button type="primary" size="medium" plain @click="handleEmpty">新增</el-button>
   <el-form ref="form" :model="form" :rules="rules" label-width="195px">
     <el-row>
@@ -272,7 +272,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="户口所在地(省)" prop="registeredPermanentResidenceProvinceId">
-          <el-select v-model="form.registeredPermanentResidenceProvinceId" placeholder="请选择户口所在地（省）" @change="handleChange">
+          <el-select v-model="form.registeredPermanentResidenceProvinceId" placeholder="请选择户口所在地（省）" @change="handleChange1">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -483,7 +483,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="专业">
-          <el-select v-model="form.lastDegreeMajorId" placeholder="请选择专业" @change="handleChangeA">
+          <el-select v-model="form.lastDegreeMajorId" placeholder="请选择专业" @change="handleChangeB">
             <el-option
               v-for="dict in baseInfoData.profession"
               :key="dict.uuid"
@@ -1031,6 +1031,18 @@ export default {
       });
     },
     handleChange(value) {
+      this.form.cityOfBirthId = undefined
+      for (const item of this.options) {
+        if (item.value == value){
+          this.city = []
+          for (const itemA of item.children) {
+            this.city.push(itemA)
+          }
+        }
+      }
+    },
+    handleChange1(value) {
+      this.form.registeredPermanentResidenceCityId = undefined
       for (const item of this.options) {
         if (item.value == value){
           this.city = []
@@ -1041,6 +1053,18 @@ export default {
       }
     },
     handleChangeA(value) {
+      this.form.firstDegreeMajorSpecializationId = undefined
+      const selectedItem = this.baseInfoData.profession.find((item) => {
+        return item.dicNo === value
+      })
+      this.baseInfo.uuid = selectedItem.uuid
+      this.degreeMajorSpecialization = []
+      getDegreeMajorSpecialization(this.baseInfo).then(response => {
+        this.degreeMajorSpecialization = response.data
+      });
+    },
+    handleChangeB(value) {
+      this.form.lastDegreeMajorSpecializationId = undefined
       const selectedItem = this.baseInfoData.profession.find((item) => {
         return item.dicNo === value
       })

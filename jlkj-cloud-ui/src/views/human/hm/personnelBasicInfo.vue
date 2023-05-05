@@ -8,7 +8,7 @@
             <el-row :gutter="20">
               <el-col :span="6">
                 <el-form-item label="公司">
-                  <el-select v-model="query.compId" placeholder="请选择公司" :popper-append-to-body="false">
+                  <el-select v-model="query.compId" placeholder="请选择公司">
                     <el-option
                       v-for="dict in companyName"
                       :key="dict.compId"
@@ -77,7 +77,6 @@ import CultivateExperienceInfo from "@/views/human/hm/cultivateExperienceInfo";
 import FamilyInfo from "@/views/human/hm/familyInfo";
 import OccupationInfo from "@/views/human/hm/occupationInfo";
 import ProfessionalInfo from "@/views/human/hm/professionalInfo";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 export default {
   name: "PersonnelBasicInfo",
@@ -96,7 +95,7 @@ export default {
       showSearch: true,
       //查询参数
       query: {
-        compId: 'J00',
+        compId: undefined,
         empNo: undefined,
         empId: undefined
       },
@@ -115,6 +114,9 @@ export default {
     selectCompany().then(res => {
       this.companyName = res.data
     })
+    this.handleQuery();
+    this.query.empNo = this.$store.state.user.name
+    this.query.compId = this.$store.state.user.userInfo.compId
   },
   methods: {
     /** 查询人员基本信息 */
@@ -229,8 +231,5 @@ export default {
 <style scoped>
 .el-select {
   width: 100%;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
 }
 </style>

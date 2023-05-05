@@ -398,6 +398,7 @@ import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "laborContract",

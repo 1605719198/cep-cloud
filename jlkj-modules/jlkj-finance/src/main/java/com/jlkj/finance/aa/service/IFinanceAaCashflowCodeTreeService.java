@@ -20,4 +20,11 @@ public interface IFinanceAaCashflowCodeTreeService extends IService<FinanceAaCas
      * @return
      */
     List<FinanceAaCashflowCodeDTO> getBaseInfoTreeList();
+
+    /**
+     * 获取选单配置树
+     * @param  companyId 公司别
+     * @return
+     */
+    List<FinanceAaCashflowCodeDTO> getBaseInfoTreeCompanyIdList(String companyId);
 }

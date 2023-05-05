@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCashflowItemCompidMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCashflowItemCompid" id="FinanceAaCashflowItemCompidResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="cashFlowCode"    column="cash_flow_code"    />
+        <result property="cashFlowId"    column="cash_flow_id"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="operator"    column="operator"    />
+        <result property="quedataway"    column="quedataway"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaCashflowItemCompidVo">
+        select id, company_id, cash_flow_code, cash_flow_id, acct_code, operator, quedataway, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_cashflow_item_compid
+    </sql>
+
+    <select id="selectFinanceAaCashflowItemCompidList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowItemCompid" resultMap="FinanceAaCashflowItemCompidResult">
+        <include refid="selectFinanceAaCashflowItemCompidVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="cashFlowCode != null  and cashFlowCode != ''"> and cash_flow_code = #{cashFlowCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaCashflowItemCompidById" parameterType="String" resultMap="FinanceAaCashflowItemCompidResult">
+        <include refid="selectFinanceAaCashflowItemCompidVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaCashflowItemCompid" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowItemCompid">
+        insert into finance_aa_cashflow_item_compid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="cashFlowCode != null">cash_flow_code,</if>
+            <if test="cashFlowId != null">cash_flow_id,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="operator != null">operator,</if>
+            <if test="quedataway != null">quedataway,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="cashFlowCode != null">#{cashFlowCode},</if>
+            <if test="cashFlowId != null">#{cashFlowId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="quedataway != null">#{quedataway},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaCashflowItemCompid" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowItemCompid">
+        update finance_aa_cashflow_item_compid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="cashFlowCode != null">cash_flow_code = #{cashFlowCode},</if>
+            <if test="cashFlowId != null">cash_flow_id = #{cashFlowId},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="quedataway != null">quedataway = #{quedataway},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaCashflowItemCompidById" parameterType="String">
+        delete from finance_aa_cashflow_item_compid where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaCashflowItemCompidByIds" parameterType="String">
+        delete from finance_aa_cashflow_item_compid where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

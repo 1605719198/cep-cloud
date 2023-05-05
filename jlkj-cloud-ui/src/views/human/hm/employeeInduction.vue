@@ -4,7 +4,7 @@
       <el-col :span="24" :xs="24">
           <el-form :model="queryParams" ref="queryForm" label-width="40px" :inline="true" v-show="showSearch">
               <el-form-item label="公司">
-                <el-select v-model="queryParams.compId" placeholder="请选择公司" :popper-append-to-body="false">
+                <el-select v-model="queryParams.compId" placeholder="请选择公司">
                   <el-option
                     v-for="dict in companyName"
                     :key="dict.compId"
@@ -71,7 +71,7 @@
         <el-dialog
           :title="title"
           :visible.sync="open"
-          width="1200px"
+          width="1300px"
         >
           <el-form
             :model="addJsonForm"
@@ -174,7 +174,7 @@
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.postPop" border>
+            <el-table :data="addJsonForm.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
@@ -186,22 +186,26 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <el-tree
-                      :data="newPostNameOptions"
-                      :props="defaultProps"
-                      :default-expand-al="false"
-                      :highlight-current="true"
-                      :expand-on-click-node="false"
-                      :default-expanded-keys="expandedKeys"
-                      v-show="tree"
-                      node-key="id"
-                      ref="tree"
-                      @node-click="handleNodeClick"
-                    />
+                    <div class="head-container" style="height: 10vh;width: 100%;">
+                      <el-scrollbar style="height: 100%;">
+                        <el-tree
+                          :data="newPostNameOptions"
+                          :props="defaultProps"
+                          :default-expand-al="false"
+                          :highlight-current="true"
+                          :expand-on-click-node="false"
+                          :default-expanded-keys="expandedKeys"
+                          v-show="tree"
+                          node-key="id"
+                          ref="tree"
+                          @node-click="handleNodeClick"
+                        />
+                      </el-scrollbar>
+                    </div>
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column  label="选取岗位" align="center">
+              <el-table-column label="选取岗位" align="center">
                 <template v-slot="scope">
                   <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict.postName)">
                     {{dict.postName}}
@@ -224,6 +228,7 @@ import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUu
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
 import {checkRealName} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 export default {
   name: "EmployeeInduction",
   components: {selectUser},
@@ -327,6 +332,15 @@ export default {
       }else{
         this.tree=false
       }
+    },
+    //监听数据 设置默认展示第一层数据
+    newPostNameOptions: {
+      handler(val) {
+        val.forEach(item => {
+          this.expandedKeys.push(item.id);
+        })
+      },
+      deep: true,
     }
   },
   created() {
@@ -512,10 +526,13 @@ export default {
 .aa >>> .el-form-item__content {
   margin-left:0px !important;
 }
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
 #changeColor:hover{
   background-color: #7f7f7f;
+}
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
 }
 </style>

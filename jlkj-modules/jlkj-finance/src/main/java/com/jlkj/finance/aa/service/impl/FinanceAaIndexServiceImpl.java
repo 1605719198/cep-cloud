@@ -79,12 +79,15 @@ public class FinanceAaIndexServiceImpl implements IFinanceAaIndexService
     public int updateFinanceAaIndex(FinanceAaIndex financeAaIndex)
     {
         financeAaIndex.setUpdateTime(DateUtils.getNowDate());
-        FinanceAaIndex financeAaIndex1 = new FinanceAaIndex();
-        financeAaIndex1.setCompanyId(financeAaIndex.getCompanyId());
-        financeAaIndex1.setNodeNo(financeAaIndex.getNodeNo());
+
+        String nodeType = "DIR";
+        if (nodeType.equals(financeAaIndex.getNodeType())){
+         FinanceAaIndex financeAaIndex1 = new FinanceAaIndex();
+            financeAaIndex1.setParentId(financeAaIndex.getId());
         List<FinanceAaIndex> financeAaIndices = financeAaIndexMapper.selectFinanceAaIndexList(financeAaIndex1);
         if (financeAaIndices.size()>0){
-            throw new ServiceException("该系统选单索引设定已存在！");
+            throw new ServiceException("该系统选单索引设定下层有资料不允许修改类别，请先删除下层资料！");
+        }
         }
         return financeAaIndexMapper.updateFinanceAaIndex(financeAaIndex);
     }
@@ -98,6 +101,16 @@ public class FinanceAaIndexServiceImpl implements IFinanceAaIndexService
     @Override
     public int deleteFinanceAaIndexByIds(String[] ids)
     {
+        for (String id:ids){
+            FinanceAaIndex financeAaIndex1 = new FinanceAaIndex();
+            financeAaIndex1.setParentId(id);
+            List<FinanceAaIndex> financeAaIndices = financeAaIndexMapper.selectFinanceAaIndexList(financeAaIndex1);
+            if (financeAaIndices.size()>0){
+                throw new ServiceException("该系统选单索引设定下层有资料不允许删除！");
+            }
+        }
+
+
         return financeAaIndexMapper.deleteFinanceAaIndexByIds(ids);
     }
 

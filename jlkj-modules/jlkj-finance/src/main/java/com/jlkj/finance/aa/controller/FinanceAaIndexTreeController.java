@@ -36,7 +36,6 @@ public class FinanceAaIndexTreeController extends BaseController {
     @GetMapping("/tree")
     public Object getDepartmentTree(@RequestParam String companyId) {
         List<FinanceAaIndexDTO> list = financeAaIndexTreeService.getBaseInfoTreeList(companyId);
-
         return AjaxResult.success(list);
     }
 

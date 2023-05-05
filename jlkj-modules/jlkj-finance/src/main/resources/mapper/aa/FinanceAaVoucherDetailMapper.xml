@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaVoucherDetailMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" id="FinanceAaVoucherDetailResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="voucherId"    column="voucher_id"    />
+        <result property="voucherDate"    column="voucher_date"    />
+        <result property="voucherNo"    column="voucher_no"    />
+        <result property="srlno"    column="srlno"    />
+        <result property="drcr"    column="drcr"    />
+        <result property="groupAcctId"    column="group_acct_id"    />
+        <result property="acctId"    column="acct_id"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="acctName"    column="acct_name"    />
+        <result property="calIda"    column="cal_ida"    />
+        <result property="calCodea"    column="cal_codea"    />
+        <result property="calNamea"    column="cal_namea"    />
+        <result property="calIdb"    column="cal_idb"    />
+        <result property="calCodeb"    column="cal_codeb"    />
+        <result property="calNameb"    column="cal_nameb"    />
+        <result property="calIdc"    column="cal_idc"    />
+        <result property="calCodec"    column="cal_codec"    />
+        <result property="calNamec"    column="cal_namec"    />
+        <result property="calIdd"    column="cal_idd"    />
+        <result property="calCoded"    column="cal_coded"    />
+        <result property="calNamed"    column="cal_named"    />
+        <result property="crcyUnit"    column="crcy_unit"    />
+        <result property="qtyFrnamt"    column="qty_frnAmt"    />
+        <result property="ntamt"    column="ntAmt"    />
+        <result property="srlDesc"    column="srl_desc"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaVoucherDetailVo">
+        select id, company_id, voucher_id, voucher_date, voucher_no, srlno, drcr, group_acct_id, acct_id, acct_code, acct_name, cal_ida, cal_codea, cal_namea, cal_idb, cal_codeb, cal_nameb, cal_idc, cal_codec, cal_namec, cal_idd, cal_coded, cal_named, crcy_unit, qty_frnAmt, ntAmt, srl_desc from finance_aa_voucher_detail
+    </sql>
+
+    <select id="selectFinanceAaVoucherDetailList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
+        <include refid="selectFinanceAaVoucherDetailVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
+    
+    <select id="selectFinanceAaVoucherDetailById" parameterType="String" resultMap="FinanceAaVoucherDetailResult">
+        <include refid="selectFinanceAaVoucherDetailVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectFinanceAaVoucherList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        select
+        DISTINCT
+        a.voucher_no,a.voucher_date,a.apId,a.voucher_desc,a.dr_amt,a.cr_amt,a.pastuser_name,a.status
+        from  finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND  b.company_id = a.company_id
+
+        <where>
+            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''"> and b.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="voucherNoStart != '' and voucherNoEnd != ''"> and b.voucher_no between #{voucherNoStart} and #{voucherNoEnd}</if>
+            <if test="acctNameStart != '' and acctNameEnd != ''"> and b.acct_name between #{acctNameStart} and #{acctNameEnd}</if>
+            <if test="calNameaStart != '' and calNameaEnd != ''"> and b.cal_namea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="calNamebStart != '' and calNamebEnd != ''"> and b.cal_nameb between #{calNamebStart} and #{calNamebEnd}</if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtEnd != ''"> and b.qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}</if>
+        </where>
+        order by b.voucher_no
+    </select>
+
+    <insert id="insertFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        insert into finance_aa_voucher_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="voucherId != null">voucher_id,</if>
+            <if test="voucherDate != null">voucher_date,</if>
+            <if test="voucherNo != null">voucher_no,</if>
+            <if test="srlno != null">srlno,</if>
+            <if test="drcr != null">drcr,</if>
+            <if test="groupAcctId != null">group_acct_id,</if>
+            <if test="acctId != null">acct_id,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="acctName != null">acct_name,</if>
+            <if test="calIda != null">cal_ida,</if>
+            <if test="calCodea != null">cal_codea,</if>
+            <if test="calNamea != null">cal_namea,</if>
+            <if test="calIdb != null">cal_idb,</if>
+            <if test="calCodeb != null">cal_codeb,</if>
+            <if test="calNameb != null">cal_nameb,</if>
+            <if test="calIdc != null">cal_idc,</if>
+            <if test="calCodec != null">cal_codec,</if>
+            <if test="calNamec != null">cal_namec,</if>
+            <if test="calIdd != null">cal_idd,</if>
+            <if test="calCoded != null">cal_coded,</if>
+            <if test="calNamed != null">cal_named,</if>
+            <if test="crcyUnit != null">crcy_unit,</if>
+            <if test="qtyFrnamt != null">qty_frnAmt,</if>
+            <if test="ntamt != null">ntAmt,</if>
+            <if test="srlDesc != null">srl_desc,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="voucherId != null">#{voucherId},</if>
+            <if test="voucherDate != null">#{voucherDate},</if>
+            <if test="voucherNo != null">#{voucherNo},</if>
+            <if test="srlno != null">#{srlno},</if>
+            <if test="drcr != null">#{drcr},</if>
+            <if test="groupAcctId != null">#{groupAcctId},</if>
+            <if test="acctId != null">#{acctId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="acctName != null">#{acctName},</if>
+            <if test="calIda != null">#{calIda},</if>
+            <if test="calCodea != null">#{calCodea},</if>
+            <if test="calNamea != null">#{calNamea},</if>
+            <if test="calIdb != null">#{calIdb},</if>
+            <if test="calCodeb != null">#{calCodeb},</if>
+            <if test="calNameb != null">#{calNameb},</if>
+            <if test="calIdc != null">#{calIdc},</if>
+            <if test="calCodec != null">#{calCodec},</if>
+            <if test="calNamec != null">#{calNamec},</if>
+            <if test="calIdd != null">#{calIdd},</if>
+            <if test="calCoded != null">#{calCoded},</if>
+            <if test="calNamed != null">#{calNamed},</if>
+            <if test="crcyUnit != null">#{crcyUnit},</if>
+            <if test="qtyFrnamt != null">#{qtyFrnamt},</if>
+            <if test="ntamt != null">#{ntamt},</if>
+            <if test="srlDesc != null">#{srlDesc},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        update finance_aa_voucher_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="voucherId != null">voucher_id = #{voucherId},</if>
+            <if test="voucherDate != null">voucher_date = #{voucherDate},</if>
+            <if test="voucherNo != null">voucher_no = #{voucherNo},</if>
+            <if test="srlno != null">srlno = #{srlno},</if>
+            <if test="drcr != null">drcr = #{drcr},</if>
+            <if test="groupAcctId != null">group_acct_id = #{groupAcctId},</if>
+            <if test="acctId != null">acct_id = #{acctId},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="acctName != null">acct_name = #{acctName},</if>
+            <if test="calIda != null">cal_ida = #{calIda},</if>
+            <if test="calCodea != null">cal_codea = #{calCodea},</if>
+            <if test="calNamea != null">cal_namea = #{calNamea},</if>
+            <if test="calIdb != null">cal_idb = #{calIdb},</if>
+            <if test="calCodeb != null">cal_codeb = #{calCodeb},</if>
+            <if test="calNameb != null">cal_nameb = #{calNameb},</if>
+            <if test="calIdc != null">cal_idc = #{calIdc},</if>
+            <if test="calCodec != null">cal_codec = #{calCodec},</if>
+            <if test="calNamec != null">cal_namec = #{calNamec},</if>
+            <if test="calIdd != null">cal_idd = #{calIdd},</if>
+            <if test="calCoded != null">cal_coded = #{calCoded},</if>
+            <if test="calNamed != null">cal_named = #{calNamed},</if>
+            <if test="crcyUnit != null">crcy_unit = #{crcyUnit},</if>
+            <if test="qtyFrnamt != null">qty_frnAmt = #{qtyFrnamt},</if>
+            <if test="ntamt != null">ntAmt = #{ntamt},</if>
+            <if test="srlDesc != null">srl_desc = #{srlDesc},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaVoucherDetailById" parameterType="String">
+        delete from finance_aa_voucher_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaVoucherDetailByIds" parameterType="String">
+        delete from finance_aa_voucher_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

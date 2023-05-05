@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaBranchMapper">
     
-    <resultMap type="FinanceAaBranch" id="FinanceAaBranchResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaBranch" id="FinanceAaBranchResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
         <result property="bankNo"    column="bank_no"    />
@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, main_id, bank_no, branch_no, branchChnName, branchEngName, branchChnAbbr, branchEngAbbr, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_branch
     </sql>
 
-    <select id="selectFinanceAaBranchList" parameterType="FinanceAaBranch" resultMap="FinanceAaBranchResult">
+    <select id="selectFinanceAaBranchList" parameterType="com.jlkj.finance.aa.domain.FinanceAaBranch" resultMap="FinanceAaBranchResult">
         <include refid="selectFinanceAaBranchVo"/>
         <where>  
             <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaBranch" parameterType="FinanceAaBranch">
+    <insert id="insertFinanceAaBranch" parameterType="com.jlkj.finance.aa.domain.FinanceAaBranch">
         insert into finance_aa_branch
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaBranch" parameterType="FinanceAaBranch">
+    <update id="updateFinanceAaBranch" parameterType="com.jlkj.finance.aa.domain.FinanceAaBranch">
         update finance_aa_branch
         <trim prefix="SET" suffixOverrides=",">
             <if test="mainId != null">main_id = #{mainId},</if>

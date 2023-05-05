@@ -12,11 +12,22 @@
               <el-col :span="4"
                       :xs="24">
                 <div class="head-container">
+                  <el-select v-model="queryParams.companyId" style="margin-bottom: 20px;    width: 228px;" filterable placeholder="请输入会计公司">
+                    <el-option
+                      v-for="item in companyList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                      @click.native="changCompanyId(item)"
+                      @keyup.enter.native="handleQuery">
+                    </el-option>
+                  </el-select>
                   <el-input placeholder="搜索系统选单索引"
                             v-model="filterText"
                             style="margin-bottom: 20px">
                   </el-input>
                 </div>
+
                 <div class="head-container"
                      style="height:700px;overflow:auto;">
                   <el-tree class="filter-tree"
@@ -148,7 +159,14 @@
         <el-row :gutter="20">
           <el-col :span="12">
         <el-form-item label="公司" prop="companyId">
-          <el-input v-model="form.companyId" placeholder="请输入公司" style="width: 220px"/>
+          <el-select v-model="form.companyId" filterable placeholder="请输入会计公司">
+            <el-option
+              v-for="item in companyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -217,8 +235,9 @@
 </template>
 
 <script>
-import { listIndex, getIndex, delIndex, addIndex, updateIndex ,getTreeNode} from "@/api/finance/aa/index";
-
+import { listIndex, getIndex, delIndex, addIndex, updateIndex ,getTreeNode}
+  from "@/api/finance/aa/index";
+import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 export default {
   name: "Index",
   dicts: ['aa_costtype'],
@@ -287,18 +306,32 @@ export default {
       nodeNoList:[],
       nodeNo:'',
       parentId:'0000',
-      parentNo:''
+      parentNo:'',
+      companyList:[],
+      companyId:''
     };
   },
   created() {
     this.queryParams.parentId = "00000"
     this.getList();
+    this.getCompanyList();
     this.initTree()
   },
   methods: {
-
+    getCompanyList() {
+      selectCompanyList().then(response => {
+        this.companyList = response;
+        this.queryParams.companyId = this.companyList[0].value
+        this.initTree()
+      });
+    },
+    //公司下拉选单掉用方法
+    changCompanyId(val) {
+      this.queryParams.companyId = val.value
+      this.initTree()
+    },
     initTree() {
-      getTreeNode("J00").then(response => {
+      getTreeNode(this.queryParams.companyId).then(response => {
         this.treeData = response.data
       })
     },
@@ -314,6 +347,7 @@ export default {
       this.parentNo = data.parentNo
       this.parentId = data.id
       this.nodeNo= data.nodeNo
+      this.companyId = data.companyId
       console.log(this.parentNo);
       this.getList()
     },

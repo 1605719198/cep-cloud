@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaRateMapper">
+    
+    <resultMap type="FinanceAaRate" id="FinanceAaRateResult">
+        <result property="id"    column="id"    />
+        <result property="ratedate"    column="rateDate"    />
+        <result property="ratecate"    column="rateCate"    />
+        <result property="ratespot"    column="rateSpot"    />
+        <result property="ratecrcy"    column="rateCrcy"    />
+        <result property="ratevalue"    column="rateValue"    />
+        <result property="ratesrc"    column="rateSrc"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaRateVo">
+        select id, rateDate, rateCate, rateSpot, rateCrcy, rateValue, rateSrc, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_rate
+    </sql>
+
+    <select id="selectFinanceAaRateList" parameterType="FinanceAaRate" resultMap="FinanceAaRateResult">
+        <include refid="selectFinanceAaRateVo"/>
+        <where>  
+            <if test="ratedate != null "> and rateDate = #{ratedate}</if>
+            <if test="ratecate != null  and ratecate != ''"> and rateCate = #{ratecate}</if>
+            <if test="ratespot != null  and ratespot != ''"> and rateSpot = #{ratespot}</if>
+            <if test="ratecrcy != null  and ratecrcy != ''"> and rateCrcy = #{ratecrcy}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaRateById" parameterType="String" resultMap="FinanceAaRateResult">
+        <include refid="selectFinanceAaRateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaRate" parameterType="FinanceAaRate">
+        insert into finance_aa_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="ratedate != null">rateDate,</if>
+            <if test="ratecate != null">rateCate,</if>
+            <if test="ratespot != null">rateSpot,</if>
+            <if test="ratecrcy != null">rateCrcy,</if>
+            <if test="ratevalue != null">rateValue,</if>
+            <if test="ratesrc != null">rateSrc,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="ratedate != null">#{ratedate},</if>
+            <if test="ratecate != null">#{ratecate},</if>
+            <if test="ratespot != null">#{ratespot},</if>
+            <if test="ratecrcy != null">#{ratecrcy},</if>
+            <if test="ratevalue != null">#{ratevalue},</if>
+            <if test="ratesrc != null">#{ratesrc},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaRate" parameterType="FinanceAaRate">
+        update finance_aa_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ratedate != null">rateDate = #{ratedate},</if>
+            <if test="ratecate != null">rateCate = #{ratecate},</if>
+            <if test="ratespot != null">rateSpot = #{ratespot},</if>
+            <if test="ratecrcy != null">rateCrcy = #{ratecrcy},</if>
+            <if test="ratevalue != null">rateValue = #{ratevalue},</if>
+            <if test="ratesrc != null">rateSrc = #{ratesrc},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaRateById" parameterType="String">
+        delete from finance_aa_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaRateByIds" parameterType="String">
+        delete from finance_aa_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

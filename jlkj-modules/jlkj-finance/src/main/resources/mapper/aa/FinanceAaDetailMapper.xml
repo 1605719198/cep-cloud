@@ -41,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="leafId != null  and leafId != ''"> and leaf_id = #{leafId}</if>
         </where>
+        order by  data_seq
     </select>
     
     <select id="selectFinanceAaDetailById" parameterType="String" resultMap="FinanceAaDetailResult">

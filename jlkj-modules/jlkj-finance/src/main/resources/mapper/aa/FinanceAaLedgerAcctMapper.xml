@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct" id="FinanceAaLedgerAcctResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="acctPeriod"    column="acct_period"    />
+        <result property="acctId"    column="acct_id"    />
+        <result property="acctName"    column="acct_name"    />
+        <result property="bgnAmt"    column="bgn_amt"    />
+        <result property="drAmt"    column="dr_amt"    />
+        <result property="crAmt"    column="cr_amt"    />
+        <result property="bgnQty"    column="bgn_qty"    />
+        <result property="drQty"    column="dr_qty"    />
+        <result property="crQty"    column="cr_qty"    />
+        <result property="yearDrAmt"    column="year_dr_amt"    />
+        <result property="yearCrAmt"    column="year_cr_amt"    />
+        <result property="yearDrQty"    column="year_dr_qty"    />
+        <result property="yearCrQty"    column="year_cr_Qty"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaLedgerAcctVo">
+        select id, company_id, acct_period, acct_id, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty from finance_aa_ledger_acct
+    </sql>
+
+    <select id="selectFinanceAaLedgerAcctList" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct" resultMap="FinanceAaLedgerAcctResult">
+        <include refid="selectFinanceAaLedgerAcctVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+            <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
+            <if test="acctName != null  and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaLedgerAcctById" parameterType="String" resultMap="FinanceAaLedgerAcctResult">
+        <include refid="selectFinanceAaLedgerAcctVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectFinanceAaLedgerAcct" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
+        <include refid="selectFinanceAaLedgerAcctVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+            <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
+            <if test="acctName != null  and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
+        </where>
+    </select>
+
+    <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
+        insert into finance_aa_ledger_acct
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="acctPeriod != null">acct_period,</if>
+            <if test="acctId != null">acct_id,</if>
+            <if test="acctName != null">acct_name,</if>
+            <if test="bgnAmt != null">bgn_amt,</if>
+            <if test="drAmt != null">dr_amt,</if>
+            <if test="crAmt != null">cr_amt,</if>
+            <if test="bgnQty != null">bgn_qty,</if>
+            <if test="drQty != null">dr_qty,</if>
+            <if test="crQty != null">cr_qty,</if>
+            <if test="yearDrAmt != null">year_dr_amt,</if>
+            <if test="yearCrAmt != null">year_cr_amt,</if>
+            <if test="yearDrQty != null">year_dr_qty,</if>
+            <if test="yearCrQty != null">year_cr_Qty,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="acctPeriod != null">#{acctPeriod},</if>
+            <if test="acctId != null">#{acctId},</if>
+            <if test="acctName != null">#{acctName},</if>
+            <if test="bgnAmt != null">#{bgnAmt},</if>
+            <if test="drAmt != null">#{drAmt},</if>
+            <if test="crAmt != null">#{crAmt},</if>
+            <if test="bgnQty != null">#{bgnQty},</if>
+            <if test="drQty != null">#{drQty},</if>
+            <if test="crQty != null">#{crQty},</if>
+            <if test="yearDrAmt != null">#{yearDrAmt},</if>
+            <if test="yearCrAmt != null">#{yearCrAmt},</if>
+            <if test="yearDrQty != null">#{yearDrQty},</if>
+            <if test="yearCrQty != null">#{yearCrQty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
+        update finance_aa_ledger_acct
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="acctPeriod != null">acct_period = #{acctPeriod},</if>
+            <if test="acctId != null">acct_id = #{acctId},</if>
+            <if test="acctName != null">acct_name = #{acctName},</if>
+            <if test="bgnAmt != null">bgn_amt = #{bgnAmt},</if>
+            <if test="drAmt != null">dr_amt = #{drAmt},</if>
+            <if test="crAmt != null">cr_amt = #{crAmt},</if>
+            <if test="bgnQty != null">bgn_qty = #{bgnQty},</if>
+            <if test="drQty != null">dr_qty = #{drQty},</if>
+            <if test="crQty != null">cr_qty = #{crQty},</if>
+            <if test="yearDrAmt != null">year_dr_amt = #{yearDrAmt},</if>
+            <if test="yearCrAmt != null">year_cr_amt = #{yearCrAmt},</if>
+            <if test="yearDrQty != null">year_dr_qty = #{yearDrQty},</if>
+            <if test="yearCrQty != null">year_cr_Qty = #{yearCrQty},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaLedgerAcctById" parameterType="String">
+        delete from finance_aa_ledger_acct where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaLedgerAcctByIds" parameterType="String">
+        delete from finance_aa_ledger_acct where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

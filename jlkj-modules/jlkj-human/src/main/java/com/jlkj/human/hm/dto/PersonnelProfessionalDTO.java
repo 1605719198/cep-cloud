@@ -37,6 +37,11 @@ public class PersonnelProfessionalDTO implements Serializable {
     private String empId;
 
     /**
+     * 是否公司内
+     */
+    private String ifInComp;
+
+    /**
      * 职称类别
      */
     private String proTypeId;

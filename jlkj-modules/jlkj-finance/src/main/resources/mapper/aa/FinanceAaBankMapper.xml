@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaBankMapper">
     
-    <resultMap type="FinanceAaBank" id="FinanceAaBankResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaBank" id="FinanceAaBankResult">
         <result property="id"    column="id"    />
         <result property="bankNo"    column="bank_no"    />
         <result property="countryId"    column="country_id"    />
@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, bank_no, country_id, bank_type, bankno_src, bankUniform_no, bankChn_name, bankEng_Name, bank_ChnAbbr, bank_EngAbbr, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_bank
     </sql>
 
-    <select id="selectFinanceAaBankList" parameterType="FinanceAaBank" resultMap="FinanceAaBankResult">
+    <select id="selectFinanceAaBankList" parameterType="com.jlkj.finance.aa.domain.FinanceAaBank" resultMap="FinanceAaBankResult">
         <include refid="selectFinanceAaBankVo"/>
         <where>  
             <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaBank" parameterType="FinanceAaBank">
+    <insert id="insertFinanceAaBank" parameterType="com.jlkj.finance.aa.domain.FinanceAaBank">
         insert into finance_aa_bank
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaBank" parameterType="FinanceAaBank">
+    <update id="updateFinanceAaBank" parameterType="com.jlkj.finance.aa.domain.FinanceAaBank">
         update finance_aa_bank
         <trim prefix="SET" suffixOverrides=",">
             <if test="bankNo != null and bankNo != ''">bank_no = #{bankNo},</if>
