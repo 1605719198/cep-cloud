@@ -104,7 +104,7 @@
     />
     <select-user ref="select" @ok="getJobNumber"/>
 
-    <!-- 添加或修改员工销假对话框 -->
+    <!-- 修改员工销假对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="200px">
 
@@ -561,7 +561,7 @@ export default {
       this.resetForm("queryForm");
       this.queryParams.startDate = null
       this.queryParams.endDate = null
-      this.handleQuery();
+      this.handleQuery(0);
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -604,14 +604,14 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    /** 作废按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除员工销假编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认作废此员工销假的数据项？').then(function() {
         return delCancelHoliday(ids);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("作废成功");
       }).catch(() => {});
     },
     /** 撤回按钮操作 */
