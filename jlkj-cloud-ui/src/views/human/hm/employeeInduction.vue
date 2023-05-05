@@ -74,8 +74,8 @@
           width="1300px"
         >
           <el-form
-            :model="addJsonForm"
             ref="addJsonForm"
+            :model="addJsonForm"
             :rules="rules"
             label-width="80px"
           >
@@ -169,12 +169,12 @@
                    :visible.sync="openPostName"
                    width="700px">
           <el-form
-            :model="addJsonForm"
-            ref="addJsonForm"
+            :model="form"
+            ref="form"
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
+            <el-table :data="form.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
@@ -253,9 +253,10 @@ export default {
           }
         ]
       },
+      form: {},
       //查询参数
       queryParams: {
-        compId: 'J00',
+        compId: undefined,
         empNo: undefined
       },
       // 列信息
@@ -344,6 +345,8 @@ export default {
     }
   },
   created() {
+    this.queryParams.empNo = this.$store.state.user.name
+    this.queryParams.compId = this.$store.state.user.userInfo.compId
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
@@ -387,14 +390,16 @@ export default {
             postTypeId: '01',
             newPostName: undefined,
           }
-        ],
+        ]
+      };
+      this.form = {
         postPop: [
           {
             postTypeId: undefined,
             newPostName: undefined,
           }
         ]
-      };
+      }
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -431,6 +436,7 @@ export default {
                 this.$message({type: "success", message: res.msg});
               }
               this.open = false
+              this.getList();
             })
           }
         }

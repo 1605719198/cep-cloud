@@ -74,6 +74,10 @@ public class EmployeeInductionController extends BaseController {
         changeMaster.setUuid(IdUtils.fastSimpleUUID());
         for (ChangeDetail item : employeeInductionList) {
             item.setParentId(changeMaster.getUuid());
+            if ("01".equals(item.getPostTypeId())) {
+                changeMasterDTO.setPostId(item.getNewPostId());
+                changeMasterDTO.setPostName(item.getNewPostName());
+            }
         }
         LambdaQueryWrapper<ChangeMaster> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChangeMaster::getEffectDate, effectDate)
@@ -82,7 +86,11 @@ public class EmployeeInductionController extends BaseController {
         queryWrapper1.eq(ChangeDetail::getParentId, changeMaster.getUuid())
                      .eq(ChangeDetail::getPostTypeId, "01");
         List<ChangeMaster> list = changeMasterService.list(queryWrapper);
+        List<ChangeMaster> list2 = changeMasterService.lambdaQuery().eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo()).list();
         List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
+        if (!list2.isEmpty()) {
+            return AjaxResult.error("入职资料已存在");
+        }
         if (list1.size() > 1) {
             return AjaxResult.error("只能存在一笔主岗位资料！！！");
         }
@@ -95,6 +103,7 @@ public class EmployeeInductionController extends BaseController {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
                     .set(Personnel::getPostId, changeMasterDTO.getPostId())
+                    .set(Personnel::getPostLevelName, changeMasterDTO.getPostLevel())
                     .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
                     .eq(Personnel::getEmpNo, changeMaster.getEmpNo()).update();
             return AjaxResult.success("保存成功");
@@ -106,6 +115,7 @@ public class EmployeeInductionController extends BaseController {
     /**
      * 根据工号查询员工入职详细信息
      */
+    @RequiresPermissions("human:employeeInduction:query")
     @Operation(summary = "根据工号查询员工入职详细信息")
     @GetMapping("/queryEmployeeInductionByUuid")
     @Log(title = "根据工号查询员工入职详细信息", businessType = BusinessType.OTHER)
