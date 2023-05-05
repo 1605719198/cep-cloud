@@ -438,7 +438,10 @@ export default {
       if (this.codeList.length == 0) {
         this.$modal.msgError("请至少勾选一笔数据");
       }
-
+      if (this.form.parentId == null) {
+        this.$modal.msgError("请点击树节点进行保存");
+        return
+      }
       for (let i = 0; i < this.codeList.length; i++) {
           this.codeList[i].parentId = this.form.parentId
           this.codeList[i].parentCode = this.form.parentCode
