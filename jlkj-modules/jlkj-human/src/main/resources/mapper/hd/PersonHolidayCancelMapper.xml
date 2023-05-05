@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="morLeaveHours"    column="mor_leave_hours"    />
         <result property="morLeaveShifts"    column="mor_leave_shifts"    />
         <result property="status"    column="status"    />
+        <result property="status1"    column="status1"    />
         <result property="isAll"    column="is_all"    />
         <result property="description"    column="description"    />
         <result property="isContainHoliday"    column="is_contain_holiday"    />
@@ -45,12 +46,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectPersonHolidayCancelList" parameterType="PersonHolidayCancel" resultMap="PersonHolidayCancelResult">
-        <include refid="selectPersonHolidayCancelVo"/>
+        select c.id, c.person_holiday_id, c.comp_id, c.emp_no, c.emp_id, c.emp_name, c.post_name, c.post_id, c.org_parent_id, c.org_id, c.start_date, c.end_date, c.leave_days, c.ori_start_date, c.ori_end_date, c.ori_leave_days, c.lea_type_id, c.leave_shifts, c.leave_hours, c.mor_leave_hours, c.mor_leave_shifts, c.status, c.is_all, c.description, c.is_contain_holiday, c.remaining_days, c.month_days, c.month_hours, c.year_days, c.year_hours, c.creator, c.creator_id, c.create_date, d.status as status1
+        from human_hd_person_holiday_cancel as c
+        left join human_hd_person_holiday as d
+        on c.comp_id = d.comp_id
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="empId != null  and empId != ''"> and emp_id = #{empId}</if>
-            <if test="startDate != null "> and start_date &lt;= #{startDate}</if>
-            <if test="endDate != null "> and end_date &gt;= #{endDate}</if>
+            <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
+            <if test="empId != null  and empId != ''"> and c.emp_id = #{empId}</if>
+            <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
+            <if test="startDate != null "> and c.start_date &lt;= #{startDate}</if>
+            <if test="endDate != null "> and c.end_date &gt;= #{endDate}</if>
         </where>
     </select>
     
@@ -170,6 +175,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
         where id = #{id}
+    </update>
+    <update id="personHolidayCancelById" parameterType="String">
+        update human_hd_person_holiday_cancel set status = '01' where id = #{ids}
     </update>
 
     <delete id="deletePersonHolidayCancelById" parameterType="String">

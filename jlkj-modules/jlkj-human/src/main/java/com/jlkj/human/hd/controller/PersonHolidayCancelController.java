@@ -95,4 +95,16 @@ public class PersonHolidayCancelController extends BaseController
     {
         return toAjax(personHolidayCancelService.deletePersonHolidayCancelByIds(ids));
     }
+
+    /**
+     * 撤回员工销假
+     */
+    @RequiresPermissions("human:cancelHoliday:withdraw")
+    @Log(title = "员工销假", businessType = BusinessType.OTHER)
+    @PostMapping("/withdraw")
+    public AjaxResult withdraw(@RequestBody String ids)
+    {
+        System.out.println(ids);
+        return toAjax(personHolidayCancelService.otherPersonHolidayCancelByIds(ids));
+    }
 }
