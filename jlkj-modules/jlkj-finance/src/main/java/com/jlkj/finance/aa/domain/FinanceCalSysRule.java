@@ -39,6 +39,10 @@ public class FinanceCalSysRule extends BaseEntity
     @Excel(name = "语法字串")
     private String sqlString;
 
+    /** 数据库字串 */
+    @Excel(name = "数据库字串")
+    private String sqlStringDb;
+
     /** 新增人名称 */
     private String createName;
 
@@ -108,6 +112,9 @@ public class FinanceCalSysRule extends BaseEntity
     {
         return sqlString;
     }
+    public void setSqlStringDb(String sqlStringDb) { this.sqlStringDb = sqlStringDb; }
+
+    public String getSqlStringDb() {  return sqlStringDb;  }
     public void setCreateName(String createName)
     {
         this.createName = createName;
@@ -137,6 +144,7 @@ public class FinanceCalSysRule extends BaseEntity
             .append("sys", getSys())
             .append("className", getClassName())
             .append("sqlString", getSqlString())
+            .append("sqlStringDb", getSqlStringDb())
             .append("createBy", getCreateBy())
             .append("createName", getCreateName())
             .append("createTime", getCreateTime())
