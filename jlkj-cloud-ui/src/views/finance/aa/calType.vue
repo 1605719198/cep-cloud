@@ -5,12 +5,14 @@
       <el-tab-pane label="核算项目类别" name="first">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="公司" prop="companyId">
-            <el-input
-              v-model="queryParams.companyId"
-              placeholder="请输入公司"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
+            <el-select v-model="queryParams.companyId" filterable placeholder="请选择公司">
+              <el-option
+                v-for="item in companyList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="核算项目类别" prop="calTypeCode" label-width="100px">
             <el-input
@@ -64,8 +66,13 @@
 
         <el-table v-loading="loading" :data="calTypeList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="核算项目类别代码" align="center" prop="calTypeCode" />
-          <el-table-column label="核算项目类别名称" align="center" prop="calTypeName" />
+          <el-table-column label="类别代码" align="center" prop="calTypeCode" width="80"/>
+          <el-table-column label="核算项目类别名称" prop="calTypeName" show-overflow-tooltip align="center" >
+            <template slot-scope="scope">
+              <el-button type="text" @click="gotoTabs(scope.row)" v-if="scope.row.calRule=='03' || scope.row.calRule=='04'">{{scope.row.calTypeName}}</el-button>
+              <div v-else>{{scope.row.calTypeName}}</div>
+            </template>
+          </el-table-column>
           <el-table-column label="核算项目规则" align="center" prop="calRule">
             <template slot-scope="scope">
               <dict-tag :options="dict.type.aa_calcode_rule" :value="scope.row.calRule"/>
@@ -112,8 +119,15 @@
     <!-- 添加或修改核算项目-类别维护对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="490px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" align="center">
-        <el-form-item label="公司" prop="companyId">
-          <el-input v-model="form.companyId" placeholder="请输入公司" style="width: 300px"/>
+        <el-form-item label="公司" prop="companyId" >
+          <el-select v-model="form.companyId" filterable placeholder="请选择公司" style="width:300px">
+            <el-option
+              v-for="item in companyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="核算项目类别代码" prop="calTypeCode">
           <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别代码" style="width: 300px"/>
@@ -146,6 +160,7 @@ import { listCalType, getCalType, delCalType, addCalType, updateCalType } from "
 import calCode from "@/views/finance/aa/calcode";
 import sysRule from "@/views/finance/aa/sysRule";
 import {parseTime} from "@/utils/jlkj";
+import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 
 export default {
   name: "CalType",
@@ -155,6 +170,8 @@ export default {
     return {
       // tab名称（默认选中第一个标签页first）
       activeName: 'first',
+      // 会计公司下拉选单
+      companyList: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -203,6 +220,7 @@ export default {
     };
   },
   created() {
+    this.getCompanyList();
     this.getList();
   },
   methods: {
@@ -218,6 +236,11 @@ export default {
         this.calTypeList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getCompanyList() {
+      selectCompanyList().then(response => {
+        this.companyList = response;
       });
     },
     // 取消按钮
@@ -316,7 +339,25 @@ export default {
         return "";
       }
       return parseTime(date,'{y}-{m}-{d}');
-    }
+    },
+    /** 跳转页签*/
+    gotoTabs(row) {
+      const obj = {}
+      obj.companyId = row.companyId
+      obj.calTypeId = row.calTypeId
+      obj.calTypeCode = row.calTypeCode
+      if(row.calRule=='04'){
+        this.activeName = "second"
+        this.$nextTick(() => {
+          this.$refs.calCode.init(obj)
+        })
+      }else  if(row.calRule=='03'){
+        this.activeName = "third"
+        this.$nextTick(() => {
+          this.$refs.sysRule.init(obj)
+        })
+      }
+    },
   }
 };
 </script>

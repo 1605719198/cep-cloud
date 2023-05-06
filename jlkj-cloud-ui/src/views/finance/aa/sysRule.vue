@@ -1,15 +1,17 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司" prop="companyId">
-        <el-input
-          v-model="queryParams.companyId"
-          placeholder="请输入公司"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.companyId" filterable placeholder="请选择公司">
+          <el-option
+            v-for="item in companyList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="核算项目类别" prop="calTypeCode">
+      <el-form-item label="核算项目类别" prop="calTypeCode" label-width="130px">
         <el-input
           v-model="queryParams.calTypeCode"
           placeholder="请输入核算项目类别"
@@ -71,9 +73,9 @@
 
     <el-table v-loading="loading" :data="sysRuleList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="系统别" align="center" prop="sys" />
+      <el-table-column label="系统别" align="center" prop="sys"  width="60"/>
       <el-table-column label="公用class" align="center" prop="className" />
-      <el-table-column label="语法字串" align="center" prop="sqlString" />
+      <el-table-column label="语法字串" align="center" prop="sqlString"  width="600"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -105,20 +107,30 @@
     <!-- 添加或修改核算项目-系统设定对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" align="left">
-        <el-form-item label="公司" prop="companyId">
-          <el-input v-model="form.companyId" placeholder="请输入公司" clearable style="width: 300px"/>
+        <el-form-item label="公司" prop="companyId" >
+          <el-select v-model="form.companyId" disabled placeholder="请选择公司" style="width:300px">
+            <el-option
+              v-for="item in companyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="核算项目类别代码" prop="calTypeCode">
-          <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别代码" clearable style="width: 300px"/>
+          <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别代码" disabled style="width: 300px"/>
         </el-form-item>
         <el-form-item label="系统别" prop="sys">
           <el-input v-model="form.sys" placeholder="请输入系统别" clearable style="width: 300px"/>
         </el-form-item>
         <el-form-item label="公用class" prop="className">
-          <el-input v-model="form.className" placeholder="请输入公用class" clearable style="width: 600px"/>
+          <el-input v-model="form.className" placeholder="请输入公用class" clearable style="width: 600px" maxlength="100" show-word-limit/>
         </el-form-item>
         <el-form-item label="语法字串" prop="sqlString">
-          <el-input v-model="form.sqlString" placeholder="请输入语法字串" type="textarea" clearable style="width: 600px"/>
+          <el-input v-model="form.sqlString" placeholder="请输入语法字串" type="textarea" clearable style="width: 600px" maxlength="300" show-word-limit/>
+        </el-form-item>
+        <el-form-item label="数据库字串" prop="sqlStringDb">
+          <el-input v-model="form.sqlStringDb" placeholder="请输入数据库字串" type="textarea" clearable style="width: 600px" maxlength="600" show-word-limit/>
         </el-form-item>
         <el-form-item label="新增人" prop="createName" align="left">
           {{form.createName}}
@@ -143,11 +155,17 @@
 
 <script>
 import { listSysRule, getSysRule, delSysRule, addSysRule, updateSysRule } from "@/api/finance/aa/sysRule";
-
+import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 export default {
   name: "SysRule",
   data() {
     return {
+      // 父组件传值
+      parCompanyId:null,
+      parCalTypeId:null,
+      parCalTypeCode: null,
+      // 会计公司下拉选单
+      companyList: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -189,20 +207,32 @@ export default {
           { max: 36,message: '长度不可超过36个字符', trigger: 'blur'}
         ],
         className: [
-          { required: true, message: "公用程式不能为空", trigger: "blur" },
-          { max: 100,message: '长度不可超过100个字符', trigger: 'blur'}
+          { required: true, message: "公用程式不能为空", trigger: "blur" }
         ],
         sqlString: [
-          { required: true, message: "语法字串不能为空", trigger: "blur" },
-          { max: 300,message: '长度不可超过300个字符', trigger: 'blur'}
+          { required: true, message: "语法字串不能为空", trigger: "blur" }
+        ],
+        sqlStringDb: [
+          { required: true, message: "数据库字串不能为空", trigger: "blur" }
         ],
       }
     };
   },
   created() {
+    this. getCompanyList();
     this.getList();
   },
   methods: {
+    /** 初始化方法 */
+    init(obj) {
+      // 根据传递过来的值进行查询
+      this.queryParams.companyId = obj.companyId
+      this.queryParams.calTypeCode = obj.calTypeCode
+      this.parCompanyId = obj.companyId
+      this.parCalTypeId = obj.calTypeId
+      this.parCalTypeCode = obj.calTypeCode
+      this.getList()
+    },
     /** 查询核算项目-系统设定列表 */
     getList() {
       this.loading = true;
@@ -210,6 +240,11 @@ export default {
         this.sysRuleList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getCompanyList() {
+      selectCompanyList().then(response => {
+        this.companyList = response;
       });
     },
     // 取消按钮
@@ -227,6 +262,7 @@ export default {
         sys: null,
         className: null,
         sqlString: null,
+        sqlStringDb: null,
         createBy: null,
         createName: null,
         createTime: null,
@@ -257,6 +293,9 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加核算项目-系统设定";
+      this.form.companyId = this.parCompanyId
+      this.form.calTypeId = this.parCalTypeId
+      this.form.calTypeCode = this.parCalTypeCode;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -291,7 +330,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除核算项目-系统设定编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认要删除么？').then(function() {
         return delSysRule(ids);
       }).then(() => {
         this.getList();
