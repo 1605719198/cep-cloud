@@ -1,5 +1,6 @@
 package com.jlkj.human.hp.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-03-08
  */
-public interface ISysDeptService
+public interface ISysDeptService extends IService<SysDept>
 {
     /**
      * 查询部门资料维护
