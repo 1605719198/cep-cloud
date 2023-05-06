@@ -1,5 +1,6 @@
 package com.jlkj.human.hp.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-03-08
  */
-public interface SysDeptMapper
+public interface SysDeptMapper extends BaseMapper<SysDept>
 {
     /**
      * 查询部门资料维护

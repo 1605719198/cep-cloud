@@ -16,10 +16,18 @@ public interface ShiftCodeMapper
     /**
      * 查询班次数据
      * 
-     * @param personShiftCodedto 排班人员工号时间
+     * @param personShiftCodedto 人员工号时间
      * @return 班次数据
      */
-    public ShiftCode selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto);
+    public List<ShiftCode> selectShiftCodeByPerson(PersonShiftCodeDTO personShiftCodedto);
+
+    /**
+     * 查询时间段内班次数据
+     *
+     * @param personShiftCodedto 人员工号起止时间
+     * @return 班次数据
+     */
+    public List<ShiftCode> selectShiftCodeByDates(PersonShiftCodeDTO personShiftCodedto);
 
     /**
      * 查询班次数据

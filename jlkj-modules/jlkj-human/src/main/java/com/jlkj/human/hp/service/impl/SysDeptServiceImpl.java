@@ -1,5 +1,6 @@
 package com.jlkj.human.hp.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.human.hp.domain.SysDept;
@@ -27,8 +28,8 @@ import java.util.stream.Collectors;
  * @date 2023-03-08
  */
 @Service
-public class SysDeptServiceImpl implements ISysDeptService
-{
+public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept>
+        implements ISysDeptService {
     @Autowired
     private SysDeptMapper sysDeptMapper;
     @Autowired

@@ -59,4 +59,12 @@ public interface PersonHolidayCancelMapper
      * @return 结果
      */
     public int deletePersonHolidayCancelByIds(String[] ids);
+
+    /**
+     * 批量删除员工销假
+     *
+     * @param ids 需要撤回的数据主键集合
+     * @return 结果
+     */
+    public int personHolidayCancelById(String ids);
 }

@@ -19,7 +19,8 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini"
+            <el-button v-hasPermi="['human:employeeInduction:list']"
+                       size="mini"
                        type="primary"
                        @click="getList"
                        icon="el-icon-search">搜 索</el-button>
@@ -53,13 +54,16 @@
           <el-table-column label="操作" align="center">
             <template v-slot="scope">
               <el-button
+                v-hasPermi="['human:employeeTurnover:edit']"
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
+                :disabled="scope.row.changeTypeId === '08'"
                 @click="handleUpdate(scope.row)"
               >修改
               </el-button>
               <el-button
+                v-hasPermi="['human:employeeTurnover:remove']"
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
@@ -73,7 +77,7 @@
         <el-dialog
           :title="title"
           :visible.sync="open"
-          width="1200px"
+          width="1400px"
         >
           <el-form
             :model="addJsonForm"
@@ -164,8 +168,8 @@
                 <span style="font-size: 18px">【岗位资料】</span>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="addLine">添加</el-button>
-            <el-button type="primary" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
+            <el-button type="primary" plain icon="el-icon-plus" @click="addLine">添加</el-button>
+            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
             <el-table
               :data="addJsonForm.employeeTurnoverList"
               border
@@ -209,7 +213,8 @@
                     style="text-align: right"
                   >
                     {{scope.row.nowPostName}}
-                    <el-button icon="el-icon-search" @click="openPostName = true"></el-button>
+                    <el-button icon="el-icon-search" size="mini" @click="openPostPop"></el-button>
+                    <el-button icon="el-icon-delete" size="mini" @click="doEmpty(scope.$index)"></el-button>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -229,11 +234,11 @@
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.employeeTurnoverList" border>
+            <el-table :data="addJsonForm.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
-                    <el-select v-model="compId" placeholder="请选择公司别" clearable size="small" @change="changeLabel">
+                    <el-select v-model="compId" placeholder="请选择公司别" clearable size="small">
                       <el-option
                         v-for="dict in companyName"
                         :key="dict.compId"
@@ -241,33 +246,30 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <el-tree
-                      :data="newPostNameOptions"
-                      :props="defaultProps"
-                      :default-expand-al="false"
-                      :highlight-current="true"
-                      :expand-on-click-node="false"
-                      :default-expanded-keys="expandedKeys"
-                      v-show="tree"
-                      node-key="id"
-                      ref="tree"
-                      @node-click="handleNodeClick"
-                    />
+                    <div class="head-container" style="height: 10vh;width: 100%;">
+                      <el-scrollbar style="height: 100%;">
+                        <el-tree
+                          :data="newPostNameOptions"
+                          :props="defaultProps"
+                          :default-expand-al="false"
+                          :highlight-current="true"
+                          :expand-on-click-node="false"
+                          :default-expanded-keys="expandedKeys"
+                          v-show="tree"
+                          node-key="id"
+                          ref="tree"
+                          @node-click="handleNodeClick"
+                        />
+                      </el-scrollbar>
+                    </div>
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column  label="选取岗位" align="center">
+              <el-table-column label="选取岗位" align="center">
                 <template v-slot="scope">
-                  <el-form-item>
-                    <el-select v-model="scope.row.postName" placeholder="请选择岗位" clearable @change="changePostName">
-                      <el-option
-                        v-for="dict in postMaintenanceList"
-                        :key="dict.postName"
-                        :label="dict.postName"
-                        :value="dict.postName"
-                      />
-                    </el-select>
-                  </el-form-item>
+                  <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict.postName)">
+                    {{dict.postName}}
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -305,6 +307,12 @@ export default {
       // 表单参数
       addJsonForm: {
         employeeTurnoverList: [
+          {
+            postTypeId: undefined,
+            newPostName: undefined,
+          }
+        ],
+        postPop: [
           {
             postTypeId: undefined,
             newPostName: undefined,
@@ -394,6 +402,8 @@ export default {
     }
   },
   created() {
+    this.queryParams.empNo = this.$store.state.user.name
+    this.queryParams.compId = this.$store.state.user.userInfo.compId
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
@@ -416,8 +426,10 @@ export default {
       queryNewPostNameAndChangeDetail(this.addJsonForm).then(res => {
         this.addJsonForm.nowPostName = res.data.list1[0].newPostName
         this.addJsonForm.nowPostLevel = res.data.list[0].postLevel
+        this.addJsonForm.postLevel = res.data.list[0].postLevel
         this.addJsonForm.versionNo = res.data.list[0].versionNo
         this.addJsonForm.employeeTurnoverList = res.data.list1
+        this.addJsonForm.employeeTurnoverList[this.index].nowPostName = this.addJsonForm.employeeTurnoverList[this.index].newPostName
       })
     },
     /** 工号点击事件 */
@@ -441,6 +453,12 @@ export default {
         employeeTurnoverList: [
           {
             postTypeId: '01',
+            newPostName: undefined,
+          }
+        ],
+        postPop: [
+          {
+            postTypeId: undefined,
             newPostName: undefined,
           }
         ]
@@ -481,7 +499,7 @@ export default {
             this.addJsonForm.compId = this.queryParams.compId
             addEmployeeTurnover(this.addJsonForm).then(res => {
               if (res.code === 200) {
-                this.$message({type: "success", message: res.msg});
+                this.$message({type: "success", message: res.msg, duration:0,});
               }
               this.open = false
             })
@@ -541,6 +559,7 @@ export default {
     // 节点单击事件
     handleNodeClick(data) {
       this.queryParams.orgId = data.id;
+      this.addJsonForm.departmentName = data.label
       this.handleQuery();
     },
     handleQuery() {
@@ -557,19 +576,10 @@ export default {
         this.newPostNameOptions = response.data;
       });
     },
-    changeLabel(val) {
-      if (val == 'J00') {
-        this.label = '吉林建龙'
-      } else if (val == 'J01') {
-        this.label = '吉林龙翔冷轧新型材料有限公司'
-      } else {
-        this.label = '吉林建龙信息科技'
-      }
-    },
     changePostName(val) {
       this.openPostName = false
       this.postName = val
-      this.addJsonForm.employeeTurnoverList[this.index].nowPostName = this.label + '-' + this.parentPostName + '-' + this.orgName + '-' + this.postName
+      this.addJsonForm.employeeTurnoverList[this.index].nowPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
     },
     changePostLevel(val) {
       const selectedItem = this.baseInfoData.ChangeCategory.find((item) => {
@@ -581,6 +591,15 @@ export default {
         this.postLevelDetail = response.data
       });
     },
+    openPostPop() {
+      this.openPostName = true
+      this.compId = undefined
+      this.postMaintenanceList = []
+    },
+    doEmpty(val) {
+      this.addJsonForm.employeeTurnoverList[val].nowPostName = undefined
+      this.key = Math.random()
+    }
   }
 }
 </script>
@@ -591,5 +610,14 @@ export default {
 }
 .aa >>> .el-form-item__content {
   margin-left:0px !important;
+}
+#changeColor:hover{
+  background-color: #7f7f7f;
+}
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__bar.is-horizontal {
+  display: none;
 }
 </style>

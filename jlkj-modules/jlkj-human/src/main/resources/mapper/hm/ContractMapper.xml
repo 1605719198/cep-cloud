@@ -14,7 +14,7 @@
             <result property="contractNo" column="contract_no" jdbcType="VARCHAR"/>
             <result property="signDate" column="sign_date" jdbcType="DATE"/>
             <result property="startDate" column="start_date" jdbcType="DATE"/>
-            <result property="conPeriId" column="con_peri_id" jdbcType="DATE"/>
+            <result property="conPeriId" column="con_peri_id" jdbcType="VARCHAR"/>
             <result property="endDate" column="end_date" jdbcType="DATE"/>
             <result property="workAddrId" column="work_addr_id" jdbcType="VARCHAR"/>
             <result property="empFeaId" column="emp_fea_id" jdbcType="VARCHAR"/>

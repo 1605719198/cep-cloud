@@ -54,62 +54,72 @@
 
       <el-form ref="form" :model="form" style="width: 100%" :rules="rules" label-width="96px">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="8">
         <el-form-item label="项次一名称" prop="itema">
           <el-input v-model="form.itema" placeholder="请输入项次一名称" style="width: 220px"/>
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
+            <el-form-item label="资料一名称" prop="dataa">
+              <el-input v-model="form.dataa" placeholder="请输入资料一名称"style="width: 220px" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
         <el-form-item label="项次二名称" prop="itemb">
           <el-input v-model="form.itemb" placeholder="请输入项次二名称" style="width: 220px" />
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
+            <el-form-item label="资料二名称" prop="datab">
+              <el-input v-model="form.datab" placeholder="请输入资料二名称"style="width: 220px" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
         <el-form-item label="项次三名称" prop="itemc">
           <el-input v-model="form.itemc" placeholder="请输入项次三名称"style="width: 220px" />
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
+            <el-form-item label="资料三名称" prop="datac">
+              <el-input v-model="form.datac" placeholder="请输入资料三名称"style="width: 220px" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
         <el-form-item label="项次四名称" prop="itemd">
           <el-input v-model="form.itemd" placeholder="请输入项次四名称"style="width: 220px" />
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
+            <el-form-item label="资料四名称" prop="datad">
+              <el-input v-model="form.datad" placeholder="请输入资料四名称" style="width: 220px"/>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
         <el-form-item label="项次五名称" prop="iteme">
           <el-input v-model="form.iteme" placeholder="请输入项次五名称"style="width: 220px" />
         </el-form-item>
           </el-col>
-          <el-col :span="6">
-        <el-form-item label="资料一名称" prop="dataa">
-          <el-input v-model="form.dataa" placeholder="请输入资料一名称"style="width: 220px" />
-        </el-form-item>
-          </el-col>
-          <el-col :span="6">
-        <el-form-item label="资料二名称" prop="datab">
-          <el-input v-model="form.datab" placeholder="请输入资料二名称"style="width: 220px" />
-        </el-form-item>
-          </el-col>
-          <el-col :span="6">
-        <el-form-item label="资料三名称" prop="datac">
-          <el-input v-model="form.datac" placeholder="请输入资料三名称"style="width: 220px" />
-        </el-form-item>
-          </el-col>
-          <el-col :span="6">
-        <el-form-item label="资料四名称" prop="datad">
-          <el-input v-model="form.datad" placeholder="请输入资料四名称" style="width: 220px"/>
-        </el-form-item>
-          </el-col>
-          <el-col :span="6">
+          <el-col :span="16">
         <el-form-item label="资料五名称" prop="datae">
           <el-input v-model="form.datae" placeholder="请输入资料五名称" style="width: 220px"/>
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
+            <el-form-item>
+            </el-form-item>
+          </el-col>
+          <el-col :span="16">
         <el-form-item label="资料六名称" prop="dataf">
           <el-input v-model="form.dataf" placeholder="请输入资料六名称"style="width: 220px" />
         </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
+            <el-form-item>
+            </el-form-item>
+          </el-col>
+          <el-col :span="16">
         <el-form-item label="资料七名称" prop="datag">
           <el-input v-model="form.datag" placeholder="请输入资料七名称"style="width: 220px" />
         </el-form-item>

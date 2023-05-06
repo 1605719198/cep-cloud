@@ -110,13 +110,14 @@ public class EmployeeTurnoverController extends BaseController {
                 return AjaxResult.success("生效日期小于薪资日期");
             }
         } else {
-            return AjaxResult.success("生效日期小于上一版本生效日期");
+            return AjaxResult.success("生效日期必须大于上一版本生效日期");
         }
     }
 
     /**
      * 修改员工异动信息作业
      */
+    @RequiresPermissions("human:employeeTurnover:edit")
     @Operation(summary = "修改员工异动信息作业")
     @PostMapping("/updateEmployeeTurnover")
     @Log(title = "修改员工异动信息作业", businessType = BusinessType.UPDATE)
@@ -144,6 +145,7 @@ public class EmployeeTurnoverController extends BaseController {
     /**
      * 根据工号删除员工异动信息
      */
+    @RequiresPermissions("human:employeeTurnover:remove")
     @Operation(summary = "根据工号删除员工异动信息")
     @DeleteMapping("/delEmployeeTurnover")
     @Log(title = "根据工号删除员工异动信息", businessType = BusinessType.DELETE)

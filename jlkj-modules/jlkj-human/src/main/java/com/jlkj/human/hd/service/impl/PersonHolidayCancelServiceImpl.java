@@ -91,4 +91,15 @@ public class PersonHolidayCancelServiceImpl implements IPersonHolidayCancelServi
     {
         return personHolidayCancelMapper.deletePersonHolidayCancelById(id);
     }
+
+    /**
+     * 撤回员工销假信息
+     *
+     * @param ids 员工销假主键
+     * @return 结果
+     */
+    @Override
+    public int otherPersonHolidayCancelByIds(String ids) {
+        return personHolidayCancelMapper.personHolidayCancelById(ids);
+    }
 }
