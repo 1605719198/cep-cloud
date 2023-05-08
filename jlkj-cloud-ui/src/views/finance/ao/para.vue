@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="公司" prop="companyId">
-        <el-select v-model="queryParams.companyId" filterable placeholder="请选择公司">
+      <el-form-item label="公司别" prop="companyId">
+        <el-select v-model="queryParams.companyId" placeholder="请选择">
           <el-option
             v-for="item in companyList"
             :key="item.value"
@@ -11,10 +11,18 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="核算项目类别" prop="calTypeCode" label-width="130px">
+      <el-form-item label="参数键名" prop="parameterKey">
         <el-input
-          v-model="queryParams.calTypeCode"
-          placeholder="请输入核算项目类别"
+          v-model="queryParams.parameterKey"
+          placeholder="请输入参数键名"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="参数名称" prop="parameterDesc">
+        <el-input
+          v-model="queryParams.parameterDesc"
+          placeholder="请输入参数名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -33,7 +41,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['finance:sysRule:add']"
+          v-hasPermi="['finance:para:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,7 +52,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['finance:sysRule:edit']"
+          v-hasPermi="['finance:para:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -55,7 +63,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['finance:sysRule:remove']"
+          v-hasPermi="['finance:para:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -65,17 +73,27 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['finance:sysRule:export']"
+          v-hasPermi="['finance:para:export']"
         >导出</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handleRefreshCache"
+          v-hasPermi="['finance:para:remove']"
+        >刷新缓存</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="sysRuleList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="paraList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="系统别" align="center" prop="sys"  width="60"/>
-      <el-table-column label="公用class" align="center" prop="className" />
-      <el-table-column label="语法字串" align="center" prop="sqlString"  width="600"/>
+      <el-table-column label="参数名称" align="center" prop="parameterDesc" />
+      <el-table-column label="参数键名" align="center" prop="parameterKey" />
+      <el-table-column label="参数键值" align="center" prop="parameterValue" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -83,14 +101,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['finance:sysRule:edit']"
+            v-hasPermi="['finance:para:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['finance:sysRule:remove']"
+            v-hasPermi="['finance:para:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -104,11 +122,11 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改核算项目-系统设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="140px" align="left">
-        <el-form-item label="公司" prop="companyId" >
-          <el-select v-model="form.companyId" disabled placeholder="请选择公司" style="width:300px">
+    <!-- 添加或修改报支参数维护对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="公司别" prop="companyId">
+          <el-select v-model="form.companyId" placeholder="请选择">
             <el-option
               v-for="item in companyList"
               :key="item.value"
@@ -117,32 +135,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="核算项目类别代码" prop="calTypeCode">
-          <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别代码" disabled style="width: 300px"/>
+        <el-form-item label="参数键名" prop="parameterKey">
+          <el-input v-model="form.parameterKey" placeholder="请输入参数键名" />
         </el-form-item>
-        <el-form-item label="系统别" prop="sys">
-          <el-input v-model="form.sys" placeholder="请输入系统别" clearable style="width: 300px"/>
+        <el-form-item label="参数名称" prop="parameterDesc">
+          <el-input v-model="form.parameterDesc" placeholder="请输入参数名称" />
         </el-form-item>
-        <el-form-item label="公用class" prop="className">
-          <el-input v-model="form.className" placeholder="请输入公用class" clearable style="width: 600px" maxlength="100" show-word-limit/>
+        <el-form-item label="参数键值" prop="parameterValue">
+          <el-input v-model="form.parameterValue" placeholder="请输入参数键值" />
         </el-form-item>
-        <el-form-item label="语法字串" prop="sqlString">
-          <el-input v-model="form.sqlString" placeholder="请输入语法字串" type="textarea" clearable style="width: 600px" maxlength="300" show-word-limit/>
-        </el-form-item>
-        <el-form-item label="数据库字串" prop="sqlStringDb">
-          <el-input v-model="form.sqlStringDb" placeholder="请输入数据库字串" type="textarea" clearable style="width: 600px" maxlength="600" show-word-limit/>
-        </el-form-item>
-        <el-form-item label="新增人" prop="createName" align="left">
-          {{form.createName}}
-        </el-form-item>
-        <el-form-item label="新增时间" prop="createTime" align="left">
-          {{form.createTime}}
-        </el-form-item>
-        <el-form-item label="异动人" prop="updateName" align="left">
-          {{form.updateName}}
-        </el-form-item>
-        <el-form-item label="异动时间" prop="updateTime" align="left">
-          {{form.updateTime}}
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -154,16 +157,14 @@
 </template>
 
 <script>
-import { listSysRule, getSysRule, delSysRule, addSysRule, updateSysRule } from "@/api/finance/aa/sysRule";
-import { selectCompanyList } from "@/api/finance/aa/companyGroup";
+import { listPara, getPara, delPara, addPara, updatePara } from "@/api/finance/ao/para";
+import {selectCompanyList} from "@/api/finance/aa/companyGroup";
+
 export default {
-  name: "SysRule",
+  name: "Para",
+  dicts: ['aa_bank_bankno'],
   data() {
     return {
-      // 父组件传值
-      parCompanyId:null,
-      parCalTypeId:null,
-      parCalTypeCode: null,
       // 会计公司下拉选单
       companyList: [],
       // 遮罩层
@@ -178,8 +179,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 核算项目-系统设定表格数据
-      sysRuleList: [],
+      // 报支参数维护表格数据
+      paraList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -189,55 +190,41 @@ export default {
         pageNum: 1,
         pageSize: 10,
         companyId: null,
-        calTypeCode: null,
+        parameterKey: null,
+        parameterDesc: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         companyId: [
-          { required: true, message: "公司不能为空", trigger: "blur" }
+          { required: true, message: "公司别不能为空", trigger: "blur" },
         ],
-        calTypeCode: [
-          { required: true, message: "核算项目类别代码不能为空", trigger: "blur" },
-          { max: 36,message: '长度不可超过36个字符', trigger: 'blur'}
+        parameterKey: [
+          { required: true, message: "参数键名不能为空", trigger: "blur" },
+          {max: 50 ,trigger: 'blur',message: "最大不超过50个字符"}
         ],
-        sys: [
-          { required: true, message: "系统别不能为空", trigger: "blur" },
-          { max: 36,message: '长度不可超过36个字符', trigger: 'blur'}
+        parameterDesc: [
+          { required: true, message: "参数名称不能为空", trigger: "blur" },
+          {max: 150 ,trigger: 'blur',message: "最大不超过150个字符"}
         ],
-        className: [
-          { required: true, message: "公用程式不能为空", trigger: "blur" }
-        ],
-        sqlString: [
-          { required: true, message: "语法字串不能为空", trigger: "blur" }
-        ],
-        sqlStringDb: [
-          { required: true, message: "数据库字串不能为空", trigger: "blur" }
+        parameterValue: [
+          { required: true, message: "参数键值不能为空", trigger: "blur" },
+          {max: 50 ,trigger: 'blur',message: "最大不超过50个字符"}
         ],
       }
     };
   },
   created() {
-    this. getCompanyList();
+    this.getCompanyList();
     this.getList();
   },
   methods: {
-    /** 初始化方法 */
-    init(obj) {
-      // 根据传递过来的值进行查询
-      this.queryParams.companyId = obj.companyId
-      this.queryParams.calTypeCode = obj.calTypeCode
-      this.parCompanyId = obj.companyId
-      this.parCalTypeId = obj.calTypeId
-      this.parCalTypeCode = obj.calTypeCode
-      this.getList()
-    },
-    /** 查询核算项目-系统设定列表 */
+    /** 查询报支参数维护列表 */
     getList() {
       this.loading = true;
-      listSysRule(this.queryParams).then(response => {
-        this.sysRuleList = response.rows;
+      listPara(this.queryParams).then(response => {
+        this.paraList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -257,18 +244,17 @@ export default {
       this.form = {
         id: null,
         companyId: null,
-        calTypeId: null,
-        calTypeCode: null,
-        sys: null,
-        className: null,
-        sqlString: null,
-        sqlStringDb: null,
+        parameterKey: null,
+        parameterDesc: null,
+        parameterValue: null,
+        status: null,
         createBy: null,
         createName: null,
         createTime: null,
         updateBy: null,
         updateName: null,
-        updateTime: null
+        updateTime: null,
+        remark: undefined
       };
       this.resetForm("form");
     },
@@ -292,19 +278,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加核算项目-系统设定";
-      this.form.companyId = this.parCompanyId
-      this.form.calTypeId = this.parCalTypeId
-      this.form.calTypeCode = this.parCalTypeCode;
+      this.title = "添加报支参数维护";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getSysRule(id).then(response => {
+      getPara(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改核算项目-系统设定";
+        this.title = "修改报支参数维护";
       });
     },
     /** 提交按钮 */
@@ -312,13 +295,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateSysRule(this.form).then(response => {
+            updatePara(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addSysRule(this.form).then(response => {
+            addPara(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -330,8 +313,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('确认要删除么？').then(function() {
-        return delSysRule(ids);
+      this.$modal.confirm('是否确认删除报支参数维护编号为"' + ids + '"的数据项？').then(function() {
+        return delPara(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -339,9 +322,15 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('finance/sysRule/export', {
+      this.download('finance/ao/para/export', {
         ...this.queryParams
-      }, `sysRule_${new Date().getTime()}.xlsx`)
+      }, `para_${new Date().getTime()}.xlsx`)
+    },
+    /** 刷新缓存按钮操作 */
+    handleRefreshCache() {
+      refreshCache().then(() => {
+        this.$modal.msgSuccess("刷新成功");
+      });
     }
   }
 };

@@ -117,7 +117,7 @@
     />
 
     <!-- 添加或修改币别管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
 
         <el-row :gutter="20">
@@ -147,22 +147,26 @@
         </el-row>
 
         <el-form-item label="图档" prop="crcyPath">
-
 <!--          <el-upload-->
-<!--            class="upload-demo"-->
-<!--            action="https://jsonplaceholder.typicode.com/posts/"-->
-<!--            :on-preview="handlePreview"-->
-<!--            :on-remove="handleRemove"-->
-<!--            :before-remove="beforeRemove"-->
-<!--            multiple-->
-<!--            :limit="3"-->
-<!--            :on-exceed="handleExceed"-->
-<!--            :file-list="fileList">-->
-<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--            class="avatar-uploader"-->
+<!--            action="http://localhost:80/finance/ipms/crcy"-->
+<!--            :show-file-list="false"-->
+<!--            :on-success="handleAvatarSuccess"-->
+<!--            :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
 <!--          </el-upload>-->
-
-          <image-upload v-model="form.crcyPath"/>
+          <image-upload v-model="form.crcyPath">
+            class="avatar-uploader"
+            action="http://10.32.15.160:80/finance/ipms/crcy"
+<!--            :show-file-list="false"-->
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </image-upload>
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -174,12 +178,15 @@
 
 <script>
 import { listCrcy, getCrcy, delCrcy, addCrcy, updateCrcy } from "@/api/finance/aa/crcy";
+import crcyPath from "@/api/finance/aa/crcy";
 
 export default {
   name: "Crcy",
   dicts: ['aa_crcy_abbr','aa_crcy_localname'],
+  components: {crcyPath},
   data() {
     return {
+      imageUrl: '',
       // 遮罩层
       loading: false,
       // 选中数组
@@ -238,18 +245,17 @@ export default {
    this.getList()
   },
   methods: {
-    // handleRemove(file, fileList) {
-    //   console.log(file, fileList);
-    // },
-    // handlePreview(file) {
-    //   console.log(file);
-    // },
-    // handleExceed(files, fileList) {
-    //   this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    // },
-    // beforeRemove(file, fileList) {
-    //   return this.$confirm(`确定移除 ${ file.name }？`);
-    // },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!');
+      }
+      return isLt2M;
+    },
 
     /** 查询币别管理列表 */
     getList() {

@@ -445,6 +445,9 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
+            this.form.startTime = this.form.workOvertimeDate[0]
+            this.form.endTime = this.form.workOvertimeDate[1]
+            console.log(this.form);
             updateOvertimeRecord(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;

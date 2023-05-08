@@ -7,6 +7,8 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hd.domain.NightDuty;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysDeptVersion;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
@@ -16,8 +18,10 @@ import com.jlkj.human.hp.service.ISysDeptService;
 import com.jlkj.human.hp.service.ISysDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -80,6 +84,15 @@ public class SysDeptController extends BaseController
     }
 
     /**
+     * 获取部门资料维护历史版本详细信息
+     */
+    @GetMapping(value = "/getVersion/{id}")
+    public AjaxResult getVersion(@PathVariable("id") Long id)
+    {
+        return success(sysDeptVersionService.selectSysDeptVersionById(id));
+    }
+
+    /**
      * 新增部门资料维护
      */
     @RequiresPermissions("human:deptMaintenance:add")
@@ -118,7 +131,7 @@ public class SysDeptController extends BaseController
     @RequiresPermissions("human:deptMaintenance:remove")
     @Log(title = "部门资料维护", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{deptIds}")
-    public AjaxResult remove(@PathVariable Long[] deptIds)
+    public AjaxResult remove(@PathVariable Long[] deptIds) throws Exception
     {
         return toAjax(sysDeptService.deleteSysDeptByDeptIds(deptIds));
     }
@@ -169,6 +182,30 @@ public class SysDeptController extends BaseController
     {
         FirstDeptDTO firstDept = sysDeptService.getFirstDeptByDept(deptId);
         return AjaxResult.success(firstDept);
+    }
+
+    @Log(title = "部门资料导入", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("human:deptMaintenance:import")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
+        List<SysDept> sysDeptList = util.importExcel(file.getInputStream());
+        String operName = SecurityUtils.getUsername();
+        String message = sysDeptService.importUser(sysDeptList, updateSupport, operName);
+        return success(message);
+    }
+
+    /**
+     * 导入夜班资料数据
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException
+    {
+        ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
+        util.importTemplateExcel(response, "部门资料数据");
     }
     
 }

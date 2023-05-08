@@ -1,15 +1,17 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="会计公司id" prop="companyId">
-        <el-input
-          v-model="queryParams.companyId"
-          placeholder="请输入会计公司id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="公司" prop="companyId">
+        <el-select v-model="queryParams.companyId" filterable placeholder="请选择公司">
+          <el-option
+            v-for="item in companyList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="核算项目类别代码" prop="calTypeCode">
+      <el-form-item label="核算项目类别代码" prop="calTypeCode" label-width="130px">
         <el-input
           v-model="queryParams.calTypeCode"
           placeholder="请输入核算项目类别代码"
@@ -125,10 +127,17 @@
     <el-dialog :title="title" :visible.sync="open" width="490px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" align="center">
         <el-form-item label="公司" prop="companyId" >
-          <el-input v-model="form.companyId" placeholder="请输入公司" style="width: 300px"/>
+          <el-select v-model="form.companyId" disabled placeholder="请选择公司" style="width:300px">
+            <el-option
+              v-for="item in companyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="核算项目类别" prop="calTypeCode">
-          <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别" style="width: 300px"/>
+          <el-input v-model="form.calTypeCode" placeholder="请输入核算项目类别" disabled style="width: 300px"/>
         </el-form-item>
         <el-form-item label="核算项目代码" prop="calCode">
           <el-input v-model="form.calCode" placeholder="请输入核算项目代码" style="width: 300px"/>
@@ -169,12 +178,18 @@
 
 <script>
 import { listCalcode, getCalcode, delCalcode, addCalcode, updateCalcode,changeUserStatus } from "@/api/finance/aa/calcode";
-
+import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 export default {
   name: "Calcode",
   dicts: ['sys_normal_disable'],
   data() {
     return {
+      // 会计公司下拉选单
+      companyList: [],
+      // 父组件传值
+      parCompanyId:null,
+      parCalTypeId:null,
+      parCalTypeCode: null,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -222,9 +237,21 @@ export default {
     };
   },
   created() {
+    this.getCompanyList();
     this.getList();
   },
   methods: {
+    /** 初始化方法 */
+    init(obj) {
+      // 根据传递过来的值进行查询
+      this.queryParams.companyId = obj.companyId
+      this.queryParams.calTypeCode = obj.calTypeCode
+      this.parCompanyId = obj.companyId
+      this.parCalTypeId = obj.calTypeId
+      this.parCalTypeCode = obj.calTypeCode
+      this.getList()
+    },
+
     /** 查询核算项目-内容维护列表 */
     getList() {
       this.loading = true;
@@ -232,6 +259,11 @@ export default {
         this.calcodeList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getCompanyList() {
+      selectCompanyList().then(response => {
+        this.companyList = response;
       });
     },
     // 取消按钮
@@ -279,6 +311,9 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加核算项目-内容维护";
+      this.form.companyId = this.parCompanyId
+      this.form.calTypeId = this.parCalTypeId
+      this.form.calTypeCode = this.parCalTypeCode;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

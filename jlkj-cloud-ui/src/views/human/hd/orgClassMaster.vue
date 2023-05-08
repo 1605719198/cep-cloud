@@ -94,7 +94,7 @@
     />
 
     <!-- 添加或修改出勤身份设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" label-position="left" >
         <el-row :gutter="20" style="margin-bottom: 10px;">
           <el-button

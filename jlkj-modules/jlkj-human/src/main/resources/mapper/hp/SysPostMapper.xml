@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ifSpeciallyAssignedPerson"    column="if_specially_assigned_person"    />
         <result property="planCapacity"    column="plan_capacity"    />
         <result property="nowCapacity"    column="now_capacity"    />
+        <result property="childCapacity"    column="child_capacity"    />
         <result property="postSort"    column="post_sort"    />
         <result property="capacityBasis"    column="capacity_basis"    />
         <result property="costCenterId"    column="cost_center_id"    />
@@ -86,6 +87,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSysPostByPostId" parameterType="Long" resultMap="SysPostResult">
         <include refid="selectSysPostVo"/>
         where post_id = #{postId}
+    </select>
+
+
+    <select id="queryChildCapacity" parameterType="Long" resultType="INTEGER">
+        select sum(plan_capacity) from sys_post
+        where parent_post_id = #{postId}
     </select>
 
     <insert id="insertSysPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">

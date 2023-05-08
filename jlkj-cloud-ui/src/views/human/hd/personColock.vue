@@ -132,7 +132,7 @@
     />
 
     <!-- 添加或修改人员卡钟对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
         <el-row :gutter="20">

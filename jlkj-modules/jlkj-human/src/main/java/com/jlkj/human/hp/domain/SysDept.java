@@ -1,5 +1,6 @@
 package com.jlkj.human.hp.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
@@ -20,6 +21,7 @@ public class SysDept extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    @TableId
     /** 机构id */
     private Long deptId;
 
@@ -32,27 +34,34 @@ public class SysDept extends BaseEntity
     private String deptName;
 
     /** 板块ID */
+    @Excel(name = "板块ID")
     private String boardId;
 
     /** 上级机构id */
+    @Excel(name = "上级机构id")
     private Long parentId;
 
     /** 上级机构名称 */
+    @Excel(name = "上级机构名称")
     private String parentName;
 
     /** 上级机构全称 */
+    @Excel(name = "上级机构全称")
     private String parentFullName;
 
     /** 祖级列表 */
+    @Excel(name = "祖级列表")
     private String ancestors;
 
     /** 层级逗号数 */
     private Integer ancestorsLevel;
 
     /** 机构层级 */
+    @Excel(name = "机构层级")
     private String orgTierId;
 
     /** 排序序号 */
+    @Excel(name = "排序序号")
     private Long orderNum;
 
     /** 领导 */
@@ -79,28 +88,34 @@ public class SysDept extends BaseEntity
 
     /** 生效日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "生效日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date effectDate;
 
     /** 版本号 */
+    @Excel(name = "版本号")
     private String versionNo;
 
     /** 是否公司 */
+    @Excel(name = "是否公司")
     private String ifCompany;
 
     /** 公司编码 */
+    @Excel(name = "公司编码")
     private String compId;
 
     /** 是否显示 */
+    @Excel(name = "是否显示")
     private String ifDisplay;
 
     /** 状态 */
+    @Excel(name = "状态")
     private String status;
 
     /** 是否是新的 */
     private String isNew;
 
     /** 公司简称 */
+    @Excel(name = "公司简称")
     private String companyName;
 
     /** 集团编码 */

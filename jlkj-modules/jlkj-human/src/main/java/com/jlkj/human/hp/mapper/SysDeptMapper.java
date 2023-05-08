@@ -40,6 +40,22 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
     public SysDept selectSysDeptByDeptCode(String deptCode);
 
     /**
+     * 查询子部门个数
+     *
+     * @param deptId 部门id
+     * @return 子部门个数
+     */
+    public Integer queryChildNumber(Long deptId);
+
+    /**
+     * 查询是否有重复编码数据
+     *
+     * @param sysDept 部门信息
+     * @return 重复编码个数
+     */
+    public Integer queryRepetitivedata(SysDept sysDept);
+
+    /**
      * 查询父id为此部门编码的数据
      *
      * @param deptId 部门id

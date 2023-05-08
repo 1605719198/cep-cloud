@@ -255,7 +255,7 @@
     </el-dialog>
 
     <!-- 详情员工请假记录对话框 -->
-    <el-dialog :title="title" :visible.sync="opencreate" width="900px" append-to-body>
+    <el-dialog :title="title" :visible.sync="opencreate" width="900px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="200px">
 
         <el-row :gutter="20">
@@ -618,12 +618,11 @@ export default {
           }
         )
       }else{
-        //
+        //起止请假时间小时分钟
         var startHour = parseInt(String(startDate.getHours()).padStart(2, '0'))
         var startMin = parseInt(String(startDate.getMinutes()).padStart(2, '0'))
         var endHour = parseInt(String(endDate.getHours()).padStart(2, '0'))
         var endMin = parseInt(String(endDate.getMinutes()).padStart(2, '0'))
-
         var params={
           empId: this.form.empNo,
           startDate: getDateTime(1,startDate),
@@ -633,37 +632,74 @@ export default {
         getShiftCodeByPerson(params).then(response =>{
           this.shiftCodeData = response.rows;
           //总工作分钟数
-          var workMinuteAll = 0
+          var workMinuteAll = 0;
           //一天理论工作分钟数
           var workMinuteDay = parseInt(this.shiftCodeData[0].conHour) * 60 + parseInt(this.shiftCodeData[0].conMin)
           if(response.total!=restDays){
             this.$modal.msgError('请假时间内有未排班天数')
           }else{
             response.rows.forEach((value)=>{
+              //工作时间
+              var workMinute = 0;
+              //工作开始时间
+              var hour1 = parseInt(value.startHour)
+              var min1 = parseInt(value.startMin)
+              //工作持续时间
+              var hour2 = parseInt(value.conHour)
+              var min2 = parseInt(value.conMin)
+              //工作结束时间
+              var hour3 = parseInt(value.endHour)
+              var min3 = parseInt(value.endMin)
+              //是否跨天
+              var overDay = (hour1+hour2+Math.floor((min1+min2)/60))>24? 'Y':'N'
               if(value.restCount==0){
-                //工作开始时间
-                var hour1 = parseInt(value.startHour)
-                var min1 = parseInt(value.startMin)
-                //工作持续时间
-                var hour2 = parseInt(value.conHour)
-                var min2 = parseInt(value.conMin)
-                //工作结束时间
-                var hour3 = parseInt(value.endHour)
-                var min3 = parseInt(value.endMin)
-                //是否跨天
-                var overDay = (hour1+hour2+Math.floor((min1+min2)/60))>24? 'Y':'N'
                 if (overDay ==='Y'){
                   console.log('跨天：'+value.shiftCode)
+                  if(value.createDate===getDateTime(1,startDate)){
+                    //分段判定，早于工作时间，工作时间内，晚于工作时间
+                    if(this.compareTime(startHour,startMin,hour1,min1)<=0){
+                      workMinute = workMinuteDay;
+                    }else if(this.compareTime(startHour,startMin,hour3,min3)>=0){
+                      workMinute = 0;
+                    }else{
+                      workMinute = (hour3-startHour)*60+(min3-startMin)
+                    }
+                  }else if(value.createDate===getDateTime(1,endDate)){
+                    if(this.compareTime(endHour,endMin,hour1,min1)<=0){
+                      workMinute = 0;
+                    }else if(this.compareTime(endHour,endHour,hour3,min3)>=0){
+                      workMinute = workMinuteDay;
+                    }else{
+                      workMinute = (endHour-hour1)*60+(endMin-min1)
+                    }
+                  }else{
+                    workMinute = workMinuteDay;
+                  }
+
 
                 }else{
                   console.log('非跨天:'+value.shiftCode)
                   if(value.createDate===getDateTime(1,startDate)){
-
+                    //分段判定，早于工作时间，工作时间内，晚于工作时间
+                    if(this.compareTime(startHour,startMin,hour1,min1)<=0){
+                      workMinute = workMinuteDay;
+                    }else if(this.compareTime(startHour,startMin,hour3,min3)>=0){
+                      workMinute = 0;
+                    }else{
+                      workMinute = (hour3-startHour)*60+(min3-startMin)
+                    }
                   }else if(value.createDate===getDateTime(1,endDate)){
-
+                    if(this.compareTime(endHour,endMin,hour1,min1)<=0){
+                      workMinute = 0;
+                    }else if(this.compareTime(endHour,endHour,hour3,min3)>=0){
+                      workMinute = workMinuteDay;
+                    }else{
+                      workMinute = (endHour-hour1)*60+(endMin-min1)
+                    }
                   }else{
-                    workMinuteAll += workMinuteDay;
+                    workMinute = workMinuteDay;
                   }
+                workMinuteAll +=workMinute;
                 }
               }
             })

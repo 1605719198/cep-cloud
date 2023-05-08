@@ -26,6 +26,14 @@ export function getDeptmaintenance(deptId) {
   })
 }
 
+// 查询部门资料维护详细
+export function getVersion(id) {
+  return request({
+    url: '/human/deptMaintenance/getVersion/' + id,
+    method: 'get'
+  })
+}
+
 // 新增部门资料维护
 export function addDeptmaintenance(data) {
   return request({
