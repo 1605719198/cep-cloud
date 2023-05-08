@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <!-- 添加或修改岗位信息数据维护对话框 -->
-    <el-dialog :title="title"  :visible.sync="visible" width="1000px" append-to-body>
+    <el-dialog :title="title"  :visible.sync="visible" width="1000px" append-to-body class="customDialogStyle">
       <el-tabs tab-position="top" type="border-card">
         <el-tab-pane label="岗位基本设定" >
           <el-form ref="forms" :model="form" :rules="rules" label-width="180px">
@@ -173,8 +173,8 @@
 
             <el-row :gutter="20" >
               <el-col :span="12">
-                <el-form-item label="该岗位直接下级定员数" prop="planCapacity" >
-                  <el-input v-model="form.planCapacity" disabled/>
+                <el-form-item label="该岗位直接下级定员数" prop="childCapacity" >
+                  <el-input v-model="form.childCapacity" disabled/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -279,7 +279,7 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-      <div v-show="ifupdate" slot="footer" >
+      <div  v-show="ifupdate" slot="footer" >
         <el-divider content-position="center" >变更记录</el-divider>
       </div>
       <el-table :data="formHistory"  v-show="ifupdate" slot="footer" >
@@ -470,6 +470,8 @@ export default {
         listPostVersion(queryParams).then(response => {
           this.formHistory = response.rows;
         });
+      }else{
+        this.ifupdate = false;
       }
       this.deepOptions1 =[];
       this.deepOptions2 =[];
@@ -564,10 +566,5 @@ export default {
 .maxWidth{
   width: 100%;
 }
-.el-select {
-  width: 100%;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
+
 </style>

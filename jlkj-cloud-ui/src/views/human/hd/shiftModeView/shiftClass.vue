@@ -81,7 +81,7 @@
     />
 
     <!-- 添加或修改班别数据对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">

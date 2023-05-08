@@ -125,7 +125,7 @@
     />
 
     <!-- 添加或修改出差会计科目对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -543,10 +543,5 @@ export default {
 }
 </script>
 <style scoped>
-.el-select {
-  width: 100%;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0px !important;
-}
+
 </style>

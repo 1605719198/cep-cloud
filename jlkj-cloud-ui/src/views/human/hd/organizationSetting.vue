@@ -32,20 +32,20 @@
     </el-row>
 
     <div style="border-color: #c8c8c8;border-width: 2px; border-style: solid; padding:15px">
-    <el-form ref="form" :model="form" :rules="rules"  label-width="180px">
+    <el-form ref="form" :model="form" :rules="rules"  label-width="200px">
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="上班打卡有效时间" prop="onDutyTime">
+          <el-form-item label="上班打卡有效时间(分钟)" prop="onDutyTime">
             <el-input  type="number" v-model="form.onDutyTime" placeholder="请输入上班打卡有效时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="下班打卡有效时间" prop="offDutyTime">
+          <el-form-item label="下班打卡有效时间(分钟)" prop="offDutyTime">
             <el-input  type="number" v-model="form.offDutyTime" placeholder="请输入下班打卡有效时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="迟到时间" prop="lateTime" label-width="100px">
+          <el-form-item label="迟到时间(分钟)" prop="lateTime" label-width="120px">
             <el-input  type="number" v-model="form.lateTime" placeholder="请输入迟到时间" class="inputWidth" />
           </el-form-item>
         </el-col>
@@ -53,17 +53,17 @@
 
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="上午下班打卡结束时间" prop="offDutyAm">
+          <el-form-item label="上午下班打卡结束时间(分钟)" prop="offDutyAm">
             <el-input  type="number" v-model="form.offDutyAm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="下午上班打卡开始时间" prop="onDutyPm">
+          <el-form-item label="下午上班打卡开始时间(分钟)" prop="onDutyPm">
             <el-input  type="number" v-model="form.onDutyPm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="早退时间" prop="leaTime" label-width="100px">
+          <el-form-item label="早退时间(分钟)" prop="leaTime" label-width="120px">
             <el-input  type="number" v-model="form.leaTime" placeholder="请输入早退时间" class="inputWidth" />
           </el-form-item>
         </el-col>
@@ -71,17 +71,17 @@
 
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="打卡间隔时间" prop="spaceTime">
+          <el-form-item label="打卡间隔时间(分钟)" prop="spaceTime">
             <el-input  type="number" v-model="form.spaceTime" placeholder="请输入打卡间隔时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="往前审核天数" prop="beforeCheckDays">
+          <el-form-item label="往前审核天数(天)" prop="beforeCheckDays">
             <el-input  type="number" v-model="form.beforeCheckDays" placeholder="请输入往前审核天数" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="缓冲时间" prop="delayTime" label-width="100px">
+          <el-form-item label="缓冲时间(分钟)" prop="delayTime" label-width="120px">
             <el-input  type="number" v-model="form.delayTime" placeholder="请输入缓冲时间" class="inputWidth"/>
           </el-form-item>
         </el-col>
@@ -177,20 +177,20 @@
 
     <!-- 历史机构参数详情对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1350px" append-to-body>
-      <el-form ref="formHistory" :model="formHistory"  label-width="180px">
+      <el-form ref="formHistory" :model="formHistory"  label-width="220px">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="上班打卡有效时间：" prop="onDutyTime">
+            <el-form-item label="上班打卡有效时间(分钟)：" prop="onDutyTime">
               {{formHistory.onDutyTime}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="下班打卡有效时间：" prop="offDutyTime">
+            <el-form-item label="下班打卡有效时间(分钟)：" prop="offDutyTime">
               {{formHistory.offDutyTime}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="迟到时间：" prop="lateTime" label-width="100px">
+            <el-form-item label="迟到时间(分钟)：" prop="lateTime" label-width="120px">
               {{formHistory.lateTime}}
             </el-form-item>
           </el-col>
@@ -198,17 +198,17 @@
 
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="上午下班打卡结束时间：" prop="offDutyAm">
+            <el-form-item label="上午下班打卡结束时间(分钟)：" prop="offDutyAm">
               {{formHistory.offDutyAm}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="下午上班打卡开始时间：" prop="onDutyPm">
+            <el-form-item label="下午上班打卡开始时间(分钟)：" prop="onDutyPm">
               {{formHistory.onDutyPm}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="早退时间：" prop="leaTime" label-width="100px">
+            <el-form-item label="早退时间(分钟)：" prop="leaTime" label-width="120px">
               {{formHistory.leaTime}}
             </el-form-item>
           </el-col>
@@ -216,17 +216,17 @@
 
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="打卡间隔时间：" prop="spaceTime">
+            <el-form-item label="打卡间隔时间(分钟)：" prop="spaceTime">
               {{formHistory.spaceTime}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="往前审核天数：" prop="beforeCheckDays">
+            <el-form-item label="往前审核天数(天)：" prop="beforeCheckDays">
               {{formHistory.beforeCheckDays}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="缓冲时间：" prop="delayTime" label-width="100px">
+            <el-form-item label="缓冲时间(分钟)：" prop="delayTime" label-width="120px">
               {{formHistory.delayTime}}
             </el-form-item>
           </el-col>
@@ -353,9 +353,6 @@ export default {
         ],
         delayTime: [
           { required: true, message: "缓冲时间不能为空", trigger: "blur" }
-        ],
-        onDutyPm: [
-          { required: true, message: "下午上班打卡开始时间不能为空", trigger: "blur" }
         ],
         effectDate: [
           { required: true, message: "生效日期不能为空", trigger: "blur" }

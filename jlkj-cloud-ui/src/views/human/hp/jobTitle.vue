@@ -37,17 +37,6 @@
           v-hasPermi="['human:humanJobTitle:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['human:humanJobTitle:remove']"
-        >删除</el-button>
-      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -106,7 +95,7 @@
     />
 
     <!-- 添加或修改职位名称数据维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -375,7 +364,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除职位名称数据维护编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除职位名称数据：' +row.jobTitleNo+'-'+row.jobTitleName ).then(function() {
         return delJobTitle(ids);
       }).then(() => {
         this.getList();

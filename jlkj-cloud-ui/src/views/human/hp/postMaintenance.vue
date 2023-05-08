@@ -385,6 +385,7 @@ export default {
         ifSpeciallyAssignedPerson: null,
         planCapacity: null,
         nowCapacity: null,
+        childCapacity: null,
         postSort: null,
         capacityBasis: null,
         costCenterId: null,
@@ -492,10 +493,5 @@ export default {
 .treeScrollbar {
   height: 100%;
 }
-.el-select {
-  width: 100%;
-}
-/deep/.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
+
 </style>

@@ -38,7 +38,15 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public SysPost selectSysPostByPostId(Long postId)
     {
-        return sysPostMapper.selectSysPostByPostId(postId);
+        int childCapacity ;
+        try {
+            childCapacity =sysPostMapper.queryChildCapacity(postId);
+        } catch (Exception e) {
+            childCapacity=0;
+        }
+        SysPost sysPost = sysPostMapper.selectSysPostByPostId(postId);
+        sysPost.setChildCapacity((long) childCapacity);
+        return sysPost;
     }
 
     /**

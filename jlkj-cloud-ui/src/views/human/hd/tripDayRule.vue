@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司别" clearable size="small" ref="selectCompany">
+        <el-select v-model="queryParams.compId" placeholder="请选择公司别"  size="small" ref="selectCompany">
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
@@ -149,7 +149,7 @@
     />
 
     <!-- 添加或修改出差日标准维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -296,12 +296,12 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      //登录人工号
-      userEmpId: null,
-      //登录人姓名
-      userEmpName: null,
-      //登录人公司
-      logincompId: null,
+      //登录人信息
+      user: {
+        empNo: null,
+        empName: null,
+        compId: null
+      },
       //公司数据
       companyList: [],
       // 出差日标准维护表格数据
@@ -356,12 +356,15 @@ export default {
   methods: {
     //表单数据配置
     setForm(e){
-      this.form.creator = this.userEmpName;
-      this.form.creatorId = this.userEmpId;
+      this.form.creator = this.user.empName;
+      this.form.creatorId = this.user.empNo;
       this.form.compId = this.queryParams.compId;
       this.form.createDate = getDateTime(1);
-      this.form.status = "0";
       this.form.compName = this.$refs.selectCompany.selectedLabel;
+      if(e===0){
+        this.form.status = "0";
+        this.form.isInternal = 'Y'
+      }
     },
     //获取公司列表
     getCompanyList() {
@@ -371,10 +374,10 @@ export default {
     },
     //初始化数据
     initData() {
-      this.userEmpId = this.$store.state.user.name
-      this.userEmpName = this.$store.state.user.userInfo.nickName
-      this.logincompId = this.$store.state.user.userInfo.compId
-      this.queryParams.compId = this.logincompId
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
     },
     //获取出勤字典
     getDisc() {
@@ -441,7 +444,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
-      this.setForm();
+      this.setForm(0);
       this.open = true
       this.title = '添加出差日标准维护'
     },
@@ -451,7 +454,7 @@ export default {
       const id = row.id || this.ids
       getTripDayRule(id).then(response => {
         this.form = response.data
-        this.form.compName = this.$refs.selectCompany.selectedLabel;
+        this.setForm();
         this.open = true
         this.title = '修改出差日标准维护'
       })

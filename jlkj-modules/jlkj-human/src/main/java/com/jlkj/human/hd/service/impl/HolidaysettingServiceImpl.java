@@ -52,6 +52,7 @@ public class HolidaysettingServiceImpl implements IHolidaysettingService
      * @param holidaysetting 假别参数设定
      * @return 公司假别参数设定
      */
+    @Override
     public HolidaySettingDTO getHolidaySetting(HolidaySettingDTO holidaysetting){
         return holidaysettingMapper.getHolidaySetting(holidaysetting);
     }

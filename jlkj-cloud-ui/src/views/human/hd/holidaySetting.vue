@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司别" clearable>
+        <el-select v-model="queryParams.compId" placeholder="请选择公司别" ref="selectComp">
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
@@ -52,7 +52,6 @@
     </el-row>
 
     <el-table v-loading="loading" :data="holidaysettingList" @selection-change="handleSelectionChange" height="67vh" >
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="假别名称" align="center" prop="holidayTypeCode">
         <template v-slot="scope">
           <dict-tag-human-basis :options="attendenceOptions.HD001" :value="scope.row.holidayTypeCode"/>
@@ -102,19 +101,12 @@
     />
 
     <!-- 添加或修改假别参数设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="190px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="公司别" prop="compId">
-              <el-select v-model="form.compId" placeholder="请选择公司别" clearable class="maxWidth" :disabled="this.form.id">
-                <el-option
-                  v-for="dict in companyList"
-                  :key="dict.compId"
-                  :label="dict.companyName"
-                  :value="dict.compId"
-                />
-              </el-select>
+            <el-form-item label="公司别" prop="compName">
+              {{form.compName}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -185,7 +177,7 @@
     </el-dialog>
 
     <!-- 假别参数复制对话框 -->
-    <el-dialog :title="titlecopy" :visible.sync="opencopy" width="500px" append-to-body>
+    <el-dialog :title="titlecopy" :visible.sync="opencopy" width="500px" append-to-body class="customDialogStyle">
       <el-form ref="formcopy" :model="formcopy" :rules="rulescopy" label-width="150px">
         <el-form-item label="来源公司" prop="oldCompId">
           <el-select v-model="formcopy.oldCompId" placeholder="请选择来源公司" clearable>
@@ -238,10 +230,12 @@ export default {
       opencopy:false,
       //复制表单
       formcopy:{},
-      //登录人姓名
-      nickName: undefined,
-      //登录人公司
-      logincompId:undefined,
+      //登录人信息
+      user: {
+        empNo: null,
+        empName: null,
+        compId: null
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -303,13 +297,6 @@ export default {
   },
   watch: {
     //监听公司别查询参数
-    // 'queryParams.compId':{
-    //   deep:true,
-    //   immediate:false,
-    //   handler:function( newV){
-    //     this.getList();
-    //          }
-    // }
     queryParams:{
       deep:true,
       immediate:false,
@@ -323,9 +310,23 @@ export default {
     this.getCompanyList();
     //假别类型查询
     this.getHumandisc();
-    this.getName();
+    this.initData();
   },
   methods: {
+    //初始化数据
+    initData() {
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
+    },
+    setForm(e){
+      this.form.creator = this.user.empName;
+      this.form.creatorId = this.user.empNo;
+      this.form.createDate = getDateTime(1);
+      this.form.compName = this.$refs.selectComp.selectedLabel;
+      this.form.compId = this.queryParams.compId;
+    },
     //获取公司列表
     getCompanyList(){
       selectCompany().then(response=>{
@@ -371,6 +372,7 @@ export default {
         id: null,
         holidayTypeCode: null,
         compId: null,
+        compName: null,
         isIncHol: null,
         isNeedCheck: null,
         minUnitDay: null,
@@ -418,9 +420,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1);
+      this.setForm();
       this.open = true;
       this.title = "添加假别参数设定";
     },
@@ -430,9 +430,7 @@ export default {
       const id = row.id || this.ids
       getHolidaysetting(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.nickName;
-        this.form.creatorId = this.$store.state.user.name;
-        this.form.createDate = getDateTime(1);
+        this.setForm();
         this.open = true;
         this.title = "修改假别参数设定";
       });

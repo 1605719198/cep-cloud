@@ -74,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         group by child_person_id
     </select>
 
+
     <select id="selectSysDeptList" parameterType="SysDept" resultMap="SysDeptResult">
         <include refid="selectSysDeptVo"/>
         <where>
@@ -87,7 +88,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptCode != null  and deptCode != ''"> and dept_code = #{deptCode}</if>
             <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName} ,'%') </if>
         </where>
-        order by dept_id asc
+        order by (LENGTH(ancestors)-LENGTH(REPLACE(ancestors,',',''))), order_num
+    </select>
+
+    <select id="queryChildNumber" resultType="Int" parameterType="Long">
+        select count(*) from sys_dept
+        <where>
+            <if test="deptId!=null and deptId!=''"> and parent_id =#{deptId}</if>
+        </where>
     </select>
 
     <select id="selectCompanyList" resultMap="SysDeptResult">
@@ -115,6 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysDeptVo"/>
         where dept_code = #{deptCode}
     </select>
+
 
     <select id="selectParentIdByDeptCode" parameterType="Long" resultMap="SysDeptResult">
         <include refid="selectSysDeptVo"/>
@@ -207,6 +216,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="newCompId!=null and newCompId!=''"> and comp_id =#{newCompId}</if>
             and if_company=0
+        </where>
+    </select>
+
+    <select id="queryRepetitivedata" resultType="Int" parameterType="SysDept">
+        select count(*) from sys_dept
+        <where>
+            <if test="deptCode!=null and deptCode!=''"> and dept_code =#{deptCode}</if>
+            <if test="deptId!=null and deptId!=''"> and dept_id !=#{deptId}</if>
+            <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
         </where>
     </select>
 

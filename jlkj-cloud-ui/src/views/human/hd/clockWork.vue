@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司别" clearable size="small">
+        <el-select v-model="queryParams.compId" placeholder="请选择公司别" size="small" ref="selectComp">
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
@@ -31,18 +31,17 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="clockworkList" @selection-change="handleSelectionChange" height="67vh">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="刷卡钟编码" align="center" prop="code" />
-      <el-table-column label="刷卡钟名称" align="center" prop="name" />
-      <el-table-column label="一级机构" align="center" prop="firstDeptName" show-overflow-tooltip/>
-      <el-table-column label="备注" align="center" prop="note" show-overflow-tooltip />
-      <el-table-column label="输入人" align="center" prop="creator" />
-      <el-table-column label="输入日期" align="center" prop="createDate" width="180">
+      <el-table-column label="刷卡钟编码" align="center" prop="code" width="120" sortable/>
+      <el-table-column label="刷卡钟名称" align="center" prop="name" width="180" sortable/>
+      <el-table-column label="一级机构" align="center" prop="firstDeptName" show-overflow-tooltip width="300" sortable/>
+      <el-table-column label="备注" align="center" prop="note" show-overflow-tooltip sortable/>
+      <el-table-column label="输入人" align="center" prop="creator" width="120" sortable/>
+      <el-table-column label="输入日期" align="center" prop="createDate" width="180" sortable>
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template v-slot="scope">
           <el-button
             size="mini"
@@ -71,24 +70,17 @@
     />
 
     <!-- 添加或修改公司卡钟设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司别" prop="compId">
-              <el-select v-model="form.compId" placeholder="请选择公司别" clearable  class="maxWidth">
-                <el-option
-                  v-for="dict in companyList"
-                  :key="dict.compId"
-                  :label="dict.deptName"
-                  :value="dict.compId"
-                />
-              </el-select>
+              {{form.compName}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="一级机构" prop="leader">
-              <el-input   v-model="form.firstDeptName" placeholder="请选择一级机构"   disabled>
+              <el-input   v-model="form.deptName"   disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>
@@ -138,20 +130,22 @@ import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName} from "@/api/system/user";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";
 import selectDept from "@/views/components/human/selectView/selectDept";
-
+import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 export default {
   name: "Clockwork",
-  components: {selectDept},
+  components: {selectDept,DictTagHuman},
   data() {
     return {
       //公司数据
       companyList:[],
       //一级部门选单部门号
       firstDeptId:'',
-      //登录人姓名
-      nickName: undefined,
-      //登录人公司
-      logincompId:undefined,
+      //登录人信息
+      user: {
+        empNo: null,
+        empName: null,
+        compId: null
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -195,9 +189,14 @@ export default {
       }
     };
   },
+  watch: {
+    'queryParams.compId'(val) {
+      this.getList();
+    }
+  },
   created() {
     this.getCompanyList();
-    this.getName();
+    this.initData();
   },
   methods: {
     //获取公司列表
@@ -214,7 +213,7 @@ export default {
         this.$modal.msgWarning("请先选择公司别");
       }
     },
-    /** 点选获取人员信息 */
+    /** 点选获取部门信息 */
     getJobNumber(val) {
       var firstDeptId = [];
       var firstDeptName = '' ;
@@ -226,17 +225,36 @@ export default {
           firstDeptName+=(','+value.deptName)
         }
         this.form.firstDeptName = firstDeptName;
+        if(this.form.firstDeptName.length>10){
+          this.form.deptName = this.form.firstDeptName.substring(0,10)+'...'
+        }else{
+          this.form.deptName = this.form.firstDeptName
+        }
         this.form.firstDeptId = firstDeptId.toString()
       })
     },
-    // 获取当前登录用户名称/信息
-    getName(){
-      getAvatorByUserName(this.$store.state.user.name).then( response => {
-        this.nickName=response.data.nickName
-        this.logincompId=response.data.compId
-        this.queryParams.compId=response.data.compId;
-        this.getList();
-      })
+    //初始化数据
+    initData() {
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
+    },
+    //配置表单数据
+    setForm(e){
+        this.form.creator = this.user.empName;
+        this.form.creatorId = this.user.empNo;
+        this.form.createDate = getDateTime(1);
+        this.form.compName = this.$refs.selectComp.selectedLabel;
+        this.form.compId = this.queryParams.compId;
+        if(e==1){
+          if(this.form.firstDeptName.length>10){
+            this.form.deptName = this.form.firstDeptName.substring(0,10)+'...'
+          }else{
+            this.form.deptName = this.form.firstDeptName
+          }
+
+        }
     },
     /** 查询公司卡钟设定列表 */
     getList() {
@@ -259,8 +277,10 @@ export default {
         code: null,
         name: null,
         compId: null,
+        compName: null,
         firstDeptId: null,
         firstDeptName: null,
+        deptName: null,
         note: null,
         creator: null,
         creatorId: null,
@@ -287,9 +307,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1);
+      this.setForm(0)
       this.open = true;
       this.title = "添加公司卡钟设定";
     },
@@ -299,10 +317,8 @@ export default {
       const id = row.id || this.ids
       getClockwork(id).then(response => {
         this.form = response.data;
-        this.form.creator = this.nickName;
-        this.form.creatorId = this.$store.state.user.name;
-        this.form.createDate = getDateTime(1);
         this.open = true;
+        this.setForm(1)
         this.title = "修改公司卡钟设定";
       });
     },
@@ -329,7 +345,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除公司卡钟设定编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除公司卡钟编码为"' + row.code + '"的数据项？').then(function() {
         return delClockwork(ids);
       }).then(() => {
         this.getList();

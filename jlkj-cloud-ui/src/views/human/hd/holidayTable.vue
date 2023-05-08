@@ -42,7 +42,7 @@
     </human-calendar>
 
     <!-- 日期类别选择对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="250px" append-to-body >
+    <el-dialog :title="title" :visible.sync="open" width="250px" append-to-body class="customDialogStyle">
       <div style="display: flex;flex-direction: column; align-items: center">
         <div :class="headClass">
           日期类别
