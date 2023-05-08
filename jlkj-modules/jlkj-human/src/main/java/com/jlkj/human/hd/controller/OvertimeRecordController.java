@@ -148,13 +148,13 @@ public class OvertimeRecordController extends BaseController {
             List<OvertimeRecord> list = iOvertimeRecordService.lambdaQuery()
                     .eq(OvertimeRecord::getEmpNo, overtimeRecord.getEmpNo())
                     .orderBy(true, false, OvertimeRecord::getEndDate)
-                    .last("limit 1")
+                    .last("limit 2")
                     .list();
             if (list.isEmpty()) {
                 iOvertimeRecordService.updateById(overtimeRecord);
                 return AjaxResult.success("修改成功");
             } else {
-                if (overtimeRecord.getStartDate().before(list.get(0).getEndDate())) {
+                if (overtimeRecord.getStartDate().before(list.get(1).getEndDate())) {
                     return AjaxResult.error("加班开始时间早于上次加班的结束时间");
                 } else {
                     iOvertimeRecordService.updateById(overtimeRecord);

@@ -14,13 +14,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PageProductionHandoverStockVerifyDTO {
 
-
-//	@JsonProperty("shift")
-//	private String shift;
-//
-//	@JsonProperty("class_type")
-//	private String classType;
-
 	@JsonProperty("start_time")
 	private String startTime;
 
@@ -35,11 +28,4 @@ public class PageProductionHandoverStockVerifyDTO {
 	@Min(value = 1, message = "size不能小于1")
 	private Long size;
 
-//	@NotNull(message = "order为必须项")
-//	@NotEmpty(message = "order不能为空")
-//	private String order;
-//
-//	@NotNull(message = "orderby为必须项")
-//	private String orderby;
 }
-
