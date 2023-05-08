@@ -61,6 +61,14 @@ public interface SysPostMapper
     public int updateSysPost(SysPost sysPost);
 
     /**
+     * 查询岗位下级定员
+     *
+     * @param postId 岗位id
+     * @return 结果
+     */
+    public int queryChildCapacity(Long postId);
+
+    /**
      * 删除岗位信息数据维护
      * 
      * @param postId 岗位信息数据维护主键

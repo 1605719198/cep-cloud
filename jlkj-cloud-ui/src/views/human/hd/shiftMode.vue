@@ -109,7 +109,7 @@
     </el-tabs>
 
     <!-- 添加或修改轮班方式数据对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-row :gutter="20">
           <el-col :span="12">

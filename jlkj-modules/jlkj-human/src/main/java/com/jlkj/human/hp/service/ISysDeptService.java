@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hd.domain.NightDuty;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-03-08
  */
-public interface ISysDeptService extends IService<SysDept>
+public interface ISysDeptService
 {
     /**
      * 查询部门资料维护
@@ -41,6 +41,14 @@ public interface ISysDeptService extends IService<SysDept>
      * @return 部门岗位资料集合
      */
     public List<DeptUnionPostDTO> selectDeptPostList(DeptUnionPostDTO deptpost);
+
+    /**
+     * 查询子部门个数
+     *
+     * @param deptId 部门id
+     * @return 子部门个数
+     */
+    public Integer queryChildNumber(Long deptId);
 
     /**
      * 查询公司列表
@@ -122,8 +130,9 @@ public interface ISysDeptService extends IService<SysDept>
      * 
      * @param deptIds 需要删除的部门资料维护主键集合
      * @return 结果
+     * @throws Exception 抛出异常停止执行
      */
-    public int deleteSysDeptByDeptIds(Long[] deptIds);
+    public int deleteSysDeptByDeptIds(Long[] deptIds)throws Exception;
 
     /**
      * 删除部门资料维护信息
@@ -170,4 +179,14 @@ public interface ISysDeptService extends IService<SysDept>
      * @return 结果
      */
     public ArrayList<FirstDeptDTO> getPersonByDept(String deptId);
+
+    /**
+     * 导入部门资料数据
+     *
+     * @param sysDeptList 部门数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importUser(List<SysDept> sysDeptList, Boolean isUpdateSupport, String operName);
 }

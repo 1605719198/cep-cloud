@@ -71,7 +71,7 @@
           </el-col>
         </el-row>
         <!-- 修改员工出勤基本资料维护对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+        <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
               <el-col :span="12">
@@ -132,7 +132,7 @@
         </el-dialog>
 
         <!-- 添加员工出勤基本资料维护对话框 -->
-        <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body>
+        <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="资料编码" prop="code">
               <el-input v-model="form.code" placeholder="请输入资料编码" />

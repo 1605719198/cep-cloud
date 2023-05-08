@@ -70,7 +70,7 @@
     />
 
     <!-- 添加或修改出差地点记录对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="公司别" prop="compId">
           <label>
@@ -163,6 +163,11 @@ export default {
         ],
       }
     };
+  },
+  watch: {
+    'queryParams.compId'(val) {
+      this.getList();
+    }
   },
   created() {
     this.getDisc()
