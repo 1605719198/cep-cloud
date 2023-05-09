@@ -314,7 +314,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['Country', 'City']
+        optionsType: ['Country']
       },
       //出勤选单选项列表
       attendenceOptions: [],
