@@ -117,8 +117,8 @@ public class AttendencebasisController extends BaseController
         List<String> optionsType = optinonType.getOptionsType();
         HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
         for (String item : optionsType) {
-            List<BasisOptionsDTO> list = attendencebasisService.selectBasisOptions(item);
-            map.put(item, list);
+                List<BasisOptionsDTO> list = attendencebasisService.selectBasisOptions(item);
+                map.put(item, list);
         }
         return AjaxResult.success(map);
     }

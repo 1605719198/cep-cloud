@@ -154,7 +154,7 @@
                     style="text-align: right"
                   >
                     {{scope.row.newPostName}}
-                    <el-button icon="el-icon-search" @click="openPostPop"></el-button>
+                    <el-button icon="el-icon-search" @click="openPostPop(scope.$index)"></el-button>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -345,8 +345,10 @@ export default {
     }
   },
   created() {
-    this.queryParams.empNo = this.$store.state.user.name
-    this.queryParams.compId = this.$store.state.user.userInfo.compId
+    this.$nextTick(function () {
+      this.queryParams.empNo = this.$store.state.user.name
+      this.queryParams.compId = this.$store.state.user.userInfo.compId
+    })
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
@@ -391,7 +393,7 @@ export default {
             newPostName: undefined,
           }
         ]
-      };
+      },
       this.form = {
         postPop: [
           {
@@ -495,6 +497,7 @@ export default {
     handleNodeClick(data) {
       this.queryParams.orgId = data.id
       this.addJsonForm.departmentName = data.label
+      this.addJsonForm.departmentId = data.id
       this.handleQuery();
     },
     handleQuery() {
@@ -516,7 +519,16 @@ export default {
       this.postName = val
       this.addJsonForm.employeeInductionList[this.index].newPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
     },
-    openPostPop() {
+    openPostPop(val) {
+      this.form = {
+        postPop: [
+          {
+            postTypeId: undefined,
+            newPostName: undefined,
+          }
+        ]
+      }
+      this.index = val
       this.openPostName = true
       this.compId = undefined
       this.postMaintenanceList = []

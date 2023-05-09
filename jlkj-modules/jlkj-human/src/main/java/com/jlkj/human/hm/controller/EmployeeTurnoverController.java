@@ -50,14 +50,18 @@ public class EmployeeTurnoverController extends BaseController {
                     .orderBy(true, false, ChangeMaster::getVersionNo)
                     .last("limit 1");
         List<ChangeMaster> list = changeMasterService.list(queryWrapper);
-        LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
-        queryWrapper1.eq(ChangeDetail::getParentId, list.get(0).getUuid())
-                     .eq(ChangeDetail::getPostTypeId, "01");
-        List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
-        Map<String,Object> dataMap = new HashMap<>(16);
-        dataMap.put("list", list);
-        dataMap.put("list1", list1);
-        return AjaxResult.success("查询成功", dataMap);
+        if (list.isEmpty()) {
+            return AjaxResult.error("查无资料");
+        } else {
+            LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
+            queryWrapper1.eq(ChangeDetail::getParentId, list.get(0).getUuid())
+                    .eq(ChangeDetail::getPostTypeId, "01");
+            List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
+            Map<String,Object> dataMap = new HashMap<>(16);
+            dataMap.put("list", list);
+            dataMap.put("list1", list1);
+            return AjaxResult.success("查询成功", dataMap);
+        }
    }
 
     /**

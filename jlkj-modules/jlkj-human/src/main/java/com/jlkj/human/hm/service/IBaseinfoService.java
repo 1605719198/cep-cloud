@@ -2,6 +2,7 @@ package com.jlkj.human.hm.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.human.hm.domain.Baseinfo;
+import com.jlkj.human.hm.dto.BaseInfoDTO;
 
 import java.util.List;
 
@@ -17,5 +18,10 @@ public interface IBaseinfoService extends IService<Baseinfo> {
      * @return
      */
     List<Baseinfo> getBaseInfoTreeList();
+
+    /**
+     * 获取专业下拉选单列表
+     */
+    Object getDegreeMajor(BaseInfoDTO humanresourceBaseInfoDTO);
 
 }

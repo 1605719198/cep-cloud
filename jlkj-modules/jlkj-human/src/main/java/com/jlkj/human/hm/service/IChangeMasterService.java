@@ -1,7 +1,8 @@
 package com.jlkj.human.hm.service;
 
-import com.jlkj.human.hm.domain.ChangeMaster;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hm.domain.ChangeMaster;
+import com.jlkj.human.hm.dto.ChangeMasterDTO;
 
 /**
 * @author 89373
@@ -10,4 +11,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface IChangeMasterService extends IService<ChangeMaster> {
 
+    /**
+     * 添加员工入职作业
+     */
+    Object addEmployeeInduction(ChangeMasterDTO changeMasterDTO);
 }

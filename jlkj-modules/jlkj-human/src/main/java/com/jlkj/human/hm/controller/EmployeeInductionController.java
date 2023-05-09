@@ -1,10 +1,8 @@
 package com.jlkj.human.hm.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
-import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
@@ -50,10 +48,8 @@ public class EmployeeInductionController extends BaseController {
     @Operation(summary = "查询员工入职作业列表")
     @GetMapping("/getList")
     public Object getEmployeeInductionList(ChangeMaster changeMaster) {
-        LambdaQueryWrapper<ChangeMaster> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StringUtils.isNotBlank(changeMaster.getCompId()), ChangeMaster::getCompId, changeMaster.getCompId())
-                    .eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo());
-        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
+        List<ChangeMaster> list = changeMasterService.lambdaQuery().eq(StringUtils.isNotBlank(changeMaster.getCompId()), ChangeMaster::getCompId, changeMaster.getCompId())
+                .eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo()).list();
         return AjaxResult.success("查询成功", list);
    }
 
@@ -65,51 +61,7 @@ public class EmployeeInductionController extends BaseController {
     @Operation(summary = "添加员工入职作业")
     @PostMapping("/addEmployeeInduction")
     public Object addEmployeeInduction(@RequestBody ChangeMasterDTO changeMasterDTO) {
-        ChangeMaster changeMaster = new ChangeMaster();
-        BeanUtils.copyProperties(changeMasterDTO, changeMaster);
-        List<ChangeDetail> employeeInductionList = changeMasterDTO.getEmployeeInductionList();
-        Date effectDate = changeMaster.getEffectDate();
-        changeMaster.setChangeTypeId("08");
-        changeMaster.setVersionNo(1);
-        changeMaster.setUuid(IdUtils.fastSimpleUUID());
-        for (ChangeDetail item : employeeInductionList) {
-            item.setParentId(changeMaster.getUuid());
-            if ("01".equals(item.getPostTypeId())) {
-                changeMasterDTO.setPostId(item.getNewPostId());
-                changeMasterDTO.setPostName(item.getNewPostName());
-            }
-        }
-        LambdaQueryWrapper<ChangeMaster> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ChangeMaster::getEffectDate, effectDate)
-                    .eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo());
-        LambdaQueryWrapper<ChangeDetail> queryWrapper1 = new LambdaQueryWrapper<>();
-        queryWrapper1.eq(ChangeDetail::getParentId, changeMaster.getUuid())
-                     .eq(ChangeDetail::getPostTypeId, "01");
-        List<ChangeMaster> list = changeMasterService.list(queryWrapper);
-        List<ChangeMaster> list2 = changeMasterService.lambdaQuery().eq(ChangeMaster::getEmpNo, changeMaster.getEmpNo()).list();
-        List<ChangeDetail> list1 = changeDetailService.list(queryWrapper1);
-        if (!list2.isEmpty()) {
-            return AjaxResult.error("入职资料已存在");
-        }
-        if (list1.size() > 1) {
-            return AjaxResult.error("只能存在一笔主岗位资料！！！");
-        }
-        if (!list.isEmpty()) {
-            return AjaxResult.error("员工同一生效日期已存在异动信息，新增失败！");
-        }
-        boolean result = changeMasterService.save(changeMaster);
-        changeDetailService.saveOrUpdateBatch(employeeInductionList);
-        if (result) {
-            personnelService.lambdaUpdate()
-                    .set(Personnel::getPostName, changeMasterDTO.getPostName())
-                    .set(Personnel::getPostId, changeMasterDTO.getPostId())
-                    .set(Personnel::getPostLevelName, changeMasterDTO.getPostLevel())
-                    .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
-                    .eq(Personnel::getEmpNo, changeMaster.getEmpNo()).update();
-            return AjaxResult.success("保存成功");
-        } else {
-            return AjaxResult.error("保存失败");
-        }
+        return changeMasterService.addEmployeeInduction(changeMasterDTO);
     }
 
     /**
@@ -173,7 +125,9 @@ public class EmployeeInductionController extends BaseController {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
                     .set(Personnel::getPostId, changeMasterDTO.getPostId())
+                    .set(Personnel::getPostLevelName, changeMasterDTO.getPostLevel())
                     .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
+                    .set(Personnel::getDepartmentId, changeMasterDTO.getDepartmentId())
                     .eq(Personnel::getEmpNo, changeMasterDTO.getEmpNo()).update();
         }
         return AjaxResult.success("修改成功");

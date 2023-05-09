@@ -1,6 +1,7 @@
 package com.jlkj.human.hm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -76,43 +77,51 @@ public class PersonnelController extends BaseController {
     /**
      * 新增人员基本信息
      */
-//    @RequiresPermissions("human:affairsBaseInfo:add")
-//    @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
-//    @Operation(summary = "新增人员基本信息")
-//    @PostMapping("/addPersonnelBasicInfo")
-//    public Object addPersonnelBasicInfo(@RequestBody Personnel personnel) {
-//        List<Personnel> list = personnelService.lambdaQuery().eq(Personnel::getCertificateNumber, personnel.getCertificateNumber()).list();
-//        if (list.isEmpty()) {
-//            List<Personnel> list1 = personnelService.lambdaQuery().eq(Personnel::getEmpNo, personnel.getEmpNo()).list();
-//            if (list1.isEmpty()) {
-//                // 根据姓名 取得大写首字母
-//                personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
-//                personnel.setStatus("1");
-//                boolean result = personnelService.saveOrUpdate(personnel);
-//                if (result) {
-//                    SysUser sysUser = new SysUser();
-//                    sysUser.setUserName(personnel.getEmpNo());
-//                    sysUser.setNickName(personnel.getFullName());
-//                    sysUser.setCreateBy(SecurityUtils.getUsername());
-//                    sysUser.setPassword(SecurityUtils.encryptPassword("123456"));
-//                    userService.save(sysUser);
-//                    return AjaxResult.success("保存成功");
-//                } else {
-//                    return AjaxResult.error();
-//                }
-//            } else {
-//                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已被使用");
-//            }
-//        } else {
-//            SysDept dept = deptService.lambdaQuery().eq(SysDept::getCompId, list.get(0).getCompId()).one();
-//            return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + dept.getDeptName() + "公司工号" + list.get(0).getEmpNo() + "使用");
-//        }
-//    }
+    @RequiresPermissions("human:affairsBaseInfo:add")
+    @Log(title = "新增人员基本信息", businessType = BusinessType.INSERT)
+    @Operation(summary = "新增人员基本信息")
+    @PostMapping("/addPersonnelBasicInfo")
+    public Object addPersonnelBasicInfo(@RequestBody Personnel personnel) {
+        List<Personnel> list = personnelService.lambdaQuery().eq(Personnel::getCertificateNumber, personnel.getCertificateNumber()).list();
+        if (list.isEmpty()) {
+            List<Personnel> list1 = personnelService.lambdaQuery().eq(Personnel::getEmpNo, personnel.getEmpNo()).list();
+            if (list1.isEmpty()) {
+                // 根据姓名 取得大写首字母
+                personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
+                personnel.setStatus("1");
+                boolean result = personnelService.save(personnel);
+                if (result) {
+                    SysUser sysUser = new SysUser();
+                    sysUser.setUserName(personnel.getEmpNo());
+                    sysUser.setNickName(personnel.getFullName());
+                    sysUser.setCreateBy(SecurityUtils.getUsername());
+                    sysUser.setPassword(SecurityUtils.encryptPassword("123456"));
+                    userService.save(sysUser);
+                    return AjaxResult.success("保存成功");
+                } else {
+                    return AjaxResult.error();
+                }
+            } else {
+                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已被使用");
+            }
+        } else {
+            if (list.get(0).getEmpNo().equals(personnel.getEmpNo())) {
+                LambdaUpdateWrapper<Personnel> updateWrapper = new LambdaUpdateWrapper<>();
+                updateWrapper.eq(Personnel::getEmpNo, personnel.getEmpNo())
+                             .eq(Personnel::getCertificateNumber, personnel.getCertificateNumber());
+                personnelService.update(personnel, updateWrapper);
+                return AjaxResult.success("修改成功");
+            } else {
+                SysDept dept = deptService.queryCompById(list.get(0).getCompId());
+                return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + dept.getDeptName() + "公司工号" + list.get(0).getEmpNo() + "使用");
+            }
+        }
+    }
 
     /**
      * 获取人员基本信息查询列表
      */
-//    @RequiresPermissions("human:personnelBasicInfo:query")
+    @RequiresPermissions("human:personnelBasicInfo:query")
     @Log(title = "获取人员基本信息查询列表", businessType = BusinessType.OTHER)
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")
