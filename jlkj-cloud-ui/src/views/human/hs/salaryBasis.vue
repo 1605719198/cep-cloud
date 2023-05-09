@@ -38,7 +38,7 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini" v-hasPermi="['human:attendenceBasis:add']" >新增
+                        <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini" v-hasPermi="['human:salaryBasis:add']" >新增
                         </el-button>
                       </el-form-item>
                     </el-form>
@@ -47,8 +47,8 @@
               </div>
               <div>
                 <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
-                  <el-table-column label="资料代号" minWidth="150" align="center" prop="code"/>
-                  <el-table-column label="资料名称" minWidth="150" align="center" prop="name"/>
+                  <el-table-column label="资料代号" minWidth="150" align="center" prop="infoCode"/>
+                  <el-table-column label="资料名称" minWidth="150" align="center" prop="infoName"/>
                   <el-table-column label="状态" minWidth="150" align="center" prop="status">
                     <template v-slot="scope">
                       <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -59,12 +59,12 @@
                   <el-table-column label="操作" align="center" min-width="160px">
                     <template v-slot="scope">
                       <el-button size="mini" type="text" icon="el-icon-edit"
-                                 v-hasPermi="['human:attendenceBasis:edit']"
+                                 v-hasPermi="['human:salaryBasis:edit']"
                                  @click="handleUpdate(scope.row)">
                         编辑
                       </el-button>
                       <el-button size="mini" type="text" icon="el-icon-delete"
-                                 v-hasPermi="['human:attendenceBasis:remove']"
+                                 v-hasPermi="['human:salaryBasis:remove']"
                                  @click="handleDelete(scope.row)">
                         删除
                       </el-button>
@@ -82,18 +82,18 @@
             </div>
           </el-col>
         </el-row>
-        <!-- 修改员工出勤基本资料维护对话框 -->
+        <!-- 修改员工薪资基本资料维护对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="资料编码" prop="code">
-                  <el-input v-model="form.code" placeholder="请输入资料编码" maxlength="30" />
+                <el-form-item label="资料编码" prop="infoCode">
+                  <el-input v-model="form.infoCode" placeholder="请输入资料编码" maxlength="30" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="资料名称" prop="name">
-                  <el-input v-model="form.name" placeholder="请输入资料名称" maxlength="200" />
+                <el-form-item label="资料名称" prop="infoName">
+                  <el-input v-model="form.infoName" placeholder="请输入资料名称" maxlength="200" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -110,11 +110,11 @@
                   </el-radio-group>
                 </el-form-item>
               </el-col>
-<!--              <el-col :span="12">-->
-<!--                <el-form-item label="排序序号" prop="orderNum">-->
-<!--                  <el-input v-model="form.orderNum" placeholder="请输入排序序号" type="number"/>-->
-<!--                </el-form-item>-->
-<!--              </el-col>-->
+              <!--              <el-col :span="12">-->
+              <!--                <el-form-item label="排序序号" prop="orderNum">-->
+              <!--                  <el-input v-model="form.orderNum" placeholder="请输入排序序号" type="number"/>-->
+              <!--                </el-form-item>-->
+              <!--              </el-col>-->
             </el-row>
 
             <el-row :gutter="20">
@@ -143,14 +143,14 @@
           </div>
         </el-dialog>
 
-        <!-- 添加员工出勤基本资料维护对话框 -->
+        <!-- 添加员工薪资基本资料维护对话框 -->
         <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="资料编码" prop="code">
-              <el-input v-model="form.code" placeholder="请输入资料编码" />
+            <el-form-item label="资料编码" prop="infoCode">
+              <el-input v-model="form.infoCode" placeholder="请输入资料编码" />
             </el-form-item>
-            <el-form-item label="资料名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入资料名称" />
+            <el-form-item label="资料名称" prop="infoName">
+              <el-input v-model="form.infoName" placeholder="请输入资料名称" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -166,7 +166,7 @@
 <script>
 import '@/assets/styles/humanStyles.scss';
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
-import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis, treeselect } from "@/api/human/hd/attendenceBasis";
+import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree } from "@/api/human/hs/salaryBasis";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 export default {
   name: "BaseInfo",
@@ -188,7 +188,7 @@ export default {
       //选单树数据转化
       defaultProps: {
         children: 'children',
-        label: 'label2'
+        label: 'infoName'
       },
       //选单目录数据
       menuData: [],
@@ -214,10 +214,10 @@ export default {
       defaultShowNodes: [],
       // 表单校验
       rules: {
-        code: [
+        infoCode: [
           { required: true, message: "资料编码不能为空", trigger: "blur" }
         ],
-        name: [
+        infoName: [
           { required: true, message: "资料名称不能为空", trigger: "blur" }
         ],
       }
@@ -253,11 +253,11 @@ export default {
     setForm(e){
       this.form.creator = this.user.empName;
       this.form.creatorId = this.user.empNo;
-      this.form.createDate = getDateTime(1)
+      this.form.createDate = getDateTime(0)
       if(e===0){
         this.form.parentid = this.queryParams.id;
         this.form.compId = this.queryParams.compId;
-        this.form.status = '0';
+        this.form.status = '0'
       }
     },
     //获取选单配置树
@@ -265,8 +265,8 @@ export default {
       var params ={
         compId:this.queryParams.compId
       }
-      treeselect(params).then(response => {
-        this.menuData = response.data;
+      listSalaryBasisTree(params).then(response => {
+        this.menuData = this.handleTree(response,"id","parentid","children");
         this.defaultShowNodes.push(this.menuData[0].id);
         this.queryParams.id = this.defaultShowNodes[0];
         this.onLoad()
@@ -282,7 +282,7 @@ export default {
     //载入数据
     onLoad() {
       this.table.loading = true;//加载状态
-      listAttendenceBasis(this.queryParams).then(response => {
+      listSalaryBasis(this.queryParams).then(response => {
         this.total = response.total;
         this.tableData = response.rows;//表格数据
         this.table.loading = false;
@@ -294,10 +294,8 @@ export default {
     /** 添加下级操作 */
     handlechild(row){
       this.reset();
+      this.setForm()
       this.form.parentid = row.id
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1)
       this.open = true;
       this.title = "添加下级窗口";
     },
@@ -327,7 +325,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getAttendenceBasis(id).then(response => {
+      getSalaryBasis(id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改窗口";
@@ -339,14 +337,14 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             this.setForm();
-            updateAttendenceBasis(this.form).then(response => {
+            updateSalaryBasis(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.opencreate = false;
               this.getList();
             });
           } else {
-            addAttendenceBasis(this.form).then(response => {
+            addSalaryBasis(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.opencreate = false;
@@ -359,8 +357,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除员工出勤基本资料维护编号为"' + ids + '"的数据项？').then(function() {
-        return delAttendenceBasis(ids);
+      this.$modal.confirm('是否确认删除员工薪资基本资料维护编号为"' + ids + '"的数据项？').then(function() {
+        return delSalaryBasis(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -376,12 +374,12 @@ export default {
     reset() {
       this.form = {
         id: null,
-        code: null,
-        name: null,
-        status: '0',
+        infoCode: null,
+        infoName: null,
+        status: null,
         compId: null,
         isShowno: null,
-        isChecked: null,
+        ischecked: null,
         orderNum: null,
         parentid: null,
         parents: null,
