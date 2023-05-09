@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司名称" clearable size="small">
+          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司名称"  size="small">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -32,6 +32,7 @@
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="职位ID" prop="postId">
             <el-input maxlength="10"
+                      clearable
                       v-model="queryParams.postId"
                       type="number"
                       placeholder="请输入职位ID"
@@ -44,12 +45,16 @@
         </el-form>
 
         <el-table v-loading="loading" :data="postPersons"  height="67vh" v-show="treeandtable">
-          <el-table-column label="职工编号" align="center" prop="empNo" />
-          <el-table-column label="姓名" align="center" prop="fullName" />
-          <el-table-column label="公司" align="center" prop="compId" />
-          <el-table-column label="部门" align="center" prop="departmentName" />
-          <el-table-column label="职位ID" align="center" prop="postId" />
-          <el-table-column label="职位中文名称" align="center" prop="postName" />
+          <el-table-column label="职工编号" align="center" prop="empNo" width="100"/>
+          <el-table-column label="姓名" align="center" prop="fullName" width="100"/>
+          <el-table-column label="公司" align="center" prop="compId" width="100" >
+            <template v-slot="scope">
+              <dict-tag-human-base :options="dicCompanyList" :value="scope.row.compId"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="部门" align="center" prop="departmentName" width="100"/>
+          <el-table-column label="职位ID" align="center" prop="postId" width="75"/>
+          <el-table-column label="职位中文名称" align="center" prop="postName" width="350"/>
           <el-table-column label="手机" align="center" prop="myMobilePhone" />
           <el-table-column label="办公电话" align="center" prop="officeTelephone" />
           <el-table-column label="办公Email" align="center" prop="officeEmail" />
@@ -68,7 +73,8 @@
 </template>
 
 <script>
-import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
+import '@/assets/styles/humanStyles.scss';
+import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
 import { deptpostTree,selectCompany,queryPersonByPost } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName } from "@/api/system/user";
@@ -82,6 +88,7 @@ export default {
       postPersons:[],
       //公司列表
       companyList:[],
+      dicCompanyList:[],
       //选单列表
       baseInfo: {
         uuid: '',
@@ -156,7 +163,16 @@ export default {
     //获取公司列表
     getCompanyList(){
       selectCompany().then(response=>{
-        this.companyList = response.data
+        this.companyList = response.data;
+        this.companyList.forEach((value,index,array)=>{
+          var compDic={
+            dicNo:null,
+            dicName:null
+          }
+          compDic.dicNo = value.compId;
+          compDic.dicName = value.companyName;
+          this.dicCompanyList.push(compDic);
+        })
       })
     },
     //获取人事选单字典

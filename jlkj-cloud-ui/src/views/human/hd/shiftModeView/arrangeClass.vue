@@ -68,6 +68,7 @@
         :data="tableData"
         :span-method="objectSpanMethod"
         border
+        :cell-style="cellStyle"
         class="tableBox"
         style="width: 100%"
       >
@@ -92,6 +93,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listShiftCode } from "@/api/human/hd/shiftCode";
 import { listShiftClass} from "@/api/human/hd/shiftClass";
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
@@ -182,6 +184,30 @@ export default {
   //   this.init()
   // },
   methods: {
+    //表格单元样式调整
+    cellStyle({row,column,rowIndex, columnIndex}){
+      for(var i in row){
+        const re = /^day.*/;
+        const rsCheck = re.test(i);
+        if(rsCheck){
+          // console.log(JSON.stringify(column))
+          if(row[i]=='00'&&column.property==i){
+            return "color:red"
+          }
+        }
+      }
+      // let cellStyle;
+      // switch (row.order) {
+      //   case '5':
+      //     cellStyle = 'background: green;color:white';
+      //     break;
+      //   default:
+      //     cellStyle = '';
+      // }
+      // if (column.property)
+      //   return cellStyle;
+      // // if(row.day)
+    },
     //排班按钮点击事件
     setCycleData(){
       this.resetData(1);

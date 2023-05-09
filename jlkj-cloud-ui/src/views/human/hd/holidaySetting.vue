@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";

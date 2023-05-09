@@ -125,6 +125,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName} from "@/api/system/user";

@@ -265,6 +265,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import {
   listTripDayRule,

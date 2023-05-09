@@ -15,7 +15,6 @@
         <div class="head-container treeDept" v-show="treeandtable">
           <el-scrollbar class="treeScrollbar">
             <el-tree
-              default-expand-all
               :data="deptOptions"
               :props="defaultProps"
               :highlight-current="true"
@@ -56,7 +55,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
@@ -505,6 +504,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
 import {
@@ -678,7 +678,6 @@ export default {
     this.initData()
     this.getHumandisc()
     this.getTreeselect()
-    this.getList()
     this.treeandtable = true
 
     // this.currentNodeId = this.$store.state.user.deptId
@@ -717,7 +716,9 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data
-        // this.expandedKeys.push(this.$store.state.user.deptId);
+        this.expandedKeys.push(response.data[0].id);
+        this.queryParams.deptId = this.expandedKeys[0];
+        this.getList()
       })
     },
     /** 转换部门数据结构 */
@@ -871,14 +872,18 @@ export default {
       this.resetForm('versionForm')
     },
     /** 搜索按钮操作 */
-    handleQuery() {
+    handleQuery(e) {
       this.queryParams.pageNum = 1
+      if (e === 0) {
+        this.queryParams.deptId = '100'
+      }
       this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
-      this.treestatus = '2'
+      this.treestatus = '2';
+      this.queryParams.deptId = this.expandedKeys[0];
       this.handleQuery()
     },
     // 多选框选中数据
@@ -944,14 +949,12 @@ export default {
             updateDeptmaintenance(this.form).then(response => {
               this.$modal.msgSuccess('修改成功')
               this.open = false
-              this.getList()
               this.getTreeselect()
             })
           } else {
             addDeptmaintenance(this.form).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
-              this.getList()
               this.getTreeselect()
             })
           }
@@ -965,7 +968,6 @@ export default {
       this.$modal.confirm('是否确认删除公司编码为"' + deptCodes + '"的数据项？').then(function() {
         return delDeptmaintenance(deptIds)
       }).then(() => {
-        this.getList()
         this.getTreeselect()
         this.$modal.msgSuccess('删除成功')
       }).catch(() => {

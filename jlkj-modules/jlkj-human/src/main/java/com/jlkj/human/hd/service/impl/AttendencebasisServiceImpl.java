@@ -148,6 +148,8 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
                 throw new Exception("资料编码已存在，请重新输入");
             }
         }
+        Attendencebasis info = attendencebasisMapper.selectAttendencebasisById(attendencebasis.getParentid());
+        attendencebasis.setParents(info.getParents() + "," + attendencebasis.getParentid());
         return attendencebasisMapper.insertAttendencebasis(attendencebasis);
     }
 

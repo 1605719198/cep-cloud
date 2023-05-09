@@ -36,13 +36,21 @@
 <!--    </el-row>-->
     <el-table v-loading="loading" :data="shiftCodeList" @selection-change="handleSelectionChange">
       <el-table-column label="班次编码" align="center" prop="shiftCode" />
-      <el-table-column label="班次开始时间_时" align="center" prop="startHour" />
-      <el-table-column label="班次工作时间_时" align="center" prop="conHour" />
-      <el-table-column label="是否中午打卡" align="center" prop="isNoon">
+      <el-table-column label="班次开始时间" align="center" prop="startHour" >
         <template v-slot="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isNoon"/>
+          {{scope.row.startHour}}时{{scope.row.startMin}}分
         </template>
       </el-table-column>
+      <el-table-column label="班次工作时间" align="center" prop="conHour" >
+        <template v-slot="scope">
+          {{scope.row.conHour}}时{{scope.row.conMin}}分
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="是否中午打卡" align="center" prop="isNoon">-->
+<!--        <template v-slot="scope">-->
+<!--          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isNoon"/>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="中间休息次数" align="center" prop="restCount" />
       <el-table-column label="大小夜" align="center" prop="bigSmaNight">
         <template v-slot="scope">
@@ -96,7 +104,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="轮班方式" prop="shiftmodeId">
-              <el-select v-model="form.shiftmodeId" placeholder="请选择轮班方式">
+              <el-select v-model="form.shiftmodeId" placeholder="请选择">
                 <el-option
                   v-for="dict in modeList"
                   :key="dict.id"
@@ -111,7 +119,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="班次编码" prop="shiftCode">
-              <el-input v-model="form.shiftCode" placeholder="请输入班次编码" />
+              <el-input v-model="form.shiftCode" placeholder="请输入" />
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -142,7 +150,7 @@
             <el-form-item label="中间休息次数" prop="restCount">
               <el-select v-model="form.restCount" placeholder="请选择次数">
                 <el-option
-                  v-for="dict in attendenceOptions.restCount"
+                  v-for="dict in attendenceOptions.RestCount"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -151,7 +159,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="中间/中午休息开始时间" prop="restStartTime">
+            <el-form-item label="中间/中午休息开始时间" prop="restStartTime" v-if="this.form.restCount!=0">
               <el-input v-model="form.restStartHour"  style="width: 35%" @blur="inputOnblur(1)"/>
               时
               <el-input v-model="form.restStartMin"  style="width: 35%" @blur="inputOnblur(1)" />
@@ -159,12 +167,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="休息时间" prop="restConMin">
+            <el-form-item label="休息时间" prop="restConMin" v-if="this.form.restCount!=0">
               <el-input v-model="form.restConMin" style="width: 50%" @blur="inputOnblur(1)" type="number"/>分
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="休息结束时间" prop="restEndTime">
+            <el-form-item label="休息结束时间" prop="restEndTime" v-if="this.form.restCount!=0">
               <el-input v-model="form.restEndTime" disabled />
             </el-form-item>
           </el-col>
@@ -229,10 +237,10 @@
             <el-form-item label="大小夜" prop="bigSmaNight">
               <el-select v-model="form.bigSmaNight" placeholder="请选择大小夜">
                 <el-option
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in attendenceOptions.BigSmaNight"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -254,7 +262,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            {{form.creatorId}}-{{form.creator}}
+            <el-form-item label="输入人员" prop="creator">
+              {{form.creatorId}}-{{form.creator}}
+            </el-form-item>
           </el-col>
         </el-row>
 
@@ -268,6 +278,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listShiftCode, getShiftCode, delShiftCode, addShiftCode, updateShiftCode , getShiftCodeByPerson} from "@/api/human/hd/shiftCode";
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
@@ -279,7 +290,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType:{
         id:'',
-        optionsType:['restCount']
+        optionsType:['RestCount','BigSmaNight']
       },
       //出勤选单选项列表
       attendenceOptions:{},
@@ -368,7 +379,53 @@ export default {
       }
     };
   },
+  watch:{
+    'form.restCount':{
+      immediate:false,
+      deep:true,
+      handler(newItem,preItem){
+        if(newItem!=null){
+          // setTimeout(()=>{
+          //   this.inputOnblur();
+          // },100)
+        }
+      }
+    }
+  },
   methods: {
+    //获得结束时间
+    updateEndTime(){
+      var hour = parseInt(this.form.endHour)
+      var min =  parseInt(this.form.endMin)
+      var fHour = (hour<10)? '0'+hour:hour
+      var fMin = (min<10)? '0'+min:min
+      var time =fHour+':'+fMin
+      this.form.endTime = time;
+      if(this.form.restCount>0){
+        hour = parseInt(this.form.restEndHour)
+        min = parseInt(this.form.restEndMin)
+        fHour = (hour<10)? '0'+hour:hour
+        fMin = (min<10)? '0'+min:min
+        time = fHour+':'+fMin
+        this.form.restEndTime = time
+        if(this.form.restCount >1){
+          hour = parseInt(this.form.restEndHour2)
+          min = parseInt(this.form.restEndMin2)
+          fHour = (hour<10)? '0'+hour:hour
+          fMin = (min<10)? '0'+min:min
+          time = fHour+':'+fMin
+          this.form.restEndTime2 = time
+          if(this.form.restCount >2){
+            hour = parseInt(this.form.restEndHour3)
+            min = parseInt(this.form.restEndMin3)
+            fHour = (hour<10)? '0'+hour:hour
+            fMin = (min<10)? '0'+min:min
+            time = fHour+':'+fMin
+            this.form.restEndTime3 = time
+          }
+        }
+      }
+    },
     //获取出勤字典
     getDisc(){
       getAttendenceOptions(this.attendenceOptionType).then(response=> {
@@ -400,7 +457,6 @@ export default {
       this.form.createDate = getDateTime(1);
       this.form.compId = this.queryParams.compId;
       if(e==0){
-        this.form.restCount = 1;
         this.form.status = '0';
         this.form.shiftmodeId = this.queryParams.shiftmodeId;
       }
@@ -497,6 +553,7 @@ export default {
       const id = row.id || this.ids
       getShiftCode(id).then(response => {
         this.form = response.data;
+        this.updateEndTime();
         this.open = true;
         this.title = "修改班次数据";
       });
@@ -541,21 +598,24 @@ export default {
         var conMin = parseInt(this.form.conMin)
         var restConMin = parseInt(this.form.restConMin)
         var restMin = 0
-        if(this.judge(this.form.restConMin)){
-          var restConMin = parseInt(this.form.restConMin);
-          restMin += restConMin
-        }
-        if(this.form.restCount >1){
-          if(this.judge(this.form.restConMin2))
-          var restConMin2 = parseInt(this.form.restConMin2)
-          restMin+=restConMin2;
-          if(this.form.restCount >2){
-            if(this.judge(this.form.restConMin3)){
-              var restConMin3 = parseInt(this.form.restConMin3)
-              restMin+=restConMin3;
+        if(this.form.restCount>0){
+          if(this.judge(this.form.restConMin)){
+            var restConMin = parseInt(this.form.restConMin);
+            restMin += restConMin
+          }
+          if(this.form.restCount >1){
+            if(this.judge(this.form.restConMin2))
+              var restConMin2 = parseInt(this.form.restConMin2)
+            restMin+=restConMin2;
+            if(this.form.restCount >2){
+              if(this.judge(this.form.restConMin3)){
+                var restConMin3 = parseInt(this.form.restConMin3)
+                restMin+=restConMin3;
+              }
             }
           }
         }
+
         var plusHour = Math.floor((restMin+conMin+startMin)/60)
         var min = (restMin+conMin+startMin)%60
         var hour = ((startHour+conHour+plusHour)>23)? (startHour+conHour+plusHour)-24:(startHour+conHour+plusHour);
@@ -628,7 +688,7 @@ export default {
       var min =this.form.startMin
       if (!hour){
         this.form.startTime = null,
-        callback(new Error('班次开始时间_时不可为空'))
+        callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(hour)) {
         this.form.startTime = null,
         callback(new Error('请输入纯数字小时数'))
@@ -637,7 +697,7 @@ export default {
         callback(new Error('请输入0-23之间的小时值'))
       }else if (!min){
         this.form.startTime = null,
-        callback(new Error('班次开始时间_分不可为空'))
+        callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(min)) {
         this.form.startTime = null,
         callback(new Error('请输入纯数字分钟数'))
@@ -656,7 +716,7 @@ export default {
       var min =this.form.conMin
       if (!hour){
         this.form.conTime = null;
-        callback(new Error('班次开始时间_时不可为空'))
+        callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(hour)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字小时数'))
@@ -665,7 +725,7 @@ export default {
         callback(new Error('请输入0-23之间的小时值'))
       }else if (!min){
         this.form.conTime = null;
-        callback(new Error('班次开始时间_分不可为空'))
+        callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(min)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字分钟数'))
@@ -684,7 +744,7 @@ export default {
       var restMin =this.form.restStartMin;
       if (!restHour){
         this.form.restStartTime = null,
-        callback(new Error('休息开始时间_时不可为空'))
+        callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
         this.form.restStartTime = null,
         callback(new Error('请输入纯数字小时数'))
@@ -693,7 +753,7 @@ export default {
         callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
         this.form.restStartTime = null,
-        callback(new Error('休息开始时间_分不可为空'))
+        callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
         this.form.restStartTime = null,
         callback(new Error('请输入纯数字分钟数'))
@@ -716,7 +776,7 @@ export default {
       var restMin =this.form.restStartMin2;
       if (!restHour){
         this.form.restStartTime2 = null,
-          callback(new Error('休息开始时间_时不可为空'))
+          callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
         this.form.restStartTime2 = null,
           callback(new Error('请输入纯数字小时数'))
@@ -725,7 +785,7 @@ export default {
           callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
         this.form.restStartTime2 = null,
-          callback(new Error('休息开始时间_分不可为空'))
+          callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
         this.form.restStartTime2 = null,
           callback(new Error('请输入纯数字分钟数'))
@@ -748,7 +808,7 @@ export default {
       var restMin =this.form.restStartMin3;
       if (!restHour){
         this.form.restStartTime3 = null,
-          callback(new Error('休息开始时间_时不可为空'))
+          callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
         this.form.restStartTime3 = null,
           callback(new Error('请输入纯数字小时数'))
@@ -757,7 +817,7 @@ export default {
           callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
         this.form.restStartTime3 = null,
-          callback(new Error('休息开始时间_分不可为空'))
+          callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
         this.form.restStartTime3 = null,
           callback(new Error('请输入纯数字分钟数'))

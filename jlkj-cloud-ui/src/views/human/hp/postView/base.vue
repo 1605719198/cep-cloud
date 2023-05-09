@@ -331,6 +331,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {  treeselect,selectCompany } from "@/api/human/hp/deptMaintenance";

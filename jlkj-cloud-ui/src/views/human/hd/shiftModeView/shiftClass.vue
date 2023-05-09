@@ -150,6 +150,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listShiftClass, getShiftClass, delShiftClass, addShiftClass, updateShiftClass } from "@/api/human/hd/shiftClass";
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 export default {
