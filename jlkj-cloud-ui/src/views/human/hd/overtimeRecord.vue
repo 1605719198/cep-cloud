@@ -100,14 +100,14 @@
                 size="mini"
                 type="text"
                 icon="el-icon-right"
-                @click="handleUpdate(scope.row)"
+                @click="handleUpdate2(scope.row)"
                 v-hasPermi="['human:overtimeRecord:edit']"
               >送出</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-back"
-                @click="handleUpdate(scope.row)"
+                @click="handleUpdate3(scope.row)"
                 v-hasPermi="['human:overtimeRecord:edit']"
               >撤回</el-button>
               <el-button
@@ -440,6 +440,52 @@ export default {
         this.title = "修改加班记录";
       });
     },
+    handleUpdate2(row){
+      //获得form表单
+      this.reset();
+      const id = row.id
+      getOvertimeRecord(id).then(response => {
+        this.form = response.data;
+        //修改审核状态
+        this.form.status = '审核中';
+        this.form.startTime = this.form.workOvertimeDate[0]
+        this.form.endTime = this.form.workOvertimeDate[1]
+        updateOvertimeRecord(this.form).then(response => {
+          this.$modal.msgSuccess("修改状态成功");
+          this.getList();
+        });
+      });
+      //打开流程页面
+      this.$router.push({
+        path: '/workflow/process/start/' + "7f6e6d8a-ed60-11ed-903b-d8bbc1268fdd",
+        query: {
+          definitionId:
+ "Process_1682316272459:4:802b06cd-ed60-11ed-903b-d8bbc1268fdd",
+          dataForm:this.form,
+        }
+      })
+    },
+    /**  取消流程申请 */
+    handleUpdate3(row){
+      this.$router.push({
+        path: '/work/own'
+      })
+      this.$message({ type: 'error', message: '请在我的流程页面取消此流程！', duration: 8000 });
+      //获得form表单
+      this.reset();
+      const id = row.id
+      getOvertimeRecord(id).then(response => {
+        this.form = response.data;
+        //修改审核状态
+        this.form.status = '未送出';
+        this.form.startTime = this.form.workOvertimeDate[0]
+        this.form.endTime = this.form.workOvertimeDate[1]
+        updateOvertimeRecord(this.form).then(response => {
+          this.$modal.msgSuccess("修改状态成功");
+          this.getList();
+        });
+      });
+    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -447,7 +493,6 @@ export default {
           if (this.form.id != null) {
             this.form.startTime = this.form.workOvertimeDate[0]
             this.form.endTime = this.form.workOvertimeDate[1]
-            console.log(this.form);
             updateOvertimeRecord(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;

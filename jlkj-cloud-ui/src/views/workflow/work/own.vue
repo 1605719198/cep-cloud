@@ -272,7 +272,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('workflow/process/ownExport', {
+      this.download('flowable/workflow/process/ownExport', {
         ...this.queryParams
       }, `wf_own_process_${new Date().getTime()}.xlsx`)
     },
