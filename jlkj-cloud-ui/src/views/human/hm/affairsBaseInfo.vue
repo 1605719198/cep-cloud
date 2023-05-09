@@ -191,7 +191,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="出生地(市/区)" prop="cityOfBirthId">
-          <el-select v-model="form.cityOfBirthId" placeholder="请选择出生地（市/区）">
+          <el-select v-model="form.cityOfBirthId" placeholder="请选择出生地（市/区）" @change="$forceUpdate()">
             <el-option
               v-for="item in city"
               :key="item.value"
@@ -284,9 +284,9 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="户口所在地(市)" prop="registeredPermanentResidenceCityId">
-          <el-select v-model="form.registeredPermanentResidenceCityId" placeholder="请选择户口所在地(市)">
+          <el-select v-model="form.registeredPermanentResidenceCityId" placeholder="请选择户口所在地(市)" @change="$forceUpdate()">
             <el-option
-              v-for="item in city"
+              v-for="item in city1"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -818,7 +818,6 @@ import {
   checkRealName,
   postalCode, validateAlphabets,
   validateEMail,
-  validatePhoneTwo,
   validateSfz
 } from "@/utils/jlkj";
 export default {
@@ -832,6 +831,7 @@ export default {
       form: {},
       options: regionData,
       city: [],
+      city1: [],
       baseInfoData: [],
       degreeMajorSpecialization: [],
       baseInfo: {
@@ -966,12 +966,6 @@ export default {
             trigger: "blur"
           }
         ],
-        officeTelephone: [
-          { required: false, validator: validatePhoneTwo, trigger: "blur" }
-        ],
-        insideLine: [
-          { required: false, validator: validatePhoneTwo, trigger: "blur" }
-        ],
         emergencyContactPersonEmail: [
           { required: true, validator: validateEMail, trigger: "blur" }
         ],
@@ -1008,8 +1002,10 @@ export default {
         for (const item of this.options) {
           if (item.value == response.data[0].provinceOfBirthId){
             this.city = []
+            this.city1 = []
             for (const itemA of item.children) {
               this.city.push(itemA)
+              this.city1.push(itemA)
             }
           }
         }
@@ -1045,9 +1041,9 @@ export default {
       this.form.registeredPermanentResidenceCityId = undefined
       for (const item of this.options) {
         if (item.value == value){
-          this.city = []
+          this.city1 = []
           for (const itemA of item.children) {
-            this.city.push(itemA)
+            this.city1.push(itemA)
           }
         }
       }

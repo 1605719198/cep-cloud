@@ -126,4 +126,9 @@ public class ChangeMasterDTO {
      * 部门字段
      */
     private String departmentName;
+
+    /**
+     * 部门ID字段
+     */
+    private String departmentId;
 }

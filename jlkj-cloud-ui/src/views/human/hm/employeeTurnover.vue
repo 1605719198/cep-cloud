@@ -213,7 +213,7 @@
                     style="text-align: right"
                   >
                     {{scope.row.nowPostName}}
-                    <el-button icon="el-icon-search" size="mini" @click="openPostPop"></el-button>
+                    <el-button icon="el-icon-search" size="mini" @click="openPostPop(scope.$index)"></el-button>
                     <el-button icon="el-icon-delete" size="mini" @click="doEmpty(scope.$index)"></el-button>
                   </el-form-item>
                 </template>
@@ -229,12 +229,12 @@
                    :visible.sync="openPostName"
                    width="700px">
           <el-form
-            :model="addJsonForm"
-            ref="addJsonForm"
+            :model="form"
+            ref="form"
             :rules="rules"
             label-width="80px"
           >
-            <el-table :data="addJsonForm.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
+            <el-table :data="form.postPop" border :cell-style="{verticalAlign:'top',textAlign: 'left'}">
               <el-table-column  label="所属组织机构" align="center">
                 <template v-slot="scope">
                   <el-form-item>
@@ -311,7 +311,9 @@ export default {
             postTypeId: undefined,
             newPostName: undefined,
           }
-        ],
+        ]
+      },
+      form: {
         postPop: [
           {
             postTypeId: undefined,
@@ -455,14 +457,16 @@ export default {
             postTypeId: '01',
             newPostName: undefined,
           }
-        ],
+        ]
+      },
+      this.form = {
         postPop: [
           {
             postTypeId: undefined,
             newPostName: undefined,
           }
         ]
-      };
+      }
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -591,7 +595,16 @@ export default {
         this.postLevelDetail = response.data
       });
     },
-    openPostPop() {
+    openPostPop(val) {
+      this.form = {
+        postPop: [
+          {
+            postTypeId: undefined,
+            newPostName: undefined,
+          }
+        ]
+      }
+      this.index = val
       this.openPostName = true
       this.compId = undefined
       this.postMaintenanceList = []
