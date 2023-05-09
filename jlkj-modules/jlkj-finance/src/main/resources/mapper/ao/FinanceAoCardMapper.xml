@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoCardMapper">
+    
+    <resultMap type="FinanceAoCard" id="FinanceAoCardResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="userNo"    column="user_no"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="cardNo"    column="card_no"    />
+        <result property="janBudget"    column="jan_budget"    />
+        <result property="bankNo"    column="bank_no"    />
+        <result property="area"    column="area"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="phoneNo"    column="phone_no"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoCardVo">
+        select uuid, company_id, user_no, dept_id, card_no, jan_budget, bank_no, area, province, city, phone_no, create_by, create_name, create_time, update_by, update_name, update_time from finance_ao_card
+    </sql>
+
+    <select id="selectFinanceAoCardList" parameterType="FinanceAoCard" resultMap="FinanceAoCardResult">
+        <include refid="selectFinanceAoCardVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoCardByUuid" parameterType="String" resultMap="FinanceAoCardResult">
+        <include refid="selectFinanceAoCardVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceAoCard" parameterType="FinanceAoCard">
+        insert into finance_ao_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="userNo != null">user_no,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="cardNo != null">card_no,</if>
+            <if test="janBudget != null">jan_budget,</if>
+            <if test="bankNo != null">bank_no,</if>
+            <if test="area != null">area,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="phoneNo != null">phone_no,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="userNo != null">#{userNo},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="cardNo != null">#{cardNo},</if>
+            <if test="janBudget != null">#{janBudget},</if>
+            <if test="bankNo != null">#{bankNo},</if>
+            <if test="area != null">#{area},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="phoneNo != null">#{phoneNo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoCard" parameterType="FinanceAoCard">
+        update finance_ao_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="userNo != null">user_no = #{userNo},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="cardNo != null">card_no = #{cardNo},</if>
+            <if test="janBudget != null">jan_budget = #{janBudget},</if>
+            <if test="bankNo != null">bank_no = #{bankNo},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="phoneNo != null">phone_no = #{phoneNo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceAoCardByUuid" parameterType="String">
+        delete from finance_ao_card where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceAoCardByUuids" parameterType="String">
+        delete from finance_ao_card where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>
