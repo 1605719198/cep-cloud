@@ -265,6 +265,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import {
   listTripDayRule,
@@ -313,7 +314,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['Country', 'City']
+        optionsType: ['Country']
       },
       //出勤选单选项列表
       attendenceOptions: [],

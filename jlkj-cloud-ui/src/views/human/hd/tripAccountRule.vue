@@ -255,6 +255,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {
   listTripAccountRule,
   getTripAccountRule,

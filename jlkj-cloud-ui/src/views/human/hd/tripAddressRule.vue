@@ -34,15 +34,19 @@
     <el-table v-loading="loading" :data="tripAddressRuleList" @selection-change="handleSelectionChange" height="67vh">
       <el-table-column label="地点" align="center" prop="address" />
       <el-table-column label="拼音缩写" align="center" prop="simpl" />
-      <el-table-column label="地点属性" align="center" prop="type" />
+      <el-table-column label="地点属性" align="center" prop="type" >
+        <template v-slot="scope">
+          <dict-tag-human :options="attendenceOptions.AddressType" :value="scope.row.type"/>
+        </template>
+      </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"
@@ -104,6 +108,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listTripAddressRule, getTripAddressRule, delTripAddressRule, addTripAddressRule, updateTripAddressRule } from "@/api/human/hd/tripAddressRule";
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
@@ -111,6 +116,7 @@ import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 export default {
   name: "TripAddressRule",
+  components:{DictTagHuman},
   data() {
     return {
       // 遮罩层

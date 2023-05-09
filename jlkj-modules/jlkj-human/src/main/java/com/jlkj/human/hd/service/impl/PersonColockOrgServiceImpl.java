@@ -65,9 +65,13 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
 
         List<PersonColockOrg> colockList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
         colockList.forEach(item->{
-            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(item.getDeptId());
-            item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-            item.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+            try{
+                FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(item.getDeptId());
+                item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+                item.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         return colockList;
     }
@@ -101,7 +105,10 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
                     personColockDetail.setMacId(strTemp);
                     personColockDetailService.insertPersonColockDetail(personColockDetail);
                 }
-                personColockService.insertPersonColockByDept(personColockOrg);
+                int result = personColockService.insertPersonColockByDept(personColockOrg);
+                if(result==0){
+                    throw new Exception("该部门下无员工，请重新选择部门");
+                }
                 return personColockOrgMapper.insertPersonColockOrg(personColockOrg);
             }else{
                 SimpleDateFormat ymddate = new SimpleDateFormat("yyyy-MM-dd");
@@ -141,6 +148,7 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
                     personColock.setCreateDate(personColockOrg.getCreateDate());
                     personColock.setEffectDate(personColockOrg.getEffectDate());
                     personColock.setCheckcard(personColockOrg.getCheckcard());
+                    personColock.setType("2");
                     personColock.setColockList(personColockOrg.getColockList());
                     try {
                         personColockService.updatePersonColock(personColock);

@@ -27,7 +27,6 @@
       </el-form-item>
     </el-form>
     <human-calendar style="width: 100%;" :value="this.queryParams.queryMonth" >
-      <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
       <template slot="dateCell" slot-scope="{date, data}" align="center">
         <p style="width: 100%;height:100%;display: flex;justify-content: center;align-items: center; padding-bottom: 30px;" @click="selectData(data)" >
           <span style="margin-top: 2px">{{ data.day.split('-').slice(2).join('-') }}</span>
@@ -58,6 +57,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {
   listHolidayTable,
   getHolidayTable,

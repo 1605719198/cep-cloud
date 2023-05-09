@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="effectDate != null"> and effect_date = #{effectDate}</if>
+            <if test="id != null  and id != ''"> and id != #{id}</if>
         </where>
     </select>
 

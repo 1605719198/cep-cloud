@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-select  v-model="compId" placeholder="请选择公司名称"  size="small">
+          <el-select v-model="compId" placeholder="请选择公司名称" size="small">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -47,7 +47,7 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery(0)">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
@@ -142,7 +142,9 @@
     </el-row>
 
     <!-- 添加或修改部门资料维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body :close-on-click-modal="false" class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body :close-on-click-modal="false"
+               class="customDialogStyle"
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -240,76 +242,78 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel(1)">取 消</el-button>
       </div>
-              <div slot="footer" v-show="ifupdate">
-                <el-divider content-position="center">变更记录</el-divider>
-                <el-table slot="footer" :data="deptversionlist" ref="deptversion" v-show="ifupdate">
-                  <el-table-column label="版本号" prop="versionNo" align="center" width="60px" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.versionNo }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="机构编码" prop="deptCode" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.deptCode }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="机构名称" prop="deptName" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.deptName }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="该机构上级" prop="parentName" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.parentName }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="机构层级" prop="orgTierId" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <dict-tag-human :options="baseInfoData.HP002" :value="scope.row.orgTierId"/>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.changeReason }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span>{{ scope.row.updateBy }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
-                    <template v-slot="scope">
-                      <span v-text="scope.row.updateTime"></span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-                    <template v-slot="scope">
-                      <el-button
-                        size="mini"
-                        type="text"
-                        @click="getVersion(scope.row)"
-                        v-hasPermi="['human:deptMaintenance:list']"
-                      >版本详情
-                      </el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
+      <div slot="footer" v-show="ifupdate">
+        <el-divider content-position="center">变更记录</el-divider>
+        <el-table slot="footer" :data="deptversionlist" ref="deptversion" v-show="ifupdate">
+          <el-table-column label="版本号" prop="versionNo" align="center" width="60px" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.versionNo }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="机构编码" prop="deptCode" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.deptCode }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="机构名称" prop="deptName" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.deptName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="该机构上级" prop="parentName" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.parentName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="机构层级" prop="orgTierId" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <dict-tag-human :options="baseInfoData.HP002" :value="scope.row.orgTierId"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更原因" prop="changeReason" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.changeReason }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span>{{ scope.row.updateBy }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
+            <template v-slot="scope">
+              <span v-text="scope.row.updateTime"></span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template v-slot="scope">
+              <el-button
+                size="mini"
+                type="text"
+                @click="getVersion(scope.row)"
+                v-hasPermi="['human:deptMaintenance:list']"
+              >版本详情
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-dialog>
 
     <!--数据详情界面-->
-    <el-dialog title="部门资料详情" :visible.sync="openDetail" width="900px" append-to-body :close-on-click-modal="false" class="customDialogStyle">
-      <el-form ref="form" :model="form"  label-width="130px">
+    <el-dialog title="部门资料详情" :visible.sync="openDetail" width="900px" append-to-body :close-on-click-modal="false"
+               class="customDialogStyle"
+    >
+      <el-form ref="form" :model="form" label-width="130px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="机构编码" prop="deptCode">
-              {{form.deptCode}}
+              {{ form.deptCode }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称" prop="deptName">
-              {{form.deptName}}
+              {{ form.deptName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -334,7 +338,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="排序序号" prop="orderNum">
-              {{form.orderNum}}
+              {{ form.orderNum }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -342,17 +346,17 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="成本中心" prop="costCenterId">
-              {{form.costCenterId}}
+              {{ form.costCenterId }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="生效日期" prop="effectDate">
-              {{form.effectDate}}
+              {{ form.effectDate }}
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="变更原因" prop="changeReason" >
-          {{form.changeReason}}
+        <el-form-item label="变更原因" prop="changeReason">
+          {{ form.changeReason }}
         </el-form-item>
 
         <el-row :gutter="20">
@@ -430,17 +434,19 @@
     </el-dialog>
 
     <!--历史版本详情界面-->
-    <el-dialog title="历史版本详情" :visible.sync="versionDetail" width="900px" append-to-body :close-on-click-modal="false" class="customDialogStyle">
-      <el-form ref="versionForm" :model="versionForm"  label-width="130px">
+    <el-dialog title="历史版本详情" :visible.sync="versionDetail" width="900px" append-to-body :close-on-click-modal="false"
+               class="customDialogStyle"
+    >
+      <el-form ref="versionForm" :model="versionForm" label-width="130px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="机构编码" prop="deptCode">
-              {{versionForm.deptCode}}
+              {{ versionForm.deptCode }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称" prop="deptName">
-              {{versionForm.deptName}}
+              {{ versionForm.deptName }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -465,7 +471,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="排序序号" prop="orderNum">
-              {{versionForm.orderNum}}
+              {{ versionForm.orderNum }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -473,17 +479,17 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="成本中心" prop="costCenterId">
-              {{versionForm.costCenterId}}
+              {{ versionForm.costCenterId }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="生效日期" prop="effectDate">
-              {{versionForm.effectDate}}
+              {{ versionForm.effectDate }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="变更原因" prop="changeReason">
-          {{versionForm.changeReason}}
+          {{ versionForm.changeReason }}
         </el-form-item>
 
         <el-row :gutter="20">
@@ -551,13 +557,14 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">-->
-<!--            <el-checkbox v-model="upload.updateSupport"/>-->
-<!--            是否更新已经存在的用户数据-->
-<!--          </div>-->
+          <!--          <div class="el-upload__tip" slot="tip">-->
+          <!--            <el-checkbox v-model="upload.updateSupport"/>-->
+          <!--            是否更新已经存在的用户数据-->
+          <!--          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
-                   @click="importTemplate">下载模板
+                   @click="importTemplate"
+          >下载模板
           </el-link>
         </div>
       </el-upload>
@@ -570,7 +577,8 @@
 </template>
 
 <script>
-import {getToken} from "@/utils/auth";
+import '@/assets/styles/humanStyles.scss'
+import { getToken } from '@/utils/auth'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
 import {
@@ -581,7 +589,7 @@ import {
   updateDeptmaintenance,
   treeselect,
   listDeptversion,
-  copySysDeptDTO,
+  copySysDept,
   selectCompany,
   getVersion
 } from '@/api/human/hp/deptMaintenance'
@@ -597,18 +605,18 @@ export default {
     return {
       // 部门资料导入参数
       upload: {
-        // 是否显示弹出层（夜班资料导入）
+        // 是否显示弹出层（部门资料导入）
         open: false,
-        // 弹出层标题（夜班资料导入）
-        title: "",
+        // 弹出层标题（部门资料导入）
+        title: '',
         // 是否禁用上传
         isUploading: false,
         // 是否更新已经存在的用户数据
         updateSupport: 0,
         // 设置上传的请求头部
-        headers: {Authorization: "Bearer " + getToken()},
+        headers: { Authorization: 'Bearer ' + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/human/deptMaintenance/importData"
+        url: process.env.VUE_APP_BASE_API + '/human/deptMaintenance/importData'
       },
       //公司数据
       companyList: [],
@@ -674,6 +682,7 @@ export default {
         pageSize: 10,
         deptId: null,
         compId: null,
+        ifCompany: 0,
         ancestors: null,
         deptCode: null,
         deptName: null
@@ -686,8 +695,7 @@ export default {
       },
       //treeselect查询参数
       queryParams3: {
-        compId: null,
-        ifCompany: 0
+        compId: null
       },
       currentNodeId: '',
       // 表单参数
@@ -768,13 +776,12 @@ export default {
       } else {
         this.treeandtable = false
       }
-      this.getList()
     }
   },
   created() {
-    this.getCompanyList();
-    this.getHumandisc();
-    this.initData();
+    this.getCompanyList()
+    this.getHumandisc()
+    this.initData()
   },
   methods: {
     //获取公司列表
@@ -794,7 +801,7 @@ export default {
       this.user.empNo = this.$store.state.user.name
       this.user.empName = this.$store.state.user.userInfo.nickName
       this.user.compId = this.$store.state.user.userInfo.compId
-      this.compId = this.user.compId;
+      this.compId = this.user.compId
     },
     //表单数据配置
     setForm(e) {
@@ -829,7 +836,9 @@ export default {
     getTreeselect() {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data
-        // this.expandedKeys.push(this.$store.state.user.deptId);
+        this.expandedKeys.push(response.data[0].id);
+        this.queryParams.deptId=this.expandedKeys[0];
+        this.getList()
       })
       treeselect().then(response => {
         this.allDeptOptions = response.data
@@ -870,10 +879,10 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      if (data.label3 != 1) {
-        this.queryParams.deptId = data.id
-        this.handleQuery()
-      }
+      this.queryParams.deptId = data.id
+      this.queryParams.deptCode = null;
+      this.queryParams.deptName = null;
+      this.handleQuery()
     },
     /** 查询部门资料维护列表 */
     getList() {
@@ -993,14 +1002,18 @@ export default {
       this.resetForm('formcopy')
     },
     /** 搜索按钮操作 */
-    handleQuery() {
+    handleQuery(e) {
       this.queryParams.pageNum = 1
+      if (e === 0) {
+        this.queryParams.deptId = null
+      }
       this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
-      this.compId = this.user.compId
+      this.compId = this.user.compId;
+      this.queryParams.deptId=this.expandedKeys[0];
       this.handleQuery()
     },
     // 多选框选中数据
@@ -1070,14 +1083,12 @@ export default {
             updateDeptmaintenance(this.form).then(response => {
               this.$modal.msgSuccess('修改成功')
               this.open = false
-              this.getList()
               this.getTreeselect()
             })
           } else {
             addDeptmaintenance(this.form).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
-              this.getList()
               this.getTreeselect()
             })
           }
@@ -1091,7 +1102,7 @@ export default {
           if (this.formcopy.newCompId == this.formcopy.oldCompId) {
             this.$modal.msgError('请选择两个不同的公司')
           } else {
-            copySysDeptDTO(this.formcopy).then(response => {
+            copySysDept(this.formcopy).then(response => {
               this.$modal.msgSuccess('复制成功')
               this.opencopy = false
               this.getList()
@@ -1102,8 +1113,8 @@ export default {
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = "部门资料导入";
-      this.upload.open = true;
+      this.upload.title = '部门资料导入'
+      this.upload.open = true
     },
     /** 下载模板操作 */
     importTemplate() {
@@ -1111,21 +1122,20 @@ export default {
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true;
+      this.upload.isUploading = true
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open = false;
-      this.upload.isUploading = false;
-      this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
-      this.getList();
+      this.upload.open = false
+      this.upload.isUploading = false
+      this.$refs.upload.clearFiles()
+      this.$alert('<div style=\'overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;\'>' + response.msg + '</div>', '导入结果', { dangerouslyUseHTMLString: true })
+      this.getList()
     },
     // 提交上传文件
     submitFileForm() {
-      this.$refs.upload.submit();
+      this.$refs.upload.submit()
     },
-
 
     /** 删除按钮操作 */
     handleDelete(row) {
@@ -1139,7 +1149,7 @@ export default {
         this.getTreeselect()
       }).catch(() => {
       })
-    },
+    }
   }
 }
 </script>

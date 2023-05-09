@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSysDeptList" parameterType="SysDept" resultMap="SysDeptResult">
         <include refid="selectSysDeptVo"/>
         <where>
-            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId} or parent_id = #{deptId}</if>
+            <if test="deptId != null  and deptId != ''"> and  parent_id = #{deptId}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="ancestors != null  and ancestors != ''"> and ancestors like concat('%', #{ancestors}, '%')</if>
             <if test="ifCompany != null  and ifCompany != ''"> and if_company = #{ifCompany}</if>
@@ -129,6 +129,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysDeptVo"/>
         where parent_id = #{deptId}
     </select>
+
+    <select id="selectSysDeptByCompId" parameterType="String" resultMap="SysDeptResult">
+        <include refid="selectSysDeptVo"/>
+        where comp_id = #{compId}
+        and if_company = 1
+    </select>
+
 
     <insert id="insertSysDept" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into sys_dept

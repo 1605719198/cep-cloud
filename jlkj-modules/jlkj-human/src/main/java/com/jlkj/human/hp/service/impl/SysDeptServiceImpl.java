@@ -451,6 +451,17 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     /**
+     * 根据公司别查询信息
+     *
+     * @param compId 公司别
+     * @return 公司信息
+     */
+    @Override
+    public SysDept queryCompById(String compId){
+        return sysDeptMapper.selectSysDeptByCompId(compId);
+    }
+
+    /**
      * 导入部门资料数据
      *
      * @param sysDeptList     部门数据列表

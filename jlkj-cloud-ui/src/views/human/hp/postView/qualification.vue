@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listPostMaintenance, getPostMaintenance, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
 export default {
   name: 'qualification',

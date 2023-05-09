@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item  prop="type">
-        <el-select v-model="colockType" placeholder="请选择卡钟设定类型" clearable>
+        <el-select v-model="colockType" placeholder="请选择卡钟设定类型" >
           <el-option
             v-for="dict in attendenceOptions.ColockType"
             :key="dict.dicNo"
@@ -47,26 +47,18 @@
           v-hasPermi="['human:personColock:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-upload2"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['human:personColock:export']"
-        >导入</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['human:personColock:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="info"-->
+<!--          plain-->
+<!--          icon="el-icon-upload2"-->
+<!--          size="mini"-->
+<!--          @click="handleImport"-->
+<!--          v-hasPermi="['human:personColock:import']"-->
+<!--        >导入-->
+<!--        </el-button>-->
+<!--      </el-col>-->
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -191,21 +183,21 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20">
-          <el-col :span="10" style="display: flex;flex-direction: row">
-            <el-form-item  prop="type" label="一级单位" style="width: 240px;">
-              {{this.form.firstDeptName}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <div v-if="this.form.checkcard=='Y'">
-          <el-divider content-position="center" >刷卡地点清单</el-divider>
-        </div>
-        <div v-if="this.form.checkcard=='Y'">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>
-          </el-checkbox-group>
-        </div>
+<!--        <el-row :gutter="20">-->
+<!--          <el-col :span="10" style="display: flex;flex-direction: row">-->
+<!--            <el-form-item  prop="type" label="一级单位" style="width: 240px;">-->
+<!--              {{this.form.firstDeptName}}-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--        <div v-if="this.form.checkcard=='Y'">-->
+<!--          <el-divider content-position="center" >刷卡地点清单</el-divider>-->
+<!--        </div>-->
+<!--        <div v-if="this.form.checkcard=='Y'">-->
+<!--          <el-checkbox-group v-model="checkList">-->
+<!--            <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>-->
+<!--          </el-checkbox-group>-->
+<!--        </div>-->
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -218,6 +210,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listPersonColock, getPersonColock, delPersonColock, addPersonColock, updatePersonColock } from "@/api/human/hd/personColock";
@@ -235,6 +228,20 @@ export default {
   components: {Treeselect,DictTagHumanBase,selectUser},
   data() {
     return {
+      upload: {
+        // // 是否显示弹出层（人员卡钟资料导入）
+        // open: false,
+        // // 弹出层标题（人员资料导入）
+        // title: "",
+        // // 是否禁用上传
+        // isUploading: false,
+        // // 是否更新已经存在的用户数据
+        // updateSupport: 0,
+        // // 设置上传的请求头部
+        // headers: {Authorization: "Bearer " + getToken()},
+        // // 上传的地址
+        // url: process.env.VUE_APP_BASE_API + "/human/personColock/importData"
+      },
       //出勤选单类型查询
       attendenceOptionType:{
         id:'',
@@ -394,21 +401,23 @@ export default {
     },
     /** 上级部门切换事件 */
     deptChange(val) {
-      queryFirstdeptByDept(val.id).then(response =>{
-        this.checkList=[];
-        this.form.firstDeptId = response.data.firstDeptId;
-        this.form.firstDeptName = response.data.firstDeptName;
-        this.clockworkList.forEach((value,index,array)=>{
-          if (value.firstDeptId){
-            var array= value.firstDeptId.split(',')
-            array.forEach((values,indexs,arrays)=>{
-              if(values==this.form.firstDeptId&&this.form.firstDeptId!=null){
-                this.checkList.push(value.code);
-              }
-            })
-          }
+      if(form.deptId!=null){
+        queryFirstdeptByDept(val.id).then(response =>{
+          this.checkList=[];
+          this.form.firstDeptId = response.data.firstDeptId;
+          this.form.firstDeptName = response.data.firstDeptName;
+          this.clockworkList.forEach((value,index,array)=>{
+            if (value.firstDeptId){
+              var array= value.firstDeptId.split(',')
+              array.forEach((values,indexs,arrays)=>{
+                if(values==this.form.firstDeptId&&this.form.firstDeptId!=null){
+                  this.checkList.push(value.code);
+                }
+              })
+            }
+          })
         })
-      })
+      }
     },
     //获取公司列表
     getCompanyList(){
@@ -463,7 +472,7 @@ export default {
         compId: null,
         deptId:null,
         empId: null,
-        org_colock_id:null,
+        orgColockId:null,
         checkcard: null,
         effectDate: null,
         status: null,
@@ -476,7 +485,6 @@ export default {
       };
       this.resetForm("form");
       this.checkList = [];
-      this.formcolockType = this.colockType;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -502,6 +510,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.formcolockType = this.colockType;
       this.form.effectDate = getDateTime(1);
       this.title = "添加卡钟";
       this.getAllcolock(this.queryParams.compId);
@@ -648,12 +657,11 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      // this.download('human/personColock/export', {
-      //   ...this.queryParams
-      // }, `personColock_${new Date().getTime()}.xlsx`)
-    }
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "部门资料导入";
+      this.upload.open = true;
+    },
   }
 };
 </script>
