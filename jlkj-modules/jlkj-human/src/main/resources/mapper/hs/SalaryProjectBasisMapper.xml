@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SalaryProjectBasisMapper">
+    
+    <resultMap type="SalaryProjectBasis" id="SalaryProjectBasisResult">
+        <result property="id"    column="id"    />
+        <result property="payProCode"    column="pay_pro_code"    />
+        <result property="payProName"    column="pay_pro_name"    />
+        <result property="isSta"    column="is_sta"    />
+        <result property="staCon"    column="sta_con"    />
+        <result property="isPostPro"    column="is_post_pro"    />
+        <result property="isEmpPro"    column="is_emp_pro"    />
+        <result property="isLov"    column="is_lov"    />
+        <result property="lovConId"    column="lov_con_id"    />
+        <result property="describe"    column="describe"    />
+        <result property="parentid"    column="parentid"    />
+        <result property="parents"    column="parents"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="isShowno"    column="is_showno"    />
+        <result property="num"    column="num"    />
+        <result property="defaultValue"    column="defaultValue"    />
+        <result property="status"    column="status"    />
+        <result property="ifUsed"    column="if_used"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSalaryProjectBasisVo">
+        select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, describe, parentid, parents, pay_type, is_showno, num, defaultValue, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
+    </sql>
+
+    <select id="selectSalaryProjectBasisList" parameterType="SalaryProjectBasis" resultMap="SalaryProjectBasisResult">
+        <include refid="selectSalaryProjectBasisVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectSalaryProjectBasisById" parameterType="Long" resultMap="SalaryProjectBasisResult">
+        <include refid="selectSalaryProjectBasisVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSalaryProjectBasis" parameterType="SalaryProjectBasis">
+        insert into human_hs_salary_project_basis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="payProCode != null">pay_pro_code,</if>
+            <if test="payProName != null">pay_pro_name,</if>
+            <if test="isSta != null">is_sta,</if>
+            <if test="staCon != null">sta_con,</if>
+            <if test="isPostPro != null">is_post_pro,</if>
+            <if test="isEmpPro != null">is_emp_pro,</if>
+            <if test="isLov != null">is_lov,</if>
+            <if test="lovConId != null">lov_con_id,</if>
+            <if test="describe != null">describe,</if>
+            <if test="parentid != null">parentid,</if>
+            <if test="parents != null">parents,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="isShowno != null">is_showno,</if>
+            <if test="num != null">num,</if>
+            <if test="defaultValue != null">defaultValue,</if>
+            <if test="status != null">status,</if>
+            <if test="ifUsed != null">if_used,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="payProCode != null">#{payProCode},</if>
+            <if test="payProName != null">#{payProName},</if>
+            <if test="isSta != null">#{isSta},</if>
+            <if test="staCon != null">#{staCon},</if>
+            <if test="isPostPro != null">#{isPostPro},</if>
+            <if test="isEmpPro != null">#{isEmpPro},</if>
+            <if test="isLov != null">#{isLov},</if>
+            <if test="lovConId != null">#{lovConId},</if>
+            <if test="describe != null">#{describe},</if>
+            <if test="parentid != null">#{parentid},</if>
+            <if test="parents != null">#{parents},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="isShowno != null">#{isShowno},</if>
+            <if test="num != null">#{num},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="status != null">#{status},</if>
+            <if test="ifUsed != null">#{ifUsed},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalaryProjectBasis" parameterType="SalaryProjectBasis">
+        update human_hs_salary_project_basis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payProCode != null">pay_pro_code = #{payProCode},</if>
+            <if test="payProName != null">pay_pro_name = #{payProName},</if>
+            <if test="isSta != null">is_sta = #{isSta},</if>
+            <if test="staCon != null">sta_con = #{staCon},</if>
+            <if test="isPostPro != null">is_post_pro = #{isPostPro},</if>
+            <if test="isEmpPro != null">is_emp_pro = #{isEmpPro},</if>
+            <if test="isLov != null">is_lov = #{isLov},</if>
+            <if test="lovConId != null">lov_con_id = #{lovConId},</if>
+            <if test="describe != null">describe = #{describe},</if>
+            <if test="parentid != null">parentid = #{parentid},</if>
+            <if test="parents != null">parents = #{parents},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="isShowno != null">is_showno = #{isShowno},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="defaultValue != null">defaultValue = #{defaultValue},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="ifUsed != null">if_used = #{ifUsed},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSalaryProjectBasisById" parameterType="Long">
+        delete from human_hs_salary_project_basis where id = #{id}
+    </delete>
+
+    <delete id="deleteSalaryProjectBasisByIds" parameterType="String">
+        delete from human_hs_salary_project_basis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
