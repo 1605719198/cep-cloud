@@ -456,6 +456,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @param compId 公司别
      * @return 公司信息
      */
+    @Override
     public SysDept queryCompById(String compId){
         return sysDeptMapper.selectSysDeptByCompId(compId);
     }
