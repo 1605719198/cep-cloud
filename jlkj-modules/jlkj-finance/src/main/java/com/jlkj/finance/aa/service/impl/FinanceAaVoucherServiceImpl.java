@@ -217,7 +217,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         if(detailList.size()>0){
 
             for (FinanceAaVoucherDetail financeAaVoucherDetail :detailList){
-                System.out.println(financeAaVoucherDetail.getNtamt());
+
                 if ("D".equals(financeAaVoucherDetail.getDrcr())){
                     ntamtD = ntamtD.add(financeAaVoucherDetail.getNtamt());
                 }
@@ -249,6 +249,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             {
                 financeAaVoucherDetail.setVoucherNo(id);
                 financeAaVoucherDetail.setId(UUID.fastUUID().toString());
+                financeAaVoucherDetail.setVoucherDate(DateUtils.dateTime(financeAaVoucher.getVoucherDate()));
                 list.add(financeAaVoucherDetail);
             }
             if (list.size() > 0)

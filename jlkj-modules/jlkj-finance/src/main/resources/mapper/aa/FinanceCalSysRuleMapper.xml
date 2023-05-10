@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceCalSysRuleMapper">
 
-    <resultMap type="FinanceCalSysRule" id="FinanceCalSysRuleResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceCalSysRule" id="FinanceCalSysRuleResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="calTypeId"    column="cal_type_id"    />
@@ -25,18 +25,11 @@
         select id, company_id, cal_type_id, cal_type_code, sys, class_name, sql_string, sql_string_db, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_cal_sysrule
     </sql>
 
-    <select id="selectFinanceCalSysRuleList" parameterType="FinanceCalSysRule" resultMap="FinanceCalSysRuleResult">
+    <select id="selectFinanceCalSysRuleList" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule" resultMap="FinanceCalSysRuleResult">
         <include refid="selectFinanceCalSysRuleVo"/>
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="calTypeId != null  and calTypeId != ''"> and cal_type_id = #{calTypeId}</if>
             <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
-            <if test="sys != null  and sys != ''"> and sys = #{sys}</if>
-            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
-            <if test="sqlString != null  and sqlString != ''"> and sql_string = #{sqlString}</if>
-            <if test="sqlStringDb != null  and sqlStringDb != ''"> and sql_string_db = #{sqlStringDb}</if>
-            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
-            <if test="updateName != null  and updateName != ''"> and update_name like concat('%', #{updateName}, '%')</if>
         </where>
     </select>
 
@@ -44,8 +37,28 @@
         <include refid="selectFinanceCalSysRuleVo"/>
         where id = #{id}
     </select>
+    <select id="selectFinanceCalSysRuleMapList" resultType="java.util.Map">
+        select sys value, sys label from finance_aa_cal_sysrule
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
+        </where>
+        ORDER BY cal_type_code
+    </select>
+    <select id="selectFinanceCalSysRule" resultType="com.jlkj.finance.aa.domain.FinanceCalSysRule">
+        <include refid="selectFinanceCalSysRuleVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="sys != null  and sys != ''"> and sys = #{sys}</if>
+            <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
+        </where>
+    </select>
+    <select id="selectFinanceSqlMapList" resultType="java.util.Map">
+        ${selectSql}
+    </select>
 
-    <insert id="insertFinanceCalSysRule" parameterType="FinanceCalSysRule">
+
+    <insert id="insertFinanceCalSysRule" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule">
         insert into finance_aa_cal_sysrule
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -62,7 +75,7 @@
             <if test="updateBy != null">update_by,</if>
             <if test="updateName != null">update_name,</if>
             <if test="updateTime != null">update_time,</if>
-        </trim>
+         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="companyId != null">#{companyId},</if>
@@ -81,7 +94,7 @@
         </trim>
     </insert>
 
-    <update id="updateFinanceCalSysRule" parameterType="FinanceCalSysRule">
+    <update id="updateFinanceCalSysRule" parameterType="com.jlkj.finance.aa.domain.FinanceCalSysRule">
         update finance_aa_cal_sysrule
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>

@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.service;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.jlkj.finance.aa.domain.FinanceCaltype;
 
 /**
@@ -66,4 +67,34 @@ public interface IFinanceCaltypeService
      * @return
      */
     public List<Map<String,String>> selectCalTypeList();
+    /**
+     * 查询核算项目系统别(下拉选单用)
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public List<Map<String,String>> selectCalTypeSystemList(FinanceCaltype financeCaltype);
+    /**
+     * 查询核算项目系统别(下拉选单用)
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public  List<JSONObject> selectFinanceAaBaseListTab(FinanceCaltype financeCaltype);
+    /**
+     * 查询核算项目系统别(下拉选单用)
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public    List<Map<String, String>> selectFinanceAaBaseListTable(FinanceCaltype financeCaltype);
+    /**
+     * 查询模糊核算项目系统别(下拉选单用)
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public    List<Map<String, String>> selectFinanceAaBaseListLikeTable(JSONObject financeCaltype);
+    /**
+     * 查询模糊核算项目系统别(下拉选单用)备用
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public    List<Map<String, String>> selectFinanceAaBaseListLikeTable1(JSONObject financeCaltype);
 }

@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.domain;
 
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
@@ -11,10 +12,13 @@ import com.jlkj.common.core.web.domain.BaseEntity;
  * @author 116514
  * @date 2023-04-06
  */
+@Data
 public class FinanceCaltype extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+    /** 系统别 */
 
+    private String sys;
     /** 主键id */
     private String id;
 

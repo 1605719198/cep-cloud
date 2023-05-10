@@ -1,9 +1,17 @@
 package com.jlkj.finance.aa.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson2.JSONObject;
+import com.jlkj.finance.aa.domain.FinanceAaBase;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +62,51 @@ public class FinanceCaltypeController extends BaseController
     @GetMapping("/calTypeList")
     public List<Map<String,String>> selectCalTypeList()
     {
+
         return financeCaltypeService.selectCalTypeList();
+    }
+    /**
+     * 查询核算项目类别(下拉选单用)
+     */
+    @RequiresPermissions("finance:calType:list")
+    @GetMapping("/calTypeSystemList")
+    public List<Map<String,String>> selectCalTypeSystemList(FinanceCaltype financeCaltype)
+    {
+
+        return financeCaltypeService.selectCalTypeSystemList(financeCaltype);
+    }
+    /**
+     * 查询核算项目类别(生成表头用)
+     */
+    @RequiresPermissions("finance:calType:list")
+    @GetMapping("/calTypeListTab")
+    public AjaxResult listTab(FinanceCaltype financeCaltype)
+    {
+
+        List<JSONObject> list = financeCaltypeService.selectFinanceAaBaseListTab(financeCaltype);
+        return  success(list);
+    }
+    /**
+     * 查询核算项目类别(生成表头用)
+     */
+    @RequiresPermissions("finance:calType:list")
+    @GetMapping("/calTypeListTable")
+    public AjaxResult calTypeListTable(FinanceCaltype financeCaltype)
+    {
+        List<Map<String, String>> list = financeCaltypeService.selectFinanceAaBaseListTable(financeCaltype);
+        return  success(list);
+    }
+
+    /**
+     * 查模糊查询核算项目类别(生成表头用)
+     */
+    @RequiresPermissions("finance:calType:list")
+    @PostMapping("/calTypeListTable2")
+    public AjaxResult calTypeListTable2(@RequestBody JSONObject financeCaltype)
+    {
+
+        List<Map<String, String>> list =financeCaltypeService.selectFinanceAaBaseListLikeTable(financeCaltype);
+        return  success(list);
     }
 
     /**
