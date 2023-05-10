@@ -353,7 +353,9 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+
       this.resetForm("queryForm");
+      this.queryParams.endDate=new Date()
       this.handleQuery();
     },
     clickRow(row) {

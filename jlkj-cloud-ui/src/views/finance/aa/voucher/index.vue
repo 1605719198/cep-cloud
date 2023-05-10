@@ -172,7 +172,7 @@
           <el-table-column label="核算项目一名称" align="center" prop="calNamea">
             <template slot-scope="scope">
               <el-input v-model="scope.row.calNamea" placeholder="请输入核算项目一名称">
-                <el-button slot="append" icon="el-icon-search" @click="inputCalNamea"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNamea(scope.row)"
                 ></el-button>
               </el-input>
             </template>
@@ -180,7 +180,7 @@
           <el-table-column label="核算项目二名称" align="center" prop="calNameb">
             <template slot-scope="scope">
               <el-input v-model="scope.row.calNameb" placeholder="请输入核算项目二名称">
-                <el-button slot="append" icon="el-icon-search" @click="inputCalNameb"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNameb(scope.row)"
                 ></el-button>
               </el-input>
             </template>
@@ -214,7 +214,7 @@
           <el-table-column label="核算项目三名称" align="center" prop="calNamec">
             <template slot-scope="scope">
               <el-input v-model="scope.row.calNamec" placeholder="请输入核算项目三名称">
-                <el-button slot="append" icon="el-icon-search" @click="inputCalNamec"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNamec(scope.row)"
                 ></el-button>
               </el-input>
             </template>
@@ -222,7 +222,7 @@
           <el-table-column label="核算项目四名称" align="center" prop="calNamed">
             <template slot-scope="scope">
               <el-input v-model="scope.row.calNamed" placeholder="请输入核算项目四名称">
-                <el-button slot="append" icon="el-icon-search" @click="inputCalNamed"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNamed(scope.row)"
                 ></el-button>
               </el-input>
             </template>
@@ -261,6 +261,10 @@
     />
     <!-- 更多条件查询弹窗 -->
     <selectVoucher ref="selectVoucher" @ok="getVoucherNo"/>
+    <calTypePOP ref="selectPOP" @pop="getCalTypePOP"/>
+    <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
+    <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
+    <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
   </div>
 </template>
 
@@ -273,11 +277,11 @@ import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listDetail} from "@/api/finance/aa/voucherdetail";
 import selectVoucher from "@/views/finance/aa/voucher/selectVoucher";
-
+import calTypePOP from "@/views/components/finance/calTypePOP";
 export default {
   name: "Voucher",
   components: {
-    selectVoucher
+    selectVoucher,calTypePOP
   },
   dicts: ['aa_source_sys', 'aa_voucher_status'],
   data() {
@@ -362,6 +366,7 @@ export default {
       voucherType:null,
       ntamtDDisabled:false,
       ntamtCDisabled:false,
+      indexRow:''
     };
   },
   created() {
@@ -375,6 +380,29 @@ export default {
       this.selectManufacturer = true
       this.$refs.selectVoucher.show();
     },
+    getCalTypePOP(val){
+      this.formDetail.detailList[this.indexRow-1].calCodea=val.calNo
+      this.formDetail.detailList[this.indexRow-1].calNamea=val.calName
+      this.formDetail.detailList[this.indexRow-1].calIda=val.Id
+    },
+    getCalTypePOP2(val){
+      this.formDetail.detailList[this.indexRow-1].calCodeb=val.calNo
+      this.formDetail.detailList[this.indexRow-1].calNameb=val.calName
+      this.formDetail.detailList[this.indexRow-1].calIdb=val.Id
+
+    },
+    getCalTypePOP3(val){
+      this.formDetail.detailList[this.indexRow-1].calCodec=val.calNo
+      this.formDetail.detailList[this.indexRow-1].calNamec=val.calName
+      this.formDetail.detailList[this.indexRow-1].calIdc=val.Id
+
+    },
+    getCalTypePOP4(val){
+      this.formDetail.detailList[this.indexRow-1].calCoded=val.calNo
+      this.formDetail.detailList[this.indexRow-1].calNamed=val.calName
+      this.formDetail.detailList[this.indexRow-1].calIdd=val.Id
+
+    },
     getVoucherNo(val) {
       this.queryParams.companyId=val.companyId
       this.queryParams.voucherNo=val.voucherNo
@@ -385,28 +413,31 @@ export default {
     },
     /** 会计科目点击事件 */
     inputAcctName() {
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
+
     },
     /** 项目1点击事件 */
-    inputCalNamea() {
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
+    inputCalNamea(val) {
+     this.indexRow= val.index
+      this.$refs.selectPOP.show( this.queryParams);
+
     },
     /** 项目2点击事件 */
-    inputCalNameb() {
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
+    inputCalNameb(val) {
+      this.indexRow= val.index
+       this.$refs.selectPOP2.show( this.queryParams);
+
     },
     /** 项目3点击事件 */
-    inputCalNamec() {
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
+    inputCalNamec(val) {
+      this.indexRow= val.index
+      this.$refs.selectPOP3.show( this.queryParams);
+
     },
     /** 项目4点击事件 */
-    inputCalNamed() {
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
+    inputCalNamed(val) {
+      this.indexRow= val.index
+      this.$refs.selectPOP4.show( this.queryParams);
+
     },
     /** 查询凭证维护-明细列表 */
     getListDetailList() {
@@ -449,7 +480,6 @@ export default {
       } else {
         listDetail(this.queryParams).then(response => {
            this.formDetail.detailList = response.rows;
-          console.log(this.formDetail.detailList.length);
           if (this.formDetail.detailList.length==0){
             let item = {
               index: null,
@@ -725,7 +755,7 @@ export default {
     },
     /** 单号跳转按钮操作 */
     billNoClick(){
-      console.log(11111)
+
     },
     /** 现金流量按钮操作 */
     cashFlowQuery(){
@@ -941,6 +971,7 @@ export default {
       if(!!this.queryParams.companyId){
         for (let i=0;i<  this.formDetail.detailList.length;i++){
         this.formDetail.detailList[i].companyId=this.queryParams.companyId
+
         if (!! this.formDetail.detailList[i].ntamtC && !! this.formDetail.detailList[i].ntamtD ){
           this.$message.error('借方金额/贷方金额,二者任选一个栏位输入');
           return
@@ -961,6 +992,7 @@ export default {
             if (valid) {
               this.form.companyId=this.queryParams.companyId
               this.form.detailList =  this.formDetail.detailList;
+              console.log(   this.form.detailList)
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
                   this.$modal.msgSuccess("修改成功");

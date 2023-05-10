@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="选择厂商" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
     <el-form :model="queryParams" ref="queryForm" size="small"
-             :inline="true" >
+             :inline="true" :close-on-click-modal="false">
       <el-form-item label="厂商编码" prop="manufacturerId">
         <el-input
           v-model="queryParams.manufacturerId"

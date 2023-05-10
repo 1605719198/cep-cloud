@@ -205,7 +205,8 @@
 </template>
 
 <script>
-import {listCode, getCode, delCode, addCode, updateCode, getTreeNode} from "@/api/finance/aa/code";
+import {listCode, getCode, delCode,
+  addCode, updateCode, getTreeNode} from "@/api/finance/aa/code";
 import {isPassword, validateContacts} from "../../../../utils/jlkj";
 
 export default {

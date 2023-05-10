@@ -215,7 +215,8 @@
 </template>
 
 <script>
-import {listCodecompid, getCode, delCodecompid, addCodecompid, updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
+import {listCodecompid, getCode, delCodecompid, addCodecompid,
+  updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
 import {isPassword, validateContacts} from "../../../../utils/jlkj";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 export default {
