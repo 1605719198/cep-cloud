@@ -183,21 +183,21 @@
           </el-col>
         </el-row>
 
-<!--        <el-row :gutter="20">-->
-<!--          <el-col :span="10" style="display: flex;flex-direction: row">-->
-<!--            <el-form-item  prop="type" label="一级单位" style="width: 240px;">-->
-<!--              {{this.form.firstDeptName}}-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--        <div v-if="this.form.checkcard=='Y'">-->
-<!--          <el-divider content-position="center" >刷卡地点清单</el-divider>-->
-<!--        </div>-->
-<!--        <div v-if="this.form.checkcard=='Y'">-->
-<!--          <el-checkbox-group v-model="checkList">-->
-<!--            <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>-->
-<!--          </el-checkbox-group>-->
-<!--        </div>-->
+        <el-row :gutter="20">
+          <el-col :span="10" style="display: flex;flex-direction: row">
+            <el-form-item  prop="type" label="一级单位" style="width: 240px;">
+              {{this.form.firstDeptName}}
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div v-if="this.form.checkcard=='Y'">
+          <el-divider content-position="center" >刷卡地点清单</el-divider>
+        </div>
+        <div v-if="this.form.checkcard=='Y'">
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>
+          </el-checkbox-group>
+        </div>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -401,7 +401,6 @@ export default {
     },
     /** 上级部门切换事件 */
     deptChange(val) {
-      if(form.deptId!=null){
         queryFirstdeptByDept(val.id).then(response =>{
           this.checkList=[];
           this.form.firstDeptId = response.data.firstDeptId;
@@ -417,7 +416,6 @@ export default {
             }
           })
         })
-      }
     },
     //获取公司列表
     getCompanyList(){
@@ -483,7 +481,7 @@ export default {
         firstDeptName: null,
         firstDeptId: null,
       };
-      this.resetForm("form");
+      // this.resetForm("form");
       this.checkList = [];
     },
     /** 搜索按钮操作 */
@@ -518,6 +516,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.formcolockType = this.colockType;
       const id = row.id || this.ids
       if(this.colockType==1){
         getPersonColock(id).then(response => {
