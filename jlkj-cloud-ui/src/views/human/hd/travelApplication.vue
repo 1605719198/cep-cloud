@@ -101,15 +101,14 @@
       </el-table-column>
       <el-table-column label="出差事由" align="center" prop="travelReason">
         <template v-slot="scope">
-          <dict-tag :options="attendenceOptions.TravelReason" :value="scope.row.travelReason"/>
+          <dict-tag-human-basis :options="attendenceOptions.TravelReason" :value="scope.row.travelReason"/>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="状态" align="center" prop="status" >
         <template v-slot="scope">
-          <dict-tag :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
+          <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
         </template>
       </el-table-column>
-
       <el-table-column label="申请人" align="center" prop="creator" />
       <el-table-column label="申请日期" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
@@ -324,50 +323,55 @@
         <el-row v-if="form.travelTpye=='02'" >
           <el-col :span="6">
             <el-form-item label="出差地点1" prop="resvAttr1">
-              <el-select v-model="form.resvAttr1" placeholder="请选择出差地点" style="width: 200px">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr1"  placeholder="请选择出差地点" >
                 <el-option
-                  v-for="dict in dict.type.travel_addr_abroad"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="出差地点2" prop="resvAttr2">
-              <el-select v-model="form.resvAttr2" placeholder="请选择出差地点" style="width: 200px">
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr2"  placeholder="请选择出差地点" >
                 <el-option
-                  v-for="dict in dict.type.travel_addr_abroad"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="出差地点3" prop="resvAttr3">
-              <el-select v-model="form.resvAttr3" placeholder="请选择出差地点" style="width: 200px">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr3"  placeholder="请选择出差地点" >
                 <el-option
-                  v-for="dict in dict.type.travel_addr_abroad"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
               </el-select>
+
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="出差地点4" prop="resvAttr4">
-              <el-select v-model="form.resvAttr4" placeholder="请选择出差地点" style="width: 200px">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr4"  placeholder="请选择出差地点" >
                 <el-option
-                  v-for="dict in dict.type.travel_addr_abroad"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
               </el-select>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -404,9 +408,11 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import {queryInfo} from "@/api/human/hm/personnelBasicInfo";
 import selectUser from "@/views/components/human/selectUser/selectUser";
+import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo";
 export default {
   name: "Travelapplication",
-  components: {selectUser},
+  components: { DictTagHumanBasis, selectUser },
+  //components: {selectUser},
   dicts: ['travel_addr_abroad'],
   data() {
     return {
@@ -419,7 +425,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer']
+        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer','TravelAbroad']
       },
       //出勤选单选项列表
       attendenceOptions: {},
@@ -472,6 +478,9 @@ export default {
           { required:true, message:'不能为空', trigger:"change"}
         ],
         isEngineer:[
+          { required:true, message:'不能为空', trigger:"change"}
+        ],
+        travelReason:[
           { required:true, message:'不能为空', trigger:"change"}
         ],
       }
