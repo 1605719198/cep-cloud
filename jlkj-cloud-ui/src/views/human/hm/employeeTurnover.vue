@@ -246,7 +246,7 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <div class="head-container" style="height: 10vh;width: 100%;">
+                    <div class="head-container" style="height: 25vh;width: 100%;">
                       <el-scrollbar style="height: 100%;">
                         <el-tree
                           :data="newPostNameOptions"

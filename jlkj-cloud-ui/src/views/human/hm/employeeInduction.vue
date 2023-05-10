@@ -120,7 +120,7 @@
               </el-col>
             </el-row>
             <el-button type="primary" plain icon="el-icon-plus" @click="addLine">添加</el-button>
-            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
+            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem">删除</el-button>
             <el-table
               :data="addJsonForm.employeeInductionList"
               border
@@ -186,7 +186,7 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <div class="head-container" style="height: 10vh;width: 100%;">
+                    <div class="head-container" style="height: 25vh;width: 100%;">
                       <el-scrollbar style="height: 100%;">
                         <el-tree
                           :data="newPostNameOptions"
@@ -242,8 +242,9 @@ export default {
       addJsonForm: {
         employeeInductionList: [
           {
-            postTypeId: undefined,
+            postTypeId: "01",
             newPostName: undefined,
+            uuid: 1
           }
         ],
         postPop: [
@@ -313,7 +314,7 @@ export default {
       //员工入职表数据
       postList: [],
       // 非多个禁用
-      addJsonMultiple: true,
+      addJsonMultiple: [],
       updatePop: true,
       key: undefined,
       label: undefined,
@@ -345,10 +346,8 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      this.queryParams.empNo = this.$store.state.user.name
-      this.queryParams.compId = this.$store.state.user.userInfo.compId
-    })
+    this.queryParams.empNo = this.$store.state.user.name
+    this.queryParams.compId = this.$store.state.user.userInfo.compId
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
@@ -423,6 +422,12 @@ export default {
     submitForm() {
       this.$refs["addJsonForm"].validate(valid => {
         if (valid) {
+          let result = []
+          this.addJsonForm.employeeInductionList.map(val => {
+            this.$delete(val, "uuid"); // 删除uuid属性
+            result.push(val);
+          });
+          this.addJsonForm.employeeInductionList = result
           if (this.addJsonForm.uuid != undefined) {
             updateEmployeeInduction(this.addJsonForm).then(res => {
               if (res.code === 200) {
@@ -457,28 +462,55 @@ export default {
     },
 // 增加一个空行, 用于录入或显示第一行
     addLine() {
-      const newLine = {
-        postTypeId: "",
-        newPostName: ""
-      }
       this.index++
-      this.addJsonForm.employeeInductionList.push(newLine)
+      if (this.addJsonForm.employeeInductionList.length === 0) {
+        const newLine = {
+          postTypeId: "01",
+          newPostName: "",
+          uuid: this.index
+        }
+        this.addJsonForm.employeeInductionList.push(newLine)
+      } else {
+        const newLine = {
+          postTypeId: "",
+          newPostName: "",
+          uuid: this.index
+        }
+        this.addJsonForm.employeeInductionList.push(newLine)
+      }
     },
+    // delTableItem() {
+    //   const uuids = this.ids;
+    //   this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
+    //     return delEmployeeInductionDetail(uuids);
+    //   }).then(() => {
+    //     queryEmployeeInductionByUuid(uuids).then(res => {
+    //       this.addJsonForm.employeeInductionList = res.data.employeeInductionList
+    //       this.key = Math.random()
+    //     })
+    //     this.$modal.msgSuccess("删除成功");
+    //   }).catch(() => {});
+    // },
     delTableItem() {
-      const uuids = this.ids;
-      this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
-        return delEmployeeInductionDetail(uuids);
-      }).then(() => {
-        queryEmployeeInductionByUuid(uuids).then(res => {
-          this.addJsonForm.employeeInductionList = res.data.employeeInductionList
-          this.key = Math.random()
-        })
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      // 确认删除
+      if (this.addJsonMultiple.length > 0) {
+        let arrs = [];
+        let ids = this.addJsonMultiple.map(val => val.uuid); //拿到选中的数据id,
+        this.addJsonForm.employeeInductionList.forEach(item => {
+          if (!ids.includes(item.uuid)) {
+            // 当uuid在employeeInductionList中，表示数据被选中，该将其删除，即将不被选中的保留
+            arrs.push(item);
+          }
+        });
+        this.addJsonForm.employeeInductionList = arrs;
+        this.key = Math.random()
+      } else {
+        this.$message.warning("请选择要删除的数据");
+      }
     },
     addJsonSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid);
-      this.addJsonMultiple = !selection.length;
+      this.addJsonMultiple = selection;
     },
     resetAddJsonPopup() {
       //关闭 固定值弹窗
