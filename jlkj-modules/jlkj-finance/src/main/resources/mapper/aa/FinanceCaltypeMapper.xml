@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
+            <if test="calTypeName != null  and calTypeName != ''"> and cal_type_name = #{calTypeName}</if>
         </where>
     </select>
     
