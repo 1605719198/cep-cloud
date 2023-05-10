@@ -140,7 +140,7 @@
                           <el-form-item :prop="'tCodeList.' + scope.$index + '.inorout'" >
                           <el-select v-model="scope.row.inorout" placeholder="请选择流入流出">
                             <el-option
-                              v-for="dict in dict.type.aa_in0r0ut"
+                              v-for="dict in dict.type.aa_inorout"
                               :key="dict.value"
                               :label="dict.label"
                               :value="dict.value"
@@ -221,7 +221,7 @@ import {isPassword, validateContacts} from "../../../../utils/jlkj";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 export default {
   name: "Code",
-  dicts: ['aa_quedataway', 'aa_in0r0ut', 'sys_yes_no'],
+  dicts: ['aa_quedataway', 'aa_inorout', 'sys_yes_no'],
   data() {
     return {
       defaultProps: {

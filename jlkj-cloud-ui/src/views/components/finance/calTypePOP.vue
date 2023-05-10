@@ -15,7 +15,7 @@
       </el-option>
     </el-select>
   </el-form-item>
-  <el-form-item   prop="sys">
+  <el-form-item   prop="sys"    v-if="tableIf">
     <el-select v-model="queryParams.sys"
                filterable placeholder="请输入系统别">
       <el-option
@@ -31,8 +31,25 @@
   <el-form-item v-for="(item, index) in tableColumnsInput" :key="index" >
     <el-input v-model="item.value" v-if=" item.nameEn!=='Id'&& item.nameEn!=='uuid'"></el-input>
   </el-form-item>
+  <el-form-item label="" v-if="tableCodeIf" prop="calCode" label-width="130px">
+    <el-input
+      v-model="queryParams.calCode"
+      placeholder="请输入核算项目编码"
+      clearable
+      @keyup.enter.native="handleQuery"
+    />
+  </el-form-item>
+  <el-form-item label=""  v-if="tableCodeIf"prop="calName" label-width="130px">
+    <el-input
+      v-model="queryParams.calName"
+      placeholder="请输入核算项目名称"
+      clearable
+      @keyup.enter.native="handleQuery"
+    />
+  </el-form-item>
   <el-form-item>
-    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" v-if="tableIf">搜索</el-button>
+    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQueryCode" v-if="tableCodeIf">搜索</el-button>
     <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
   </el-form-item>
 </el-form>
@@ -93,8 +110,11 @@
 </template>
 
 <script>
-import { calTypeListTable2,selectCalTypeList,selectCalTypeSystemList,calTypeListTab,calTypeListTable,calTypeListCodeTable}
+import { calTypeListTable2,selectCalTypeList,selectCalTypeSystemList,calTypeListTab,
+  calTypeListTable}
   from "@/api/finance/aa/calType";
+import { listCalcode }
+  from "@/api/finance/aa/calcode";
 export default {
   name: "calTypePOP",
   data(){
@@ -116,7 +136,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         calTypeCode:'',
-
+        calTypeName:"",
         companyId:'J00',
         sys:"",
         key:{},
@@ -207,20 +227,21 @@ export default {
       this.multiple = !selection.length
     },
     /** 搜索按钮操作 */
+    handleQueryCode() {
+      this.queryParams.pageNum = 1;
+      this.getCodeList();
+    },
+    /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-
       for (let i=1;i<this.tableColumns.length;i++){
         if (this.tableColumns[i].value==null||this.tableColumns[i].value==''){
           this.$set(this.queryParam.key,this.tableColumns[i].nameEn,"null")
         }else {
-
           this.$set(this.queryParam,this.tableColumns[i].nameEn, this.tableColumns[i].value)
           this.$set(this.queryParam.key,this.tableColumns[i].nameEn,this.tableColumns[i].value)
         }
-
       }
-
       this.queryParam.companyId= this.queryParams.companyId
       this.queryParam.calTypeCode= this.queryParams.calTypeCode
       this.queryParam.sys= this.queryParams.sys
@@ -244,9 +265,7 @@ export default {
             this.fundsList2=[]
           }
         }
-
       });
- /*     this.getList();*/
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -278,27 +297,10 @@ export default {
     },
     //表格数据
     getCodeList(){
-      calTypeListCodeTable(this.queryParams).then(response => {
-        this.detailCodeList= response.data
-        this.fundsList1 =response.data;
-        this.detailCodeList = this.fundsList1.slice(0,this.totalVal)
-        this.total =this.detailCodeList.length;
-        let number = Math.ceil(this.total / this.totalVal);
-        if (this.numbertotal <= number && this.numbertotal !==0){
-          if (this.numbertotal===1){
-            this.detailCodeList =  response.rows.slice(0, this.totalVal)
-          }else if (this.total>this.totalVal*this.numbertotal){
-            this.fundsList1 = response.rows;
-            this.fundsList2 = this.fundsList1.slice(this.totalVal*(this.numbertotal-1), this.totalVal*this.numbertotal)
-            this.detailCodeList = this.fundsList2
-            this.fundsList2=[]
-          }else if ( number === this.numbertotal){
-            this.fundsList2 = this.fundsList1.slice(this.totalVal*(this.numbertotal-1),this.total)
-            this.detailCodeList = this.fundsList2
-            this.fundsList2=[]
-          }
-        }
-
+      listCalcode(this.queryParams).then(response => {
+        this.detailCodeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
       });
     },
     //表格数据
@@ -339,6 +341,7 @@ export default {
           this.tableIf = true
           this.tableCodeIf = false
         }else {
+          this.getCodeList();
           this.tableColumnsInput=[]
           this.tableIf = false
           this.tableCodeIf = true
@@ -348,6 +351,7 @@ export default {
     //公司下拉选单掉用方法
     changCompanyId(val) {
       this.queryParams.calTypeCode = val.value
+
       this.getCalTypeSystemList()
     },
     //系统别下拉选单掉用方法

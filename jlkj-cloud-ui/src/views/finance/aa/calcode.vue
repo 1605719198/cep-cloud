@@ -177,7 +177,8 @@
 </template>
 
 <script>
-import { listCalcode, getCalcode, delCalcode, addCalcode, updateCalcode,changeUserStatus } from "@/api/finance/aa/calcode";
+import { listCalcode, getCalcode, delCalcode, addCalcode, updateCalcode,changeUserStatus }
+  from "@/api/finance/aa/calcode";
 import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 export default {
   name: "Calcode",
