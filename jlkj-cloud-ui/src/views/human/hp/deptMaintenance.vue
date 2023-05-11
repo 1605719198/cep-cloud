@@ -92,7 +92,6 @@
         <el-table v-loading="loading" :data="deptmaintenanceList" @selection-change="handleSelectionChange"
                   height="67vh" v-show="treeandtable"
         >
-          <el-table-column type="selection" width="55" align="center" show-overflow-tooltip/>
           <el-table-column label="机构编码" align="center" width="120" prop="deptCode" show-overflow-tooltip/>
           <el-table-column label="机构名称" align="center" width="300" prop="deptName" show-overflow-tooltip/>
           <el-table-column label="排序序号" align="center" prop="orderNum" show-overflow-tooltip/>

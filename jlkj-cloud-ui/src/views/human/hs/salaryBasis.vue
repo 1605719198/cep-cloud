@@ -166,7 +166,7 @@
 <script>
 import '@/assets/styles/humanStyles.scss';
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
-import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree } from "@/api/human/hs/salaryBasis";
+import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree, getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 export default {
   name: "BaseInfo",
@@ -210,6 +210,13 @@ export default {
         loading: false,
       },
       tableData: [],
+      //薪资选单类型查询
+      salaryOptionType: {
+        id: '',
+        optionsType: ['test2']
+      },
+      //出勤选单选项列表
+      options: [],
       //默认显示id
       defaultShowNodes: [],
       // 表单校验

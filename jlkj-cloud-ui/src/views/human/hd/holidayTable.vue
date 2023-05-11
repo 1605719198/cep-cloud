@@ -97,7 +97,7 @@ export default {
         optionsType: ['dateType']
       },
       //出勤选单选项列表
-      attendenceOptions: {},
+      attendenceOptions: [],
       //公司数据
       companyList: [],
       //登录人工号

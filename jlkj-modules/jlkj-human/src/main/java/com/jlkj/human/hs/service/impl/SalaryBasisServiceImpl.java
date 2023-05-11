@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 import com.jlkj.human.hs.mapper.SalaryBasisMapper;
 import com.jlkj.human.hs.service.ISalaryBasisService;
@@ -131,5 +132,18 @@ public class SalaryBasisServiceImpl implements ISalaryBasisService
     @Override
     public List<SalaryBasis> selectSalaryBasisByParentid(Long  parentid){
         return salaryBasisMapper.selectSalaryBasisByParentid(parentid);
+    }
+
+    /**
+     * 查询员工薪资基本资料维护选单
+     *
+     * @param code 员工薪资基本资料维护编码
+     * @return 结果
+     */
+    @Override
+    public List<BasisOptionsDTO> selectBasisOptions(String code) {
+        Long parentid = salaryBasisMapper.selectSalaryParentByCode(code).getId();
+        List<BasisOptionsDTO> list = salaryBasisMapper.selectSalaryByParentid(parentid);
+        return list;
     }
 }
