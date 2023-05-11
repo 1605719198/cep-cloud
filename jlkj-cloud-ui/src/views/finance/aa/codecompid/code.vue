@@ -346,6 +346,7 @@ export default {
         this.form.tCodeList = response.rows;
         this.total = response.total;
         if (response.rows.length > 0) {
+          this.form.companyId = response.rows[0].companyId
           this.form.parentId = response.rows[0].parentId
           this.form.parentCode = response.rows[0].parentCode
           this.form.parentName = response.rows[0].parentName
@@ -471,7 +472,13 @@ export default {
       }
 
       for (let i = 0; i < this.codeList.length; i++) {
-        this.codeList[i].companyId = this.form.companyId
+        if( this.form.companyId== null){
+          this.$modal.msgError("请点击树节点进行保存");
+          return
+        }else {
+          this.codeList[i].companyId = this.form.companyId
+        }
+
         this.codeList[i].parentId = this.form.parentId
         this.codeList[i].parentCode = this.form.parentCode
         this.codeList[i].parentName = this.form.parentName
