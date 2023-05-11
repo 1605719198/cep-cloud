@@ -229,7 +229,7 @@ export default {
 
     moreQuery() {
       this.selectManufacturer = true
-      this.$refs.selectVoucher.show();
+      this.$refs.selectVoucher.show(this.queryParams);
     },
     /** 更多条件弹窗*/
     getVoucherNo(val) {

@@ -99,14 +99,14 @@
             </el-form-item>
           </el-col>
           <el-col   :span="12">
-            <el-form-item label="会计科目" prop="acctName">
+            <el-form-item label="会计科目" prop="acctNameStart">
               <el-input v-model="queryParams.acctNameStart"  placeholder="请输入会计科目">
                 <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
                 ></el-button>
               </el-input>
             </el-form-item>
             ~
-            <el-form-item>
+            <el-form-item prop="acctNameEnd">
               <el-input v-model="queryParams.acctNameEnd"  placeholder="请输入会计科目">
                 <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
                 ></el-button>
@@ -121,16 +121,16 @@
             </el-form-item>
           </el-col>
           <el-col   :span="12">
-            <el-form-item label="核算项目一" prop="calNamea">
+            <el-form-item label="核算项目一" prop="calNameaStart">
               <el-input v-model="queryParams.calNameaStart"  placeholder="请输入核算项目一">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNamea"
                 ></el-button>
               </el-input>
             </el-form-item>
             ~
-            <el-form-item>
+            <el-form-item  prop="calNameaEnd">
               <el-input v-model="queryParams.calNameaEnd"  placeholder="请输入核算项目一">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNamea1"
                 ></el-button>
               </el-input>
             </el-form-item>
@@ -141,16 +141,16 @@
             </el-form-item>
           </el-col>
           <el-col   :span="12">
-            <el-form-item label="核算项目二" prop="calNameb">
+            <el-form-item label="核算项目二" prop="calNamebStart">
               <el-input v-model="queryParams.calNamebStart"  placeholder="请输入核算项目二">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNameb"
                 ></el-button>
               </el-input>
             </el-form-item>
             ~
-            <el-form-item>
+            <el-form-item prop="calNamebEnd">
               <el-input v-model="queryParams.calNamebEnd"  placeholder="请输入核算项目二">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputCalNameb1"
                 ></el-button>
               </el-input>
             </el-form-item>
@@ -211,10 +211,11 @@
           />
         </el-form-item>
       </el-form>
-
-
     </el-row>
-
+    <calTypePOP ref="selectPOP" @pop="getCalTypePOP"/>
+    <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
+    <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
+    <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
   </el-dialog>
 </template>
 
@@ -222,9 +223,13 @@
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listVoucherDetailSelect} from "@/api/finance/aa/voucher";
+import calTypePOP from "@/views/components/finance/calTypePOP";
 export default {
   name: "selecVoucher",
   dicts: ['aa_source_sys', 'aa_voucher_status'],
+  components: {
+    calTypePOP
+  },
   data() {
     return {
       // 遮罩层
@@ -281,13 +286,17 @@ export default {
         calNamebStart:null,
         calNamebEnd:null,
         qtyFrnamtStart:null,
-        qtyFrnamtEnd:null
+        qtyFrnamtEnd:null,
+        calCodec:null,
+        calNamec:null,
+        calIdc:null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      calNameaStart:""
     };
   },
   created() {
@@ -296,6 +305,42 @@ export default {
 
   },
   methods: {
+    /** 项目1起始点击事件 */
+    inputCalNamea(val) {
+      this.$refs.selectPOP.show( this.queryParams);
+
+    },
+    /** 项目1结束点击事件 */
+    inputCalNamea1(val) {
+
+      this.$refs.selectPOP2.show( this.queryParams);
+
+    },
+    /** 项目2起始点击事件 */
+    inputCalNameb(val) {
+      this.$refs.selectPOP3.show( this.queryParams);
+
+    },
+    /** 项目2结束点击事件 */
+    inputCalNameb1(val) {
+      this.$refs.selectPOP4.show( this.queryParams);
+    },
+    getCalTypePOP(val){
+      this.$set( this.queryParams, 'calCodeaStart', val.calNo);
+      this.$set( this.queryParams, 'calNameaStart', val.calNo);
+    },
+    getCalTypePOP2(val){
+      this.$set( this.queryParams, 'calNameaEnd', val.calNo);
+      this.$set( this.queryParams, 'calCodeaEnd', val.calNo);
+    },
+    getCalTypePOP3(val){
+      this.$set( this.queryParams, 'calNamebStart', val.calNo);
+      this.$set( this.queryParams, 'alCodebStart', val.calNo);
+    },
+    getCalTypePOP4(val){
+       this.$set( this.queryParams, 'calNamebEnd', val.calNo);
+      this.$set( this.queryParams, 'calCodebEnd', val.calNo);
+    },
     //查询日期切换事件
     dutyDateChange(val) {
       if (val!=null){
@@ -327,6 +372,7 @@ export default {
       if(queryParams){
         this.queryParams = queryParams;
       }
+
       this.visible = true;
     },
 

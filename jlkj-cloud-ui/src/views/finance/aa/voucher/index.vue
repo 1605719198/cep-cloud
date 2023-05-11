@@ -389,7 +389,7 @@ export default {
     },
     moreQuery() {
       this.selectManufacturer = true
-      this.$refs.selectVoucher.show();
+      this.$refs.selectVoucher.show(this.queryParams);
     },
     getCalTypePOP(val){
       this.formDetail.detailList[this.indexRow-1].calCodea=val.calNo
