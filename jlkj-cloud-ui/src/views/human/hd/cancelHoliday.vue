@@ -189,6 +189,17 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否全销" prop="isAll">
+              <el-radio-group v-model="form.isAll">
+                <el-radio
+                  v-for="dict in dict.type.sys_yes_no"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row :gutter="20">
@@ -307,6 +318,11 @@
           <el-col :span="8">
             <el-form-item label="是否包括节假日" prop="isContainHoliday">
               {{ form.isContainHoliday }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否全销" prop="isAll">
+              {{ form.isAll }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -437,7 +453,7 @@ export default {
     leaveDays(){
         var startDate = new Date(this.form.startDate);
         var endDate = new Date(this.form.endDate)
-      return (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+        return (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
     }
   },
   created() {
@@ -587,7 +603,11 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.form.leaveDays = this.leaveDays;
+          if(this.form.isAll === '否'){
+          this.form.leaveDays = this.leaveDays
+          } else{
+            this.form.leaveDays = this.leaveDays = 0
+          }
           if (this.form.id != null) {
             updateCancelHoliday(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

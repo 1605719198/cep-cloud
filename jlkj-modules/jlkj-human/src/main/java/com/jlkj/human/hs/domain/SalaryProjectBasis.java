@@ -1,7 +1,6 @@
 package com.jlkj.human.hs.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,6 +23,7 @@ public class SalaryProjectBasis implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /** 薪酬项目编码 */

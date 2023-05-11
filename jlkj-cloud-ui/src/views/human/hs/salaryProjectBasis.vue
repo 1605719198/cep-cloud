@@ -64,7 +64,7 @@
             </el-table-column>
             <el-table-column label="是否显示编码" align="center" prop="isShowno" >
             <template v-slot="scope">
-              <el-checkbox v-model="scope.row.isShowno"></el-checkbox>
+              <el-checkbox v-model="scope.row.isShowno" true-label="1" false-label="0"></el-checkbox>
             </template>
             </el-table-column>
             <el-table-column label="排序" align="center" prop="num" >
@@ -72,7 +72,11 @@
               <el-input v-model="scope.row.num" placeholder="请输入内容"></el-input>
             </template>
             </el-table-column>
-            <el-table-column label="状态" align="center" prop="status" />
+            <el-table-column label="状态" align="center" prop="status" >
+            <template v-slot="scope">
+              <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+            </template>
+            </el-table-column>
             <el-table-column label="输入人" align="center" prop="creator" />
             <el-table-column label="输入日期" align="center" prop="createDate" width="180">
               <template v-slot="scope">
@@ -113,6 +117,7 @@ import {getDateTime} from "@/api/human/hd/ahumanUtils";
 
 export default {
   name: "SalaryProjectBasis",
+  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 选中数组
@@ -141,7 +146,8 @@ export default {
       //列表数据
       tableData: [
         {
-          payProCode: undefined
+          payProCode: undefined,
+          status :'0',
         }
       ],
       // 是否显示弹出层
@@ -180,6 +186,8 @@ export default {
     }
   },
   created() {
+    this.initData();
+
     this.getBaseInfoTree();
   },
   methods: {
@@ -271,9 +279,6 @@ export default {
     handleSave() {
       addSalaryProjectBasis(this.tableData).then(res => {
         this.$modal.msgSuccess("保存成功");
-        this.form.creator = this.$store.state.user.userInfo.nickName ;
-        this.form.createDate = getDateTime(1) ;
-        this.form.creatorId = this.$store.state.user.name;
         this.getList();
       })
     },
@@ -349,8 +354,13 @@ export default {
     addLine(row) {
       if (this.tableData.length = row.index + 1) {
         const newLine = {
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
+          status: "0",
           payProCode: "",
           parentid: null,
+          isShowno: "0",
         }
         this.index++
         this.tableData.push(newLine)
