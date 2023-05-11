@@ -162,14 +162,13 @@ export default {
     },
     //点击节点方法
     handleNodeClick(data) {
-      this.uuid = data.uuid
+      this.queryParams.uuid = data.uuid
       this.tableData = []
       this.onLoad()
     },
     //载入数据
     onLoad() {
       this.table.loading = true;//加载状态
-      this.queryParams.uuid = this.uuid
       getChildrenList(this.queryParams).then(res => {
         this.queryParams.total = res.data.total;//数据总数
         this.tableData = res.data.rows;//表格数据
