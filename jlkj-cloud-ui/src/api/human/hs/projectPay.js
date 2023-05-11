@@ -9,6 +9,15 @@ export function listProjectPay(query) {
   })
 }
 
+// 查询薪资资料树结构
+export function listProjectPayTree(query) {
+  return request({
+    url: '/human/projectPay/listTree',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询薪酬项目详细
 export function getProjectPay(id) {
   return request({

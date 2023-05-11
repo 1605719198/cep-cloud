@@ -72,7 +72,7 @@ public class SalaryBasis extends BaseEntity
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
-    /** 子部门 */
+    /** 子节点 */
     private List<SalaryBasis> children = new ArrayList<SalaryBasis>();
 
     public void setId(Long id)

@@ -48,6 +48,17 @@ public class ProjectPayController extends BaseController
     }
 
     /**
+     * 查询薪酬项目树结构
+     */
+    @RequiresPermissions("human:projectPay:list")
+    @GetMapping("/listTree")
+    public List<ProjectPay> listTree(ProjectPay projectPay)
+    {
+        List<ProjectPay> list = projectPayService.selectProjectPayList(projectPay);
+        return list;
+    }
+
+    /**
      * 导出薪酬项目列表
      */
     @RequiresPermissions("human:projectPay:export")

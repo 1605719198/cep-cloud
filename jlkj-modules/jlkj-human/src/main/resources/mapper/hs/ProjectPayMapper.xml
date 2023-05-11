@@ -34,7 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectPayList" parameterType="ProjectPay" resultMap="ProjectPayResult">
         <include refid="selectProjectPayVo"/>
-        <where>  
+        <where>
+            <if test="id != null  and id != ''"> and parentid = #{id}</if>
+             and pay_type = "1"
         </where>
     </select>
     

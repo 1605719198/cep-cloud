@@ -1,6 +1,9 @@
 package com.jlkj.human.hs.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -91,6 +94,9 @@ public class ProjectPay extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
+
+    /** 子节点 */
+    private List<ProjectPay> children = new ArrayList<ProjectPay>();
 
     public void setId(Long id)
     {
@@ -280,6 +286,15 @@ public class ProjectPay extends BaseEntity
     public Date getCreateDate()
     {
         return createDate;
+    }
+    public List<ProjectPay> getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren(List<ProjectPay> children)
+    {
+        this.children = children;
     }
 
     @Override
