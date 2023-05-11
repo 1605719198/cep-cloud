@@ -34,19 +34,18 @@
                   <el-button
                     type="danger"
                     plain
-                    icon="el-icon-delete"
                     size="mini"
                     :disabled="multiple"
                     @click="handleDelete"
                     v-hasPermi="['human:salaryProjectBasis:remove']"
-                  >删除</el-button>
+                  >作废</el-button>
                 </el-form-item>
               </el-form>
             </el-col>
           </el-row>
         </div>
         <div>
-          <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
+          <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="tableData" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="薪酬项目编码" align="center" prop="payProCode" >
               <template v-slot="scope">
@@ -111,8 +110,6 @@
 <script>
 import { listSalaryProjectBasis, getSalaryProjectBasis, delSalaryProjectBasis, addSalaryProjectBasis, updateSalaryProjectBasis, treeselect } from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
-import {addPersonnelData} from "@/api/human/hm/personnelBasicInfo";
-
 
 export default {
   name: "SalaryProjectBasis",
@@ -142,7 +139,11 @@ export default {
         loading: false,
       },
       //列表数据
-      tableData: [],
+      tableData: [
+        {
+          payProCode: undefined
+        }
+      ],
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -179,7 +180,6 @@ export default {
     }
   },
   created() {
-    this.getList();
     this.getBaseInfoTree();
   },
   methods: {
@@ -269,19 +269,13 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.form.compId = this.compId;
-          addPersonnelData(this.form).then(response => {
-            if (response.code == 200) {
-              this.$message({
-                type: 'success',
-                message: response.msg
-              })
-            }
-          })
-        }
-      });
+      addSalaryProjectBasis(this.tableData).then(res => {
+        this.$modal.msgSuccess("保存成功");
+        this.form.creator = this.$store.state.user.userInfo.nickName ;
+        this.form.createDate = getDateTime(1) ;
+        this.form.creatorId = this.$store.state.user.name;
+        this.getList();
+      })
     },
     /** 提交按钮 */
     submitForm() {
@@ -330,8 +324,8 @@ export default {
     onLoad() {
       this.table.loading = true;//加载状态
       listSalaryProjectBasis(this.queryParams).then(response => {
-        this.total = response.total;
-        this.tableData = response.rows;//表格数据
+        this.total = response.data.total;
+        this.tableData = response.data.rows;//表格数据
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
@@ -348,22 +342,15 @@ export default {
       this.open = true;
       this.title = "添加下级窗口";
     },
+    addIndex({row, rowIndex}) {
+      row.index = rowIndex
+    },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      //列表数据最大行数
-      let maxLine = 1;
-      //列表数据当前有效行数
-      let nowLine = 0;
-      this.tableData.forEach((value)=>{
-        if(value.payProCode){
-          nowLine ++;
-        }
-        maxLine ++;
-      })
-      console.log('最大行:'+maxLine+'当前行'+nowLine)
-      if(parseInt(maxLine)===parseInt(nowLine)+1){
+      if (this.tableData.length = row.index + 1) {
         const newLine = {
-          payProCode: ""
+          payProCode: "",
+          parentid: null,
         }
         this.index++
         this.tableData.push(newLine)

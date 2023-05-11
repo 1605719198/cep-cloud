@@ -3,7 +3,6 @@ package com.jlkj.human.hs.controller;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
@@ -33,11 +32,20 @@ public class SalaryProjectBasisController extends BaseController
      */
     @RequiresPermissions("human:salaryProjectBasis:list")
     @GetMapping("/list")
-    public TableDataInfo list(SalaryProjectBasis salaryProjectBasis)
+    public Object list(SalaryProjectBasis salaryProjectBasis)
     {
-        startPage();
-        List<SalaryProjectBasis> list = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
-        return getDataTable(list);
+        try {
+            startPage();
+            List<SalaryProjectBasis> list = salaryProjectBasisService.lambdaQuery()
+                    .eq(SalaryProjectBasis::getParentid, salaryProjectBasis.getId()).list();
+            if (list.isEmpty()) {
+                return AjaxResult.error("查无资料");
+            } else {
+                return AjaxResult.success("查询成功！", getDataTable(list));
+            }
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
     }
 
     /**
@@ -69,9 +77,9 @@ public class SalaryProjectBasisController extends BaseController
     @RequiresPermissions("human:salaryProjectBasis:add")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SalaryProjectBasis salaryProjectBasis)
+    public Object add(@RequestBody List<SalaryProjectBasis> salaryProjectBasisList)
     {
-        return toAjax(salaryProjectBasisService.insertSalaryProjectBasis(salaryProjectBasis));
+        return salaryProjectBasisService.insertSalaryProjectBasis(salaryProjectBasisList);
     }
 
     /**
@@ -96,28 +104,14 @@ public class SalaryProjectBasisController extends BaseController
         return toAjax(salaryProjectBasisService.deleteSalaryProjectBasisByIds(ids));
     }
 
-//    /**
-//     * 获取集团级薪资项目下拉树列表
-//     */
-//    @GetMapping("/treeselect")
-//    public AjaxResult treeselect(SalaryProjectBasis salaryProjectBasis)
-//    {
-//        List<SalaryProjectBasis> salaryProjectBasiss = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
-//        return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
-//    }
+    /**
+     * 获取集团级薪资项目下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public AjaxResult treeselect(SalaryProjectBasis salaryProjectBasis)
+    {
+        List<SalaryProjectBasis> salaryProjectBasiss = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
+        return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
+    }
 
-//    /**
-//     * 获取集团级薪资项目下拉选单列表
-//     */
-//    @GetMapping(value = "/getBasisOptions")
-//    public Object getBasisOptions(OptinonTypeDTO optinonType)
-//    {
-//        List<String> optionsType = optinonType.getOptionsType();
-//        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
-//        for (String item : optionsType) {
-//            List<BasisOptionsDTO> list = salaryProjectBasisService.selectBasisOptions(item);
-//            map.put(item, list);
-//        }
-//        return AjaxResult.success(map);
-//    }
 }
