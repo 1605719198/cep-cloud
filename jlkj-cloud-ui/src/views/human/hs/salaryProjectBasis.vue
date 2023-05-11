@@ -28,16 +28,14 @@
               <el-form :inline="true">
                 <!-- 操作按钮 -->
                 <el-form-item>
-                  <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="mini" plain @click="handleSave">保存</el-button>
+                  <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
                 </el-form-item>
                 <el-form-item>
                   <el-button
                     type="danger"
                     plain
                     size="mini"
-                    :disabled="multiple"
-                    @click="handleDelete"
-                    v-hasPermi="['human:salaryProjectBasis:remove']"
+                    @click="cancellation"
                   >作废</el-button>
                 </el-form-item>
               </el-form>
@@ -144,12 +142,7 @@ export default {
         loading: false,
       },
       //列表数据
-      tableData: [
-        {
-          payProCode: undefined,
-          status :'0',
-        }
-      ],
+      tableData: [],
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -171,8 +164,10 @@ export default {
       // 表单校验
       rules: {
       },
-      index: 0
+      index: 0,
+      multipleSelection: []
     };
+
   },
   watch: {
     // 监听数据 设置默认展示第一层数据
@@ -256,8 +251,13 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
+
+      this.multipleSelection = selection;
+      console.log(selection.length)
+
       this.single = selection.length!==1
       this.multiple = !selection.length
+      console.log(this.ids)
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -277,7 +277,17 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      addSalaryProjectBasis(this.tableData).then(res => {
+      addSalaryProjectBasis(this.multipleSelection).then(res => {
+        this.$modal.msgSuccess("保存成功");
+        this.getList();
+      })
+    },
+    // 作废按钮
+    cancellation() {
+      for(let i = 0;i<this.multipleSelection.length;i++){
+        this.multipleSelection[i].status = "1"
+      }
+      addSalaryProjectBasis(this.multipleSelection).then(res => {
         this.$modal.msgSuccess("保存成功");
         this.getList();
       })
@@ -335,6 +345,20 @@ export default {
       }, error => {
         this.table.loading = false;
         window.console.log(error);
+
+        const newLine = {
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
+          status: "0",
+          payType: "2",
+          isPostPro: "0",
+          isEmpPro: "0",
+          payProCode: "",
+          parentid: this.queryParams.id,
+          isShowno: "0",
+        }
+        this.tableData.push(newLine)
       });
     },
     /** 添加下级操作 */
@@ -358,8 +382,11 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           status: "0",
+          payType: "2",
+          isPostPro: "0",
+          isEmpPro: "0",
           payProCode: "",
-          parentid: null,
+          parentid: this.queryParams.id,
           isShowno: "0",
         }
         this.index++
