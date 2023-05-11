@@ -278,6 +278,7 @@ import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listDetail} from "@/api/finance/aa/voucherdetail";
 import selectVoucher from "@/views/finance/aa/voucher/selectVoucher";
 import calTypePOP from "@/views/components/finance/calTypePOP";
+
 export default {
   name: "Voucher",
   components: {
@@ -403,6 +404,7 @@ export default {
       this.formDetail.detailList[this.indexRow-1].calIdd=val.Id
 
     },
+
     getVoucherNo(val) {
       this.queryParams.companyId=val.companyId
       this.queryParams.voucherNo=val.voucherNo
