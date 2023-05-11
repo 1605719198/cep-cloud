@@ -85,14 +85,16 @@ public interface IFinanceCaltypeService
      * @return
      */
     public    List<Map<String, String>> selectFinanceAaBaseListTable(FinanceCaltype financeCaltype);
+
     /**
      * 查询模糊核算项目系统别(下拉选单用)
      * @param financeCaltype 核算项目-类别维护
      * @return
      */
     public    List<Map<String, String>> selectFinanceAaBaseListLikeTable(JSONObject financeCaltype);
+
     /**
-     * 查询模糊核算项目系统别(下拉选单用)备用
+     * 查询模糊核算项目系统别(下拉选单用)备份
      * @param financeCaltype 核算项目-类别维护
      * @return
      */
