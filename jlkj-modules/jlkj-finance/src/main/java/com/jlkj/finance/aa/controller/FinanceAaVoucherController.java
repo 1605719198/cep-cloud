@@ -113,7 +113,7 @@ public class FinanceAaVoucherController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAaVoucher financeAaVoucher)
     {
-        List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherList(financeAaVoucher);
+        List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherDetailList(financeAaVoucher);
         ExcelUtil<FinanceAaVoucher> util = new ExcelUtil<FinanceAaVoucher>(FinanceAaVoucher.class);
         util.exportExcel(response, list, "凭证维护-主数据");
     }
