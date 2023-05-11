@@ -129,6 +129,11 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/voucher',
+    component: () => import('@/views/finance/aa/voucher/index'),
+    name:'voucher'
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

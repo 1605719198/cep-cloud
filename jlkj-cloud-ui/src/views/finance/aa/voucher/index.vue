@@ -371,12 +371,22 @@ export default {
     };
   },
   created() {
-    this.getCompanyList();
-    this.getVoucherTypeList();
-    this.getList();
-    this.getListDetailList()
+    this.init();
+  },
+  watch: {
+    $route(){
+      this.init();
+    }
   },
   methods: {
+    init(){
+      this.queryParams.voucherNo=this.$route.query.voucherNo
+      this.queryParams.companyId=this.$route.query.companyId
+      this.getCompanyList();
+      this.getVoucherTypeList();
+      this.getList();
+      this.getListDetailList()
+    },
     moreQuery() {
       this.selectManufacturer = true
       this.$refs.selectVoucher.show();
