@@ -384,7 +384,6 @@ export default {
     operaSelect(val) {
       let compName = ""
       if (this.compOptions.length > 0) {
-        console.log(this.compOptions)
         this.compOptions.forEach(item => {
           if (item.value === val) {
             compName = item.label
