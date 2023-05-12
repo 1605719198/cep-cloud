@@ -700,7 +700,7 @@ export default {
                   }else{
                     workMinute = workMinuteDay;
                   }
-                workMinuteAll +=workMinute;
+                  workMinuteAll +=workMinute;
                 }
               }
             })

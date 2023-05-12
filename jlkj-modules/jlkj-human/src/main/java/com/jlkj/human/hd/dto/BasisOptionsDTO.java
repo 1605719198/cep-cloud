@@ -3,7 +3,7 @@ package com.jlkj.human.hd.dto;
 import lombok.Data;
 
 /**
- * 人事出勤选单
+ * 人事选单
  * @author 266861
  * @date 2023-03-08
  */

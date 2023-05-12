@@ -1,12 +1,15 @@
 package com.jlkj.human.hs.domain;
 
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 集团级薪资项目输入维护对象 human_hs_salary_project_basis
@@ -14,11 +17,13 @@ import java.util.Date;
  * @author jiangbingchen
  * @date 2023-05-08
  */
-public class SalaryProjectBasis extends BaseEntity
+@TableName(value ="human_hs_salary_project_basis")
+public class SalaryProjectBasis implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /** 薪酬项目编码 */
@@ -49,7 +54,7 @@ public class SalaryProjectBasis extends BaseEntity
 
     /** 说明 */
     @Excel(name = "说明")
-    private String describe;
+    private String salaryDescribe;
 
     /** 父结点ID */
     private Long parentid;
@@ -89,6 +94,10 @@ public class SalaryProjectBasis extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
+
+    /** 子部门 */
+    @TableField(exist = false)
+    private List<SalaryProjectBasis> children = new ArrayList<>();
 
     public void setId(Long id)
     {
@@ -171,14 +180,14 @@ public class SalaryProjectBasis extends BaseEntity
     {
         return lovConId;
     }
-    public void setDescribe(String describe)
+    public void setSalaryDescribe(String salaryDescribe)
     {
-        this.describe = describe;
+        this.salaryDescribe = salaryDescribe;
     }
 
-    public String getDescribe()
+    public String getSalaryDescribe()
     {
-        return describe;
+        return salaryDescribe;
     }
     public void setParentid(Long parentid)
     {
@@ -280,6 +289,16 @@ public class SalaryProjectBasis extends BaseEntity
         return createDate;
     }
 
+    public List<SalaryProjectBasis> getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren(List<SalaryProjectBasis> children)
+    {
+        this.children = children;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -292,7 +311,7 @@ public class SalaryProjectBasis extends BaseEntity
             .append("isEmpPro", getIsEmpPro())
             .append("isLov", getIsLov())
             .append("lovConId", getLovConId())
-            .append("describe", getDescribe())
+            .append("salaryDescribe", getSalaryDescribe())
             .append("parentid", getParentid())
             .append("parents", getParents())
             .append("payType", getPayType())

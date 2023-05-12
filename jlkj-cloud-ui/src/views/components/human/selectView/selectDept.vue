@@ -13,7 +13,6 @@
         <el-table-column label="部门id" prop="deptId" :show-overflow-tooltip="true"/>
         <el-table-column label="部门编码" prop="deptCode" :show-overflow-tooltip="true"/>
         <el-table-column label="部门名称" prop="deptName" :show-overflow-tooltip="true"/>
-        <el-table-column label="领导" prop="leader" :show-overflow-tooltip="true"/>
         <el-table-column label="状态" align="center" prop="status">
           <template v-slot="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>

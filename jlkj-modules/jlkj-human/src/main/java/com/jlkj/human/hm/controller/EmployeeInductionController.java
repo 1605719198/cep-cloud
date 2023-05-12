@@ -120,7 +120,8 @@ public class EmployeeInductionController extends BaseController {
         for (ChangeDetail item : changeMasterDTO.getEmployeeInductionList()) {
             item.setParentId(changeMaster.getUuid());
         }
-        changeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeInductionList());
+        changeDetailService.lambdaUpdate().eq(ChangeDetail::getParentId, changeMasterDTO.getUuid()).remove();
+        changeDetailService.saveBatch(changeMasterDTO.getEmployeeInductionList());
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())

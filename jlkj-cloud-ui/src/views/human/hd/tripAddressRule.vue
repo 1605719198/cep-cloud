@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
       <el-form-item label="公司别" prop="compId">
         <el-select v-model="queryParams.compId" placeholder="请选择公司别" ref="selectCompany">
           <el-option
@@ -9,6 +9,19 @@
             :label="dict.companyName"
             :value="dict.compId"
           />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="地点" prop="address">
+        <el-input maxlength="32"  v-model="queryParams.address" placeholder="请输入地点"  />
+      </el-form-item>
+      <el-form-item label="地点属性" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择地点属性">
+          <el-option
+            v-for="dict in attendenceOptions.AddressType"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -104,6 +117,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <select-address ref="select" @ok="getAddress"></select-address>
   </div>
 </template>
 
@@ -114,9 +128,10 @@ import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
+import SelectAddress from "@/views/components/human/selectView/selectTripAddress";
 export default {
   name: "TripAddressRule",
-  components:{DictTagHuman},
+  components:{DictTagHuman, SelectAddress},
   data() {
     return {
       // 遮罩层
@@ -153,6 +168,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: null,
+        address: null,
+        type: null,
       },
       // 表单参数
       form: {},
@@ -177,8 +194,8 @@ export default {
   },
   created() {
     this.getDisc()
-    this.initData()
     this.getCompanyList()
+    this.initData()
     this.getList();
   },
   methods: {
@@ -204,10 +221,11 @@ export default {
     },
     //初始化数据
     initData() {
-      this.user.empNo = this.$store.state.user.name
-      this.user.empName = this.$store.state.user.userInfo.nickName
-      this.user.compId = this.$store.state.user.userInfo.compId
-      this.queryParams.compId = this.user.compId
+      this.user.empNo = this.$store.state.user.name;
+      this.user.empName = this.$store.state.user.userInfo.nickName;
+      this.user.compId = this.$store.state.user.userInfo.compId;
+      this.queryParams.compId = this.user.compId;
+      this.queryParams.address = null;
     },
     /** 查询出差地点记录列表 */
     getList() {
@@ -245,6 +263,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.$refs.select.show(this.queryParams.compId);
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -302,12 +321,11 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/tripAddressRule/export', {
-        ...this.queryParams
-      }, `tripAddressRule_${new Date().getTime()}.xlsx`)
-    }
+
+    /** 点选获取部门信息 */
+    getAddress(val) {
+      alert(JSON.stringify(val))
+    },
   }
 };
 </script>

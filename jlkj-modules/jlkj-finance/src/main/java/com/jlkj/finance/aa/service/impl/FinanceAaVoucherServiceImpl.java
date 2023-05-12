@@ -16,8 +16,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.finance.aa.domain.*;
+import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaAcctcodeCorpMapper;
 import com.jlkj.finance.aa.service.FinanceAccountYearService;
 import org.springframework.beans.BeanUtils;
@@ -92,6 +94,18 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
     public List<FinanceAaVoucher> selectFinanceAaVoucherDetailList(FinanceAaVoucher financeAaVoucher)
     {
         return financeAaVoucherMapper.selectFinanceAaVoucherDetailList(financeAaVoucher);
+    }
+
+    /**
+     * 查询凭证维护-主列表(不去重)
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主
+     */
+    @Override
+    public List<FinanceAaVoucher> selectFinanceAaVoucherLinkList(FinanceAaVoucher financeAaVoucher)
+    {
+        return financeAaVoucherMapper.selectFinanceAaVoucherLinkList(financeAaVoucher);
     }
 
     /**
@@ -202,7 +216,6 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 int i=Integer.parseInt(voucherNo1.substring(9,14))+1;
                 voucherNoSubstring=decimalFormat.format(i);
                 voucherNo= voucherNo+voucherNoSubstring;
-
             }
 
         }else {
@@ -217,7 +230,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         if(detailList.size()>0){
 
             for (FinanceAaVoucherDetail financeAaVoucherDetail :detailList){
-                System.out.println(financeAaVoucherDetail.getNtamt());
+
                 if ("D".equals(financeAaVoucherDetail.getDrcr())){
                     ntamtD = ntamtD.add(financeAaVoucherDetail.getNtamt());
                 }
@@ -249,6 +262,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             {
                 financeAaVoucherDetail.setVoucherNo(id);
                 financeAaVoucherDetail.setId(UUID.fastUUID().toString());
+                financeAaVoucherDetail.setVoucherDate(DateUtils.dateTime(financeAaVoucher.getVoucherDate()));
                 list.add(financeAaVoucherDetail);
             }
             if (list.size() > 0)
@@ -495,13 +509,13 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             FinanceAaAcctcodeCorp financeAaAcctcodeCorp = financeAaAcctcodeCorpMapper.selectAcctId(acctId);
             if(financeAaAcctcodeCorp!=null){
                 if (!financeAaAcctcodeCorp.getDisabledCode().equals("Y")&&!financeAaAcctcodeCorp.getIsVoucher().equals("Y")){
-                    throw new ServiceException("状态为作废或！传票性科目为否");
+                    throw new ServiceException("状态为作废或传票性科目为否!");
                 }
             }else {
                 throw new ServiceException("该会计科目在会计科目——公司级不存在");
             }
-
         }
+
     }
     /**
      * 检查资料数据有效性-核算项目
@@ -553,5 +567,50 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
     {
         financeAaVoucherMapper.deleteFinanceAaVoucherDetailByVoucherNo(id);
         return financeAaVoucherMapper.deleteFinanceAaVoucherById(id);
+    }
+    /**
+     * 导入凭证
+     *
+     * @param financeAaVoucher 凭证数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    @Override
+    public String importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName)
+    {
+        StringBuilder successMsg = new StringBuilder();
+        if (StringUtils.isNull(financeAaVoucher) || financeAaVoucher.size() == 0)
+        {
+            successMsg.insert(0, "导入探亲假数据不能为空！");
+            throw new ServiceException("导入探亲假数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+
+        StringBuilder failureMsg = new StringBuilder();
+        for (FinanceAaVoucherDTO financeAaVoucher1 : financeAaVoucher)
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "";
+                failureMsg.append(msg + e.getMessage());
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
     }
 }

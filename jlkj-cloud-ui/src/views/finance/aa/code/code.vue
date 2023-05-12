@@ -33,7 +33,8 @@
                 <!--           条件搜索 -->
                 <div class="avue-crud__search"
                      style="border: 0">
-                  <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
+                  <el-form :model="queryParams"
+                           ref="queryForm" size="small" :inline="true" v-show="showSearch"
                            label-width="148px">
                     <el-form-item label="现金流量表代码名称" prop="cashFlowName">
                       <el-input
@@ -130,7 +131,7 @@
                           <el-form-item :prop="'tCodeList.' + scope.$index + '.inorout'" >
                           <el-select v-model="scope.row.inorout" placeholder="请选择流入流出">
                             <el-option
-                              v-for="dict in dict.type.aa_in0r0ut"
+                              v-for="dict in dict.type.aa_inorout"
                               :key="dict.value"
                               :label="dict.label"
                               :value="dict.value"
@@ -205,12 +206,13 @@
 </template>
 
 <script>
-import {listCode, getCode, delCode, addCode, updateCode, getTreeNode} from "@/api/finance/aa/code";
+import {listCode, getCode, delCode,
+  addCode, updateCode, getTreeNode} from "@/api/finance/aa/code";
 import {isPassword, validateContacts} from "../../../../utils/jlkj";
 
 export default {
   name: "Code",
-  dicts: ['aa_quedataway', 'aa_in0r0ut', 'sys_yes_no'],
+  dicts: ['aa_quedataway', 'aa_inorout', 'sys_yes_no'],
   data() {
     return {
       defaultProps: {

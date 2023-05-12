@@ -6,11 +6,14 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
+import com.jlkj.human.hd.dto.OptinonTypeDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 import com.jlkj.human.hs.service.ISalaryBasisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -90,5 +93,20 @@ public class SalaryBasisController extends BaseController
     public AjaxResult remove(@PathVariable Long id)throws Exception
     {
         return toAjax(salaryBasisService.deleteSalaryBasisById(id));
+    }
+
+    /**
+     * 获取薪资作业下拉选单列表
+     */
+    @GetMapping(value = "/getBasisOptions")
+    public Object getBasisOptions(OptinonTypeDTO optinonType)
+    {
+        List<String> optionsType = optinonType.getOptionsType();
+        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
+        for (String item : optionsType) {
+            List<BasisOptionsDTO> list = salaryBasisService.selectBasisOptions(item);
+            map.put(item, list);
+        }
+        return AjaxResult.success(map);
     }
 }

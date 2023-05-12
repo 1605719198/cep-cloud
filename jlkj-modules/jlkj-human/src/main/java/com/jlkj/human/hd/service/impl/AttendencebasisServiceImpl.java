@@ -118,8 +118,6 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     {
         return getChildList(list, t).size() > 0 ? true : false;
     }
-    
-    
 
     /**
      * 查询员工出勤基本资料维护列表

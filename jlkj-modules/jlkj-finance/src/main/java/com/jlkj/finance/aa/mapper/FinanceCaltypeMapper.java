@@ -66,4 +66,10 @@ public interface FinanceCaltypeMapper
      * @return
      */
     public List<Map<String,String>> selectCalTypeList();
+    /**
+     * 查询核算项目类别(下拉选单用)
+     * @param financeCaltype 核算项目-类别维护
+     * @return
+     */
+    public FinanceCaltype selectCalTypeSystemList(FinanceCaltype financeCaltype);
 }

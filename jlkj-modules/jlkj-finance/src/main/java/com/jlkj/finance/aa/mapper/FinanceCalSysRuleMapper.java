@@ -1,7 +1,10 @@
 package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.jlkj.finance.aa.domain.FinanceCalSysRule;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 核算项目-系统设定Mapper接口
@@ -18,7 +21,13 @@ public interface FinanceCalSysRuleMapper
      * @return 核算项目-系统设定
      */
     public FinanceCalSysRule selectFinanceCalSysRuleById(String id);
-
+    /**
+     * 查询核算项目-系统设定
+     *
+     * @param financeCalSysRule 核算项目-系统设定
+     * @return 核算项目-系统设定
+     */
+    public FinanceCalSysRule selectFinanceCalSysRule(FinanceCalSysRule financeCalSysRule);
     /**
      * 查询核算项目-系统设定列表
      * 
@@ -58,4 +67,18 @@ public interface FinanceCalSysRuleMapper
      * @return 结果
      */
     public int deleteFinanceCalSysRuleByIds(String[] ids);
+
+
+    /**
+     * 查询核算项目类别(下拉选单用)
+     * @param financeCalSysRule 核算项目-系统设定
+     * @return
+     */
+    public List<Map<String,String>> selectFinanceCalSysRuleMapList(FinanceCalSysRule financeCalSysRule);
+    /**
+     * 查询核算项目类别(下拉选单用)
+     * @param  selectSql 查询sql
+     * @return
+     */
+    public List<Map<String,String>> selectFinanceSqlMapList(@Param("selectSql")String selectSql);
 }

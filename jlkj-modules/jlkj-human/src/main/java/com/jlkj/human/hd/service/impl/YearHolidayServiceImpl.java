@@ -139,7 +139,7 @@ public class YearHolidayServiceImpl implements IYearHolidayService
                 // 查询该员工是否有剩余年休假，如果有则进行清空，重新赋值可休天数，已休天数，剩余可休天数
                 //
                 YearHoliday u = yearHolidayMapper.selectYearHolidayByEmpNo(yearHoliday);
-                if (!u.getPreYearDays().toString().equals("0")) {
+                if (!"0".equals(u.getPreYearDays().toString())) {
                     yearHoliday.setTotalDays(BigDecimal.valueOf(0));
                     yearHoliday.setRestDays(BigDecimal.valueOf(0));
                     yearHoliday.setPreYearDays(BigDecimal.valueOf(0));

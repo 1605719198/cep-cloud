@@ -135,12 +135,15 @@ public class EmployeeTurnoverController extends BaseController {
         for (ChangeDetail item : changeMasterDTO.getEmployeeTurnoverList()) {
             item.setParentId(changeMaster.getUuid());
         }
-        changeDetailService.saveOrUpdateBatch(changeMasterDTO.getEmployeeTurnoverList());
+        changeDetailService.lambdaUpdate().eq(ChangeDetail::getParentId, changeMasterDTO.getUuid()).remove();
+        changeDetailService.saveBatch(changeMasterDTO.getEmployeeTurnoverList());
         if (result) {
             personnelService.lambdaUpdate()
                     .set(Personnel::getPostName, changeMasterDTO.getPostName())
                     .set(Personnel::getPostId, changeMasterDTO.getPostId())
+                    .set(Personnel::getPostLevelName, changeMasterDTO.getPostLevel())
                     .set(Personnel::getDepartmentName, changeMasterDTO.getDepartmentName())
+                    .set(Personnel::getDepartmentId, changeMasterDTO.getDepartmentId())
                     .eq(Personnel::getEmpNo, changeMasterDTO.getEmpNo()).update();
         }
         return AjaxResult.success("修改成功");

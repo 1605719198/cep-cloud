@@ -238,7 +238,7 @@ export default {
         compId: null
       },
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -298,13 +298,13 @@ export default {
   },
   watch: {
     //监听公司别查询参数
-    queryParams:{
-      deep:true,
-      immediate:false,
-      handler:function( newV){
-        this.getList();
-      }
-    }
+    // queryParams:{
+    //   deep:true,
+    //   immediate:false,
+    //   handler:function( newV){
+    //     this.getList();
+    //   }
+    // }
 
   },
   created() {
@@ -399,7 +399,6 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.queryParams.compId = this.logincompId;
       this.getList();
     },
     /** 重置按钮操作 */

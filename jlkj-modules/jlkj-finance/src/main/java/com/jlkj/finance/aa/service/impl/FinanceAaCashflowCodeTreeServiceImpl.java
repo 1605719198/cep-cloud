@@ -36,7 +36,7 @@ public class FinanceAaCashflowCodeTreeServiceImpl  extends ServiceImpl<FinanceAa
 
         //查询选单配置资料
         List<FinanceAaCashflowCode> equipmentDownTypeTrees =
-                baseMapper.selectList(new QueryWrapper<FinanceAaCashflowCode>().orderByDesc("cash_flow_code").orderByAsc("cash_flow_name"));
+                baseMapper.selectList(new QueryWrapper<FinanceAaCashflowCode>().orderByAsc("cash_flow_code").orderByAsc("cash_flow_name"));
         //树结构DTO
         List<FinanceAaCashflowCodeDTO> treeDTOList = new ArrayList<>();
         //循环取出id值，存入tempList

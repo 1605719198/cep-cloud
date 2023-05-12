@@ -130,12 +130,6 @@
               </el-col>
             </el-row>
 
-            <!--        <el-form-item label="是否显示编码" prop="isShowno">-->
-            <!--          <el-input v-model="form.isShowno" placeholder="请输入是否显示编码" />-->
-            <!--        </el-form-item>-->
-            <!--        <el-form-item label="输入人id" prop="creatorId">-->
-            <!--          <el-input v-model="form.creatorId" placeholder="请输入输入人id" />-->
-            <!--        </el-form-item>-->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -166,7 +160,7 @@
 <script>
 import '@/assets/styles/humanStyles.scss';
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
-import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree } from "@/api/human/hs/salaryBasis";
+import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree, getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 export default {
   name: "BaseInfo",
@@ -210,6 +204,13 @@ export default {
         loading: false,
       },
       tableData: [],
+      //薪资选单类型查询
+      salaryOptionType: {
+        id: '',
+        optionsType: ['test2']
+      },
+      //出勤选单选项列表
+      options: [],
       //默认显示id
       defaultShowNodes: [],
       // 表单校验
@@ -252,7 +253,7 @@ export default {
     //表单值设置
     setForm(e){
       this.form.creator = this.user.empName;
-      this.form.creatorId = this.user.empNo;
+      this.form.creatorNo = this.user.empNo;
       this.form.createDate = getDateTime(0)
       if(e===0){
         this.form.parentid = this.queryParams.id;
@@ -384,6 +385,7 @@ export default {
         parentid: null,
         parents: null,
         creator: null,
+        creatorNo: null,
         creatorId: null,
         createDate: null
       };

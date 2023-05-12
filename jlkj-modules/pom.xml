@@ -37,6 +37,8 @@
         <module>jlkj-rabbit</module>
         <!--    流程管理    -->
         <module>jlkj-flowable</module>
+        <!--    ureport2    -->
+        <module>jlkj-ureport</module>
     </modules>
 
     <artifactId>jlkj-modules</artifactId>

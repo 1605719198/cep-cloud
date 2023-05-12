@@ -30,6 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTripAddressVo"/>
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address} , '%') </if>
         </where>
     </select>
 

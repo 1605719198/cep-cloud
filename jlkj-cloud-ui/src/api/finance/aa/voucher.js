@@ -16,6 +16,14 @@ export function listVoucherDetailSelect(query) {
     params: query
   })
 }
+// 更多条件查询凭证维护-主列表
+export function listVoucherLinkSelect(query) {
+  return request({
+    url: '/finance/voucher/listVoucherLinkSelect',
+    method: 'get',
+    params: query
+  })
+}
 // 查询前笔凭证维护-主列表
 export function listFrontVoucher(query) {
   return request({

@@ -1,5 +1,7 @@
 package com.jlkj.human.hs.mapper;
 
+import com.jlkj.human.hd.domain.Attendencebasis;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 
 import java.util.List;
@@ -75,4 +77,22 @@ public interface SalaryBasisMapper
      * @return 结果
      */
     public int deleteSalaryBasisByIds(Long[] ids);
+
+
+    /**
+     * 通过编码查询员工出勤基本资料维护
+     *
+     * @param code 员工出勤基本资料维护编码
+     * @return 员工出勤基本资料维护
+     */
+    public SalaryBasis selectSalaryParentByCode(String  code);
+
+
+    /**
+     * 通过父节点id查询员工出勤基本资料维护
+     *
+     * @param parentid 员工出勤基本资料维护编码
+     * @return 员工出勤基本资料维护
+     */
+    public List<BasisOptionsDTO> selectSalaryByParentid(Long  parentid);
 }
