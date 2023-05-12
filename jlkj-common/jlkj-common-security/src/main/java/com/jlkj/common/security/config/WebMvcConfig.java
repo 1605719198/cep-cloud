@@ -12,7 +12,7 @@ import com.jlkj.common.security.interceptor.HeaderInterceptor;
 public class WebMvcConfig implements WebMvcConfigurer
 {
     /** 不需要拦截地址 */
-    public static final String[] excludeUrls = { "/login", "/logout", "/refresh" };
+    public static final String[] excludeUrls = { "/login", "/logout", "/refresh", "/ureport/**" };
 
     @Override
     public void addInterceptors(InterceptorRegistry registry)
