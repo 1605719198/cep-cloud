@@ -111,12 +111,14 @@ export default {
     }
   },
   created() {
+    this.$nextTick(function () {
+      this.query.empNo = this.$store.state.user.name
+      this.query.compId = this.$store.state.user.userInfo.compId
+    })
     selectCompany().then(res => {
       this.companyName = res.data
     })
     this.handleQuery();
-    this.query.empNo = this.$store.state.user.name
-    this.query.compId = this.$store.state.user.userInfo.compId
   },
   methods: {
     /** 查询人员基本信息 */

@@ -1,14 +1,18 @@
 package com.jlkj.human.hm.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.human.hm.domain.Baseinfo;
+import com.jlkj.human.hm.dto.BaseInfoDTO;
 import com.jlkj.human.hm.mapper.BaseinfoMapper;
 import com.jlkj.human.hm.service.IBaseinfoService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,6 +102,23 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoMapper, Baseinfo>
      */
     private boolean hasChild(List<Baseinfo> list, Baseinfo baseInfo) {
         return getChildList(list,baseInfo).size() > 0;
+    }
+
+    /**
+     * 获取专业下拉选单列表
+     */
+    @Override
+    public Object getDegreeMajor(BaseInfoDTO humanresourceBaseInfoDTO) {
+        List<String> baseInfoList = humanresourceBaseInfoDTO.getBaseInfoList();
+        HashMap<String, List<Baseinfo>> map = new HashMap<>(16);
+        for (String item : baseInfoList) {
+            LambdaQueryWrapper<Baseinfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Baseinfo::getDicNo, item);
+            Baseinfo baseInfo = getOne(queryWrapper);
+            List<Baseinfo> list = lambdaQuery().eq(Baseinfo::getParentId, baseInfo.getUuid()).list();
+            map.put(item, list);
+        }
+        return AjaxResult.success("查询成功", map);
     }
 
 }

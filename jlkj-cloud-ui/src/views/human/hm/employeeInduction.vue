@@ -120,7 +120,7 @@
               </el-col>
             </el-row>
             <el-button type="primary" plain icon="el-icon-plus" @click="addLine">添加</el-button>
-            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem" :disabled="addJsonMultiple">删除</el-button>
+            <el-button type="danger" plain icon="el-icon-delete" @click="delTableItem">删除</el-button>
             <el-table
               :data="addJsonForm.employeeInductionList"
               border
@@ -136,7 +136,7 @@
                   <el-form-item
                     :prop="'employeeInductionList.' + scope.$index + '.postTypeId'"
                   >
-                    <el-select v-model="scope.row.postTypeId">
+                    <el-select v-model="scope.row.postTypeId" @change="checkPostTypeId">
                       <el-option
                         v-for="dict in baseInfoData.post_type_id"
                         :key="dict.dicNo"
@@ -154,7 +154,7 @@
                     style="text-align: right"
                   >
                     {{scope.row.newPostName}}
-                    <el-button icon="el-icon-search" @click="openPostPop"></el-button>
+                    <el-button icon="el-icon-search" @click="openPostPop(scope.$index)"></el-button>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -186,7 +186,7 @@
                         :value="dict.compId"
                       />
                     </el-select>
-                    <div class="head-container" style="height: 10vh;width: 100%;">
+                    <div class="head-container" style="height: 25vh;width: 100%;">
                       <el-scrollbar style="height: 100%;">
                         <el-tree
                           :data="newPostNameOptions"
@@ -207,8 +207,8 @@
               </el-table-column>
               <el-table-column label="选取岗位" align="center">
                 <template v-slot="scope">
-                  <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict.postName)">
-                    {{dict.postName}}
+                  <div id="changeColor" v-for="dict in postMaintenanceList" @click="changePostName(dict)">
+                    {{dict.postCode}} {{dict.postName}}
                   </div>
                 </template>
               </el-table-column>
@@ -242,8 +242,9 @@ export default {
       addJsonForm: {
         employeeInductionList: [
           {
-            postTypeId: undefined,
+            postTypeId: "01",
             newPostName: undefined,
+            uuid: 1
           }
         ],
         postPop: [
@@ -313,13 +314,12 @@ export default {
       //员工入职表数据
       postList: [],
       // 非多个禁用
-      addJsonMultiple: true,
+      addJsonMultiple: [],
       updatePop: true,
       key: undefined,
-      label: undefined,
-      parentPostName: undefined,
-      orgName: undefined,
-      companyName: []
+      companyName: [],
+      compName: undefined,
+      num: 0
     }
   },
   watch: {
@@ -391,7 +391,7 @@ export default {
             newPostName: undefined,
           }
         ]
-      };
+      }
       this.form = {
         postPop: [
           {
@@ -421,7 +421,13 @@ export default {
     submitForm() {
       this.$refs["addJsonForm"].validate(valid => {
         if (valid) {
-          if (this.addJsonForm.uuid != undefined) {
+          let result = []
+          this.addJsonForm.employeeInductionList.map(val => {
+            this.$delete(val, "uuid"); // 删除uuid属性
+            result.push(val);
+          });
+          this.addJsonForm.employeeInductionList = result
+          if (this.addJsonForm.uuid !== undefined) {
             updateEmployeeInduction(this.addJsonForm).then(res => {
               if (res.code === 200) {
                 this.$message({type: "success", message: res.msg});
@@ -455,28 +461,43 @@ export default {
     },
 // 增加一个空行, 用于录入或显示第一行
     addLine() {
-      const newLine = {
-        postTypeId: "",
-        newPostName: ""
-      }
       this.index++
-      this.addJsonForm.employeeInductionList.push(newLine)
+      if (this.addJsonForm.employeeInductionList.length === 0) {
+        const newLine = {
+          postTypeId: "01",
+          newPostName: "",
+          uuid: this.index
+        }
+        this.addJsonForm.employeeInductionList.push(newLine)
+      } else {
+        const newLine = {
+          postTypeId: "",
+          newPostName: "",
+          uuid: this.index
+        }
+        this.addJsonForm.employeeInductionList.push(newLine)
+      }
     },
     delTableItem() {
-      const uuids = this.ids;
-      this.$modal.confirm('是否确认删除用户编号为"' + uuids + '"的数据项？').then(function() {
-        return delEmployeeInductionDetail(uuids);
-      }).then(() => {
-        queryEmployeeInductionByUuid(uuids).then(res => {
-          this.addJsonForm.employeeInductionList = res.data.employeeInductionList
-          this.key = Math.random()
-        })
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      // 确认删除
+      if (this.addJsonMultiple.length > 0) {
+        let arrs = [];
+        let ids = this.addJsonMultiple.map(val => val.uuid); //拿到选中的数据id,
+        this.addJsonForm.employeeInductionList.forEach(item => {
+          if (!ids.includes(item.uuid)) {
+            // 当uuid在employeeInductionList中，表示数据被选中，该将其删除，即将不被选中的保留
+            arrs.push(item);
+          }
+        });
+        this.addJsonForm.employeeInductionList = arrs;
+        this.key = Math.random()
+      } else {
+        this.$message.warning("请选择要删除的数据");
+      }
     },
     addJsonSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid);
-      this.addJsonMultiple = !selection.length;
+      this.addJsonMultiple = selection;
     },
     resetAddJsonPopup() {
       //关闭 固定值弹窗
@@ -495,31 +516,51 @@ export default {
     handleNodeClick(data) {
       this.queryParams.orgId = data.id
       this.addJsonForm.departmentName = data.label
+      this.addJsonForm.departmentId = data.id
       this.handleQuery();
     },
     handleQuery() {
       listPostMaintenance(this.queryParams).then(response => {
         this.postMaintenanceList = response.rows;
-        this.orgName = this.postMaintenanceList[0].orgName
-        this.parentPostName = this.postMaintenanceList[0].parentPostName
         this.addJsonForm.employeeInductionList[this.index].newPostId = this.postMaintenanceList[0].postId
       });
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
       treeselect(this.queryParams).then(response => {
+        this.compName = response.data[0].label
         this.newPostNameOptions = response.data;
       });
     },
     changePostName(val) {
       this.openPostName = false
       this.postName = val
-      this.addJsonForm.employeeInductionList[this.index].newPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
+      this.addJsonForm.employeeInductionList[this.index].newPostName = this.compName + '-' + val.orgName + '-' + val.postName
     },
-    openPostPop() {
+    openPostPop(val) {
+      this.form = {
+        postPop: [
+          {
+            postTypeId: undefined,
+            newPostName: undefined,
+          }
+        ]
+      }
+      this.index = val
       this.openPostName = true
       this.compId = undefined
       this.postMaintenanceList = []
+    },
+    checkPostTypeId() {
+      this.num = 0
+      this.addJsonForm.employeeInductionList.forEach(item =>{
+        if (item.postTypeId === '01') {
+          this.num++
+        }
+        if (this.num > 1) {
+          this.$modal.msgError("只能有一笔主岗位资料");
+        }
+      })
     }
   }
 }

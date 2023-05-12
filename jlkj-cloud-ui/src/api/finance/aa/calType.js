@@ -50,3 +50,45 @@ export function selectCalTypeList() {
     method: 'get',
   })
 }
+
+// 查询系统别(下拉选单用)
+export function selectCalTypeSystemList(query) {
+  return request({
+    url: '/finance/calType/calTypeSystemList',
+    method: 'get',
+    params: query
+  })
+}
+// 查询系统选单-基本设定列表
+export function calTypeListTab(query) {
+  return request({
+    url: '/finance/calType/calTypeListTab',
+    method: 'get',
+    params: query
+  })
+}
+// 查询系统选单-基本设定列表
+export function calTypeListTable(query) {
+  return request({
+    url: '/finance/calType/calTypeListTable',
+    method: 'get',
+    params: query
+  })
+}
+// 查询系统选单-基本设定列表
+export function calTypeListTable2(query) {
+  return request({
+    url: '/finance/calType/calTypeListTable2',
+    method: 'post',
+    data: query
+  })
+}
+
+// 查询系统选单-基本设定列表
+export function calTypeListCodeTable(query) {
+  return request({
+    url: '/finance/calType/calTypeListCodeTable',
+    method: 'get',
+    params: query
+  })
+}

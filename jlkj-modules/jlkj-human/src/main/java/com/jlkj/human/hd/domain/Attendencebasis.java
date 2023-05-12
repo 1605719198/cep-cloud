@@ -64,7 +64,8 @@ public class Attendencebasis extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
-    /** 子部门 */
+
+    /** 子节点 */
     private List<Attendencebasis> children = new ArrayList<Attendencebasis>();
 
     public void setId(Long id)

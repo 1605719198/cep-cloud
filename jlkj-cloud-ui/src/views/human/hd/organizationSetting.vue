@@ -281,6 +281,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getAvatorByUserName } from "@/api/system/user";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { listOrganizationSetting, getOrganizationSetting,  addOrganizationSetting, updateOrganizationSetting } from "@/api/human/hd/organizationSetting";

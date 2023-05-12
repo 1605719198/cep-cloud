@@ -5,6 +5,16 @@
         <el-row :gutter="20">
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
+            <div class="head-container">
+              <el-select v-model="queryParams.compId" placeholder="请选择公司名称" size="small">
+                <el-option
+                  v-for="dict in companyList"
+                  :key="dict.compId"
+                  :label="dict.companyName"
+                  :value="dict.compId"
+                />
+              </el-select>
+            </div>
             <div class="head-container" style="height: 75vh;width: 100%;">
               <el-scrollbar style="height: 100%;">
                 <el-tree ref="tree"
@@ -28,7 +38,7 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini">新增
+                        <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini" v-hasPermi="['human:attendenceBasis:add']" >新增
                         </el-button>
                       </el-form-item>
                     </el-form>
@@ -47,12 +57,14 @@
                   <el-table-column label="输入人" minWidth="150" align="center" prop="creator"/>
                   <el-table-column label="输入日期" minWidth="150" align="center" prop="createDate"/>
                   <el-table-column label="操作" align="center" min-width="160px">
-                    <template slot-scope="scope">
+                    <template v-slot="scope">
                       <el-button size="mini" type="text" icon="el-icon-edit"
+                                 v-hasPermi="['human:attendenceBasis:edit']"
                                  @click="handleUpdate(scope.row)">
-                        修改
+                        编辑
                       </el-button>
                       <el-button size="mini" type="text" icon="el-icon-delete"
+                                 v-hasPermi="['human:attendenceBasis:remove']"
                                  @click="handleDelete(scope.row)">
                         删除
                       </el-button>
@@ -152,6 +164,8 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
+import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { listAttendenceBasis, getAttendenceBasis, delAttendenceBasis, addAttendenceBasis, updateAttendenceBasis, treeselect } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 export default {
@@ -159,16 +173,18 @@ export default {
   dicts: ['sys_normal_disable'],
   data() {
     return {
+      //公司数据
+      companyList: [],
       // 是否显示修改弹出层
       open: false,
       //是否显示新增弹出层
       opencreate: false,
-      //登录人工号
-      userEmpId: null,
-      //登录人姓名
-      nickName: null,
-      //登录人公司
-      logincompId: null,
+      //登录人信息
+      user: {
+        empNo: null,
+        empName: null,
+        compId: null
+      },
       //选单树数据转化
       defaultProps: {
         children: 'children',
@@ -185,6 +201,7 @@ export default {
         pageSize: 10,
         pageNum: 1,
         id: null,
+        compId: null,
       },
       // 总条数
       total: 0,
@@ -207,40 +224,52 @@ export default {
     }
   },
   watch: {
-    // 监听数据 设置默认展示第一层数据
-    menuData: {
+    'queryParams.compId':{
       handler(val) {
-        val.forEach(item => {
-          this.defaultShowNodes.push(item.id);
-        })
+        this.getBaseInfoTree();
       },
       deep: true,
-    }
+    },
   },
   created() {
+    this.getCompanyList()
     this.initData();
-    this.getBaseInfoTree();
   },
   methods: {
+    //获取公司列表
+    getCompanyList() {
+      selectCompany().then(response => {
+        this.companyList = response.data
+      })
+    },
     //初始化数据
     initData(){
-      this.userEmpId= this.$store.state.user.name;
-      this.nickName= this.$store.state.user.userInfo.nickName;
-      this.logincompId= this.$store.state.user.userInfo.compId;
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
     },
     //表单值设置
     setForm(e){
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.userEmpId;
+      this.form.creator = this.user.empName;
+      this.form.creatorId = this.user.empNo;
       this.form.createDate = getDateTime(1)
       if(e===0){
         this.form.parentid = this.queryParams.id;
+        this.form.compId = this.queryParams.compId;
+        this.form.status = '0';
       }
     },
     //获取选单配置树
     getBaseInfoTree() {
-      treeselect().then(response => {
+      var params ={
+        compId:this.queryParams.compId
+      }
+      treeselect(params).then(response => {
         this.menuData = response.data;
+        this.defaultShowNodes.push(this.menuData[0].id);
+        this.queryParams.id = this.defaultShowNodes[0];
+        this.onLoad()
         this.loading = false;
       })
     },
@@ -288,7 +317,7 @@ export default {
       if(this.queryParams.id!=null){
         this.reset();
         this.setForm(0);
-        this.open = true;
+        this.opencreate = true;
         this.title = "新增窗口";
       }else{
         this.$modal.msgWarning("请先选择父菜单");
@@ -313,14 +342,14 @@ export default {
             updateAttendenceBasis(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.open = false;
+              this.opencreate = false;
               this.getList();
             });
           } else {
             addAttendenceBasis(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.open = false;
+              this.opencreate = false;
               this.getList();
             });
           }
@@ -340,7 +369,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
-      this.open = false;
+      this.opencreate = false;
       this.reset();
     },
     // 表单重置
@@ -365,7 +394,6 @@ export default {
     //获取列表数据
     getList(){
       this.getBaseInfoTree();
-      this.onLoad();
     }
   }
 }

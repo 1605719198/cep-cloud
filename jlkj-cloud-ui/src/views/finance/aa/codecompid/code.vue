@@ -140,7 +140,7 @@
                           <el-form-item :prop="'tCodeList.' + scope.$index + '.inorout'" >
                           <el-select v-model="scope.row.inorout" placeholder="请选择流入流出">
                             <el-option
-                              v-for="dict in dict.type.aa_in0r0ut"
+                              v-for="dict in dict.type.aa_inorout"
                               :key="dict.value"
                               :label="dict.label"
                               :value="dict.value"
@@ -215,12 +215,13 @@
 </template>
 
 <script>
-import {listCodecompid, getCode, delCodecompid, addCodecompid, updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
+import {listCodecompid, getCode, delCodecompid, addCodecompid,
+  updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
 import {isPassword, validateContacts} from "../../../../utils/jlkj";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 export default {
   name: "Code",
-  dicts: ['aa_quedataway', 'aa_in0r0ut', 'sys_yes_no'],
+  dicts: ['aa_quedataway', 'aa_inorout', 'sys_yes_no'],
   data() {
     return {
       defaultProps: {
@@ -345,6 +346,7 @@ export default {
         this.form.tCodeList = response.rows;
         this.total = response.total;
         if (response.rows.length > 0) {
+          this.form.companyId = response.rows[0].companyId
           this.form.parentId = response.rows[0].parentId
           this.form.parentCode = response.rows[0].parentCode
           this.form.parentName = response.rows[0].parentName
@@ -470,7 +472,13 @@ export default {
       }
 
       for (let i = 0; i < this.codeList.length; i++) {
-        this.codeList[i].companyId = this.form.companyId
+        if( this.form.companyId== null){
+          this.$modal.msgError("请点击树节点进行保存");
+          return
+        }else {
+          this.codeList[i].companyId = this.form.companyId
+        }
+
         this.codeList[i].parentId = this.form.parentId
         this.codeList[i].parentCode = this.form.parentCode
         this.codeList[i].parentName = this.form.parentName

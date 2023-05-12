@@ -142,7 +142,7 @@ public class HomeLeaveHolidayServiceImpl implements IHomeLeaveHolidayService
                 // 查询该员工是否有剩余年休假，如果有则进行清空，重新赋值可休天数，已休天数，剩余可休天数
                 //
                 HomeLeaveHoliday u = homeLeaveHolidayMapper.selectHomeLeaveHolidayByEmpNo(homeLeaveHoliday);
-                if (!u.getPreHomeDays().toString().equals("0")) {
+                if (!"0".equals(u.getPreHomeDays().toString())) {
                     homeLeaveHoliday.setDueHomeDays(BigDecimal.valueOf(0));
                     homeLeaveHoliday.setRestHomeDays(BigDecimal.valueOf(0));
                     homeLeaveHoliday.setPreHomeDays(BigDecimal.valueOf(0));

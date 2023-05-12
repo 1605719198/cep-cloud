@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
+import com.jlkj.human.hs.domain.SalaryProjectBasis;
 
 import java.io.Serializable;
 import java.util.List;
@@ -85,6 +86,16 @@ public class TreeSelect implements Serializable
         this.label3 = attendencebasis.getStatus();
         this.label4 = attendencebasis.getCompId();
         this.children = attendencebasis.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(SalaryProjectBasis salaryProjectBasis)
+    {
+        this.id = salaryProjectBasis.getId();
+        this.label = salaryProjectBasis.getPayProCode();
+        this.label2 = salaryProjectBasis.getPayProName();
+        this.label3 = salaryProjectBasis.getStatus();
+        this.label4 = salaryProjectBasis.getPayType();
+        this.children = salaryProjectBasis.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
 

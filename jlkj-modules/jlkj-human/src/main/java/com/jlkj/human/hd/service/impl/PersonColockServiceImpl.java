@@ -1,5 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
+import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
@@ -61,9 +62,13 @@ public class PersonColockServiceImpl implements IPersonColockService
 
         List<PersonColock> colockList = personColockMapper.selectPersonColockList(personColock);
         colockList.forEach(item->{
-            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(item.getEmpId());
-            item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-            item.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+            try{
+                FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(item.getEmpId());
+                item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+                item.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         return colockList;
     }
@@ -77,6 +82,8 @@ public class PersonColockServiceImpl implements IPersonColockService
     @Override
     public int insertPersonColock(PersonColock personColock) throws Exception
     {
+        //员工新增：1，部门新增2
+        String type;
         PersonColock oldPersonColock =new PersonColock();
         oldPersonColock.setEffectDate(personColock.getEffectDate());
         oldPersonColock.setEmpId(personColock.getEmpId());
@@ -85,6 +92,12 @@ public class PersonColockServiceImpl implements IPersonColockService
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
                 personColock.setId(UUID.randomUUID().toString().substring(0, 32));
+                if(personColock.getOrgColockId()!=null){
+                    type = "2";
+                }else{
+                    type = "1";
+                }
+                personColock.setType(type);
                 PersonColockDetail personColockDetail =new PersonColockDetail();
                 ArrayList<String> arrayList  = personColock.getColockList();
                 for (String strTemp : arrayList){
@@ -119,20 +132,25 @@ public class PersonColockServiceImpl implements IPersonColockService
      */
     @Override
     public int insertPersonColockByDept(PersonColockOrg personColockOrg){
+        int result = 1;
         String deptId = personColockOrg.getDeptId();
         PersonColock personColock = new PersonColock();
         ArrayList<FirstDeptDTO> personList= sysDeptService.getPersonByDept(deptId);
-        for (FirstDeptDTO strTemp : personList){
-            BeanUtils.copyProperties(personColockOrg,personColock);
-            personColock.setEmpId(strTemp.getChildPersonId());
-            personColock.setOrgColockId(personColockOrg.getId());
-            try {
-                insertPersonColock(personColock);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(CollectionUtils.isEmpty(personList)||personList.get(0)!=null){
+            for (FirstDeptDTO strTemp : personList){
+                BeanUtils.copyProperties(personColockOrg,personColock);
+                personColock.setEmpId(strTemp.getChildPersonId());
+                personColock.setOrgColockId(personColockOrg.getId());
+                try {
+                    insertPersonColock(personColock);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        }else{
+            result = 0;
         }
-        return 1;
+        return result;
     }
 
     /**
@@ -147,6 +165,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         PersonColock oldPersonColock =new PersonColock();
         oldPersonColock.setEffectDate(personColock.getEffectDate());
         oldPersonColock.setEmpId(personColock.getEmpId());
+        oldPersonColock.setId(personColock.getId());
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
         Boolean bool = oldList.size()==0;
         if(bool){

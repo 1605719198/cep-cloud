@@ -41,7 +41,6 @@
     </el-row>
 
     <el-table v-loading="loading" :data="jobTitleList" @selection-change="handleSelectionChange" height="67vh">
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="职称代号" align="center" prop="jobTitleNo" />
       <el-table-column label="中文职称说明" align="center" prop="jobTitleName" />
       <el-table-column label="英文职称说明" align="center" prop="jobTitleNameEng" />
@@ -65,7 +64,6 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="现有人数" align="center" prop="number" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button
@@ -168,9 +166,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="现有人数" prop="number" >
-              <el-input v-model="form.number" disabled />
-            </el-form-item>
+
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -195,6 +191,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
@@ -371,12 +368,6 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/humanJobTitle/export', {
-        ...this.queryParams
-      }, `jobTitle_${new Date().getTime()}.xlsx`)
-    }
   }
 };
 </script>

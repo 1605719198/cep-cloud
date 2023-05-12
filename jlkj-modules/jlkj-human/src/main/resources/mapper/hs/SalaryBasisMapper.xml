@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SalaryBasisMapper">
+    
+    <resultMap type="SalaryBasis" id="SalaryBasisResult">
+        <result property="id"    column="id"    />
+        <result property="infoCode"    column="info_code"    />
+        <result property="infoName"    column="info_name"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="isShowno"    column="is_showno"    />
+        <result property="ischecked"    column="ischecked"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="parentid"    column="parentid"    />
+        <result property="parents"    column="parents"    />
+        <result property="status"    column="status"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="BasisOptionsDTO" id="BasisOptions">
+        <result property="id"    column="id"    />
+        <result property="dicNo"    column="info_code"    />
+        <result property="dicName"    column="info_name"    />
+        <result property="status"    column="status"    />
+        <result property="compId"    column="comp_id"    />
+    </resultMap>
+
+    <sql id="selectSalaryBasisVo">
+        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator, creator_id, create_date from human_hs_salary_basis
+    </sql>
+
+    <select id="selectSalaryBasisList" parameterType="SalaryBasis" resultMap="SalaryBasisResult">
+        <include refid="selectSalaryBasisVo"/>
+        <where>  
+            <if test="infoCode != null  and infoCode != ''"> and info_code = #{infoCode}</if>
+            <if test="infoName != null  and infoName != ''"> and info_name like concat('%', #{infoName}, '%')</if>
+            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or comp_id ='000') </if>
+            <if test="id!=null and id!=''"> and parentid =#{id}</if>
+        </where>
+        order by id
+    </select>
+
+    <select id="selectSalaryBasisByParentid" parameterType="Long" resultMap="SalaryBasisResult">
+        <include refid="selectSalaryBasisVo"/>
+        where parentid = #{parentid}
+    </select>
+
+    <select id="queryRepetitivedata" resultType="Int" parameterType="SalaryBasis">
+        select count(*) from human_hs_salary_basis
+        <where>
+            <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
+            <if test="infoCode!=null and infoCode!=''"> and info_code =#{infoCode}</if>
+            <if test="id!=null and id!=''"> and id !=#{id}</if>
+            and (LENGTH(parents)-LENGTH(REPLACE(parents,',',''))) = 1
+        </where>
+    </select>
+    
+    <select id="selectSalaryBasisById" parameterType="Long" resultMap="SalaryBasisResult">
+        <include refid="selectSalaryBasisVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSalaryBasis" parameterType="SalaryBasis" useGeneratedKeys="true" keyProperty="id">
+        insert into human_hs_salary_basis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="infoCode != null">info_code,</if>
+            <if test="infoName != null">info_name,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="isShowno != null">is_showno,</if>
+            <if test="ischecked != null">ischecked,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="parentid != null">parentid,</if>
+            <if test="parents != null">parents,</if>
+            <if test="status != null">status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="infoCode != null">#{infoCode},</if>
+            <if test="infoName != null">#{infoName},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="isShowno != null">#{isShowno},</if>
+            <if test="ischecked != null">#{ischecked},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="parentid != null">#{parentid},</if>
+            <if test="parents != null">#{parents},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalaryBasis" parameterType="SalaryBasis">
+        update human_hs_salary_basis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="infoCode != null">info_code = #{infoCode},</if>
+            <if test="infoName != null">info_name = #{infoName},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="isShowno != null">is_showno = #{isShowno},</if>
+            <if test="ischecked != null">ischecked = #{ischecked},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="parentid != null">parentid = #{parentid},</if>
+            <if test="parents != null">parents = #{parents},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSalaryBasisById" parameterType="Long">
+        delete from human_hs_salary_basis where id = #{id}
+    </delete>
+
+    <delete id="deleteSalaryBasisByIds" parameterType="String">
+        delete from human_hs_salary_basis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectSalaryParentByCode" parameterType="String" resultMap="SalaryBasisResult">
+        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator, creator_id, create_date from human_hs_salary_basis
+        where info_code = #{code}
+    </select>
+
+    <select id="selectSalaryByParentid" parameterType="Long" resultMap="BasisOptions">
+        <include refid="selectSalaryBasisVo"/>
+        where parentid = #{parentid}
+    </select>
+</mapper>

@@ -116,7 +116,7 @@
             plain
             type="primary"
             size="mini"
-            @click="handleAdd"
+            @click="runShiftView"
             style="margin-right: 10px"
           >轮班方式/班次/班别查看</el-button>
         </el-row>
@@ -178,7 +178,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="轮班方式" prop="shiftmodeId">
-              <el-select v-model="form.shiftmodeId" placeholder="请选择轮班方式" clearable>
+              <el-select v-model="form.shiftmodeId" placeholder="请选择轮班方式" style="width: 100%;" >
                 <el-option
                   v-for="dict in shiftModeList"
                   :key="dict.id"
@@ -190,7 +190,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="班别" prop="classId">
-              <el-select v-model="form.classId" placeholder="请选择班别" clearable>
+              <el-select v-model="form.classId" placeholder="请选择班别" style="width: 100%">
                 <el-option
                   v-for="dict in shiftClassList"
                   :key="dict.id"
@@ -260,7 +260,6 @@
           </el-date-picker>
 
           <human-calendar style="width: 100%;" :value="this.queryParams.queryMonth">
-            <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
             <template slot="dateCell" slot-scope="{date, data}" align="center" >
               <div style="width: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-if="shiftChangeObj!=null&&data.type==='current-month'">
 
@@ -346,6 +345,7 @@ import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanUtils";
 import { getAvatorByUserName} from "@/api/system/user";
 import selectUser from "@/views/components/human/selectUser/selectUser";
+import '@/assets/styles/humanStyles.scss';
 export default {
   name: "OrgPersonClass",
   dicts: ['sys_normal_disable','sys_yes_no'],
@@ -375,12 +375,8 @@ export default {
       compId:null,
       //公司数据
       companyList:[],
-      //登录人工号
-      userEmpId: this.$store.state.user.name,
-      //登录人姓名
-      nickName: this.$store.state.user.userInfo.nickName,
-      //登录人公司
-      logincompId: this.$store.state.user.userInfo.compId,
+      //登录人信息
+      user: {},
       // 遮罩层
       loading: true,
       //部门选单树数据
@@ -405,7 +401,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: this.$store.state.user.userInfo.compId,
+        compId: null,
         empId: null,
         deptId: null,
         queryMonth: new Date(),
@@ -444,6 +440,7 @@ export default {
       handler:function( newV){
         this.getList();
         this.getTreeselect();
+        this.getShiftList();
       }
     },
     'form.shiftmodeId':{
@@ -459,12 +456,19 @@ export default {
     }
   },
   created() {
+    this.initData();
     this.init();
     this.getCompanyList();
     this.getDisc()
-    this.getShiftList();
   },
   methods: {
+    //初始化数据
+    initData() {
+      this.user.empNo = this.$store.state.user.name
+      this.user.empName = this.$store.state.user.userInfo.nickName
+      this.user.compId = this.$store.state.user.userInfo.compId
+      this.queryParams.compId = this.user.compId
+    },
     //调班数据对象初始化
     init(){
       //大月
@@ -514,8 +518,8 @@ export default {
             }
             obj.arrShiDate = i;
           }
-          obj.creator = this.nickName;
-          obj.creatorId = this.userEmpId;
+          obj.creator = this.user.empName;
+          obj.creatorId = this.user.empNo;
           obj.createDate = getDateTime(1);
           shiftChange.push(obj)
         }
@@ -526,7 +530,7 @@ export default {
         this.$modal.msgSuccess("调班成功")
       })
     },
-    //查询轮班方式及班别
+    //查询轮班方式
     getShiftList(){
       listShiftMode(this.queryParams).then(response => {
         this.shiftModeList = response.rows
@@ -583,8 +587,8 @@ export default {
     },
     //设置表单值
     setForm(e){
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.userEmpId;
+      this.form.creator = this.user.empName;
+      this.form.creatorId = this.user.empNo;
       this.form.createDate = getDateTime(1);
       this.form.compId = this.queryParams.compId;
       if(e==0){
@@ -675,6 +679,10 @@ export default {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
+    },
+    // 轮班方式，班次，班别查看
+    runShiftView(){
+      // this.$router.push("/system/user-auth/role/");
     },
     /** 新增按钮操作 */
     handleAdd() {

@@ -36,94 +36,135 @@ public class FinanceAaVoucher extends BaseEntity
     private String calNamebEnd;
     private String qtyFrnamtStart;
     private String qtyFrnamtEnd;
+    /** 凭证号码 */
+    @Excel(name = "凭证号码")
+    private String voucherNo;
+    /** 凭证日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "凭证日期", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date voucherDate;
+
+    /** 抛帐系统代号 */
+    @Excel(name = "抛帐系统代号")
+    private String apid;
+    /**
+     * 凭证分录摘要
+     */
+    @Excel(name = "摘要")
+    private String srlDesc;
+    /**
+     * 会计科目编号
+     */
+    @Excel(name = "科目代码")
+    private String acctCode;
+
+    /**
+     * 会计科目中文名称
+     */
+    @Excel(name = "科目名称")
+    private String acctName;
+    /**
+     * 数量单位/币别
+     */
+    @Excel(name = "单位/币别")
+    private String crcyUnit;
+
+    /**
+     * 数量/外币金额
+     */
+    @Excel(name = "原币金额")
+    private BigDecimal qtyFrnamt;
+
+
+    /** 借方金额 */
+    @Excel(name = "借方金额")
+    private BigDecimal drAmt;
+    /** 贷方金额 */
+    @Excel(name = "贷方金额")
+    private BigDecimal crAmt;
+    /**
+     * 金额
+     */
+    @Excel(name = "金额")
+    private BigDecimal ntamt;
+
+    /** 经办人姓名 */
+    @Excel(name = "经办人姓名")
+    private String pastuserName;
+    /** 凭单张数 */
+    @Excel(name = "附件数")
+    private Long srlnoCount;
+    /** 打印次数 */
+    @Excel(name = "打印次数")
+    private Long printCount;
+
+
+
+
     /** 主键 */
     private String id;
 
     /** 会计公司id */
     private String companyId;
 
-    /** 凭证日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "凭证日期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date voucherDate;
 
-    /** 凭证号码 */
-    @Excel(name = "凭证号码")
-    private String voucherNo;
+
 
     /** 过帐凭证号码 */
-    @Excel(name = "过帐凭证号码")
+
     private String tradeNo;
 
-    /** 抛帐系统代号 */
-    @Excel(name = "抛帐系统代号")
-    private String apid;
 
     /** 抛帐程序名称 */
     @Excel(name = "抛帐程序名称")
     private String pgrmid;
 
     /** 凭证摘要说明 */
-    @Excel(name = "凭证摘要说明")
+
     private String voucherDesc;
 
     /** 业务单据编号 */
-    @Excel(name = "业务单据编号")
+
     private String billNo;
 
     /** 业务单据查询地址 */
-    @Excel(name = "业务单据查询地址")
+
     private String billUrl;
 
-    /** 打印次数 */
-    @Excel(name = "打印次数")
-    private Long printCount;
-
-    /** 凭单张数 */
-    @Excel(name = "凭单张数")
-    private Long srlnoCount;
 
     /** 经办人工号 */
-    @Excel(name = "经办人工号")
+
     private String pastuserId;
 
-    /** 经办人姓名 */
-    @Excel(name = "经办人姓名")
-    private String pastuserName;
+
 
     /** 出纳工号 */
-    @Excel(name = "出纳工号")
+
     private String moneyuserId;
 
     /** 出纳姓名 */
-    @Excel(name = "出纳姓名")
+
     private String moneyuserName;
 
     /** 过账人工号 */
-    @Excel(name = "过账人工号")
+
     private String potstuserId;
 
     /** 过账人名称 */
-    @Excel(name = "过账人名称")
+
     private String potstuserName;
 
     /** 过账日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "过账日期", width = 30, dateFormat = "yyyy-MM-dd")
+
     private Date postDate;
 
     /** 过账时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "过账时间", width = 30, dateFormat = "yyyy-MM-dd")
+
     private Date postTime;
 
-    /** 借方金额 */
-    @Excel(name = "借方金额")
-    private BigDecimal drAmt;
 
-    /** 贷方金额 */
-    @Excel(name = "贷方金额")
-    private BigDecimal crAmt;
 
     /** 状态 */
     @Excel(name = "状态")

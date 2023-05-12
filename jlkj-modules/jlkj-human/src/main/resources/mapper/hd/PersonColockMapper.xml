@@ -30,6 +30,7 @@
             <if test="empId != null  and empId != ''"> and emp_id = #{empId}</if>
             <if test="orgColockId != null  and orgColockId != ''"> and org_colock_id = #{orgColockId}</if>
             <if test="effectDate != null"> and effect_date = #{effectDate}</if>
+            <if test="id != null  and id != ''"> and id != #{id}</if>
         </where>
     </select>
 
@@ -51,6 +52,7 @@
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
             <if test="empId != null">emp_id,</if>
+            <if test="type != null">type,</if>
             <if test="checkcard != null">checkcard,</if>
             <if test="effectDate != null">effect_date,</if>
             <if test="status != null">status,</if>
@@ -63,6 +65,7 @@
             <if test="id != null">#{id},</if>
             <if test="compId != null">#{compId},</if>
             <if test="empId != null">#{empId},</if>
+            <if test="type != null">#{type},</if>
             <if test="checkcard != null">#{checkcard},</if>
             <if test="effectDate != null">#{effectDate},</if>
             <if test="status != null">#{status},</if>

@@ -9,6 +9,15 @@ export function listAttendanceAbnormal(query) {
   })
 }
 
+// 查询个人出勤异常
+export function listAttendanceAbnormalQuery(query) {
+  return request({
+    url: '/human/attendanceAbnormal/abnormal',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询出勤异常详细
 export function getAttendanceAbnormal(id) {
   return request({

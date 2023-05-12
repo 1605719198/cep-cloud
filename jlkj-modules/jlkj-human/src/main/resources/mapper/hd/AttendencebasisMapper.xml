@@ -26,14 +26,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dicName"    column="name"    />
         <result property="status"    column="status"    />
         <result property="compId"    column="comp_id"    />
-<!--        <result property="isShowno"    column="is_showno"    />-->
-<!--        <result property="isChecked"    column="is_checked"    />-->
-<!--        <result property="orderNum"    column="order_num"    />-->
-<!--        <result property="parentid"    column="parentid"    />-->
-<!--        <result property="parents"    column="parents"    />-->
-<!--        <result property="creator"    column="creator"    />-->
-<!--        <result property="creatorId"    column="creator_id"    />-->
-<!--        <result property="createDate"    column="create_date"    />-->
     </resultMap>
 
     <sql id="selectAttendencebasisVo">
@@ -45,16 +37,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="name!=null and name!=''"> and name like concat('%', #{name}, '%')</if>
             <if test="code!=null and code!=''"> and code =#{code}</if>
+            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or comp_id ='000') </if>
             <if test="id!=null and id!=''"> and parentid =#{id}</if>
         </where>
-        order by order_num asc
+        order by id
     </select>
 
     <select id="queryRepetitivedata" resultType="Int" parameterType="Attendencebasis">
         select count(*) from human_hd_attendence_basis
         <where>
+            <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
             <if test="code!=null and code!=''"> and code =#{code}</if>
             <if test="id!=null and id!=''"> and id !=#{id}</if>
+            and parentid = 1
         </where>
     </select>
 

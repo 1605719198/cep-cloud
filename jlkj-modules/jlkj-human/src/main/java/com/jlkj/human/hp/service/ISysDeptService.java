@@ -172,6 +172,14 @@ public interface ISysDeptService
      */
     public FirstDeptDTO getFirstDeptByPerson(String empId);
 
+    /**
+     * 根据公司别查询信息
+     *
+     * @param compId 公司别
+     * @return 公司信息
+     */
+    public SysDept queryCompById(String compId);
+
 
     /**
      * 通过部门查员工

@@ -37,7 +37,7 @@ public class FinanceAaCashflowCmopIdTreeCodeServiceImpl
 
         //查询选单配置资料
         List<FinanceAaCashflowCodeCompid> equipmentDownTypeTrees =
-                baseMapper.selectList(new QueryWrapper<FinanceAaCashflowCodeCompid>().eq("company_id",companyId).orderByDesc("cash_flow_code").orderByAsc("cash_flow_name"));
+                baseMapper.selectList(new QueryWrapper<FinanceAaCashflowCodeCompid>().eq("company_id",companyId).orderByAsc("cash_flow_code").orderByAsc("cash_flow_name"));
         //树结构DTO
         List<FinanceAaCashflowCodeDTO> treeDTOList = new ArrayList<>();
         //循环取出id值，存入tempList

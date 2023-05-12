@@ -65,22 +65,22 @@
       </el-table-column>
       <el-table-column label="请假天数" align="center" prop="leaveShifts"/>
       <el-table-column label="请假开始时间" align="center" prop="startDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="请假结束时间" align="center" prop="endDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button v-if="scope.row.status === '01'"
                      size="mini"
                      type="text"
@@ -362,6 +362,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {
   listPersonHoliday,
   getPersonHoliday,
@@ -699,7 +700,7 @@ export default {
                   }else{
                     workMinute = workMinuteDay;
                   }
-                workMinuteAll +=workMinute;
+                  workMinuteAll +=workMinute;
                 }
               }
             })

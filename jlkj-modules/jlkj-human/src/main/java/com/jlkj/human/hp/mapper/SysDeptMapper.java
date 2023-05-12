@@ -40,6 +40,14 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
     public SysDept selectSysDeptByDeptCode(String deptCode);
 
     /**
+     * 根据公司别查询信息
+     *
+     * @param compId 公司别
+     * @return 公司信息
+     */
+    public SysDept selectSysDeptByCompId(String compId);
+
+    /**
      * 查询子部门个数
      *
      * @param deptId 部门id

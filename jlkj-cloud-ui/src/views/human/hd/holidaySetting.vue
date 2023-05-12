@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
@@ -237,7 +238,7 @@ export default {
         compId: null
       },
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -297,13 +298,13 @@ export default {
   },
   watch: {
     //监听公司别查询参数
-    queryParams:{
-      deep:true,
-      immediate:false,
-      handler:function( newV){
-        this.getList();
-      }
-    }
+    // queryParams:{
+    //   deep:true,
+    //   immediate:false,
+    //   handler:function( newV){
+    //     this.getList();
+    //   }
+    // }
 
   },
   created() {
