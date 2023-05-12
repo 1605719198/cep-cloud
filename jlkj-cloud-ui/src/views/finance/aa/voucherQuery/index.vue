@@ -88,8 +88,8 @@
 import {listHeadVoucher, } from "@/api/finance/aa/voucher";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
-import {listDetail} from "@/api/finance/aa/voucherdetail";
-import {listVoucherDetailSelect} from "@/api/finance/aa/voucher";
+
+import {listVoucherLinkSelect} from "@/api/finance/aa/voucher";
 import voucherQuery from "@/views/finance/aa/voucherQuery/voucherQuery";
 
 export default {
@@ -240,7 +240,7 @@ export default {
     /** 查询凭证维护-明细列表 */
     getListDetailList() {
       this.loading = true;
-      listVoucherDetailSelect(this.queryParams).then(response => {
+      listVoucherLinkSelect(this.queryParams).then(response => {
           this.formDetail.detailList = response.rows;
             for (let t = 0;t<response.rows.length;t++){
               if (this.formDetail.detailList[t].drcr==='C'){
