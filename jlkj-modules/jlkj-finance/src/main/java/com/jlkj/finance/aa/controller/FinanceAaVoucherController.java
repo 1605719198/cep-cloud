@@ -3,6 +3,8 @@ package com.jlkj.finance.aa.controller;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
 
@@ -58,6 +61,18 @@ public class FinanceAaVoucherController extends BaseController
         startPage();
 
         List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherDetailList(financeAaVoucher);
+        return getDataTable(list);
+    }
+    /**
+     * 查询凭证维护-主列表(不去重)
+     */
+    @RequiresPermissions("aa:voucher:list")
+    @GetMapping("/listVoucherLinkSelect")
+    public TableDataInfo listVoucherLinkSelect(FinanceAaVoucher financeAaVoucher)
+    {
+        startPage();
+
+        List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherLinkList(financeAaVoucher);
         return getDataTable(list);
     }
     /**
@@ -182,5 +197,27 @@ public class FinanceAaVoucherController extends BaseController
     public AjaxResult remove(@RequestBody FinanceAaVoucher financeAaVoucher)
     {
         return toAjax(financeAaVoucherService.deleteFinanceAaVoucherByIds(financeAaVoucher));
+    }
+
+    /**
+     * 导入凭证
+     */
+    @Log(title = "导入凭证", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("aa:voucher:import")
+    @PostMapping("/importData/{companyId}")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport,@PathVariable("companyId") String companyId) throws Exception
+    {
+        System.out.println(companyId);
+        ExcelUtil<FinanceAaVoucherDTO> util = new ExcelUtil<FinanceAaVoucherDTO>(FinanceAaVoucherDTO.class);
+        List<FinanceAaVoucherDTO> financeAaVoucher = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = financeAaVoucherService.importFinanceAaVoucher(financeAaVoucher, updateSupport, operName);
+        return AjaxResult.success(message);
+    }
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<FinanceAaVoucherDTO> util = new ExcelUtil<FinanceAaVoucherDTO>(FinanceAaVoucherDTO.class);
+        util.importTemplateExcel(response, "凭证信息表");
     }
 }
