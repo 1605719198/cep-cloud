@@ -154,4 +154,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update sys_dept set del_flag = '2' where dept_id = #{deptId}
 	</delete>
 
+	<select id="getSysDeptSelectResult" resultType="map">
+		select dept_code as value, dept_name as label from sys_dept where 1=1
+			and if_company = '1'
+		order by dept_code
+	</select>
+
 </mapper>

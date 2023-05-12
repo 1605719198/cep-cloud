@@ -1,9 +1,11 @@
 package com.jlkj.system.mapper;
 
 import com.jlkj.system.api.domain.SysDept;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 数据层
@@ -116,4 +118,11 @@ public interface SysDeptMapper
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+
+    /**
+     * 获取公司别下拉选单
+     * @return
+     */
+    @MapKey("value")
+    List<Map<String,String>> getSysDeptSelectResult();
 }

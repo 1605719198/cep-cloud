@@ -1,12 +1,16 @@
 package com.jlkj.system.service.impl;
 
+import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.UserConstants;
+import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.text.Convert;
 import com.jlkj.common.core.utils.SpringUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.datascope.annotation.DataScope;
+import com.jlkj.common.redis.service.RedisService;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.finance.api.RemoteAaCompanyGroupService;
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.api.domain.SysRole;
 import com.jlkj.system.api.domain.SysUser;
@@ -14,17 +18,16 @@ import com.jlkj.system.domain.vo.TreeSelect;
 import com.jlkj.system.mapper.SysDeptMapper;
 import com.jlkj.system.mapper.SysRoleMapper;
 import com.jlkj.system.service.ISysDeptService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * 部门管理 服务实现
- * 
+ *
  * @author jlkj
  */
 @Service
@@ -36,9 +39,15 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Autowired
     private SysRoleMapper roleMapper;
 
+    @Autowired
+    private RemoteAaCompanyGroupService companyGroupService;
+
+    @Autowired
+    private RedisService redisService;
+
     /**
      * 查询部门管理数据
-     * 
+     *
      * @param dept 部门信息
      * @return 部门信息集合
      */
@@ -51,7 +60,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 查询部门树结构信息
-     * 
+     *
      * @param dept 部门信息
      * @return 部门树信息集合
      */
@@ -65,7 +74,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 构建前端所需要树结构
-     * 
+     *
      * @param depts 部门列表
      * @return 树结构列表
      */
@@ -92,7 +101,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 构建前端所需要下拉树结构
-     * 
+     *
      * @param depts 部门列表
      * @return 下拉树结构列表
      */
@@ -105,7 +114,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 根据角色ID查询部门树信息
-     * 
+     *
      * @param roleId 角色ID
      * @return 选中部门列表
      */
@@ -118,7 +127,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 根据部门ID查询信息
-     * 
+     *
      * @param deptId 部门ID
      * @return 部门信息
      */
@@ -130,7 +139,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 根据ID查询所有子部门（正常状态）
-     * 
+     *
      * @param deptId 部门ID
      * @return 子部门数
      */
@@ -142,7 +151,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 是否存在子节点
-     * 
+     *
      * @param deptId 部门ID
      * @return 结果
      */
@@ -155,7 +164,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 查询部门是否存在用户
-     * 
+     *
      * @param deptId 部门ID
      * @return 结果 true 存在 false 不存在
      */
@@ -168,7 +177,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 校验部门名称是否唯一
-     * 
+     *
      * @param dept 部门信息
      * @return 结果
      */
@@ -186,7 +195,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 校验部门是否有数据权限
-     * 
+     *
      * @param deptId 部门id
      */
     @Override
@@ -206,7 +215,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 新增保存部门信息
-     * 
+     *
      * @param dept 部门信息
      * @return 结果
      */
@@ -225,7 +234,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 修改保存部门信息
-     * 
+     *
      * @param dept 部门信息
      * @return 结果
      */
@@ -253,7 +262,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 修改该部门的父级部门状态
-     * 
+     *
      * @param dept 当前部门
      */
     private void updateParentDeptStatusNormal(SysDept dept)
@@ -265,7 +274,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 修改子元素关系
-     * 
+     *
      * @param deptId 被修改的部门ID
      * @param newAncestors 新的父ID集合
      * @param oldAncestors 旧的父ID集合
@@ -285,7 +294,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     /**
      * 删除部门管理信息
-     * 
+     *
      * @param deptId 部门ID
      * @return 结果
      */
@@ -336,5 +345,24 @@ public class SysDeptServiceImpl implements ISysDeptService
     private boolean hasChild(List<SysDept> list, SysDept t)
     {
         return getChildList(list, t).size() > 0 ? true : false;
+    }
+
+    /**
+     * 获取公司别下拉选单列表
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getCompList() {
+        List<Map<String,String>> sysDeptVoList = deptMapper.getSysDeptSelectResult();
+        List<Map<String, String>> financeCompList = companyGroupService.selectCompanyList(SecurityConstants.INNER);
+        List<Map<String, String>> collect = financeCompList.stream().map(item -> {
+            Map<String, String> map = new HashMap<>(2);
+            map.put("label", item.get("label") + "(财务)");
+            map.put("value", item.get("id"));
+            return map;
+        }).collect(Collectors.toList());
+        collect.addAll(sysDeptVoList);
+        redisService.setCacheObject("comp_list:comp_list",collect);
+        return collect;
     }
 }

@@ -22,6 +22,8 @@ public class SysRole extends BaseEntity
     /** 角色ID */
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
+    /**公司别*/
+    private String comId;
 
     /** 角色名称 */
     @Excel(name = "角色名称")
@@ -219,10 +221,19 @@ public class SysRole extends BaseEntity
         this.permissions = permissions;
     }
 
+    public String getComId() {
+        return comId;
+    }
+
+    public void setComId(String comId) {
+        this.comId = comId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("roleId", getRoleId())
+            .append("comId", getComId())
             .append("roleName", getRoleName())
             .append("roleKey", getRoleKey())
             .append("roleSort", getRoleSort())

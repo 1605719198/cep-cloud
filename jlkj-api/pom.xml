@@ -10,6 +10,7 @@
 
     <modules>
         <module>jlkj-api-system</module>
+        <module>jlkj-api-finance</module>
     </modules>
 
     <artifactId>jlkj-api</artifactId>
