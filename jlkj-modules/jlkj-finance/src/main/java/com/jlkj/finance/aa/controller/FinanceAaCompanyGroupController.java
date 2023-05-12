@@ -108,10 +108,18 @@ public class FinanceAaCompanyGroupController extends BaseController
 
 
     /**
+     * 查询核算项目类别(下拉选单用)- 远程调用暴露接口
+     */
+    @InnerAuth
+    @GetMapping("/getCompanyFeign")
+    public List<Map<String,String>> getCompanyFeign()
+    {
+        return financeAaCompanyGroupService.selectCompanyList();
+    }
+    /**
      * 查询核算项目类别(下拉选单用)
      */
     @GetMapping("/companyList")
-    @InnerAuth
     public List<Map<String,String>> selectCompanyList()
     {
         return financeAaCompanyGroupService.selectCompanyList();

@@ -25,7 +25,7 @@ public interface RemoteAaCompanyGroupService
      * @param source 请求来源
      * @return 结果
      */
-    @GetMapping("/companyGroup/companyList")
+    @GetMapping("/companyGroup/getCompanyFeign")
     public List<Map<String,String>> selectCompanyList( @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
 }
