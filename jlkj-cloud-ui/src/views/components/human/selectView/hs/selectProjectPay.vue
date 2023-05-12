@@ -29,9 +29,9 @@
                     @selection-change="handleSelectionChange" stripe
           >
             <el-table-column type="selection" width="45" align="center"/>
-            <el-table-column label="薪酬项目编码" align="center" prop="payProCode" show-overflow-tooltip width="200"/>
-            <el-table-column label="薪酬项目名称" align="center" prop="payProName" show-overflow-tooltip width="200" />
-            <el-table-column label="说明" align="center" prop="salaryDescribe" show-overflow-tooltip width="300" />
+            <el-table-column label="薪酬项目编码" align="center" prop="payProCode" show-overflow-tooltip />
+            <el-table-column label="薪酬项目名称" align="center" prop="payProName" show-overflow-tooltip  />
+            <el-table-column label="说明" align="center" prop="salaryDescribe" show-overflow-tooltip  />
           </el-table>
           <pagination
             v-show="total>0"
