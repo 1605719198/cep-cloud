@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="parents"    column="parents"    />
         <result property="status"    column="status"    />
         <result property="creator"    column="creator"    />
+        <result property="creatorNo"    column="creator_no"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
     </resultMap>
@@ -29,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSalaryBasisVo">
-        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator, creator_id, create_date from human_hs_salary_basis
+        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator, creator_id,creator_no, create_date from human_hs_salary_basis
     </sql>
 
     <select id="selectSalaryBasisList" parameterType="SalaryBasis" resultMap="SalaryBasisResult">
@@ -76,6 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="parents != null">parents,</if>
             <if test="status != null">status,</if>
             <if test="creator != null">creator,</if>
+            <if test="creatorNo != null">creator_no,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="createDate != null">create_date,</if>
          </trim>
@@ -90,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="parents != null">#{parents},</if>
             <if test="status != null">#{status},</if>
             <if test="creator != null">#{creator},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="createDate != null">#{createDate},</if>
          </trim>
@@ -108,6 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="parents != null">parents = #{parents},</if>
             <if test="status != null">status = #{status},</if>
             <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
@@ -126,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectSalaryParentByCode" parameterType="String" resultMap="SalaryBasisResult">
-        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator, creator_id, create_date from human_hs_salary_basis
+        select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator,creator_no, creator_id, create_date from human_hs_salary_basis
         where info_code = #{code}
     </select>
 

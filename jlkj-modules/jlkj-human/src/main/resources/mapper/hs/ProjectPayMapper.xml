@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectProjectPayVo"/>
         <where>
             <if test="id != null  and id != ''"> and parentid = #{id}</if>
-             and pay_type = "1"
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
         </where>
     </select>
     

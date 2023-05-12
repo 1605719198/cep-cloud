@@ -130,12 +130,6 @@
               </el-col>
             </el-row>
 
-            <!--        <el-form-item label="是否显示编码" prop="isShowno">-->
-            <!--          <el-input v-model="form.isShowno" placeholder="请输入是否显示编码" />-->
-            <!--        </el-form-item>-->
-            <!--        <el-form-item label="输入人id" prop="creatorId">-->
-            <!--          <el-input v-model="form.creatorId" placeholder="请输入输入人id" />-->
-            <!--        </el-form-item>-->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -259,7 +253,7 @@ export default {
     //表单值设置
     setForm(e){
       this.form.creator = this.user.empName;
-      this.form.creatorId = this.user.empNo;
+      this.form.creatorNo = this.user.empNo;
       this.form.createDate = getDateTime(0)
       if(e===0){
         this.form.parentid = this.queryParams.id;
@@ -391,6 +385,7 @@ export default {
         parentid: null,
         parents: null,
         creator: null,
+        creatorNo: null,
         creatorId: null,
         createDate: null
       };

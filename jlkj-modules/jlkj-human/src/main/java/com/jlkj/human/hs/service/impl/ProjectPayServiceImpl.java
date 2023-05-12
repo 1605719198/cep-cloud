@@ -1,6 +1,10 @@
 package com.jlkj.human.hs.service.impl;
 
+import java.security.Security;
+import java.util.Date;
 import java.util.List;
+
+import com.jlkj.common.security.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.human.hs.mapper.ProjectPayMapper;
@@ -46,13 +50,26 @@ public class ProjectPayServiceImpl implements IProjectPayService
     /**
      * 新增薪酬项目
      *
-     * @param projectPay 薪酬项目
+     * @param projectPayList 薪酬项目列表
      * @return 结果
      */
     @Override
-    public int insertProjectPay(ProjectPay projectPay)
+    public int insertProjectPay(List<ProjectPay> projectPayList)
     {
-        return projectPayMapper.insertProjectPay(projectPay);
+        for(ProjectPay projectPay :projectPayList){
+            if(projectPay.getId()!=null){
+                Date date = new Date();
+                projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+                projectPay.setCreator(SecurityUtils.getNickName());
+                projectPay.setCreateDate(date);
+                projectPayMapper.updateProjectPay(projectPay);
+
+            }else{
+                projectPayMapper.insertProjectPay(projectPay);
+            }
+
+        }
+        return 1;
     }
 
     /**

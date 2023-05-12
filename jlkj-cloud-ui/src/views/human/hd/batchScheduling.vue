@@ -94,22 +94,20 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-    <el-form ref="batchScheduleForm" :model="{batchScheduleList}" :rules="rules" v-if="this.batchScheduleList.length!=0">
+
       <el-table ref="batchSchedule" :data="batchScheduleList" @selection-change="handleSelectionChange"
-                highlight-current-row :cell-style="{paddingBottom:'0px'}"
+                height="67vh" size="small" highlight-current-row :cell-style="{paddingBottom:'0px'}"
       >
         <el-table-column type="selection" width="100" align="center"/>
-        <el-table-column label="工号-姓名" align="center" key="empIdName" prop="empIdName">
+        <el-table-column label="工号-姓名" align="center" prop="empIdName">
           <template v-slot="scope">
             <!--            <el-form-item :prop="'batchScheduleList.'+scope.$index+'.empId'">-->
 <!--            <el-form-item prop="empId">-->
 <!--              <el-input v-model="scope.row.empId" placeholder="请输入" clearable></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item label="" prop="empIdName">
-              <el-input maxlength="32"  v-model="batchScheduleList[(scope.row.index)].empIdName" placeholder="请选择员工" disabled>
+              <el-input maxlength="32"  v-model="scope.row.empIdName" placeholder="请选择员工" disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick(scope.row.index)"></el-button>
               </el-input>
-            </el-form-item>
           </template>
         </el-table-column>
         <el-table-column label="轮班方式" align="center" key="shiftmodeCode" prop="shiftmodeCode"/>
@@ -119,7 +117,6 @@
         <el-table-column label="输入人" align="center" key="creator" prop="creator"/>
         <el-table-column label="输入日期" align="center" key="createDate" prop="createDate"/>
       </el-table>
-    </el-form>
     <select-user ref="select" @ok="getJobNumber"/>
   </div>
 </template>
@@ -147,7 +144,17 @@ export default {
       //登录人公司
       logincompId: this.$store.state.user.userInfo.compId,
       //批量排班列表
-      batchScheduleList: [],
+      batchScheduleList: [{
+        compId: null,
+        empId: null,
+        shiftmodeId: null,
+        classId: null,
+        startDate: null,
+        endDate: null,
+        remark: "2",
+        status: "0",
+        empIdName: "admin-管理员",
+      }],
       //排班区间
       interval: null,
       // 遮罩层
@@ -204,16 +211,16 @@ export default {
     },
     //新增按钮操作
     handleAdd() {
-
       this.batchScheduleList.push({
-        index: this.index,
         id: null,
         empId: null,
         empIdName: null,
         shiftmodeCode: this.queryParams.shiftmodeCode,
         classCode: this.queryParams.classCode,
-        startDate: getDateTime(1,this.interval[0]),
-        endDate: getDateTime(1,this.interval[1]),
+        // startDate: getDateTime(1,this.interval[0]),
+        // endDate: getDateTime(1,this.interval[1]),
+        startDate: null,
+        endDate: null,
         creator: this.nickName,
         creatorId: this.empId,
         createDate: getDateTime(1)

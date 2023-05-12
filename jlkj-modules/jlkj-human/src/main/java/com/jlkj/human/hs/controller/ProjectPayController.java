@@ -59,19 +59,6 @@ public class ProjectPayController extends BaseController
     }
 
     /**
-     * 导出薪酬项目列表
-     */
-    @RequiresPermissions("human:projectPay:export")
-    @Log(title = "薪酬项目", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, ProjectPay projectPay)
-    {
-        List<ProjectPay> list = projectPayService.selectProjectPayList(projectPay);
-        ExcelUtil<ProjectPay> util = new ExcelUtil<ProjectPay>(ProjectPay.class);
-        util.exportExcel(response, list, "薪酬项目数据");
-    }
-
-    /**
      * 获取薪酬项目详细信息
      */
     @RequiresPermissions("human:projectPay:query")
@@ -85,32 +72,12 @@ public class ProjectPayController extends BaseController
      * 新增薪酬项目
      */
     @RequiresPermissions("human:projectPay:add")
-    @Log(title = "薪酬项目", businessType = BusinessType.INSERT)
+    @Log(title = "薪酬项目新增", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody ProjectPay projectPay)
+    public int add(@RequestBody List<ProjectPay> projectPayList)
     {
-        return toAjax(projectPayService.insertProjectPay(projectPay));
+        return projectPayService.insertProjectPay(projectPayList);
     }
 
-    /**
-     * 修改薪酬项目
-     */
-    @RequiresPermissions("human:projectPay:edit")
-    @Log(title = "薪酬项目", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody ProjectPay projectPay)
-    {
-        return toAjax(projectPayService.updateProjectPay(projectPay));
-    }
 
-    /**
-     * 删除薪酬项目
-     */
-    @RequiresPermissions("human:projectPay:remove")
-    @Log(title = "薪酬项目", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
-        return toAjax(projectPayService.deleteProjectPayByIds(ids));
-    }
 }

@@ -30,10 +30,10 @@ public interface IProjectPayService
     /**
      * 新增薪酬项目
      * 
-     * @param projectPay 薪酬项目
+     * @param projectPayList 薪酬项目列表
      * @return 结果
      */
-    public int insertProjectPay(ProjectPay projectPay);
+    public int insertProjectPay(List<ProjectPay> projectPayList);
 
     /**
      * 修改薪酬项目

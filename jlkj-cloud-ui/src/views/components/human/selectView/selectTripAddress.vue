@@ -56,7 +56,7 @@
       />
     </el-row>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleSelectUser">确 定</el-button>
+      <el-button type="primary" @click="handleSelectAddress">确 定</el-button>
       <el-button @click="visible = false">取 消</el-button>
     </div>
   </el-dialog>
@@ -119,7 +119,6 @@ export default {
       this.getList();
       this.visible = true;
       this.isSingle = true;
-
     },
     clickRow(row) {
       this.$refs.table.toggleRowSelection(row);
@@ -146,7 +145,7 @@ export default {
       this.handleQuery();
     },
     /** 选择地点操作 */
-    handleSelectUser() {
+    handleSelectAddress() {
       if (this.userIds.length === 0) {
         this.$modal.msgError("请选择一笔数据");
         return;

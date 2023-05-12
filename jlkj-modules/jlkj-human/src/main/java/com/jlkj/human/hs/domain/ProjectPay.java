@@ -41,7 +41,7 @@ public class ProjectPay extends BaseEntity
 
     /** 是否岗位定薪项目 */
     @Excel(name = "是否岗位定薪项目")
-    private Long isPostPro;
+    private String isPostPro;
 
     /** 是否员工定薪项目 */
     @Excel(name = "是否员工定薪项目")
@@ -143,12 +143,12 @@ public class ProjectPay extends BaseEntity
     {
         return staCon;
     }
-    public void setIsPostPro(Long isPostPro)
+    public void setIsPostPro(String isPostPro)
     {
         this.isPostPro = isPostPro;
     }
 
-    public Long getIsPostPro()
+    public String getIsPostPro()
     {
         return isPostPro;
     }
