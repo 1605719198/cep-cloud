@@ -49,8 +49,7 @@
 
 <script>
 import {
-  listProjectPay,
-  listProjectPayTree
+  listProjectPayTree, listProjectPay,
 } from '@/api/human/hs/projectPay'
 export default {
   name: 'SalaryProjectBasis',
@@ -116,10 +115,9 @@ export default {
       listProjectPayTree().then(response => {
         this.menuData = this.handleTree(response, 'id', 'parentid', 'children')
         this.defaultShowNodes.push(this.menuData[0].id)
-      })
-      if (this.queryParams.id != null) {
+        this.queryParams.id = this.menuData[0].id
         this.onLoad()
-      }
+      })
     },
     //载入数据
     onLoad() {

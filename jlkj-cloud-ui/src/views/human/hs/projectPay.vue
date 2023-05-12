@@ -257,7 +257,7 @@ export default {
     // 作废按钮
     cancellation() {
       //添加薪酬项目pop
-      // this.openPop()
+      this.openPop()
       for(let i = 0;i<this.multipleSelection.length;i++){
         this.multipleSelection[i].status = "1"
       }
