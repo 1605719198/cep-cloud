@@ -50,6 +50,4 @@ public class BasisOptionsDTO {
 //    /** 输入日期 */
 //    private Date createDate;
 //
-//    /** 子部门 */
-//    private List<Attendencebasis> children ;
 }

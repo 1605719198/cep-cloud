@@ -1,8 +1,10 @@
 package com.jlkj.human.hs.service;
 
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
+import com.jlkj.human.hd.dto.OptinonTypeDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -83,8 +85,24 @@ public interface ISalaryBasisService
     /**
      * 查询员工薪资基本资料维护选单
      *
-     * @param code 员工薪资基本资料维护编码
+     * @param salaryBasis 员工薪资基本资料
      * @return 结果
      */
-    public List<BasisOptionsDTO> selectBasisOptions(String code) ;
+    public List<BasisOptionsDTO> selectBasisOptions(SalaryBasis salaryBasis) ;
+
+    /**
+     * 获取薪资作业下拉选单主项
+     *
+     * @param optinonType 选单查询条件
+     * @return 结果
+     */
+    public HashMap<String, List<BasisOptionsDTO>> getBasisOptions(OptinonTypeDTO optinonType) ;
+
+    /**
+     * 获取薪资作业下拉选单细项
+     *
+     * @param optinonType 选单查询条件
+     * @return 结果
+     */
+    public List<BasisOptionsDTO> getDeepOptions(OptinonTypeDTO optinonType) ;
 }

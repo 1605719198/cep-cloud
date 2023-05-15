@@ -181,23 +181,12 @@ export default {
       form: {},
       // 表单校验
       rules: {},
-      index: 0,
       //选中项数据
       multipleSelection: []
     }
 
   },
-  watch: {
-    // 监听数据 设置默认展示第一层数据
-    menuData: {
-      handler(val) {
-        val.forEach(item => {
-          this.defaultShowNodes.push(item.id)
-        })
-      },
-      deep: true
-    }
-  },
+  watch: {},
   created() {
     this.initData()
     this.getBaseInfoTree()
@@ -257,7 +246,7 @@ export default {
     // 作废按钮
     cancellation() {
       //添加薪酬项目pop
-      this.openPop()
+      // this.openPop()
       for(let i = 0;i<this.multipleSelection.length;i++){
         this.multipleSelection[i].status = "1"
       }
@@ -268,12 +257,17 @@ export default {
     },
     //获取选单配置树
     getBaseInfoTree() {
-      listProjectPayTree(this.queryParams).then(response => {
-        this.menuData = this.handleTree(response, 'id', 'parentid', 'children')
-      })
-      if (this.queryParams.id != null) {
-        this.onLoad()
+      var param = {
+        payType:1,
       }
+      listProjectPayTree(param).then(response => {
+        this.menuData = this.handleTree(response, 'id', 'parentid', 'children')
+        this.defaultShowNodes.push(this.menuData[0].id)
+        if(this.queryParams.id===null){
+          this.queryParams.id = this.defaultShowNodes[0];
+        }
+        this.onLoad()
+      })
     },
     //点击节点方法
     handleNodeClick(data) {
@@ -345,13 +339,12 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1)
         }
-        this.index++
         this.tableData.push(newLine)
       }
     },
     // 获取弹窗数据
     getPopData(val) {
-      console.log(JSON.stringify(val))
+ 
     },
     // 打开薪资选择弹窗
     openPop() {

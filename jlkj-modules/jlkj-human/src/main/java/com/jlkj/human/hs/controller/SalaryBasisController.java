@@ -101,12 +101,17 @@ public class SalaryBasisController extends BaseController
     @GetMapping(value = "/getBasisOptions")
     public Object getBasisOptions(OptinonTypeDTO optinonType)
     {
-        List<String> optionsType = optinonType.getOptionsType();
-        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
-        for (String item : optionsType) {
-            List<BasisOptionsDTO> list = salaryBasisService.selectBasisOptions(item);
-            map.put(item, list);
-        }
-        return AjaxResult.success(map);
+
+        return AjaxResult.success(salaryBasisService.getBasisOptions(optinonType));
+    }
+
+    /**
+     * 获取薪资作业下拉选单细项
+     */
+    @GetMapping(value = "/getDeepOptions")
+    public AjaxResult getDeepOptions(OptinonTypeDTO optinonType)
+    {
+        List<BasisOptionsDTO> options = salaryBasisService.getDeepOptions(optinonType);
+        return AjaxResult.success(options);
     }
 }

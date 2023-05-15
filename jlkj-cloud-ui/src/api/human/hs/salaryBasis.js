@@ -60,3 +60,12 @@ export function getSalaryOptions(data) {
     params: data
   })
 }
+
+//获取子项选单
+export function getSalaryDeepOptions(data) {
+  return request({
+    url: '/human/salaryBasis/getDeepOptions',
+    method: 'get',
+    params: data
+  })
+}
