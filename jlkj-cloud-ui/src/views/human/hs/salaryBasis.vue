@@ -6,7 +6,7 @@
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
             <div class="head-container">
-              <el-select v-model="queryParams.compId" placeholder="请选择公司名称" size="small">
+              <el-select v-model="queryParams.compId" placeholder="请选择公司" size="small">
                 <el-option
                   v-for="dict in companyList"
                   :key="dict.compId"
@@ -211,7 +211,7 @@ export default {
         optionsType: ['PerformanceLevel'],
         compId:'J00',
       },
-      //出勤选单选项列表
+      //薪资选单选项列表
       options: [],
       //默认显示id
       defaultShowNodes: [],
@@ -232,6 +232,7 @@ export default {
         this.getBaseInfoTree();
       },
       deep: true,
+      immediate: false,
     },
   },
   created() {

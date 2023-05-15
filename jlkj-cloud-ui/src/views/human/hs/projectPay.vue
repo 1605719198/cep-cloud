@@ -29,12 +29,13 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button type="primary" size="mini" plain @click="handleSave">保存</el-button>
+                        <el-button type="primary" size="mini" plain @click="handleSave" :disabled="multiple">保存</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button
                           type="danger"
                           plain
+                          :disabled="multiple"
                           size="mini"
                           @click="cancellation"
                         >作废
@@ -344,7 +345,7 @@ export default {
     },
     // 获取弹窗数据
     getPopData(val) {
- 
+
     },
     // 打开薪资选择弹窗
     openPop() {
