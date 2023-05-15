@@ -327,9 +327,9 @@ export default {
   },
   watch:{
     colockType(val){
-      this.queryParams.empId=null,
-        this.queryParams.deptId=null,
-        this.getList();
+      this.queryParams.empId=null;
+      this.queryParams.deptId=null;
+      this.getList();
     },
     'queryParams.compId':{
       deep:true,

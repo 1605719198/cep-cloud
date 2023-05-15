@@ -250,6 +250,13 @@
                 <version>${jlkj.version}</version>
             </dependency>
 
+            <!-- 财务模块接口 -->
+            <dependency>
+                <groupId>com.jlkj</groupId>
+                <artifactId>jlkj-api-finance</artifactId>
+                <version>${jlkj.version}</version>
+            </dependency>
+
             <!-- 公共实体类DTO -->
             <dependency>
                 <groupId>com.jlkj</groupId>
@@ -339,8 +346,8 @@
     <repositories>
         <repository>
             <id>public</id>
-            <name>nexus</name>
-            <url>http://10.32.100.189:8081/repository/maven-public/</url>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -350,8 +357,8 @@
     <pluginRepositories>
         <pluginRepository>
             <id>public</id>
-            <name>nexus</name>
-            <url>http://10.32.100.189:8081/repository/maven-public/</url>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCompanyGroupMapper">
-    
+
     <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup" id="FinanceAaCompanyGroupResult">
         <result property="id"    column="id"    />
         <result property="companyNo"    column="company_no"    />
@@ -28,17 +28,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectFinanceAaCompanyGroupList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup" resultMap="FinanceAaCompanyGroupResult">
         <include refid="selectFinanceAaCompanyGroupVo"/>
-        <where>  
+        <where>
             <if test="companyNo != null  and companyNo != ''"> and company_no = #{companyNo}</if>
             <if test="companySname != null  and companySname != ''"> and company_sname like concat('%', #{companySname}, '%')</if>
         </where>
     </select>
-    
+
     <select id="selectFinanceAaCompanyGroupById" parameterType="String" resultMap="FinanceAaCompanyGroupResult">
         <include refid="selectFinanceAaCompanyGroupVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertFinanceAaCompanyGroup" parameterType="com.jlkj.finance.aa.domain.FinanceAaCompanyGroup">
         insert into finance_aa_company
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -103,13 +103,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteFinanceAaCompanyGroupByIds" parameterType="String">
-        delete from finance_aa_company where id in 
+        delete from finance_aa_company where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <select id="selectCompanyList" parameterType="String" resultType="map">
-        SELECT company_no value, company_sname label, company_name fullname FROM finance_aa_company
+        SELECT id, company_no value, company_sname label, company_name fullname FROM finance_aa_company
     </select>
 </mapper>

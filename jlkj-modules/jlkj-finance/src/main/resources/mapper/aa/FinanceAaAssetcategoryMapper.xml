@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaAssetcategoryMapper">
+    
+    <resultMap type="FinanceAaAssetcategory" id="FinanceAaAssetcategoryResult">
+        <result property="id"    column="id"    />
+        <result property="assetGroup"    column="asset_group"    />
+        <result property="assetGroupName"    column="asset_group_name"    />
+        <result property="assetCategory"    column="asset_category"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaAssetcategoryVo">
+        select id, asset_group, asset_group_name, asset_category, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_assetCategory
+    </sql>
+
+    <select id="selectFinanceAaAssetcategoryList" parameterType="FinanceAaAssetcategory" resultMap="FinanceAaAssetcategoryResult">
+        <include refid="selectFinanceAaAssetcategoryVo"/>
+        <where>  
+            <if test="assetGroup != null  and assetGroup != ''"> and asset_group = #{assetGroup}</if>
+            <if test="assetGroupName != null  and assetGroupName != ''"> and asset_group_name like concat('%', #{assetGroupName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaAssetcategoryById" parameterType="String" resultMap="FinanceAaAssetcategoryResult">
+        <include refid="selectFinanceAaAssetcategoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaAssetcategory" parameterType="FinanceAaAssetcategory">
+        insert into finance_aa_assetCategory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="assetGroup != null">asset_group,</if>
+            <if test="assetGroupName != null">asset_group_name,</if>
+            <if test="assetCategory != null">asset_category,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetGroup != null">#{assetGroup},</if>
+            <if test="assetGroupName != null">#{assetGroupName},</if>
+            <if test="assetCategory != null">#{assetCategory},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaAssetcategory" parameterType="FinanceAaAssetcategory">
+        update finance_aa_assetCategory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetGroup != null">asset_group = #{assetGroup},</if>
+            <if test="assetGroupName != null">asset_group_name = #{assetGroupName},</if>
+            <if test="assetCategory != null">asset_category = #{assetCategory},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaAssetcategoryById" parameterType="String">
+        delete from finance_aa_assetCategory where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaAssetcategoryByIds" parameterType="String">
+        delete from finance_aa_assetCategory where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

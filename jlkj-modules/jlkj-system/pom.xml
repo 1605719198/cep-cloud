@@ -77,6 +77,11 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
+        <!-- 财务模块远程调用接口 -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-finance</artifactId>
+        </dependency>
 
     </dependencies>
 

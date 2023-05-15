@@ -26,4 +26,9 @@ public class ServiceNameConstants
      * 工作流服务的serviceid
      */
     public static final String FLOWABLE_SERVICE = "jlkj-flowable";
+
+    /**
+     * 财务模块的serviceid
+     */
+    public static final String FINANCE_SERVICE = "jlkj-finance";
 }

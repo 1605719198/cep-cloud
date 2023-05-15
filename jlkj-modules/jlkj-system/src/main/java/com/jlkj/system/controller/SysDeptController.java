@@ -12,11 +12,13 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.service.ISysDeptService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门信息
@@ -153,5 +155,15 @@ public class SysDeptController extends BaseController
         ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
         ajax.put("depts", deptService.buildDeptTreeSelect(depts));
         return ajax;
+    }
+
+    /**
+     * 获取公司别下拉选单列表
+     * @return
+     */
+    @GetMapping("/getCompList")
+    public AjaxResult getCompList() {
+        List<Map<String,String>> comJson = deptService.getCompList();
+        return AjaxResult.success("查询成功",comJson);
     }
 }

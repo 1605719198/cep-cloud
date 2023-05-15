@@ -2,8 +2,10 @@ package com.jlkj.system.service;
 
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.domain.vo.TreeSelect;
+import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 服务层
@@ -122,4 +124,10 @@ public interface ISysDeptService
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+
+    /**
+     * 获取公司别下拉选单列表
+     * @return
+     */
+    List<Map<String,String>> getCompList();
 }

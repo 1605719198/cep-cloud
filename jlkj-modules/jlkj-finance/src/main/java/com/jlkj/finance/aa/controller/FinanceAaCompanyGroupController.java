@@ -4,6 +4,8 @@ import java.util.List;
 import java.io.IOException;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.common.security.annotation.InnerAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,6 +107,15 @@ public class FinanceAaCompanyGroupController extends BaseController
     }
 
 
+    /**
+     * 查询核算项目类别(下拉选单用)- 远程调用暴露接口
+     */
+    @InnerAuth
+    @GetMapping("/getCompanyFeign")
+    public List<Map<String,String>> getCompanyFeign()
+    {
+        return financeAaCompanyGroupService.selectCompanyList();
+    }
     /**
      * 查询核算项目类别(下拉选单用)
      */

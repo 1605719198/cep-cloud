@@ -51,3 +51,12 @@ export function delSalaryBasis(id) {
     method: 'delete'
   })
 }
+
+//获取基础选单
+export function getSalaryOptions(data) {
+  return request({
+    url: '/human/salaryBasis/getBasisOptions',
+    method: 'get',
+    params: data
+  })
+}

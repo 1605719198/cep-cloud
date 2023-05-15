@@ -28,24 +28,56 @@
               <el-form :inline="true">
                 <!-- 操作按钮 -->
                 <el-form-item>
-                  <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini">新增
-                  </el-button>
+                  <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    type="danger"
+                    plain
+                    size="mini"
+                    @click="cancellation"
+                  >作废</el-button>
                 </el-form-item>
               </el-form>
             </el-col>
           </el-row>
         </div>
         <div>
-          <el-table height="70vh" size="small" v-loading="table.loading" :data="tableData" stripe>
-            <el-table-column label="薪酬项目编码" align="center" prop="payProCode" />
-            <el-table-column label="薪酬项目名称" align="center" prop="payProName" />
-            <el-table-column label="说明" align="center" prop="describe" />
-            <el-table-column label="是否显示编码" align="center" prop="isShowno" />
-            <el-table-column label="排序" align="center" prop="num" />
-            <el-table-column label="状态" align="center" prop="status" />
+          <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="tableData" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
+            <el-table-column type="selection" width="55" align="center" />
+            <el-table-column label="薪酬项目编码" align="center" prop="payProCode" >
+              <template v-slot="scope">
+                <el-input v-model="scope.row.payProCode" placeholder="请输入内容"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="薪酬项目名称" align="center" prop="payProName" >
+            <template v-slot="scope">
+              <el-input v-model="scope.row.payProName" placeholder="请输入内容"></el-input>
+            </template>
+            </el-table-column>
+            <el-table-column label="说明" align="center" prop="salaryDescribe" >
+            <template v-slot="scope">
+              <el-input v-model="scope.row.salaryDescribe" placeholder="请输入内容"></el-input>
+            </template>
+            </el-table-column>
+            <el-table-column label="是否显示编码" align="center" prop="isShowno" >
+            <template v-slot="scope">
+              <el-checkbox v-model="scope.row.isShowno" true-label="1" false-label="0"></el-checkbox>
+            </template>
+            </el-table-column>
+            <el-table-column label="排序" align="center" prop="num" >
+            <template v-slot="scope">
+              <el-input v-model="scope.row.num" placeholder="请输入内容"></el-input>
+            </template>
+            </el-table-column>
+            <el-table-column label="状态" align="center" prop="status" >
+            <template v-slot="scope">
+              <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+            </template>
+            </el-table-column>
             <el-table-column label="输入人" align="center" prop="creator" />
             <el-table-column label="输入日期" align="center" prop="createDate" width="180">
-              <template slot-scope="scope">
+              <template v-slot="scope">
                 <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
               </template>
             </el-table-column>
@@ -79,14 +111,13 @@
 
 <script>
 import { listSalaryProjectBasis, getSalaryProjectBasis, delSalaryProjectBasis, addSalaryProjectBasis, updateSalaryProjectBasis, treeselect } from "@/api/human/hs/salaryProjectBasis";
-
+import {getDateTime} from "@/api/human/hd/ahumanUtils";
 
 export default {
   name: "SalaryProjectBasis",
+  dicts: ['sys_normal_disable'],
   data() {
     return {
-      // 遮罩层
-      loading: true,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -95,12 +126,23 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      //登录人工号
+      userEmpId: null,
+      //登录人姓名
+      nickName: null,
+      //登录人公司
+      logincompId: null,
       // 总条数
       total: 0,
-      // 集团级薪资项目输入维护表格数据
-      salaryProjectBasisList: [],
       // 弹出层标题
       title: "",
+      //表格属性
+      table: {
+        border: true,
+        loading: false,
+      },
+      //列表数据
+      tableData: [],
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -121,8 +163,11 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      index: 0,
+      multipleSelection: []
     };
+
   },
   watch: {
     // 监听数据 设置默认展示第一层数据
@@ -136,20 +181,30 @@ export default {
     }
   },
   created() {
-    this.getList();
+    this.initData();
+
     this.getBaseInfoTree();
   },
   methods: {
+    //初始化数据
+    initData(){
+      this.userEmpId= this.$store.state.user.name;
+      this.nickName= this.$store.state.user.userInfo.nickName;
+      this.logincompId= this.$store.state.user.userInfo.compId;
+    },
+    //表单值设置
+    setForm(e){
+      this.form.creator = this.nickName;
+      this.form.creatorId = this.userEmpId;
+      this.form.createDate = getDateTime(1)
+      if(e===0){
+        this.form.parentid = this.queryParams.id;
+      }
+    },
     /** 查询集团级薪资项目输入维护列表 */
     getList() {
-      this.loading = true;
-      listSalaryProjectBasis(this.queryParams).then(response => {
-        this.salaryProjectBasisList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-        this.getBaseInfoTree();
-        this.onLoad();
-      });
+      this.getBaseInfoTree();
+      this.onLoad();
     },
     // 取消按钮
     cancel() {
@@ -168,7 +223,7 @@ export default {
         isEmpPro: null,
         isLov: null,
         lovConId: null,
-        describe: null,
+        salaryDescribe: null,
         parentid: null,
         parents: null,
         payType: null,
@@ -196,8 +251,13 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
+
+      this.multipleSelection = selection;
+      console.log(selection.length)
+
       this.single = selection.length!==1
       this.multiple = !selection.length
+      console.log(this.ids)
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -214,6 +274,23 @@ export default {
         this.open = true;
         this.title = "修改集团级薪资项目输入维护";
       });
+    },
+    /** 保存按钮 */
+    handleSave() {
+      addSalaryProjectBasis(this.multipleSelection).then(res => {
+        this.$modal.msgSuccess("保存成功");
+        this.getList();
+      })
+    },
+    // 作废按钮
+    cancellation() {
+      for(let i = 0;i<this.multipleSelection.length;i++){
+        this.multipleSelection[i].status = "1"
+      }
+      addSalaryProjectBasis(this.multipleSelection).then(res => {
+        this.$modal.msgSuccess("保存成功");
+        this.getList();
+      })
     },
     /** 提交按钮 */
     submitForm() {
@@ -238,7 +315,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除集团级薪资项目输入维护编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除此集团级薪资项目输入维护的数据项？').then(function() {
         return delSalaryProjectBasis(ids);
       }).then(() => {
         this.getList();
@@ -249,7 +326,6 @@ export default {
     getBaseInfoTree() {
       treeselect().then(response => {
         this.menuData = response.data;
-        this.loading = false;
       })
     },
 
@@ -263,13 +339,59 @@ export default {
     onLoad() {
       this.table.loading = true;//加载状态
       listSalaryProjectBasis(this.queryParams).then(response => {
-        this.total = response.total;
-        this.tableData = response.rows;//表格数据
+        this.total = response.data.total;
+        this.tableData = response.data.rows;//表格数据
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
         window.console.log(error);
+
+        const newLine = {
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
+          status: "0",
+          payType: "2",
+          isPostPro: "0",
+          isEmpPro: "0",
+          payProCode: "",
+          parentid: this.queryParams.id,
+          isShowno: "0",
+        }
+        this.tableData.push(newLine)
       });
+    },
+    /** 添加下级操作 */
+    handlechild(row){
+      this.reset();
+      this.form.parentid = row.id
+      this.form.creator = this.nickName;
+      this.form.creatorId = this.$store.state.user.name;
+      this.form.createDate = getDateTime(1)
+      this.open = true;
+      this.title = "添加下级窗口";
+    },
+    addIndex({row, rowIndex}) {
+      row.index = rowIndex
+    },
+    // 增加一个空行, 用于录入或显示第一行
+    addLine(row) {
+      if (this.tableData.length = row.index + 1) {
+        const newLine = {
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
+          status: "0",
+          payType: "2",
+          isPostPro: "0",
+          isEmpPro: "0",
+          payProCode: "",
+          parentid: this.queryParams.id,
+          isShowno: "0",
+        }
+        this.index++
+        this.tableData.push(newLine)
+      }
     },
   }
 };

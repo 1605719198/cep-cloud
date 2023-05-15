@@ -41,7 +41,6 @@
     </el-row>
 
     <el-table v-loading="loading" :data="jobTitleList" @selection-change="handleSelectionChange" height="67vh">
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="职称代号" align="center" prop="jobTitleNo" />
       <el-table-column label="中文职称说明" align="center" prop="jobTitleName" />
       <el-table-column label="英文职称说明" align="center" prop="jobTitleNameEng" />

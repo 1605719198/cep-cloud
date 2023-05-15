@@ -66,3 +66,11 @@ export function roleDeptTreeselect(roleId) {
     method: 'get'
   })
 }
+
+// 获取公司别下拉选单列表
+export function getCompList() {
+  return request({
+    url: '/system/dept/getCompList',
+    method: 'get'
+  })
+}

@@ -36,7 +36,7 @@ public class FinanceAaIndexTreeServiceImpl extends ServiceImpl<FinanceAaIndexTre
 
         //查询选单配置资料
         List<FinanceAaIndex> equipmentDownTypeTrees =
-                baseMapper.selectList(new QueryWrapper<FinanceAaIndex>().eq("company_id",companyId).orderByDesc("node_no").orderByAsc("node_name"));
+                baseMapper.selectList(new QueryWrapper<FinanceAaIndex>().eq("company_id",companyId).orderByAsc("node_no").orderByAsc("node_name"));
         //树结构DTO
         List<FinanceAaIndexDTO> treeDTOList = new ArrayList<>();
         //循环取出id值，存入tempList

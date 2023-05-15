@@ -1,12 +1,22 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
+      <el-form-item label="公司别" prop="comId">
+        <el-select v-model="queryParams.comId" filterable  placeholder="请选择公司别" ref="selectCompany" >
+          <el-option
+            v-for="dict in compOptions"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
         <el-input
           v-model="queryParams.roleName"
           placeholder="请输入角色名称"
           clearable
-          style="width: 240px"
+          style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -15,7 +25,7 @@
           v-model="queryParams.roleKey"
           placeholder="请输入权限字符"
           clearable
-          style="width: 240px"
+          style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -24,7 +34,7 @@
           v-model="queryParams.status"
           placeholder="角色状态"
           clearable
-          style="width: 240px"
+          style="width: 150px"
         >
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
@@ -102,6 +112,11 @@
       <el-table-column label="角色编号" prop="roleId" width="120" />
       <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" width="150" />
       <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
+      <el-table-column label="公司别" prop="comId" :show-overflow-tooltip="true" width="200">
+        <template slot-scope="scope">
+          <span>{{operaSelect(scope.row.comId)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="显示顺序" prop="roleSort" width="100" />
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">
@@ -169,6 +184,16 @@
             权限字符
           </span>
           <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
+        </el-form-item>
+        <el-form-item label="公司别" prop="comId">
+          <el-select v-model="form.comId" filterable  placeholder="请选择公司别" ref="selectCompany" >
+            <el-option
+              v-for="dict in compOptions"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="角色顺序" prop="roleSort">
           <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
@@ -254,6 +279,7 @@
 <script>
 import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus, deptTreeSelect } from "@/api/system/role";
 import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
+import { getCompList } from "@/api/system/dept"
 
 export default {
   name: "Role",
@@ -313,13 +339,18 @@ export default {
       menuOptions: [],
       // 部门列表
       deptOptions: [],
+      // 公司别列表
+      compOptions: [],
+      // 当前登录人员公司别
+      defaultCompId: "",
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         roleName: undefined,
         roleKey: undefined,
-        status: undefined
+        status: undefined,
+        comId: this.$store.state.user.userInfo.compId
       },
       // 表单参数
       form: {},
@@ -337,6 +368,9 @@ export default {
         ],
         roleSort: [
           { required: true, message: "角色顺序不能为空", trigger: "blur" }
+        ],
+        comId: [
+          { required: true, message: "请选择公司别", trigger: "change" }
         ]
       }
     };
@@ -344,9 +378,27 @@ export default {
   created() {
     this.getList();
   },
+  computed: {
+  },
   methods: {
+    operaSelect(val) {
+      let compName = ""
+      if (this.compOptions.length > 0) {
+        this.compOptions.forEach(item => {
+          if (item.value === val) {
+            compName = item.label
+          }
+        })
+      }
+      return compName
+    },
     /** 查询角色列表 */
     getList() {
+      this.defaultCompId = this.$store.state.user.userInfo.compId
+      // 获取公司别列表
+      getCompList().then(response => {
+        this.compOptions = response.data
+      })
       this.loading = true;
       listRole(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.roleList = response.rows;
@@ -427,6 +479,7 @@ export default {
         roleId: undefined,
         roleName: undefined,
         roleKey: undefined,
+        comId: this.$store.state.user.userInfo.compId,
         roleSort: 0,
         status: "0",
         menuIds: [],
