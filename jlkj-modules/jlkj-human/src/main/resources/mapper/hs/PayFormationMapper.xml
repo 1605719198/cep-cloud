@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PayFormationMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hs.domain.PayFormation">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="payProId" column="pay_pro_id" jdbcType="VARCHAR"/>
+            <result property="payProCode" column="pay_pro_code" jdbcType="VARCHAR"/>
+            <result property="payProName" column="pay_pro_name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,pay_pro_id,
+        pay_pro_code,pay_pro_name,description,
+        creator,creator_id,create_date
+    </sql>
+</mapper>
