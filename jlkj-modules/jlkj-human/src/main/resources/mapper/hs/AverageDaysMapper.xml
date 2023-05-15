@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.AverageDaysMapper">
+    
+    <resultMap type="AverageDays" id="AverageDaysResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="avgDayNum"    column="avg_day_num"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="comm"    column="comm"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="creator"    column="creator"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectAverageDaysVo">
+        select uuid, comp_id, effect_date, avg_day_num, version_no, comm, resv_attr1, resv_attr2, creator_id, creator_no, creator, create_date from human_hs_average_days
+    </sql>
+
+    <select id="selectAverageDaysList" parameterType="AverageDays" resultMap="AverageDaysResult">
+        <include refid="selectAverageDaysVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAverageDaysByUuid" parameterType="String" resultMap="AverageDaysResult">
+        <include refid="selectAverageDaysVo"/>
+        where uuid = #{uuid}
+    </select>
+
+    <select id="queryAverageDaysVersion" parameterType="AverageDays" resultType="Long">
+        select max(version_no) from human_hs_average_days where comp_id = #{compId}
+    </select>
+        
+    <insert id="insertAverageDays" parameterType="AverageDays">
+        insert into human_hs_average_days
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="avgDayNum != null">avg_day_num,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="comm != null">comm,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="avgDayNum != null">#{avgDayNum},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="comm != null">#{comm},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAverageDays" parameterType="AverageDays">
+        update human_hs_average_days
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="avgDayNum != null">avg_day_num = #{avgDayNum},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="comm != null">comm = #{comm},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteAverageDaysByUuid" parameterType="String">
+        delete from human_hs_average_days where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteAverageDaysByUuids" parameterType="String">
+        delete from human_hs_average_days where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

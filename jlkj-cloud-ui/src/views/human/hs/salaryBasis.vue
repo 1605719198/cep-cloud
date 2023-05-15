@@ -6,7 +6,7 @@
           <!-- 左侧选单配置树 -->
           <el-col :span="4" class="left_tree">
             <div class="head-container">
-              <el-select v-model="queryParams.compId" placeholder="请选择公司名称" size="small">
+              <el-select v-model="queryParams.compId" placeholder="请选择公司" size="small">
                 <el-option
                   v-for="dict in companyList"
                   :key="dict.compId"
@@ -120,7 +120,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="输入人" prop="creator">
-                  {{form.creator}}
+                  {{form.creatorNo}}-{{form.creator}}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -160,8 +160,8 @@
 <script>
 import '@/assets/styles/humanStyles.scss';
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
-import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree, getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
+import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree, getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
 export default {
   name: "BaseInfo",
   dicts: ['sys_normal_disable'],
@@ -177,6 +177,7 @@ export default {
       user: {
         empNo: null,
         empName: null,
+        empId: null,
         compId: null
       },
       //选单树数据转化
@@ -206,10 +207,11 @@ export default {
       tableData: [],
       //薪资选单类型查询
       salaryOptionType: {
-        id: '',
-        optionsType: ['test2']
+        id: '19',
+        optionsType: ['PerformanceLevel'],
+        compId:'J00',
       },
-      //出勤选单选项列表
+      //薪资选单选项列表
       options: [],
       //默认显示id
       defaultShowNodes: [],
@@ -230,13 +232,24 @@ export default {
         this.getBaseInfoTree();
       },
       deep: true,
+      immediate: false,
     },
   },
   created() {
+    // this.test();
     this.getCompanyList()
     this.initData();
   },
   methods: {
+    //选单查询测试方法
+    test(){
+      getSalaryOptions(this.salaryOptionType).then(response =>{
+        alert(JSON.stringify(response))
+      })
+      getSalaryDeepOptions(this.salaryOptionType).then(response =>{
+        alert(JSON.stringify(response))
+      })
+    },
     //获取公司列表
     getCompanyList() {
       selectCompany().then(response => {
@@ -245,15 +258,17 @@ export default {
     },
     //初始化数据
     initData(){
-      this.user.empNo = this.$store.state.user.name
-      this.user.empName = this.$store.state.user.userInfo.nickName
-      this.user.compId = this.$store.state.user.userInfo.compId
+      this.user.empNo = this.$store.state.user.userInfo.userName;
+      this.user.empId = this.$store.state.user.userInfo.userId;
+      this.user.empName = this.$store.state.user.userInfo.nickName;
+      this.user.compId = this.$store.state.user.userInfo.compId;
       this.queryParams.compId = this.user.compId
     },
     //表单值设置
     setForm(e){
       this.form.creator = this.user.empName;
       this.form.creatorNo = this.user.empNo;
+      this.form.creatorId = this.user.empId;
       this.form.createDate = getDateTime(0)
       if(e===0){
         this.form.parentid = this.queryParams.id;
@@ -269,7 +284,9 @@ export default {
       listSalaryBasisTree(params).then(response => {
         this.menuData = this.handleTree(response,"id","parentid","children");
         this.defaultShowNodes.push(this.menuData[0].id);
-        this.queryParams.id = this.defaultShowNodes[0];
+        if(!this.queryParams.id){
+          this.queryParams.id = this.defaultShowNodes[0];
+        }
         this.onLoad()
         this.loading = false;
       })
