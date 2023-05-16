@@ -96,4 +96,12 @@ public interface IFinanceAaAcctcodeCorpService
      * @return
      */
     public int insertBatchFinanceAcctcodeCorp(Map request);
+
+    /**
+     * 查询会计科目-公司级列表(POP)
+     *
+     * @param financeAaAcctcodeCorp 会计科目-公司级
+     * @return 会计科目-公司级
+     */
+    public List<FinanceAaAcctcodeCorp> selectFinanceAaAcctcodeCorpListPop(FinanceAaAcctcodeCorp financeAaAcctcodeCorp);
 }
