@@ -30,6 +30,8 @@ public class FinanceAaVoucherDTO {
     private String calNamebEnd;
     private String qtyFrnamtStart;
     private String qtyFrnamtEnd;
+    /** 错误原因 */
+    private String errorReason;
     /** 凭证号码 */
     private String voucherNo;
     /** 凭证日期 */

@@ -1,8 +1,9 @@
 package com.jlkj.finance.aa.service;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
+
+import java.util.List;
 
 /**
  * 凭证维护-主Service接口
@@ -85,7 +86,7 @@ public interface IFinanceAaVoucherService
      * @param financeAaVoucher 凭证维护-主
      * @return 结果
      */
-    public int insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
+    public String insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
 
     /**
      * 修改凭证维护-主

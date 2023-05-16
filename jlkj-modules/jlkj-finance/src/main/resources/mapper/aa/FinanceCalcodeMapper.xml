@@ -38,7 +38,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceCalcodeVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectFinanceCalcode" resultType="com.jlkj.finance.aa.domain.FinanceCalcode">
+        <include refid="selectFinanceCalcodeVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="calTypeCode != null  and calTypeCode != ''"> and cal_type_code = #{calTypeCode}</if>
+
+        </where>
+    </select>
+
     <insert id="insertFinanceCalcode" parameterType="com.jlkj.finance.aa.domain.FinanceCalcode">
         insert into finance_aa_calcode
         <trim prefix="(" suffix=")" suffixOverrides=",">
