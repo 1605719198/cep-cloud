@@ -279,11 +279,12 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             financeAaVoucher.setPastuserName(getUsername());
         }
         String inspectionCollection = inspectionCollection(financeAaVoucher);
-        if (!StringUtils.isEmpty(inspectionCollection)){
-            throw new ServiceException(inspectionCollection);
+        if (StringUtils.isEmpty(inspectionCollection)){
+            //throw new ServiceException(inspectionCollection);
+            insertFinanceAaVoucherDetail(financeAaVoucher);
+            financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher);
         }
-        insertFinanceAaVoucherDetail(financeAaVoucher);
-        financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher);
+
         return inspectionCollection;
 
     }
@@ -330,11 +331,12 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             financeAaVoucher.setPastuserName(getUsername());
         }
         String inspectionCollection = inspectionCollection(financeAaVoucher);
-        if (!StringUtils.isEmpty(inspectionCollection)){
-            throw new ServiceException(inspectionCollection);
+        if (StringUtils.isEmpty(inspectionCollection)){
+            //throw new ServiceException(inspectionCollection);
+            financeAaVoucherMapper.deleteFinanceAaVoucherDetailByVoucherNo(financeAaVoucher.getVoucherNo());
+            insertFinanceAaVoucherDetail(financeAaVoucher);
         }
-        financeAaVoucherMapper.deleteFinanceAaVoucherDetailByVoucherNo(financeAaVoucher.getVoucherNo());
-        insertFinanceAaVoucherDetail(financeAaVoucher);
+
         return financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
     }
     /**
@@ -717,6 +719,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         String s ;
         String s1 = "";
         String s2 = "";
+        System.out.println(sqlQuery);
         String[] sqlStringDb =sqlQuery.split(",");
         for (int i = 0;i<sqlStringDb.length;i++){
             if (i == 0){
