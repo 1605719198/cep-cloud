@@ -362,7 +362,7 @@ export default {
           if (this.selectIf==true){
             this.changType()
           }
-        }else {
+        }else if (this.calTypeCodeaSystemList[0].calRule="04"){
 
           this.getCodeList();
           this.tableColumnsInput=[]
