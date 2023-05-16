@@ -2,18 +2,18 @@
   <!-- 授权用户 -->
   <el-dialog title="会计科目" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
     <el-form :model="queryParams" ref="queryForm" :inline="true">
-          <el-form-item label="会计科目代码" prop="groupAcctCode">
+          <el-form-item label="会计科目代码" prop="acctCode">
             <el-input
-              v-model="queryParams.groupAcctCode"
+              v-model="queryParams.acctCode"
               placeholder="会计科目代码"
               clearable
               size="small"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="会计科目名称" prop="groupAcctName">
+          <el-form-item label="会计科目名称" prop="acctName">
             <el-input
-              v-model="queryParams.groupAcctName"
+              v-model="queryParams.acctName"
               placeholder="会计科目名称"
               clearable
               size="small"
@@ -29,13 +29,17 @@
       <el-table @row-click="clickRow" ref="table" :data="baseList" @selection-change="handleSelectionChange"
                 height="360px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="会计科目代码" prop="groupAcctCode" :show-overflow-tooltip="true"/>
-        <el-table-column label="会计科目名称" prop="groupAcctName" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目一" prop="calTypeCodeA" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目二" prop="calTypeCodeB" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目三" prop="calTypeCodeC" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目四" prop="calTypeCodeD" :show-overflow-tooltip="true"/>
-        <el-table-column label="是否凭证科目" prop="isVoucher" :show-overflow-tooltip="true"/>
+        <el-table-column label="会计科目代码" prop="acctCode" :show-overflow-tooltip="true"/>
+        <el-table-column label="会计科目名称" prop="acctName" :show-overflow-tooltip="true"/>
+        <el-table-column label="核算项目一" prop="calTypeCodea" :show-overflow-tooltip="true"/>
+        <el-table-column label="核算项目二" prop="calTypeCodeb" :show-overflow-tooltip="true"/>
+        <el-table-column label="核算项目三" prop="calTypeCodec" :show-overflow-tooltip="true"/>
+        <el-table-column label="核算项目四" prop="calTypeCoded" :show-overflow-tooltip="true"/>
+        <el-table-column label="是否凭证科目" prop="isVoucher" :show-overflow-tooltip="true">
+          <template v-slot="scope">
+            <dict-tag :options="dict.type.aa_yes_no" :value="scope.row.isVoucher"/>
+          </template>
+        </el-table-column>
       </el-table>
       <pagination
         v-show="total>0"
@@ -78,8 +82,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         roleId: 1,
-        groupAcctCode: null,
-        groupAcctName: null,
+        acctCode: null,
+        acctName: null,
       }
     };
   },
