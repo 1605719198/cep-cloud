@@ -13,10 +13,7 @@ import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 核算项目-类别维护Service业务层处理
@@ -129,6 +126,7 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
     @Override
     public List<Map<String,String>> selectCalTypeSystemList(FinanceCaltype financeCaltype) {
         List<Map<String, String>> maps = new ArrayList<>();
+        Map map = new HashMap();
         FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
         if (financeCaltype1!=null){
             String calRule3 = "03";
@@ -138,7 +136,8 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                 financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                 maps = financeCalSysRuleMapper.selectFinanceCalSysRuleMapList(financeCalSysRule);
             }else {
-                maps = new ArrayList<>();
+                map.put("calRule", "04");
+                maps.add(map);
             }
         }
         return maps;

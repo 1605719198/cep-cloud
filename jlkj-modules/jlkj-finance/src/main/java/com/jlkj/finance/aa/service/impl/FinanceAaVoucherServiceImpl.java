@@ -485,11 +485,10 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
     {
         StringBuilder successMsg = new StringBuilder();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMM");
-        System.out.println(financeAaVoucher);
         if (financeAaVoucher.getCompanyId()==null &&financeAaVoucher.getVoucherDate()==null&&
                 financeAaVoucher.getApid()==null &&financeAaVoucher.getPgrmid()==null&&financeAaVoucher.getVoucherDesc()==null){
             successMsg.append("公司别、凭证类别、凭证日期、抛帐系统代号、抛帐程序名称、凭证摘要说明，不能为空！");
-            throw new ServiceException(successMsg.toString());
+           //throw new ServiceException(successMsg.toString());
         }else {
             QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
             wrapper.likeRight("account_period",sdf1.format(financeAaVoucher.getVoucherDate()))
@@ -499,7 +498,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 if ("N".equals(financeAccountYear.getIsClosed())){
                 }else {
                     successMsg.append("资料不是未关账状态");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
             }
         }
@@ -519,7 +518,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         int i=2;
         if (detailList.size()<i){
             successMsg.append("明细表至少有两笔数据!");
-            throw new ServiceException(successMsg.toString());
+           //throw new ServiceException(successMsg.toString());
         }
         BigDecimal ntamtC=BigDecimal.ZERO;
         BigDecimal ntamtD=BigDecimal.ZERO;
@@ -527,18 +526,18 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             if (StringUtils.isEmpty(financeAaVoucherDetail.getAcctCode())||
                     StringUtils.isEmpty(financeAaVoucherDetail.getDrcr())||StringUtils.isEmpty(financeAaVoucherDetail.getSrlDesc())){
                 successMsg.append("会计科目、借贷别、凭证分录摘要不能为空！");
-                throw new ServiceException(successMsg.toString());
+               //throw new ServiceException(successMsg.toString());
 
             }
             if (financeAaVoucherDetail.getNtamt().equals( BigDecimal.ZERO)){
                 successMsg.append("借贷金额不能为空！");
-                throw new ServiceException(successMsg.toString());
+               //throw new ServiceException(successMsg.toString());
 
             }
             if (financeAaVoucherDetail.getQtyFrnamt()!=null&&financeAaVoucherDetail.getNtamt()!=null) {
                 if (financeAaVoucherDetail.getQtyFrnamt().equals(BigDecimal.ZERO) && financeAaVoucherDetail.getNtamt().equals(BigDecimal.ZERO)) {
                     successMsg.append("数量和金额不能同时为零！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
 
                 }
                 String qtyFrnamt = financeAaVoucherDetail.getQtyFrnamt().toString();
@@ -548,14 +547,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 Matcher matcher = pattern.matcher(ntamt);
                 if (!matcher.matches()) {
                     successMsg.append("金额小数点必须小于等于2位！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
                 String zhengShuqtyFrnamt = "/(^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:.\\d{1,3})?$)/";
                 Pattern patternqtyFrnamt = Pattern.compile(zhengShuqtyFrnamt);
                 Matcher matcherqtyFrnamt = patternqtyFrnamt.matcher(qtyFrnamt);
                 if (!matcherqtyFrnamt.matches()) {
                     successMsg.append("数量小数点必须小于等于3位！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
             }
 
@@ -569,7 +568,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         }
         if (!ntamtD.subtract(ntamtC).equals(BigDecimal.ZERO)){
             successMsg.append("金额借贷金额必须平衡！");
-            throw new ServiceException(successMsg.toString());
+           //throw new ServiceException(successMsg.toString());
         }
         return  successMsg.toString();
     }
@@ -590,11 +589,11 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             if(financeAaAcctcodeCorp!=null){
                 if (!financeAaAcctcodeCorp.getDisabledCode().equals("Y")&&!financeAaAcctcodeCorp.getIsVoucher().equals("Y")){
                     successMsg.append("状态为作废或传票性科目为否！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
             }else {
                 successMsg.append("该会计科目在会计科目——公司级不存在！");
-                throw new ServiceException(successMsg.toString());
+               //throw new ServiceException(successMsg.toString());
             }
         }
         return  successMsg.toString();
@@ -630,14 +629,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), financeAaVoucherDetail.getCalCodea(), financeAaVoucherDetail.getCalNamea(),"一");
                         successMsg.append(s);
-                        throw new ServiceException(successMsg.toString());
+                       //throw new ServiceException(successMsg.toString());
                     }else if (calRule4.equals(financeCaltype1.getCalRule())){
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
                         if (!financeCalcode1.getCalName().equals(financeAaVoucherDetail.getCalNamea())){
                             successMsg.append("所选择的核算项目一内容不正确");
-                            throw new ServiceException(successMsg.toString());
+                           //throw new ServiceException(successMsg.toString());
                         }
                     }
                 }
@@ -652,14 +651,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), financeAaVoucherDetail.getCalCodeb(), financeAaVoucherDetail.getCalNameb(),"二");
                         successMsg.append(s);
-                        throw new ServiceException(successMsg.toString());
+                       //throw new ServiceException(successMsg.toString());
                     }else if (calRule4.equals(financeCaltype1.getCalRule())){
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
                         if (!financeCalcode1.getCalName().equals(financeAaVoucherDetail.getCalNameb())){
                             successMsg.append("所选择的核算项目二内容不正确");
-                            throw new ServiceException(successMsg.toString());
+                           //throw new ServiceException(successMsg.toString());
                         }
                     }
                 }
@@ -674,14 +673,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), financeAaVoucherDetail.getCalCodec(), financeAaVoucherDetail.getCalNamec(),"三");
                         successMsg.append(s);
-                        throw new ServiceException(successMsg.toString());
+                       //throw new ServiceException(successMsg.toString());
                     }else if (calRule4.equals(financeCaltype1.getCalRule())){
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
                         if (!financeCalcode1.getCalName().equals(financeAaVoucherDetail.getCalNamec())){
                             successMsg.append("所选择的核算项目三内容不正确");
-                            throw new ServiceException(successMsg.toString());
+                           //throw new ServiceException(successMsg.toString());
                         }
                     }
                 }
@@ -696,14 +695,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), financeAaVoucherDetail.getCalCoded(), financeAaVoucherDetail.getCalNamed(),"四");
                         successMsg.append(s);
-                        throw new ServiceException(successMsg.toString());
+                       //throw new ServiceException(successMsg.toString());
                     }else if (calRule4.equals(financeCaltype1.getCalRule())){
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
                         if (!financeCalcode1.getCalName().equals(financeAaVoucherDetail.getCalNamed())){
                             successMsg.append("所选择的核算项目四内容不正确");
-                            throw new ServiceException(successMsg.toString());
+                           //throw new ServiceException(successMsg.toString());
                         }
                     }
                 }
@@ -729,11 +728,13 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                 s2 = " and " + s  + " LIKE " + "'%" +calName+ "%'";
             }
-            sql.append(s1+s2);
-            List<Map<String, String>> list = financeCalSysRuleMapper.selectFinanceSqlMapList(sqlQuery + sql);
-            if (list.size()==0){
-                successMsg.append("所选择的核算项目"+number+"内容不正确！");
-            }
+
+        }
+        sql.append(s1+s2);
+        System.out.println(sqlQuery + sql);
+        List<Map<String, String>> list = financeCalSysRuleMapper.selectFinanceSqlMapList(sqlQuery + sql);
+        if (list.size()==0){
+            successMsg.append("所选择的核算项目"+number+"内容不正确！");
         }
         return  successMsg.toString();
     }
@@ -752,11 +753,11 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             for (FinanceAaVoucherDetail financeAaVoucherDetail:detailList){
                 if (StringUtils.isEmpty(financeAaVoucherDetail.getCrcyUnit())){
                     successMsg.append("数量单位/币别不能为空！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
                 if (financeAaVoucherDetail.getQtyFrnamt()==null){
                     successMsg.append("数量/外币金额不能为空！");
-                    throw new ServiceException(successMsg.toString());
+                   //throw new ServiceException(successMsg.toString());
                 }
             }
         }
