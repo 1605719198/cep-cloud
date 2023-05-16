@@ -163,7 +163,7 @@
               <el-form-item
                 :prop="'detailList.' + scope.$index + '.acctName'" :rules="rulesDetail.acctName">
               <el-input v-model="scope.row.acctName" placeholder="请输入会计科目">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputAcctName(scope.row)"
                 ></el-button>
               </el-input>
               </el-form-item>
@@ -265,6 +265,7 @@
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
     <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
   </div>
 </template>
 
@@ -278,11 +279,11 @@ import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listDetail} from "@/api/finance/aa/voucherdetail";
 import selectVoucher from "@/views/finance/aa/voucher/selectVoucher";
 import calTypePOP from "@/views/components/finance/calTypePOP";
-
+import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
 export default {
   name: "Voucher",
   components: {
-    selectVoucher,calTypePOP
+    selectVoucher,calTypePOP,acctcodeCorpPop
   },
   dicts: ['aa_source_sys', 'aa_voucher_status'],
   data() {
@@ -323,6 +324,7 @@ export default {
         voucherDate: null,
         voucherNo: null,
         printCount: null,
+        calTypeCode:''
       },
       // 会计公司下拉选单
       companyList: [],
@@ -367,7 +369,11 @@ export default {
       voucherType:null,
       ntamtDDisabled:false,
       ntamtCDisabled:false,
-      indexRow:''
+      indexRow:'',
+      calTypeCodea:'',
+      calTypeCodeb:'',
+      calTypeCodec:'',
+      calTypeCoded:''
     };
   },
   created() {
@@ -395,24 +401,35 @@ export default {
       this.formDetail.detailList[this.indexRow-1].calCodea=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamea=val.calName
       this.formDetail.detailList[this.indexRow-1].calIda=val.Id
+      this.formDetail.detailList[this.indexRow-1].sysa=val.sys
     },
     getCalTypePOP2(val){
       this.formDetail.detailList[this.indexRow-1].calCodeb=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNameb=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdb=val.Id
-
+      this.formDetail.detailList[this.indexRow-1].sysb=val.sys
     },
     getCalTypePOP3(val){
       this.formDetail.detailList[this.indexRow-1].calCodec=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamec=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdc=val.Id
-
+      this.formDetail.detailList[this.indexRow-1].sysc=val.sys
     },
     getCalTypePOP4(val){
       this.formDetail.detailList[this.indexRow-1].calCoded=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamed=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdd=val.Id
-
+      this.formDetail.detailList[this.indexRow-1].sysd=val.sys
+    },
+    getAcctCodeCorpPop(val){
+      this.formDetail.detailList[this.indexRow-1].acctCode=val[0].acctCode
+      this.formDetail.detailList[this.indexRow-1].acctName=val[0].acctName
+      this.formDetail.detailList[this.indexRow-1].acctId=val[0].acctId
+      this.form.isFrnCrcy=val[0].isFrnCrcy
+      this.calTypeCodea=val[0].calTypeCodea
+      this.calTypeCodeb=val[0].calTypeCodeb
+      this.calTypeCodec=val[0].calTypeCodec
+      this.calTypeCoded=val[0].calTypeCoded
     },
 
     getVoucherNo(val) {
@@ -421,35 +438,37 @@ export default {
       this.voucherType=val.voucherNo.substring(0,1)
       this.getList();
       this.getListDetailList()
-
     },
     /** 会计科目点击事件 */
-    inputAcctName() {
-
+    inputAcctName(val) {
+      this.indexRow= val.index
+      this.$refs.selectAcctCodeCorpPop.show();
     },
     /** 项目1点击事件 */
     inputCalNamea(val) {
      this.indexRow= val.index
-      this.$refs.selectPOP.show( this.queryParams);
+      this.queryParams.calTypeCode =  this.calTypeCodea
+      this.$refs.selectPOP.show(this.queryParams);
 
     },
     /** 项目2点击事件 */
     inputCalNameb(val) {
       this.indexRow= val.index
+      this.queryParams.calTypeCode =  this.calTypeCodeb
        this.$refs.selectPOP2.show( this.queryParams);
 
     },
     /** 项目3点击事件 */
     inputCalNamec(val) {
       this.indexRow= val.index
+      this.queryParams.calTypeCode =  this.calTypeCodec
       this.$refs.selectPOP3.show( this.queryParams);
-
     },
     /** 项目4点击事件 */
     inputCalNamed(val) {
       this.indexRow= val.index
+      this.queryParams.calTypeCode =  this.calTypeCoded
       this.$refs.selectPOP4.show( this.queryParams);
-
     },
     /** 查询凭证维护-明细列表 */
     getListDetailList() {
@@ -648,8 +667,6 @@ export default {
         }
         this.loading = false;
       });
-
-
     },
     /** 次笔按钮操作 */
     headOrderQuery() {
@@ -1004,7 +1021,7 @@ export default {
             if (valid) {
               this.form.companyId=this.queryParams.companyId
               this.form.detailList =  this.formDetail.detailList;
-              console.log(   this.form.detailList)
+
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
                   this.$modal.msgSuccess("修改成功");
