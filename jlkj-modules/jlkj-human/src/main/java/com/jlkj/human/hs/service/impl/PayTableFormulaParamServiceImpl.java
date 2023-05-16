@@ -1,6 +1,12 @@
 package com.jlkj.human.hs.service.impl;
 
+import java.security.Security;
+import java.util.Date;
 import java.util.List;
+
+import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hs.dto.PayTableFormulaParamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jlkj.human.hs.mapper.PayTableFormulaParamMapper;
@@ -44,6 +50,54 @@ public class PayTableFormulaParamServiceImpl implements IPayTableFormulaParamSer
     }
 
     /**
+     * 保存公司薪资计算参数
+     *
+     * @param payTableFormulaParamDTO 公司薪资计算参数列表
+     * @return 结果
+     */
+    @Override
+    public int savePayTableFormulaParam(PayTableFormulaParamDTO payTableFormulaParamDTO){
+        payTableFormulaParamMapper.deletePayTableFormulaParamByCompId(payTableFormulaParamDTO.getCompId());
+        List<PayTableFormulaParam> list = payTableFormulaParamDTO.getPayTableFormulaParamList();
+        int number = 0;
+        for (PayTableFormulaParam param : list){
+            param.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            param.setCompId(payTableFormulaParamDTO.getCompId());
+            param.setCreatorId(SecurityUtils.getUserId().toString());
+            param.setCreator(SecurityUtils.getNickName());
+            param.setCreatorNo(SecurityUtils.getUsername());
+            param.setCreateDate(new Date());
+            insertPayTableFormulaParam(param);
+            number++;
+        }
+        return number;
+    }
+
+    /**
+     * 复制公司薪资计算参数
+     *
+     * @param payTableFormulaParamDTO 公司薪资计算参数
+     * @return 结果
+     */
+    @Override
+    public int copyPayTableFormulaParam(PayTableFormulaParamDTO payTableFormulaParamDTO){
+        payTableFormulaParamMapper.deletePayTableFormulaParamByCompId(payTableFormulaParamDTO.getCompIdTo());
+        List<PayTableFormulaParam> list = payTableFormulaParamMapper.selectPayTableFormulaParamByCompId(payTableFormulaParamDTO.getCompId());
+        int number = 0;
+        for (PayTableFormulaParam param : list){
+            param.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            param.setCompId(payTableFormulaParamDTO.getCompIdTo());
+            param.setCreatorId(SecurityUtils.getUserId().toString());
+            param.setCreator(SecurityUtils.getNickName());
+            param.setCreatorNo(SecurityUtils.getUsername());
+            param.setCreateDate(new Date());
+            insertPayTableFormulaParam(param);
+            number++;
+        }
+        return number;
+    }
+
+    /**
      * 新增公司薪资计算参数
      *
      * @param payTableFormulaParam 公司薪资计算参数
@@ -67,27 +121,4 @@ public class PayTableFormulaParamServiceImpl implements IPayTableFormulaParamSer
         return payTableFormulaParamMapper.updatePayTableFormulaParam(payTableFormulaParam);
     }
 
-    /**
-     * 批量删除公司薪资计算参数
-     *
-     * @param uuids 需要删除的公司薪资计算参数主键
-     * @return 结果
-     */
-    @Override
-    public int deletePayTableFormulaParamByUuids(String[] uuids)
-    {
-        return payTableFormulaParamMapper.deletePayTableFormulaParamByUuids(uuids);
-    }
-
-    /**
-     * 删除公司薪资计算参数信息
-     *
-     * @param uuid 公司薪资计算参数主键
-     * @return 结果
-     */
-    @Override
-    public int deletePayTableFormulaParamByUuid(String uuid)
-    {
-        return payTableFormulaParamMapper.deletePayTableFormulaParamByUuid(uuid);
-    }
 }

@@ -23,6 +23,9 @@ public class PayTableFormulaParam extends BaseEntity
     /** 公司别 */
     private String compId;
 
+    /** 是否选择 */
+    private String isCheck;
+
     /** 参数代码 */
     @Excel(name = "参数代码")
     private String paramCode;
@@ -55,7 +58,7 @@ public class PayTableFormulaParam extends BaseEntity
     private String creator;
 
     /** 输入日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
@@ -76,6 +79,15 @@ public class PayTableFormulaParam extends BaseEntity
     public String getCompId()
     {
         return compId;
+    }
+    public void setIsCheck(String isCheck)
+    {
+        this.isCheck = isCheck;
+    }
+
+    public String getIsCheck()
+    {
+        return isCheck;
     }
     public void setParamCode(String paramCode)
     {

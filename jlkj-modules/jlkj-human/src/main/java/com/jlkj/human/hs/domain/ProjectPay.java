@@ -1,14 +1,14 @@
 package com.jlkj.human.hs.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
 
 /**
  * 薪酬项目对象 human_hs_salary_project_basis

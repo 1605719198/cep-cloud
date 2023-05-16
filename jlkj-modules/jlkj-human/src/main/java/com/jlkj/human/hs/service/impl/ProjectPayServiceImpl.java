@@ -58,10 +58,10 @@ public class ProjectPayServiceImpl implements IProjectPayService
     {
         for(ProjectPay projectPay :projectPayList){
             if(projectPay.getId()!=null){
-                Date date = new Date();
                 projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+                projectPay.setCreatorNo(SecurityUtils.getUsername());
                 projectPay.setCreator(SecurityUtils.getNickName());
-                projectPay.setCreateDate(date);
+                projectPay.setCreateDate(new Date());
                 projectPayMapper.updateProjectPay(projectPay);
 
             }else{

@@ -1,20 +1,19 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.*;
-
 import com.alibaba.fastjson2.JSONObject;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.aa.domain.FinanceCalSysRule;
+import com.jlkj.finance.aa.domain.FinanceCaltype;
 import com.jlkj.finance.aa.mapper.FinanceCalSysRuleMapper;
+import com.jlkj.finance.aa.mapper.FinanceCaltypeMapper;
+import com.jlkj.finance.aa.service.IFinanceCaltypeService;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceCaltypeMapper;
-import com.jlkj.finance.aa.domain.FinanceCaltype;
-import com.jlkj.finance.aa.service.IFinanceCaltypeService;
+
+import java.util.*;
 
 /**
  * 核算项目-类别维护Service业务层处理
@@ -127,6 +126,7 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
     @Override
     public List<Map<String,String>> selectCalTypeSystemList(FinanceCaltype financeCaltype) {
         List<Map<String, String>> maps = new ArrayList<>();
+        Map map = new HashMap();
         FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
         if (financeCaltype1!=null){
             String calRule3 = "03";
@@ -136,7 +136,8 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                 financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                 maps = financeCalSysRuleMapper.selectFinanceCalSysRuleMapList(financeCalSysRule);
             }else {
-                maps = new ArrayList<>();
+                map.put("calRule", "04");
+                maps.add(map);
             }
         }
         return maps;
@@ -236,7 +237,7 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                         substring1="";
                     }
                     if (i1 == 0){
-                        s =  s.append(" WHERE " + substring + " LIKE " + "'%" +substring1 + "%'" );
+                        s =  s.append(" and " + substring + " LIKE " + "'%" +substring1 + "%'" );
                     }else {
                         s =  s.append(" and " + substring + " LIKE " + "'%" +substring1 + "%'");
                     }
@@ -272,13 +273,13 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                 for (int i = 0;i<sqlStringDb.length;i++){
                     if (i == 0){
                         s= sqlStringDb[0].substring( sqlStringDb[0].indexOf("SELECT") + 7,  sqlStringDb[0].lastIndexOf("AS"));
-                        System.out.println(s);
+
                     }else if (i == 1){
                         s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                         if (nullId.equals(financeCaltypeLike.get("calNo").toString())){
-                            s1 =  " WHERE " + s + " LIKE " + "'%" + ""+ "%'";
+                            s1 =  " and " + s + " LIKE " + "'%" + ""+ "%'";
                         }else {
-                            s1 =  " WHERE " + s + " LIKE " + "'%" +financeCaltypeLike.get("calNo") + "%'";
+                            s1 =  " and " + s + " LIKE " + "'%" +financeCaltypeLike.get("calNo") + "%'";
                         }
 
                     }else {

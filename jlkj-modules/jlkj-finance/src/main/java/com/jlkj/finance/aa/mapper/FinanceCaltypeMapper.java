@@ -1,9 +1,9 @@
 package com.jlkj.finance.aa.mapper;
 
+import com.jlkj.finance.aa.domain.FinanceCaltype;
+
 import java.util.List;
 import java.util.Map;
-
-import com.jlkj.finance.aa.domain.FinanceCaltype;
 
 /**
  * 核算项目-类别维护Mapper接口
@@ -20,6 +20,7 @@ public interface FinanceCaltypeMapper
      * @return 核算项目-类别维护
      */
     public FinanceCaltype selectFinanceCaltypeById(String id);
+
 
     /**
      * 查询核算项目-类别维护列表
