@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司别" :popper-append-to-body="false">
+        <el-select v-model="queryParams.compId" placeholder="请选择公司别" >
           <el-option
             v-for="dict in companyList"
             :key="dict.deptCode"
@@ -103,7 +103,6 @@
                      icon="el-icon-details"
                      @click="handleDetails(scope.row)"
           >详情
-            <!--            v-hasPermi="['human:personHoliday:details']"-->
           </el-button>
         </template>
       </el-table-column>
@@ -446,7 +445,19 @@ export default {
       rules: {
         totalDays: [
           { required: true, message: '不能为空', trigger: 'change' }
-        ]
+        ],
+        empNo: [
+          { required: true, message: '员工工号不能为空', trigger: 'blur'}
+        ],
+        leaTypeId: [
+          { required: true, message: '请选择请假类别', trigger: 'change'}
+        ],
+        startDate: [
+          { required: true, message: '请假开始时间不能为空', trigger: 'change'}
+        ],
+        endDate: [
+          { required: true, message: '请假结束时间不能为空', trigger: 'change'}
+        ],
       }
     }
   },
@@ -539,6 +550,7 @@ export default {
               var min5 = parseInt(this.shiftCodeData.restEndMin)
               //当天初始工作分钟数
               var workMinute = 0
+              //非工作日判定
               if (value.dateType != dateType1) {
                 if (this.form.isContainHoliday == 'N') {
                   k++
@@ -582,7 +594,6 @@ export default {
                   } else {
                     workMinute = workMinuteDay
                   }
-
                 }
               }
               workMinuteAll += workMinute
@@ -606,11 +617,12 @@ export default {
                   })
                 } else {
                   this.form.leaveShifts = leaveDays
-                  addPersonHoliday(this.form).then(response => {
-                    this.$modal.msgSuccess('新增成功')
-                    this.open = false
-                    this.getList()
-                  })
+                  this.$modal.msgSuccess('请假时间符合要求')
+                  // addPersonHoliday(this.form).then(response => {
+                  //   this.$modal.msgSuccess('新增成功')
+                  //   this.open = false
+                  //   this.getList()
+                  // })
                 }
               } else {
                 this.$modal.msgError('请假时间不合要求')
@@ -967,7 +979,4 @@ export default {
   width: 30%;
 }
 
-/deep/ .el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
 </style>
