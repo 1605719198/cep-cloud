@@ -237,7 +237,7 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                         substring1="";
                     }
                     if (i1 == 0){
-                        s =  s.append(" WHERE " + substring + " LIKE " + "'%" +substring1 + "%'" );
+                        s =  s.append(" and " + substring + " LIKE " + "'%" +substring1 + "%'" );
                     }else {
                         s =  s.append(" and " + substring + " LIKE " + "'%" +substring1 + "%'");
                     }
@@ -277,9 +277,9 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
                     }else if (i == 1){
                         s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                         if (nullId.equals(financeCaltypeLike.get("calNo").toString())){
-                            s1 =  " WHERE " + s + " LIKE " + "'%" + ""+ "%'";
+                            s1 =  " and " + s + " LIKE " + "'%" + ""+ "%'";
                         }else {
-                            s1 =  " WHERE " + s + " LIKE " + "'%" +financeCaltypeLike.get("calNo") + "%'";
+                            s1 =  " and " + s + " LIKE " + "'%" +financeCaltypeLike.get("calNo") + "%'";
                         }
 
                     }else {

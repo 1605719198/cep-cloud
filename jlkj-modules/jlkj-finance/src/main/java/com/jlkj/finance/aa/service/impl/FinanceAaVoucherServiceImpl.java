@@ -723,7 +723,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 s= sqlStringDb[0].substring( sqlStringDb[0].indexOf("SELECT") + 7,  sqlStringDb[0].lastIndexOf("AS"));
             }else if (i == 1){
                 s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
-                s1 =  " WHERE " + s + " LIKE " + "'%" +calCode+ "%'";
+                s1 =  " and " + s + " LIKE " + "'%" +calCode+ "%'";
             }else {
                 s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                 s2 = " and " + s  + " LIKE " + "'%" +calName+ "%'";
