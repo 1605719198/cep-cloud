@@ -254,6 +254,12 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         financeAaVoucher.setVoucherNo(voucherNo);
         financeAaVoucher.setStatus("N");
         financeAaVoucher.setApid("AA");
+        if(StringUtils.isEmpty(financeAaVoucher.getPgrmid())){
+            financeAaVoucher.setPgrmid("voucherAA");
+        }
+        if(StringUtils.isEmpty(financeAaVoucher.getVoucherDesc())){
+            financeAaVoucher.setPgrmid("页面新增");
+        }
         BigDecimal ntamtD=BigDecimal.ZERO;
         BigDecimal ntamtC=BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
@@ -479,9 +485,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
     {
         StringBuilder successMsg = new StringBuilder();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMM");
-
-        if (financeAaVoucher.getCompanyId()==null||financeAaVoucher.getVoucherDate()==null||
-                financeAaVoucher.getApid()==null||financeAaVoucher.getPgrmid()==null||financeAaVoucher.getVoucherDesc()==null){
+        System.out.println(financeAaVoucher);
+        if (financeAaVoucher.getCompanyId()==null &&financeAaVoucher.getVoucherDate()==null&&
+                financeAaVoucher.getApid()==null &&financeAaVoucher.getPgrmid()==null&&financeAaVoucher.getVoucherDesc()==null){
             successMsg.append("公司别、凭证类别、凭证日期、抛帐系统代号、抛帐程序名称、凭证摘要说明，不能为空！");
             throw new ServiceException(successMsg.toString());
         }else {
@@ -529,38 +535,41 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 throw new ServiceException(successMsg.toString());
 
             }
-            if (financeAaVoucherDetail.getQtyFrnamt().equals(BigDecimal.ZERO)&& financeAaVoucherDetail.getNtamt().equals(BigDecimal.ZERO)){
-                successMsg.append("数量和金额不能同时为零！");
-                throw new ServiceException(successMsg.toString());
+            if (financeAaVoucherDetail.getQtyFrnamt()!=null&&financeAaVoucherDetail.getNtamt()!=null) {
+                if (financeAaVoucherDetail.getQtyFrnamt().equals(BigDecimal.ZERO) && financeAaVoucherDetail.getNtamt().equals(BigDecimal.ZERO)) {
+                    successMsg.append("数量和金额不能同时为零！");
+                    throw new ServiceException(successMsg.toString());
 
+                }
+                String qtyFrnamt = financeAaVoucherDetail.getQtyFrnamt().toString();
+                String ntamt = financeAaVoucherDetail.getNtamt().toString();
+                String zhengShu = "/(^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:.\\d{1,2})?$)/";
+                Pattern pattern = Pattern.compile(zhengShu);
+                Matcher matcher = pattern.matcher(ntamt);
+                if (!matcher.matches()) {
+                    successMsg.append("金额小数点必须小于等于2位！");
+                    throw new ServiceException(successMsg.toString());
+                }
+                String zhengShuqtyFrnamt = "/(^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:.\\d{1,3})?$)/";
+                Pattern patternqtyFrnamt = Pattern.compile(zhengShuqtyFrnamt);
+                Matcher matcherqtyFrnamt = patternqtyFrnamt.matcher(qtyFrnamt);
+                if (!matcherqtyFrnamt.matches()) {
+                    successMsg.append("数量小数点必须小于等于3位！");
+                    throw new ServiceException(successMsg.toString());
+                }
             }
-            String qtyFrnamt = financeAaVoucherDetail.getQtyFrnamt().toString();
-            String ntamt = financeAaVoucherDetail.getQtyFrnamt().toString();
 
-            String zhengShu="/(^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:.\\d{1,2})?$)/";
-            Pattern pattern = Pattern.compile(zhengShu);
-            Matcher matcher = pattern.matcher(ntamt);
-            if (!matcher.matches()){
-                successMsg.append("金额小数点必须小于等于2位！");
-                throw new ServiceException(successMsg.toString());
-            }
-            String zhengShuqtyFrnamt="/(^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:.\\d{1,3})?$)/";
-            Pattern patternqtyFrnamt = Pattern.compile(zhengShuqtyFrnamt);
-            Matcher matcherqtyFrnamt = patternqtyFrnamt.matcher(qtyFrnamt);
-            if (!matcherqtyFrnamt.matches()){
-                successMsg.append("数量小数点必须小于等于3位！");
-                throw new ServiceException(successMsg.toString());
-            }
             if ("D".equals(financeAaVoucherDetail.getDrcr())){
                  ntamtD =ntamtD.add(financeAaVoucherDetail.getNtamt());
             }
             if ("C".equals(financeAaVoucherDetail.getDrcr())){
                 ntamtC =ntamtC.add(financeAaVoucherDetail.getNtamt());
             }
-            if (!ntamtD.subtract(ntamtC).equals(BigDecimal.ZERO)){
-                successMsg.append("金额借贷金额必须平衡！");
-                throw new ServiceException(successMsg.toString());
-            }
+
+        }
+        if (!ntamtD.subtract(ntamtC).equals(BigDecimal.ZERO)){
+            successMsg.append("金额借贷金额必须平衡！");
+            throw new ServiceException(successMsg.toString());
         }
         return  successMsg.toString();
     }
