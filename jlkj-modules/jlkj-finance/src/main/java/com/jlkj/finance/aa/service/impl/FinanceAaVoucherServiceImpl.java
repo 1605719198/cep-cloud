@@ -202,55 +202,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
     @Override
     public String insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher)
     {
-        financeAaVoucher.setCreateTime(DateUtils.getNowDate());
-        financeAaVoucher.setId(UUID.fastUUID().toString());
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMM");
-        String voucherNo = "";
-        QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
-        wrapper.likeRight("account_period",sdf1.format(financeAaVoucher.getVoucherDate()))
-                .eq("comp_id", financeAaVoucher.getCompanyId());
-        FinanceAccountYear financeAccountYear = financeAccountYearService.getOne(wrapper);
-        String M = "M";
-        String R = "R";
-        String P = "P";
-        String T = "T";
-
-        if (M.equals(financeAaVoucher.getVoucherType())){
-            Long manVoucherhrSrl = financeAccountYear.getManVoucherhrSrl();
-            DecimalFormat decimalFormat=new DecimalFormat("00000");
-            int i=Integer.parseInt(manVoucherhrSrl.toString())+1;
-              voucherNo=M+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
-
-            financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
-            financeAccountYearService.updateById(financeAccountYear);
-        }  
-        if (R.equals(financeAaVoucher.getVoucherType())){
-            Long receiveVoucherCurrentSrl = financeAccountYear.getReceiveVoucherCurrentSrl();
-            DecimalFormat decimalFormat=new DecimalFormat("00000");
-            int i=Integer.parseInt(receiveVoucherCurrentSrl.toString())+1;
-            voucherNo=R+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
-
-            financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
-            financeAccountYearService.updateById(financeAccountYear);
-    }
-        if (P.equals(financeAaVoucher.getVoucherType())){
-            Long payVoucherCurrentSrl = financeAccountYear.getPayVoucherCurrentSrl();
-            DecimalFormat decimalFormat=new DecimalFormat("00000");
-            int i=Integer.parseInt(payVoucherCurrentSrl.toString())+1;
-            voucherNo=P+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
-
-            financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
-            financeAccountYearService.updateById(financeAccountYear);
-        }
-        if (T.equals(financeAaVoucher.getVoucherType())){
-            Long transVoucherCurrentSrl = financeAccountYear.getTransVoucherCurrentSrl();
-            DecimalFormat decimalFormat=new DecimalFormat("00000");
-            int i=Integer.parseInt(transVoucherCurrentSrl.toString())+1;
-            voucherNo=T+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
-
-            financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
-            financeAccountYearService.updateById(financeAccountYear);
-        }
+        String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
         financeAaVoucher.setVoucherNo(voucherNo);
         financeAaVoucher.setStatus("N");
         financeAaVoucher.setApid("AA");
@@ -287,6 +239,65 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
 
         return inspectionCollection;
 
+    }
+    /**
+     * 获取凭证号
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 结果
+     */
+
+    public String insertFinanceAaVoucherVoucherNo(FinanceAaVoucher financeAaVoucher){
+        financeAaVoucher.setCreateTime(DateUtils.getNowDate());
+        financeAaVoucher.setId(UUID.fastUUID().toString());
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMM");
+        String voucherNo = "";
+        QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
+        wrapper.likeRight("account_period",sdf1.format(financeAaVoucher.getVoucherDate()))
+                .eq("comp_id", financeAaVoucher.getCompanyId());
+        FinanceAccountYear financeAccountYear = financeAccountYearService.getOne(wrapper);
+        String M = "M";
+        String R = "R";
+        String P = "P";
+        String T = "T";
+        if (M.equals(financeAaVoucher.getVoucherType())){
+            Long manVoucherhrSrl = financeAccountYear.getManVoucherhrSrl();
+            DecimalFormat decimalFormat=new DecimalFormat("00000");
+            int i=Integer.parseInt(manVoucherhrSrl.toString())+1;
+            voucherNo=M+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
+
+            financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
+            financeAccountYearService.updateById(financeAccountYear);
+        }
+        if (R.equals(financeAaVoucher.getVoucherType())){
+            Long receiveVoucherCurrentSrl = financeAccountYear.getReceiveVoucherCurrentSrl();
+            DecimalFormat decimalFormat=new DecimalFormat("00000");
+            int i=Integer.parseInt(receiveVoucherCurrentSrl.toString())+1;
+            voucherNo=R+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
+
+            financeAccountYear.setReceiveVoucherCurrentSrl(Long.valueOf(i));
+            financeAccountYearService.updateById(financeAccountYear);
+        }
+        if (P.equals(financeAaVoucher.getVoucherType())){
+            Long payVoucherCurrentSrl = financeAccountYear.getPayVoucherCurrentSrl();
+            DecimalFormat decimalFormat=new DecimalFormat("00000");
+            int i=Integer.parseInt(payVoucherCurrentSrl.toString())+1;
+            voucherNo=P+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
+
+            financeAccountYear.setPayVoucherCurrentSrl(Long.valueOf(i));
+            financeAccountYearService.updateById(financeAccountYear);
+        }
+        if (T.equals(financeAaVoucher.getVoucherType())){
+            Long transVoucherCurrentSrl = financeAccountYear.getTransVoucherCurrentSrl();
+            DecimalFormat decimalFormat=new DecimalFormat("00000");
+            int i=Integer.parseInt(transVoucherCurrentSrl.toString())+1;
+            voucherNo=T+financeAccountYear.getAccountPeriod()+decimalFormat.format(i);
+
+            financeAccountYear.setTransVoucherCurrentSrl(Long.valueOf(i));
+            financeAccountYearService.updateById(financeAccountYear);
+        }
+        financeAaVoucher.setVoucherNo(voucherNo);
+        return financeAaVoucher.getVoucherNo();
     }
     /**
      * 新增凭证维护-明细信息
@@ -807,39 +818,48 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
      * @return 结果
      */
     @Override
-    public String importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName)
+    public List<FinanceAaVoucherDTO> importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName)
     {
         StringBuilder successMsg = new StringBuilder();
+        List<FinanceAaVoucherDTO>financeAaVoucherDTO = new ArrayList<>();
+        List<FinanceAaVoucherDTO>financeAaVoucherVoucherNo = new ArrayList<>();
         if (StringUtils.isNull(financeAaVoucher) || financeAaVoucher.size() == 0)
         {
             throw new ServiceException("导入凭证数据不能为空！");
         }
-        int successNum = 0;
-        int failureNum = 0;
-
         StringBuilder failureMsg = new StringBuilder();
         for (FinanceAaVoucherDTO financeAaVoucher1 : financeAaVoucher)
         {
             try
             {
-
+                FinanceAaVoucher financeAaVoucher2 =new FinanceAaVoucher();
+                String[] acctCode = financeAaVoucher1.getAcctCode().split("_");
+                financeAaVoucher1.setAcctCode(acctCode[0]);
+                BeanUtils.copyProperties(financeAaVoucher1,financeAaVoucher2);
+                StringBuilder append = successMsg.append(inspectionCollection(financeAaVoucher2));
+                if (!StringUtils.isEmpty(append)){
+                    financeAaVoucher1.setErrorReason( successMsg.append(inspectionCollection(financeAaVoucher2)).toString());
+                    financeAaVoucherDTO.add(financeAaVoucher1);
+                }
+                financeAaVoucher1.setVoucherNo(insertFinanceAaVoucherVoucherNo(financeAaVoucher2));
+                financeAaVoucherVoucherNo.add(financeAaVoucher1);
             }
             catch (Exception e)
             {
-                failureNum++;
                 String msg = "";
                 failureMsg.append(msg + e.getMessage());
             }
         }
-        if (failureNum > 0)
-        {
-            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
-            throw new ServiceException(failureMsg.toString());
+        if (financeAaVoucherDTO.size()==0){
+            FinanceAaVoucher financeAaVoucher2 =new FinanceAaVoucher();
+            FinanceAaVoucherDTO financeAaVoucherDTO1 = financeAaVoucher.get(0);
+            BeanUtils.copyProperties(financeAaVoucherDTO1,financeAaVoucher2);
+            financeAaVoucher2.setVoucherDate(financeAaVoucher.get(0).getVoucherDate());
+            financeAaVoucher2.setVoucherDesc(financeAaVoucher.get(0).getSrlDesc());
+            financeAaVoucher2.setVoucherNo(insertFinanceAaVoucherVoucherNo(financeAaVoucher2));
+            financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher2);
+            financeAaVoucherMapper.batchFinanceAaVoucherDetailImport(financeAaVoucherVoucherNo);
         }
-        else
-        {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
-        }
-        return successMsg.toString();
+        return financeAaVoucherDTO;
     }
 }
