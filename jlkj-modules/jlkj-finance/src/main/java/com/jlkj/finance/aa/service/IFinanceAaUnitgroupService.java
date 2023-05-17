@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.service;
 import com.jlkj.finance.aa.domain.FinanceAaUnitgroup;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 计量单位分组Service接口
@@ -10,11 +11,10 @@ import java.util.List;
  * @author SunXuTong
  * @date 2023-04-17
  */
-public interface IFinanceAaUnitgroupService 
-{
+public interface IFinanceAaUnitgroupService {
     /**
      * 查询计量单位分组
-     * 
+     *
      * @param id 计量单位分组主键
      * @return 计量单位分组
      */
@@ -22,7 +22,7 @@ public interface IFinanceAaUnitgroupService
 
     /**
      * 查询计量单位分组列表
-     * 
+     *
      * @param financeAaUnitgroup 计量单位分组
      * @return 计量单位分组集合
      */
@@ -30,7 +30,7 @@ public interface IFinanceAaUnitgroupService
 
     /**
      * 新增计量单位分组
-     * 
+     *
      * @param financeAaUnitgroup 计量单位分组
      * @return 结果
      */
@@ -38,7 +38,7 @@ public interface IFinanceAaUnitgroupService
 
     /**
      * 修改计量单位分组
-     * 
+     *
      * @param financeAaUnitgroup 计量单位分组
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface IFinanceAaUnitgroupService
 
     /**
      * 批量删除计量单位分组
-     * 
+     *
      * @param ids 需要删除的计量单位分组主键集合
      * @return 结果
      */
@@ -54,9 +54,16 @@ public interface IFinanceAaUnitgroupService
 
     /**
      * 删除计量单位分组信息
-     * 
+     *
      * @param id 计量单位分组主键
      * @return 结果
      */
     public int deleteFinanceAaUnitgroupById(String id);
+
+    /**
+     * 查询会计公司列表(下拉选单用)
+     *
+     * @return
+     */
+    public List<Map<String, String>> selectCompanyList();
 }

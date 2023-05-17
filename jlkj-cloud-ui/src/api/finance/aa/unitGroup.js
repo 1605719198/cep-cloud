@@ -8,6 +8,13 @@ export function listUnitGroup(query) {
     params: query
   })
 }
+// 查询会计公司清单(下拉选单用)
+export function select1() {
+  return request({
+    url: '/finance/unitGroup/select1',
+    method: 'get',
+  })
+}
 
 // 查询计量单位分组详细
 export function getUnitGroup(id) {

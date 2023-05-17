@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 计量单位分组Service业务层处理
@@ -100,5 +101,13 @@ public class FinanceAaUnitgroupServiceImpl implements IFinanceAaUnitgroupService
     public int deleteFinanceAaUnitgroupById(String id)
     {
         return financeAaUnitgroupMapper.deleteFinanceAaUnitgroupById(id);
+    }
+    /**
+     * 查询会计公司列表（下拉选单用）
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectCompanyList(){
+        return financeAaUnitgroupMapper.selectCompanyList();
     }
 }

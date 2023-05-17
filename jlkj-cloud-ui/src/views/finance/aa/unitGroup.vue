@@ -104,10 +104,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="分组代号" prop="groupNo">
-          <el-input v-model="form.groupNo" placeholder="请输入分组代号" />
+          <el-input v-model="form.groupNo" placeholder="请输入分组代号" class="input"/>
         </el-form-item>
         <el-form-item label="分组名称" prop="groupName">
-          <el-input v-model="form.groupName" placeholder="请输入分组名称" />
+          <el-input v-model="form.groupName" placeholder="请输入分组名称" class="input"/>
         </el-form-item>
         <el-form-item label="序号" prop="srlno">
           <el-input-number v-model="num" @change="handleChange" :min="1" :max="100" label="序号"></el-input-number>
@@ -276,3 +276,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.input {
+  width: 62%;
+}
+</style>

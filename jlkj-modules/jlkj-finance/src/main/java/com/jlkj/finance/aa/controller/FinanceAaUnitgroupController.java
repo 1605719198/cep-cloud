@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 计量单位分组Controller
@@ -95,4 +96,14 @@ public class FinanceAaUnitgroupController extends BaseController
     {
         return toAjax(financeAaUnitgroupService.deleteFinanceAaUnitgroupByIds(ids));
     }
+    /**
+     * 查询核算项目类别(下拉选单用)
+     */
+    @GetMapping("/select1")
+    public List<Map<String,String>> selectCompanyList()
+    {
+
+        return financeAaUnitgroupService.selectCompanyList();
+    }
 }
+
