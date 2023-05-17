@@ -1,14 +1,8 @@
 package com.jlkj.finance.aa.controller;
 
 import java.util.List;
-import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jlkj.common.core.web.page.TableDataInfo;
-import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.aa.domain.FinanceCalcode;
-import com.jlkj.system.api.domain.SysDept;
-import com.jlkj.system.api.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
