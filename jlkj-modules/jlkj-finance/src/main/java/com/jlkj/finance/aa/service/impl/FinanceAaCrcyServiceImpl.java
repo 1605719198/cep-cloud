@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 币别管理Service业务层处理
@@ -101,5 +102,14 @@ public class FinanceAaCrcyServiceImpl implements IFinanceAaCrcyService
     public int deleteFinanceAaCrcyById(String id)
     {
         return financeAaCrcyMapper.deleteFinanceAaCrcyById(id);
+    }
+
+    /**
+     * 查询会计公司列表（下拉选单用）
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectCompanyList(){
+        return financeAaCrcyMapper.selectCompanyList();
     }
 }

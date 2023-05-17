@@ -105,4 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <select id="selectCompanyList" parameterType="String" resultType="map">
+        SELECT id, crcy_code value, crcy_local_name label FROM finance_aa_crcy
+    </select>
 </mapper>

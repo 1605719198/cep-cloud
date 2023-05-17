@@ -9,6 +9,14 @@ export function listCrcy(query) {
   })
 }
 
+// 查询会计公司清单(下拉选单用)
+export function selectCrcy() {
+  return request({
+    url: '/finance/crcy/selectCrcy',
+    method: 'get',
+  })
+}
+
 // 查询币别管理详细
 export function getCrcy(id) {
   return request({
