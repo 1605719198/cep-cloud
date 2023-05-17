@@ -8,6 +8,7 @@ import com.jlkj.finance.aa.domain.FinanceCaltype;
 import com.jlkj.finance.aa.mapper.FinanceCalSysRuleMapper;
 import com.jlkj.finance.aa.mapper.FinanceCaltypeMapper;
 import com.jlkj.finance.aa.service.IFinanceCaltypeService;
+import com.jlkj.finance.utils.ConstantsUtil;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,11 +127,10 @@ public class FinanceCaltypeServiceImpl implements IFinanceCaltypeService
     @Override
     public List<Map<String,String>> selectCalTypeSystemList(FinanceCaltype financeCaltype) {
         List<Map<String, String>> maps = new ArrayList<>();
-        Map map = new HashMap();
+        Map map = new HashMap(16);
         FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
         if (financeCaltype1!=null){
-            String calRule3 = "03";
-            if (calRule3.equals(financeCaltype1.getCalRule())){
+            if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())){
                 FinanceCalSysRule financeCalSysRule= new FinanceCalSysRule();
                 financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
                 financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
