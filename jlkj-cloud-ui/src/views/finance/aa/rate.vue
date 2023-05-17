@@ -171,9 +171,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="币别" prop="ratecrcy">
-              <el-select v-model="form.ratecrcy" placeholder="请选择">
+              <el-select v-model="form.ratecrcy" placeholder="请选择" filterable >
                 <el-option
-                  v-for="dict in dict.type.aa_crcy_abbr"
+                  v-for="dict in ratecrcyList"
                   :key="dict.value"
                   :label="dict.label"
                   :value="dict.value">
@@ -202,12 +202,14 @@
 
 <script>
 import { listRate, getRate, delRate, addRate, updateRate } from "@/api/finance/aa/rate";
+import {selectCrcy} from "@/api/finance/aa/crcy";
 
 export default {
   name: "Rate",
   dicts: ['aa_rate_cate','aa_rate_spot','aa_crcy_abbr'],
   data() {
     return {
+      ratecrcyList:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -258,6 +260,7 @@ export default {
     };
   },
   created() {
+    this.getCompanyList();
     this.getList();
   },
   methods: {
@@ -268,6 +271,12 @@ export default {
         this.rateList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getCompanyList() {
+      selectCrcy().then(response => {
+        console.log(response);
+        this.ratecrcyList = response;
       });
     },
     // 取消按钮
