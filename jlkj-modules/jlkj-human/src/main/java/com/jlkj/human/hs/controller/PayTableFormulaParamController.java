@@ -3,6 +3,8 @@ package com.jlkj.human.hs.controller;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.human.hs.dto.PayTableFormulaParamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,58 +50,25 @@ public class PayTableFormulaParamController extends BaseController
     }
 
     /**
-     * 导出公司薪资计算参数列表
+     * 保存公司薪资计算参数
      */
-    @RequiresPermissions("human:payFormulaParam:export")
-    @Log(title = "公司薪资计算参数", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PayTableFormulaParam payTableFormulaParam)
-    {
-        List<PayTableFormulaParam> list = payTableFormulaParamService.selectPayTableFormulaParamList(payTableFormulaParam);
-        ExcelUtil<PayTableFormulaParam> util = new ExcelUtil<PayTableFormulaParam>(PayTableFormulaParam.class);
-        util.exportExcel(response, list, "公司薪资计算参数数据");
-    }
-
-    /**
-     * 获取公司薪资计算参数详细信息
-     */
-    @RequiresPermissions("human:payFormulaParam:query")
-    @GetMapping(value = "/{uuid}")
-    public AjaxResult getInfo(@PathVariable("uuid") String uuid)
-    {
-        return success(payTableFormulaParamService.selectPayTableFormulaParamByUuid(uuid));
-    }
-
-    /**
-     * 新增公司薪资计算参数
-     */
-    @RequiresPermissions("human:payFormulaParam:add")
+    @RequiresPermissions("human:payFormulaParam:save")
     @Log(title = "公司薪资计算参数", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody PayTableFormulaParam payTableFormulaParam)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody PayTableFormulaParamDTO payTableFormulaParamDTO)
     {
-        return toAjax(payTableFormulaParamService.insertPayTableFormulaParam(payTableFormulaParam));
+        return toAjax(payTableFormulaParamService.savePayTableFormulaParam(payTableFormulaParamDTO));
     }
 
     /**
-     * 修改公司薪资计算参数
+     * 复制公司薪资计算参数
      */
-    @RequiresPermissions("human:payFormulaParam:edit")
-    @Log(title = "公司薪资计算参数", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody PayTableFormulaParam payTableFormulaParam)
+    @RequiresPermissions("human:payFormulaParam:copy")
+    @Log(title = "公司薪资计算参数", businessType = BusinessType.INSERT)
+    @PostMapping("/copy")
+    public AjaxResult edit(@RequestBody PayTableFormulaParamDTO payTableFormulaParamDTO)
     {
-        return toAjax(payTableFormulaParamService.updatePayTableFormulaParam(payTableFormulaParam));
+        return toAjax(payTableFormulaParamService.copyPayTableFormulaParam(payTableFormulaParamDTO));
     }
 
-    /**
-     * 删除公司薪资计算参数
-     */
-    @RequiresPermissions("human:payFormulaParam:remove")
-    @Log(title = "公司薪资计算参数", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{uuids}")
-    public AjaxResult remove(@PathVariable String[] uuids)
-    {
-        return toAjax(payTableFormulaParamService.deletePayTableFormulaParamByUuids(uuids));
-    }
 }

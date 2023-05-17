@@ -20,6 +20,14 @@ public interface PayTableFormulaParamMapper
     public PayTableFormulaParam selectPayTableFormulaParamByUuid(String uuid);
 
     /**
+     * 查询公司薪资计算参数
+     *
+     * @param compId 公司别
+     * @return 公司薪资计算参数
+     */
+    public List<PayTableFormulaParam> selectPayTableFormulaParamByCompId(String compId);
+
+    /**
      * 查询公司薪资计算参数列表
      * 
      * @param payTableFormulaParam 公司薪资计算参数
@@ -46,10 +54,12 @@ public interface PayTableFormulaParamMapper
     /**
      * 删除公司薪资计算参数
      * 
-     * @param uuid 公司薪资计算参数主键
+     * @param compId 公司薪资计算参数公司别
      * @return 结果
      */
-    public int deletePayTableFormulaParamByUuid(String uuid);
+    public int deletePayTableFormulaParamByCompId(String compId);
+
+
 
     /**
      * 批量删除公司薪资计算参数

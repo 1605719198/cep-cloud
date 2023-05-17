@@ -108,7 +108,7 @@
             ~
             <el-form-item prop="acctNameEnd">
               <el-input v-model="queryParams.acctNameEnd"  placeholder="请输入会计科目">
-                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                <el-button slot="append" icon="el-icon-search" @click="inputAcctName1"
                 ></el-button>
               </el-input>
             </el-form-item>
@@ -216,6 +216,8 @@
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
     <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop1" @ok="getAcctCodeCorpPop1"/>
   </el-dialog>
 </template>
 
@@ -224,11 +226,12 @@ import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listVoucherDetailSelect} from "@/api/finance/aa/voucher";
 import calTypePOP from "@/views/components/finance/calTypePOP";
+import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
 export default {
   name: "selecVoucher",
   dicts: ['aa_source_sys', 'aa_voucher_status'],
   components: {
-    calTypePOP
+    calTypePOP,acctcodeCorpPop
   },
   data() {
     return {
@@ -305,6 +308,14 @@ export default {
 
   },
   methods: {
+    /** 会计科目起始点击事件 */
+    inputAcctName(){
+      this.$refs.selectAcctCodeCorpPop.show();
+    },
+    /** 会计科目截止点击事件 */
+    inputAcctName1(){
+      this.$refs.selectAcctCodeCorpPop1.show();
+    },
     /** 项目1起始点击事件 */
     inputCalNamea(val) {
       this.$refs.selectPOP.show( this.queryParams);
@@ -341,6 +352,16 @@ export default {
        this.$set( this.queryParams, 'calNamebEnd', val.calNo);
       this.$set( this.queryParams, 'calCodebEnd', val.calNo);
     },
+    getAcctCodeCorpPop(val){
+      this.$set( this.queryParams, 'acctCodeStart', val.acctCode);
+      this.$set( this.queryParams, 'acctNameStart', val.acctCode);
+      this.$set( this.queryParams, 'acctIdStart', val.acctId);
+    },
+    getAcctCodeCorpPop1(val){
+      this.$set( this.queryParams, 'acctCodeEnd', val.acctCode);
+      this.$set( this.queryParams, 'acctNameEnd', val.acctCode);
+      this.$set( this.queryParams, 'acctIdEnd', val.acctId);
+    },
     //查询日期切换事件
     dutyDateChange(val) {
       if (val!=null){
@@ -352,11 +373,7 @@ export default {
       }
 
     },
-    /** 会计科目点击事件 */
-    inputAcctName(){
-      /*    this.selectManufacturer = true
-          this.$refs.select.show();*/
-    },
+
     getCompanyList() {
       selectCompanyList().then(response => {
         this.companyList = response;

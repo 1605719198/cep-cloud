@@ -1,6 +1,5 @@
 package com.jlkj.human.hp.service;
 
-import com.jlkj.human.hd.domain.NightDuty;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;

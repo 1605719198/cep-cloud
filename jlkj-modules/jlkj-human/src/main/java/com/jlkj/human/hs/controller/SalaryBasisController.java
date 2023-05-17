@@ -43,7 +43,7 @@ public class SalaryBasisController extends BaseController
     /**
      * 查询薪资资料树结构
      */
-    @RequiresPermissions("human:salaryBasis:lists")
+    @RequiresPermissions("human:salaryBasis:list")
     @GetMapping("/listTree")
     public List<SalaryBasis> listTree(SalaryBasis salaryBasis)
     {

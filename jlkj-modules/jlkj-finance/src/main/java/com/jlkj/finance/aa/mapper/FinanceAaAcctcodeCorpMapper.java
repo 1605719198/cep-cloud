@@ -2,7 +2,6 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
-import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 
 /**
  * 会计科目-公司级Mapper接口
@@ -74,4 +73,12 @@ public interface FinanceAaAcctcodeCorpMapper
      * @return
      */
     public int insertBatchFinanceAcctcodeCorp(List<FinanceAaAcctcodeCorp> acctcodeCorps);
+
+    /**
+     * 查询会计科目-公司级列表(弹窗用)
+     *
+     * @param financeAaAcctcodeCorp 会计科目-公司级
+     * @return 会计科目-公司级集合
+     */
+    public List<FinanceAaAcctcodeCorp> selectFinanceAaAcctcodeCorpListPop(FinanceAaAcctcodeCorp financeAaAcctcodeCorp);
 }

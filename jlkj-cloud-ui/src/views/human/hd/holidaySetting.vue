@@ -111,7 +111,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="假别名称" prop="holidayTypeCode">
-              <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id">
+              <el-select v-model="form.holidayTypeCode" placeholder="请选择假别名称" clearable class="maxWidth" :disabled="this.form.id!=null">
                 <el-option
                   v-for="dict in attendenceOptions.HD001"
                   :key="dict.dicNo"
@@ -298,13 +298,13 @@ export default {
   },
   watch: {
     //监听公司别查询参数
-    // queryParams:{
-    //   deep:true,
-    //   immediate:false,
-    //   handler:function( newV){
-    //     this.getList();
-    //   }
-    // }
+    queryParams:{
+      deep:true,
+      immediate:false,
+      handler:function( newV){
+        this.getList();
+      }
+    }
 
   },
   created() {

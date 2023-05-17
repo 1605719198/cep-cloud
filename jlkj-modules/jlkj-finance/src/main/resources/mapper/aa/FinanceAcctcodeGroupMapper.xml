@@ -32,11 +32,8 @@
     <select id="selectFinanceAcctcodeGroupList" parameterType="com.jlkj.finance.aa.domain.FinanceAcctcodeGroup" resultMap="FinanceAcctcodeGroupResult">
         <include refid="selectFinanceAcctcodeGroupVo"/>
         <where>
-            <if test="groupAcctCode != null  and groupAcctCode != ''">
-                AND (group_acct_code = #{groupAcctCode} OR group_acct_code IN ( SELECT t.group_acct_code FROM finance_aa_group_acctcode t WHERE find_in_set(#{groupAcctCode}, ancestors) ))
-            </if>
+            <if test="groupAcctCode != null  and groupAcctCode != ''"> and parent_acct_code = #{groupAcctCode} </if>
             <if test="groupAcctName != null and groupAcctName != ''"> and group_acct_name like concat('%', #{groupAcctName}, '%')</if>
-
         </where>
         order by group_acct_code,group_acct_name
     </select>

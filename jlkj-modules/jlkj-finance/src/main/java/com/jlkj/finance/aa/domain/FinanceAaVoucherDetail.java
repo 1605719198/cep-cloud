@@ -32,6 +32,18 @@ public class FinanceAaVoucherDetail extends BaseEntity {
     private String qtyFrnamtEnd;
     private BigDecimal ntamtC;
     private BigDecimal  ntamtD;
+    /** 核算项目1编号 */
+
+    private String calTypeCodea;
+    /** 核算项目2编号 */
+
+    private String calTypeCodeb;
+    /** 核算项目3编号 */
+
+    private String calTypeCodec;
+    /** 核算项目4编号 */
+
+    private String calTypeCoded;
     /**
      * 主键
      */

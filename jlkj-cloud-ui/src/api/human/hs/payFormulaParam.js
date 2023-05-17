@@ -9,36 +9,21 @@ export function listPayFormulaParam(query) {
   })
 }
 
-// 查询公司薪资计算参数详细
-export function getPayFormulaParam(uuid) {
+// 保存公司薪资计算参数
+export function savePayFormulaParam(data) {
   return request({
-    url: '/human/payFormulaParam/' + uuid,
-    method: 'get'
-  })
-}
-
-// 新增公司薪资计算参数
-export function addPayFormulaParam(data) {
-  return request({
-    url: '/human/payFormulaParam',
+    url: '/human/payFormulaParam/save',
     method: 'post',
     data: data
   })
 }
 
 // 修改公司薪资计算参数
-export function updatePayFormulaParam(data) {
+export function copyPayFormulaParam(data) {
   return request({
-    url: '/human/payFormulaParam',
-    method: 'put',
+    url: '/human/payFormulaParam/copy',
+    method: 'post',
     data: data
   })
 }
 
-// 删除公司薪资计算参数
-export function delPayFormulaParam(uuid) {
-  return request({
-    url: '/human/payFormulaParam/' + uuid,
-    method: 'delete'
-  })
-}

@@ -246,11 +246,9 @@ export default {
     /** 项目1起始点击事件 */
     inputCalNamea(val) {
       this.$refs.selectPOP.show( this.queryParams);
-
     },
     /** 项目1结束点击事件 */
     inputCalNamea1(val) {
-
       this.$refs.selectPOP2.show( this.queryParams);
 
     },
