@@ -284,7 +284,7 @@
 <script>
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
-import {queryEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
+import {queryEmployeeInduction, queryEmployeeInductionByUuid} from "@/api/human/hm/employeeInduction";
 import {
   addEmployeeTurnover,
   delEmployeeTurnover,
@@ -459,7 +459,7 @@ export default {
             newPostName: undefined,
           }
         ]
-      },
+      }
       this.form = {
         postPop: [
           {

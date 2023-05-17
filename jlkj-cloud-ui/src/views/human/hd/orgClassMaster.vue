@@ -33,6 +33,11 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -41,8 +46,9 @@
           @click="handleAdd"
           v-hasPermi="['human:personColock:add']"
         >排班</el-button>
-      </el-form-item>
-    </el-form>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
 
     <el-table v-loading="loading" :data="ClassList" @selection-change="handleSelectionChange" height="67vh" v-if="this.personClassType!=''">
       <el-table-column label="员工工号" align="center" prop="empId" v-if="this.personClassType==1"/>
@@ -667,7 +673,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.queryParams.compId = this.logincompId;
+      this.queryParams.compId = this.user.compId;
       this.queryParams.empId = null;
       this.queryParams.deptId = null;
       this.personClassType = '1';

@@ -39,12 +39,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectFinanceAaVoucherDetailList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
-        <include refid="selectFinanceAaVoucherDetailVo"/>
+        SELECT DISTINCT
+        a.* ,
+        b.cal_type_codeA,
+        b.cal_type_codeB,
+        b.cal_type_codeC,
+        b.cal_type_codeD
+        FROM
+        finance_aa_voucher_detail a
+        LEFT JOIN finance_aa_acctcode b ON b.acct_id = a.acct_id and
+        b.acct_code=a.acct_code
         <where>  
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="companyId != null  and companyId != ''"> and a.company_id = #{companyId}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and a.voucher_no = #{voucherNo}</if>
         </where>
-        order by voucher_no
+        order by a.voucher_no
     </select>
     
     <select id="selectFinanceAaVoucherDetailById" parameterType="String" resultMap="FinanceAaVoucherDetailResult">

@@ -99,7 +99,7 @@ public class SalaryBasis extends BaseEntity {
     /**
      * 输入日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 

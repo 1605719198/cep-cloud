@@ -1,8 +1,10 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
+import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
+
+import java.util.List;
 
 /**
  * 凭证维护-主Mapper接口
@@ -93,6 +95,14 @@ public interface FinanceAaVoucherMapper
      * @return 结果
      */
     public int batchFinanceAaVoucherDetail(List<FinanceAaVoucherDetail> financeAaVoucherDetailList);
+
+    /**
+     * 批量新增凭证维护-明细
+     *
+     * @param financeAaVoucherDetailImportList 凭证维护-明细列表
+     * @return 结果
+     */
+    public int batchFinanceAaVoucherDetailImport(List<FinanceAaVoucherDTO> financeAaVoucherDetailImportList);
     /**
      * 修改凭证维护-主
      * 

@@ -5,7 +5,8 @@
   :inline="true" >
   <el-form-item  prop="calTypeCode">
     <el-select v-model="queryParams.calTypeCode"
-               filterable placeholder="请输入核算项目类别">
+               filterable placeholder="请输入核算项目类别"
+               :disabled="selectIf"  >
       <el-option
         v-for="item in calTypeList"
         :key="item.value"
@@ -172,7 +173,8 @@ export default {
       detailList: [],
       fundsList1:[],
       fundsList2:[],
-      compIdList:{}
+      compIdList:{},
+      selectIf:false
     };
 
   },
@@ -204,10 +206,22 @@ export default {
       if(queryParams){
         this.queryParams = queryParams;
       }
-
       if(!this.queryParams.companyId){
         this.$message.error('公司别不能为空');
         return
+      }
+
+      this.queryParams.calTypeCode = queryParams.calTypeCode
+      if (!!this.queryParams.calTypeCode){
+        this.selectIf = true
+        this.changCompanyId(this.queryParams);
+      }else {
+        this.selectIf = false
+        this.queryParams.sys=''
+        this.detailCodeList=[]
+        this.detailList=[]
+        this.tableColumns=[]
+        this.tableColumnsInput=[]
       }
       this.getCalTypeList();
       this.visible = true;
@@ -215,14 +229,23 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.compId=selection
-      this.compIdList=   this.compId[0]
-
+      this.compIdList=this.compId[0]
+      this.$set( this.compIdList,"sys", this.queryParams.sys)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
     // 多选框选中数据
     handleSelectionCodeChange(selection) {
       this.compId=selection
+      this.compIdList=this.compId[0]
+
+      if(!!this.compId.length>0){
+        this.compIdList.calNo=this.compId[0].calCode
+      }
+      if(!!this.compId.length>0){
+        this.compIdList.Id=this.compId[0].id
+      }
+
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -299,6 +322,7 @@ export default {
     getCodeList(){
       listCalcode(this.queryParams).then(response => {
         this.detailCodeList = response.rows;
+
         this.total = response.total;
         this.loading = false;
       });
@@ -337,10 +361,15 @@ export default {
       this.queryParams.sys=''
       selectCalTypeSystemList(this.queryParams).then(response => {
         this.calTypeCodeaSystemList = response;
+        console.log(this.calTypeCodeaSystemList[0]);
         if (this.calTypeCodeaSystemList.length>0){
           this.tableIf = true
           this.tableCodeIf = false
-        }else {
+          if (this.selectIf==true){
+            this.changType()
+          }
+        }else if (this.calTypeCodeaSystemList[0].calRule=="04"){
+
           this.getCodeList();
           this.tableColumnsInput=[]
           this.tableIf = false
@@ -350,13 +379,19 @@ export default {
     },
     //公司下拉选单掉用方法
     changCompanyId(val) {
-      this.queryParams.calTypeCode = val.value
-
+      if (!!val.value){
+        this.queryParams.calTypeCode = val.value
+      }
       this.getCalTypeSystemList()
     },
     //系统别下拉选单掉用方法
     changType(val) {
-      this.queryParams.sys = val.value
+      if (!!val){
+        this.queryParams.sys = val.value
+      }else {
+        this.queryParams.sys =  this.calTypeCodeaSystemList[0].value
+      }
+
       calTypeListTab(this.queryParams).then(response => {
         this.tableColumns= response.data
         this.tableColumnsInput=  this.tableColumns

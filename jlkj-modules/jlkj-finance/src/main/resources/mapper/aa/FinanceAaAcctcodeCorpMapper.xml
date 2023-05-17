@@ -191,9 +191,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <insert id="insertBatchFinanceAcctcodeCorp">
-        insert into finance_aa_acctcode (acct_id, company_id, group_acct_id, acct_code, acct_name, parent_id, parent_acct_code, ancestors, is_voucher, dr_or_cr, is_cash, level, create_by, create_name, create_time) values
+        insert into finance_aa_acctcode (acct_id, company_id, group_acct_id, acct_code, acct_name, parent_id, parent_acct_code, ancestors, is_voucher, dr_or_cr, is_cash, level, disabled_code ,create_by, create_name, create_time) values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.acctId},#{item.companyId},#{item.groupAcctId},#{item.acctCode},#{item.acctName},#{item.parentId},#{item.parentAcctCode},#{item.ancestors},#{item.isVoucher},#{item.drOrCr},#{item.isCash},#{item.level},#{item.createBy},#{item.createName},#{item.createTime})
+            (#{item.acctId},#{item.companyId},#{item.groupAcctId},#{item.acctCode},#{item.acctName},#{item.parentId},#{item.parentAcctCode},#{item.ancestors},#{item.isVoucher},#{item.drOrCr},#{item.isCash},#{item.level},#{item.disabledCode},#{item.createBy},#{item.createName},#{item.createTime})
         </foreach>
     </insert>
+
+    <select id="selectFinanceAaAcctcodeCorpListPop" parameterType="com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp" resultMap="FinanceAaAcctcodeCorpResult">
+        <include refid="selectFinanceAaAcctcodeCorpVo"/>
+        <where>
+            <if test="companyId != null and companyId != ''"> and company_id =  #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode} </if>
+            <if test="acctName != null and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
+        </where>
+        order by acct_code,acct_name
+    </select>
 </mapper>

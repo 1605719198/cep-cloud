@@ -5,13 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -222,11 +219,24 @@ public class FinanceAaAcctcodeCorpServiceImpl implements IFinanceAaAcctcodeCorpS
             acctcodeCorp.setDrOrCr((String) acctcodeGroup.get("drOrCr"));
             acctcodeCorp.setIsCash((String) acctcodeGroup.get("isCash"));
             acctcodeCorp.setLevel((String) acctcodeGroup.get("level"));
+            acctcodeCorp.setDisabledCode("Y");
             acctcodeCorp.setCreateBy(SecurityUtils.getUsername());
             acctcodeCorp.setCreateName(SecurityUtils.getNickName());
             acctcodeCorp.setCreateTime(DateUtils.getNowDate());
             acctcodeCorps.add(acctcodeCorp);
         }
         return financeAaAcctcodeCorpMapper.insertBatchFinanceAcctcodeCorp(acctcodeCorps);
+    }
+
+    /**
+     * 查询会计科目-公司级列表(POP)
+     *
+     * @param financeAaAcctcodeCorp 会计科目-公司级
+     * @return 会计科目-公司级
+     */
+    @Override
+    public List<FinanceAaAcctcodeCorp> selectFinanceAaAcctcodeCorpListPop(FinanceAaAcctcodeCorp financeAaAcctcodeCorp)
+    {
+        return financeAaAcctcodeCorpMapper.selectFinanceAaAcctcodeCorpListPop(financeAaAcctcodeCorp);
     }
 }

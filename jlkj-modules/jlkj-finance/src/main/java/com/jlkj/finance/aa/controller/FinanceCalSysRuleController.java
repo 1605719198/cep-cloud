@@ -1,7 +1,6 @@
 package com.jlkj.finance.aa.controller;
 
 import java.util.List;
-import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +37,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 查询核算项目-系统设定列表
      */
-    @RequiresPermissions("finance:sysRule:list")
+    @RequiresPermissions("finance:calType:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceCalSysRule financeCalSysRule)
     {
@@ -50,7 +49,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 导出核算项目-系统设定列表
      */
-    @RequiresPermissions("finance:sysRule:export")
+    @RequiresPermissions("finance:calType:export")
     @Log(title = "核算项目-系统设定", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceCalSysRule financeCalSysRule)
@@ -63,7 +62,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 获取核算项目-系统设定详细信息
      */
-    @RequiresPermissions("finance:sysRule:query")
+    @RequiresPermissions("finance:calType:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -73,7 +72,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 新增核算项目-系统设定
      */
-    @RequiresPermissions("finance:sysRule:add")
+    @RequiresPermissions("finance:calType:add")
     @Log(title = "核算项目-系统设定", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceCalSysRule financeCalSysRule)
@@ -84,7 +83,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 修改核算项目-系统设定
      */
-    @RequiresPermissions("finance:sysRule:edit")
+    @RequiresPermissions("finance:calType:edit")
     @Log(title = "核算项目-系统设定", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceCalSysRule financeCalSysRule)
@@ -95,7 +94,7 @@ public class FinanceCalSysRuleController extends BaseController
     /**
      * 删除核算项目-系统设定
      */
-    @RequiresPermissions("finance:sysRule:remove")
+    @RequiresPermissions("finance:calType:remove")
     @Log(title = "核算项目-系统设定", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

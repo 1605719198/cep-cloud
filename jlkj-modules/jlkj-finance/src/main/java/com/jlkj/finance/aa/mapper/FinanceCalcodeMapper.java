@@ -1,7 +1,8 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceCalcode;
+
+import java.util.List;
 
 /**
  * 核算项目-内容维护Mapper接口
@@ -26,6 +27,13 @@ public interface FinanceCalcodeMapper
      * @return 核算项目-内容维护集合
      */
     public List<FinanceCalcode> selectFinanceCalcodeList(FinanceCalcode financeCalcode);
+    /**
+     * 查询核算项目-内容维护列表
+     *
+     * @param financeCalcode 核算项目-内容维护
+     * @return 核算项目-内容维护集合
+     */
+    public FinanceCalcode selectFinanceCalcode(FinanceCalcode financeCalcode);
 
     /**
      * 新增核算项目-内容维护

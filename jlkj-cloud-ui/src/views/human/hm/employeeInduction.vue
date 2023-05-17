@@ -224,11 +224,12 @@
 <script>
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
-import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, updateEmployeeInduction, delEmployeeInductionDetail} from "@/api/human/hm/employeeInduction";
+import {queryEmployeeInduction, addEmployeeInduction, queryEmployeeInductionByUuid, delEmployeeInduction, updateEmployeeInduction} from "@/api/human/hm/employeeInduction";
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import {listPostMaintenance} from "@/api/human/hp/postMaintenance";
 import {checkRealName} from "@/utils/jlkj";
 import '@/assets/styles/humanStyles.scss';
+
 export default {
   name: "EmployeeInduction",
   components: {selectUser},

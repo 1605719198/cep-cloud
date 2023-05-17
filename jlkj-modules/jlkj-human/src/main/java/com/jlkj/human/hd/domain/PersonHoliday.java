@@ -88,12 +88,12 @@ public class PersonHoliday extends BaseEntity
     private BigDecimal leaveShifts;
 
     /** 请假开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "请假开始时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date startDate;
 
     /** 请假结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "请假结束时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date endDate;
 

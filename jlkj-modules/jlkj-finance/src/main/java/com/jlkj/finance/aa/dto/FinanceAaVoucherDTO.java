@@ -30,6 +30,8 @@ public class FinanceAaVoucherDTO {
     private String calNamebEnd;
     private String qtyFrnamtStart;
     private String qtyFrnamtEnd;
+    /** 错误原因 */
+    private String errorReason;
     /** 凭证号码 */
     private String voucherNo;
     /** 凭证日期 */
@@ -54,10 +56,16 @@ public class FinanceAaVoucherDTO {
     @Excel(name = "科目代码")
     private String acctCode;
     /**
+     * 会计科目中文名称
+     */
+    private String acctName;
+    /**
      * 核算项目一代码
      */
     @Excel(name = "核算项目一代码")
     private String calCodea;
+
+
     /**
      * 核算项目二代码
      */
@@ -94,10 +102,7 @@ public class FinanceAaVoucherDTO {
     @Excel(name = "凭证分录摘要")
     private String srlDesc;
 
-    /**
-     * 会计科目中文名称
-     */
-    private String acctName;
+
 
     /** 借方金额 */
 

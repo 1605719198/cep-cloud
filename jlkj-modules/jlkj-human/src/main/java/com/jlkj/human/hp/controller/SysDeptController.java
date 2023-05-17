@@ -8,7 +8,6 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hd.domain.NightDuty;
 import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.domain.SysDeptVersion;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;

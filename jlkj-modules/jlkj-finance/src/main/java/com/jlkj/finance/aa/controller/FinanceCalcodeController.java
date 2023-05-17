@@ -1,11 +1,8 @@
 package com.jlkj.finance.aa.controller;
 
 import java.util.List;
-import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.system.api.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +38,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 查询核算项目-内容维护列表
      */
-    @RequiresPermissions("finance:calcode:list")
+    @RequiresPermissions("finance:calType:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceCalcode financeCalcode)
     {
@@ -53,7 +50,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 导出核算项目-内容维护列表
      */
-    @RequiresPermissions("finance:calcode:export")
+    @RequiresPermissions("finance:calType:export")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceCalcode financeCalcode)
@@ -66,7 +63,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 获取核算项目-内容维护详细信息
      */
-    @RequiresPermissions("finance:calcode:query")
+    @RequiresPermissions("finance:calType:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -76,7 +73,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 新增核算项目-内容维护
      */
-    @RequiresPermissions("finance:calcode:add")
+    @RequiresPermissions("finance:calType:add")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceCalcode financeCalcode)
@@ -87,7 +84,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 修改核算项目-内容维护
      */
-    @RequiresPermissions("finance:calcode:edit")
+    @RequiresPermissions("finance:calType:edit")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceCalcode financeCalcode)
@@ -98,7 +95,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 删除核算项目-内容维护
      */
-    @RequiresPermissions("finance:calcode:remove")
+    @RequiresPermissions("finance:calType:remove")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
@@ -109,7 +106,7 @@ public class FinanceCalcodeController extends BaseController
     /**
      * 状态修改
      */
-    @RequiresPermissions("finance:calcode:edit")
+    @RequiresPermissions("finance:calType:edit")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody FinanceCalcode financeCalcode)

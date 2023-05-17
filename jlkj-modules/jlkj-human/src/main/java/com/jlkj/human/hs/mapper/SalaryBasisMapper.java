@@ -82,10 +82,10 @@ public interface SalaryBasisMapper
     /**
      * 通过编码查询员工出勤基本资料维护
      *
-     * @param code 员工出勤基本资料维护编码
+     * @param salaryBasis 员工出勤基本资料维护
      * @return 员工出勤基本资料维护
      */
-    public SalaryBasis selectSalaryParentByCode(String  code);
+    public SalaryBasis selectSalaryParentByCode(SalaryBasis  salaryBasis);
 
 
     /**
@@ -95,4 +95,6 @@ public interface SalaryBasisMapper
      * @return 员工出勤基本资料维护
      */
     public List<BasisOptionsDTO> selectSalaryByParentid(Long  parentid);
+
+
 }

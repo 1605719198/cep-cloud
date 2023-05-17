@@ -83,3 +83,13 @@ export function changeStatus(groupAcctId, disabledCode) {
     data: data
   })
 }
+
+
+// 查询会计科目-公司级列表
+export function listAcctcodeCorpPop(query) {
+  return request({
+    url: '/finance/acctcodeCorp/listPop',
+    method: 'get',
+    params: query
+  })
+}

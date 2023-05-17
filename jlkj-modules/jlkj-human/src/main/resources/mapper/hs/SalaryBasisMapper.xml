@@ -44,10 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by id
     </select>
 
-    <select id="selectSalaryBasisByParentid" parameterType="Long" resultMap="SalaryBasisResult">
+    <select id="selectSalaryBasisByParentid" parameterType="Long" resultMap="BasisOptions">
         <include refid="selectSalaryBasisVo"/>
         where parentid = #{parentid}
     </select>
+
 
     <select id="queryRepetitivedata" resultType="Int" parameterType="SalaryBasis">
         select count(*) from human_hs_salary_basis
@@ -129,9 +130,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="selectSalaryParentByCode" parameterType="String" resultMap="SalaryBasisResult">
+    <select id="selectSalaryParentByCode" parameterType="SalaryBasis" resultMap="SalaryBasisResult">
         select id, info_code, info_name, comp_id, is_showno, ischecked, order_num, parentid, parents, status, creator,creator_no, creator_id, create_date from human_hs_salary_basis
-        where info_code = #{code}
+        where info_code = #{infoCode} and comp_id = #{compId}
     </select>
 
     <select id="selectSalaryByParentid" parameterType="Long" resultMap="BasisOptions">
