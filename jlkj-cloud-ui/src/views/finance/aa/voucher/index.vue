@@ -915,7 +915,7 @@ export default {
     /** 过账按钮操作 */
     handleCrossQuery(){
       this.form.detailList =  this.formDetail.detailList;
-      if (this.form.status==='N'){
+      if (this.form.status==='Y'){
         this.form.status='P'
         this.form.postTime = new Date()
         this.form.potstuserName = '1'
