@@ -137,6 +137,6 @@ public interface IFinanceAaVoucherService
      * @param operName 操作用户
      * @return 结果
      */
-    public String importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName);
+    public List<FinanceAaVoucherDTO> importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName);
 }
 

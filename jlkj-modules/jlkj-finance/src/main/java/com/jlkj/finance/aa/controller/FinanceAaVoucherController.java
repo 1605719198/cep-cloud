@@ -202,8 +202,8 @@ public class FinanceAaVoucherController extends BaseController
         ExcelUtil<FinanceAaVoucherDTO> util = new ExcelUtil<FinanceAaVoucherDTO>(FinanceAaVoucherDTO.class);
         List<FinanceAaVoucherDTO> financeAaVoucher = util.importExcel(file.getInputStream());
         String operName = getUsername();
-        String message = financeAaVoucherService.importFinanceAaVoucher(financeAaVoucher, updateSupport, operName);
-        return AjaxResult.success(message);
+        List<FinanceAaVoucherDTO> financeAaVoucherDTOS = financeAaVoucherService.importFinanceAaVoucher(financeAaVoucher, updateSupport, operName);
+        return AjaxResult.success(financeAaVoucherDTOS);
     }
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
