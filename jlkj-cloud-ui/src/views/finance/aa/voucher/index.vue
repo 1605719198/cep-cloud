@@ -430,6 +430,11 @@ export default {
       this.calTypeCodeb=val[0].calTypeCodeb
       this.calTypeCodec=val[0].calTypeCodec
       this.calTypeCoded=val[0].calTypeCoded
+      this.formDetail.detailList[this.indexRow-1].calNamea=""
+      this.formDetail.detailList[this.indexRow-1].calNameb=""
+      this.formDetail.detailList[this.indexRow-1].calNamec=""
+      this.formDetail.detailList[this.indexRow-1].calNamed=""
+      console.log(this.formDetail.detailList[this.indexRow - 1].calNamea);
     },
 
     getVoucherNo(val) {
@@ -988,6 +993,10 @@ export default {
         }
         this.form.detailList =  this.formDetail.detailList;
         addVoucher(this.form).then(response => {
+          if (!!response.msg){
+            this.$message.error(response.msg);
+            return
+          }
           this.$modal.msgSuccess("红冲成功");
           this.open = false;
           this.getList();
@@ -1006,6 +1015,10 @@ export default {
         this.form.companyId=this.queryParams.companyId
         this.form.detailList =  this.formDetail.detailList;
         addVoucher(this.form).then(response => {
+          if (!!response.msg){
+            this.$message.error(response.msg);
+            return
+          }
           this.$modal.msgSuccess("复制成功");
           this.open = false;
           this.getList();
