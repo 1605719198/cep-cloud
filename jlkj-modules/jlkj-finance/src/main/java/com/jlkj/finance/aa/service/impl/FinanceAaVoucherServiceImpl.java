@@ -223,7 +223,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
 
             financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
             financeAccountYearService.updateById(financeAccountYear);
-        }  
+        }
         if (R.equals(financeAaVoucher.getVoucherType())){
             Long receiveVoucherCurrentSrl = financeAccountYear.getReceiveVoucherCurrentSrl();
             DecimalFormat decimalFormat=new DecimalFormat("00000");
@@ -720,6 +720,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
         String s1 = "";
         String s2 = "";
         System.out.println(sqlQuery);
+        sqlQuery.replaceAll("as","AS");
         String[] sqlStringDb =sqlQuery.split(",");
         for (int i = 0;i<sqlStringDb.length;i++){
             if (i == 0){
@@ -727,7 +728,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
             }else if (i == 1){
                 s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                 s1 =  " and " + s + " LIKE " + "'%" +calCode+ "%'";
-            }else {
+            }else if (i == 2){
                 s = sqlStringDb[i].substring(0,  sqlStringDb[i].indexOf("AS"));
                 s2 = " and " + s  + " LIKE " + "'%" +calName+ "%'";
             }
