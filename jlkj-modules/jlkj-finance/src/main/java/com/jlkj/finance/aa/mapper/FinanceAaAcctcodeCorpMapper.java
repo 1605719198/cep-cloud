@@ -2,7 +2,6 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
-import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 
 /**
  * 会计科目-公司级Mapper接口

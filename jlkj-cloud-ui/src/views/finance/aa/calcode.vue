@@ -33,7 +33,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['finance:calcode:add']"
+          v-hasPermi="['finance:calType:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,7 +44,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['finance:calcode:edit']"
+          v-hasPermi="['finance:calType:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -55,7 +55,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['finance:calcode:remove']"
+          v-hasPermi="['finance:calType:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -65,7 +65,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['finance:calcode:export']"
+          v-hasPermi="['finance:calType:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -102,14 +102,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['finance:calcode:edit']"
+            v-hasPermi="['finance:calType:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['finance:calcode:remove']"
+            v-hasPermi="['finance:calType:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

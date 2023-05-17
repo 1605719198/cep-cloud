@@ -10,7 +10,6 @@ import com.jlkj.finance.aa.mapper.FinanceAaCarryRulesCorpMapper;
 import com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp;
 import com.jlkj.finance.aa.service.IFinanceAaCarryRulesCorpService;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
