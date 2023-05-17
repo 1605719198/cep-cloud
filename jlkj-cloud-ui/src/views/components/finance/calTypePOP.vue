@@ -210,12 +210,18 @@ export default {
         this.$message.error('公司别不能为空');
         return
       }
+
       this.queryParams.calTypeCode = queryParams.calTypeCode
       if (!!this.queryParams.calTypeCode){
         this.selectIf = true
         this.changCompanyId(this.queryParams);
       }else {
         this.selectIf = false
+        this.queryParams.sys=''
+        this.detailCodeList=[]
+        this.detailList=[]
+        this.tableColumns=[]
+        this.tableColumnsInput=[]
       }
       this.getCalTypeList();
       this.visible = true;
@@ -355,14 +361,14 @@ export default {
       this.queryParams.sys=''
       selectCalTypeSystemList(this.queryParams).then(response => {
         this.calTypeCodeaSystemList = response;
-
+        console.log(this.calTypeCodeaSystemList[0]);
         if (this.calTypeCodeaSystemList.length>0){
           this.tableIf = true
           this.tableCodeIf = false
           if (this.selectIf==true){
             this.changType()
           }
-        }else if (this.calTypeCodeaSystemList[0].calRule="04"){
+        }else if (this.calTypeCodeaSystemList[0].calRule=="04"){
 
           this.getCodeList();
           this.tableColumnsInput=[]

@@ -268,7 +268,6 @@
     <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
   </div>
 </template>
-
 <script>
 import {
   listVoucher, getVoucher, delVoucher,
@@ -401,25 +400,26 @@ export default {
       this.formDetail.detailList[this.indexRow-1].calCodea=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamea=val.calName
       this.formDetail.detailList[this.indexRow-1].calIda=val.Id
-      this.formDetail.detailList[this.indexRow-1].sysa=val.sys
+      this.form.sysa=val.sys
+
     },
     getCalTypePOP2(val){
       this.formDetail.detailList[this.indexRow-1].calCodeb=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNameb=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdb=val.Id
-      this.formDetail.detailList[this.indexRow-1].sysb=val.sys
+      this.form.sysb=val.sys
     },
     getCalTypePOP3(val){
       this.formDetail.detailList[this.indexRow-1].calCodec=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamec=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdc=val.Id
-      this.formDetail.detailList[this.indexRow-1].sysc=val.sys
+      this.form.sysc=val.sys
     },
     getCalTypePOP4(val){
       this.formDetail.detailList[this.indexRow-1].calCoded=val.calNo
       this.formDetail.detailList[this.indexRow-1].calNamed=val.calName
       this.formDetail.detailList[this.indexRow-1].calIdd=val.Id
-      this.formDetail.detailList[this.indexRow-1].sysd=val.sys
+      this.form.sysd=val.sys
     },
     getAcctCodeCorpPop(val){
       this.formDetail.detailList[this.indexRow-1].acctCode=val[0].acctCode
@@ -447,27 +447,48 @@ export default {
     /** 项目1点击事件 */
     inputCalNamea(val) {
      this.indexRow= val.index
-      this.queryParams.calTypeCode =  this.calTypeCodea
+      console.log(this.calTypeCodea);
+     if(!! val.calTypeCodea){
+       this.queryParams.calTypeCode =  val.calTypeCodea
+     }else {
+       this.queryParams.calTypeCode =  this.calTypeCodea
+     }
+
       this.$refs.selectPOP.show(this.queryParams);
 
     },
     /** 项目2点击事件 */
     inputCalNameb(val) {
       this.indexRow= val.index
-      this.queryParams.calTypeCode =  this.calTypeCodeb
+      if(!! val.calTypeCodeb){
+        this.queryParams.calTypeCode =  val.calTypeCodeb
+      }else {
+        this.queryParams.calTypeCode =  this.calTypeCodeb
+      }
+
+
        this.$refs.selectPOP2.show( this.queryParams);
 
     },
     /** 项目3点击事件 */
     inputCalNamec(val) {
       this.indexRow= val.index
-      this.queryParams.calTypeCode =  this.calTypeCodec
+
+      if(!! val.calTypeCodec){
+        this.queryParams.calTypeCode =  val.calTypeCodec
+      }else {
+        this.queryParams.calTypeCode =  this.calTypeCodec
+      }
       this.$refs.selectPOP3.show( this.queryParams);
     },
     /** 项目4点击事件 */
     inputCalNamed(val) {
       this.indexRow= val.index
-      this.queryParams.calTypeCode =  this.calTypeCoded
+      if(!! val.calTypeCoded){
+        this.queryParams.calTypeCode =  val.calTypeCoded
+      }else {
+        this.queryParams.calTypeCode =  this.calTypeCoded
+      }
       this.$refs.selectPOP4.show( this.queryParams);
     },
     /** 查询凭证维护-明细列表 */
@@ -553,6 +574,7 @@ export default {
               if (this.formDetail.detailList[t].drcr==='D'){
                 this.formDetail.detailList[t].ntamtD=this.formDetail.detailList[t].ntamt
               }
+
             }
           }
 
@@ -1031,6 +1053,11 @@ export default {
                 });
               } else {
                 addVoucher(this.form).then(response => {
+                  console.log(response);
+                  if (!!response.msg){
+                    this.$message.error(response.msg);
+                    return
+                  }
                   this.$modal.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
