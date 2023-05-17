@@ -405,20 +405,21 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService
                 BeanUtils.copyProperties(financeAaVoucherDetail,financeAaLedgerAcct);
                     if ("D".equals(financeAaVoucherDetail.getDrcr())){
                         if ("N".equals(financeAaVoucher.getStatus())){
-                            ntamtD = ntamtD.add(financeAaVoucherDetail.getNtamt().negate());
-                            qtyFrnamtD = qtyFrnamtD.add(financeAaVoucherDetail.getQtyFrnamt()).negate();
+                            ntamtD = ntamtD.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt().negate());
+                            qtyFrnamtD = qtyFrnamtD.add(null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt()).negate();
                         }else if ("P".equals(financeAaVoucher.getStatus())) {
-                            ntamtD = ntamtD.add(financeAaVoucherDetail.getNtamt());
-                            qtyFrnamtD = qtyFrnamtD.add(financeAaVoucherDetail.getQtyFrnamt());
+                            ntamtD = ntamtD.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt());
+                            qtyFrnamtD = qtyFrnamtD.add( null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt());
                         }
                     }
                     if ("C".equals(financeAaVoucherDetail.getDrcr())){
                         if ("N".equals(financeAaVoucher.getStatus())){
-                            ntamtC=ntamtC.add(financeAaVoucherDetail.getNtamt().negate());
-                            qtyFrnamtC = qtyFrnamtC.add(financeAaVoucherDetail.getQtyFrnamt().negate());
+                            ntamtC=ntamtC.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt().negate());
+                            qtyFrnamtC = qtyFrnamtC.add(null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt().negate());
                         }else if ("P".equals(financeAaVoucher.getStatus())) {
-                            ntamtC=ntamtC.add(financeAaVoucherDetail.getNtamt());
-                            qtyFrnamtC = qtyFrnamtC.add(financeAaVoucherDetail.getQtyFrnamt());
+                            ntamtC=ntamtC.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt());
+
+                            qtyFrnamtC = qtyFrnamtC.add( null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt());
                         }
                     }
                 FinanceAaLedgerAcct financeAaLedgerAcct1 = financeAaLedgerAcctService.selectFinanceAaLedgerAcct(financeAaLedgerAcct);
