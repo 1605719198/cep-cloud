@@ -31,10 +31,26 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="会计科目代码" prop="acctCode" :show-overflow-tooltip="true"/>
         <el-table-column label="会计科目名称" prop="acctName" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目一" prop="calTypeCodea" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目二" prop="calTypeCodeb" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目三" prop="calTypeCodec" :show-overflow-tooltip="true"/>
-        <el-table-column label="核算项目四" prop="calTypeCoded" :show-overflow-tooltip="true"/>
+        <el-table-column label="核算项目一" align="center" prop="calTypeCodea" show-overflow-tooltip>
+          <template v-slot="scope">
+            <span>{{ transCalTypeName(scope.row.calTypeCodea, '') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="核算项目二" align="center" prop="calTypeCodeb" show-overflow-tooltip>
+          <template v-slot="scope">
+            <span>{{ transCalTypeName(scope.row.calTypeCodeb, '') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="核算项目三" align="center" prop="calTypeCodec" show-overflow-tooltip>
+          <template v-slot="scope">
+            <span>{{ transCalTypeName(scope.row.calTypeCodec, '') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="核算项目四" align="center" prop="calTypeCoded" show-overflow-tooltip>
+          <template v-slot="scope">
+            <span>{{ transCalTypeName(scope.row.calTypeCoded, '') }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="是否凭证科目" prop="isVoucher" :show-overflow-tooltip="true">
           <template v-slot="scope">
             <dict-tag :options="dict.type.aa_yes_no" :value="scope.row.isVoucher"/>
@@ -57,12 +73,14 @@
 </template>
 
 <script>
-import {listAcctcodeCorp} from "@/api/finance/aa/acctcodeCorp";
-
+import {listAcctcodeCorpPop} from "@/api/finance/aa/acctcodeCorp";
+import { selectCalTypeList } from "@/api/finance/aa/calType";
 export default {
   dicts: ['aa_yes_no','aa_disabled_code','aa_drcr'],
   data() {
     return {
+      // 核算项目类别选单
+      calTypeList: [],
       // 判断选择单笔还是多笔
       isSingle: true,
       // 遮罩层
@@ -88,7 +106,7 @@ export default {
     };
   },
   created() {
-    //this.getDeptTree();
+    this.getCalTypeList();
   },
   methods: {
     // 显示弹框
@@ -109,13 +127,17 @@ export default {
     // 查询表数据
     getList() {
       this.loading = true;
-      listAcctcodeCorp(this.queryParams).then(response => {
+      listAcctcodeCorpPop(this.queryParams).then(response => {
         this.baseList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
-
+    getCalTypeList() {
+      selectCalTypeList().then(response => {
+        this.calTypeList = response;
+      });
+    },
 
     /** 搜索按钮操作 */
     handleQuery() {
@@ -139,7 +161,15 @@ export default {
       }
       this.visible = false;
       this.$emit("ok",this.projectIds);
-    }
+    },
+    /** 核算项目转中文 */
+    transCalTypeName(calType,delimiter) {
+      if(calType == '') return '';
+      if(delimiter!=''){
+        return calType + delimiter + this.calTypeList.find(item => item.value == calType).label;
+      }
+      return this.calTypeList.find(item => item.value == calType).label;
+    },
   }
 };
 </script>

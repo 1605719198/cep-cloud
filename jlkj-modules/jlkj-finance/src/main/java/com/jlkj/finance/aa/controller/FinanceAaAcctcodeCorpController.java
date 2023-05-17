@@ -163,4 +163,16 @@ public class FinanceAaAcctcodeCorpController extends BaseController
     {
         return toAjax(financeAaAcctcodeCorpService.updateFinanceAaAcctcodeCorp(financeAaAcctcodeCorp));
     }
+
+    /**
+     * 查询会计科目-公司级列表
+     */
+    @RequiresPermissions("finance:acctcodeCorp:list")
+    @GetMapping("/listPop")
+    public TableDataInfo listPop(FinanceAaAcctcodeCorp financeAaAcctcodeCorp)
+    {
+        startPage();
+        List<FinanceAaAcctcodeCorp> list = financeAaAcctcodeCorpService.selectFinanceAaAcctcodeCorpListPop(financeAaAcctcodeCorp);
+        return getDataTable(list);
+    }
 }

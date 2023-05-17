@@ -222,11 +222,24 @@ public class FinanceAaAcctcodeCorpServiceImpl implements IFinanceAaAcctcodeCorpS
             acctcodeCorp.setDrOrCr((String) acctcodeGroup.get("drOrCr"));
             acctcodeCorp.setIsCash((String) acctcodeGroup.get("isCash"));
             acctcodeCorp.setLevel((String) acctcodeGroup.get("level"));
+            acctcodeCorp.setDisabledCode("Y");
             acctcodeCorp.setCreateBy(SecurityUtils.getUsername());
             acctcodeCorp.setCreateName(SecurityUtils.getNickName());
             acctcodeCorp.setCreateTime(DateUtils.getNowDate());
             acctcodeCorps.add(acctcodeCorp);
         }
         return financeAaAcctcodeCorpMapper.insertBatchFinanceAcctcodeCorp(acctcodeCorps);
+    }
+
+    /**
+     * 查询会计科目-公司级列表(POP)
+     *
+     * @param financeAaAcctcodeCorp 会计科目-公司级
+     * @return 会计科目-公司级
+     */
+    @Override
+    public List<FinanceAaAcctcodeCorp> selectFinanceAaAcctcodeCorpListPop(FinanceAaAcctcodeCorp financeAaAcctcodeCorp)
+    {
+        return financeAaAcctcodeCorpMapper.selectFinanceAaAcctcodeCorpListPop(financeAaAcctcodeCorp);
     }
 }
