@@ -351,13 +351,22 @@
 
     <repositories>
         <repository>
-            <id>public</id>
-            <name>nexus</name>
-            <url>http://10.32.100.189:8081/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
         </repository>
+        <repository>
+            <id>IDA</id>
+            <url>http://ida.fel.cvut.cz/maven/</url>
+        </repository>
+<!--        <repository>-->
+<!--            <id>public</id>-->
+<!--            <name>nexus</name>-->
+<!--            <url>http://10.32.100.189:8081/repository/maven-public/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--        </repository>-->
     </repositories>
 
     <pluginRepositories>
