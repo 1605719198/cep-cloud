@@ -41,7 +41,7 @@
         <redisson.version>3.16.8</redisson.version>
         <hutool.version>5.7.20</hutool.version>
         <flowable.version>6.7.2</flowable.version>
-        <easyexcel.version>3.2.1</easyexcel.version>
+        <easyexcel.version>3.1.5</easyexcel.version>
     </properties>
 
     <!-- 依赖声明 -->
