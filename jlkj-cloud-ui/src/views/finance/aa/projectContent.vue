@@ -42,7 +42,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAddItemList"
-          v-hasPermi="['aa:item:Add']"
+          v-hasPermi="['finance:reportDefin:Add']"
         >添加</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -52,7 +52,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['aa:item:add']"
+          v-hasPermi="['finance:reportDefin:add']"
         >保存</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +63,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['finance:calType:remove']"
+          v-hasPermi="['finance:reportDefin:remove']"
         >删除</el-button>
       </el-col>
 
@@ -164,7 +164,7 @@
               type="text"
               icon="el-icon-delete"
               @click="handleDeleteSingle(scope.row)"
-              v-hasPermi="['aa:item:remove']"
+              v-hasPermi="['finance:reportDefin:remove']"
             >删除</el-button>
           </template>
         </el-table-column>
