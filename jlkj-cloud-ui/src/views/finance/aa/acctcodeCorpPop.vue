@@ -77,6 +77,7 @@ import {listAcctcodeCorpPop} from "@/api/finance/aa/acctcodeCorp";
 import { selectCalTypeList } from "@/api/finance/aa/calType";
 export default {
   dicts: ['aa_yes_no','aa_disabled_code','aa_drcr'],
+  props: ['companyId'],
   data() {
     return {
       // 核算项目类别选单
@@ -100,6 +101,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         roleId: 1,
+        companyId: null,
         acctCode: null,
         acctName: null,
       }
@@ -127,6 +129,7 @@ export default {
     // 查询表数据
     getList() {
       this.loading = true;
+      this.queryParams.companyId = this.companyId;
       listAcctcodeCorpPop(this.queryParams).then(response => {
         this.baseList = response.rows;
         this.total = response.total;
