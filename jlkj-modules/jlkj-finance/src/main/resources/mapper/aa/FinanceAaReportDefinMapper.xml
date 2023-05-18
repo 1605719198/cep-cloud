@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaReportDefinMapper">
+
+    <resultMap type="FinanceAaReportDefin" id="FinanceAaReportDefinResult">
+        <result property="reportId"    column="report_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="reportNo"    column="report_no"    />
+        <result property="reportName"    column="report_name"    />
+        <result property="reportTail"    column="report_tail"    />
+        <result property="ureportName"    column="ureport_name"    />
+        <result property="reportType"    column="report_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaReportDefinVo">
+        select report_id, company_id, report_no, report_name, report_tail, ureport_name, report_type, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_report_defin
+    </sql>
+
+    <select id="selectFinanceAaReportDefinList" parameterType="FinanceAaReportDefin" resultMap="FinanceAaReportDefinResult">
+        <include refid="selectFinanceAaReportDefinVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="reportNo != null  and reportNo != ''"> and report_no = #{reportNo}</if>
+            <if test="reportName != null  and reportName != ''"> and report_name like concat('%', #{reportName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectFinanceAaReportDefinByReportId" parameterType="String" resultMap="FinanceAaReportDefinResult">
+        <include refid="selectFinanceAaReportDefinVo"/>
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertFinanceAaReportDefin" parameterType="FinanceAaReportDefin">
+        insert into finance_aa_report_defin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">report_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="reportNo != null">report_no,</if>
+            <if test="reportName != null">report_name,</if>
+            <if test="reportTail != null">report_tail,</if>
+            <if test="ureportName != null">ureport_name,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">#{reportId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="reportNo != null">#{reportNo},</if>
+            <if test="reportName != null">#{reportName},</if>
+            <if test="reportTail != null">#{reportTail},</if>
+            <if test="ureportName != null">#{ureportName},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFinanceAaReportDefin" parameterType="FinanceAaReportDefin">
+        update finance_aa_report_defin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="reportNo != null">report_no = #{reportNo},</if>
+            <if test="reportName != null">report_name = #{reportName},</if>
+            <if test="reportTail != null">report_tail = #{reportTail},</if>
+            <if test="ureportName != null">ureport_name = #{ureportName},</if>
+            <if test="reportType != null">report_type = #{reportType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteFinanceAaReportDefinByReportId" parameterType="String">
+        delete from finance_aa_report_defin where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteFinanceAaReportDefinByReportIds" parameterType="String">
+        delete from finance_aa_report_defin where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+
+    <select id="selectReportNoList" parameterType="String" resultType="map">
+        SELECT report_id id, report_no value, report_name label FROM finance_aa_report_defin where company_id = #{compId}
+    </select>
+
+    <update id="updateCheckReportDefin" parameterType="FinanceAaReportDefin">
+        update finance_aa_report_defin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportNo != null">report_no = #{reportNo},</if>
+        </trim>
+        where company_id = #{companyId} and report_no = #{reportNo}
+    </update>
+</mapper>
