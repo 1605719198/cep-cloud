@@ -33,7 +33,7 @@
         <fastjson.version>2.0.20</fastjson.version>
         <jjwt.version>0.9.1</jjwt.version>
         <minio.version>8.2.2</minio.version>
-        <poi.version>5.2.3</poi.version>
+        <poi.version>4.1.2</poi.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
@@ -351,22 +351,13 @@
 
     <repositories>
         <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
+            <id>public</id>
+            <name>nexus</name>
+            <url>http://10.32.100.189:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
-        <repository>
-            <id>IDA</id>
-            <url>http://ida.fel.cvut.cz/maven/</url>
-        </repository>
-<!--        <repository>-->
-<!--            <id>public</id>-->
-<!--            <name>nexus</name>-->
-<!--            <url>http://10.32.100.189:8081/repository/maven-public/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--        </repository>-->
     </repositories>
 
     <pluginRepositories>
