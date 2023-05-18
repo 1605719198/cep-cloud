@@ -113,6 +113,7 @@
 import { listSalaryProjectBasis, getSalaryProjectBasis, delSalaryProjectBasis, addSalaryProjectBasis, updateSalaryProjectBasis, treeselect } from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 
+
 export default {
   name: "SalaryProjectBasis",
   dicts: ['sys_normal_disable'],
@@ -143,6 +144,7 @@ export default {
       },
       //列表数据
       tableData: [],
+
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -206,6 +208,7 @@ export default {
       this.getBaseInfoTree();
       this.onLoad();
     },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -376,7 +379,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.tableData.length = row.index + 1) {
+      if (this.tableData.length === row.index + 1) {
         const newLine = {
           creator: this.nickName,
           creatorId: this.$store.state.user.name,

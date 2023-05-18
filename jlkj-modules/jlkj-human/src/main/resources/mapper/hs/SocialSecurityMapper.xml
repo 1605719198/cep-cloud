@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SocialSecurityMapper">
+    
+    <resultMap type="SocialSecurity" id="SocialSecurityResult">
+        <result property="id"    column="id"    />
+        <result property="salaryProjectId"    column="salary_project_id"    />
+        <result property="comPro"    column="com_pro"    />
+        <result property="comMon"    column="com_mon"    />
+        <result property="perPro"    column="per_pro"    />
+        <result property="perMon"    column="per_mon"    />
+        <result property="baseUcl"    column="base_ucl"    />
+        <result property="baseLl"    column="base_ll"    />
+        <result property="deciBit"    column="deci_bit"    />
+        <result property="carryMode"    column="carry_mode"    />
+        <result property="payAreaId"    column="pay_area_id"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="version"    column="version"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSocialSecurityVo">
+        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+    </sql>
+
+    <select id="selectSocialSecurityList" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
+        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+
+</select>
+    
+    <select id="selectSocialSecurityById" parameterType="String" resultMap="SocialSecurityResult">
+        <include refid="selectSocialSecurityVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSocialSecurity" parameterType="SocialSecurity">
+        insert into human_hs_social_security
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="salaryProjectId != null">salary_project_id,</if>
+            <if test="comPro != null">com_pro,</if>
+            <if test="comMon != null">com_mon,</if>
+            <if test="perPro != null">per_pro,</if>
+            <if test="perMon != null">per_mon,</if>
+            <if test="baseUcl != null">base_ucl,</if>
+            <if test="baseLl != null">base_ll,</if>
+            <if test="deciBit != null">deci_bit,</if>
+            <if test="carryMode != null">carry_mode,</if>
+            <if test="payAreaId != null">pay_area_id,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="version != null">version,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="salaryProjectId != null">#{salaryProjectId},</if>
+            <if test="comPro != null">#{comPro},</if>
+            <if test="comMon != null">#{comMon},</if>
+            <if test="perPro != null">#{perPro},</if>
+            <if test="perMon != null">#{perMon},</if>
+            <if test="baseUcl != null">#{baseUcl},</if>
+            <if test="baseLl != null">#{baseLl},</if>
+            <if test="deciBit != null">#{deciBit},</if>
+            <if test="carryMode != null">#{carryMode},</if>
+            <if test="payAreaId != null">#{payAreaId},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="version != null">#{version},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSocialSecurity" parameterType="SocialSecurity">
+        update human_hs_social_security
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="salaryProjectId != null">salary_project_id = #{salaryProjectId},</if>
+            <if test="comPro != null">com_pro = #{comPro},</if>
+            <if test="comMon != null">com_mon = #{comMon},</if>
+            <if test="perPro != null">per_pro = #{perPro},</if>
+            <if test="perMon != null">per_mon = #{perMon},</if>
+            <if test="baseUcl != null">base_ucl = #{baseUcl},</if>
+            <if test="baseLl != null">base_ll = #{baseLl},</if>
+            <if test="deciBit != null">deci_bit = #{deciBit},</if>
+            <if test="carryMode != null">carry_mode = #{carryMode},</if>
+            <if test="payAreaId != null">pay_area_id = #{payAreaId},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSocialSecurityById" parameterType="String">
+        delete from human_hs_social_security where id = #{id}
+    </delete>
+
+    <delete id="deleteSocialSecurityByIds" parameterType="String">
+        delete from human_hs_social_security where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
