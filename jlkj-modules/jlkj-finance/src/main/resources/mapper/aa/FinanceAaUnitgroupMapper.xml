@@ -92,4 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <select id="selectCompanyList" parameterType="String" resultType="map">
+        SELECT id, group_no value, group_name label FROM finance_aa_unitGroup
+    </select>
 </mapper>

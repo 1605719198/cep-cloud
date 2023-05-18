@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 币别管理Controller
@@ -94,5 +95,15 @@ public class FinanceAaCrcyController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(financeAaCrcyService.deleteFinanceAaCrcyByIds(ids));
+    }
+
+    /**
+     * 查询核算项目类别(下拉选单用)
+     */
+    @GetMapping("/selectCrcy")
+    public List<Map<String,String>> selectCompanyList()
+    {
+
+        return financeAaCrcyService.selectCompanyList();
     }
 }

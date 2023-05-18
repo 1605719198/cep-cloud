@@ -115,10 +115,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="计量单位" prop="unitNo">
-          <el-input v-model="form.unitNo" placeholder="请输入计量单位" />
+          <el-input v-model="form.unitNo" placeholder="请输入计量单位" class="input"/>
         </el-form-item>
         <el-form-item label="单位名称" prop="unitName">
-          <el-input v-model="form.unitName" placeholder="请输入单位名称" />
+          <el-input v-model="form.unitName" placeholder="请输入单位名称" class="input"/>
         </el-form-item>
         <el-form-item label="组名" prop="groupId">
           <el-select v-model="form.groupId" placeholder="请选择">
@@ -131,9 +131,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="基本计量单位 " prop="baseUnitId">
-          <el-select v-model="form.baseUnitId" placeholder="请选择">
+          <el-select v-model="form.baseUnitId" placeholder="请选择" filterable >
             <el-option
-              v-for="dict in dict.type.aa_unit_baseunitid"
+              v-for="dict in baseUnitIdList"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value">
@@ -151,12 +151,15 @@
 
 <script>
 import { listUnit, getUnit, delUnit, addUnit, updateUnit } from "@/api/finance/aa/unit";
+import {select1  } from "@/api/finance/aa/unitGroup";
+
 
 export default {
   name: "Unit",
   dicts: ['aa_unitgroup_groupname','aa_unit_baseunitid'],
   data() {
     return {
+      baseUnitIdList:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -217,6 +220,13 @@ export default {
         this.loading = false;
       });
     },
+    /** 查询计量单位维护列表 */
+    getCompanyList() {
+      select1().then(response => {
+        console.log(response);
+        this.baseUnitIdList = response;
+      });
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -265,6 +275,7 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加计量单位维护";
+      this.getCompanyList()
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -274,6 +285,7 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改计量单位维护";
+        this.getCompanyList()
       });
     },
     /** 提交按钮 */
@@ -309,3 +321,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.input {
+  width: 62%;
+}
+</style>

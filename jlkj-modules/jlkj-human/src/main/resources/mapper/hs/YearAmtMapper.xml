@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.YearAmtMapper">
+    
+    <resultMap type="YearAmt" id="YearAmtResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="year"    column="year"    />
+        <result property="ifFullTax"    column="if_full_tax"    />
+        <result property="ifIncomeGreaterSix"    column="if_income_greater_six"    />
+        <result property="sumIncome"    column="sum_income"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectYearAmtVo">
+        select id, comp_id, emp_id, emp_no, emp_name, year, if_full_tax, if_income_greater_six, sum_income, creator, creator_id, creator_no, create_date from human_hs_year_amt
+    </sql>
+
+    <select id="selectYearAmtList" parameterType="YearAmt" resultMap="YearAmtResult">
+        <include refid="selectYearAmtVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+    </select>
+    
+    <select id="selectYearAmtById" parameterType="String" resultMap="YearAmtResult">
+        <include refid="selectYearAmtVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYearAmt" parameterType="YearAmt">
+        insert into human_hs_year_amt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="year != null">year,</if>
+            <if test="ifFullTax != null">if_full_tax,</if>
+            <if test="ifIncomeGreaterSix != null">if_income_greater_six,</if>
+            <if test="sumIncome != null">sum_income,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="year != null">#{year},</if>
+            <if test="ifFullTax != null">#{ifFullTax},</if>
+            <if test="ifIncomeGreaterSix != null">#{ifIncomeGreaterSix},</if>
+            <if test="sumIncome != null">#{sumIncome},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYearAmt" parameterType="YearAmt">
+        update human_hs_year_amt
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="ifFullTax != null">if_full_tax = #{ifFullTax},</if>
+            <if test="ifIncomeGreaterSix != null">if_income_greater_six = #{ifIncomeGreaterSix},</if>
+            <if test="sumIncome != null">sum_income = #{sumIncome},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYearAmtById" parameterType="String">
+        delete from human_hs_year_amt where id = #{id}
+    </delete>
+
+    <delete id="deleteYearAmtByIds" parameterType="String">
+        delete from human_hs_year_amt where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.mapper;
 import com.jlkj.finance.aa.domain.FinanceAaCrcy;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 币别管理Mapper接口
@@ -59,4 +60,12 @@ public interface FinanceAaCrcyMapper
      * @return 结果
      */
     public int deleteFinanceAaCrcyByIds(String[] ids);
+
+    /**
+     * 查询会计公司列表（下拉选单用）
+     *
+     * @return
+     */
+    public List<Map<String, String>> selectCompanyList();
+
 }

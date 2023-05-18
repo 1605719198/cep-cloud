@@ -205,9 +205,10 @@ export default {
     };
   },
   created() {
-    this.getCompanyList();
+
     this.getVoucherTypeList();
     this.getListDetailList()
+    this.getCompanyList()
   },
   methods: {
     voucherNoClick(row){
@@ -216,13 +217,8 @@ export default {
     },
     /** 查询凭证维护-明细列表 */
     getListDetailList() {
-      this.loading = true;
-      listVoucherDetailSelect(this.queryParams).then(response => {
-        this.formDetail.detailList = response.rows;
+      this.loading = false;
 
-        this.total = response.total;
-        this.loading = false;
-      });
     },
     getCompanyList() {
       selectCompanyList().then(response => {
@@ -257,13 +253,15 @@ export default {
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
+      console.log(response+"上传成功");
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
+      this.formDetail.detailList = response.data
+/*      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
         response.msg + "</div>", "导入结果",
-        { dangerouslyUseHTMLString: true });
-      this.getListDetailList();
+        { dangerouslyUseHTMLString: true });*/
+
     },
     // 提交上传文件
     submitFileForm() {

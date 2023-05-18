@@ -14,6 +14,11 @@ public class ConstantsUtil
      */
     public static final String CALRULE3="03";
     /**
+     * calRule
+     */
+    public static final String CALRULE4="04";
+
+    /**
      * disabledCode
      */
     public static final String DISABLEDCODE="Y";

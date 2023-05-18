@@ -5,9 +5,9 @@
 <!--        {{this.unitName}}-->
 <!--      </el-form-item>-->
       <el-form-item label="转换单位" prop="unitId">
-        <el-select v-model="queryParams.unitId" placeholder="请选择">
+        <el-select v-model="queryParams.unitId" placeholder="请选择" filterable >
           <el-option
-            v-for="dict in dict.type.aa_unit_baseunitid"
+            v-for="dict in baseUnitIdList"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value">
@@ -15,9 +15,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="被转换单位" prop="chgunitid">
-        <el-select v-model="queryParams.chgunitid" placeholder="请选择">
+        <el-select v-model="queryParams.chgunitid" placeholder="请选择" filterable >
           <el-option
-            v-for="dict in dict.type.aa_unit_baseunitid"
+            v-for="dict in baseUnitIdList"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value">
@@ -109,9 +109,9 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="转换单位" prop="unitId">
-          <el-select v-model="form.unitId" placeholder="请选择">
+          <el-select v-model="form.unitId" placeholder="请选择" filterable >
             <el-option
-              v-for="dict in dict.type.aa_unit_baseunitid"
+              v-for="dict in baseUnitIdList"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value">
@@ -119,9 +119,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="被转换单位" prop="chgunitid">
-          <el-select v-model="form.chgunitid" placeholder="请选择">
+          <el-select v-model="form.chgunitid" placeholder="请选择" filterable >
             <el-option
-              v-for="dict in dict.type.aa_unit_baseunitid"
+              v-for="dict in baseUnitIdList"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value">
@@ -129,7 +129,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="转换率" prop="changerate">
-          <el-input v-model="form.changerate" placeholder="请输入转换率" />
+          <el-input v-model="form.changerate" placeholder="请输入转换率" class="input"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -142,12 +142,14 @@
 
 <script>
 import { listChg, getChg, delChg, addChg, updateChg } from "@/api/finance/aa/unitChg";
+import {select1} from "@/api/finance/aa/unitGroup";
 
 export default {
   name: "Chg",
   dicts: ['aa_unit_baseunitid'],
   data() {
     return {
+      baseUnitIdList:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -204,6 +206,7 @@ export default {
   },
 
   created() {
+    this.getCompanyList();
     this.getList();
   },
   methods: {
@@ -214,6 +217,13 @@ export default {
         this.chgList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+
+    getCompanyList() {
+      select1().then(response => {
+        console.log(response);
+        this.baseUnitIdList = response;
       });
     },
     // 取消按钮
@@ -304,3 +314,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.input {
+  width: 60%;
+}
+</style>
