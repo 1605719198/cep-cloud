@@ -95,7 +95,7 @@ public class FinanceAaVoucherDTO {
     /**
      * 数量单位/币别
      */
-    @Excel(name = "数量单位/币别")
+    @Excel(name = "单位/币别")
     private String crcyUnit;
 
     /**

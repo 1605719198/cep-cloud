@@ -1011,15 +1011,13 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         }
         List<FinanceAaVoucherDetail> detailList1 = new ArrayList<>();
         FinanceAaVoucher financeAaVoucher4 = new FinanceAaVoucher();
-        String s = null;
+
         for (int i = 0; i < financeAaVoucher.size(); i++) {
             FinanceAaVoucher financeAaVoucher3 = new FinanceAaVoucher();
             financeAaVoucher.get(i).setCompanyId(companyId);
             financeAaVoucher.get(i).setId(UUID.fastUUID().toString());
             BeanUtils.copyProperties(financeAaVoucher.get(i), financeAaVoucher3);
-            if (i==0){
-                s = insertFinanceAaVoucherVoucherNo(financeAaVoucher3);
-            }
+
 
             FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
             BeanUtils.copyProperties(financeAaVoucher.get(i), financeAaVoucherDetail);
@@ -1027,10 +1025,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             detailList3.add(financeAaVoucherDetail);
             financeAaVoucher3.setDetailList(detailList3);
             FinanceAaVoucher financeAaVoucher1 = inspectImportFinanceCalTypeList(financeAaVoucher3);
-
             financeAaVoucher1.getDetailList().get(0).setVoucherDate(DateUtils.dateTime(financeAaVoucher.get(i).getVoucherDate()));
-            financeAaVoucher1.getDetailList().get(0).setVoucherNo(s);
-
             List<FinanceAaVoucherDetail> detailList = new ArrayList<>();
             detailList.add( financeAaVoucher1.getDetailList().get(0));
             detailList1.add( financeAaVoucher1.getDetailList().get(0));
@@ -1039,7 +1034,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                 financeAaVoucher.get(i).setErrorReason(inspectionImportCollection(financeAaVoucher3));
                 financeAaVoucherDTO.add(financeAaVoucher.get(i));
             }
-            financeAaVoucher.get(i).setVoucherNo(s);
+
             financeAaVoucherVoucherNo.add(financeAaVoucher.get(i));
             if (i==financeAaVoucher.size()){
                 financeAaVoucher4.setDetailList(detailList1);
@@ -1060,6 +1055,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher2);
             for (FinanceAaVoucherDetail financeAaVoucherDetail: detailList1){
                 financeAaVoucherDetail.setVoucherId(financeAaVoucher2.getId());
+                financeAaVoucherDetail.setVoucherNo(financeAaVoucher2.getVoucherNo());
             }
             financeAaVoucherMapper.batchFinanceAaVoucherDetail(detailList1);
         }
