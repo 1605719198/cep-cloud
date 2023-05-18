@@ -31,7 +31,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 查询集团管理-纵向印项目公式列表
      */
-    @RequiresPermissions("finance:projectFormula:list")
+    @RequiresPermissions("finance:reportDefin:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAaProjectFormula financeAaProjectFormula)
     {
@@ -43,7 +43,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 导出集团管理-纵向印项目公式列表
      */
-    @RequiresPermissions("finance:projectFormula:export")
+    @RequiresPermissions("finance:reportDefin:export")
     @Log(title = "集团管理-纵向印项目公式", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAaProjectFormula financeAaProjectFormula)
@@ -56,7 +56,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 获取集团管理-纵向印项目公式详细信息
      */
-    @RequiresPermissions("finance:projectFormula:query")
+    @RequiresPermissions("finance:reportDefin:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +66,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 新增集团管理-纵向印项目公式
      */
-    @RequiresPermissions("finance:projectFormula:add")
+    @RequiresPermissions("finance:reportDefin:add")
     @Log(title = "集团管理-纵向印项目公式", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAaProjectFormula financeAaProjectFormula)
@@ -78,7 +78,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 修改集团管理-纵向印项目公式
      */
-    @RequiresPermissions("finance:projectFormula:edit")
+    @RequiresPermissions("finance:reportDefin:edit")
     @Log(title = "集团管理-纵向印项目公式", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceAaProjectFormula financeAaProjectFormula)
@@ -89,7 +89,7 @@ public class FinanceAaProjectFormulaController extends BaseController
     /**
      * 删除集团管理-纵向印项目公式
      */
-    @RequiresPermissions("finance:projectFormula:remove")
+    @RequiresPermissions("finance:reportDefin:remove")
     @Log(title = "集团管理-纵向印项目公式", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

@@ -31,7 +31,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 查询集团管理-报表内容资料列表
      */
-    @RequiresPermissions("finance:projectContent:list")
+    @RequiresPermissions("finance:reportDefin:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAaProjectContent financeAaProjectContent)
     {
@@ -43,7 +43,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 导出集团管理-报表内容资料列表
      */
-    @RequiresPermissions("finance:projectContent:export")
+    @RequiresPermissions("finance:reportDefin:export")
     @Log(title = "集团管理-报表内容资料", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAaProjectContent financeAaProjectContent)
@@ -56,7 +56,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 获取集团管理-报表内容资料详细信息
      */
-    @RequiresPermissions("finance:projectContent:query")
+    @RequiresPermissions("finance:reportDefin:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +66,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 新增集团管理-报表内容资料
      */
-    @RequiresPermissions("finance:projectContent:add")
+    @RequiresPermissions("finance:reportDefin:add")
     @Log(title = "集团管理-报表内容资料", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAaProjectContent financeAaProjectContent)
@@ -78,7 +78,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 修改集团管理-报表内容资料
      */
-    @RequiresPermissions("finance:projectContent:edit")
+    @RequiresPermissions("finance:reportDefin:edit")
     @Log(title = "集团管理-报表内容资料", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceAaProjectContent financeAaProjectContent)
@@ -89,7 +89,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 删除集团管理-报表内容资料
      */
-    @RequiresPermissions("finance:projectContent:remove")
+    @RequiresPermissions("finance:reportDefin:remove")
     @Log(title = "集团管理-报表内容资料", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
@@ -100,7 +100,7 @@ public class FinanceAaProjectContentController extends BaseController
     /**
      * 状态修改
      */
-    @RequiresPermissions("finance:projectContent:edit")
+    @RequiresPermissions("finance:reportDefin:edit")
     @Log(title = "核算项目-内容维护", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody FinanceAaProjectContent financeAaProjectContent)
