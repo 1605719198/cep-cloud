@@ -265,13 +265,13 @@
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
     <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
-    <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop" :companyId="this.queryParams.companyId" @ok="getAcctCodeCorpPop"/>
   </div>
 </template>
 <script>
 import {
   listVoucher, getVoucher, delVoucher,
-  addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher, listLastVoucher,
+  addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher,
   updateVoucherStatus,updateVoucherCross} from "@/api/finance/aa/voucher";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
