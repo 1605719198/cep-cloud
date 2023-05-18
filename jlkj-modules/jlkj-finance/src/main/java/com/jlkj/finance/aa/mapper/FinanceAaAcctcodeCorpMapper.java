@@ -1,7 +1,9 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 会计科目-公司级Mapper接口
@@ -21,10 +23,11 @@ public interface FinanceAaAcctcodeCorpMapper
     /**
      * 查询会计科目-公司级
      *
-     * @param acctId 会计科目-公司级主键
+     * @param acctCode 会计科目-公司级编码
+     * @param companyId 会计科目-公司
      * @return 会计科目-公司级
      */
-    public FinanceAaAcctcodeCorp selectAcctId(String acctId);
+    public FinanceAaAcctcodeCorp selectAcctId(@Param("acctCode")String acctCode,@Param("companyId") String companyId);
 
     /**
      * 查询会计科目-公司级列表
