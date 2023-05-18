@@ -261,7 +261,6 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             DecimalFormat decimalFormat = new DecimalFormat("00000");
             int i = Integer.parseInt(manVoucherhrSrl.toString()) + 1;
             voucherNo = M + financeAccountYear.getAccountPeriod() + decimalFormat.format(i);
-
             financeAccountYear.setManVoucherhrSrl(Long.valueOf(i));
             financeAccountYearService.updateById(financeAccountYear);
         }
