@@ -135,8 +135,9 @@ public interface IFinanceAaVoucherService
      * @param financeAaVoucher 凭证数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @param operName 操作用户
+     *  @param companyId 公司别
      * @return 结果
      */
-    public List<FinanceAaVoucherDTO> importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName);
+    public List<FinanceAaVoucherDTO> importFinanceAaVoucher(List<FinanceAaVoucherDTO> financeAaVoucher, Boolean isUpdateSupport, String operName,String companyId);
 }
 

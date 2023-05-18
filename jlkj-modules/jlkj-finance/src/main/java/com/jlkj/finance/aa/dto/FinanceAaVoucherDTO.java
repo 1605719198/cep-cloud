@@ -41,14 +41,6 @@ public class FinanceAaVoucherDTO {
     /** 凭证类型 */
     @Excel(name = "凭证类型")
     private String voucherType;
-    /**
-     * 借贷方向
-     */
-    @Excel(name = "借贷方向")
-    private String drcr;
-    /** 抛帐系统代号 */
-
-    private String apid;
 
     /**
      * 会计科目编号
@@ -58,54 +50,82 @@ public class FinanceAaVoucherDTO {
     /**
      * 会计科目中文名称
      */
+    @Excel(name = "科目名称")
     private String acctName;
     /**
      * 核算项目一代码
      */
     @Excel(name = "核算项目一代码")
     private String calCodea;
-
-
+    /**
+     * 核算项目一名称
+     */
+    @Excel(name = "核算项目一名称")
+    private String calNamea;
     /**
      * 核算项目二代码
      */
     @Excel(name = "核算项目二代码")
     private String calCodeb;
     /**
+     * 核算项目二名称
+     */
+    @Excel(name = "核算项目二名称")
+    private String calNameb;
+    /**
      * 核算项目三代码
      */
     @Excel(name = "核算项目三代码")
     private String calCodec;
+    /**
+     * 核算项目三名称
+     */
+    @Excel(name = "核算项目三名称")
+    private String calNamec;
     /**
      * 核算项目四代码
      */
     @Excel(name = "核算项目四代码")
     private String calCoded;
     /**
+     * 核算项目四名称
+     */
+    @Excel(name = "核算项目四名称")
+    private String calNamed;
+    /**
      * 数量单位/币别
      */
     @Excel(name = "数量单位/币别")
     private String crcyUnit;
+
     /**
      * 数量/外币金额
      */
-    @Excel(name = "数量/外币金额")
+    @Excel(name = "原币金额")
     private BigDecimal qtyFrnamt;
+    /**
+     * 借贷方向
+     */
+    @Excel(name = "借贷方向")
+    private String drcr;
     /**
      * 记帐币金额
      */
-    @Excel(name = "记帐币金额")
+    @Excel(name = "金额")
     private BigDecimal ntamt;
     /**
      * 凭证分录摘要
      */
     @Excel(name = "凭证分录摘要")
     private String srlDesc;
+    /** 抛帐系统代号 */
+    private String apid;
+
+
 
 
 
     /** 借方金额 */
-
     private BigDecimal drAmt;
     /** 贷方金额 */
 
@@ -170,4 +190,83 @@ public class FinanceAaVoucherDTO {
     /** 异动人姓名 */
 
     private String updateName;
+
+
+
+
+
+
+    private BigDecimal ntamtC;
+    private BigDecimal  ntamtD;
+    /** 核算项目1编号 */
+
+    private String calTypeCodea;
+    /** 核算项目2编号 */
+
+    private String calTypeCodeb;
+    /** 核算项目3编号 */
+
+    private String calTypeCodec;
+    /** 核算项目4编号 */
+
+    private String calTypeCoded;
+
+
+
+    /**
+     * 凭证id
+     */
+
+    private String voucherId;
+
+
+
+    /**
+     * 分录序号
+     */
+
+    private Long srlno;
+
+
+    /**
+     * 集团级会计科目主键
+     */
+    private String groupAcctId;
+
+    /**
+     * 会计科目id
+     */
+    @Excel(name = "会计科目id")
+    private String acctId;
+
+
+
+    /**
+     * 核算项目一id
+     */
+
+    private String calIda;
+
+
+
+    /**
+     * 核算项目二id
+     */
+
+    private String calIdb;
+
+
+
+    /**
+     * 核算项目三id
+     */
+
+    private String calIdc;
+
+    /**
+     * 核算项目四id
+     */
+    @Excel(name = "核算项目四id")
+    private String calIdd;
+
 }
