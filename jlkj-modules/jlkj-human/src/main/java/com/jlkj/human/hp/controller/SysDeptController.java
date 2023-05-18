@@ -183,6 +183,13 @@ public class SysDeptController extends BaseController
         return AjaxResult.success(firstDept);
     }
 
+    /**
+     * 导入部门数据
+     * @param file
+     * @param updateSupport
+     * @return
+     * @throws Exception
+     */
     @Log(title = "部门资料导入", businessType = BusinessType.IMPORT)
     @RequiresPermissions("human:deptMaintenance:import")
     @PostMapping("/importData")
@@ -196,7 +203,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 导入夜班资料数据
+     * 导入部门资料数据
      * @param response
      * @throws IOException
      */

@@ -349,7 +349,6 @@ import { treeselect,selectCompany,queryFirstdeptByPerson,queryFirstdeptByDept } 
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanUtils";
-import { getAvatorByUserName} from "@/api/system/user";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import '@/assets/styles/humanStyles.scss';
 export default {
