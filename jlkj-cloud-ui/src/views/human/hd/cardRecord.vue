@@ -40,7 +40,7 @@
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="刷卡时间" align="center" prop="cardTime" width="180">
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.cardTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.cardTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="刷卡卡钟编码" align="center" prop="macCode" />
@@ -75,7 +75,7 @@ export default {
       //用户公司别
       userCompId: this.$store.state.user.userInfo.compId,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -111,7 +111,7 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getList();
+    // this.getList();
   },
   methods: {
     /** 查询公司列表 */

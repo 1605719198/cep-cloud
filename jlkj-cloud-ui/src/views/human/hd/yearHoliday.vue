@@ -221,7 +221,7 @@ export default {
       //公司列表
       companyList:[],
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -285,7 +285,6 @@ export default {
 
   created() {
     this.getCompanyList();
-    this.getList();
   },
   methods: {
     /** 查询年休假天数设定列表 */
