@@ -902,6 +902,8 @@ export default {
         this.form.status='Y'
         this.form.postTime=new Date()
         this.form.potstuserName = '1'
+        this.form.isInspect = 'Y'
+        this.form.isInspect = 'Y'
         updateVoucherStatus(this.form).then(response => {
           this.$modal.msgSuccess("确认成功");
           this.open = false;
@@ -1050,13 +1052,13 @@ export default {
           return
         }
       }
+        this.form.isInspect = 'Y'
       this.$refs["formDetail"].validate(valid => {
         if (valid) {
           this.$refs["form"].validate(valid => {
             if (valid) {
               this.form.companyId=this.queryParams.companyId
               this.form.detailList =  this.formDetail.detailList;
-
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
                   this.$modal.msgSuccess("修改成功");
@@ -1066,7 +1068,6 @@ export default {
                 });
               } else {
                 addVoucher(this.form).then(response => {
-                  console.log(response);
                   if (!!response.msg){
                     this.$message.error(response.msg);
                     return

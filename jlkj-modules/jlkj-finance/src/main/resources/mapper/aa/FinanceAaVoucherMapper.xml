@@ -93,6 +93,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by b.voucher_no
     </select>
+    <select id="selectFinanceAaVoucherBatchExecutionList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        SELECT
+        a.company_id,
+        a.voucher_no,
+        a.voucher_date,
+        a.apId,
+        a.voucher_desc,
+        a.dr_amt,
+        a.cr_amt,
+        a.pastuser_name,
+        a.STATUS,
+        a.srlNo_count,
+        a.print_count,
+        b.acct_name,
+        b.acct_code,
+        b.crcy_unit,
+        b.qty_frnAmt,
+        b.srl_desc,
+        a.create_by,
+        b.drcr,
+        b.ntAmt
+        FROM
+        finance_aa_voucher a
+        LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
+        AND b.company_id = a.company_id
+        <where>
+            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="apid != null  and apid != ''"> and a.apId = #{apid}</if>
+            <if test="srlDesc != null  and srlDesc != ''"> and b.srl_desc = #{srlDesc}</if>
+            <if test="createBy != null  and createBy != ''"> and a.create_by = #{createBy}</if>
+            <if test="pastuserName != null  and pastuserName != ''"> and a.pastuser_name = #{pastuserName}</if>
+            <if test="companyId != null  and companyId != ''"> and a.company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and a.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="voucherNoStart != '' and voucherNoStart != null and voucherNoEnd != '' and voucherNoEnd != null"> and a.voucher_no between #{voucherNoStart} and #{voucherNoEnd}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and b.acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and b.cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="calNamebStart != '' and calNamebStart !=null and calNamebEnd != ''and calNamebEnd != null"> and b.cal_codeb between #{calNamebStart} and #{calNamebEnd}</if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtStart != null and qtyFrnamtEnd != '' and qtyFrnamtEnd != null"> and b.qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}</if>
+        </where>
+        group by
+        b.voucher_no
+    </select>
     <select id="selectFinanceAaVoucherById" parameterType="String" resultMap="FinanceAaVoucherResult">
         <include refid="selectFinanceAaVoucherVo"/>
         where id = #{id}
@@ -112,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaVoucherVo"/>
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="voucherDate != null "> and voucher_date  like concat('%',#{voucherDate},'%') </if>
             <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
             <if test="printCount != null "> and print_count = #{printCount}</if>
         </where>

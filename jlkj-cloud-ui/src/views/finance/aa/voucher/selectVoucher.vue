@@ -216,8 +216,8 @@
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
     <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
-    <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
-    <acctcodeCorpPop ref="selectAcctCodeCorpPop1" @ok="getAcctCodeCorpPop1"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop" :companyId="this.queryParams.companyId" @ok="getAcctCodeCorpPop"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop1":companyId="this.queryParams.companyId" @ok="getAcctCodeCorpPop1"/>
   </el-dialog>
 </template>
 
