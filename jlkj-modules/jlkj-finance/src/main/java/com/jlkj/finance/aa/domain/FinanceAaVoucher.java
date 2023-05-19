@@ -43,6 +43,8 @@ public class FinanceAaVoucher extends BaseEntity
     private String   sysc;
     private String   sysd;
     private String  isFrnCrcy;
+
+    private String  isInspect;
     /** 凭证号码 */
     @Excel(name = "凭证号码")
     private String voucherNo;
