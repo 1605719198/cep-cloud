@@ -358,7 +358,7 @@ export default {
     handleSelectionChange(selection) {
       this.checkedTCapitalDetail = selection.map(item => item.index)
       this.detailList = selection
-      console.log(this.detailList);
+
       this.ids = selection.map(item => item.id)
       this.single = selection.length !== 1
       this.multiple = !selection.length
@@ -366,12 +366,12 @@ export default {
     /** 确认按钮操作 */
     handleConfirmQuery() {
       this.form.detailList =this.detailList;
-      console.log(this.form.detailList);
+
       if (this.form.detailList.length==0){this.$message.error('至少选择一笔数据确认');return}
         this.form.status = 'Y'
         this.form.postTime = new Date()
         this.form.potstuserName = '1'
-      console.log(this.form);
+
       updateVoucherStatus(this.form).then(response => {
           this.$modal.msgSuccess("确认成功");
           this.open = false;
@@ -409,7 +409,6 @@ export default {
         this.form.postTime = new Date()
         this.form.potstuserName = '1'
       this.form.status = 'P'
-      console.log(this.form);
         updateVoucherCross(this.form).then(response => {
           this.$modal.msgSuccess("过账成功");
           this.open = false;
@@ -435,14 +434,12 @@ export default {
           this.$message.error('至少选择一笔数据反过账');
           return
         }
-        console.log(this.form);
+
         updateVoucherCross(this.form).then(response => {
           this.$modal.msgSuccess("反过账成功");
           this.open = false;
-
           this.getListDetailList()
         });
-
     },
 
     /** 主档删除按钮操作 */
