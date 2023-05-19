@@ -88,7 +88,11 @@
         </el-table-column>
       </el-table-column>
 
-      <el-table-column label="费用类别" align="center" prop="apprGroup" />
+      <el-table-column label="费用类别" align="center" prop="apprGroup" >
+        <template v-slot="scope">
+            <dict-tag-human :options="baseInfoData.HP007" :value="scope.row.apprGroup"/>
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作人" align="center" prop="creator">
         <el-table-column label="操作时间" align="center" prop="create" width="180">
@@ -224,7 +228,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="借方">
+            <el-form-item label="贷方">
               <el-row :gutter="20">
                 <el-col :span="6">
                   <el-input v-model="form.acctCoded" placeholder="请选择" :disabled="true">
@@ -235,10 +239,10 @@
                   <el-input v-model="form.idNamed" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.idCoded" disabled></el-input>
+                  <el-input v-model="form.idCodec" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.refNod" disabled></el-input>
+                  <el-input v-model="form.refNoc" disabled></el-input>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -382,7 +386,7 @@ export default {
         this.attendenceOptions = response.data
       })
       getBaseInfo(this.baseInfo).then(response => {
-        this.baseInfoData = response.data
+        this.baseInfoData = response.data;
       })
     },
     //表格合并方法

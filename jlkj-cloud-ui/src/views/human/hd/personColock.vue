@@ -272,7 +272,7 @@ export default {
       //登录人公司
       logincompId: this.$store.state.user.userInfo.compId,
       // 遮罩层
-      loading: true,
+      loading: false,
       //部门选单树数据
       deptOptions: [],
       // 选中数组
@@ -435,7 +435,11 @@ export default {
     /** 查询人员数据 */
     getList(){
       if(this.colockType==1){
-        this.getListPerspn();
+        if(this.queryParams.empId===null){
+          this.$modal.msgWarning("请输入工号");
+        }else{
+          this.getListPerspn();
+        }
       }else if(this.colockType==2){
         this.getListOrg();
       }
@@ -640,7 +644,7 @@ export default {
     /** 删除人员卡钟按钮操作 */
     handleDeletePerson(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除人员卡钟编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delPersonColock(ids);
       }).then(() => {
         this.getList();
@@ -649,7 +653,7 @@ export default {
     },
     handleDeleteDept(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除部门卡钟编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delPersonColockOrg(ids);
       }).then(() => {
         this.getList();

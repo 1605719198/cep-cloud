@@ -330,18 +330,19 @@ export default {
     },
     /** 保存按钮操作 */
     handleSave(row) {
-      // saveYearAmt(this.multipleSelection).then( response=>{
-      //   this.$modal.msgSuccess('保存成功')
-      //   this.getList()
-      // })
-      this.showForm = false;
       this.form.yearAmtList = this.multipleSelection;
-      this.showForm = true;
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$modal.msgSuccess("保存成功");
-        }
-      });
+      saveYearAmt(this.form.multipleSelection).then( response=>{
+        this.$modal.msgSuccess('保存成功')
+        this.getList()
+      })
+
+      this.$nextTick(()=>{
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+
+          }
+        });
+      })
     },
     //添加行index
     addIndex({ row, rowIndex }) {
