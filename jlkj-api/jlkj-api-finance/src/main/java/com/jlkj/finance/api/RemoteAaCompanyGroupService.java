@@ -4,7 +4,8 @@ import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.ServiceNameConstants;
 import com.jlkj.finance.api.factory.RemoteAaCompanyGroupFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Map;
