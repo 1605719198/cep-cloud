@@ -9,7 +9,6 @@ import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.Baseinfo;
 import com.jlkj.human.hm.dto.BaseInfoDTO;
 import com.jlkj.human.hm.service.IBaseinfoService;
-import com.jlkj.human.hm.service.impl.BaseinfoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

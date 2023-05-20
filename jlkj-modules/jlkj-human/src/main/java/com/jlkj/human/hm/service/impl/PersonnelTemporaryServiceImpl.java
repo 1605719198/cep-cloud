@@ -2,8 +2,8 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.PersonnelTemporary;
-import com.jlkj.human.hm.service.IPersonnelTemporaryService;
 import com.jlkj.human.hm.mapper.PersonnelTemporaryMapper;
+import com.jlkj.human.hm.service.IPersonnelTemporaryService;
 import org.springframework.stereotype.Service;
 
 /**

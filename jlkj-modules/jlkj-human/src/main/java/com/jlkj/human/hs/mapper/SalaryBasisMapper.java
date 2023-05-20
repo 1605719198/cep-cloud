@@ -1,6 +1,5 @@
 package com.jlkj.human.hs.mapper;
 
-import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 

@@ -1,7 +1,8 @@
 package com.jlkj.human.hs.mapper;
 
-import java.util.List;
 import com.jlkj.human.hs.domain.PayTableFormulaParam;
+
+import java.util.List;
 
 /**
  * 公司薪资计算参数Mapper接口

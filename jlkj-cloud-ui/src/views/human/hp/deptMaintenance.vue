@@ -836,7 +836,7 @@ export default {
       treeselect(this.queryParams3).then(response => {
         this.deptOptions = response.data
         this.expandedKeys.push(response.data[0].id);
-        this.queryParams.deptId=this.expandedKeys[0];
+        this.queryParams.deptId=response.data[0].id;
         this.getList()
       })
       treeselect().then(response => {
@@ -1012,8 +1012,6 @@ export default {
     resetQuery() {
       this.resetForm('queryForm')
       this.compId = this.user.compId;
-      this.queryParams.deptId=this.expandedKeys[0];
-      this.handleQuery()
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

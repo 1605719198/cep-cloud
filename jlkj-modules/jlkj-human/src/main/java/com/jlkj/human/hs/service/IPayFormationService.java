@@ -1,7 +1,7 @@
 package com.jlkj.human.hs.service;
 
-import com.jlkj.human.hs.domain.PayFormation;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hs.domain.PayFormation;
 
 /**
 * @author 89373

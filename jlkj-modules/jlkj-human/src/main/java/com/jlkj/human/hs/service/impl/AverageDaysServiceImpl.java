@@ -1,13 +1,13 @@
 package com.jlkj.human.hs.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.human.hs.domain.AverageDays;
+import com.jlkj.human.hs.mapper.AverageDaysMapper;
+import com.jlkj.human.hs.service.IAverageDaysService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hs.mapper.AverageDaysMapper;
-import com.jlkj.human.hs.domain.AverageDays;
-import com.jlkj.human.hs.service.IAverageDaysService;
+
+import java.util.List;
 
 /**
  * 各公司平均天数设定Service业务层处理
