@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.PerformanceBasisMapper">
+    
+    <resultMap type="PerformanceBasis" id="PerformanceBasisResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="isShowno"    column="is_showno"    />
+        <result property="isChecked"    column="is_checked"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="parentid"    column="parentid"    />
+        <result property="parents"    column="parents"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+
+    <resultMap type="BasisOptionsDTO" id="BasisOptions">
+        <result property="id"    column="id"    />
+        <result property="dicNo"    column="code"    />
+        <result property="dicName"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="compId"    column="comp_id"    />
+    </resultMap>
+
+    <sql id="selectPerformanceBasisVo">
+        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_pa_performance_basis
+    </sql>
+
+    <select id="selectPerformanceBasisList" parameterType="PerformanceBasis" resultMap="PerformanceBasisResult">
+        <include refid="selectPerformanceBasisVo"/>
+        <where>
+            <if test="name!=null and name!=''"> and name like concat('%', #{name}, '%')</if>
+            <if test="code!=null and code!=''"> and code =#{code}</if>
+            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or comp_id ='000') </if>
+            <if test="id!=null and id!=''"> and parentid =#{id}</if>
+        </where>
+        order by id
+    </select>
+
+    
+    <select id="selectPerformanceBasisById" parameterType="Long" resultMap="PerformanceBasisResult">
+        <include refid="selectPerformanceBasisVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerformanceBasis" parameterType="PerformanceBasis" useGeneratedKeys="true" keyProperty="id">
+        insert into human_pa_performance_basis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="status != null">status,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="isShowno != null">is_showno,</if>
+            <if test="isChecked != null">is_checked,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="parentid != null">parentid,</if>
+            <if test="parents != null">parents,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="status != null">#{status},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="isShowno != null">#{isShowno},</if>
+            <if test="isChecked != null">#{isChecked},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="parentid != null">#{parentid},</if>
+            <if test="parents != null">#{parents},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerformanceBasis" parameterType="PerformanceBasis">
+        update human_pa_performance_basis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="isShowno != null">is_showno = #{isShowno},</if>
+            <if test="isChecked != null">is_checked = #{isChecked},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="parentid != null">parentid = #{parentid},</if>
+            <if test="parents != null">parents = #{parents},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerformanceBasisById" parameterType="Long">
+        delete from human_pa_performance_basis where id = #{id}
+    </delete>
+
+    <delete id="deletePerformanceBasisByIds" parameterType="String">
+        delete from human_pa_performance_basis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectAttendencebasisByParentid" parameterType="Long" resultMap="BasisOptions">
+        <include refid="selectPerformanceBasisVo"/>
+        where parentid = #{parentid}
+    </select>
+
+
+    <select id="selectAttendencebasisParentByCode" parameterType="String" resultMap="PerformanceBasisResult">
+        select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_pa_performance_basis
+        where code = #{code}
+    </select>
+
+
+    <select id="queryRepetitivedata" resultType="Int" parameterType="PerformanceBasis">
+        select count(*) from human_pa_performance_basis
+        <where>
+            <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
+            <if test="code!=null and code!=''"> and code =#{code}</if>
+            <if test="id!=null and id!=''"> and id !=#{id}</if>
+            and parentid = 1
+        </where>
+    </select>
+</mapper>
