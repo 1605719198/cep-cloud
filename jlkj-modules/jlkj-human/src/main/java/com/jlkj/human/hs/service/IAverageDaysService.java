@@ -1,7 +1,8 @@
 package com.jlkj.human.hs.service;
 
-import java.util.List;
 import com.jlkj.human.hs.domain.AverageDays;
+
+import java.util.List;
 
 /**
  * 各公司平均天数设定Service接口

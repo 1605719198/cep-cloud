@@ -1,17 +1,16 @@
 package com.jlkj.human.hs.service.impl;
 
-import java.security.Security;
-import java.util.Date;
-import java.util.List;
-
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hs.domain.PayTableFormulaParam;
 import com.jlkj.human.hs.dto.PayTableFormulaParamDTO;
+import com.jlkj.human.hs.mapper.PayTableFormulaParamMapper;
+import com.jlkj.human.hs.service.IPayTableFormulaParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hs.mapper.PayTableFormulaParamMapper;
-import com.jlkj.human.hs.domain.PayTableFormulaParam;
-import com.jlkj.human.hs.service.IPayTableFormulaParamService;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 公司薪资计算参数Service业务层处理

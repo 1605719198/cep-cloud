@@ -1,7 +1,7 @@
 package com.jlkj.human.hs.mapper;
 
-import com.jlkj.human.hs.domain.PayFormation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.hs.domain.PayFormation;
 
 /**
 * @author 89373
