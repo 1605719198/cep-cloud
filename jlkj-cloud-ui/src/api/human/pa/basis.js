@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询员工出勤基本资料维护列表
 export function listBasis(query) {
   return request({
-    url: '/human/Basis/list',
+    url: '/human/basis/list',
     method: 'get',
     params: query
   })
