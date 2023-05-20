@@ -265,13 +265,13 @@
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>
     <calTypePOP ref="selectPOP4" @pop="getCalTypePOP4"/>
-    <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
+    <acctcodeCorpPop ref="selectAcctCodeCorpPop" :companyId="this.queryParams.companyId" @ok="getAcctCodeCorpPop"/>
   </div>
 </template>
 <script>
 import {
   listVoucher, getVoucher, delVoucher,
-  addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher, listLastVoucher,
+  addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher,
   updateVoucherStatus,updateVoucherCross} from "@/api/finance/aa/voucher";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
@@ -902,6 +902,8 @@ export default {
         this.form.status='Y'
         this.form.postTime=new Date()
         this.form.potstuserName = '1'
+        this.form.isInspect = 'Y'
+        this.form.isInspect = 'Y'
         updateVoucherStatus(this.form).then(response => {
           this.$modal.msgSuccess("确认成功");
           this.open = false;
@@ -1050,13 +1052,13 @@ export default {
           return
         }
       }
+        this.form.isInspect = 'Y'
       this.$refs["formDetail"].validate(valid => {
         if (valid) {
           this.$refs["form"].validate(valid => {
             if (valid) {
               this.form.companyId=this.queryParams.companyId
               this.form.detailList =  this.formDetail.detailList;
-
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
                   this.$modal.msgSuccess("修改成功");
@@ -1066,7 +1068,6 @@ export default {
                 });
               } else {
                 addVoucher(this.form).then(response => {
-                  console.log(response);
                   if (!!response.msg){
                     this.$message.error(response.msg);
                     return

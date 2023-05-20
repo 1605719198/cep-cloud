@@ -1,7 +1,8 @@
 package com.jlkj.human.hd.service;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.TravelApplication;
+
+import java.util.List;
 
 /**
  * 出差申请Service接口

@@ -62,9 +62,9 @@
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isIncHol"/>
         </template>
       </el-table-column>
-      <el-table-column label="常白班请假最小单位" align="center" prop="isNeedCheck" />
-      <el-table-column label="常白班请假最小单位" align="center" prop="minUnitDay" />
-      <el-table-column label="倒班请假最小单位" align="center" prop="minUnitTurns" />
+      <el-table-column label="常白班请假最小单位(小时)" align="center" prop="isNeedCheck" />
+      <el-table-column label="常白班请假最小单位(班次)" align="center" prop="minUnitDay" />
+      <el-table-column label="倒班请假最小单位(班次)" align="center" prop="minUnitTurns" />
       <el-table-column label="说明" align="center" prop="description" />
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">

@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="compId">
-        <el-select v-model="queryParams.compId" placeholder="请选择公司别" >
+        <el-select v-model="queryParams.compId" placeholder="请选择公司别">
           <el-option
             v-for="dict in companyList"
             :key="dict.deptCode"
@@ -361,7 +361,7 @@
 </template>
 
 <script>
-import '@/assets/styles/humanStyles.scss';
+import '@/assets/styles/humanStyles.scss'
 import {
   listPersonHoliday,
   getPersonHoliday,
@@ -380,16 +380,14 @@ import { homeLeaveHoliday } from '@/api/human/hd/homeLeaveHoliday'
 import { getClassMasterByPerson } from '@/api/human/hd/personClassMaster'
 import { getCompHolidaySetting } from '@/api/human/hd/holidaysetting'
 import { getHoliday } from '@/api/human/hd/holidayTable'
-import { queryShiftCode,getShiftCodeByPerson } from '@/api/human/hd/shiftCode'
+import { queryShiftCode, getShiftCodeByPerson } from '@/api/human/hd/shiftCode'
 
 export default {
   name: 'PersonHoliday',
-  dicts: ['sys_yes_no', 'sys_classtype'],
+  dicts: ['sys_yes_no'],
   components: { DictTagHumanBasis, selectUser },
   data() {
     return {
-      //状态
-      status: '01',
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
@@ -447,30 +445,21 @@ export default {
           { required: true, message: '不能为空', trigger: 'change' }
         ],
         empNo: [
-          { required: true, message: '员工工号不能为空', trigger: 'blur'}
+          { required: true, message: '员工工号不能为空', trigger: 'blur' }
         ],
         leaTypeId: [
-          { required: true, message: '请选择请假类别', trigger: 'change'}
+          { required: true, message: '请选择请假类别', trigger: 'change' }
         ],
         startDate: [
-          { required: true, message: '请假开始时间不能为空', trigger: 'change'}
+          { required: true, message: '请假开始时间不能为空', trigger: 'change' }
         ],
         endDate: [
-          { required: true, message: '请假结束时间不能为空', trigger: 'change'}
-        ],
+          { required: true, message: '请假结束时间不能为空', trigger: 'change' }
+        ]
       }
     }
   },
   watch: {
-    'form.empNo': {
-      handler(val) {
-        if (val) {
-
-        }
-      },
-      deep: true,
-      immediate: false
-    },
     'form.leaTypeId': {
       handler(val) {
         if (val) {
@@ -490,14 +479,7 @@ export default {
       immediate: true
     }
   },
-  computed: {
-    monthDays() {
-
-    },
-    yearDays() {
-
-    }
-  },
+  computed: {},
   created() {
     this.initData()
     this.getCompanyList()
@@ -505,6 +487,37 @@ export default {
     this.getDisc()
   },
   methods: {
+    personHoliday(){
+      this.getShiftMode();
+    },
+    //获取轮班方式
+    getShiftMode() {
+      var params = {
+        compId: this.form.compId,
+        empId: this.form.empId
+      }
+      getClassMasterByPerson(params).then(response => {
+        this.shiftMode = response.data.shiftmodeName;
+        console.log('员工工号为'+empId+'的轮班方式编码为:'+this.shiftMode)
+        //如果轮班方式是常白班：01
+        var cbMode = '01'
+        if (this.shiftMode == cbMode) {
+          //班次：常白班
+          var cbCode = '01'
+          var shiftCode = {
+            shiftCode: cbCode,
+            compId: this.form.compId
+          }
+          queryShiftCode(shiftCode).then(response => {
+            this.shiftCodeData = response.data;
+            console.log('常白班的班次数据为：'+JSON.stringify(this.shiftCodeData))
+          })
+        } else {
+
+        }
+      })
+    },
+
     /** 工时计算 */
     computeManhour(e) {
       //如果轮班方式是常白班：01
@@ -534,8 +547,8 @@ export default {
             var workMinuteDay = parseInt(this.shiftCodeData.conHour) * 60 + parseInt(this.shiftCodeData.conMin)
             this.holidayTable.forEach((value, index, array) => {
               //请假时间
-              var hour1;
-              var min1;
+              var hour1
+              var min1
               //工作开始时间
               var hour2 = parseInt(this.shiftCodeData.startHour)
               var min2 = parseInt(this.shiftCodeData.startMin)
@@ -630,30 +643,30 @@ export default {
             }
           }
         )
-      }else{
+      } else {
         //起止请假时间小时分钟
         var startHour = parseInt(String(startDate.getHours()).padStart(2, '0'))
         var startMin = parseInt(String(startDate.getMinutes()).padStart(2, '0'))
         var endHour = parseInt(String(endDate.getHours()).padStart(2, '0'))
         var endMin = parseInt(String(endDate.getMinutes()).padStart(2, '0'))
-        var params={
+        var params = {
           empId: this.form.empNo,
-          startDate: getDateTime(1,startDate),
-          endDate: getDateTime(1,endDate),
-          compId: this.form.compId,
+          startDate: getDateTime(1, startDate),
+          endDate: getDateTime(1, endDate),
+          compId: this.form.compId
         }
-        getShiftCodeByPerson(params).then(response =>{
-          this.shiftCodeData = response.rows;
+        getShiftCodeByPerson(params).then(response => {
+          this.shiftCodeData = response.rows
           //总工作分钟数
-          var workMinuteAll = 0;
+          var workMinuteAll = 0
           //一天理论工作分钟数
           var workMinuteDay = parseInt(this.shiftCodeData[0].conHour) * 60 + parseInt(this.shiftCodeData[0].conMin)
-          if(response.total!=restDays){
+          if (response.total != restDays) {
             this.$modal.msgError('请假时间内有未排班天数')
-          }else{
-            response.rows.forEach((value)=>{
+          } else {
+            response.rows.forEach((value) => {
               //工作时间
-              var workMinute = 0;
+              var workMinute = 0
               //工作开始时间
               var hour1 = parseInt(value.startHour)
               var min1 = parseInt(value.startMin)
@@ -664,55 +677,53 @@ export default {
               var hour3 = parseInt(value.endHour)
               var min3 = parseInt(value.endMin)
               //是否跨天
-              var overDay = (hour1+hour2+Math.floor((min1+min2)/60))>24? 'Y':'N'
-              if(value.restCount==0){
-                if (overDay ==='Y'){
-                  console.log('跨天：'+value.shiftCode)
-                  if(value.createDate===getDateTime(1,startDate)){
+              var overDay = (hour1 + hour2 + Math.floor((min1 + min2) / 60)) > 24 ? 'Y' : 'N'
+              if (value.restCount == 0) {
+                if (overDay === 'Y') {
+                  console.log('跨天：' + value.shiftCode)
+                  if (value.createDate === getDateTime(1, startDate)) {
                     //分段判定，早于工作时间，工作时间内，晚于工作时间
-                    if(this.compareTime(startHour,startMin,hour1,min1)<=0){
-                      workMinute = workMinuteDay;
-                    }else if(this.compareTime(startHour,startMin,hour3,min3)>=0){
-                      workMinute = 0;
-                    }else{
-                      workMinute = (hour3-startHour)*60+(min3-startMin)
+                    if (this.compareTime(startHour, startMin, hour1, min1) <= 0) {
+                      workMinute = workMinuteDay
+                    } else if (this.compareTime(startHour, startMin, hour3, min3) >= 0) {
+                      workMinute = 0
+                    } else {
+                      workMinute = (hour3 - startHour) * 60 + (min3 - startMin)
                     }
-                  }else if(value.createDate===getDateTime(1,endDate)){
-                    if(this.compareTime(endHour,endMin,hour1,min1)<=0){
-                      workMinute = 0;
-                    }else if(this.compareTime(endHour,endHour,hour3,min3)>=0){
-                      workMinute = workMinuteDay;
-                    }else{
-                      workMinute = (endHour-hour1)*60+(endMin-min1)
+                  } else if (value.createDate === getDateTime(1, endDate)) {
+                    if (this.compareTime(endHour, endMin, hour1, min1) <= 0) {
+                      workMinute = 0
+                    } else if (this.compareTime(endHour, endHour, hour3, min3) >= 0) {
+                      workMinute = workMinuteDay
+                    } else {
+                      workMinute = (endHour - hour1) * 60 + (endMin - min1)
                     }
-                  }else{
-                    workMinute = workMinuteDay;
+                  } else {
+                    workMinute = workMinuteDay
                   }
-
-
-                }else{
-                  console.log('非跨天:'+value.shiftCode)
-                  if(value.createDate===getDateTime(1,startDate)){
+                } else {
+                  console.log('非跨天:' + value.shiftCode)
+                  if (value.createDate === getDateTime(1, startDate)) {
                     //分段判定，早于工作时间，工作时间内，晚于工作时间
-                    if(this.compareTime(startHour,startMin,hour1,min1)<=0){
-                      workMinute = workMinuteDay;
-                    }else if(this.compareTime(startHour,startMin,hour3,min3)>=0){
-                      workMinute = 0;
-                    }else{
-                      workMinute = (hour3-startHour)*60+(min3-startMin)
+                    if (this.compareTime(startHour, startMin, hour1, min1) <= 0) {
+                      workMinute = workMinuteDay
+                    } else if (this.compareTime(startHour, startMin, hour3, min3) >= 0) {
+                      workMinute = 0
+                    } else {
+                      workMinute = (hour3 - startHour) * 60 + (min3 - startMin)
                     }
-                  }else if(value.createDate===getDateTime(1,endDate)){
-                    if(this.compareTime(endHour,endMin,hour1,min1)<=0){
-                      workMinute = 0;
-                    }else if(this.compareTime(endHour,endHour,hour3,min3)>=0){
-                      workMinute = workMinuteDay;
-                    }else{
-                      workMinute = (endHour-hour1)*60+(endMin-min1)
+                  } else if (value.createDate === getDateTime(1, endDate)) {
+                    if (this.compareTime(endHour, endMin, hour1, min1) <= 0) {
+                      workMinute = 0
+                    } else if (this.compareTime(endHour, endHour, hour3, min3) >= 0) {
+                      workMinute = workMinuteDay
+                    } else {
+                      workMinute = (endHour - hour1) * 60 + (endMin - min1)
                     }
-                  }else{
-                    workMinute = workMinuteDay;
+                  } else {
+                    workMinute = workMinuteDay
                   }
-                  workMinuteAll +=workMinute;
+                  workMinuteAll += workMinute
                 }
               }
             })
@@ -938,31 +949,6 @@ export default {
         this.form.empName = userName
         queryNewPostNameAndChangeDetail(this.form).then(res => {
           this.form.postname = res.data.list1[0].newPostName
-        })
-        var params = {
-          compId: compId,
-          empId: empId
-        }
-        getClassMasterByPerson(params).then(response => {
-          this.shiftMode = response.data.shiftmodeName
-          //如果轮班方式是常白班：01
-          var cbMode = '01'
-          if (this.shiftMode == cbMode) {
-            //班次：常白班
-            var cbCode = '01'
-            var shiftCode = {
-              shiftCode: cbCode,
-              compId: this.form.compId
-            }
-            queryShiftCode(shiftCode).then(response => {
-              this.shiftCodeData = response.data
-            })
-          }else{
-            // alert(this.shiftMode)
-            //getShiftCodeByPerson
-
-          }
-
         })
       } else {
         this.queryParams.empNo = empId

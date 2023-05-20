@@ -1,7 +1,8 @@
 package com.jlkj.human.hs.mapper;
 
-import java.util.List;
 import com.jlkj.human.hs.domain.ProjectPay;
+
+import java.util.List;
 
 /**
  * 薪酬项目Mapper接口

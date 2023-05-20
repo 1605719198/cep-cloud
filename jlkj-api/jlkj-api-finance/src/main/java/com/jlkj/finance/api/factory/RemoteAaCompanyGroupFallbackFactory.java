@@ -1,6 +1,5 @@
 package com.jlkj.finance.api.factory;
 
-import com.jlkj.common.core.domain.R;
 import com.jlkj.finance.api.RemoteAaCompanyGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

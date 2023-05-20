@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
-import com.jlkj.human.hm.domain.ChangeDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.hm.domain.ChangeDetail;
 
 /**
 * @author 89373

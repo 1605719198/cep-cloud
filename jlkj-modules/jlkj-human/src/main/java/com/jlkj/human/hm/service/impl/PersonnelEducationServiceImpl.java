@@ -2,8 +2,8 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.PersonnelEducation;
-import com.jlkj.human.hm.service.IPersonnelEducationService;
 import com.jlkj.human.hm.mapper.PersonnelEducationMapper;
+import com.jlkj.human.hm.service.IPersonnelEducationService;
 import org.springframework.stereotype.Service;
 
 /**

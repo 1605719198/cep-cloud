@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.mapper;
 
-import com.jlkj.human.hm.domain.PersonnelOccupation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.hm.domain.PersonnelOccupation;
 
 /**
 * @author 89373

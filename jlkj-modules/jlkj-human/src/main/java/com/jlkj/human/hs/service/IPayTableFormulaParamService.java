@@ -1,8 +1,9 @@
 package com.jlkj.human.hs.service;
 
-import java.util.List;
 import com.jlkj.human.hs.domain.PayTableFormulaParam;
 import com.jlkj.human.hs.dto.PayTableFormulaParamDTO;
+
+import java.util.List;
 
 /**
  * 公司薪资计算参数Service接口

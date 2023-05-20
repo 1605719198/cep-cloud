@@ -2,8 +2,8 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.Encourage;
-import com.jlkj.human.hm.service.IEncourageService;
 import com.jlkj.human.hm.mapper.EncourageMapper;
+import com.jlkj.human.hm.service.IEncourageService;
 import org.springframework.stereotype.Service;
 
 /**

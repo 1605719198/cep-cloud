@@ -55,6 +55,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by a.voucher_no
     </select>
+
+    <select id="selectFinanceAaVoucherBatchExecutionList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
+        <include refid="selectFinanceAaVoucherDetailVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
     
     <select id="selectFinanceAaVoucherDetailById" parameterType="String" resultMap="FinanceAaVoucherDetailResult">
         <include refid="selectFinanceAaVoucherDetailVo"/>

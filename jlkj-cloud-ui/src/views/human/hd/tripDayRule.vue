@@ -35,9 +35,9 @@
         <el-select v-model="queryParams.area" placeholder="请选择城市" clearable>
           <el-option
             v-for="dict in cityList"
-            :key="dict.id"
-            :label="dict.area"
-            :value="dict.area"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
           />
         </el-select>
       </el-form-item>
@@ -87,7 +87,11 @@
           <dict-tag-human :options="attendenceOptions.Country" :value="scope.row.nation"/>
         </template>
       </el-table-column>
-      <el-table-column label="城市" align="center" prop="area"/>
+      <el-table-column label="城市" align="center" prop="area">
+        <template v-slot="scope">
+          <dict-tag-human :options="cityList" :value="scope.row.area"/>
+        </template>
+      </el-table-column>
       <el-table-column label="住宿费" align="center" prop="lodgAllow"/>
       <el-table-column label="交通费" align="center" prop="trafficAllow"/>
       <el-table-column label="伙食费" align="center" prop="foodAllow"/>
@@ -180,7 +184,14 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="城市" prop="area">
-              <el-input v-model="form.area" placeholder="请输入城市" maxlength="10"/>
+              <el-select v-model="form.area" placeholder="请选择城市" clearable>
+                <el-option
+                  v-for="dict in cityList"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -264,6 +275,7 @@ import {
   updateTripDayRule,
   listTripDayArea,
 } from '@/api/human/hd/tripDayRule'
+import { listTripAddress } from '@/api/human/hd/tripAddressRule'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
@@ -337,6 +349,12 @@ export default {
       }
     }
   },
+  watch: {
+    'queryParams.compId'(val) {
+      this.getList();
+      this.getDisc();
+    }
+  },
   created() {
     this.initData()
     this.getCompanyList()
@@ -377,7 +395,7 @@ export default {
       getBaseInfo(this.baseInfo).then(response => {
         this.baseInfoData = response.data
       })
-      listTripDayArea(this.queryParams).then(response => {
+      listTripAddress(this.queryParams).then(response => {
         this.cityList = response.rows;
       })
     },

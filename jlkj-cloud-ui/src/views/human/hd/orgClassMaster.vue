@@ -441,7 +441,7 @@ export default {
     },
     'queryParams.compId':{
       deep:true,
-      immediate:true,
+      immediate:false,
       handler:function( newV){
         this.getList();
         this.getTreeselect();
@@ -567,7 +567,11 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(val, userName,compId) {
+      if(this.open===true){
         this.form.empId = val;
+      }else{
+        this.queryParams.empId = val;
+      }
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
