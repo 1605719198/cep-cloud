@@ -2,8 +2,6 @@ package com.jlkj.finance.api;
 
 import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.ServiceNameConstants;
-import com.jlkj.common.core.domain.R;
-
 import com.jlkj.finance.api.factory.RemoteAaCompanyGroupFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
