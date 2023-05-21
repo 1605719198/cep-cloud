@@ -38,7 +38,7 @@ public class CardRecord extends BaseEntity
     private String empNo;
 
     /** 刷卡时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "刷卡时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date cardTime;
 

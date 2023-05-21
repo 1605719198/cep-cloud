@@ -34,7 +34,7 @@ public interface ISocialSecurityService
      * @param socialSecurityList 社保公积金缴费比例设定
      * @return 结果
      */
-    public Object insertSocialSecurity(List<SocialSecurity> socialSecurityList);
+    public int insertSocialSecurity(List<SocialSecurity> socialSecurityList);
 
     /**
      * 修改社保公积金缴费比例设定

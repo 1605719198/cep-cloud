@@ -40,6 +40,8 @@ public class SocialSecurityController extends BaseController
         return getDataTable(list);
     }
 
+
+
     /**
      * 导出社保公积金缴费比例设定列表
      */
@@ -64,12 +66,12 @@ public class SocialSecurityController extends BaseController
     }
 
     /**
-     * 新增社保公积金缴费比例设定
+     * 保存社保公积金缴费比例设定详细信息
      */
     @RequiresPermissions("human:socialSecurity:add")
-    @Log(title = "社保公积金缴费比例设定", businessType = BusinessType.INSERT)
-    @PostMapping
-    public Object add(@RequestBody List<SocialSecurity> socialSecurityList)
+    @Log(title = "社保公积金缴费比例设定保存", businessType = BusinessType.INSERT)
+    @PostMapping("/save")
+    public int save(@RequestBody List<SocialSecurity> socialSecurityList)
     {
         return socialSecurityService.insertSocialSecurity(socialSecurityList);
     }

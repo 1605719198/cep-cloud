@@ -31,10 +31,10 @@ public interface SocialSecurityMapper
     /**
      * 新增社保公积金缴费比例设定
      * 
-     * @param socialSecurityList 社保公积金缴费比例设定
+     * @param socialSecurity 社保公积金缴费比例设定
      * @return 结果
      */
-    public int insertSocialSecurity(List<SocialSecurity> socialSecurityList);
+    public int insertSocialSecurity(SocialSecurity socialSecurity);
 
     /**
      * 修改社保公积金缴费比例设定
