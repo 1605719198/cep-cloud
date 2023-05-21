@@ -20,7 +20,7 @@ export function getSocialSecurity(id) {
 // 新增社保公积金缴费比例设定
 export function addSocialSecurity(data) {
   return request({
-    url: '/human/socialSecurity',
+    url: '/human/socialSecurity/save',
     method: 'post',
     data: data
   })

@@ -9,7 +9,7 @@
               <div style="background:#409EFF" align="center">
                 缴费地区
               </div>
-                <div id="changeColor" v-for="dict in salaryOptions.SocialSecurity" align="center" @click="changePostName(dict)">
+                <div id="changeColor" v-for="(dict,index) in salaryOptions.SocialSecurity" align="center" @click="changePostName(dict,index)">
                   {{dict.dicName}}
                 </div>
             </div>
@@ -33,7 +33,7 @@
                       </el-form-item>
                       <!-- 操作按钮 -->
                       <el-form-item>
-                      <el-button type="primary"  plain icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                      <el-button type="primary"  plain size="mini" @click="handleQuery">搜索</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
@@ -42,7 +42,6 @@
                         <el-button
                           type="danger"
                           plain
-                          icon="el-icon-delete"
                           size="mini"
                           :disabled="multiple"
                           @click="handleDelete"
@@ -55,12 +54,12 @@
                 <el-row>
                   <el-form :inline="true">
                     <el-form-item label="缴费地区" prop="payAreaId">
-                      <el-select v-model="queryParams.payAreaId" placeholder="请选择缴费地区">
+                      <el-select v-model="queryParams.payAreaId" placeholder="请选择缴费地区" disabled>
                         <el-option
-                          v-for="dict in salaryList"
-                          :key="dict.deptCode"
-                          :label="dict.companyName"
-                          :value="dict.deptCode"
+                          v-for="dict in salaryOptions.SocialSecurity"
+                          :key="dict.dicNo"
+                          :label="dict.dicName"
+                          :value="dict.dicNo"
                         />
                       </el-select>
                     </el-form-item>
@@ -74,21 +73,19 @@
                       </el-date-picker>
                     </el-form-item>
                   </el-form>
-
                 </el-row>
               </div>
-
     <div>
       <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="socialSecurityList" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="社保公积金项目" align="center" prop="comPro" width="120">
-        <template slot-scope="scope">
-          <el-select v-model="queryParams.salaryProjectId" >
+      <el-table-column label="社保公积金项目" align="center" prop="salaryProjectId" width="120">
+        <template v-slot="scope">
+          <el-select v-model="scope.row.salaryProjectId" >
             <el-option
-              v-for="dict in salaryOptions.SocialSecurity"
-              :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
+              v-for="dict in salaryList"
+              :key="dict.id"
+              :label="dict.payProName"
+              :value="dict.id"
             />
           </el-select>
         </template>
@@ -129,10 +126,10 @@
         </template>
       </el-table-column>
       <el-table-column label="进位方式" align="center" prop="carryMode">
-        <template slot-scope="scope">
-          <el-select v-model="queryParams.salaryProjectId" >
+        <template v-slot="scope">
+          <el-select v-model="scope.row.carryMode" >
             <el-option
-              v-for="dict in salaryOptions.SocialSecurity"
+              v-for="dict in salaryOptions.abc"
               :key="dict.dicNo"
               :label="dict.dicName"
               :value="dict.dicNo"
@@ -141,13 +138,13 @@
         </template>
       </el-table-column>
       <el-table-column label="生效日期" align="center" prop="effectDate" >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
@@ -157,20 +154,13 @@
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="onLoad"
     />
     </div>
             </div>
           </el-col>
-    <!-- 添加或修改社保公积金缴费比例设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
+
+
       </el-row>
     </div>
   </div>
@@ -191,16 +181,19 @@ export default {
     return {
       //薪资列表
       salaryList:[],
+      multipleSelection: [],
       //tab方向
       tabPosition: 'left',
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
       multiple: true,
+      //样式数组
+      styleList:['','',''],
       //表格属性
       table: {
         border: true,
@@ -217,7 +210,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['SocialSecurity'],
+        optionsType: ['SocialSecurity','abc'],
         compId:null,
       },
       // 显示搜索条件
@@ -235,6 +228,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         date: null,
+        payAreaId: null,
       },
       // 表单参数
       form: {},
@@ -246,14 +240,16 @@ export default {
   created() {
     this.getSalaryList()
     this.initData();
-    this.getList();
     this.getDisc();
   },
   methods: {
     /** 查询列表 */
     getSalaryList(){
-      listSalaryProjectBasis().then(response =>{
-          this.salaryList = response.data
+      let obj={
+        id:'62',
+      }
+      listSalaryProjectBasis(obj).then(response =>{
+          this.salaryList = response.data.rows
         }
       )
     },
@@ -263,15 +259,15 @@ export default {
       this.nickName= this.$store.state.user.userInfo.nickName;
       this.logincompId= this.$store.state.user.userInfo.compId;
     },
-    /** 查询社保公积金缴费比例设定列表 */
-    getList() {
-      this.loading = true;
-      listSocialSecurity(this.queryParams).then(response => {
-        this.socialSecurityList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
+    // /** 查询社保公积金缴费比例设定列表 */
+    // getList() {
+    //   this.loading = true;
+    //   listSocialSecurity(this.queryParams).then(response => {
+    //     this.socialSecurityList = response.rows;
+    //     this.total = response.total;
+    //     this.loading = false;
+    //   });
+    // },
     //表单值设置
     setForm(e){
       this.form.creator = this.nickName;
@@ -323,7 +319,7 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.onLoad();
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -333,6 +329,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
+      this.multipleSelection = selection;
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -352,35 +349,16 @@ export default {
         this.title = "修改社保公积金缴费比例设定";
       });
     },
-    /** 日期查询范围变更*/
+    /** 日期查询变更*/
     dateFormat(val){
-      this.queryParams.date =val[0];
+      this.queryParams.date =this.queryParams.effectDate;
     },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.id != null) {
-            updateSocialSecurity(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addSocialSecurity(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
+
     /** 保存按钮 */
     handleSave() {
-      addSalaryProjectBasis(this.multipleSelection).then(res => {
+      addSocialSecurity(this.multipleSelection).then(res => {
         this.$modal.msgSuccess("保存成功");
-        this.getList();
+        this.onLoad();
       })
     },
 
@@ -390,19 +368,13 @@ export default {
       this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function() {
         return delSocialSecurity(ids);
       }).then(() => {
-        this.getList();
+        this.onLoad();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/socialSecurity/export', {
-        ...this.queryParams
-      }, `socialSecurity_${new Date().getTime()}.xlsx`)
-    },
     //点击节点方法
-    changePostName(data){
-      this.queryParams.id = data.id;
+    changePostName(data,index){
+      this.queryParams.payAreaId = data.dicNo;
       this.socialSecurityList = []
       this.onLoad()
     },
@@ -416,12 +388,10 @@ export default {
       }, error => {
         this.table.loading = false;
         window.console.log(error);
-
         const newLine = {
           creator: this.nickName,
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
-
           parentid: this.queryParams.id,
           isShowno: "0",
         }
@@ -442,6 +412,7 @@ export default {
     addLine(row) {
       if (this.socialSecurityList.length == row.index + 1) {
         const newLine = {
+          id: null,
           creator: this.nickName,
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
@@ -452,6 +423,7 @@ export default {
           payProCode: "",
           parentid: this.queryParams.id,
           isShowno: "0",
+          payAreaId: null,
         }
         this.index++
         this.socialSecurityList.push(newLine)

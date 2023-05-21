@@ -21,6 +21,10 @@ public class SocialSecurity extends BaseEntity
     /** 主键 */
     private String id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date date;
+
+
     /** 社保公积金项目ID */
     @Excel(name = "社保公积金项目ID")
     private Long salaryProjectId;
@@ -97,6 +101,15 @@ public class SocialSecurity extends BaseEntity
     public Long getSalaryProjectId()
     {
         return salaryProjectId;
+    }
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
+    public Date getDate()
+    {
+        return date;
     }
     public void setComPro(String comPro)
     {
@@ -229,6 +242,7 @@ public class SocialSecurity extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+                .append("date", getDate())
             .append("salaryProjectId", getSalaryProjectId())
             .append("comPro", getComPro())
             .append("comMon", getComMon())

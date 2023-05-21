@@ -334,14 +334,9 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery(e) {
-      if(e===0){
+      if(this.judgeQuery()){
         this.queryParams.pageNum = 1;
         this.getList();
-      }else{
-        if(this.judgeQuery()){
-          this.queryParams.pageNum = 1;
-          this.getList();
-        }
       }
     },
     /** 查询条件判定 */
@@ -356,7 +351,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery(0);
+      this.holidayList = [];
+      this.total = 0;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
