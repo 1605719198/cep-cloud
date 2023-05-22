@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.PerformanceLevelMapper">
+    
+    <resultMap type="PerformanceLevel" id="PerformanceLevelResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="perfTierCode"    column="perf_tier_code"    />
+        <result property="perfIterName"    column="perf_iter_name"    />
+        <result property="perfTypeId"    column="perf_type_id"    />
+        <result property="perfCoefficient"    column="perf_coefficient"    />
+        <result property="remark"    column="remark"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorName"    column="creator_name"    />
+        <result property="creatdate"    column="creatDate"    />
+    </resultMap>
+
+    <sql id="selectPerformanceLevelVo">
+        select uuid, comp_id, perf_tier_code, perf_iter_name, perf_type_id, perf_coefficient, remark, creator, creator_id, creator_name, creatDate from human_pa_performance_level
+    </sql>
+
+    <select id="selectPerformanceLevelList" parameterType="PerformanceLevel" resultMap="PerformanceLevelResult">
+        <include refid="selectPerformanceLevelVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="perfTypeId != null  and perfTypeId != ''"> and perf_type_id = #{perfTypeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerformanceLevelByUuid" parameterType="String" resultMap="PerformanceLevelResult">
+        <include refid="selectPerformanceLevelVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertPerformanceLevel" parameterType="PerformanceLevel">
+        insert into human_pa_performance_level
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="perfTierCode != null">perf_tier_code,</if>
+            <if test="perfIterName != null">perf_iter_name,</if>
+            <if test="perfTypeId != null">perf_type_id,</if>
+            <if test="perfCoefficient != null">perf_coefficient,</if>
+            <if test="remark != null">remark,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorName != null">creator_name,</if>
+            <if test="creatdate != null">creatDate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="perfTierCode != null">#{perfTierCode},</if>
+            <if test="perfIterName != null">#{perfIterName},</if>
+            <if test="perfTypeId != null">#{perfTypeId},</if>
+            <if test="perfCoefficient != null">#{perfCoefficient},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorName != null">#{creatorName},</if>
+            <if test="creatdate != null">#{creatdate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerformanceLevel" parameterType="PerformanceLevel">
+        update human_pa_performance_level
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="perfTierCode != null">perf_tier_code = #{perfTierCode},</if>
+            <if test="perfIterName != null">perf_iter_name = #{perfIterName},</if>
+            <if test="perfTypeId != null">perf_type_id = #{perfTypeId},</if>
+            <if test="perfCoefficient != null">perf_coefficient = #{perfCoefficient},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorName != null">creator_name = #{creatorName},</if>
+            <if test="creatdate != null">creatDate = #{creatdate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deletePerformanceLevelByUuid" parameterType="String">
+        delete from human_pa_performance_level where uuid = #{uuid}
+    </delete>
+
+    <delete id="deletePerformanceLevelByUuids" parameterType="String">
+        delete from human_pa_performance_level where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

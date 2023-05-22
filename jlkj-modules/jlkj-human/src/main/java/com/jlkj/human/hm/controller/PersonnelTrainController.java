@@ -12,7 +12,6 @@ import com.jlkj.human.hm.dto.PersonnelTrainDTO;
 import com.jlkj.human.hm.service.IPersonnelTrainService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

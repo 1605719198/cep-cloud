@@ -349,7 +349,6 @@ import { treeselect,selectCompany,queryFirstdeptByPerson,queryFirstdeptByDept } 
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getAttendenceOptions } from "@/api/human/hd/attendenceBasis";
 import { getDateTime } from "@/api/human/hd/ahumanUtils";
-import { getAvatorByUserName} from "@/api/system/user";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import '@/assets/styles/humanStyles.scss';
 export default {
@@ -442,7 +441,7 @@ export default {
     },
     'queryParams.compId':{
       deep:true,
-      immediate:true,
+      immediate:false,
       handler:function( newV){
         this.getList();
         this.getTreeselect();
@@ -568,7 +567,11 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(val, userName,compId) {
+      if(this.open===true){
         this.form.empId = val;
+      }else{
+        this.queryParams.empId = val;
+      }
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {

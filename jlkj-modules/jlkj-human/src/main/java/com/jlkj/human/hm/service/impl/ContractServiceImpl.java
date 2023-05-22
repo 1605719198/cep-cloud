@@ -2,8 +2,8 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.Contract;
-import com.jlkj.human.hm.service.IContractService;
 import com.jlkj.human.hm.mapper.ContractMapper;
+import com.jlkj.human.hm.service.IContractService;
 import org.springframework.stereotype.Service;
 
 /**

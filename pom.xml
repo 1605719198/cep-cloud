@@ -33,7 +33,7 @@
         <fastjson.version>2.0.20</fastjson.version>
         <jjwt.version>0.9.1</jjwt.version>
         <minio.version>8.2.2</minio.version>
-        <poi.version>5.2.3</poi.version>
+        <poi.version>4.1.2</poi.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable-thread-local.version>2.13.2</transmittable-thread-local.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
@@ -41,7 +41,7 @@
         <redisson.version>3.16.8</redisson.version>
         <hutool.version>5.7.20</hutool.version>
         <flowable.version>6.7.2</flowable.version>
-        <easyexcel.version>3.2.1</easyexcel.version>
+        <easyexcel.version>3.1.5</easyexcel.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -144,18 +144,6 @@
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.version}</version>
                 <exclusions>
-<!--                    <exclusion>-->
-<!--                        <groupId>javax.servlet</groupId>-->
-<!--                        <artifactId>servlet-api</artifactId>-->
-<!--                    </exclusion>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.apache.poi</groupId>-->
-<!--                        <artifactId>poi</artifactId>-->
-<!--                    </exclusion>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.apache.poi</groupId>-->
-<!--                        <artifactId>poi-ooxml</artifactId>-->
-<!--                    </exclusion>-->
                     <exclusion>
                         <groupId>org.apache.poi</groupId>
                         <artifactId>poi-ooxml-schemas</artifactId>
@@ -364,8 +352,8 @@
     <repositories>
         <repository>
             <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <name>nexus</name>
+            <url>http://10.32.100.189:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -375,8 +363,8 @@
     <pluginRepositories>
         <pluginRepository>
             <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <name>nexus</name>
+            <url>http://10.32.100.189:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

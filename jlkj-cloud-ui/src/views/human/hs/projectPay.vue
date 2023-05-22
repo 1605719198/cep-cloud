@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { listProjectPay, addProjectPay, listProjectPayTree } from '@/api/human/hs/projectPay'
+import { listProjectPay, saveProjectPay, listProjectPayTree } from '@/api/human/hs/projectPay'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import selectProjectPay from '@/views/components/human/selectView/hs/selectProjectPay'
 
@@ -143,12 +143,8 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
-      //登录人工号
-      userEmpId: null,
-      //登录人姓名
-      nickName: null,
-      //登录人公司
-      logincompId: null,
+      //登录用户信息
+      user:{},
       // 总条数
       total: 0,
       // 弹出层标题
@@ -185,7 +181,6 @@ export default {
       //选中项数据
       multipleSelection: []
     }
-
   },
   watch: {},
   created() {
@@ -195,9 +190,10 @@ export default {
   methods: {
     //初始化数据
     initData() {
-      this.userEmpId = this.$store.state.user.name
-      this.nickName = this.$store.state.user.userInfo.nickName
-      this.logincompId = this.$store.state.user.userInfo.compId
+      this.user.empNo = this.$store.state.user.userInfo.userName;
+      this.user.empId = this.$store.state.user.userInfo.userId;
+      this.user.empName = this.$store.state.user.userInfo.nickName;
+      this.user.compId = this.$store.state.user.userInfo.compId;
     },
     /** 查询集团级薪资项目输入维护列表 */
     getList() {
@@ -239,7 +235,7 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      addProjectPay(this.multipleSelection).then(res => {
+      saveProjectPay(this.multipleSelection).then(res => {
         this.$modal.msgSuccess('保存成功')
         this.getList()
       })
@@ -251,7 +247,7 @@ export default {
       for(let i = 0;i<this.multipleSelection.length;i++){
         this.multipleSelection[i].status = "1"
       }
-      addProjectPay(this.multipleSelection).then(res => {
+      saveProjectPay(this.multipleSelection).then(res => {
         this.$modal.msgSuccess("保存成功");
         this.getList();
       })
@@ -282,46 +278,19 @@ export default {
       listProjectPay(this.queryParams).then(response => {
         this.total = response.total
         this.tableData = response.rows
-        const newLine = {
-          payProCode: '',
-          payProName: '',
-          isSta: '',
-          staCon: '',
-          isPostPro: '',
-          isEmpPro: '',
-          isLov: '',
-          lovConId: '',
-          salaryDescribe: '',
-          status: '0',
-          payType: '1',
-          parentid: this.queryParams.id,
-          isShowno: '0',
-          creator: this.nickName,
-          creatorId: this.$store.state.user.name,
-          createDate: getDateTime(1)
-        }
-        this.tableData.push(newLine)
+        this.addLine();
         this.table.loading = false
       }, error => {
         this.table.loading = false
       })
     },
-    /** 添加下级操作 */
-    handlechild(row) {
-      this.reset()
-      this.form.parentid = row.id
-      this.form.creator = this.nickName
-      this.form.creatorId = this.$store.state.user.name
-      this.form.createDate = getDateTime(1)
-      this.open = true
-      this.title = '添加下级窗口'
-    },
+    //添加行index
     addIndex({ row, rowIndex }) {
       row.index = rowIndex
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.tableData.length == row.index + 1) {
+      if (!row||this.tableData.length == row.index + 1) {
         const newLine = {
           payProCode: '',
           payProName: '',
@@ -336,8 +305,9 @@ export default {
           payType: '1',
           parentid: this.queryParams.id,
           isShowno: '0',
-          creator: this.nickName,
-          creatorId: this.$store.state.user.name,
+          creator: this.user.empName,
+          creatorId: this.user.empId,
+          creatorNo: this.user.empNo,
           createDate: getDateTime(1)
         }
         this.tableData.push(newLine)

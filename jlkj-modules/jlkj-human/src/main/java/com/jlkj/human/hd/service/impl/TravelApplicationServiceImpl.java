@@ -1,20 +1,21 @@
 package com.jlkj.human.hd.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.domain.PersonHoliday;
+import com.jlkj.human.hd.domain.TravelApplication;
 import com.jlkj.human.hd.mapper.PersonHolidayMapper;
+import com.jlkj.human.hd.mapper.TravelApplicationMapper;
+import com.jlkj.human.hd.service.ITravelApplicationService;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hd.mapper.TravelApplicationMapper;
-import com.jlkj.human.hd.domain.TravelApplication;
-import com.jlkj.human.hd.service.ITravelApplicationService;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * 出差申请Service业务层处理
@@ -65,15 +66,6 @@ public class TravelApplicationServiceImpl implements ITravelApplicationService
     @Override
     public int insertTravelApplication(TravelApplication travelApplication)
     {
-        //根据 出差开始结束日期 查询 员工 时间段内是否存在请假或者补休资料  或已经存在出差资料
-        travelApplication.setId(UUID.randomUUID().toString().substring(0,32));
-        travelApplication.setTravelNo(String.valueOf(System.currentTimeMillis()));
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        SysUser user = loginUser.getSysUser();
-        travelApplication.setCreator(user.getUserName());
-        travelApplication.setCreateDate(DateUtils.getNowDate());
-        travelApplication.setRealStartDate(travelApplication.getStartDate());
-        travelApplication.setRealEndDate(travelApplication.getEndDate());
         //判断时间段内是否存在出差单
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String  startdate=sdf.format(travelApplication.getStartDate());
@@ -84,6 +76,7 @@ public class TravelApplicationServiceImpl implements ITravelApplicationService
         if (application.size()>0){
             throw new ServiceException("当前员工出差时间段已存在出差申请单，请确认后再申请！");
         }
+
         //判断时间段内是否有请假假
         PersonHoliday  personHoliday = new   PersonHoliday();
         personHoliday.setEmpNo(travelApplication.getEmpNo());
@@ -93,6 +86,16 @@ public class TravelApplicationServiceImpl implements ITravelApplicationService
         if (personHolidayList.size()>0){
             throw new ServiceException("当前员工出差时间段已存在请假信息，请确认后再申请！");
         }
+
+        travelApplication.setId(UUID.randomUUID().toString().substring(0,32));
+        travelApplication.setTravelNo(String.valueOf(System.currentTimeMillis()));
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        SysUser user = loginUser.getSysUser();
+        travelApplication.setCreator(user.getUserName());
+        travelApplication.setCreateDate(DateUtils.getNowDate());
+        travelApplication.setRealStartDate(travelApplication.getStartDate());
+        travelApplication.setRealEndDate(travelApplication.getEndDate());
+        travelApplication.setStatus("0");
         return travelApplicationMapper.insertTravelApplication(travelApplication);
     }
 
@@ -151,6 +154,8 @@ public class TravelApplicationServiceImpl implements ITravelApplicationService
     @Override
     public int deleteTravelApplicationById(String id)
     {
+
         return travelApplicationMapper.deleteTravelApplicationById(id);
+
     }
 }

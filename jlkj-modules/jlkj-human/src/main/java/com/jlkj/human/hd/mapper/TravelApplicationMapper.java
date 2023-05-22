@@ -1,8 +1,9 @@
 package com.jlkj.human.hd.mapper;
 
-import java.util.List;
 import com.jlkj.human.hd.domain.TravelApplication;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 出差申请Mapper接口

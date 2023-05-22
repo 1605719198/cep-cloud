@@ -40,7 +40,7 @@
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="刷卡时间" align="center" prop="cardTime" width="180">
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.cardTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.cardTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="刷卡卡钟编码" align="center" prop="macCode" />
@@ -75,7 +75,7 @@ export default {
       //用户公司别
       userCompId: this.$store.state.user.userInfo.compId,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -111,7 +111,7 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getList();
+    // this.getList();
   },
   methods: {
     /** 查询公司列表 */
@@ -125,7 +125,6 @@ export default {
     getList() {
       this.loading = true;
       listCardRecord(this.queryParams).then(response => {
-        console.log(response);
         this.recordList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -156,15 +155,10 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery(e) {
-      if(e===0){
-        this.queryParams.pageNum = 1;
-        this.getList();
-      }else{
         if(this.judgeQuery()){
           this.queryParams.pageNum = 1;
           this.getList();
         }
-      }
     },
     /** 查询条件判定 */
     judgeQuery(){
@@ -180,7 +174,8 @@ export default {
       this.resetForm("queryForm");
       this.queryParams.date1 = null;
       this.queryParams.date2 = null;
-      this.handleQuery(0);
+      this.recordList = [];
+      this.total = 0;
     },
     /** 工号点击事件 */
     inputClick() {

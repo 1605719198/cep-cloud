@@ -12,10 +12,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="地点" prop="address">
-        <el-input maxlength="32"  v-model="queryParams.address" placeholder="请输入地点"  />
+        <el-input maxlength="32"  v-model="queryParams.address" placeholder="请输入地点"  clearable/>
       </el-form-item>
       <el-form-item label="地点属性" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择地点属性">
+        <el-select v-model="queryParams.type" placeholder="请选择地点属性" clearable>
           <el-option
             v-for="dict in attendenceOptions.AddressType"
             :key="dict.dicNo"
@@ -263,7 +263,6 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.$refs.select.show(this.queryParams.compId);
       this.resetForm("queryForm");
       this.handleQuery();
     },

@@ -89,7 +89,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
         }
         //类型为组织机构
         String orgType ="1";
-        if(list.get(0).getClassType()==orgType){
+        if(list.get(0).getClassType().equals(orgType)){
 //            String masterId = list.get(0).getPersonClassMasterId();
 //            PersonClassMaster personClassMaster = new PersonClassMaster();
 //            personClassMaster.setOrgId(masterId);

@@ -2,8 +2,8 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hm.domain.ChangeDetail;
-import com.jlkj.human.hm.service.IChangeDetailService;
 import com.jlkj.human.hm.mapper.ChangeDetailMapper;
+import com.jlkj.human.hm.service.IChangeDetailService;
 import org.springframework.stereotype.Service;
 
 /**

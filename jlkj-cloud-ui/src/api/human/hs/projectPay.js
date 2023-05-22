@@ -27,9 +27,9 @@ export function getProjectPay(id) {
 }
 
 // 新增薪酬项目
-export function addProjectPay(data) {
+export function saveProjectPay(data) {
   return request({
-    url: '/human/projectPay',
+    url: '/human/projectPay/save',
     method: 'post',
     data: data
   })

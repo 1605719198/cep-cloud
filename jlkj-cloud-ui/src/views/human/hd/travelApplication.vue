@@ -32,7 +32,7 @@
           range-separator="~"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
-          @change="dateFormat">
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -104,12 +104,11 @@
           <dict-tag-human-basis :options="attendenceOptions.TravelReason" :value="scope.row.travelReason"/>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="状态" align="center" prop="status" >
         <template v-slot="scope">
           <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
         </template>
       </el-table-column>
-
       <el-table-column label="申请人" align="center" prop="creator" />
       <el-table-column label="申请日期" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
@@ -146,8 +145,8 @@
     />
 
     <!-- 添加或修改出差申请对话框 -->
-    <el-dialog :title="title" :visible.sync="open"  :close-on-click-modal="false"  width="1800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+    <el-dialog :title="title" :visible.sync="open"  :close-on-click-modal="false"  width="1500px" append-to-body align="left" >
+      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
 
         <el-row>
           <el-col :span="8">
@@ -156,29 +155,33 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出差类别" prop="travelTpye">
-              <el-radio-group v-model="form.TravelType" >
-                <el-radio
-                  v-for="dict in attendenceOptions.TravelType"
-                  :key="dict.value"
-                  :label="dict.dicName"
-                >{{ dict.dicName }}
-                </el-radio>
-              </el-radio-group>
-              <el-select v-model="form.isEngineer" placeholder="请选择是否工程费用" clearable style="width: 100px">
-                <el-option
-                  v-for="dict in attendenceOptions.IsEngineer"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                />
-              </el-select>
-
+            <el-form-item label="出差类别" align="left" :required="true" >
+              <el-form-item prop="travelTpye" size="large" style="display: inline-block">
+                <el-radio-group v-model="form.travelTpye" @change="changeType()">
+                  <el-radio
+                    style="margin-right: 5px"
+                    v-for="dict in attendenceOptions.TravelType"
+                    :key="dict.dicNo"
+                    :label="dict.dicNo"
+                  >{{ dict.dicName }}
+                  </el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item prop="isEngineer" size="large" style="display: inline-block">
+                <el-select v-model="form.isEngineer" placeholder="请选择" clearable style="width: 130px">
+                  <el-option
+                    v-for="dict in attendenceOptions.IsEngineer"
+                    :key="dict.dicNo"
+                    :label="dict.dicName"
+                    :value="dict.dicNo"
+                  />
+                </el-select>
+              </el-form-item>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="出差事由类别" prop="travelReason">
-                <el-select :popper-append-to-body="false" v-model="form.travelReason" placeholder="请选择出差事由类别">
+              <el-select :popper-append-to-body="false" v-model="form.travelReason" placeholder="请选择出差事由类别">
                 <el-option
                   v-for="dict in attendenceOptions.TravelReason"
                   :key="dict.dicNo"
@@ -221,7 +224,7 @@
             <el-form-item label="代理人" prop="agentNo">
               <el-input v-model="form.agentNo" placeholder="请选择代理人" :disabled="true" class="inputInner" style="width: 160px">
                 <el-button slot="append" icon="el-icon-search" @click="inputClick('agent')" clearable></el-button>
-                </el-input>{{ form.agentName }}
+              </el-input>{{ form.agentName }}
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -243,11 +246,13 @@
           <el-col :span="16" >
             <el-form-item label="出差日期" prop="empNo">
               <el-date-picker clearable
+                              style="width: 160px"
                               v-model="form.startDate"
                               type="date"
                               placeholder="请选择时间">
               </el-date-picker>          ~
               <el-date-picker clearable
+                              style="width: 160px"
                               v-model="form.endDate"
                               type="date"
                               placeholder="请选择时间">
@@ -265,11 +270,13 @@
           <el-col :span="16">
             <el-form-item label="实际出差日期" prop="realStartDate">
               <el-date-picker clearable
+                              style="width: 160px"
                               v-model="form.realStartDate"
                               type="date"
                               placeholder="请选择时间">
               </el-date-picker>         ~
               <el-date-picker clearable
+                              style="width: 160px"
                               v-model="form.realEndDate"
                               type="date"
                               placeholder="请选择时间">
@@ -283,12 +290,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="form.travelTpye=='01'">
           <el-col :span="6">
             <el-form-item label="出差地点1" prop="billNo">
-                <el-input v-model="form.resvAttr1" placeholder="请选择出差地点" class="inputInner" style="width: 200px">
-                  <el-button slot="append" icon="el-icon-search" @click="inputCenter()" clearable></el-button>
-                </el-input>
+              <el-input v-model="form.resvAttr1" placeholder="请选择出差地点" class="inputInner" style="width: 200px">
+                <el-button slot="append" icon="el-icon-search" @click="inputCenter()" clearable></el-button>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -313,6 +320,61 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row v-if="form.travelTpye=='02'" >
+          <el-col :span="6">
+            <el-form-item label="出差地点1" prop="resvAttr1">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr1"  placeholder="请选择出差地点" >
+                <el-option
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出差地点2" prop="resvAttr2">
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr2"  placeholder="请选择出差地点" >
+                <el-option
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出差地点3" prop="resvAttr3">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr3"  placeholder="请选择出差地点" >
+                <el-option
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
+
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出差地点4" prop="resvAttr4">
+
+              <el-select :popper-append-to-body="false" v-model="form.resvAttr4"  placeholder="请选择出差地点" >
+                <el-option
+                  v-for="dict in attendenceOptions.TravelAbroad"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
+
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="报支单号" prop="billNo">
@@ -320,7 +382,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="申请人" prop="travelTpye">
+            <el-form-item label="申请人" prop="creator">
               {{ form.creator }}
             </el-form-item>
           </el-col>
@@ -346,9 +408,12 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import {queryInfo} from "@/api/human/hm/personnelBasicInfo";
 import selectUser from "@/views/components/human/selectUser/selectUser";
+import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo";
 export default {
   name: "Travelapplication",
-  components: {selectUser},
+  components: { DictTagHumanBasis, selectUser },
+  //components: {selectUser},
+  dicts: ['travel_addr_abroad'],
   data() {
     return {
       //登录人信息
@@ -360,7 +425,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer']
+        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer','TravelAbroad']
       },
       //出勤选单选项列表
       attendenceOptions: {},
@@ -412,9 +477,12 @@ export default {
         endDate:[
           { required:true, message:'不能为空', trigger:"change"}
         ],
-        travelTpye:[
-         { required:true, message:'不能为空', trigger:"change"}
-          ],
+        isEngineer:[
+          { required:true, message:'不能为空', trigger:"change"}
+        ],
+        travelReason:[
+          { required:true, message:'不能为空', trigger:"change"}
+        ],
       }
     };
   },
@@ -465,7 +533,7 @@ export default {
       this.form = {
         id: null,
         travelNo: null,
-        travelTpye: "01",
+        travelTpye: '01',
         travelReason: null,
         isEngineer:null,
         compId: null,
@@ -574,7 +642,7 @@ export default {
     /** 工号点击事件 */
     inputCenter() {
       //this.tagsrc = val;
-     // this.$refs.select.show();
+      // this.$refs.select.show();
     },
     /** 工号点击事件 */
     inputClick(val) {
@@ -583,21 +651,21 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(val, userName) {
-     if(this.tagsrc=='query'){
-       this.queryParams.empNo = val
-       this.getList();
-     }else if (this.tagsrc=='empno'){
-       this.form.empNo = val
-       this.form.empName = userName
-       queryInfo(this.form).then(res => {
-         console.log(res.data[0].departmentName)
-         this.form.deptName = res.data[0].departmentName
-       })
-     }else if(this.tagsrc=='agent'){
-       this.form.agentNo = val
-       this.form.agentName = userName
-       console.log(this.form.agentName)
-     }
+      if(this.tagsrc=='query'){
+        this.queryParams.empNo = val
+        this.getList();
+      }else if (this.tagsrc=='empno'){
+        this.form.empNo = val
+        this.form.empName = userName
+        queryInfo(this.form).then(res => {
+          console.log(res.data[0].departmentName)
+          this.form.deptName = res.data[0].departmentName
+        })
+      }else if(this.tagsrc=='agent'){
+        this.form.agentNo = val
+        this.form.agentName = userName
+        console.log(this.form.agentName)
+      }
       // queryNewPostNameAndChangeDetail(this.form).then(res => {
       //   this.form.postName = res.data.list1[0].newPostName
       // })
@@ -613,6 +681,13 @@ export default {
         return Math.floor((new Date(this.form.realEndDate).getTime()-new Date(this.form.realStartDate).getTime())/(24*3600*1000)) + 1
       }
       return ''
+    },
+    changeType(){
+      // 切换出差类别，清空原出差地点内容
+      this.form.resvAttr1='';
+      this.form.resvAttr2='';
+      this.form.resvAttr3='';
+      this.form.resvAttr4='';
     }
   }
 };

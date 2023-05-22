@@ -98,7 +98,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFormcopy">确 定</el-button>
-        <el-button @click="cancelcopy">取 消</el-button>
+        <el-button @click="cancelCopy">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -236,7 +236,7 @@ export default {
       })
     },
     //取消确认
-    cancelcopy(){
+    cancelCopy(){
       this.open = false;
     },
     //查询薪资选单

@@ -1,7 +1,7 @@
 package com.jlkj.human.hm.service;
 
-import com.jlkj.human.hm.domain.Encourage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hm.domain.Encourage;
 
 /**
 * @author 89373

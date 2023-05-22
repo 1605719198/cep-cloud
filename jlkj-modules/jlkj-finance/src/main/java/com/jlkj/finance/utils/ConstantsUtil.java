@@ -23,6 +23,10 @@ public class ConstantsUtil
      */
     public static final String DISABLEDCODE="Y";
 
+    public static final String CODE_Y="Y";
+
+    public static final String CODE_N="N";
+
 
 
 }

@@ -35,6 +35,13 @@ public interface FinanceAaVoucherMapper
      * @return 凭证维护-主集合
      */
     public List<FinanceAaVoucher> selectFinanceAaVoucherDetailList(FinanceAaVoucher financeAaVoucher);
+    /**
+     * 批量执行查询凭证维护-主列表
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主集合
+     */
+    public List<FinanceAaVoucher> selectFinanceAaVoucherBatchExecutionList(FinanceAaVoucher financeAaVoucher);
 
 
     /**

@@ -1,15 +1,14 @@
 package com.jlkj.human.hs.service.impl;
 
-import java.security.Security;
-import java.util.Date;
-import java.util.List;
-
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hs.domain.ProjectPay;
+import com.jlkj.human.hs.mapper.ProjectPayMapper;
+import com.jlkj.human.hs.service.IProjectPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.hs.mapper.ProjectPayMapper;
-import com.jlkj.human.hs.domain.ProjectPay;
-import com.jlkj.human.hs.service.IProjectPayService;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 薪酬项目Service业务层处理
@@ -67,7 +66,6 @@ public class ProjectPayServiceImpl implements IProjectPayService
             }else{
                 projectPayMapper.insertProjectPay(projectPay);
             }
-
         }
         return 1;
     }
