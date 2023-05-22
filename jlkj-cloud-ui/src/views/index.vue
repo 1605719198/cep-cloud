@@ -25,7 +25,7 @@
       </el-col>
     </el-row>
 
-    
+
   </div>
 </template>
 
@@ -71,6 +71,11 @@ export default {
   },
   methods: {
     handleSetLineChartData(type) {
+      if (type === "messages") {
+        this.$router.push({
+          path: '/work/todo',
+        })
+      }
       this.lineChartData = lineChartData[type]
     }
   }
