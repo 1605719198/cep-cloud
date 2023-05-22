@@ -386,9 +386,12 @@ export default {
       paramsDetail: [],
       rowIndex: -1, //行索引
       columnIndex: -1, //列索引
+      //登录人信息
+      user: {},
     };
   },
   created() {
+    this.initData();
     selectCompany().then(res => {
       this.companyName = res.data
     })
@@ -397,6 +400,11 @@ export default {
     })
   },
   methods: {
+    //初始化数据
+    initData(){
+      this.user.compId = this.$store.state.user.userInfo.compId;
+      this.queryParams.compId = this.user.compId
+    },
     /** 查询公司级薪资项目维护列表 */
     getList() {
       this.loading = true;

@@ -176,15 +176,23 @@ export default {
       //选中薪酬项目名称
       payProName: undefined,
       //选中薪酬项目ID
-      id: undefined
+      id: undefined,
+      //登录人信息
+      user: {},
     };
   },
   created() {
+    this.initData();
     selectCompany().then(res => {
       this.companyName = res.data
     })
   },
   methods: {
+    //初始化数据
+    initData(){
+      this.user.compId = this.$store.state.user.userInfo.compId;
+      this.queryParams.compId = this.user.compId
+    },
     /** 查询公司薪酬项目设定列表 */
     getList() {
       this.loading = true;
