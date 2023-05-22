@@ -159,6 +159,7 @@ export default {
         compId: undefined,
         id: undefined
       },
+      // 公司别下拉选单
       companyName: [],
       payFormationOptions: [],
       //el tree默认值
@@ -250,7 +251,6 @@ export default {
         this.open = true;
         this.title = "添加薪酬项目";
       }
-
     },
     /** 删除按钮操作 */
     handleDelete(row) {
