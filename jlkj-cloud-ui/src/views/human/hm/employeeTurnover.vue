@@ -89,7 +89,7 @@
               <el-col :span="12">
                 <el-form-item label="工号">
                   <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick1" v-show="updatePop"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
@@ -180,7 +180,7 @@
             >
               <el-table-column type="selection" width="55" align="center">
               </el-table-column>
-              <el-table-column label="岗位类型" align="center">
+              <el-table-column label="岗位类型" align="center" width="200">
                 <template v-slot="scope">
                   <el-form-item
                     :prop="'employeeTurnoverList.' + scope.$index + '.postTypeId'"
@@ -276,6 +276,7 @@
           </el-form>
         </el-dialog>
         <select-user ref="select" @ok="getJobNumber"/>
+        <select-user ref="select1" @ok="getJobNumber1"/>
       </el-col>
     </el-row>
   </div>
@@ -421,7 +422,12 @@ export default {
       })
     },
     /** 获取工号 */
-    getJobNumber(val, userName) {
+    getJobNumber(val) {
+      this.queryParams.empNo = val
+      this.getList();
+    },
+    /** 获取工号 */
+    getJobNumber1(val, userName) {
       this.queryParams.empNo = val
       this.addJsonForm.empNo = val
       this.addJsonForm.empName = userName
@@ -438,6 +444,10 @@ export default {
     /** 工号点击事件 */
     inputClick() {
       this.$refs.select.show();
+    },
+    /** 工号点击事件 */
+    inputClick1() {
+      this.$refs.select1.show();
     },
     handleEmpty() {
       this.queryParams = {
