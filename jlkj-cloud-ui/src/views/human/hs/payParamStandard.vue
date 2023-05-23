@@ -75,10 +75,10 @@
             <template v-slot="scope">
               <el-select v-model="scope.row.status" placeholder="请选择">
                 <el-option
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
+                  v-for="dict in payParamStandard.status"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
                 ></el-option>
               </el-select>
             </template>
@@ -130,7 +130,6 @@ import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
 export default {
   name: "PayParamStandard",
-  dicts: ['sys_yes_no'],
   data() {
     return {
       // 遮罩层
@@ -147,11 +146,7 @@ export default {
       total: 0,
       // 公司薪资参数设定表格数据
       payParamStandardForm: {
-        payParamStandardList: [
-          {
-            standardCode: undefined
-          }
-        ]
+        payParamStandardList: []
       },
       // 弹出层标题
       title: "",
@@ -161,7 +156,9 @@ export default {
       salaryOptionType: {
         id: '19',
         optionsType: [
-          'SalaryParameters'],
+          'SalaryParameters',
+          'status'
+        ],
         compId:'J00',
       },
       payParamStandard: [],
@@ -213,6 +210,12 @@ export default {
         this.payParamStandardForm.payParamStandardList = response.data.rows;
         if (this.payParamStandardForm.payParamStandardList.length > 0) {
           this.status = false
+        } else {
+          this.payParamStandardForm.payParamStandardList = [
+            {
+              standardCode: undefined
+            }
+          ]
         }
         this.total = response.data.total;
         this.loading = false;
@@ -226,16 +229,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        uuid: null,
-        compId: null,
-        standardCode: null,
-        standard: null,
-        description: null,
-        status: null,
-        payParaId: null,
-        creator: null,
-        creatorId: null,
-        createDate: null
+        compIdTo: null
       };
       this.resetForm("form");
     },
@@ -252,7 +246,6 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid)
-      this.single = selection.length!==1
       this.multiple = !selection.length
     },
     /** 保存按钮操作 */
