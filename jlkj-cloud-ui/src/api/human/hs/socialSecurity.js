@@ -42,3 +42,13 @@ export function delSocialSecurity(id) {
     method: 'delete'
   })
 }
+
+//获取缴费地区列表
+export function selectVersion(payAreaId) {
+
+  return request({
+    url: '/human/socialSecurity/selectVersion/'+payAreaId,
+    method: 'get',
+  })
+}
+

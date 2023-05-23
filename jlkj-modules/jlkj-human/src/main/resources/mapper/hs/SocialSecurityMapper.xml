@@ -29,8 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSocialSecurityList" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
         select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
-
-</select>
+        <where>
+            <if test="date != null ">and effect_date = #{date} </if>
+            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
+            <if test="version != null and version != ''">and version = #{version} </if>
+        </where>
+    </select>
     
     <select id="selectSocialSecurityById" parameterType="String" resultMap="SocialSecurityResult">
         <include refid="selectSocialSecurityVo"/>
@@ -102,6 +106,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteSocialSecurityById" parameterType="String">
         delete from human_hs_social_security where id = #{id}
     </delete>
+
+    <select id="getVersionList" parameterType="String" resultMap="SocialSecurityResult">
+        SELECT distinct version FROM human_hs_social_security WHERE pay_area_id = #{payAreaId}  order by  version
+    </select>
+
+    <select id="selectMaxVersion" parameterType="String" resultType="map">
+        select  effect_date effectDate, version from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
+    </select>
 
     <delete id="deleteSocialSecurityByIds" parameterType="String">
         delete from human_hs_social_security where id in 
