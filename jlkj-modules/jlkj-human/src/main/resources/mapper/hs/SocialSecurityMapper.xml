@@ -112,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectMaxVersion" parameterType="String" resultType="map">
-        select  effect_date effectDate, version from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
+        select  effect_date effectDate, version  from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
     </select>
 
     <delete id="deleteSocialSecurityByIds" parameterType="String">

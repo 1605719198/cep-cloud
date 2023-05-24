@@ -54,41 +54,52 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
      */
     @Override
     public int insertSocialSecurity(List<SocialSecurity> socialSecurityList) {
-        String  payAreaId = socialSecurityList.get(0).getPayAreaId();
-        Date  inEffectDate = socialSecurityList.get(0).getEffectDate();
+        String payAreaId = socialSecurityList.get(0).getPayAreaId();
+        Date inEffectDate = socialSecurityList.get(0).getEffectDate();
+        Date nowdate = DateUtils.getNowDate();
+        if(nowdate.compareTo(inEffectDate)>0){
+            throw new ServiceException("生效日期不允许小于当前日期");
+        }
         //查询当前公司别 最大版次号 及 生效日期
         Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
         Long version = 1L;
-        Date nowdate = DateUtils.getNowDate();
+        version = Long.parseLong(versionMap.get("version").toString())+1;
         if(versionMap != null && versionMap.get("version") != null){
             Date effectDate= (Date) versionMap.get("effectDate");
-            //Date temDate = DateUtils.dateTime("yyyy-MM-dd",effectDate);
-            if(nowdate.compareTo(effectDate)>=0){
+            if(nowdate.compareTo(effectDate)<0){
                 for (SocialSecurity socialSecurity : socialSecurityList) {
                     if (socialSecurity.getId() != null) {
                         socialSecurityMapper.deleteSocialSecurityById(socialSecurity.getId());
                     }
                 }
             }
-        }
-            //判断当前数据生效日期 必须要大于最大班次生效日期
-             version = Long.parseLong(versionMap.get("version").toString())+1;
-        if(nowdate.compareTo(inEffectDate)>0){
-            throw new ServiceException("生效日期不允许小于当前日期");
-        }
-        for (SocialSecurity socialSecurity : socialSecurityList) {
-            if (socialSecurity.getId() != null) {
+            for (SocialSecurity socialSecurity : socialSecurityList) {
+                socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
                 socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
                 socialSecurity.setCreator(SecurityUtils.getNickName());
                 socialSecurity.setCreateDate(new Date());
                 socialSecurity.setVersion(version);
-                socialSecurityMapper.updateSocialSecurity(socialSecurity);
-            } else {
-                socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
-                socialSecurity.setVersion(version);
                 socialSecurityMapper.insertSocialSecurity(socialSecurity);
             }
         }
+
+
+
+        else{
+            for (SocialSecurity socialSecurity : socialSecurityList) {
+                if (socialSecurity.getId() != null) {
+                    socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
+                    socialSecurity.setCreator(SecurityUtils.getNickName());
+                    socialSecurity.setCreateDate(new Date());
+                    socialSecurity.setVersion(version);
+                    socialSecurityMapper.updateSocialSecurity(socialSecurity);
+                } else {
+                    socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
+                    socialSecurity.setVersion(version);
+                    socialSecurityMapper.insertSocialSecurity(socialSecurity);
+                }
+            }
+         }
         return 1;
     }
 

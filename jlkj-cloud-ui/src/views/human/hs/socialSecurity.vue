@@ -360,7 +360,6 @@ export default {
       this.queryParams.payAreaId = data.dicNo;
       this.getVersionList()
       this.socialSecurityList = []
-      // this.queryParams.effectDate = null;
       this.onLoad()
     },
     //载入数据
