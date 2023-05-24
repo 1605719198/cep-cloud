@@ -37,6 +37,8 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
     @Autowired
     private FinanceAaVoucherMapper financeAaVoucherMapper;
     @Autowired
+    private FinanceAaVoucherDetailMapper financeAaVoucherDetailMapper;
+    @Autowired
     private FinanceAccountYearService financeAccountYearService;
     @Autowired
     private FinanceAaAcctcodeCorpMapper financeAaAcctcodeCorpMapper;
@@ -487,8 +489,8 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
      * @param financeAaVoucher 凭证维护-主
      * @return 结果
      */
-    @Override
-    public int updateFinanceAaVoucherCross(FinanceAaVoucher financeAaVoucher) {
+
+/*    public int updateFinanceAaVoucherCross(FinanceAaVoucher financeAaVoucher) {
         financeAaVoucher.setUpdateTime(DateUtils.getNowDate());
         if (!StringUtils.isEmpty(financeAaVoucher.getPotstuserName())) {
             financeAaVoucher.setPotstuserName(getUsername());
@@ -520,6 +522,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     } else if ("P".equals(financeAaVoucher.getStatus())) {
                         ntamtD = ntamtD.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt());
                         qtyFrnamtD = qtyFrnamtD.add(null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt());
+
                     }
                 }
                 if ("C".equals(financeAaVoucherDetail.getDrcr())) {
@@ -582,6 +585,184 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         }
         financeAaVoucher.setDrAmt(ntamtD);
         financeAaVoucher.setCrAmt(ntamtC);
+        return financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
+    }   */
+    /**
+     * 过账凭证维护-主
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 结果
+     */
+    @Override
+    public int updateFinanceAaVoucherCross(FinanceAaVoucher financeAaVoucher) {
+        financeAaVoucher.setUpdateTime(DateUtils.getNowDate());
+        if (!StringUtils.isEmpty(financeAaVoucher.getPotstuserName())) {
+            financeAaVoucher.setPotstuserName(getUsername());
+        }
+        financeAaVoucherMapper.deleteFinanceAaVoucherDetailByVoucherNo(financeAaVoucher.getVoucherNo());
+        insertFinanceAaVoucherDetail(financeAaVoucher);
+        List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
+        BigDecimal drAmt ;
+        BigDecimal drQty ;
+        BigDecimal drAmtC ;
+        BigDecimal drQtyC ;
+        BigDecimal drQtyCal;
+        BigDecimal drAmtCal ;
+        BigDecimal drQtyCalC ;
+        BigDecimal drAmtCalC ;
+
+        if (detailList.size() > 0) {
+            for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
+                FinanceAaLedgerAcct financeAaLedgerAcct = new FinanceAaLedgerAcct();
+                FinanceAaLedgerlCal financeAaLedgerlCal = new FinanceAaLedgerlCal();
+                financeAaLedgerAcct.setCompanyId(financeAaVoucherDetail.getCompanyId());
+                financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getAcctCode());
+                financeAaLedgerAcct.setAcctId(financeAaVoucherDetail.getAcctId());
+                FinanceAaLedgerAcct financeAaLedgerAcct1 = financeAaLedgerAcctService.selectFinanceAaLedgerAcct(financeAaLedgerAcct);
+                financeAaLedgerlCal.setCompanyId(financeAaVoucherDetail.getCompanyId());
+                financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getAcctCode());
+                financeAaLedgerlCal.setAcctId(financeAaVoucherDetail.getAcctId());
+                FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalService.selectFinanceAaLedgerlCal(financeAaLedgerlCal);
+                FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAdd(financeAaVoucherDetail);
+                FinanceAaVoucherDetail financeAaVoucherDetail2 = financeAaVoucherDetailMapper.selectFinancecalCodeAdd(financeAaVoucherDetail);
+
+                BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerAcct);
+
+                BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal);
+                if (ConstantsUtil.CODE_N.equals(financeAaVoucher.getStatus())) {
+                    if (financeAaLedgerAcct1 !=null){
+                        BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerAcct1);
+                        drAmt = ( null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(financeAaLedgerAcct1.getDrAmt()).negate();
+                        drQty =(null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(financeAaLedgerAcct1.getDrQty()).negate();
+                        drAmtC = ( null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(financeAaLedgerAcct1.getCrAmt()).negate();
+                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(financeAaLedgerAcct1.getCrQty()).negate();
+
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerAcct1.setDrAmt(drAmt);
+                            financeAaLedgerAcct1.setDrQty(drQty);
+                        }else {
+                            financeAaLedgerAcct1.setCrAmt(drAmtC);
+                            financeAaLedgerAcct1.setCrQty(drQtyC);
+                        }
+
+                        financeAaLedgerAcct1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerAcctService.updateFinanceAaLedgerAcct(financeAaLedgerAcct1);
+                    }
+                    else {
+                        drAmt = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).negate();
+                        drQty =(null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).negate();
+                        drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).negate();
+                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).negate();
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerAcct.setDrAmt(drAmt);
+                            financeAaLedgerAcct.setDrQty(drQty);
+                        }else {
+                            financeAaLedgerAcct.setCrAmt(drAmtC);
+                            financeAaLedgerAcct.setCrQty(drQtyC);
+                        }
+                        financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                        financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerAcctService.insertFinanceAaLedgerAcct(financeAaLedgerAcct);
+                    }
+                    if (financeAaLedgerlCal1 != null) {
+                        BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal1);
+                        drQtyCal = financeAaLedgerlCal1.getDrQty().subtract(( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()));
+                        drAmtCal =financeAaLedgerlCal1.getDrAmt().subtract (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()) ;
+                        drQtyCalC =financeAaLedgerlCal1.getCrQty().subtract( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
+                        drAmtCalC =financeAaLedgerlCal1.getCrAmt().subtract (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
+
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerlCal1.setDrAmt(drAmtCal);
+                            financeAaLedgerlCal1.setDrQty(drQtyCal);
+                        }else {
+                            financeAaLedgerlCal1.setCrAmt(drQtyCalC);
+                            financeAaLedgerlCal1.setCrQty(drAmtCalC);
+                        }
+
+                        financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerlCalService.updateFinanceAaLedgerlCal(financeAaLedgerlCal1);
+                    }else {
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerlCal.setDrAmt( null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt().negate());
+                            financeAaLedgerlCal.setDrQty( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt().negate());
+
+                        }else {
+                            financeAaLedgerlCal.setCrAmt(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt().negate());
+                            financeAaLedgerlCal.setCrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt().negate());
+
+                        }
+                        financeAaLedgerlCal.setId(UUID.fastUUID().toString());
+                        financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerlCalService.insertFinanceAaLedgerlCal(financeAaLedgerlCal);
+                    }
+                }else if(ConstantsUtil.STATUS_P.equals(financeAaVoucher.getStatus())) {
+                    if (financeAaLedgerAcct1 !=null){
+                        BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerAcct1);
+                        drAmt = ( null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(financeAaLedgerAcct1.getDrAmt());
+                        drQty =(null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(financeAaLedgerAcct1.getDrQty());
+                        drAmtC = ( null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(financeAaLedgerAcct1.getCrAmt());
+                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(financeAaLedgerAcct1.getCrQty());
+
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerAcct1.setDrAmt(drAmt);
+                            financeAaLedgerAcct1.setDrQty(drQty);
+                        }else {
+                            financeAaLedgerAcct1.setCrAmt(drAmtC);
+                            financeAaLedgerAcct1.setCrQty(drQtyC);
+                        }
+                        financeAaLedgerAcct1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerAcctService.updateFinanceAaLedgerAcct(financeAaLedgerAcct1);
+                    }
+                    else {
+                        drAmt = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt());
+                        drQty =(null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt());
+                        drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt());
+                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt());
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerAcct.setDrAmt(drAmt);
+                            financeAaLedgerAcct.setDrQty(drQty);
+                        }else {
+                            financeAaLedgerAcct.setCrAmt(drAmtC);
+                            financeAaLedgerAcct.setCrQty(drQtyC);
+                        }
+
+                        financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                        financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerAcctService.insertFinanceAaLedgerAcct(financeAaLedgerAcct);
+                    }
+                    if (financeAaLedgerlCal1 != null) {
+                        BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal1);
+                        drQtyCal = ( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(financeAaLedgerlCal1.getDrQty());
+                        drAmtCal = ( null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(financeAaLedgerlCal1.getDrAmt());
+                        drQtyCalC = ( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(financeAaLedgerlCal1.getCrQty());
+                        drAmtCalC = ( null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(financeAaLedgerlCal1.getCrAmt());
+
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerlCal1.setDrAmt(drAmtCal);
+                            financeAaLedgerlCal1.setDrQty(drQtyCal);
+                        }else {
+                            financeAaLedgerlCal1.setCrAmt(drQtyCalC);
+                            financeAaLedgerlCal1.setCrQty(drAmtCalC);
+                        }
+                        financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerlCalService.updateFinanceAaLedgerlCal(financeAaLedgerlCal1);
+                    }else {
+                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())){
+                            financeAaLedgerlCal.setDrAmt( null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
+                            financeAaLedgerlCal.setDrQty( null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
+
+                        }else {
+                            financeAaLedgerlCal.setCrAmt(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
+                            financeAaLedgerlCal.setCrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
+
+                        }
+                        financeAaLedgerlCal.setId(UUID.fastUUID().toString());
+                        financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                        financeAaLedgerlCalService.insertFinanceAaLedgerlCal(financeAaLedgerlCal);
+                    }
+                }
+            }
+        }
         return financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
     }
 
@@ -1078,7 +1259,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                 financeAaVoucherDTO.add(financeAaVoucher.get(i));
             }
             financeAaVoucherVoucherNo.add(financeAaVoucher.get(i));
-            if (i==financeAaVoucher.size()){
+            if ((i+1)==financeAaVoucher.size()){
                 financeAaVoucher4.setDetailList(detailList1);
                 financeAaVoucher4.setIsInspect("N");
                 inspectFinanceAaVoucherList(financeAaVoucher4);

@@ -27,7 +27,7 @@ public class ConstantsUtil
 
     public static final String CODE_N="N";
 
-
+    public static final String STATUS_P="P";
     /**
      * carryA
      */
