@@ -174,7 +174,7 @@ export default {
   },
   created() {
     this.queryParams.acctPeriod = new Date(new Date() - 30 * 24 * 3600 * 1000)
-    this.getList();
+
     this.getCompanyList()
 
   },
@@ -191,6 +191,7 @@ export default {
       selectCompanyList().then(response => {
         this.companyList = response;
         this.queryParams.companyId = this.companyList[0].value
+        this.getList();
       });
     },
     /** 查询自动结转规则-执行记录列表 */
