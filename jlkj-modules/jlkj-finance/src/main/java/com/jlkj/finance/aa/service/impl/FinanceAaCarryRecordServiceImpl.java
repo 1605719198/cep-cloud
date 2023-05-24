@@ -71,7 +71,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
      */
     @Override
     public List<FinanceAaCarryRecord> selectFinanceAaCarryRecordList(FinanceAaCarryRecord financeAaCarryRecord) {
-        financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0,10));
+        financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0,7));
         return financeAaCarryRecordMapper.selectFinanceAaCarryRecordList(financeAaCarryRecord);
     }
 
@@ -161,7 +161,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
-                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 10));
+                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
                     financeAaCarryRecord.setAcctPeriod(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
@@ -211,7 +211,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
-                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 10));
+                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
                 String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
@@ -278,7 +278,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
-                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 10));
+                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
                 String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
@@ -332,7 +332,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
-                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 10));
+                financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
                 String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
@@ -376,7 +376,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
             financeAaCarryRecord.setCancelVoucherNo(ruleAdd);
             financeAaCarryRecord.setCreateTime(DateUtils.getNowDate());
             financeAaCarryRecord.setCreateBy(SecurityUtils.getUsername());
-            financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 10));
+            financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
              i = financeAaCarryRecordMapper.updateFinanceAaCarryRecord(financeAaCarryRecord);
         }
         return i;

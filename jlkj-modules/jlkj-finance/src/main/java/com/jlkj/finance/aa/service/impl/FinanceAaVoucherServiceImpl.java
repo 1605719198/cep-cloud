@@ -543,7 +543,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     financeAaLedgerAcct1.setDrQty(qtyFrnamtD.add(drQty));
                     financeAaLedgerAcct1.setCrAmt(ntamtC.add(drAmtC));
                     financeAaLedgerAcct1.setCrQty(qtyFrnamtC.add(drQtyC));
-                    financeAaLedgerAcct1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,10));
+                    financeAaLedgerAcct1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
                     financeAaLedgerAcctService.updateFinanceAaLedgerAcct(financeAaLedgerAcct1);
                 } else {
                     financeAaLedgerAcct.setDrAmt(ntamtD.add(drAmt));
@@ -551,7 +551,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     financeAaLedgerAcct.setDrQty(qtyFrnamtD.add(drQty));
                     financeAaLedgerAcct.setCrQty(qtyFrnamtC.add(drQtyC));
                     financeAaLedgerAcct.setId(UUID.fastUUID().toString());
-                    financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,10));
+                    financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
                     financeAaLedgerAcctService.insertFinanceAaLedgerAcct(financeAaLedgerAcct);
                 }
                 FinanceAaLedgerlCal financeAaLedgerlCal = new FinanceAaLedgerlCal();
@@ -567,7 +567,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     financeAaLedgerlCal1.setDrQty(qtyFrnamtD.add(drQty));
                     financeAaLedgerlCal1.setCrAmt(ntamtC.add(drQtyCalC));
                     financeAaLedgerlCal1.setCrQty(qtyFrnamtC.add(drAmtCalC));
-                    financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,10));
+                    financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
                     financeAaLedgerlCalService.updateFinanceAaLedgerlCal(financeAaLedgerlCal1);
                 } else {
                     financeAaLedgerlCal.setDrAmt(ntamtD.add(drAmt));
@@ -575,7 +575,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     financeAaLedgerlCal.setCrAmt(ntamtC.add(drQtyCalC));
                     financeAaLedgerlCal.setCrQty(qtyFrnamtC.add(drAmtCalC));
                     financeAaLedgerlCal.setId(UUID.fastUUID().toString());
-                    financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,10));
+                    financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
                     financeAaLedgerlCalService.insertFinanceAaLedgerlCal(financeAaLedgerlCal);
                 }
             }
