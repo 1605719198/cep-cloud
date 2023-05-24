@@ -28,5 +28,22 @@ public class ConstantsUtil
     public static final String CODE_N="N";
 
 
+    /**
+     * carryA
+     */
+    public static final String CARRYA="A";
+    /**
+     * carryB
+     */
+    public static final String CARRYB="B";
+    /**
+     * drcrC
+     */
+    public static final String drcrC="C";
+    /**
+     * drcrD
+     */
+    public static final String drcrD="D";
+
 
 }
