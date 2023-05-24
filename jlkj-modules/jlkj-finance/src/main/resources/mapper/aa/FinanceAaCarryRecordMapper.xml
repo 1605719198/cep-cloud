@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCarryRecordMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCarryRecord" id="FinanceAaCarryRecordResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="carry"    column="carry"    />
+        <result property="rulesNo"    column="rules_no"    />
+        <result property="acctPeriod"    column="acct_period"    />
+        <result property="executeVoucherNo"    column="execute_voucher_no"    />
+        <result property="cancelVoucherNo"    column="cancel_voucher_no"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createName"    column="create_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaCarryRecordVo">
+        select id, company_id, carry, rules_no, acct_period, execute_voucher_no, cancel_voucher_no, status, create_by, create_time, create_name from finance_aa_carry_record
+    </sql>
+
+    <select id="selectFinanceAaCarryRecordList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord" resultMap="FinanceAaCarryRecordResult">
+        SELECT
+        a.rules_name AS rules_name,
+        a.rules_no AS rules_no,
+        a.remark AS remark,
+        a.voucher_status as`statusA`,
+        b.id,
+        b.company_id,
+        b.carry,
+        b.acct_period,
+        b.execute_voucher_no,
+        b.cancel_voucher_no,
+        b.STATUS,
+        b.create_by,
+        b.create_time,
+        b.create_name
+        FROM
+        finance_aa_carry_base a
+        LEFT JOIN finance_aa_carry_record b ON b.rules_no = a.rules_no
+            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+            <if test="carry != null  and carry != ''"> and b.carry = #{carry}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and b.acct_period = #{acctPeriod}</if>
+        ORDER BY
+        b.rules_no
+    </select>
+    <select id="selectFinanceAaCarryRecordCompanyIdList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord" resultMap="FinanceAaCarryRecordResult">
+        SELECT
+        a.rules_name AS rules_name,
+        a.rules_no AS rules_no,
+        a.remark AS remark,
+        a.voucher_status as`statusA`,
+        b.id,
+        b.company_id,
+        b.carry,
+        b.acct_period,
+        b.execute_voucher_no,
+        b.cancel_voucher_no,
+        b.STATUS,
+        b.create_by,
+        b.create_time,
+        b.create_name
+        FROM
+        finance_aa_company_carry_base a
+        LEFT JOIN finance_aa_carry_record b ON b.rules_no = a.rules_no
+        <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+        <if test="carry != null  and carry != ''"> and b.carry = #{carry}</if>
+        <if test="acctPeriod != null  and acctPeriod != ''"> and b.acct_period = #{acctPeriod}</if>
+        ORDER BY
+        b.rules_no
+    </select>
+    <select id="selectFinanceAaCarryRecordById" parameterType="String" resultMap="FinanceAaCarryRecordResult">
+        <include refid="selectFinanceAaCarryRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaCarryRecord" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord">
+        insert into finance_aa_carry_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="carry != null">carry,</if>
+            <if test="rulesNo != null">rules_no,</if>
+            <if test="acctPeriod != null">acct_period,</if>
+            <if test="executeVoucherNo != null">execute_voucher_no,</if>
+            <if test="cancelVoucherNo != null">cancel_voucher_no,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createName != null">create_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="carry != null">#{carry},</if>
+            <if test="rulesNo != null">#{rulesNo},</if>
+            <if test="acctPeriod != null">#{acctPeriod},</if>
+            <if test="executeVoucherNo != null">#{executeVoucherNo},</if>
+            <if test="cancelVoucherNo != null">#{cancelVoucherNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createName != null">#{createName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaCarryRecord" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord">
+        update finance_aa_carry_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="carry != null">carry = #{carry},</if>
+            <if test="rulesNo != null">rules_no = #{rulesNo},</if>
+            <if test="acctPeriod != null">acct_period = #{acctPeriod},</if>
+            <if test="executeVoucherNo != null">execute_voucher_no = #{executeVoucherNo},</if>
+            <if test="cancelVoucherNo != null">cancel_voucher_no = #{cancelVoucherNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaCarryRecordById" parameterType="String">
+        delete from finance_aa_carry_record where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaCarryRecordByIds" parameterType="String">
+        delete from finance_aa_carry_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

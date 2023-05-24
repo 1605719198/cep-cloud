@@ -87,6 +87,13 @@ public interface IFinanceAaVoucherService
      * @return 结果
      */
     public String insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
+    /**
+     * 红冲凭证维护-主
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 结果
+     */
+    public String insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher);
 
     /**
      * 修改凭证维护-主
