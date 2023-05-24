@@ -426,7 +426,7 @@ export default {
       this.queryParams.empNo = val
       this.getList();
     },
-    /** 获取工号 */
+    /** 获取工号岗位 */
     getJobNumber1(val, userName) {
       this.queryParams.empNo = val
       this.addJsonForm.empNo = val
@@ -583,14 +583,6 @@ export default {
       //关闭 固定值弹窗
       this.$set(this.addJsonForm, "employeeTurnoverList", []);
       this.open = false;
-    },
-    RndNum(n) {
-      // 生成随机数
-      let rdmNum = "";
-      for (let i = 0; i < n; i++) {
-        rdmNum += Math.floor(Math.random() * 10); // [0,10)的整数
-      }
-      return rdmNum;
     },
     // 节点单击事件
     handleNodeClick(data) {

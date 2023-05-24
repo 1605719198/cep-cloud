@@ -102,9 +102,9 @@ public class AttendanceAbnormalController extends BaseController {
     @PostMapping("/send")
     @Log(title = "出勤异常申请信息送审", businessType = BusinessType.UPDATE)
     public Object sendAttendanceAbnormal(@RequestBody AttendanceAbnormal attendanceAbnormal) {
-        String status = "未送审";
+        String status = "01";
         if (status.equals(attendanceAbnormal.getStatus())) {
-            attendanceAbnormal.setStatus("审核中");
+            attendanceAbnormal.setStatus("03");
             iAttendanceAbnormalService.updateById(attendanceAbnormal);
             return AjaxResult.success("送审成功");
         } else {
@@ -121,9 +121,9 @@ public class AttendanceAbnormalController extends BaseController {
     @PostMapping("/recall")
     @Log(title = "出勤异常申请信息撤回", businessType = BusinessType.UPDATE)
     public Object recallAttendanceAbnormal(@RequestBody AttendanceAbnormal attendanceAbnormal) {
-        String status = "审核中";
+        String status = "03";
         if (status.equals(attendanceAbnormal.getStatus())) {
-            attendanceAbnormal.setStatus("未送审");
+            attendanceAbnormal.setStatus("01");
             iAttendanceAbnormalService.updateById(attendanceAbnormal);
             return AjaxResult.success("撤回成功");
         } else {

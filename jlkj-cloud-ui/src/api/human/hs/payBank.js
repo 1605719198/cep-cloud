@@ -9,28 +9,11 @@ export function listPayBank(query) {
   })
 }
 
-// 查询各公司薪资支付银行维护详细
-export function getPayBank(uuid) {
-  return request({
-    url: '/human/payBank/' + uuid,
-    method: 'get'
-  })
-}
-
 // 新增各公司薪资支付银行维护
 export function addPayBank(data) {
   return request({
     url: '/human/payBank',
     method: 'post',
-    data: data
-  })
-}
-
-// 修改各公司薪资支付银行维护
-export function updatePayBank(data) {
-  return request({
-    url: '/human/payBank',
-    method: 'put',
     data: data
   })
 }

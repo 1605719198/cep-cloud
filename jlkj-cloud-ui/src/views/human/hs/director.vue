@@ -27,7 +27,7 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleSave"
-              v-hasPermi="['human:payBank:add']"
+              v-hasPermi="['human:director:add']"
             >保存</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -38,24 +38,19 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
-              v-hasPermi="['human:payBank:remove']"
+              v-hasPermi="['human:director:remove']"
             >删除</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="form.payBankList" :row-class-name="tableRowClassName" @row-click="addLine" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :key="key" :data="form.directorList" :row-class-name="tableRowClassName" @row-click="addLine" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="银行编码" align="center" prop="bankCode">
+          <el-table-column label="职责" align="center" prop="dutyCode">
             <template v-slot="scope">
-              <el-input v-model="scope.row.bankCode" placeholder="请输入"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="银行名称" align="center" prop="bankName">
-            <template v-slot="scope">
-              <el-select v-model="scope.row.bankName" placeholder="请选择">
+              <el-select v-model="scope.row.dutyCode" placeholder="请选择">
                 <el-option
-                  v-for="dict in payBankData.BankName"
+                  v-for="dict in directorData.Responsibility"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -63,16 +58,16 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="状态" align="center" prop="status">
+          <el-table-column label="岗位" align="center" prop="postId" width="500">
             <template v-slot="scope">
-              <el-select v-model="scope.row.status" placeholder="请选择">
-                <el-option
-                  v-for="dict in payBankData.status"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
+              <el-input v-model="scope.row.postId" placeholder="请输入岗位" disabled />
+            </template>
+          </el-table-column>
+          <el-table-column label="工号" align="center" prop="empId">
+            <template v-slot="scope">
+              <el-input v-model="scope.row.empId" placeholder="请输入工号" disabled>
+                <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+              </el-input>
             </template>
           </el-table-column>
           <el-table-column label="输入人" align="center" prop="creator" />
@@ -90,27 +85,28 @@
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
         />
+        <select-user ref="select" @ok="getJobNumber"/>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { listPayBank, delPayBank, addPayBank } from "@/api/human/hs/payBank";
+import { listDirector, delDirector, addDirector } from "@/api/human/hs/director";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
+import selectUser from "@/views/components/human/selectUser/selectUser";
+import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 
 export default {
-  name: "PayBank",
-  dicts: ['sys_yes_no'],
+  name: "Director",
+  components: {selectUser},
   data() {
     return {
       // 遮罩层
       loading: false,
       // 选中数组
       ids: [],
-      // 非单个禁用
-      single: true,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -129,8 +125,8 @@ export default {
       },
       // 表单参数
       form: {
-        // 各公司薪资支付银行维护表格数据
-        payBankList: []
+        // 各公司人事业务负责人表格数据
+        directorList: []
       },
       // 表单校验
       rules: {
@@ -139,16 +135,17 @@ export default {
       user: {},
       // 公司别下拉选单
       companyName: [],
+      index: 0,
+      rowIndex: 0,
       salaryOptionType: {
         id: '19',
         optionsType: [
-          'BankName',
-          'status'
+          'Responsibility'
         ],
         compId:'J00',
       },
-      payBankData: [],
-      index: 0,
+      directorData: [],
+      key: undefined,
     };
   },
   created() {
@@ -157,7 +154,7 @@ export default {
       this.companyName = res.data
     })
     getSalaryOptions(this.salaryOptionType).then(response =>{
-      this.payBankData = response.data
+      this.directorData = response.data
     })
   },
   methods: {
@@ -166,15 +163,15 @@ export default {
       this.user.compId = this.$store.state.user.userInfo.compId;
       this.queryParams.compId = this.user.compId
     },
-    /** 查询各公司薪资支付银行维护列表 */
+    /** 查询各公司人事业务负责人列表 */
     getList() {
       this.loading = true;
-      listPayBank(this.queryParams).then(response => {
-        this.form.payBankList = response.data.rows;
-        if (this.form.payBankList.length === 0) {
-          this.form.payBankList = [
+      listDirector(this.queryParams).then(response => {
+        this.form.directorList = response.data.rows;
+        if (this.form.directorList.length === 0) {
+          this.form.directorList = [
             {
-              bankCode: undefined
+              dutyCode: undefined
             }
           ]
         }
@@ -192,9 +189,10 @@ export default {
       this.form = {
         uuid: null,
         compId: null,
-        bankCode: null,
-        bankName: null,
-        status: null,
+        dutyCode: null,
+        empId: null,
+        postId: null,
+        orgId: null,
         resvAttr1: null,
         resvAttr2: null,
         creator: null,
@@ -221,10 +219,10 @@ export default {
     /** 保存按钮操作 */
     handleSave() {
       this.$refs['queryForm'].validate(valid => {
-        this.form.payBankList.map(value => {
+        this.form.directorList.map(value => {
           value.compId = this.queryParams.compId
         })
-        addPayBank(this.form).then(res => {
+        addDirector(this.form).then(res => {
           this.$modal.msgSuccess("新增成功");
           this.getList();
         })
@@ -233,8 +231,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除各公司薪资支付银行维护编号为"' + uuids + '"的数据项？').then(function() {
-        return delPayBank(uuids);
+      this.$modal.confirm('是否确认删除各公司人事业务负责人编号为"' + uuids + '"的数据项？').then(function() {
+        return delDirector(uuids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -246,13 +244,27 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.form.payBankList.length === row.index + 1) {
+      this.rowIndex = row.index
+      if (this.form.directorList.length === row.index + 1) {
         const newLine = {
-          bankCode: undefined
+          dutyCode: undefined
         }
         this.index++
-        this.form.payBankList.push(newLine)
+        this.form.directorList.push(newLine)
       }
+    },
+    /** 工号点击事件 */
+    inputClick() {
+      this.$refs.select.show();
+    },
+    /** 获取工号 */
+    getJobNumber(val) {
+      this.form.directorList[0].empId = val
+      this.form.empNo = val
+      queryNewPostNameAndChangeDetail(this.form).then(res => {
+        this.form.directorList[this.rowIndex].postId = res.data.list1[0].newPostName
+        this.key = Math.random()
+      })
     },
   }
 };
