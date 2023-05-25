@@ -1,20 +1,26 @@
 package com.jlkj.flow.workflow.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.utils.JsonUtils;
 import com.jlkj.common.core.web.controller.BaseController;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.PageQuery;
 import com.jlkj.common.core.web.page.TableDataInfoPlus;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.flow.flowable.core.domain.ProcessQuery;
+import com.jlkj.flow.workflow.domain.SysInstanceForm;
 import com.jlkj.flow.workflow.domain.vo.WfDeployVo;
 import com.jlkj.flow.workflow.domain.vo.WfFormVo;
 import com.jlkj.flow.workflow.service.IWfDeployFormService;
 import com.jlkj.flow.workflow.service.IWfDeployService;
+import com.jlkj.flow.workflow.service.SysInstanceFormService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -36,6 +42,8 @@ public class WfDeployController extends BaseController {
 
     private final IWfDeployService deployService;
     private final IWfDeployFormService deployFormService;
+    @Autowired
+    private SysInstanceFormService sysInstanceFormService;
 
     /**
      * 查询流程部署列表
@@ -104,4 +112,5 @@ public class WfDeployController extends BaseController {
         }
         return R.ok(JsonUtils.parseObject(formVo.getContent(), Map.class));
     }
+
 }

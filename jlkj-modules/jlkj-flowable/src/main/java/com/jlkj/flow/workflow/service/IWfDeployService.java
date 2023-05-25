@@ -14,13 +14,39 @@ import java.util.List;
  */
 public interface IWfDeployService {
 
+    /**
+     * 分页查询
+     * @param processQuery
+     * @param pageQuery
+     * @return
+     */
     TableDataInfoPlus<WfDeployVo> queryPageList(ProcessQuery processQuery, PageQuery pageQuery);
 
+    /**
+     * 查询发布列表
+     * @param processKey
+     * @param pageQuery
+     * @return
+     */
     TableDataInfoPlus<WfDeployVo> queryPublishList(String processKey, PageQuery pageQuery);
 
+    /**
+     * 更新挂起、激活
+     * @param definitionId
+     * @param stateCode
+     */
     void updateState(String definitionId, String stateCode);
 
+    /**
+     * 根据id查询xml
+     * @param definitionId
+     * @return
+     */
     String queryBpmnXmlById(String definitionId);
 
+    /**
+     * 根据id删除
+     * @param deployIds
+     */
     void deleteByIds(List<String> deployIds);
 }

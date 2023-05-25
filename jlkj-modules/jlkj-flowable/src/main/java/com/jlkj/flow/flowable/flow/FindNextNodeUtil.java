@@ -122,9 +122,9 @@ public class FindNextNodeUtil {
     /**
      * 判断是否是多实例子流程并且需要设置集合类型变量
      */
-    public static boolean checkSubProcess(String Id, Collection<FlowElement> flowElements, List<UserTask> nextUser) {
+    public static boolean checkSubProcess(String id, Collection<FlowElement> flowElements, List<UserTask> nextUser) {
         for (FlowElement flowElement1 : flowElements) {
-            if (flowElement1 instanceof SubProcess && flowElement1.getId().equals(Id)) {
+            if (flowElement1 instanceof SubProcess && flowElement1.getId().equals(id)) {
 
                 SubProcess sp = (SubProcess) flowElement1;
                 if (sp.getLoopCharacteristics() != null) {
@@ -167,13 +167,13 @@ public class FindNextNodeUtil {
     /**
      * 根据ID查询流程节点对象, 如果是子任务，则返回子任务的开始节点
      *
-     * @param Id           节点ID
+     * @param id           节点ID
      * @param flowElements 流程节点集合
      * @return
      */
-    public static FlowElement getFlowElementById(String Id, Collection<FlowElement> flowElements) {
+    public static FlowElement getFlowElementById(String id, Collection<FlowElement> flowElements) {
         for (FlowElement flowElement : flowElements) {
-            if (flowElement.getId().equals(Id)) {
+            if (flowElement.getId().equals(id)) {
                 //如果是子任务，则查询出子任务的开始节点
                 if (flowElement instanceof SubProcess) {
                     return getStartFlowElement(((SubProcess) flowElement).getFlowElements());
@@ -181,7 +181,7 @@ public class FindNextNodeUtil {
                 return flowElement;
             }
             if (flowElement instanceof SubProcess) {
-                FlowElement flowElement1 = getFlowElementById(Id, ((SubProcess) flowElement).getFlowElements());
+                FlowElement flowElement1 = getFlowElementById(id, ((SubProcess) flowElement).getFlowElements());
                 if (flowElement1 != null) {
                     return flowElement1;
                 }

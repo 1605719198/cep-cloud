@@ -246,9 +246,9 @@ public class WfModelServiceImpl extends FlowServiceFactory implements IWfModelSe
             throw new RuntimeException("开始节点不存在，请检查流程设计是否有误！");
         }
         // 获取开始节点配置的表单Key
-        if (StrUtil.isBlank(startEvent.getFormKey())) {
-            throw new RuntimeException("请配置流程表单");
-        }
+//        if (StrUtil.isBlank(startEvent.getFormKey())) {
+//            throw new RuntimeException("请配置流程表单");
+//        }
         Model newModel;
         if (Boolean.TRUE.equals(modelBo.getNewVersion())) {
             newModel = repositoryService.newModel();
@@ -337,7 +337,8 @@ public class WfModelServiceImpl extends FlowServiceFactory implements IWfModelSe
         // 修改流程定义的分类，便于搜索流程
         repositoryService.setProcessDefinitionCategory(procDef.getId(), model.getCategory());
         // 保存部署表单
-        return deployFormService.saveInternalDeployForm(deployment.getId(), bpmnModel);
+//        return deployFormService.saveInternalDeployForm(deployment.getId(), bpmnModel);
+        return true;
     }
 
     /**

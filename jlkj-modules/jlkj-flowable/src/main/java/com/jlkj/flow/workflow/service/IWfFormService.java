@@ -26,9 +26,9 @@ public interface IWfFormService {
 
     /**
      * 查询流程表单列表
-     *
-     * @param bo 流程表单
-     * @return 流程表单集合
+     * @param bo
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfFormVo> queryPageList(WfFormBo bo, PageQuery pageQuery);
 

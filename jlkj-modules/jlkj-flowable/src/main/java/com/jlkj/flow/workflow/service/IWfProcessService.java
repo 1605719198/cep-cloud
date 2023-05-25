@@ -18,93 +18,114 @@ public interface IWfProcessService {
 
     /**
      * 查询可发起流程列表
-     * @param pageQuery 分页参数
+     * @param processQuery
+     * @param pageQuery
      * @return
      */
     TableDataInfoPlus<WfDefinitionVo> selectPageStartProcessList(ProcessQuery processQuery, PageQuery pageQuery);
 
     /**
      * 查询可发起流程列表
+     * @param processQuery
+     * @return
      */
     List<WfDefinitionVo> selectStartProcessList(ProcessQuery processQuery);
 
     /**
      * 查询我的流程列表
-     * @param pageQuery 分页参数
+     * @param processQuery
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfTaskVo> selectPageOwnProcessList(ProcessQuery processQuery, PageQuery pageQuery);
 
     /**
      * 查询我的流程列表
+     * @param processQuery
+     * @return
      */
     List<WfTaskVo> selectOwnProcessList(ProcessQuery processQuery);
 
     /**
-     * 查询代办任务列表
-     * @param pageQuery 分页参数
+     *查询代办任务列表
+     * @param processQuery
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfTaskVo> selectPageTodoProcessList(ProcessQuery processQuery, PageQuery pageQuery);
 
     /**
      * 查询代办任务列表
+     * @param processQuery
+     * @return
      */
     List<WfTaskVo> selectTodoProcessList(ProcessQuery processQuery);
 
     /**
      * 查询待签任务列表
-     * @param pageQuery 分页参数
+     * @param processQuery
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfTaskVo> selectPageClaimProcessList(ProcessQuery processQuery, PageQuery pageQuery);
 
     /**
      * 查询待签任务列表
+     * @param processQuery
+     * @return
      */
     List<WfTaskVo> selectClaimProcessList(ProcessQuery processQuery);
 
     /**
      * 查询已办任务列表
-     * @param pageQuery 分页参数
+     * @param processQuery
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfTaskVo> selectPageFinishedProcessList(ProcessQuery processQuery, PageQuery pageQuery);
 
     /**
      * 查询已办任务列表
+     * @param processQuery
+     * @return
      */
     List<WfTaskVo> selectFinishedProcessList(ProcessQuery processQuery);
 
     /**
      * 查询流程部署关联表单信息
-     * @param definitionId 流程定义ID
-     * @param deployId 部署ID
+     * @param definitionId
+     * @param deployId
+     * @return
      */
     String selectFormContent(String definitionId, String deployId);
 
     /**
      * 启动流程实例
-     * @param procDefId 流程定义ID
-     * @param variables 扩展参数
+     * @param procDefId
+     * @param variables
      */
     void startProcessByDefId(String procDefId, Map<String, Object> variables);
 
     /**
      * 通过DefinitionKey启动流程
-     * @param procDefKey 流程定义Key
-     * @param variables 扩展参数
+     * @param procDefKey
+     * @param variables
      */
     void startProcessByDefKey(String procDefKey, Map<String, Object> variables);
 
-
     /**
      * 读取xml文件
-     * @param processDefId 流程定义ID
+     * @param processDefId
+     * @return
      */
     String queryBpmnXmlById(String processDefId);
 
-
     /**
      * 查询流程任务详情信息
-     * @param procInsId 流程实例ID
-     * @param taskId 任务ID
+     * @param procInsId
+     * @param taskId
+     * @return
      */
     WfDetailVo queryProcessDetail(String procInsId, String taskId);
+
 }

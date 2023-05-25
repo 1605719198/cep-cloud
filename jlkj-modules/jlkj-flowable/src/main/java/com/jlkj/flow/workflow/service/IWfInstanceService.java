@@ -42,11 +42,18 @@ public interface IWfInstanceService {
      */
     HistoricProcessInstance getHistoricProcessInstanceById(String processInstanceId);
 
-
     /**
      * 查询流程详情信息
-     * @param procInsId 流程实例ID
-     * @param deployId 流程部署ID
+     * @param procInsId
+     * @param deployId
+     * @return
      */
     Map<String, Object> queryDetailProcess(String procInsId, String deployId);
+
+    /**
+     * 根据流程实例id查询历史流程
+     * @param procInsId
+     * @return
+     */
+    Integer getHisByProcInsId(String procInsId);
 }

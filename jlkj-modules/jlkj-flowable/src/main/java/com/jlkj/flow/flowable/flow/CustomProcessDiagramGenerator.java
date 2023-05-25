@@ -14,6 +14,9 @@ import java.util.List;
  * @date 2021/4/5 0:31
  */
 public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerator {
+
+    private static final String ENDENV = "endenv";
+    private static final String EVENT = "Event_";
     @Override
     protected DefaultProcessDiagramCanvas generateProcessDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities, List<String> highLightedFlows, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDI) {
         this.prepareBpmnModel(bpmnModel);
@@ -319,8 +322,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             if (highLightedActivities.contains(flowNode.getId())) {
 
                 if (highLightedActivities.get(highLightedActivities.size() - 1).equals(flowNode.getId())
-                        && !"endenv".equals(flowNode.getId())) {
-                    if ((flowNode.getId().contains("Event_"))) {
+                        && !ENDENV.equals(flowNode.getId())) {
+                    if ((flowNode.getId().contains(EVENT))) {
                         drawHighLightEnd((com.jlkj.flow.flowable.flow.CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
                     } else {
                         drawHighLightNow((com.jlkj.flow.flowable.flow.CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
@@ -357,8 +360,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             List<GraphicInfo> graphicInfoList = bpmnModel.getFlowLocationGraphicInfo(sequenceFlow.getId());
             if (graphicInfoList != null && graphicInfoList.size() > 0) {
                 graphicInfoList = connectionPerfectionizer(processDiagramCanvas, bpmnModel, sourceElement, targetElement, graphicInfoList);
-                int xPoints[] = new int[graphicInfoList.size()];
-                int yPoints[] = new int[graphicInfoList.size()];
+                int[] xPoints = new int[graphicInfoList.size()];
+                int[] yPoints = new int[graphicInfoList.size()];
 
                 for (int i = 1; i < graphicInfoList.size(); i++) {
                     GraphicInfo graphicInfo = graphicInfoList.get(i);

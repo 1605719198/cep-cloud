@@ -8,3 +8,10 @@ export function getDetailInstance(query) {
     params: query
   })
 }
+// 查询流程实例详情信息
+export function getHisByProcInsId(procInsId) {
+  return request({
+    url: `/flowable/workflow/instance/getHisByProcInsId/${procInsId}`,
+    method: 'get',
+  })
+}

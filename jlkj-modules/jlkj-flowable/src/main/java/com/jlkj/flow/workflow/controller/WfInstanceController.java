@@ -2,6 +2,7 @@ package com.jlkj.flow.workflow.controller;
 
 
 import com.jlkj.common.core.domain.R;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.flow.workflow.domain.bo.WfTaskBo;
 import com.jlkj.flow.workflow.service.IWfInstanceService;
 import lombok.RequiredArgsConstructor;
@@ -69,4 +70,15 @@ public class WfInstanceController {
     public R detail(String procInsId, String deployId) {
         return R.ok(instanceService.queryDetailProcess(procInsId, deployId));
     }
+
+    /**
+     * 根据流程实例id查询流程状态
+     * @param procInsId
+     * @return
+     */
+    @GetMapping("/getHisByProcInsId/{procInsId}")
+    public AjaxResult getHisByProcInsId(@PathVariable String procInsId) {
+        return AjaxResult.success("查询成功",instanceService.getHisByProcInsId(procInsId));
+    }
+
 }
