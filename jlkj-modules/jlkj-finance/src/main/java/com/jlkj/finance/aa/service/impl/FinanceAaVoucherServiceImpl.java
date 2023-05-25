@@ -527,7 +527,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrQty().negate());
                         drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrAmt().negate());
                         drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerAcct1.getCrQty().negate());
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct1.setDrAmt(drAmt);
                             financeAaLedgerAcct1.setDrQty(drQty);
                         } else {
@@ -541,7 +541,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).negate();
                         drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).negate();
                         drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).negate();
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct.setDrAmt(drAmt);
                             financeAaLedgerAcct.setDrQty(drQty);
                         } else {
@@ -562,7 +562,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrQty() );
                         drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrAmt() );
                         drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getCrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrQty());
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct1.setDrAmt(drAmt);
                             financeAaLedgerAcct1.setDrQty(drQty);
                         } else {
@@ -576,7 +576,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt());
                         drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt());
                         drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt());
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct.setDrAmt(drAmt);
                             financeAaLedgerAcct.setDrQty(drQty);
                         } else {
@@ -607,7 +607,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drAmtCal =(null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getDrAmt()) .subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
                         drQtyCalC = (null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrQty()).subtract(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
                         drAmtCalC = (null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrAmt()).subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal1.setDrAmt(drAmtCal);
                             financeAaLedgerlCal1.setDrQty(drQtyCal);
                         } else {
@@ -617,7 +617,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerlCalService.updateFinanceAaLedgerlCal(financeAaLedgerlCal1);
                     } else {
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal.setDrAmt(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt().negate());
                             financeAaLedgerlCal.setDrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt().negate());
                         } else {
@@ -637,7 +637,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drAmtCal = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getDrAmt());
                         drQtyCalC = (null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrQty());
                         drAmtCalC = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrAmt());
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal1.setDrAmt(drAmtCal);
                             financeAaLedgerlCal1.setDrQty(drQtyCal);
                         } else {
@@ -647,7 +647,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         financeAaLedgerlCal1.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerlCalService.updateFinanceAaLedgerlCal(financeAaLedgerlCal1);
                     } else {
-                        if (ConstantsUtil.drcrD.equals(financeAaVoucherDetail.getDrcr())) {
+                        if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal.setDrAmt(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
                             financeAaLedgerlCal.setDrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
 

@@ -23,7 +23,6 @@ public class ConstantsUtil
      */
     public static final String DISABLEDCODE="Y";
 
-    public static final String CODE_Y="Y";
 
     public static final String CODE_N="N";
 
@@ -39,11 +38,11 @@ public class ConstantsUtil
     /**
      * drcrC
      */
-    public static final String drcrC="C";
+    public static final String DRCRC="C";
     /**
      * drcrD
      */
-    public static final String drcrD="D";
+    public static final String DRCRD="D";
 
 
 }

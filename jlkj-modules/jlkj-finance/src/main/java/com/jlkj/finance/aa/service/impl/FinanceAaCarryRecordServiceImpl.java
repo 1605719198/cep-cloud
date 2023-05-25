@@ -127,9 +127,9 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     financeAaVoucherDetail1.setSrlDesc(financeAaCarryRecord.getRemark());
                     financeAaVoucherDetailsList.add(financeAaVoucherDetail1);
                 }
-                if (ConstantsUtil.drcrD.equals(financeAaCarryRules.getCarryType())) {
+                if (ConstantsUtil.DRCRD.equals(financeAaCarryRules.getCarryType())) {
                     drcr = "C";
-                } else if (ConstantsUtil.drcrC.equals(financeAaCarryRules.getCarryType())) {
+                } else if (ConstantsUtil.DRCRC.equals(financeAaCarryRules.getCarryType())) {
                     drcr = "D";
                 }
                 financeAaVoucherDetail.setDrcr(drcr);
@@ -246,9 +246,9 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     financeAaVoucherDetailsList.add(financeAaVoucherDetail1);
                 }
 
-                if (ConstantsUtil.drcrD.equals(financeAaCarryRulesCorp.getCarryType())) {
+                if (ConstantsUtil.DRCRD.equals(financeAaCarryRulesCorp.getCarryType())) {
                     drcr = "C";
-                } else if (ConstantsUtil.drcrC.equals(financeAaCarryRulesCorp.getCarryType())) {
+                } else if (ConstantsUtil.DRCRC.equals(financeAaCarryRulesCorp.getCarryType())) {
                     drcr = "D";
                 }
                 financeAaVoucherDetail.setDrcr(drcr);
