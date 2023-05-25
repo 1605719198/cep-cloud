@@ -363,6 +363,7 @@ export default {
       this.queryParams.version = null;
       this.queryParams.effectDate = null;
       this.queryParams.payAreaId = data.dicNo;
+      this.queryParams.date = null;
       this.getVersionList()
       this.socialSecurityList = []
       this.onLoad()

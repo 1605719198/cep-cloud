@@ -166,6 +166,7 @@ export default {
     changePostName(){
       this.queryParams.versionNo = null;
       this.queryParams.effectDate = null;
+      this.queryParams.date = null;
       this.getVersionList()
 
       // this.personalIncomeTaxList = []

@@ -206,13 +206,7 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           status: "1",
-          payType: "2",
-          isPostPro: "0",
-          isEmpPro: "0",
-          payProCode: "",
-          parentid: this.queryParams.id,
-          isShowno: "0",
-          payAreaId: null,
+          compId: this.queryParams.compId,
         }
         this.index++
         this.paySheetInputList.push(newLine)
