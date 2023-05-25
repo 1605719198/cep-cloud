@@ -331,15 +331,13 @@ export default {
     /** 保存按钮操作 */
     handleSave(row) {
       this.form.yearAmtList = this.multipleSelection;
-      saveYearAmt(this.form.multipleSelection).then( response=>{
-        this.$modal.msgSuccess('保存成功')
-        this.getList()
-      })
-
       this.$nextTick(()=>{
         this.$refs["form"].validate(valid => {
           if (valid) {
-
+            saveYearAmt(this.form.yearAmtList).then( response=>{
+              this.$modal.msgSuccess('保存成功')
+              this.getList()
+            })
           }
         });
       })
