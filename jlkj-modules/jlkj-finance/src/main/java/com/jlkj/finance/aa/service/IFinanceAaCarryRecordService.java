@@ -40,7 +40,7 @@ public interface IFinanceAaCarryRecordService
      * @param financeAaCarryRecord 自动结转规则-执行记录
      * @return 结果
      */
-    public int insertFinanceAaCarryRecordExecute(FinanceAaCarryRecord financeAaCarryRecord);
+    public String insertFinanceAaCarryRecordExecute(FinanceAaCarryRecord financeAaCarryRecord);
     /**
      * 取消自动结转规则-执行记录
      *

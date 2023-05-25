@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="companyId"    column="company_id"    />
         <result property="acctPeriod"    column="acct_period"    />
         <result property="acctId"    column="acct_id"    />
+        <result property="acctCode"    column="acct_code"    />
         <result property="acctName"    column="acct_name"    />
         <result property="bgnAmt"    column="bgn_amt"    />
         <result property="drAmt"    column="dr_amt"    />
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectFinanceAaLedgerAcctVo">
-        select id, company_id, acct_period, acct_id, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty from finance_aa_ledger_acct
+        select id, company_id, acct_period, acct_id,acct_code, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty from finance_aa_ledger_acct
     </sql>
 
     <select id="selectFinanceAaLedgerAcctList" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct" resultMap="FinanceAaLedgerAcctResult">
@@ -64,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null">company_id,</if>
             <if test="acctPeriod != null">acct_period,</if>
             <if test="acctId != null">acct_id,</if>
+            <if test="acctCode != null">acct_code,</if>
             <if test="acctName != null">acct_name,</if>
             <if test="bgnAmt != null">bgn_amt,</if>
             <if test="drAmt != null">dr_amt,</if>
@@ -81,6 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null">#{companyId},</if>
             <if test="acctPeriod != null">#{acctPeriod},</if>
             <if test="acctId != null">#{acctId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
             <if test="acctName != null">#{acctName},</if>
             <if test="bgnAmt != null">#{bgnAmt},</if>
             <if test="drAmt != null">#{drAmt},</if>
@@ -95,9 +98,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
     <insert id="batchFinanceAcct">
-        insert into finance_aa_ledger_acct(id, company_id, acct_period, acct_id, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty ) values
+        insert into finance_aa_ledger_acct(id, company_id, acct_period, acct_id, acct_code, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty ) values
         <foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.companyId}, #{item.acctPeriod}, #{item.acctId}, #{item.acctName}, #{item.bgnAmt}, #{item.drAmt}, #{item.crAmt}, #{item.bgnQty}, #{item.drQty}, #{item.crQty}, #{item.yearDrAmt}, #{item.yearCrAmt}, #{item.yearDrQty}, #{item.yearCrQty})
+            ( #{item.id}, #{item.companyId}, #{item.acctPeriod}, #{item.acctId}, #{item.acctCode},, #{item.acctName}, #{item.bgnAmt}, #{item.drAmt}, #{item.crAmt}, #{item.bgnQty}, #{item.drQty}, #{item.crQty}, #{item.yearDrAmt}, #{item.yearCrAmt}, #{item.yearDrQty}, #{item.yearCrQty})
         </foreach>
     </insert>
 
@@ -107,6 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null">company_id = #{companyId},</if>
             <if test="acctPeriod != null">acct_period = #{acctPeriod},</if>
             <if test="acctId != null">acct_id = #{acctId},</if>
+            <if test="acctCode != null">acct_code= #{acctCode},</if>
             <if test="acctName != null">acct_name = #{acctName},</if>
             <if test="bgnAmt != null">bgn_amt = #{bgnAmt},</if>
             <if test="drAmt != null">dr_amt = #{drAmt},</if>
