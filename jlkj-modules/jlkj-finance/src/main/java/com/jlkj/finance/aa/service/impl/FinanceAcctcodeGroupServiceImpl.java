@@ -1,24 +1,21 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
+import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
+import com.jlkj.finance.aa.mapper.FinanceAcctcodeGroupMapper;
+import com.jlkj.finance.aa.service.IFinanceAcctcodeGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.jlkj.common.core.constant.UserConstants;
-import com.jlkj.common.core.exception.ServiceException;
-import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.SpringUtils;
-import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.IdUtils;
-import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
-import com.jlkj.system.api.domain.SysDept;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAcctcodeGroupMapper;
-import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
-import com.jlkj.finance.aa.service.IFinanceAcctcodeGroupService;
 
 /**
  * 会计科目-集团级Service业务层处理
@@ -252,5 +249,29 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
     public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode, String companyId) {
         acctCode = StringUtils.isEmpty(acctCode) ? "0" :acctCode;
         return financeAcctcodeGroupMapper.selectCodeGroupList(acctCode,companyId);
+    }
+
+
+    /**
+     * 根据会计科目编号查询会计科目中文名称
+     * @param groupAcctCode
+     * @return
+     */
+    @Override
+    public String selectAcctNameByCode(String groupAcctCode){
+        String acctName = financeAcctcodeGroupMapper.selectAcctNameByCode(groupAcctCode);
+        acctName = (!"".equals(acctName) && acctName !=null) ? acctName : "" ;
+        return acctName;
+    }
+
+    /**
+     * 集团会计科目弹窗查询方法
+     * @param financeAcctcodeGroup
+     * @return
+     */
+    @Override
+    public List<FinanceAcctcodeGroup> selectFinanceAcctcodeGroupPopList(FinanceAcctcodeGroup financeAcctcodeGroup)
+    {
+        return financeAcctcodeGroupMapper.selectFinanceAcctcodeGroupPopList(financeAcctcodeGroup);
     }
 }

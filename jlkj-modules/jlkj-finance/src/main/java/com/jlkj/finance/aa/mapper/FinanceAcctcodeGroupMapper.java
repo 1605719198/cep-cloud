@@ -1,8 +1,9 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 会计科目-集团级Mapper接口
@@ -27,6 +28,7 @@ public interface FinanceAcctcodeGroupMapper
      * @return 会计科目-集团级集合
      */
     public List<FinanceAcctcodeGroup> selectFinanceAcctcodeGroupList(FinanceAcctcodeGroup financeAcctcodeGroup);
+
 
     /**
      * 新增会计科目-集团级
@@ -89,4 +91,20 @@ public interface FinanceAcctcodeGroupMapper
      * @return
      */
     public List<FinanceAcctcodeGroup> selectCodeGroupList(@Param("acctCode") String acctCode, @Param("companyId") String companyId);
+
+
+    /**
+     * 根据会计科目编号查询会计科目中文名称
+     * @param groupAcctCode
+     * @return
+     */
+    public String selectAcctNameByCode(String groupAcctCode);
+
+    /**
+     * 集团会计科目弹窗查询方法
+     * @param financeAcctcodeGroup
+     * @return
+     */
+    public List<FinanceAcctcodeGroup> selectFinanceAcctcodeGroupPopList(FinanceAcctcodeGroup financeAcctcodeGroup);
+
 }
