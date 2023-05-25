@@ -49,6 +49,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctName != null  and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
         </where>
     </select>
+    <select id="selectLedgerAcctPeriodList" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
+        <include refid="selectFinanceAaLedgerAcctVo"/>
+<where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+        </where>
+    </select>
 
     <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
         insert into finance_aa_ledger_acct
@@ -86,6 +93,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="yearDrQty != null">#{yearDrQty},</if>
             <if test="yearCrQty != null">#{yearCrQty},</if>
          </trim>
+    </insert>
+    <insert id="batchFinanceAcct">
+        insert into finance_aa_ledger_acct(id, company_id, acct_period, acct_id, acct_name, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty ) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.companyId}, #{item.acctPeriod}, #{item.acctId}, #{item.acctName}, #{item.bgnAmt}, #{item.drAmt}, #{item.crAmt}, #{item.bgnQty}, #{item.drQty}, #{item.crQty}, #{item.yearDrAmt}, #{item.yearCrAmt}, #{item.yearDrQty}, #{item.yearCrQty})
+        </foreach>
     </insert>
 
     <update id="updateFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">

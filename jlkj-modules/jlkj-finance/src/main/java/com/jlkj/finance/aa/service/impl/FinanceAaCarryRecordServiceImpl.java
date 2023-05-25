@@ -83,6 +83,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
      */
     @Override
     public List<FinanceAaCarryRecord> selectFinanceAaCarryRecordCompanyIdList(FinanceAaCarryRecord financeAaCarryRecord) {
+        financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0,7));
         return financeAaCarryRecordMapper.selectFinanceAaCarryRecordCompanyIdList(financeAaCarryRecord);
     }
 

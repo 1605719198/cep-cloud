@@ -85,6 +85,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
+    <select id="selectAcctPeriodList" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+        </where>
+    </select>
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
         insert into finance_aa_ledgerl_cal
@@ -148,6 +155,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="yearDrQty != null">#{yearDrQty},</if>
             <if test="yearCrQty != null">#{yearCrQty},</if>
          </trim>
+    </insert>
+    <insert id="batchFinanceAaLedgerlCal">
+        insert into finance_aa_ledgerl_cal( id, company_id, acct_period, acct_id, acct_code, acct_name, cal_ida, cal_codea, cal_namea, cal_idb, cal_codeb, cal_nameb, cal_idc, cal_codec, cal_namec, cal_idd, cal_coded, cal_named, bgn_amt, dr_amt, cr_amt, bgn_qty, dr_qty, cr_qty, year_dr_amt, year_cr_amt, year_dr_qty, year_cr_Qty ) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.companyId}, #{item.acctPeriod}, #{item.acctId}, #{item.acctCode}, #{item.acctName}, #{item.calIda}, #{item.calCodea}, #{item.calNamea}, #{item.calIdb}, #{item.calCodeb}, #{item.calNameb}, #{item.calIdc}, #{item.calCodec}, #{item.calNamec}, #{item.calIdd}, #{item.calCoded}, #{item.calNamed}, #{item.bgnAmt}, #{item.drAmt}, #{item.crAmt}, #{item.bgnQty}, #{item.drQty}, #{item.crQty}, #{item.yearDrAmt}, #{item.yearCrAmt}, #{item.yearDrQty}, #{item.yearCrQty})
+        </foreach>
     </insert>
 
     <update id="updateFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
