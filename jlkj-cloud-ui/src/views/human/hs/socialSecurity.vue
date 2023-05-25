@@ -345,13 +345,18 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function() {
-        return delSocialSecurity(ids);
-      }).then(() => {
-        this.onLoad();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      if(this.form.effectDate > getDateTime(1)) {
+        const ids = row.id || this.ids;
+        this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
+          return delSocialSecurity(ids);
+        }).then(() => {
+          this.onLoad();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {
+        });
+      }else{
+        this.$modal.msgError("生效日期必须大于当前日期");
+      }
     },
     //点击节点方法
     changePostName(data,index){

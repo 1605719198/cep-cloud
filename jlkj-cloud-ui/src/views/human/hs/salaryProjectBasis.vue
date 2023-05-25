@@ -336,7 +336,7 @@ export default {
     //点击节点方法
     handleNodeClick(data) {
       this.queryParams.id = data.id;
-      this.parentPayType = data.payType;
+      this.parentPayType = data.label4;
       this.tableData = []
       this.onLoad()
     },

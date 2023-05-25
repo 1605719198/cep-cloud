@@ -82,9 +82,6 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                 socialSecurityMapper.insertSocialSecurity(socialSecurity);
             }
         }
-
-
-
         else{
             for (SocialSecurity socialSecurity : socialSecurityList) {
                 if (socialSecurity.getId() != null) {
