@@ -74,14 +74,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
             <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
             <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
-
-            <if test="calIda != null  and calIda != ''"> and cal_ida = #{calIda}</if>
-
-            <if test="calIdb != null  and calIdb != ''"> and cal_idb = #{calIdb}</if>
-
-            <if test="calIdc != null  and calIdc != ''"> and cal_idc = #{calIdc}</if>
-
-            <if test="calIdd != null  and calIdd != ''"> and cal_idd = #{calIdd}</if>
+     and cal_ida = #{calIda}
+            and cal_idb = #{calIdb}
+            and cal_idc = #{calIdc}
+            and cal_idd = #{calIdd}
 
         </where>
     </select>
