@@ -26,9 +26,9 @@ public interface IWfCopyService {
 
     /**
      * 查询流程抄送列表
-     *
-     * @param wfCopy 流程抄送
-     * @return 流程抄送集合
+     * @param wfCopy
+     * @param pageQuery
+     * @return
      */
     TableDataInfoPlus<WfCopyVo> selectPageList(WfCopyBo wfCopy, PageQuery pageQuery);
 

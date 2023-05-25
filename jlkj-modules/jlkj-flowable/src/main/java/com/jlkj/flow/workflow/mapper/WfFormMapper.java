@@ -17,5 +17,10 @@ import java.util.List;
  */
 public interface WfFormMapper extends BaseMapperPlus<WfFormMapper, WfForm, WfFormVo> {
 
+    /**
+     * 查询流程form表单
+     * @param queryWrapper
+     * @return
+     */
     List<WfFormVo> selectFormVoList(@Param(Constants.WRAPPER) Wrapper<WfForm> queryWrapper);
 }

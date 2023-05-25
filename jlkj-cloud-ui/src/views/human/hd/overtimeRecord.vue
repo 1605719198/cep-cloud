@@ -417,12 +417,15 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.getList();
+        }
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -503,6 +506,7 @@ export default {
             addOvertimeRecord(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
+              this.queryParams.workOvertimeDate = this.form.workOvertimeDate
               this.getList();
             });
           }
@@ -528,7 +532,6 @@ export default {
       this.queryParams.empNo = val
       this.form.empNo = val
       this.form.empName = userName
-      this.getList();
       queryNewPostNameAndChangeDetail(this.form).then(res => {
         this.form.postName = res.data.list1[0].newPostName
       })

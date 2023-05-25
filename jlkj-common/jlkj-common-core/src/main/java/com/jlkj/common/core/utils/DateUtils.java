@@ -2,6 +2,7 @@ package com.jlkj.common.core.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import java.lang.management.ManagementFactory;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -123,7 +124,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
             return null;
         }
     }
-
+    /**
+     * 获得当前月--结束日期
+     * @param date
+     * @return
+     */
+    public static String getMaxMonthDate(String date){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            calendar.setTime(dayFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return dayFormat.format(calendar.getTime());
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 获取服务器启动时间
      */
@@ -202,5 +219,25 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         } else {
             return false;
         }
+    }
+    /**
+     * 月份计算
+     * @param oDate 日期
+     * @param num 月数
+     * @return
+     */
+    public static String addMonth(String oDate, Integer num)  {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date newDate = df.parse(oDate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(newDate);
+            cal.add(Calendar.MONTH, num);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.format(cal.getTime());
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

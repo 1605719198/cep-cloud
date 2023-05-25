@@ -131,6 +131,7 @@
 <script>
 import { listOwnProcess, stopProcess, delProcess } from '@/api/workflow/process';
 import { listAllCategory } from '@/api/workflow/category';
+import { getFromByInsId } from '@/api/workflow/insform'
 export default {
   name: "Own",
   components: {
@@ -249,11 +250,18 @@ export default {
     },
     /** 流程流转记录 */
     handleFlowRecord(row) {
-      this.$router.push({
-        path: '/workflow/process/detail/' + row.procInsId,
-        query: {
-          processed: false
-        }
+      // 根据流程实例id查询路由地址
+      const params = {insId: row.procInsId};
+      getFromByInsId(params).then(res => {
+        this.$router.push({
+          path: res.data.routerPath,
+          query: {
+            procDefId: row.procDefId,
+            procInsId: row.procInsId,
+            processed: false,
+            taskFlag: 'skip'
+          }
+        })
       })
     },
     /** 删除按钮操作 */

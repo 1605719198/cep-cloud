@@ -70,7 +70,8 @@ public class SocialSecurity extends BaseEntity
     private Date effectDate;
 
     /** 版本号 */
-    private String version;
+    @Excel(name = "版本号")
+    private Long version;
 
     /** 输入人 */
     @Excel(name = "输入人")
@@ -201,12 +202,12 @@ public class SocialSecurity extends BaseEntity
     {
         return effectDate;
     }
-    public void setVersion(String version)
+    public void setVersion(Long version)
     {
         this.version = version;
     }
 
-    public String getVersion()
+    public Long getVersion()
     {
         return version;
     }

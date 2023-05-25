@@ -22,7 +22,7 @@
           <div class="card-panel-text">
             消息
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="totalMsg" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,15 +57,37 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { listTodoProcess } from '@/api/workflow/process'
 
 export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      totalMsg: 0,
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        name: null,
+        category: null
+      },
+    }
+  },
+  created() {
+    this.getList()
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
+    /** 查询流程定义列表 */
+    getList() {
+      listTodoProcess(this.queryParams).then(response => {
+        this.totalMsg = response.total;
+      });
+    },
   }
 }
 </script>

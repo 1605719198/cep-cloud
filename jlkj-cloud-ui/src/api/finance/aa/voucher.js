@@ -80,6 +80,14 @@ export function addVoucher(data) {
     data: data
   })
 }
+//红冲凭证维护-主
+export function addHongChongVoucher(data) {
+  return request({
+    url: '/finance/voucher/addHongChongVoucher',
+    method: 'post',
+    data: data
+  })
+}
 
 // 修改凭证维护-主
 export function updateVoucher(data) {

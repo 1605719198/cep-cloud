@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSalaryProjectBasisList" parameterType="SalaryProjectBasis" resultMap="SalaryProjectBasisResult">
         select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
-        where pay_type = 2
+        where pay_type != 1
     </select>
     
     <select id="selectSalaryProjectBasisById" parameterType="Long" resultMap="SalaryProjectBasisResult">

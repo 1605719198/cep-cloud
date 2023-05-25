@@ -27,6 +27,10 @@ import java.util.stream.Collectors;
 @Component("multiInstanceHandler")
 public class MultiInstanceHandler {
 
+    private static final String USERS = "USERS";
+    private static final String ROLES = "ROLES";
+    private static final String DEPTS = "DEPTS";
+
     @Autowired
     private RemoteUserService userService;
 
@@ -36,19 +40,19 @@ public class MultiInstanceHandler {
         if (ObjectUtil.isNotEmpty(flowElement) && flowElement instanceof UserTask) {
             UserTask userTask = (UserTask) flowElement;
             String dataType = userTask.getAttributeValue(ProcessConstants.NAMASPASE, ProcessConstants.PROCESS_CUSTOM_DATA_TYPE);
-            if ("USERS".equals(dataType) && CollUtil.isNotEmpty(userTask.getCandidateUsers())) {
+            if (USERS.equals(dataType) && CollUtil.isNotEmpty(userTask.getCandidateUsers())) {
                 candidateUserIds.addAll(userTask.getCandidateUsers());
             } else if (CollUtil.isNotEmpty(userTask.getCandidateGroups())) {
                 List<String> groups = userTask.getCandidateGroups()
                     .stream().map(item -> item.substring(4)).collect(Collectors.toList());
-                if ("ROLES".equals(dataType)) {
+                if (ROLES.equals(dataType)) {
                     groups.forEach(item -> {
                         R<List<Long>> listR = userService.selectUserIdsByRoleId(Long.parseLong(item), SecurityConstants.INNER);
                         List<String> userIds = listR.getData()
                             .stream().map(String::valueOf).collect(Collectors.toList());
                         candidateUserIds.addAll(userIds);
                     });
-                } else if ("DEPTS".equals(dataType)) {
+                } else if (DEPTS.equals(dataType)) {
                     R<List<Long>> listR = userService.selectList(groups, SecurityConstants.INNER);
                     List<String> userIds = listR.getData()
                         .stream().map(String::valueOf).collect(Collectors.toList());
