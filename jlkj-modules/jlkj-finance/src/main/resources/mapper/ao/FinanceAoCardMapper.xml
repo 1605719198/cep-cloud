@@ -34,9 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectFinanceAoCardByUuid" parameterType="String" resultMap="FinanceAoCardResult">
+    <select id="selectFinanceAoCardByUserNo" parameterType="String" resultMap="FinanceAoCardResult">
         <include refid="selectFinanceAoCardVo"/>
-        where uuid = #{uuid}
+        where user_no = #{userNo}
     </select>
         
     <insert id="insertFinanceAoCard" parameterType="FinanceAoCard">

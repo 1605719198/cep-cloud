@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { addCard } from "@/api/finance/ao/card";
+import { addCard, queryCard } from "@/api/finance/ao/card";
 
 export default {
   name: "Card",
@@ -65,9 +65,12 @@ export default {
   },
   created() {
     this.form.userNo = this.$store.state.user.userInfo.userName
-    this.form.name = this.$store.state.user.userInfo.nickName
     this.form.deptId = this.$store.state.user.userInfo.compId
-    this.form.deptName = this.$store.state.user.userInfo.dept.deptName
+    queryCard(this.$store.state.user.userInfo.userName).then(res => {
+      this.form = res.data
+      this.form.name = this.$store.state.user.userInfo.nickName
+      this.form.deptName = this.$store.state.user.userInfo.dept.deptName
+    })
   },
   methods: {
     /** 保存按钮 */
@@ -76,7 +79,6 @@ export default {
         if (valid) {
           addCard(this.form).then(response => {
             this.$modal.msgSuccess("保存成功");
-            this.open = false;
           });
         }
       });
@@ -84,6 +86,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .input {
   width: 20%;
