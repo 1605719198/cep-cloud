@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="80px">
           <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
@@ -18,9 +18,9 @@
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="刷卡日期" prop="slotCardDate">
+          <el-form-item label="刷卡日期" prop="workOvertimeDate">
             <el-date-picker
-              v-model="queryParams.slotCardDate"
+              v-model="queryParams.workOvertimeDate"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="~"
@@ -73,6 +73,7 @@
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import { listAttendenceRecord } from "@/api/human/hd/attendenceRecord";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import {validateNumber} from "@/utils/jlkj";
 
 export default {
   name: "AttendenceRecord",
@@ -95,10 +96,19 @@ export default {
         pageSize: 10,
         compId: 'J00',
         empNo: null,
-        slotCardDate: '',
+        workOvertimeDate: '',
         startTime: '',
         endTime: ''
       },
+      rules: {
+        empNo: [
+          { required: true, validator: validateNumber, trigger: "blur" },
+          { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
+        ],
+        workOvertimeDate: [
+          { required: true, message: "刷卡日期不能为空", trigger: "blur" }
+        ],
+      }
     };
   },
   created() {
@@ -123,7 +133,11 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.getList();
+        }
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {

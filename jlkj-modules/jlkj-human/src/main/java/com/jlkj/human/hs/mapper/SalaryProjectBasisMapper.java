@@ -1,7 +1,6 @@
 package com.jlkj.human.hs.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.SalaryProjectBasis;
 
 import java.util.List;
@@ -29,14 +28,6 @@ public interface SalaryProjectBasisMapper extends BaseMapper<SalaryProjectBasis>
      * @return 集团级薪资项目输入维护集合
      */
     public List<SalaryProjectBasis> selectSalaryProjectBasisList(SalaryProjectBasis salaryProjectBasis);
-
-    /**
-     * 通过父节点id查询集团级薪资项目输入维护
-     *
-     * @param parentid 集团级薪资项目输入维护编码
-     * @return 集团级薪资项目输入维护
-     */
-    public List<BasisOptionsDTO> selectSalaryProjectBasisByParentid(Long  parentid);
 
     /**
      * 新增集团级薪资项目输入维护

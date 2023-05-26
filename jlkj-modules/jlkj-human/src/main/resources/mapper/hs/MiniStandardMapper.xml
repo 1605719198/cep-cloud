@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.MiniStandardMapper">
+    
+    <resultMap type="MiniStandard" id="MiniStandardResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="version"    column="version"    />
+        <result property="salaryStandard"    column="salary_standard"    />
+        <result property="money"    column="money"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectMiniStandardVo">
+        select uuid, comp_id, version, salary_standard, money, effect_date, resv_attr1, resv_attr2, creator, creator_id, create_date from human_hs_mini_standard
+    </sql>
+
+    <select id="selectMiniStandardList" parameterType="MiniStandard" resultMap="MiniStandardResult">
+        <include refid="selectMiniStandardVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="effectDate != null "> and effect_date = #{effectDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectMiniStandardByUuid" parameterType="String" resultMap="MiniStandardResult">
+        <include refid="selectMiniStandardVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertMiniStandard" parameterType="MiniStandard">
+        insert into human_hs_mini_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="version != null">version,</if>
+            <if test="salaryStandard != null">salary_standard,</if>
+            <if test="money != null">money,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="version != null">#{version},</if>
+            <if test="salaryStandard != null">#{salaryStandard},</if>
+            <if test="money != null">#{money},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMiniStandard" parameterType="MiniStandard">
+        update human_hs_mini_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="salaryStandard != null">salary_standard = #{salaryStandard},</if>
+            <if test="money != null">money = #{money},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteMiniStandardByUuid" parameterType="String">
+        delete from human_hs_mini_standard where uuid = #{uuid}
+    </delete>
+
+    <select id="getVersionList" parameterType="String" resultMap="MiniStandardResult">
+        SELECT distinct version FROM human_hs_mini_standard WHERE comp_id = #{compId}  order by  version
+    </select>
+
+    <select id="selectMaxVersion" parameterType="String" resultType="map">
+        select  effect_date effectDate, version from human_hs_mini_standard where comp_id = #{compId} order by effect_date desc limit 1
+    </select>
+
+    <delete id="deleteMiniStandardByUuids" parameterType="String">
+        delete from human_hs_mini_standard where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+
+    <delete id="deleteMiniStandardByVersion" parameterType="map">
+        delete from human_hs_mini_standard where comp_id = #{compId} and  version= #{version}
+    </delete>
+</mapper>

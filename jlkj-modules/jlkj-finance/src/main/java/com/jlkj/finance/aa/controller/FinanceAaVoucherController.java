@@ -146,6 +146,17 @@ public class FinanceAaVoucherController extends BaseController
         financeAaVoucher.setCreateBy(getUsername());
         return success(financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher));
     }
+    /**
+     * 红冲凭证维护-主
+     */
+    @RequiresPermissions("aa:voucher:add")
+    @Log(title = "凭证维护-主", businessType = BusinessType.INSERT)
+    @PostMapping("/addHongChongVoucher")
+    public AjaxResult addHongChongVoucher(@RequestBody FinanceAaVoucher financeAaVoucher)
+    {
+        financeAaVoucher.setCreateBy(getUsername());
+        return success(financeAaVoucherService.insertFinanceAaVoucherHongChong(financeAaVoucher));
+    }
 
     /**
      * 修改凭证维护-主

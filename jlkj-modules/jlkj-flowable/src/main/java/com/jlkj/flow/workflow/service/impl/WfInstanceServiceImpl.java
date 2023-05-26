@@ -27,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.history.HistoricProcessInstanceQuery;
+import org.flowable.engine.impl.persistence.entity.HistoricProcessInstanceEntityImpl;
 import org.flowable.engine.task.Comment;
 import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -56,6 +58,9 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
     @Autowired
     private final RemoteDeptService deptService;
 
+    private static final int ONE = 1;
+    private static final int TWO = 2;
+
     /**
      * 结束流程实例
      *
@@ -77,11 +82,11 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
     public void updateState(Integer state, String instanceId) {
 
         // 激活
-        if (state == 1) {
+        if (state == ONE) {
             runtimeService.activateProcessInstanceById(instanceId);
         }
         // 挂起
-        if (state == 2) {
+        if (state == TWO) {
             runtimeService.suspendProcessInstanceById(instanceId);
         }
     }
@@ -133,7 +138,7 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
      */
     @Override
     public Map<String, Object> queryDetailProcess(String procInsId, String deployId) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(64);
         if (StringUtils.isNotBlank(procInsId)) {
             List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(procInsId)
@@ -210,5 +215,22 @@ public class WfInstanceServiceImpl extends FlowServiceFactory implements IWfInst
             map.put("formData", JsonUtils.parseObject(formVo.getContent(), Map.class));
         }
         return map;
+    }
+
+    /**
+     * 根据流程实例id查询历史流程
+     * @param procInsId
+     * @return
+     */
+    @Override
+    public Integer getHisByProcInsId(String procInsId) {
+        HistoricProcessInstanceQuery historicProcessInstanceQuery = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(procInsId);
+        List<HistoricProcessInstance> instanceList = historicProcessInstanceQuery.list();
+        if (instanceList.size() > 0) {
+            return ((HistoricProcessInstanceEntityImpl) instanceList.get(0)).getRevision();
+        } else {
+            return 9;
+        }
     }
 }

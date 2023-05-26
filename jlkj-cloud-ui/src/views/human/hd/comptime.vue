@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="68px">
           <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
@@ -18,9 +18,9 @@
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="日期" prop="startDate">
+          <el-form-item label="日期" prop="workOvertimeDate">
             <el-date-picker
-              v-model="queryParams.startDate"
+              v-model="queryParams.workOvertimeDate"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="~"
@@ -276,7 +276,7 @@ export default {
         pageSize: 10,
         compId: 'J00',
         empNo: null,
-        startDate: '',
+        workOvertimeDate: '',
         startTime: '',
         endTime: ''
       },
@@ -354,8 +354,7 @@ export default {
         empNo: null,
         postId: null,
         postName: null,
-        startDate: null,
-        endDate: null,
+        workOvertimeDate: null,
         saveHours: '0',
         compHours: '0',
         description: null,
@@ -373,7 +372,11 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.getList();
+        }
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -411,6 +414,7 @@ export default {
             addComptime(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
+              this.queryParams.workOvertimeDate = this.form.workOvertimeDate
               this.getList();
             });
           }
@@ -436,7 +440,6 @@ export default {
       this.queryParams.empNo = val
       this.form.empNo = val
       this.form.empName = userName
-      this.getList();
       queryNewPostNameAndChangeDetail(this.form).then(res => {
         this.form.postName = res.data.list1[0].newPostName
       })

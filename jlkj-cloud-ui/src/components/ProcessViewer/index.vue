@@ -20,7 +20,7 @@
       </marker>
     </defs>
     <!-- 已完成节点悬浮弹窗 -->
-    <el-dialog class="comment-dialog" :title="dlgTitle || '审批记录'" :visible.sync="dialogVisible">
+    <el-dialog class="comment-dialog" :title="dlgTitle || '审批记录'" :visible.sync="dialogVisible" :modal="false">
       <el-row>
         <el-table :data="taskCommentList" size="mini" border header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" />

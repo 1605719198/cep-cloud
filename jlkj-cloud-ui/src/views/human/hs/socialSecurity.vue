@@ -23,12 +23,12 @@
                     <el-form :inline="true">
                       <el-form-item label="版本号" prop="version">
                         <el-select v-model="queryParams.version" placeholder="请选择版本号">
-<!--                          <el-option-->
-<!--                            v-for="dict in companyList"-->
-<!--                            :key="dict.deptCode"-->
-<!--                            :label="dict.companyName"-->
-<!--                            :value="dict.deptCode"-->
-<!--                          />-->
+                          <el-option
+                            v-for="dict in versionList"
+                            :key="dict.value"
+                            :label="dict.label"
+                            :value="dict.value"
+                          />
                         </el-select>
                       </el-form-item>
                       <!-- 操作按钮 -->
@@ -36,7 +36,7 @@
                       <el-button type="primary"  plain size="mini" @click="handleQuery">搜索</el-button>
                       </el-form-item>
                       <el-form-item>
-                        <el-button v-hasPermi="['human:affairsBaseInfo:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+                        <el-button v-hasPermi="['human:socialSecurity:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button
@@ -129,7 +129,7 @@
         <template v-slot="scope">
           <el-select v-model="scope.row.carryMode" >
             <el-option
-              v-for="dict in salaryOptions.abc"
+              v-for="dict in salaryOptions.CarryMethod"
               :key="dict.dicNo"
               :label="dict.dicName"
               :value="dict.dicNo"
@@ -168,17 +168,19 @@
 </template>
 
 <script>
-import { listSocialSecurity, getSocialSecurity, delSocialSecurity, addSocialSecurity, updateSocialSecurity } from "@/api/human/hs/socialSecurity";
-import {addSalaryProjectBasis, listSalaryProjectBasis} from "@/api/human/hs/salaryProjectBasis";
+import { listSocialSecurity, delSocialSecurity, addSocialSecurity, selectVersion} from "@/api/human/hs/socialSecurity";
+import { listSalaryProjectBasis} from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
-import { getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
-import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
+
 
 export default {
   name: "SocialSecurity",
   dicts: ['sys_normal_disable'],
   data() {
     return {
+      //版本号数据
+      versionList: [],
       //薪资列表
       salaryList:[],
       multipleSelection: [],
@@ -210,7 +212,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['SocialSecurity','abc'],
+        optionsType: ['SocialSecurity','CarryMethod'],
         compId:null,
       },
       // 显示搜索条件
@@ -229,6 +231,8 @@ export default {
         pageSize: 10,
         date: null,
         payAreaId: null,
+        version: null,
+        effectDate: null,
       },
       // 表单参数
       form: {},
@@ -259,15 +263,12 @@ export default {
       this.nickName= this.$store.state.user.userInfo.nickName;
       this.logincompId= this.$store.state.user.userInfo.compId;
     },
-    // /** 查询社保公积金缴费比例设定列表 */
-    // getList() {
-    //   this.loading = true;
-    //   listSocialSecurity(this.queryParams).then(response => {
-    //     this.socialSecurityList = response.rows;
-    //     this.total = response.total;
-    //     this.loading = false;
-    //   });
-    // },
+    //获取缴费地区列表
+    getVersionList() {
+      selectVersion(this.queryParams.payAreaId).then(response => {
+        this.versionList = response.data
+      })
+    },
     //表单值设置
     setForm(e){
       this.form.creator = this.nickName;
@@ -284,11 +285,7 @@ export default {
         this.salaryOptions = response.data;
       })
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
+
     addIndex({row, rowIndex}) {
       row.index = rowIndex
     },
@@ -321,11 +318,6 @@ export default {
       this.queryParams.pageNum = 1;
       this.onLoad();
     },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
@@ -333,48 +325,46 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加社保公积金缴费比例设定";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids
-      getSocialSecurity(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改社保公积金缴费比例设定";
-      });
-    },
     /** 日期查询变更*/
     dateFormat(val){
       this.queryParams.date =this.queryParams.effectDate;
     },
-
     /** 保存按钮 */
     handleSave() {
-      addSocialSecurity(this.multipleSelection).then(res => {
-        this.$modal.msgSuccess("保存成功");
-        this.onLoad();
-      })
+      if(this.queryParams.effectDate > getDateTime(1)) {
+        for(let i = 0;i<this.multipleSelection.length;i++){
+          this.multipleSelection[i].effectDate = this.queryParams.effectDate
+        }
+        addSocialSecurity(this.multipleSelection).then(res => {
+          this.$modal.msgSuccess("保存成功");
+          this.onLoad();
+        })
+      }else{
+        this.$modal.msgError("生效日期必须大于当前日期");
+      }
     },
-
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function() {
-        return delSocialSecurity(ids);
-      }).then(() => {
-        this.onLoad();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      if(this.form.effectDate > getDateTime(1)) {
+        const ids = row.id || this.ids;
+        this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
+          return delSocialSecurity(ids);
+        }).then(() => {
+          this.onLoad();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {
+        });
+      }else{
+        this.$modal.msgError("生效日期必须大于当前日期");
+      }
     },
     //点击节点方法
     changePostName(data,index){
+      this.queryParams.version = null;
+      this.queryParams.effectDate = null;
       this.queryParams.payAreaId = data.dicNo;
+      this.queryParams.date = null;
+      this.getVersionList()
       this.socialSecurityList = []
       this.onLoad()
     },
@@ -393,40 +383,29 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           parentid: this.queryParams.id,
-          isShowno: "0",
+          effectDate: this.queryParams.effectDate,
         }
         this.socialSecurityList.push(newLine)
       });
     },
-    /** 添加下级操作 */
-    handlechild(row){
-      this.reset();
-      this.form.parentid = row.id
-      this.form.creator = this.nickName;
-      this.form.creatorId = this.$store.state.user.name;
-      this.form.createDate = getDateTime(1)
-      this.open = true;
-      this.title = "添加下级窗口";
-    },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.socialSecurityList.length == row.index + 1) {
-        const newLine = {
-          id: null,
-          creator: this.nickName,
-          creatorId: this.$store.state.user.name,
-          createDate: getDateTime(1),
-          status: "0",
-          payType: "2",
-          isPostPro: "0",
-          isEmpPro: "0",
-          payProCode: "",
-          parentid: this.queryParams.id,
-          isShowno: "0",
-          payAreaId: null,
+      if(this.queryParams.effectDate != null) {
+        if (this.socialSecurityList.length == row.index + 1) {
+          const newLine = {
+            id: null,
+            creator: this.nickName,
+            creatorId: this.$store.state.user.name,
+            createDate: getDateTime(1),
+            parentid: this.queryParams.id,
+            payAreaId: this.queryParams.payAreaId,
+            effectDate: this.queryParams.effectDate,
+          }
+          this.index++
+          this.socialSecurityList.push(newLine)
         }
-        this.index++
-        this.socialSecurityList.push(newLine)
+      }else {
+        this.$modal.msgError("生效日期不能为空");
       }
     },
   }

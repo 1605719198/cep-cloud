@@ -71,3 +71,22 @@ export function changeStatus(groupAcctId, disabledCode) {
     data: data
   })
 }
+
+// 根据会计科目编号acctCode查询会计科目名称acctName
+export function selectAcctNameByCode(acctCode) {
+  return request({
+    url: '/finance/acctcodeGroup/selectAcctName/' + acctCode,
+    method: 'get'
+  })
+}
+
+
+// 查询会计科目-集团级列表
+export function popListAcctcodeGroup(query) {
+  return request({
+    url: '/finance/acctcodeGroup/popList',
+    method: 'get',
+    params: query
+  })
+}
+

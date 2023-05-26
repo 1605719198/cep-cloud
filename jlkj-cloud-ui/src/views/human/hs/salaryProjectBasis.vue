@@ -144,7 +144,8 @@ export default {
       },
       //列表数据
       tableData: [],
-
+      //父节点类型
+      parentPayType:null,
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -335,6 +336,7 @@ export default {
     //点击节点方法
     handleNodeClick(data) {
       this.queryParams.id = data.id;
+      this.parentPayType = data.label4;
       this.tableData = []
       this.onLoad()
     },
@@ -354,7 +356,7 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           status: "0",
-          payType: "2",
+          payType: this.parentPayType,
           isPostPro: "0",
           isEmpPro: "0",
           payProCode: "",
@@ -385,7 +387,7 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           status: "0",
-          payType: "2",
+          payType: this.parentPayType,
           isPostPro: "0",
           isEmpPro: "0",
           payProCode: "",

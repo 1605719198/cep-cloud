@@ -24,15 +24,19 @@ import java.text.AttributedString;
  * @date 2021/4/4 23:58
  */
 public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
-    //定义走过流程连线颜色为绿色
+    /** 定义走过流程连线颜色为绿色 */
     protected static Color HIGHLIGHT_SequenceFlow_COLOR = Color.GREEN;
-    //设置未走过流程的连接线颜色
+    /** 设置未走过流程的连接线颜色 */
     protected static Color CONNECTION_COLOR = Color.BLACK;
-    //设置flows连接线字体颜色red
+    /** 设置flows连接线字体颜色red */
     protected static Color LABEL_COLOR = new Color(0, 0, 0);
-    //高亮显示task框颜色
+    /** 高亮显示task框颜色 */
     protected static Color HIGHLIGHT_COLOR = Color.GREEN;
     protected static Color HIGHLIGHT_COLOR1 = Color.RED;
+
+    private static final String ASSOCIATION = "association";
+    private static final String PNG = "png";
+
 
     public CustomProcessDiagramCanvas(int width, int height, int minX, int minY, String imageType, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
         super(width, height, minX, minY, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
@@ -55,7 +59,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         Paint originalPaint = this.g.getPaint();
         Stroke originalStroke = this.g.getStroke();
         this.g.setPaint(CONNECTION_COLOR);
-        if ("association".equals(connectionType)) {
+        if (ASSOCIATION.equals(connectionType)) {
             this.g.setStroke(ASSOCIATION_STROKE);
         } else if (highLighted) {
             this.g.setPaint(HIGHLIGHT_SequenceFlow_COLOR);
@@ -102,14 +106,14 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
      */
     @Override
     public void initialize(String imageType) {
-        if ("png".equalsIgnoreCase(imageType)) {
+        if (PNG.equalsIgnoreCase(imageType)) {
             this.processDiagram = new BufferedImage(this.canvasWidth, this.canvasHeight, 2);
         } else {
             this.processDiagram = new BufferedImage(this.canvasWidth, this.canvasHeight, 1);
         }
 
         this.g = this.processDiagram.createGraphics();
-        if (!"png".equalsIgnoreCase(imageType)) {
+        if (!PNG.equalsIgnoreCase(imageType)) {
             this.g.setBackground(new Color(255, 255, 255, 0));
             this.g.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         }

@@ -16,7 +16,7 @@ public class ProcessFormUtils {
 
     private static final String CONFIG = "__config__";
     private static final String MODEL = "__vModel__";
-
+    private static final String CHILDREN = "children";
     /**
      * 填充表单项内容
      *
@@ -35,7 +35,7 @@ public class ProcessFormUtils {
             return;
         }
         Map<String, Object> configMap = (Map<String, Object>) field.get(CONFIG);
-        if (configMap.containsKey("children")) {
+        if (configMap.containsKey(CHILDREN)) {
             List<Map<String, Object>> childrens = (List<Map<String, Object>>) configMap.get("children");
             for (Map<String, Object> children : childrens) {
                 recursiveFillField(children, data);

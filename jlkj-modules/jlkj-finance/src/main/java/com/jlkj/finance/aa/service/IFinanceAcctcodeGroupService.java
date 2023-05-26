@@ -1,8 +1,9 @@
 package com.jlkj.finance.aa.service;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
+
+import java.util.List;
 
 /**
  * 会计科目-集团级Service接口
@@ -100,4 +101,18 @@ public interface IFinanceAcctcodeGroupService
      * @return
      */
     public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode, String companyId);
+
+    /**
+     * 根据会计科目编号查询会计科目中文名称
+     * @param groupAcctCode
+     * @return
+     */
+    public String selectAcctNameByCode(String groupAcctCode);
+
+    /**
+     * 集团会计科目弹窗查询方法
+     * @param financeAcctcodeGroup
+     * @return
+     */
+    public List<FinanceAcctcodeGroup> selectFinanceAcctcodeGroupPopList(FinanceAcctcodeGroup financeAcctcodeGroup);
 }

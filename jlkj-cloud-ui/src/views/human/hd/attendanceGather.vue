@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="80px">
           <el-form-item label="公司" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
@@ -18,12 +18,12 @@
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="日期" prop="shiftDate">
+          <el-form-item label="出勤月份" prop="shiftDate">
             <el-date-picker
               v-model="queryParams.shiftDate"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="选择日期">
+              value-format="yyyy-MM"
+              type="month"
+              placeholder="选择出勤月份">
             </el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -44,23 +44,23 @@
           <el-table-column label="小夜班次数" align="center" prop="smaNig" />
           <el-table-column label="大小夜班次数" align="center" prop="bigSmaNig" />
           <el-table-column label="请假天数" align="center">
-            <el-table-column label="病假" align="center" prop="dueAttDuty" />
-            <el-table-column label="工作假" align="center" prop="dueAttDuty" />
-            <el-table-column label="事假" align="center" prop="dueAttDuty" />
-            <el-table-column label="婚假" align="center" prop="dueAttDuty" />
-            <el-table-column label="产假" align="center" prop="dueAttDuty" />
-            <el-table-column label="丧假" align="center" prop="dueAttDuty" />
-            <el-table-column label="探亲假" align="center" prop="dueAttDuty" />
-            <el-table-column label="公假" align="center" prop="dueAttDuty" />
-            <el-table-column label="年休假" align="center" prop="dueAttDuty" />
-            <el-table-column label="护理假" align="center" prop="dueAttDuty" />
-            <el-table-column label="合计" align="center" prop="holDuty" />
+            <el-table-column label="病假" align="center" prop="holOveType" />
+            <el-table-column label="工作假" align="center" prop="holOveType" />
+            <el-table-column label="事假" align="center" prop="holOveType" />
+            <el-table-column label="婚假" align="center" prop="holOveType" />
+            <el-table-column label="产假" align="center" prop="holOveType" />
+            <el-table-column label="丧假" align="center" prop="holOveType" />
+            <el-table-column label="探亲假" align="center" prop="holOveType" />
+            <el-table-column label="公假" align="center" prop="holOveType" />
+            <el-table-column label="年休假" align="center" prop="holOveType" />
+            <el-table-column label="护理假" align="center" prop="holOveType" />
+            <el-table-column label="合计" align="center" prop="hourNum" />
           </el-table-column>
           <el-table-column label="加班小时数" align="center">
-            <el-table-column label="延时加班" align="center" prop="overTimeHou" />
-            <el-table-column label="休息日加班" align="center" prop="overTimeHou" />
-            <el-table-column label="法定假加班" align="center" prop="overTimeHou" />
-            <el-table-column label="合计" align="center" prop="overTimeHou" />
+            <el-table-column label="延时加班" align="center" prop="holOveType" />
+            <el-table-column label="休息日加班" align="center" prop="holOveType" />
+            <el-table-column label="法定假加班" align="center" prop="holOveType" />
+            <el-table-column label="合计" align="center" prop="hourNum" />
           </el-table-column>
           <el-table-column label="月初未上岗天数" align="center" prop="befEntDuty" />
           <el-table-column label="月末未上岗天数" align="center" prop="aftEntDuty" />
@@ -87,6 +87,7 @@
 import { listAttendanceGather } from "@/api/human/hd/attendanceGather";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
+import {validateNumber} from "@/utils/jlkj";
 
 export default {
   name: "AttendanceGather",
@@ -122,6 +123,13 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        empNo: [
+          { required: true, validator: validateNumber, trigger: "blur" },
+          { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
+        ],
+        shiftDate: [
+          { required: true, message: "出勤月份不能为空", trigger: "blur" }
+        ]
       },
       // 公司别数据
       companyName: [],
@@ -145,7 +153,11 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.getList();
+        }
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {

@@ -1,7 +1,8 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCarryRules;
+
+import java.util.List;
 
 /**
  * 集团管理-自动结转规则-规则设置Mapper接口
@@ -26,6 +27,13 @@ public interface FinanceAaCarryRulesMapper
      * @return 集团管理-自动结转规则-规则设置集合
      */
     public List<FinanceAaCarryRules> selectFinanceAaCarryRulesList(FinanceAaCarryRules financeAaCarryRules);
+    /**
+     * 接口查询
+     *
+     * @param rulesNo 集团管理-自动结转规则-规则设置
+     * @return 集团管理-自动结转规则-规则设置集合
+     */
+    public FinanceAaCarryRules selectFinanceAaCarryRulesExecuteList(String rulesNo);
 
     /**
      * 新增集团管理-自动结转规则-规则设置

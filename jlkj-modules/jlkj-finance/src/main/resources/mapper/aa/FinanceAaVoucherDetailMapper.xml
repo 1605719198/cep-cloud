@@ -87,7 +87,196 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by b.voucher_no
     </select>
+    <select id="selectFinanceAaVoucherExecuteList"
+            resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        SELECT
+        voucher_no,
+        drcr,
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit,
+        sum( qty_frnAmt )AS qty_frnAmt,
+        sum( ntAmt ) AS ntAmt
+        FROM
+        finance_aa_voucher_detail
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+        </where>
+        GROUP BY
+        voucher_no,
+        drcr,
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit
+        HAVING
+        sum( qty_frnAmt ) <![CDATA[ <> ]]> 0
+        OR sum( ntAmt )<![CDATA[ <> ]]>0
+    </select>
+    <select id="selectFinanceAaVoucherExecuteAList"
+            resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        SELECT
+        drcr,
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit,
+        sum( qty_frnAmt )AS qty_frnAmt,
+        sum( ntAmt ) AS ntAmt
+        FROM
+        finance_aa_voucher_detail
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+        </where>
+        GROUP BY
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit
+    </select>
+    <select id="selectFinanceAdd" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        SELECT
+        sum( qty_frnAmt ) AS qty_frnAmt,
+        sum( ntAmt ) AS ntAmt,
+        id,
+        company_id,
+        voucher_id,
+        voucher_date,
+        voucher_no,
+        srlno,
+        drcr,
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit,
+        srl_desc
+        FROM
+        finance_aa_voucher_detail
 
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+        </where>
+    </select>
+    <select id="selectFinancecalCodeAdd" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        SELECT
+        sum( qty_frnAmt ) AS qty_frnAmt,
+        sum( ntAmt ) AS ntAmt,
+        id,
+        company_id,
+        voucher_id,
+        voucher_date,
+        voucher_no,
+        srlno,
+        drcr,
+        group_acct_id,
+        acct_id,
+        acct_code,
+        acct_name,
+        cal_ida,
+        cal_codea,
+        cal_namea,
+        cal_idb,
+        cal_codeb,
+        cal_nameb,
+        cal_idc,
+        cal_codec,
+        cal_namec,
+        cal_idd,
+        cal_coded,
+        cal_named,
+        crcy_unit,
+        srl_desc
+        FROM
+        finance_aa_voucher_detail
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+
+            <if test="calCodea != null  and calCodea != ''"> and cal_codea = #{calCodea}</if>
+
+            <if test="calCodeb != null  and calCodeb != ''"> and cal_codeb = #{calCodeb}</if>
+
+            <if test="calCodec != null  and calCodec != ''"> and cal_codec = #{calCodec}</if>
+
+            <if test="calCoded != null  and calCoded != ''"> and cal_coded = #{calCoded}</if>
+
+        </where>
+    </select>
     <insert id="insertFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         insert into finance_aa_voucher_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">

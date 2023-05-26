@@ -85,6 +85,13 @@
             <el-button
               type="text"
               size="mini"
+              icon="el-icon-thumb"
+              @click="handleGetprocdefId(scope.row)"
+              v-hasPermi="['workflow:deploy:list']"
+            >获取部署ID</el-button>
+            <el-button
+              type="text"
+              size="mini"
               icon="el-icon-price-tag"
               @click.native="handlePublish(scope.row)"
               v-hasPermi="['workflow:deploy:list']"
@@ -110,12 +117,12 @@
     </el-row>
 
     <!-- 流程图 -->
-    <el-dialog :title="processView.title" :visible.sync="processView.open" width="70%" append-to-body>
+    <el-dialog :title="processView.title" :visible.sync="processView.open" width="70%" append-to-body :close-on-click-modal="false">
       <process-viewer :key="`designer-${processView.index}`" :xml="processView.xmlData" :style="{height: '400px'}" />
     </el-dialog>
 
     <!-- 版本管理 -->
-    <el-dialog title="版本管理" :visible.sync="publish.open" width="50%" append-to-body>
+    <el-dialog title="版本管理" :visible.sync="publish.open" width="50%" append-to-body :close-on-click-modal="false">
       <el-table v-loading="publish.loading" :data="publish.dataList">
         <el-table-column label="流程标识" align="center" prop="processKey" :show-overflow-tooltip="true" />
         <el-table-column label="流程名称" align="center" :show-overflow-tooltip="true">
@@ -173,6 +180,11 @@
       />
     </el-dialog>
 
+    <!--    点击获取流程部署ID-->
+    <el-dialog title="获取流程部署ID" :visible.sync="procdefOpen" width="50%" append-to-body :close-on-click-modal="false">
+      <el-input v-model="procdefId"></el-input>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -188,6 +200,10 @@ export default {
   },
   data() {
     return {
+      // 流程部署id dialog
+      procdefOpen: false,
+      // 流程部署ID
+      procdefId: undefined,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -247,6 +263,11 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    /** 点击获取流程部署id */
+    handleGetprocdefId(row) {
+      this.procdefOpen = true
+      this.procdefId = row.definitionId
     },
     // 表单重置
     reset() {

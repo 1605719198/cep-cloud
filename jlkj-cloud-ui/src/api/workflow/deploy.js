@@ -17,6 +17,14 @@ export function listPublish(query) {
   })
 }
 
+export function getDeployListPlus(query) {
+  return request({
+    url: '/flowable/workflow/deploy/getDeployListPlus',
+    method: 'get',
+    params: query
+  })
+}
+
 // 获取流程模型流程图
 export function getBpmnXml(definitionId) {
   return request({

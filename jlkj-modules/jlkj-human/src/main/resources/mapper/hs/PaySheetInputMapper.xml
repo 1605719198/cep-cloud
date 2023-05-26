@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PaySheetInputMapper">
+    
+    <resultMap type="PaySheetInput" id="PaySheetInputResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="payTier"    column="pay_tier"    />
+        <result property="minMon"    column="min_mon"    />
+        <result property="maxMon"    column="max_mon"    />
+        <result property="midMon"    column="mid_mon"    />
+        <result property="status"    column="status"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPaySheetInputVo">
+        select uuid, comp_id, pay_tier, min_mon, max_mon, mid_mon, status, resv_attr1, resv_attr2, creator, creator_id, create_date from human_hs_pay_sheet_input
+    </sql>
+
+    <select id="selectPaySheetInputList" parameterType="PaySheetInput" resultMap="PaySheetInputResult">
+        <include refid="selectPaySheetInputVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPaySheetInputByUuid" parameterType="String" resultMap="PaySheetInputResult">
+        <include refid="selectPaySheetInputVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertPaySheetInput" parameterType="PaySheetInput">
+        insert into human_hs_pay_sheet_input
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="payTier != null">pay_tier,</if>
+            <if test="minMon != null">min_mon,</if>
+            <if test="maxMon != null">max_mon,</if>
+            <if test="midMon != null">mid_mon,</if>
+            <if test="status != null">status,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="payTier != null">#{payTier},</if>
+            <if test="minMon != null">#{minMon},</if>
+            <if test="maxMon != null">#{maxMon},</if>
+            <if test="midMon != null">#{midMon},</if>
+            <if test="status != null">#{status},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePaySheetInput" parameterType="PaySheetInput">
+        update human_hs_pay_sheet_input
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="payTier != null">pay_tier = #{payTier},</if>
+            <if test="minMon != null">min_mon = #{minMon},</if>
+            <if test="maxMon != null">max_mon = #{maxMon},</if>
+            <if test="midMon != null">mid_mon = #{midMon},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deletePaySheetInputByUuid" parameterType="String">
+        delete from human_hs_pay_sheet_input where uuid = #{uuid}
+    </delete>
+
+    <delete id="deletePaySheetInputByUuids" parameterType="String">
+        delete from human_hs_pay_sheet_input where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,7 +1,8 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaLedgerlCal;
+
+import java.util.List;
 
 /**
  * 账薄-核算项目余额Mapper接口
@@ -32,6 +33,13 @@ public interface FinanceAaLedgerlCalMapper
      * @param financeAaLedgerlCal 账薄-核算项目余额
      * @return 账薄-核算项目余额集合
      */
+    public List<FinanceAaLedgerlCal> selectAcctPeriodList(FinanceAaLedgerlCal financeAaLedgerlCal);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerlCal 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
     public FinanceAaLedgerlCal selectFinanceAaLedgerlCal(FinanceAaLedgerlCal financeAaLedgerlCal);
 
     /**
@@ -41,6 +49,13 @@ public interface FinanceAaLedgerlCalMapper
      * @return 结果
      */
     public int insertFinanceAaLedgerlCal(FinanceAaLedgerlCal financeAaLedgerlCal);
+    /**
+     * 批量新增账薄-核算项目余额
+     *
+     * @param financeAaLedgerlCal 账薄-核算项目余额
+     * @return 结果
+     */
+    public int batchFinanceAaLedgerlCal(List<FinanceAaLedgerlCal> financeAaLedgerlCal);
 
     /**
      * 修改账薄-核算项目余额

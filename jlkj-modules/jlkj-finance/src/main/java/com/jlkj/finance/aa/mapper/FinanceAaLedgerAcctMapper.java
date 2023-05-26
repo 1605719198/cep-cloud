@@ -1,7 +1,8 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaLedgerAcct;
+
+import java.util.List;
 
 /**
  * 账薄-会计科目余额Mapper接口
@@ -26,7 +27,13 @@ public interface FinanceAaLedgerAcctMapper
      * @return 账薄-会计科目余额集合
      */
     public List<FinanceAaLedgerAcct> selectFinanceAaLedgerAcctList(FinanceAaLedgerAcct financeAaLedgerAcct);
-
+    /**
+     * 查询账薄-会计科目余额列表
+     *
+     * @param financeAaLedgerAcct 账薄-会计科目余额
+     * @return 账薄-会计科目余额集合
+     */
+    public List<FinanceAaLedgerAcct> selectLedgerAcctPeriodList(FinanceAaLedgerAcct financeAaLedgerAcct);
     /**
      * 查询账薄-会计科目余额列表
      *
@@ -42,6 +49,13 @@ public interface FinanceAaLedgerAcctMapper
      * @return 结果
      */
     public int insertFinanceAaLedgerAcct(FinanceAaLedgerAcct financeAaLedgerAcct);
+    /**
+     * 新增账薄-会计科目余额
+     *
+     * @param financeAaLedgerAcct 账薄-会计科目余额
+     * @return 结果
+     */
+    public int batchFinanceAcct(List<FinanceAaLedgerAcct> financeAaLedgerAcct);
 
     /**
      * 修改账薄-会计科目余额

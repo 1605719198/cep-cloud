@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCarryRulesMapper">
     
-    <resultMap type="FinanceAaCarryRules" id="FinanceAaCarryRulesResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCarryRules" id="FinanceAaCarryRulesResult">
         <result property="id"    column="id"    />
         <result property="rulesId"    column="rules_id"    />
         <result property="rulesNo"    column="rules_no"    />
@@ -31,19 +31,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join finance_aa_group_acctcode tin on t1.account_id_in= tin.group_acct_id
     </sql>
 
-    <select id="selectFinanceAaCarryRulesList" parameterType="FinanceAaCarryRules" resultMap="FinanceAaCarryRulesResult">
+    <select id="selectFinanceAaCarryRulesList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRules" resultMap="FinanceAaCarryRulesResult">
         <include refid="selectFinanceAaCarryRulesVo"/>
         <where>  
             <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
         </where>
     </select>
-    
+    <select id="selectFinanceAaCarryRulesExecuteList" parameterType="String" resultMap="FinanceAaCarryRulesResult">
+        select *
+                   from finance_aa_carry_rules
+        <where>
+            <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
+        </where>
+    </select>
+
     <select id="selectFinanceAaCarryRulesById" parameterType="String" resultMap="FinanceAaCarryRulesResult">
         <include refid="selectFinanceAaCarryRulesVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaCarryRules" parameterType="FinanceAaCarryRules">
+    <insert id="insertFinanceAaCarryRules" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRules">
         insert into finance_aa_carry_rules
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -83,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaCarryRules" parameterType="FinanceAaCarryRules">
+    <update id="updateFinanceAaCarryRules" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRules">
         update finance_aa_carry_rules
         <trim prefix="SET" suffixOverrides=",">
             <if test="rulesId != null">rules_id = #{rulesId},</if>

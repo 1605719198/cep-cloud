@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.flow.workflow.mapper.SysInstanceFormMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.flow.workflow.domain.SysInstanceForm">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="formId" column="form_id" jdbcType="VARCHAR"/>
+        <result property="deployId" column="deploy_id" jdbcType="VARCHAR"/>
+        <result property="routerPath" column="router_path" jdbcType="VARCHAR"/>
+        <result property="instanceId" column="instance_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,form_id,deploy_id,router_path,instance_id
+    </sql>
+</mapper>

@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectShiftCodeByDates" parameterType="PersonShiftCodeDTO" resultMap="ShiftCodeResult">
         select d.arr_shi_date as create_date , c.id , c.comp_id, c.shiftmode_id, c.shift_code, c.start_hour, c.start_min, c.con_hour, c.con_min, c.end_hour, c.end_min, c.is_noon, c.rest_count, c.big_sma_night, c.status, c.description, c.is_used, c.rest_start_hour, c.rest_start_min, c.rest_con_min, c.rest_end_hour, c.rest_end_min, c.rest_start_hour2, c.rest_start_min2, c.rest_con_min2, c.rest_end_hour2, c.rest_end_min2, c.rest_start_hour3, c.rest_start_min3, c.rest_con_min3, c.rest_end_hour3, c.rest_end_min3 from human_hd_person_class_detail d
-        left join human_hd_shift_code c on d.fir_shift_id = c.id
+        left join human_hd_shift_code c on if(length(d.sec_shift_id)>0,d.sec_shift_id,d.fir_shift_id)= c.id
         where d.emp_id = #{empId} and d.comp_id = #{compId} and d.arr_shi_date &gt;= #{startDate} and d.arr_shi_date &lt;= #{endDate}
     </select>
 
