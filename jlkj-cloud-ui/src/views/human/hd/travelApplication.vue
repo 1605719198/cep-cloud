@@ -84,6 +84,16 @@
           v-hasPermi="['human:travelapplication:export']"
         >导出</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-coffee-cup"
+          size="mini"
+          @click="handleBindProcess"
+          v-hasPermi="['human:travelapplication:edit']"
+        >绑定流程</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -416,6 +426,8 @@
 
     </el-dialog>
     <select-user ref="select" @ok="getJobNumber"/>
+<!--    选择流程-->
+    <select-deploy ref="deployProcess" @check="bindProcess"></select-deploy>
   </div>
 </template>
 
@@ -426,12 +438,13 @@ import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import {queryInfo} from "@/api/human/hm/personnelBasicInfo";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo";
-import { startProcess } from '@/api/workflow/process'
+import { startProcess, startProcessOverride } from '@/api/workflow/process'
 import flowDetail from '@/views/components/flowable/detail'
-import { getFromByInsId, getTaskByFormId } from '@/api/workflow/insform'
+import { getFromByInsId, getTaskByFormId, saveInstanceForm } from '@/api/workflow/insform'
+import selectDeploy from '@/views/components/flowable/deploy'
 export default {
   name: "Travelapplication",
-  components: { DictTagHumanBasis, selectUser, flowDetail },
+  components: { DictTagHumanBasis, selectUser, flowDetail, selectDeploy },
   //components: {selectUser},
   dicts: ['travel_addr_abroad'],
   computed: {
@@ -537,7 +550,9 @@ export default {
       },
 
       // 判断页面是跳转还是直接进入
-      taskFlag: undefined
+      taskFlag: undefined,
+      // table选择数据
+      selectionList: []
     };
   },
   created() {
@@ -580,7 +595,6 @@ export default {
       this.form = val.formData
       // 任务被拒绝后更改状态为 2 => 审批通过且流程结束
       this.form.status = val.type
-      console.log(this.form)
       updateTravelapplication(this.form).then(res1 => {
         this.getList()
       })
@@ -614,7 +628,6 @@ export default {
         this.loading = false;
       });
     },
-
     // 取消按钮
     cancel() {
       this.open = false;
@@ -682,6 +695,38 @@ export default {
       this.nos = selection.map(item => item.travelNo)
       this.single = selection.length!==1
       this.multiple = !selection.length
+      this.selectionList = selection
+    },
+
+    /** 绑定流程 */
+    handleBindProcess() {
+      if (this.selectionList.length === 0) {
+        this.$modal.msgWarning("请选择表单数据！")
+      } else {
+        this.$refs.deployProcess.init()
+      }
+    },
+    /** 绑定流程子传父回调函数 */
+    bindProcess(val) {
+      const formList = []
+      const obj = {
+        formId: undefined,
+        deployId: undefined,
+        routerPath: undefined
+      }
+      // 只有未送审和被驳回的表单才能重新绑定流程
+      this.selectionList.forEach(item => {
+        if (item.status == 0 || item.status == 3) {
+          obj.formId = item.id
+          obj.deployId = val
+          obj.routerPath = this.$route.path
+          formList.push(obj)
+        }
+      })
+      /** 绑定表单流程 */
+      saveInstanceForm(formList).then(res => {
+        this.$modal.msgSuccess(res.msg);
+      })
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -697,7 +742,6 @@ export default {
       getTravelapplication(id).then(response => {
         this.form = response.data;
         this.form.compId = this.queryParams.compId;
-
       })
       // 如果不是从我的流程或待办任务跳转，则带formid查询
       // if (!(this.taskFlag === 'skip')) {
@@ -737,21 +781,22 @@ export default {
         this.form = response.data;
         this.form.compId = this.queryParams.compId;
       }).then(() => {
-        const definitionId = "Process_1684716249007:1:a0a8ee0f-f879-11ed-92c5-005056c00008";
         const variables = this.form;
+        // 设定流程变量参数 -- 天数
         variables.days = this.getTravelDays();
-        variables.routerPath = "/human/hd/travelApplication";
         // 启动流程并将表单数据加入流程变量
-        startProcess(definitionId, JSON.stringify(variables)).then(res => {
-          this.$modal.msgSuccess(res.msg);
-          this.$tab.closeOpenPage({
-            path: '/work/own'
-          })
-          this.form.status = res.data
-          // 流程启动更新状态为 1 => 进行中
-          updateTravelapplication(this.form).then(res1 => {
-            this.getList()
-          })
+        startProcessOverride(JSON.stringify(variables)).then(res => {
+          if (res.code === 200) {
+            this.$modal.msgSuccess(res.msg);
+            this.$tab.closeOpenPage({
+              path: '/work/own'
+            })
+            this.form.status = res.data
+            // 流程启动更新状态为 1 => 进行中
+            updateTravelapplication(this.form).then(res1 => {
+              this.getList()
+            })
+          }
         })
       });
     },

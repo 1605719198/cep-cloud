@@ -64,6 +64,15 @@ public class WfDeployController extends BaseController {
     }
 
     /**
+     * 查询流程部署版本列表--升级版
+     */
+    @RequiresPermissions("workflow:deploy:list")
+    @GetMapping("/getDeployListPlus")
+    public TableDataInfoPlus<WfDeployVo> getDeployListPlus(ProcessQuery processQuery, PageQuery pageQuery) {
+        return deployService.getDeployListPlus(processQuery, pageQuery);
+    }
+
+    /**
      * 激活或挂起流程
      *
      * @param state 状态（active:激活 suspended:挂起）

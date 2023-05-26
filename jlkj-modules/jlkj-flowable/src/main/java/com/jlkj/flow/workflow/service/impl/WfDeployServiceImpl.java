@@ -112,6 +112,51 @@ public class WfDeployServiceImpl implements IWfDeployService {
     }
 
     /**
+     * 查询流程部署版本列表--升级版
+     * @param processQuery
+     * @param pageQuery
+     * @return
+     */
+    @Override
+    public TableDataInfoPlus<WfDeployVo> getDeployListPlus(ProcessQuery processQuery, PageQuery pageQuery) {
+        // 流程定义列表数据查询
+        ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+                .latestVersion()
+                .orderByProcessDefinitionKey()
+                .desc();
+        // 构建搜索条件
+        ProcessUtils.buildProcessSearch(processDefinitionQuery, processQuery);
+        // 根据条件查询所有符合条件的历史数据
+        List<ProcessDefinition> definitionList = processDefinitionQuery.list();
+        // 流程部署查询
+        ProcessDefinitionQuery processDeploryQuery = repositoryService.createProcessDefinitionQuery();
+        List<ProcessDefinition> list = new ArrayList<>();
+        for (ProcessDefinition processDefinition : definitionList) {
+            // 创建查询条件
+            list.addAll(processDeploryQuery
+                    .processDefinitionKey(processDefinition.getKey())
+                    .orderByProcessDefinitionVersion()
+                    .desc()
+                    .list());
+        }
+        List<WfDeployVo> collect = list.stream().map(item -> {
+            WfDeployVo vo = new WfDeployVo();
+            vo.setDefinitionId(item.getId());
+            vo.setProcessKey(item.getKey());
+            vo.setProcessName(item.getName());
+            vo.setVersion(item.getVersion());
+            vo.setCategory(item.getCategory());
+            vo.setDeploymentId(item.getDeploymentId());
+            vo.setSuspended(item.isSuspended());
+            return vo;
+        }).collect(Collectors.toList());
+        Page<WfDeployVo> page = new Page<>();
+        page.setRecords(collect);
+        page.setTotal(collect.size());
+        return TableDataInfoPlus.build(page);
+    }
+
+    /**
      * 激活或挂起流程
      *
      * @param state 状态
@@ -146,4 +191,5 @@ public class WfDeployServiceImpl implements IWfDeployService {
             deployFormMapper.delete(new LambdaQueryWrapper<WfDeployForm>().eq(WfDeployForm::getDeployId, deployId));
         }
     }
+
 }
