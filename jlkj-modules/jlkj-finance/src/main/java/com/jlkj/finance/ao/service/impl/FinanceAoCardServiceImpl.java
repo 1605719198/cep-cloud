@@ -26,13 +26,13 @@ public class FinanceAoCardServiceImpl implements IFinanceAoCardService
     /**
      * 查询个人信息设置
      *
-     * @param uuid 个人信息设置主键
+     * @param userNo 个人信息工号
      * @return 个人信息设置
      */
     @Override
-    public FinanceAoCard selectFinanceAoCardByUuid(String uuid)
+    public FinanceAoCard selectFinanceAoCardByUserNo(String userNo)
     {
-        return financeAoCardMapper.selectFinanceAoCardByUuid(uuid);
+        return financeAoCardMapper.selectFinanceAoCardByUserNo(userNo);
     }
 
     /**

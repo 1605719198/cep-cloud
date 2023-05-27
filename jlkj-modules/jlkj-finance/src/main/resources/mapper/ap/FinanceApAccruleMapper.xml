@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ap.mapper.FinanceApAccruleMapper">
+    
+    <resultMap type="FinanceApAccrule" id="FinanceApAccruleResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="payMethod"    column="pay_method"    />
+        <result property="payMethodName"    column="pay_method_name"    />
+        <result property="voucherType"    column="voucher_type"    />
+        <result property="isGen"    column="is_gen"    />
+        <result property="acctId"    column="acct_id"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="calTypeIda"    column="cal_type_ida"    />
+        <result property="calTypeCodea"    column="cal_type_codea"    />
+        <result property="calTypeIdb"    column="cal_type_idb"    />
+        <result property="calTypeCodeb"    column="cal_type_codeb"    />
+        <result property="calTypeIdc"    column="cal_type_idc"    />
+        <result property="calTypeCodec"    column="cal_type_codec"    />
+        <result property="calTypeIdd"    column="cal_type_idd"    />
+        <result property="calTypeCoded"    column="cal_type_coded"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceApAccruleVo">
+        select id, company_id, pay_method, pay_method_name, voucher_type, is_gen, acct_id, acct_code, cal_type_ida, cal_type_codea, cal_type_idb, cal_type_codeb, cal_type_idc, cal_type_codec, cal_type_idd, cal_type_coded, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_accrule
+    </sql>
+
+    <select id="selectFinanceApAccruleList" parameterType="FinanceApAccrule" resultMap="FinanceApAccruleResult">
+        <include refid="selectFinanceApAccruleVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="payMethod != null  and payMethod != ''"> and pay_method = #{payMethod}</if>
+            <if test="payMethodName != null  and payMethodName != ''"> and pay_method_name like concat('%', #{payMethodName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceApAccruleById" parameterType="String" resultMap="FinanceApAccruleResult">
+        <include refid="selectFinanceApAccruleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceApAccrule" parameterType="FinanceApAccrule">
+        insert into finance_ap_accrule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null and companyId != ''">company_id,</if>
+            <if test="payMethod != null and payMethod != ''">pay_method,</if>
+            <if test="payMethodName != null and payMethodName != ''">pay_method_name,</if>
+            <if test="voucherType != null and voucherType != ''">voucher_type,</if>
+            <if test="isGen != null">is_gen,</if>
+            <if test="acctId != null and acctId != ''">acct_id,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="calTypeIda != null">cal_type_ida,</if>
+            <if test="calTypeCodea != null">cal_type_codea,</if>
+            <if test="calTypeIdb != null">cal_type_idb,</if>
+            <if test="calTypeCodeb != null">cal_type_codeb,</if>
+            <if test="calTypeIdc != null">cal_type_idc,</if>
+            <if test="calTypeCodec != null">cal_type_codec,</if>
+            <if test="calTypeIdd != null">cal_type_idd,</if>
+            <if test="calTypeCoded != null">cal_type_coded,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null and companyId != ''">#{companyId},</if>
+            <if test="payMethod != null and payMethod != ''">#{payMethod},</if>
+            <if test="payMethodName != null and payMethodName != ''">#{payMethodName},</if>
+            <if test="voucherType != null and voucherType != ''">#{voucherType},</if>
+            <if test="isGen != null">#{isGen},</if>
+            <if test="acctId != null and acctId != ''">#{acctId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="calTypeIda != null">#{calTypeIda},</if>
+            <if test="calTypeCodea != null">#{calTypeCodea},</if>
+            <if test="calTypeIdb != null">#{calTypeIdb},</if>
+            <if test="calTypeCodeb != null">#{calTypeCodeb},</if>
+            <if test="calTypeIdc != null">#{calTypeIdc},</if>
+            <if test="calTypeCodec != null">#{calTypeCodec},</if>
+            <if test="calTypeIdd != null">#{calTypeIdd},</if>
+            <if test="calTypeCoded != null">#{calTypeCoded},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceApAccrule" parameterType="FinanceApAccrule">
+        update finance_ap_accrule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null and companyId != ''">company_id = #{companyId},</if>
+            <if test="payMethod != null and payMethod != ''">pay_method = #{payMethod},</if>
+            <if test="payMethodName != null and payMethodName != ''">pay_method_name = #{payMethodName},</if>
+            <if test="voucherType != null and voucherType != ''">voucher_type = #{voucherType},</if>
+            <if test="isGen != null">is_gen = #{isGen},</if>
+            <if test="acctId != null and acctId != ''">acct_id = #{acctId},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="calTypeIda != null">cal_type_ida = #{calTypeIda},</if>
+            <if test="calTypeCodea != null">cal_type_codea = #{calTypeCodea},</if>
+            <if test="calTypeIdb != null">cal_type_idb = #{calTypeIdb},</if>
+            <if test="calTypeCodeb != null">cal_type_codeb = #{calTypeCodeb},</if>
+            <if test="calTypeIdc != null">cal_type_idc = #{calTypeIdc},</if>
+            <if test="calTypeCodec != null">cal_type_codec = #{calTypeCodec},</if>
+            <if test="calTypeIdd != null">cal_type_idd = #{calTypeIdd},</if>
+            <if test="calTypeCoded != null">cal_type_coded = #{calTypeCoded},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceApAccruleById" parameterType="String">
+        delete from finance_ap_accrule where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceApAccruleByIds" parameterType="String">
+        delete from finance_ap_accrule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

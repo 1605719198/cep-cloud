@@ -36,7 +36,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAddItemList"
-          v-hasPermi="['finance:reportDefin:Add']"
+          v-hasPermi="['finance:reportDefin:add']"
         >添加</el-button>
       </el-col>
       <el-col :span="1.5">

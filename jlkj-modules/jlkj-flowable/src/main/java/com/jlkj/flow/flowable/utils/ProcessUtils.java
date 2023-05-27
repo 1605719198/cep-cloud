@@ -19,6 +19,8 @@ import java.util.Map;
  * @since 2022/12/11 03:35
  */
 public class ProcessUtils {
+    private static final String BEGINTIME = "beginTime";
+    private static final String ENDTIME = "endTime";
 
     public static void buildProcessSearch(Query<?, ?> query, ProcessQuery process) {
         if (query instanceof ProcessDefinitionQuery) {
@@ -69,9 +71,9 @@ public class ProcessUtils {
         if (StringUtils.isNotBlank(process.getProcessName())) {
             query.processDefinitionNameLike("%" + process.getProcessName() + "%");
         }
-        if (params.get("beginTime") != null && params.get("endTime") != null) {
+        if (params.get(BEGINTIME) != null && params.get(ENDTIME) != null) {
             query.taskCreatedAfter(DateUtils.parseDate(params.get("beginTime")));
-            query.taskCreatedBefore(DateUtils.parseDate(params.get("endTime")));
+            query.taskCreatedBefore(DateUtils.parseDate(params.get(ENDTIME)));
         }
     }
 
@@ -83,9 +85,9 @@ public class ProcessUtils {
         if (StringUtils.isNotBlank(process.getProcessName())) {
             query.processDefinitionNameLike("%" + process.getProcessName() + "%");
         }
-        if (params.get("beginTime") != null && params.get("endTime") != null) {
-            query.taskCompletedAfter(DateUtils.parseDate(params.get("beginTime")));
-            query.taskCompletedBefore(DateUtils.parseDate(params.get("endTime")));
+        if (params.get(BEGINTIME) != null && params.get(ENDTIME) != null) {
+            query.taskCompletedAfter(DateUtils.parseDate(params.get(BEGINTIME)));
+            query.taskCompletedBefore(DateUtils.parseDate(params.get(ENDTIME)));
         }
     }
 
@@ -106,9 +108,9 @@ public class ProcessUtils {
         if (StringUtils.isNotBlank(process.getCategory())) {
             query.processDefinitionCategory(process.getCategory());
         }
-        if (params.get("beginTime") != null && params.get("endTime") != null) {
-            query.startedAfter(DateUtils.parseDate(params.get("beginTime")));
-            query.startedBefore(DateUtils.parseDate(params.get("endTime")));
+        if (params.get(BEGINTIME) != null && params.get(ENDTIME) != null) {
+            query.startedAfter(DateUtils.parseDate(params.get(BEGINTIME)));
+            query.startedBefore(DateUtils.parseDate(params.get(ENDTIME)));
         }
     }
 

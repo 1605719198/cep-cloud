@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCarryRulesCorpMapper">
     
-    <resultMap type="FinanceAaCarryRulesCorp" id="FinanceAaCarryRulesCorpResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp" id="FinanceAaCarryRulesCorpResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="rulesId"    column="rules_id"    />
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join finance_aa_group_acctcode tin on t1.account_id_in= tin.group_acct_id
     </sql>
 
-    <select id="selectFinanceAaCarryRulesCorpList" parameterType="FinanceAaCarryRulesCorp" resultMap="FinanceAaCarryRulesCorpResult">
+    <select id="selectFinanceAaCarryRulesCorpList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp" resultMap="FinanceAaCarryRulesCorpResult">
         <include refid="selectFinanceAaCarryRulesCorpVo"/>
         <where>  
             <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
@@ -43,8 +43,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaCarryRulesCorpVo"/>
         where id = #{id}
     </select>
-        
-    <insert id="insertFinanceAaCarryRulesCorp" parameterType="FinanceAaCarryRulesCorp">
+    <select id="selectFinanceAaCarryRulesExecuteList"
+            resultType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp">
+        <include refid="selectFinanceAaCarryRulesCorpVo"/>
+        <where>
+            <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+        </where>
+    </select>
+
+
+    <insert id="insertFinanceAaCarryRulesCorp" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp">
         insert into finance_aa_company_carry_rules
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -86,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaCarryRulesCorp" parameterType="FinanceAaCarryRulesCorp">
+    <update id="updateFinanceAaCarryRulesCorp" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp">
         update finance_aa_company_carry_rules
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>

@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.flow.flowable.common.enums.FlowComment;
 import com.jlkj.flow.workflow.domain.bo.WfTaskBo;
 import com.jlkj.flow.workflow.service.IWfTaskService;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +80,7 @@ public class WfTaskController {
     @RequiresPermissions("workflow:process:approval")
     public AjaxResult taskReject(@RequestBody WfTaskBo taskBo) {
         flowTaskService.taskReject(taskBo);
-        return AjaxResult.success("任务已拒绝！");
+        return AjaxResult.success("任务已拒绝！", FlowComment.REJECT.getType());
     }
 
     /**

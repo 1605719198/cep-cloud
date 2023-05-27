@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PersonalIncomeTaxMapper">
+    
+    <resultMap type="PersonalIncomeTax" id="PersonalIncomeTaxResult">
+        <result property="id"    column="id"    />
+        <result property="taxSpace"    column="tax_space"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="deductNum"    column="deduct_num"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="type"    column="type"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonalIncomeTaxVo">
+        select id, tax_space, tax_rate, deduct_num, version_no, effect_date, type, creator, create_date , creator_id from human_hs_personal_income_tax
+    </sql>
+
+    <select id="selectPersonalIncomeTaxList" parameterType="PersonalIncomeTax" resultMap="PersonalIncomeTaxResult">
+        <include refid="selectPersonalIncomeTaxVo"/>
+        <where>
+            <if test="date != null ">and effect_date = #{date} </if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="versionNo != null and versionNo != ''">and version_no = #{versionNo} </if>
+        </where>
+    </select>
+    
+    <select id="selectPersonalIncomeTaxById" parameterType="String" resultMap="PersonalIncomeTaxResult">
+        <include refid="selectPersonalIncomeTaxVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonalIncomeTax" parameterType="PersonalIncomeTax">
+        insert into human_hs_personal_income_tax
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="taxSpace != null">tax_space,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="deductNum != null">deduct_num,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="type != null">type,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="creatorId != null">creator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="taxSpace != null">#{taxSpace},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="deductNum != null">#{deductNum},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="type != null">#{type},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonalIncomeTax" parameterType="PersonalIncomeTax">
+        update human_hs_personal_income_tax
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taxSpace != null">tax_space = #{taxSpace},</if>
+            <if test="taxRate != null">tax_rate = #{taxRate},</if>
+            <if test="deductNum != null">deduct_num = #{deductNum},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonalIncomeTaxById" parameterType="String">
+        delete from human_hs_personal_income_tax where id = #{id}
+    </delete>
+
+    <select id="getVersionList" parameterType="String" resultMap="PersonalIncomeTaxResult">
+        SELECT distinct version_no FROM human_hs_personal_income_tax WHERE type = #{type}  order by  version_no
+    </select>
+
+    <select id="selectMaxVersionNo" parameterType="String" resultType="map">
+        select  effect_date effectDate, version_no versionNo from human_hs_personal_income_tax where type = #{type} order by effect_date desc limit 1
+    </select>
+
+    <delete id="deletePersonalIncomeTaxByIds" parameterType="String">
+        delete from human_hs_personal_income_tax where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePersonalIncomeTaxByVersion" parameterType="map">
+        delete from human_hs_personal_income_tax where type = #{type} and  version_no= #{versionNo}
+    </delete>
+</mapper>

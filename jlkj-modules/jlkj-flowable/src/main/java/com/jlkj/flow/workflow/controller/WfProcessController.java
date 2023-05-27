@@ -13,6 +13,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.flow.flowable.common.enums.FlowComment;
 import com.jlkj.flow.flowable.core.domain.ProcessQuery;
 import com.jlkj.flow.workflow.domain.bo.WfCopyBo;
 import com.jlkj.flow.workflow.domain.vo.*;
@@ -207,8 +208,18 @@ public class WfProcessController extends BaseController {
     @PostMapping("/start/{processDefId}")
     public AjaxResult start(@PathVariable(value = "processDefId") String processDefId, @RequestBody Map<String, Object> variables) {
         processService.startProcessByDefId(processDefId, variables);
-        return AjaxResult.success("操作成功！");
+        return AjaxResult.success("操作成功！", FlowComment.NORMAL.getType());
+    }
 
+    /**
+     * 根据流程定义id启动流程实例（重写）
+     *
+     * @param variables 变量集合,json对象
+     */
+    @RequiresPermissions("workflow:process:start")
+    @PostMapping("/startProcess")
+    public AjaxResult startProcess(@RequestBody Map<String, Object> variables) {
+        return processService.startProcessOverride(variables);
     }
 
     /**

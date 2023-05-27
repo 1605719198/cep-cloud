@@ -40,15 +40,19 @@
         <el-table v-loading="loading" :data="attendanceAbnormalList">
           <el-table-column label="工号" align="center" prop="empNo"/>
           <el-table-column label="姓名" align="center" prop="empName"/>
-          <el-table-column label="正常出勤时段" align="center" prop="norOndutyBegin" />
-          <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" />
+          <el-table-column label="正常出勤时段" align="center" prop="norOndutyBegin" width="300"/>
+          <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" width="300"/>
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
               <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
           <el-table-column label="辅助说明" align="center" prop="description" />
-          <el-table-column label="审批状态" align="center" prop="status" />
+          <el-table-column label="审批状态" align="center" prop="status">
+            <template v-slot="scope">
+              <dict-tag-human-basis :options="attendenceOptions.HolidayStatus" :value="scope.row.status"/>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template v-slot="scope">
               <el-button
@@ -88,36 +92,36 @@
         <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
             <el-row>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="申请人" prop="empNo">
                   {{form.empNo}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="姓名" prop="empName">
                   {{form.empName}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="岗位" prop="postName">
                   {{form.postName}}
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="正常出勤时段" prop="norOndutyBegin">
                   {{form.norOndutyBegin}}~{{form.norOndutyEnd}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="实际出勤时段" prop="slotCardOnduty">
                   {{form.slotCardOnduty}}~{{form.slotCardOffduty}}
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="出勤证明原因">
                   <el-select v-model="form.proveReason" style="width: 100%">
                     <el-option
@@ -129,24 +133,24 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="辅助说明" prop="description">
                   <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="审批状态" prop="status">
                   {{form.status}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="9">
                 <el-form-item label="输入人" prop="creator">
                   {{form.creator}}
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-form-item label="输入日期" prop="createDate">
                   {{form.createDate}}
                 </el-form-item>
@@ -171,10 +175,12 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {validateNumber} from "@/utils/jlkj";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
+import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
+import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo";
 
 export default {
   name: "AttendanceAbnormal",
-  components: {selectUser,DictTagHuman},
+  components: {selectUser,DictTagHuman,DictTagHumanBasis},
   data() {
     return {
       // 遮罩层
@@ -218,6 +224,13 @@ export default {
       // 公司别数据
       companyName: [],
       baseInfoData: [],
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['HolidayStatus']
+      },
+      //出勤选单选项列表
+      attendenceOptions: {},
       baseInfo: {
         baseInfoList: [
           'ProveReason']
@@ -231,6 +244,10 @@ export default {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    /** 查询出勤字典 */
+    getAttendenceOptions(this.attendenceOptionType).then(response => {
+      this.attendenceOptions = response.data;
+    })
   },
   methods: {
     /** 查询出勤异常列表 */
@@ -285,7 +302,11 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.getList();
+        }
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {

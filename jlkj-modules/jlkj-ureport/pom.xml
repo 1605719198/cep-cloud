@@ -16,6 +16,12 @@
     </description>
 
     <dependencies>
+        <!-- 添加 Ureport2 依赖 -->
+        <dependency>
+            <groupId>com.bstek.ureport</groupId>
+            <artifactId>ureport2-console</artifactId>
+            <version>2.2.9</version>
+        </dependency>
 
         <!-- SpringCloud Alibaba Nacos -->
         <dependency>

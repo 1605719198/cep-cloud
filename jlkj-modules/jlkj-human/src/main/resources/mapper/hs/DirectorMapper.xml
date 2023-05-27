@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.DirectorMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hs.domain.Director">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="dutyCode" column="duty_code" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="orgId" column="org_id" jdbcType="VARCHAR"/>
+            <result property="resvAttr1" column="resv_attr1" jdbcType="VARCHAR"/>
+            <result property="resvAttr2" column="resv_attr2" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,duty_code,
+        emp_id,post_id,org_id,
+        resv_attr1,resv_attr2,creator,
+        creator_id,create_date
+    </sql>
+</mapper>

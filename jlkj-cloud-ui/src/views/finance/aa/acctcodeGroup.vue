@@ -397,6 +397,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.groupAcctId)
+      this.d
       this.single = selection.length!==1
       this.multiple = !selection.length
     },

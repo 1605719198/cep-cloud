@@ -9,4 +9,12 @@ export function addCard(data) {
   })
 }
 
+// 查询个人信息详细
+export function queryCard(userNo) {
+  return request({
+    url: '/finance/card/' + userNo,
+    method: 'get'
+  })
+}
+
 

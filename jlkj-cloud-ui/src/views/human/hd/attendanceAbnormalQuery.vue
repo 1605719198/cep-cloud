@@ -53,12 +53,12 @@
           <el-table-column label="岗位" align="center" prop="postName"/>
           <el-table-column label="正常出勤时段" align="center" prop="norOndutyBegin" />
           <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" />
-          <el-table-column label="异常原因" align="center" prop="proveReason" >
+          <el-table-column label="异常原因" align="center" prop="excReaId" />
+          <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
               <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
-          <el-table-column label="出勤证明原因" align="center" prop="proveReason" />
           <el-table-column label="处理情况" align="center" prop="disposeId" />
         </el-table>
 

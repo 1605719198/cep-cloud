@@ -141,7 +141,6 @@ export default {
       }else{
         this.treeAndTable=false
       }
-      this.getList();
     },
     //监听数据 设置默认展示第一层数据
     deptOptions: {
@@ -193,7 +192,6 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
     },
     /** 选择授权用户操作 */
     handleSelectUser() {

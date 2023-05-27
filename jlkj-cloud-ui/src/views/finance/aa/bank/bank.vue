@@ -167,12 +167,31 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="新增人名称" prop="createName">
-          <el-input v-model="form.createName" placeholder="请输入新增人名称" />
-        </el-form-item>
-        <el-form-item label="异动名称" prop="updateName">
-          <el-input v-model="form.updateName" placeholder="请输入异动名称" />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="新增人" prop="createName">
+              {{form.createName}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="新增日期" prop="createTime">
+              {{ parseTime(form.createTime, '{y}-{m}-{d}') }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="异动人" prop="updateName">
+              {{form.updateName}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="异动日期" prop="updateTime">
+              {{ parseTime(form.updateTime, '{y}-{m}-{d}') }}
+            </el-form-item>
+          </el-col>
+        </el-row>
 
       </el-form>
       <div slot="footer" class="dialog-footer">

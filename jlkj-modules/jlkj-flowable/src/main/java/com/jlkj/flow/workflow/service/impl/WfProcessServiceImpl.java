@@ -16,10 +16,12 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.JsonUtils;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.PageQuery;
 import com.jlkj.common.core.web.page.TableDataInfoPlus;
 import com.jlkj.flow.flowable.common.constant.ProcessConstants;
 import com.jlkj.flow.flowable.common.constant.TaskConstants;
+import com.jlkj.flow.flowable.common.enums.FlowComment;
 import com.jlkj.flow.flowable.core.FormConf;
 import com.jlkj.flow.flowable.core.domain.ProcessQuery;
 import com.jlkj.flow.flowable.factory.FlowServiceFactory;
@@ -28,6 +30,8 @@ import com.jlkj.flow.flowable.utils.ModelUtils;
 import com.jlkj.flow.flowable.utils.ProcessFormUtils;
 import com.jlkj.flow.flowable.utils.ProcessUtils;
 import com.jlkj.flow.flowable.utils.TaskUtils;
+import com.jlkj.flow.workflow.domain.SysInstanceForm;
+import com.jlkj.flow.workflow.service.SysInstanceFormService;
 import com.jlkj.system.api.RemoteDeptService;
 import com.jlkj.system.api.RemoteRoleService;
 import com.jlkj.system.api.RemoteUserService;
@@ -87,6 +91,8 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
     private final RemoteDeptService deptService;
     @Autowired
     private final WfDeployFormMapper deployFormMapper;
+    @Autowired
+    private SysInstanceFormService sysInstanceFormService;
 
     /**
      * 流程定义列表
@@ -110,6 +116,7 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
             return TableDataInfoPlus.build();
         }
         int offset = pageQuery.getPageSize() * (pageQuery.getPageNum() - 1);
+        // ACT_RE_PROCDEF
         List<ProcessDefinition> definitionList = processDefinitionQuery.listPage(offset, pageQuery.getPageSize());
 
         List<WfDefinitionVo> definitionVoList = new ArrayList<>();
@@ -576,13 +583,44 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
     @Transactional(rollbackFor = Exception.class)
     public void startProcessByDefId(String procDefId, Map<String, Object> variables) {
         try {
+            // 绑定表单id、流程部署id、流程实例id、跳转路由
+            SysInstanceForm instanceForm = new SysInstanceForm();
+            instanceForm.setFormId(variables.get("id").toString());
+            instanceForm.setRouterPath(variables.get("routerPath").toString());
+            instanceForm.setDeployId(procDefId);
             ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(procDefId).singleResult();
-            startProcess(processDefinition, variables);
+            startProcessCopy(processDefinition, variables, instanceForm);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServiceException("流程启动错误");
         }
+    }
+
+    /**
+     * 根据流程定义id启动流程实例（重写）
+     * @param variables
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult startProcessOverride(Map<String, Object> variables) {
+        try {
+            LambdaQueryWrapper<SysInstanceForm> wrapper = new LambdaQueryWrapper();
+            wrapper.eq(SysInstanceForm::getFormId,variables.get("id"));
+            SysInstanceForm instanceForm = sysInstanceFormService.getOne(wrapper);
+            if (StringUtils.isNotNull(instanceForm)) {
+                ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                        .processDefinitionId(instanceForm.getDeployId()).singleResult();
+                startProcessCopy(processDefinition, variables, instanceForm);
+                return AjaxResult.success("操作成功！", FlowComment.NORMAL.getType());
+            } else {
+                return AjaxResult.error("查询流程绑定表单失败！请确认是否绑定流程！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServiceException("流程启动错误");
+        }
+
     }
 
     /**
@@ -632,6 +670,9 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
             .processInstanceId(procInsId)
             .includeProcessVariables()
             .singleResult();
+        if (StringUtils.isNull(historicProcIns)) {
+            return detailVo;
+        }
         if (StringUtils.isNotBlank(taskId)) {
             HistoricTaskInstance taskIns = historyService.createHistoricTaskInstanceQuery()
                 .taskId(taskId)
@@ -668,6 +709,26 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
         variables.put(BpmnXMLConstants.ATTRIBUTE_EVENT_START_INITIATOR, userIdStr);
         // 发起流程实例
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDef.getId(), variables);
+        // 第一个用户任务为发起人，则自动完成任务
+        wfTaskService.startFirstTask(processInstance, variables);
+    }
+
+    /**
+     * 自定义启动流程实例
+     */
+    private void startProcessCopy(ProcessDefinition procDef, Map<String, Object> variables, SysInstanceForm instanceForm) {
+        if (ObjectUtil.isNotNull(procDef) && procDef.isSuspended()) {
+            throw new ServiceException("流程已被挂起，请先激活流程");
+        }
+        // 设置流程发起人Id到流程中
+        String userIdStr = TaskUtils.getUserId();
+        identityService.setAuthenticatedUserId(userIdStr);
+        variables.put(BpmnXMLConstants.ATTRIBUTE_EVENT_START_INITIATOR, userIdStr);
+        // 发起流程实例
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDef.getId(), variables);
+        // set流程实例id
+        instanceForm.setInstanceId(processInstance.getId());
+        sysInstanceFormService.updateById(instanceForm);
         // 第一个用户任务为发起人，则自动完成任务
         wfTaskService.startFirstTask(processInstance, variables);
     }

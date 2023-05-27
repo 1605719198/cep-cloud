@@ -505,14 +505,6 @@ export default {
       this.$set(this.addJsonForm, "employeeInductionList", []);
       this.open = false;
     },
-    RndNum(n) {
-      // 生成随机数
-      let rdmNum = "";
-      for (let i = 0; i < n; i++) {
-        rdmNum += Math.floor(Math.random() * 10); // [0,10)的整数
-      }
-      return rdmNum;
-    },
     // 节点单击事件
     handleNodeClick(data) {
       this.queryParams.orgId = data.id

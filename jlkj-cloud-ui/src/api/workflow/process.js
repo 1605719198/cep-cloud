@@ -26,6 +26,14 @@ export function startProcess(processDefId, data) {
     data: data
   })
 }
+// 重写部署流程实例方法
+export function startProcessOverride(data) {
+  return request({
+    url: '/flowable/workflow/process/startProcess',
+    method: 'post',
+    data: data
+  })
+}
 
 // 获取流程图
 export function getBpmnXml(processDefId) {

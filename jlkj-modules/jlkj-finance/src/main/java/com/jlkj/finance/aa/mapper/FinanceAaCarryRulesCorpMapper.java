@@ -1,7 +1,9 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 集团管理-自动结转规则-规则设置Mapper接口
@@ -18,7 +20,14 @@ public interface FinanceAaCarryRulesCorpMapper
      * @return 集团管理-自动结转规则-规则设置
      */
     public FinanceAaCarryRulesCorp selectFinanceAaCarryRulesCorpById(String id);
-
+    /**
+     * 接口查询
+     *
+     * @param rulesNo 集团管理-自动结转规则-规则设置
+     * @param companyId 公司別
+     * @return 集团管理-自动结转规则-规则设置集合
+     */
+    public FinanceAaCarryRulesCorp selectFinanceAaCarryRulesExecuteList(@Param("rulesNo")String rulesNo, @Param("companyId")String companyId);
     /**
      * 查询集团管理-自动结转规则-规则设置列表
      * 

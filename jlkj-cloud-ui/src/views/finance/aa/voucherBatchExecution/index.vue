@@ -21,6 +21,8 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            format="yyyy-MM-dd"
             @change="dutyDateChange">
           </el-date-picker>
 
@@ -206,6 +208,7 @@ export default {
     },
     //查询日期切换事件
     dutyDateChange(val) {
+      console.log(val);
       if (val != null) {
         this.queryParams.startDate = val[0]
         this.queryParams.endDate = val[1]

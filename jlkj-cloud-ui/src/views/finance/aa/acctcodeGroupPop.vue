@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {listAcctcodeGroup} from "@/api/finance/aa/acctcodeGroup";
+import {popListAcctcodeGroup} from "@/api/finance/aa/acctcodeGroup";
 
 export default {
   dicts: ['aa_yes_no','aa_disabled_code','aa_drcr'],
@@ -115,7 +115,7 @@ export default {
     // 查询表数据
     getList() {
       this.loading = true;
-      listAcctcodeGroup(this.queryParams).then(response => {
+      popListAcctcodeGroup(this.queryParams).then(response => {
         this.baseList = response.rows;
         this.total = response.total;
         this.loading = false;

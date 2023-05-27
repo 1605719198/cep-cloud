@@ -272,7 +272,7 @@
 import {
   listVoucher, getVoucher, delVoucher,
   addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher,
-  updateVoucherStatus,updateVoucherCross} from "@/api/finance/aa/voucher";
+  updateVoucherStatus,updateVoucherCross,addHongChongVoucher} from "@/api/finance/aa/voucher";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listDetail} from "@/api/finance/aa/voucherdetail";
@@ -980,21 +980,9 @@ export default {
         this.form.voucherNo=""
         this.form.id=null
         this.form.companyId=this.queryParams.companyId
-        for (let i=0;i<  this.formDetail.detailList.length;i++){
-          this.formDetail.detailList[i].qtyFrnamt = 0 -this.formDetail.detailList[i].qtyFrnamt
-          this.formDetail.detailList[i].ntamtD = 0 -this.formDetail.detailList[i].ntamtD
-          this.formDetail.detailList[i].ntamtC = 0 -this.formDetail.detailList[i].ntamtC
-          this.formDetail.detailList[i].srlDesc="红冲凭证号"+ this.formDetail.detailList[i].voucherNo
-            if (!! this.formDetail.detailList[i].ntamtC){
-            this.formDetail.detailList[i].ntamt =  this.formDetail.detailList[i].ntamtC
-            this.formDetail.detailList[i].drcr = "C"
-          }else if (!! this.formDetail.detailList[i].ntamtD){
-            this.formDetail.detailList[i].ntamt =  this.formDetail.detailList[i].ntamtD
-            this.formDetail.detailList[i].drcr = "D"
-          }
-        }
+        this.form.isInspect = 'Y'
         this.form.detailList =  this.formDetail.detailList;
-        addVoucher(this.form).then(response => {
+        addHongChongVoucher(this.form).then(response => {
           if (!!response.msg){
             this.$message.error(response.msg);
             return

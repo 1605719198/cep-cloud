@@ -12,7 +12,9 @@ import java.awt.geom.RoundRectangle2D;
  * @date 2021-04-03
  */
 public class MyDefaultProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
-    //设置高亮线的颜色  这里我设置成绿色
+    private static final String ASSOCIATION = "association";
+
+    /** 设置高亮线的颜色  这里我设置成绿色 */
     protected static Color HIGHLIGHT_SEQUENCEFLOW_COLOR = Color.GREEN;
 
     public MyDefaultProcessDiagramCanvas(int width, int height, int minX, int minY, String imageType, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
@@ -35,7 +37,7 @@ public class MyDefaultProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         Stroke originalStroke = g.getStroke();
 
         g.setPaint(CONNECTION_COLOR);
-        if ("association".equals(connectionType)) {
+        if (ASSOCIATION.equals(connectionType)) {
             g.setStroke(ASSOCIATION_STROKE);
         } else if (highLighted) {
             //设置线的颜色

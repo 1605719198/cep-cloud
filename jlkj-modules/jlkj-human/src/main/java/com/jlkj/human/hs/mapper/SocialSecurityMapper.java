@@ -1,8 +1,10 @@
 package com.jlkj.human.hs.mapper;
 
 import com.jlkj.human.hs.domain.SocialSecurity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 社保公积金缴费比例设定Mapper接口
@@ -31,10 +33,10 @@ public interface SocialSecurityMapper
     /**
      * 新增社保公积金缴费比例设定
      * 
-     * @param socialSecurityList 社保公积金缴费比例设定
+     * @param socialSecurity 社保公积金缴费比例设定
      * @return 结果
      */
-    public int insertSocialSecurity(List<SocialSecurity> socialSecurityList);
+    public int insertSocialSecurity(SocialSecurity socialSecurity);
 
     /**
      * 修改社保公积金缴费比例设定
@@ -59,4 +61,9 @@ public interface SocialSecurityMapper
      * @return 结果
      */
     public int deleteSocialSecurityByIds(String[] ids);
+
+    List<SocialSecurity> getVersionList(String payAreaId);
+
+    Map<String,Object> selectMaxVersion(String payAreaId);
+    public int deleteSocialSecurityByVersion(@Param("payAreaId") String payAreaId, @Param("version") Long version);
 }

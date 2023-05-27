@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PayTableMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hs.domain.PayTable">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="payTabCodeId" column="pay_tab_code_id" jdbcType="VARCHAR"/>
+            <result property="payTabCode" column="pay_tab_code" jdbcType="VARCHAR"/>
+            <result property="payTabName" column="pay_tab_name" jdbcType="VARCHAR"/>
+            <result property="payTypeId" column="pay_type_id" jdbcType="VARCHAR"/>
+            <result property="dataAreaId" column="data_area_id" jdbcType="VARCHAR"/>
+            <result property="computeNo" column="compute_no" jdbcType="VARCHAR"/>
+            <result property="isThrowFinance" column="is_throw_finance" jdbcType="VARCHAR"/>
+            <result property="isReport" column="is_report" jdbcType="VARCHAR"/>
+            <result property="reportLocation" column="report_location" jdbcType="VARCHAR"/>
+            <result property="isSheetPro" column="is_sheet_pro" jdbcType="VARCHAR"/>
+            <result property="sheetLocationId" column="sheet_location_id" jdbcType="VARCHAR"/>
+            <result property="serialNo" column="serial_no" jdbcType="VARCHAR"/>
+            <result property="isTeamPerformance" column="is_team_performance" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,comp_id,pay_tab_code_id,
+        pay_tab_code,pay_tab_name,pay_type_id,
+        data_area_id,compute_no,is_throw_finance,
+        is_report,report_location,is_sheet_pro,
+        sheet_location_id,serial_no,is_team_performance,
+        creator,creator_id,create_date
+    </sql>
+</mapper>

@@ -1,25 +1,19 @@
 package com.jlkj.finance.aa.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+import com.jlkj.common.core.utils.poi.ExcelUtil;
+import com.jlkj.common.core.web.controller.BaseController;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import com.jlkj.finance.aa.service.IFinanceAcctcodeGroupService;
-import com.jlkj.common.core.web.controller.BaseController;
-import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.utils.poi.ExcelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 会计科目-集团级Controller
@@ -134,5 +128,28 @@ public class FinanceAcctcodeGroupController extends BaseController
     public AjaxResult changeStatus(@RequestBody FinanceAcctcodeGroup financeAcctcodeGroup)
     {
         return toAjax(financeAcctcodeGroupService.updateFinanceAcctcodeGroup(financeAcctcodeGroup));
+    }
+
+    /**
+     * 根据会计科目编号acctCode查询会计科目名称acctName
+     * @param acctCode
+     * @return
+     */
+    @GetMapping(value = "selectAcctName/{acctCode}")
+    public String selectAcctNameByCode(@PathVariable("acctCode") String acctCode)
+    {
+        return financeAcctcodeGroupService.selectAcctNameByCode(acctCode);
+    }
+
+    /**
+     * 集团会计科目弹窗查询方法
+     */
+    @RequiresPermissions("finance:acctcodeGroup:list")
+    @GetMapping("/popList")
+    public TableDataInfo popList(FinanceAcctcodeGroup financeAcctcodeGroup)
+    {
+        startPage();
+        List<FinanceAcctcodeGroup> list = financeAcctcodeGroupService.selectFinanceAcctcodeGroupPopList(financeAcctcodeGroup);
+        return getDataTable(list);
     }
 }

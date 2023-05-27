@@ -125,7 +125,6 @@ export default {
     getList() {
       this.loading = true;
       listCardRecord(this.queryParams).then(response => {
-        console.log(response);
         this.recordList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -156,15 +155,10 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery(e) {
-      if(e===0){
-        this.queryParams.pageNum = 1;
-        this.getList();
-      }else{
         if(this.judgeQuery()){
           this.queryParams.pageNum = 1;
           this.getList();
         }
-      }
     },
     /** 查询条件判定 */
     judgeQuery(){
@@ -180,7 +174,8 @@ export default {
       this.resetForm("queryForm");
       this.queryParams.date1 = null;
       this.queryParams.date2 = null;
-      this.handleQuery(0);
+      this.recordList = [];
+      this.total = 0;
     },
     /** 工号点击事件 */
     inputClick() {

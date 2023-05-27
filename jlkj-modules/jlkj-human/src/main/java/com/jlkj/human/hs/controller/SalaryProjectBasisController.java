@@ -22,8 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/salaryProjectBasis")
-public class SalaryProjectBasisController extends BaseController
-{
+public class SalaryProjectBasisController extends BaseController {
     @Autowired
     private ISalaryProjectBasisService salaryProjectBasisService;
 
@@ -32,8 +31,7 @@ public class SalaryProjectBasisController extends BaseController
      */
     @RequiresPermissions("human:salaryProjectBasis:list")
     @GetMapping("/list")
-    public Object list(SalaryProjectBasis salaryProjectBasis)
-    {
+    public Object list(SalaryProjectBasis salaryProjectBasis) {
         try {
             startPage();
             List<SalaryProjectBasis> list = salaryProjectBasisService.lambdaQuery()
@@ -48,14 +46,15 @@ public class SalaryProjectBasisController extends BaseController
         }
     }
 
+
+
     /**
      * 导出集团级薪资项目输入维护列表
      */
     @RequiresPermissions("human:salaryProjectBasis:export")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SalaryProjectBasis salaryProjectBasis)
-    {
+    public void export(HttpServletResponse response, SalaryProjectBasis salaryProjectBasis) {
         List<SalaryProjectBasis> list = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
         ExcelUtil<SalaryProjectBasis> util = new ExcelUtil<SalaryProjectBasis>(SalaryProjectBasis.class);
         util.exportExcel(response, list, "集团级薪资项目输入维护数据");
@@ -66,8 +65,7 @@ public class SalaryProjectBasisController extends BaseController
      */
     @RequiresPermissions("human:salaryProjectBasis:query")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(salaryProjectBasisService.selectSalaryProjectBasisById(id));
     }
 
@@ -77,8 +75,7 @@ public class SalaryProjectBasisController extends BaseController
     @RequiresPermissions("human:salaryProjectBasis:add")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public Object add(@RequestBody List<SalaryProjectBasis> salaryProjectBasisList)
-    {
+    public Object add(@RequestBody List<SalaryProjectBasis> salaryProjectBasisList) {
         return salaryProjectBasisService.insertSalaryProjectBasis(salaryProjectBasisList);
     }
 
@@ -88,8 +85,7 @@ public class SalaryProjectBasisController extends BaseController
     @RequiresPermissions("human:salaryProjectBasis:edit")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SalaryProjectBasis salaryProjectBasis)
-    {
+    public AjaxResult edit(@RequestBody SalaryProjectBasis salaryProjectBasis) {
         return toAjax(salaryProjectBasisService.updateSalaryProjectBasis(salaryProjectBasis));
     }
 
@@ -98,9 +94,8 @@ public class SalaryProjectBasisController extends BaseController
      */
     @RequiresPermissions("human:salaryProjectBasis:remove")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(salaryProjectBasisService.deleteSalaryProjectBasisByIds(ids));
     }
 
@@ -108,8 +103,7 @@ public class SalaryProjectBasisController extends BaseController
      * 获取集团级薪资项目下拉树列表
      */
     @GetMapping("/treeselect")
-    public AjaxResult treeselect(SalaryProjectBasis salaryProjectBasis)
-    {
+    public AjaxResult treeselect(SalaryProjectBasis salaryProjectBasis) {
         List<SalaryProjectBasis> salaryProjectBasiss = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
         return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
     }

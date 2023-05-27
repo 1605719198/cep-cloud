@@ -42,7 +42,6 @@ export default {
         deployId: this.deployId
       }).then(res => {
         if (res.data) {
-          console.log(res.data)
           this.formData = res.data;
           this.formOpen = true
         }
