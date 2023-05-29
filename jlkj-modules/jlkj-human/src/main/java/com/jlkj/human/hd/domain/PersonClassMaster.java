@@ -32,7 +32,6 @@ public class PersonClassMaster extends BaseEntity
     private String empId;
 
     /** 姓名 */
-    @Excel(name = "姓名")
     private String nickName;
 
     /** 一级单位名称 */
@@ -46,7 +45,6 @@ public class PersonClassMaster extends BaseEntity
     private String shiftmodeId;
 
     /** 轮班方式名称 */
-    @Excel(name = "轮班方式名称")
     private String shiftmodeName;
 
     /** 班别ID */
@@ -54,7 +52,6 @@ public class PersonClassMaster extends BaseEntity
     private String classId;
 
     /** 班别名称 */
-    @Excel(name = "班别名称")
     private String className;
 
     /** 排班开始日期 */
@@ -71,7 +68,6 @@ public class PersonClassMaster extends BaseEntity
     private String status;
 
     /** 输入人 */
-    @Excel(name = "输入人")
     private String creator;
 
     /** 输入人ID */
@@ -79,7 +75,6 @@ public class PersonClassMaster extends BaseEntity
 
     /** 输入日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
     public void setId(String id)

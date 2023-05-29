@@ -81,21 +81,20 @@
         <el-button
           type="primary"
           plain
-          icon="el-icon-plus"
           size="mini"
           @click="setScheduling"
         >排班
         </el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          size="mini"
-          @click="showShift"
-        >轮班方式/班次/班别查看
-        </el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          size="mini"-->
+<!--          @click="showShift"-->
+<!--        >轮班方式/班次/班别查看-->
+<!--        </el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -127,7 +126,7 @@
     />
     <select-user ref="select" @ok="getJobNumber"/>
     <!-- 批量排班资料导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="450px" append-to-body class="customDialogStyle">
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body class="customDialogStyle">
       <el-upload
         ref="upload"
         :limit="1"

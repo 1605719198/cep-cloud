@@ -169,6 +169,11 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
         for (PersonClassMaster personClassMaster : personClassMasterList) {
             try {
                 BeanValidators.validateWithException(validator, personClassMaster);
+                personClassMaster.setStatus(String.valueOf(1));
+                personClassMaster.setRemark("2");
+                personClassMaster.setCreator(SecurityUtils.getNickName());
+                personClassMaster.setCreatorId(SecurityUtils.getUsername());
+                personClassMaster.setCreateDate(new Date());
                 insertPersonClassMaster(personClassMaster);
                 successNum++;
                 successMsg.append("<br/>" + successNum + "、员工工号 " + personClassMaster.getEmpId() + " 导入成功");
