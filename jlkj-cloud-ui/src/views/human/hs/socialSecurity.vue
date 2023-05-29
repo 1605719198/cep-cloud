@@ -280,7 +280,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })
