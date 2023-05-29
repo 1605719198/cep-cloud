@@ -35,7 +35,7 @@
                     type="danger"
                     plain
                     size="mini"
-                    @click="cancellation"
+                    @click="handleDelete"
                   >作废</el-button>
                 </el-form-item>
               </el-form>
@@ -72,7 +72,14 @@
             </el-table-column>
             <el-table-column label="状态" align="center" prop="status" >
             <template v-slot="scope">
-              <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+              <el-switch
+                v-model="scope.row.status"
+                active-color="#ff4949"
+                inactive-color="#13ce66"
+                active-value="1"
+                inactive-value="0"
+                @change="handleStatusChange(scope.row)"
+              ></el-switch>
             </template>
             </el-table-column>
             <el-table-column label="输入人" align="center" prop="creator" />
@@ -110,7 +117,7 @@
 </template>
 
 <script>
-import { listSalaryProjectBasis, getSalaryProjectBasis, delSalaryProjectBasis, addSalaryProjectBasis, updateSalaryProjectBasis, treeselect } from "@/api/human/hs/salaryProjectBasis";
+import { listSalaryProjectBasis, getSalaryProjectBasis, delSalaryProjectBasis, addSalaryProjectBasis, updateSalaryProjectBasis, treeselect, changeStatus } from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 
 
@@ -286,16 +293,6 @@ export default {
         this.getList();
       })
     },
-    // 作废按钮
-    cancellation() {
-      for(let i = 0;i<this.multipleSelection.length;i++){
-        this.multipleSelection[i].status = "1"
-      }
-      addSalaryProjectBasis(this.multipleSelection).then(res => {
-        this.$modal.msgSuccess("保存成功");
-        this.getList();
-      })
-    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -318,13 +315,14 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除此集团级薪资项目输入维护的数据项？').then(function() {
-        return delSalaryProjectBasis(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+        const ids = row.id || this.ids;
+        this.$modal.confirm('是否确认删除此集团级薪资项目输入维护的数据项？').then(function () {
+          return delSalaryProjectBasis(ids);
+        }).then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {
+        });
     },
     //获取选单配置树
     getBaseInfoTree() {
@@ -332,7 +330,17 @@ export default {
         this.menuData = response.data;
       })
     },
-
+    // 用户状态修改
+    handleStatusChange(row) {
+      let text = row.status === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要' + text + '吗？').then(function () {
+        return changeStatus(row.id,row.parentid, row.status);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
     //点击节点方法
     handleNodeClick(data) {
       this.queryParams.id = data.id;

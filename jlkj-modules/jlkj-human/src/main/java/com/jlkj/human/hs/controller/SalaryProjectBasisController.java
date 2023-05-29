@@ -46,8 +46,6 @@ public class SalaryProjectBasisController extends BaseController {
         }
     }
 
-
-
     /**
      * 导出集团级薪资项目输入维护列表
      */
@@ -94,9 +92,10 @@ public class SalaryProjectBasisController extends BaseController {
      */
     @RequiresPermissions("human:salaryProjectBasis:remove")
     @Log(title = "集团级薪资项目输入维护", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(salaryProjectBasisService.deleteSalaryProjectBasisByIds(ids));
+    @DeleteMapping("/{id}")
+    public AjaxResult remove(@PathVariable Long id)throws Exception
+    {
+        return toAjax(salaryProjectBasisService.deleteSalaryProjectBasisById(id));
     }
 
     /**
@@ -106,6 +105,17 @@ public class SalaryProjectBasisController extends BaseController {
     public AjaxResult treeselect(SalaryProjectBasis salaryProjectBasis) {
         List<SalaryProjectBasis> salaryProjectBasiss = salaryProjectBasisService.selectSalaryProjectBasisList(salaryProjectBasis);
         return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
+    }
+
+    /**
+     * 状态修改
+     */
+    @RequiresPermissions("human:salaryProjectBasis:edit")
+    @Log(title = "启用禁用", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody SalaryProjectBasis salaryProjectBasis)
+    {
+        return toAjax(salaryProjectBasisService.updateSalaryProjectBasis(salaryProjectBasis));
     }
 
 }
