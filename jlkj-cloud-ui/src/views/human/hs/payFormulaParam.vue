@@ -179,13 +179,13 @@ export default {
     'queryParams.compId':{
       handler(val) {
         this.getList();
-        this.getDisc();
       },
       deep: true,
       immediate: false,
     },
   },
   created() {
+    this.getDisc();
     this.getCompanyList()
     this.initData();
   },
@@ -245,7 +245,6 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = this.queryParams.compId;
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

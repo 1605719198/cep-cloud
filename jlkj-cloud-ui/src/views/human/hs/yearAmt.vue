@@ -285,7 +285,6 @@ export default {
   methods: {
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = 'J00';
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })
