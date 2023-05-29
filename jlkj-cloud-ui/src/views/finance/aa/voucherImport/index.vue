@@ -34,7 +34,7 @@
           <el-table-column label="原币金额" align="center" prop="qtyFrnamt"/>
           <el-table-column label="借贷方向" align="center" prop="drcr"/>
           <el-table-column label="金额" align="center" prop="ntamt"/>
-          <el-table-column label="错误原因" align="center" prop="errorReason"/>
+          <el-table-column label="错误原因" align="center" prop="errorReason":show-overflow-tooltip='true'/>
         </el-table>
       </el-form-item>
     </el-form>
@@ -82,7 +82,6 @@
 <script>
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
-import {listVoucherDetailSelect} from "@/api/finance/aa/voucher";
 import voucherQuery from "@/views/finance/aa/voucherQuery/voucherQuery";
 import {getToken} from "@/utils/auth";
 export default {
@@ -186,7 +185,7 @@ export default {
       ntamtDDisabled:false,
       ntamtCDisabled:false,
       indexRow:'',
-      // 探亲假资料导入参数
+      // 导入参数
       upload: {
         // 是否显示弹出层（探亲假资料导入）
         open: false,
