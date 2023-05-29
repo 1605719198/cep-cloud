@@ -268,7 +268,9 @@ export default {
       treeselect(params).then(response => {
         this.menuData = response.data;
         this.defaultShowNodes.push(this.menuData[0].id);
-        this.queryParams.id = this.defaultShowNodes[0];
+        if(this.queryParams.id===null){
+          this.queryParams.id = this.defaultShowNodes[0];
+        }
         this.onLoad()
         this.loading = false;
       })

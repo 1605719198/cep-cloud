@@ -37,7 +37,7 @@
 <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
 <!--    </el-row>-->
 
-    <el-table v-loading="loading" :data="shiftClassList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="shiftClassList" @selection-change="handleSelectionChange" height="60vh">
       <el-table-column label="班别编码" align="center" prop="classMode" />
       <el-table-column label="班别名称" align="center" prop="className" />
       <el-table-column label="说明" align="center" prop="description" />

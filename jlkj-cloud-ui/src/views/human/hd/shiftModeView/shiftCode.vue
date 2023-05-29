@@ -34,7 +34,7 @@
 <!--      </el-col>-->
 <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
 <!--    </el-row>-->
-    <el-table v-loading="loading" :data="shiftCodeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="shiftCodeList" @selection-change="handleSelectionChange" height="60vh">
       <el-table-column label="班次编码" align="center" prop="shiftCode" />
       <el-table-column label="班次开始时间" align="center" prop="startHour" >
         <template v-slot="scope">

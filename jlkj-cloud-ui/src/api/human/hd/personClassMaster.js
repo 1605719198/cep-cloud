@@ -35,6 +35,15 @@ export function addPersonClassMaster(data) {
   })
 }
 
+// 新增出勤身份
+export function batchAddPersonClassMaster(data) {
+  return request({
+    url: '/human/personClassMaster/batchAdd',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改出勤身份
 export function updatePersonClassMaster(data) {
   return request({

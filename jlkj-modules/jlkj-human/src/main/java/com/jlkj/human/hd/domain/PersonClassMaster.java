@@ -24,6 +24,7 @@ public class PersonClassMaster extends BaseEntity
     private String id;
 
     /** 公司别 */
+    @Excel(name = "公司别")
     private String compId;
 
     /** 工号 */
