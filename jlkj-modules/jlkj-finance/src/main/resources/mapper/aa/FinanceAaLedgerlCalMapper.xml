@@ -74,11 +74,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
             <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
             <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
-     and cal_ida = #{calIda}
+            and cal_ida = #{calIda}
             and cal_idb = #{calIdb}
             and cal_idc = #{calIdc}
             and cal_idd = #{calIdd}
 
+        </where>
+    </select>
+    <select id="selectFinanceAaLedgerlCalName" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+            <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+
+            and cal_namea = #{calNamea}
+            and cal_nameb = #{calNameb}
+            and cal_namec = #{calNamec}
+            and cal_named = #{calNamed}
         </where>
     </select>
     <select id="selectAcctPeriodList" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
