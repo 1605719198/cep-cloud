@@ -325,7 +325,7 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 日期查询变更*/
+    /** 日期变更*/
     dateFormat(val){
       this.queryParams.date =this.queryParams.effectDate;
     },

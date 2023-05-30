@@ -38,7 +38,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          v-hasPermi="['human:personalIncomeTax:add']"
+          v-hasPermi="['human:miniStandard:add']"
           type="primary"
           size="mini"
           plain

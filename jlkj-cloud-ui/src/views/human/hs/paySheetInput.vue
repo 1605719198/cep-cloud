@@ -70,9 +70,8 @@
 </template>
 
 <script>
-import { listPaySheetInput, getPaySheetInput, delPaySheetInput, addPaySheetInput, updatePaySheetInput } from "@/api/human/hs/paySheetInput";
+import { listPaySheetInput, addPaySheetInput, } from "@/api/human/hs/paySheetInput";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {addSocialSecurity} from "@/api/human/hs/socialSecurity";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
@@ -140,7 +139,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })
