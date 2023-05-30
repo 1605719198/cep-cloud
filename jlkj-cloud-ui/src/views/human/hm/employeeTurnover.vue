@@ -199,20 +199,20 @@
               <el-table-column label="异动前岗位" align="center">
                 <template v-slot="scope">
                   <el-form-item
-                    :prop="'employeeTurnoverList.' + scope.$index + '.newPostName'"
+                    :prop="'employeeTurnoverList.' + scope.$index + '.oldPostName'"
                     align="center"
                   >
-                    {{scope.row.newPostName}}
+                    {{scope.row.oldPostName}}
                   </el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="异动后岗位" align="center">
                 <template v-slot="scope">
                   <el-form-item
-                    :prop="'employeeTurnoverList.' + scope.$index + '.nowPostName'"
+                    :prop="'employeeTurnoverList.' + scope.$index + '.newPostName'"
                     style="text-align: right"
                   >
-                    {{scope.row.nowPostName}}
+                    {{scope.row.newPostName}}
                     <el-button icon="el-icon-search" size="mini" @click="openPostPop(scope.$index)"></el-button>
                     <el-button icon="el-icon-delete" size="mini" @click="doEmpty(scope.$index)"></el-button>
                   </el-form-item>
@@ -285,10 +285,10 @@
 <script>
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo, getDegreeMajorSpecialization} from "@/api/human/hm/baseInfo";
-import {queryEmployeeInduction, queryEmployeeInductionByUuid} from "@/api/human/hm/employeeInduction";
+import {queryEmployeeInductionByUuid} from "@/api/human/hm/employeeInduction";
 import {
   addEmployeeTurnover,
-  delEmployeeTurnover,
+  delEmployeeTurnover, queryEmployeeTurnover,
   queryNewPostNameAndChangeDetail,
   updateEmployeeTurnover
 } from "@/api/human/hm/employeeTurnover"
@@ -417,7 +417,7 @@ export default {
   },
   methods: {
     getList() {
-      queryEmployeeInduction(this.queryParams).then(res => {
+      queryEmployeeTurnover(this.queryParams).then(res => {
         this.postList = res.data
       })
     },
@@ -438,7 +438,7 @@ export default {
         this.addJsonForm.postLevel = res.data.list[0].postLevel
         this.addJsonForm.versionNo = res.data.list[0].versionNo
         this.addJsonForm.employeeTurnoverList = res.data.list1
-        this.addJsonForm.employeeTurnoverList[this.index].nowPostName = this.addJsonForm.employeeTurnoverList[this.index].newPostName
+        this.addJsonForm.employeeTurnoverList[this.index].oldPostName = this.addJsonForm.employeeTurnoverList[this.index].newPostName
       })
     },
     /** 工号点击事件 */
@@ -493,7 +493,6 @@ export default {
         this.addJsonForm.nowPostName = res.data.employeeInductionList[0].newPostName
         this.addJsonForm.nowPostLevel = res.data.list[0].postLevel
         this.addJsonForm.employeeTurnoverList = res.data.employeeInductionList
-        this.addJsonForm.employeeTurnoverList[this.index].nowPostName = res.data.employeeInductionList[this.index].newPostName
         this.open = true
         this.title = "修改岗位异动资料"
         this.updatePop = false
@@ -522,7 +521,8 @@ export default {
               if (res.code === 200) {
                 this.$message({type: "success", message: res.msg, duration:0,});
               }
-              this.open = false
+              this.open = false;
+              this.getList();
             })
           }
         }
@@ -551,8 +551,9 @@ export default {
         this.addJsonForm.employeeTurnoverList.push(newLine)
       } else {
         const newLine = {
-          postTypeId: "",
+          postTypeId: "02",
           newPostName: "",
+          oldPostName: this.addJsonForm.employeeTurnoverList[this.index-1].newPostName,
           uuid: this.index
         }
         this.addJsonForm.employeeTurnoverList.push(newLine)
@@ -588,6 +589,7 @@ export default {
     handleNodeClick(data) {
       this.queryParams.orgId = data.id;
       this.addJsonForm.departmentName = data.label
+      this.addJsonForm.departmentId = data.id
       this.handleQuery();
     },
     handleQuery() {
@@ -607,7 +609,7 @@ export default {
     changePostName(val) {
       this.openPostName = false
       this.postName = val
-      this.addJsonForm.employeeTurnoverList[this.index].nowPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
+      this.addJsonForm.employeeTurnoverList[this.index].newPostName = this.addJsonForm.departmentName + '-' + this.parentPostName + '-' + this.orgName + '-' + val
     },
     changePostLevel(val) {
       const selectedItem = this.baseInfoData.ChangeCategory.find((item) => {
@@ -634,7 +636,7 @@ export default {
       this.postMaintenanceList = []
     },
     doEmpty(val) {
-      this.addJsonForm.employeeTurnoverList[val].nowPostName = undefined
+      this.addJsonForm.employeeTurnoverList[val].newPostName = undefined
       this.key = Math.random()
     },
     checkPostTypeId() {

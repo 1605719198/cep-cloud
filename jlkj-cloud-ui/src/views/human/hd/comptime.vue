@@ -174,7 +174,7 @@
               </el-col>
               <el-col :span="16">
                 <el-form-item label="辅助说明" prop="description">
-                  <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.description" maxlength="500" show-word-limit type="textarea" placeholder="请输入内容" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -380,7 +380,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.workOvertimeDate = undefined
       this.handleQuery();
     },
     /** 新增按钮操作 */

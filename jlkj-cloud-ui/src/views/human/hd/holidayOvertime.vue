@@ -169,7 +169,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.legalHolDate = undefined
       this.handleQuery();
     },
     /** 工号点击事件 */

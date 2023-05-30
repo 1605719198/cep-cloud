@@ -1,6 +1,6 @@
 <template>
   <!-- 授权用户 -->
-  <el-dialog title="选择组织机构" :visible.sync="visible" width="800px" top="5vh" append-to-body>
+  <el-dialog title="选择组织机构" :visible.sync="visible" width="900px" top="5vh" append-to-body>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="head-container">

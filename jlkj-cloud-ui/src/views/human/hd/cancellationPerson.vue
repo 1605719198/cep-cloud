@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="type">
-            <el-select v-model="queryParams.type" :popper-append-to-body="false" @change="changeType">
+            <el-select v-model="queryParams.type" :popper-append-to-body="false">
               <el-option
                 v-for="dict in baseInfoData.CancellationPersonType"
                 :key="dict.dicNo"
@@ -34,7 +34,7 @@
             </el-input>
           </el-form-item>
           <el-form-item v-else>
-            <el-select v-model="queryParams.clockWorkId" :popper-append-to-body="false" @change="changeType">
+            <el-select v-model="queryParams.clockWorkId" :popper-append-to-body="false">
               <el-option
                 v-for="dict in baseInfoData.CancellationPersonType"
                 :key="dict.dicNo"
@@ -246,6 +246,7 @@ export default {
     getList() {
       this.loading = true;
       listCancellationPerson(this.queryParams).then(response => {
+        this.tableColumns = []
         if (response.data.rows.empNo!=='') {
           this.tableColumns.push({ key: 'empNo', name: '工号', align: 'center'})
         } else if (response.data.rows.orgId!=='') {
