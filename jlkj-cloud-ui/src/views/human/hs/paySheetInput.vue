@@ -41,14 +41,13 @@
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status" >
         <template v-slot="scope">
-          <el-select v-model="scope.row.status" >
-            <el-option
+          <el-radio-group v-model="scope.row.status" >
+            <el-radio
               v-for="dict in salaryOptions.status"
               :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
-            />
-          </el-select>
+              :label="dict.dicNo"
+            >{{dict.dicName}}</el-radio>
+          </el-radio-group>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
