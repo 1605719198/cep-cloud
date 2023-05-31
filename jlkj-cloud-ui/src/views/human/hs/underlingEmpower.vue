@@ -125,7 +125,7 @@ export default {
         optionsType: [
           'PostType'
         ],
-        compId:'J00',
+        compId:null,
       },
       directorData: [],
     };

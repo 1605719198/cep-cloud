@@ -159,7 +159,7 @@ export default {
           'SalaryParameters',
           'status'
         ],
-        compId:'J00',
+        compId:null,
       },
       payParamStandard: [],
       // 查询参数
