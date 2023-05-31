@@ -81,7 +81,7 @@ public class FinanceAaCarryRecordController extends BaseController
     @PostMapping("/addExecute")
     public AjaxResult addExecute(@RequestBody FinanceAaCarryRecord financeAaCarryRecord)
     {
-        return toAjax(financeAaCarryRecordService.insertFinanceAaCarryRecordExecute(financeAaCarryRecord));
+        return success(financeAaCarryRecordService.insertFinanceAaCarryRecordExecute(financeAaCarryRecord));
     }
     /**
      * 取消修改自动结转规则-执行记录

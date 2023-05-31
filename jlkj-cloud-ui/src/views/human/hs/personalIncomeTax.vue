@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
         <el-button v-hasPermi="['human:personalIncomeTax:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
       </el-form-item>
         </el-col>
@@ -166,6 +166,7 @@ export default {
     changePostName(){
       this.queryParams.versionNo = null;
       this.queryParams.effectDate = null;
+      this.queryParams.date = null;
       this.getVersionList()
 
       // this.personalIncomeTaxList = []
@@ -173,7 +174,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

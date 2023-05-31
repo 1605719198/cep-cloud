@@ -141,7 +141,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.workOvertimeDate = undefined
       this.handleQuery();
     },
     dateFormat(picker) {

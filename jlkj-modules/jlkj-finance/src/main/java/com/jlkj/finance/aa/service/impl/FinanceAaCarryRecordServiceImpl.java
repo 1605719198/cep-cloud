@@ -42,9 +42,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
     /*** 凭证维护-主Service业务层处理*/
     @Autowired
     private FinanceAaVoucherServiceImpl financeAaVoucherService;
-    /*** 凭证维护-主Mapper接口*/
-    @Autowired
-    private FinanceAaVoucherMapper financeAaVoucherMapper;
+
     /***  会计科目-集团级*/
     @Autowired
     private FinanceAcctcodeGroupMapper financeAcctcodeGroupMapper;
@@ -83,6 +81,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
      */
     @Override
     public List<FinanceAaCarryRecord> selectFinanceAaCarryRecordCompanyIdList(FinanceAaCarryRecord financeAaCarryRecord) {
+        financeAaCarryRecord.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0,7));
         return financeAaCarryRecordMapper.selectFinanceAaCarryRecordCompanyIdList(financeAaCarryRecord);
     }
 
@@ -93,11 +92,10 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
      * @return 自动结转规则-执行记录
      */
     @Override
-    public int insertFinanceAaCarryRecordExecute(FinanceAaCarryRecord financeAaCarryRecord) {
+    public String insertFinanceAaCarryRecordExecute(FinanceAaCarryRecord financeAaCarryRecord) {
         FinanceAaCarryRecord financeAaCarryRecord2 = new FinanceAaCarryRecord();
         financeAaCarryRecord2.setStatus("Y");
         financeAaCarryRecord.setStatus("Y");
-        int i = 0;
         BigDecimal ntamt = BigDecimal.ZERO;
         String drcr = "";
         String voucherNo;
@@ -107,7 +105,8 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         financeAaVoucherDetail.setCompanyId(financeAaCarryRecord.getCompanyId());
         Date date = DateUtils.dateTime(DateUtils.YYYY_MM, financeAaCarryRecord.getAcctPeriod());
-
+        String ruleAdd ="";
+        StringBuilder successMsg = new StringBuilder();
         if (ConstantsUtil.CARRYA.equals(financeAaCarryRecord.getCarry())) {
             FinanceAaCarryRules financeAaCarryRules = financeAaCarryRulesMapper.selectFinanceAaCarryRulesExecuteList(financeAaCarryRecord.getRulesNo());
             financeAaVoucherDetail.setAcctCode(financeAaCarryRules.getAccountCodeOut());
@@ -143,7 +142,6 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaVoucherDetail.setSrlDesc(financeAaCarryRules.getRemark());
                 financeAaVoucherDetail.setVoucherId(financeAaVoucher.getId());
                 financeAaVoucherDetailsList.add(financeAaVoucherDetail);
-
                 financeAaVoucher.setCompanyId(financeAaCarryRecord.getCompanyId());
                 financeAaVoucher.setVoucherDate(DateUtils.dateTime(DateUtils.YYYY_MM_DD, DateUtils.getMaxMonthDate(DateUtils.dateTime(date))));
                 financeAaVoucher.setVoucherNo(voucherNo);
@@ -162,10 +160,12 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
                 financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
-                String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
+                 ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
                     financeAaCarryRecord.setAcctPeriod(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
-                    i = financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                    financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                }else {
+                    successMsg.append(ruleAdd);
                 }
             } else {
                 financeAaVoucherDetail.setDrcr("");
@@ -214,16 +214,17 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
-                String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
+                 ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
                     BeanUtils.copyProperties(financeAaCarryRecord, financeAaCarryRecord2);
                     financeAaCarryRecord2.setId(UUID.fastUUID().toString());
                     financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                     financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                     financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
-
                     financeAaCarryRecord.setAcctPeriod(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
-                    i = financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                   financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                }else {
+                    successMsg.append(ruleAdd);
                 }
             }
         } else if (ConstantsUtil.CARRYB.equals(financeAaCarryRecord.getCarry())) {
@@ -280,11 +281,12 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
                 financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
-                String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
+                 ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
-
                     financeAaCarryRecord.setAcctPeriod(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
-                    i = financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                   financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                }else {
+                    successMsg.append(ruleAdd);
                 }
             } else {
                 financeAaVoucherDetail.setDrcr("");
@@ -335,7 +337,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaCarryRecord2.setAcctPeriod(financeAaCarryRecord.getAcctPeriod().substring(0, 7));
                 BeanUtils.copyProperties(financeAaCarryRecord2, financeAaVoucher);
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
-                String ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
+                 ruleAdd = financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher);
                 if (StringUtils.isEmpty(ruleAdd)) {
                     BeanUtils.copyProperties(financeAaCarryRecord, financeAaCarryRecord2);
                     financeAaCarryRecord2.setId(UUID.fastUUID().toString());
@@ -343,11 +345,13 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                     financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
                     financeAaCarryRecord.setAcctPeriod(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
-                    i = financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                     financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
+                }else {
+                    successMsg.append(ruleAdd);
                 }
             }
         }
-        return i;
+        return successMsg.toString();
     }
 
     /**

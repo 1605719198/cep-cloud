@@ -229,6 +229,7 @@ export default {
         this.getBaseInfoTree();
       },
       deep: true,
+      immediate:true
     },
   },
   created() {
@@ -239,7 +240,12 @@ export default {
     //获取公司列表
     getCompanyList() {
       selectCompany().then(response => {
+        let gerenal ={
+          compId:null,
+          companyName:'集团通用',
+        }
         this.companyList = response.data
+        this.companyList.unshift(gerenal)
       })
     },
     //初始化数据
@@ -247,7 +253,6 @@ export default {
       this.user.empNo = this.$store.state.user.name
       this.user.empName = this.$store.state.user.userInfo.nickName
       this.user.compId = this.$store.state.user.userInfo.compId
-      this.queryParams.compId = this.user.compId
     },
     //表单值设置
     setForm(e){
@@ -268,7 +273,9 @@ export default {
       treeselect(params).then(response => {
         this.menuData = response.data;
         this.defaultShowNodes.push(this.menuData[0].id);
-        this.queryParams.id = this.defaultShowNodes[0];
+        if(this.queryParams.id===null){
+          this.queryParams.id = this.defaultShowNodes[0];
+        }
         this.onLoad()
         this.loading = false;
       })

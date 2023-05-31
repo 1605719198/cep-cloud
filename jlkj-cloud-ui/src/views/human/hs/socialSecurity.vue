@@ -280,7 +280,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })
@@ -325,7 +325,7 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 日期查询变更*/
+    /** 日期变更*/
     dateFormat(val){
       this.queryParams.date =this.queryParams.effectDate;
     },
@@ -345,19 +345,25 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function() {
-        return delSocialSecurity(ids);
-      }).then(() => {
-        this.onLoad();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      if(this.form.effectDate > getDateTime(1)) {
+        const ids = row.id || this.ids;
+        this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
+          return delSocialSecurity(ids);
+        }).then(() => {
+          this.onLoad();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {
+        });
+      }else{
+        this.$modal.msgError("生效日期必须大于当前日期");
+      }
     },
     //点击节点方法
     changePostName(data,index){
       this.queryParams.version = null;
       this.queryParams.effectDate = null;
       this.queryParams.payAreaId = data.dicNo;
+      this.queryParams.date = null;
       this.getVersionList()
       this.socialSecurityList = []
       this.onLoad()

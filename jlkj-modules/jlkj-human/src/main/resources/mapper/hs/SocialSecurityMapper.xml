@@ -121,4 +121,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteSocialSecurityByVersion" parameterType="map">
+        delete from human_hs_social_security where pay_area_id = #{payAreaId} and  version= #{version}
+    </delete>
 </mapper>

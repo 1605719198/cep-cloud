@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.CompPunishmentMapper">
+    
+    <resultMap type="CompPunishment" id="CompPunishmentResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="punishmentId"    column="punishment_id"    />
+        <result property="srino"    column="srino"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="CompPunishmentDTO" id="CompPunishmentDTOResult">
+        <result property="punishmentId"    column="punishment_id"    />
+        <result property="payProCode"    column="pay_pro_code"    />
+        <result property="payProName"    column="pay_pro_name"    />
+        <result property="isSta"    column="is_sta"    />
+        <result property="staCon"    column="sta_con"    />
+        <result property="isPostPro"    column="is_post_pro"    />
+        <result property="isEmpPro"    column="is_emp_pro"    />
+        <result property="isLov"    column="is_lov"    />
+        <result property="lovConId"    column="lov_con_id"    />
+        <result property="salaryDescribe"    column="salary_describe"    />
+        <result property="parentid"    column="parentid"    />
+        <result property="parents"    column="parents"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="isShowno"    column="is_showno"    />
+        <result property="num"    column="num"    />
+        <result property="defaultValue"    column="default_value"    />
+        <result property="status"    column="status"    />
+        <result property="ifUsed"    column="if_used"    />
+        <result property="srino"    column="srino"    />
+        <result property="ifChecked"    column="if_checked"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+
+
+    <sql id="selectCompPunishmentVo">
+        select uuid, comp_id, punishment_id, srino, resv_attr1, resv_attr2, creator, creator_id, creator_no, create_date from human_hs_punishment
+    </sql>
+
+    <select id="selectCompPunishmentList" parameterType="CompPunishment" resultMap="CompPunishmentDTOResult">
+        select b.id as punishment_id, b.pay_pro_code, b.pay_pro_name, b.pay_type, b.salary_describe, p.srino,if(length(p.uuid)>0,"1","0" )as if_checked, p.creator, p.create_date from human_hs_salary_project_basis as b
+        left join human_hs_punishment as p on b.id = p.punishment_id and p.comp_id= #{compId}
+        where pay_type=4
+        order by LENGTH(p.srino)>0 desc,srino asc,if_checked desc
+    </select>
+    
+    <select id="selectCompPunishmentByUuid" parameterType="String" resultMap="CompPunishmentResult">
+        <include refid="selectCompPunishmentVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertCompPunishment" parameterType="CompPunishment">
+        insert into human_hs_punishment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="punishmentId != null">punishment_id,</if>
+            <if test="srino != null">srino,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="punishmentId != null">#{punishmentId},</if>
+            <if test="srino != null">#{srino},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompPunishment" parameterType="CompPunishment">
+        update human_hs_punishment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="punishmentId != null">punishment_id = #{punishmentId},</if>
+            <if test="srino != null">srino = #{srino},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteCompPunishmentByUuid" parameterType="String">
+        delete from human_hs_punishment where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteCompPunishmentByCompId" parameterType="String">
+        delete from human_hs_punishment where comp_id = #{compId}
+    </delete>
+
+    <delete id="deleteCompPunishmentByUuids" parameterType="String">
+        delete from human_hs_punishment where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

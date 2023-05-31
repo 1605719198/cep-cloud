@@ -1,5 +1,6 @@
 package com.jlkj.flow.workflow.service;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.PageQuery;
 import com.jlkj.common.core.web.page.TableDataInfoPlus;
 import com.jlkj.flow.flowable.core.domain.ProcessQuery;
@@ -105,6 +106,12 @@ public interface IWfProcessService {
      * @param variables
      */
     void startProcessByDefId(String procDefId, Map<String, Object> variables);
+
+    /**
+     * 根据流程定义id启动流程实例（重写）
+     * @param variables
+     */
+    AjaxResult startProcessOverride(Map<String, Object> variables);
 
     /**
      * 通过DefinitionKey启动流程

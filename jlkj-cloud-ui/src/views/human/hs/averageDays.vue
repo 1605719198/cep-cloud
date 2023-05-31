@@ -319,7 +319,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除各公司平均天数设定编号为"' + uuids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除所选数据项？').then(function() {
         return delAverageDays(uuids);
       }).then(() => {
         this.getList();

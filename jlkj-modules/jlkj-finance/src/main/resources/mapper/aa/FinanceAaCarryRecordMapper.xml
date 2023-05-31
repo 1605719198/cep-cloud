@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.rules_name AS rules_name,
         a.rules_no AS rules_no,
         a.remark AS remark,
-        a.voucher_status as`statusA`,
+        a.voucher_status AS `statusA`,
         b.id,
         b.company_id,
         b.carry,
@@ -65,12 +65,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         b.create_name
         FROM
         finance_aa_company_carry_base a
-        LEFT JOIN finance_aa_carry_record b ON b.rules_no = a.rules_no
-        <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+        LEFT JOIN finance_aa_carry_record b ON b.rules_no = a.rules_no  and b.company_id = b.company_id
+
         <if test="carry != null  and carry != ''"> and b.carry = #{carry}</if>
         <if test="acctPeriod != null  and acctPeriod != ''"> and b.acct_period = #{acctPeriod}</if>
+         where
+        <if test="companyId != null  and companyId != ''">  a.company_id = #{companyId}</if>
         ORDER BY
         b.rules_no
+
     </select>
     <select id="selectFinanceAaCarryRecordById" parameterType="String" resultMap="FinanceAaCarryRecordResult">
         <include refid="selectFinanceAaCarryRecordVo"/>

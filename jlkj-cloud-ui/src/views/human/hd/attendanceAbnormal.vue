@@ -310,7 +310,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.slotCardOnduty = undefined
       this.handleQuery();
     },
     /** 修改按钮操作 */

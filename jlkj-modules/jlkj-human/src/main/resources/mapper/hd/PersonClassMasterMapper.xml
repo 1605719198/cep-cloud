@@ -38,6 +38,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="compId != null  and compId != ''"> and p.comp_id = #{compId}</if>
             <if test="empId != null  and empId != ''"> and p.emp_id = #{empId}</if>
+            <if test="remark != null  and remark != ''"> and p.remark = #{remark}</if>
+            <if test="status != null  and status != ''"> and p.status = #{status}</if>
+            <if test="shiftmodeId != null  and shiftmodeId != ''"> and p.shiftmode_id = #{shiftmodeId}</if>
+            <if test="classId != null  and classId != ''"> and p.class_id = #{classId}</if>
         </where>
         group by p.id
     </select>

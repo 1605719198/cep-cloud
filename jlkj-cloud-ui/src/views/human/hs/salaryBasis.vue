@@ -232,7 +232,7 @@ export default {
         this.getBaseInfoTree();
       },
       deep: true,
-      immediate: false,
+      immediate: true,
     },
   },
   created() {
@@ -253,7 +253,12 @@ export default {
     //获取公司列表
     getCompanyList() {
       selectCompany().then(response => {
+        let gerenal ={
+          compId:null,
+          companyName:'集团通用',
+        }
         this.companyList = response.data
+        this.companyList.unshift(gerenal)
       })
     },
     //初始化数据
@@ -262,7 +267,6 @@ export default {
       this.user.empId = this.$store.state.user.userInfo.userId;
       this.user.empName = this.$store.state.user.userInfo.nickName;
       this.user.compId = this.$store.state.user.userInfo.compId;
-      this.queryParams.compId = this.user.compId
     },
     //表单值设置
     setForm(e){

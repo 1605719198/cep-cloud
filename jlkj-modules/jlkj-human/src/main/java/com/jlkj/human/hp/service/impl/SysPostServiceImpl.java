@@ -162,4 +162,23 @@ public class SysPostServiceImpl implements ISysPostService
     {
         return sysPostMapper.deleteSysPostByPostId(postId);
     }
+
+    /**
+     * 岗位现员增加
+     *
+     * @param postId 岗位信息数据维护主键
+     * @return 结果
+     */
+    @Override
+    public int updateSysPostNowCapacity(Long postId){
+        try{
+            SysPost sysPost = sysPostMapper.selectSysPostByPostId(postId);
+            Long number = sysPost.getNowCapacity()+1;
+            sysPost.setNowCapacity(number);
+            sysPostMapper.updateSysPost(sysPost);
+            return Math.toIntExact(number);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
 }

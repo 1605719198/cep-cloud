@@ -49,4 +49,12 @@ public interface IWfDeployService {
      * @param deployIds
      */
     void deleteByIds(List<String> deployIds);
+
+    /**
+     * 查询流程部署版本列表--升级版
+     * @param processQuery
+     * @param pageQuery
+     * @return
+     */
+    TableDataInfoPlus<WfDeployVo> getDeployListPlus(ProcessQuery processQuery, PageQuery pageQuery);
 }

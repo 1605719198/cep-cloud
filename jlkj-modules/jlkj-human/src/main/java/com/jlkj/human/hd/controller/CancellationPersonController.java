@@ -98,6 +98,7 @@ public class CancellationPersonController extends BaseController {
                         .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
                         .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
                         .list();
+
                 if (attendanceAbnormalList.isEmpty()) {
                     return AjaxResult.error("已处理不能注销");
                 } else {

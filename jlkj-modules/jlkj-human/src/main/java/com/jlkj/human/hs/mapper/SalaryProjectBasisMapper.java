@@ -1,6 +1,7 @@
 package com.jlkj.human.hs.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.SalaryProjectBasis;
 
 import java.util.List;
@@ -46,6 +47,14 @@ public interface SalaryProjectBasisMapper extends BaseMapper<SalaryProjectBasis>
     public int updateSalaryProjectBasis(SalaryProjectBasis salaryProjectBasis);
 
     /**
+     * 通过父节点id查询员工薪资基本资料维护
+     *
+     * @param parentid 员工薪资基本资料维护编码
+     * @return 员工薪资基本资料维护
+     */
+    public List<BasisOptionsDTO> selectSalaryProjectBasisByParentid(Long  parentid);
+
+    /**
      * 删除集团级薪资项目输入维护
      * 
      * @param id 集团级薪资项目输入维护主键
@@ -60,4 +69,12 @@ public interface SalaryProjectBasisMapper extends BaseMapper<SalaryProjectBasis>
      * @return 结果
      */
     public int deleteSalaryProjectBasisByIds(Long[] ids);
+
+    /**
+     * 通过父节点id查询员工出勤基本资料维护
+     *
+     * @param parentid 员工出勤基本资料维护编码
+     * @return 员工出勤基本资料维护
+     */
+    public List<BasisOptionsDTO> selectSalaryByParentid(Long  parentid);
 }

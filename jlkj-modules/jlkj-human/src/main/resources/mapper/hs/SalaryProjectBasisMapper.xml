@@ -28,6 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
+    <resultMap type="BasisOptionsDTO" id="BasisOptions">
+        <result property="id"    column="id"    />
+        <result property="dicNo"    column="info_code"    />
+        <result property="dicName"    column="info_name"    />
+        <result property="status"    column="status"    />
+        <result property="compId"    column="comp_id"    />
+    </resultMap>
+
     <sql id="selectSalaryProjectBasisVo">
         select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
     </sql>
@@ -36,7 +44,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
         where pay_type != 1
     </select>
-    
+
+    <select id="selectSalaryProjectBasisByParentid" parameterType="Long" resultMap="BasisOptions">
+        <include refid="selectSalaryProjectBasisVo"/>
+        where parentid = #{parentid}
+    </select>
+
     <select id="selectSalaryProjectBasisById" parameterType="Long" resultMap="SalaryProjectBasisResult">
         <include refid="selectSalaryProjectBasisVo"/>
         where id = #{id}
@@ -129,4 +142,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectSalaryByParentid" parameterType="Long" resultMap="BasisOptions">
+        <include refid="selectSalaryProjectBasisVo"/>
+        where parentid = #{parentid}
+    </select>
 </mapper>

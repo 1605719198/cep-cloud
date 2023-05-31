@@ -15,4 +15,9 @@ public interface IChangeMasterService extends IService<ChangeMaster> {
      * 添加员工入职作业
      */
     Object addEmployeeInduction(ChangeMasterDTO changeMasterDTO);
+
+    /**
+     * 添加员工入职作业
+     */
+    Object updateEmployeeInduction(ChangeMasterDTO changeMasterDTO);
 }

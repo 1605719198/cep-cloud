@@ -16,3 +16,12 @@ export function getTaskByFormId(formId) {
     method: 'get',
   })
 }
+
+// 保存流程表单信息
+export function saveInstanceForm(data) {
+  return request({
+    url: '/flowable/workflow/instanceform/save',
+    method: 'post',
+    data: data
+  })
+}

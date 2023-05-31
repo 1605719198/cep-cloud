@@ -1,10 +1,12 @@
 package com.jlkj.finance.aa.domain;
 
-import java.math.BigDecimal;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.math.BigDecimal;
 
 /**
  * 账薄-会计科目余额对象 finance_aa_ledger_acct
@@ -12,6 +14,7 @@ import com.jlkj.common.core.web.domain.BaseEntity;
  * @author jlkj
  * @date 2023-04-29
  */
+@Data
 public class FinanceAaLedgerAcct extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -26,6 +29,9 @@ public class FinanceAaLedgerAcct extends BaseEntity
     /** 会计周期 */
     @Excel(name = "会计周期")
     private String acctPeriod;
+    /** 会计周期 */
+    @Excel(name = "会计编号")
+    private String acctCode;
 
     /** 会计科目id */
     @Excel(name = "会计科目id")

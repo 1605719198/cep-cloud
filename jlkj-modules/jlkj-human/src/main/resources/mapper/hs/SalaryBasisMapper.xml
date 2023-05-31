@@ -35,10 +35,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSalaryBasisList" parameterType="SalaryBasis" resultMap="SalaryBasisResult">
         <include refid="selectSalaryBasisVo"/>
-        <where>  
+        <where>
             <if test="infoCode != null  and infoCode != ''"> and info_code = #{infoCode}</if>
             <if test="infoName != null  and infoName != ''"> and info_name like concat('%', #{infoName}, '%')</if>
-            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or comp_id ='000') </if>
+            <if test="compId==null or compId==''.toString()"> and (comp_id =#{compId} or isNull(comp_id) or id=1) </if>
+            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or id =1) </if>
             <if test="id!=null and id!=''"> and parentid =#{id}</if>
         </where>
         order by id

@@ -117,7 +117,7 @@
 import '@/assets/styles/humanStyles.scss'
 import { listPayFormulaParam, savePayFormulaParam, copyPayFormulaParam } from "@/api/human/hs/payFormulaParam";
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
-import { getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
+import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
 export default {
   name: "PayFormulaParam",
@@ -179,13 +179,13 @@ export default {
     'queryParams.compId':{
       handler(val) {
         this.getList();
-        this.getDisc();
       },
       deep: true,
       immediate: false,
     },
   },
   created() {
+    this.getDisc();
     this.getCompanyList()
     this.initData();
   },
@@ -209,10 +209,14 @@ export default {
         compId: this.queryParams.compId,
         payTableFormulaParamList:this.multipleList
       }
-      savePayFormulaParam(data).then( response=>{
-        this.$modal.msgSuccess('保存成功')
-        this.getList()
-      })
+      if(this.multipleList.length===0){
+        this.$modal.msgError('请至少选择一条数据')
+      }else{
+        savePayFormulaParam(data).then( response=>{
+          this.$modal.msgSuccess('保存成功')
+          this.getList()
+        })
+      }
     },
     //复制按钮点击事件
     handleCopy(){
@@ -241,7 +245,6 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = this.queryParams.compId;
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

@@ -41,6 +41,13 @@ public interface FinanceAaLedgerlCalMapper
      * @return 账薄-核算项目余额集合
      */
     public FinanceAaLedgerlCal selectFinanceAaLedgerlCal(FinanceAaLedgerlCal financeAaLedgerlCal);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerlCal 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public FinanceAaLedgerlCal selectFinanceAaLedgerlCalName(FinanceAaLedgerlCal financeAaLedgerlCal);
 
     /**
      * 新增账薄-核算项目余额

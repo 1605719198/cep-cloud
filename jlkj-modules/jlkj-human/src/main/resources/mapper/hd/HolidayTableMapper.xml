@@ -43,6 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="startDate != null  "> and hol_day &gt;= #{startDate}</if>
             <if test="endDate != null  "> and hol_day &lt;= #{endDate}</if>
+            <if test="dateType !=null and dateType !=''">and date_type = #{dateType}</if>
         </where>
     </select>
     

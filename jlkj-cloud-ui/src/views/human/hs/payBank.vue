@@ -145,7 +145,7 @@ export default {
           'BankName',
           'status'
         ],
-        compId:'J00',
+        compId:null,
       },
       payBankData: [],
       index: 0,

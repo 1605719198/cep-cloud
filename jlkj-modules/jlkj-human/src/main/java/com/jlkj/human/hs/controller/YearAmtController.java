@@ -93,11 +93,11 @@ public class YearAmtController extends BaseController
      * 保存年收入维护
      */
     @RequiresPermissions("human:yearAmt:add")
-    @Log(title = "年收入维护", businessType = BusinessType.INSERT)
+    @Log(title = "年收入保存", businessType = BusinessType.INSERT)
     @PostMapping("/save")
-    public AjaxResult save(@RequestBody List<YearAmt> yearAmtList)
+    public int save(@RequestBody List<YearAmt> yearAmtList)
     {
-        return toAjax(yearAmtService.insertYearAmt(yearAmtList));
+        return yearAmtService.insertYearAmt(yearAmtList);
     }
 
 
@@ -129,6 +129,6 @@ public class YearAmtController extends BaseController
     public void importTemplate(HttpServletResponse response) throws IOException
     {
         ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
-        util.importTemplateExcel(response, "年收入部门数据");
+        util.importTemplateExcel(response, "年收入资料数据");
     }
 }

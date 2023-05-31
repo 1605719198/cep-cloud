@@ -379,7 +379,7 @@ export default {
           'LogicalOperator',
           'ArithmeticOperator',
           'Digit'],
-        compId:'J00',
+        compId:null,
       },
       payTableData: [],
       index: 0,

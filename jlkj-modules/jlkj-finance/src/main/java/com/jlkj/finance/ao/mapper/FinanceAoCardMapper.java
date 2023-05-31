@@ -15,10 +15,10 @@ public interface FinanceAoCardMapper
     /**
      * 查询个人信息设置
      * 
-     * @param uuid 个人信息设置主键
+     * @param userNo 个人信息工号
      * @return 个人信息设置
      */
-    public FinanceAoCard selectFinanceAoCardByUuid(String uuid);
+    public FinanceAoCard selectFinanceAoCardByUserNo(String userNo);
 
     /**
      * 查询个人信息设置列表

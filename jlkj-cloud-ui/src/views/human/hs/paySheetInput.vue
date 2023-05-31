@@ -41,14 +41,13 @@
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status" >
         <template v-slot="scope">
-          <el-select v-model="scope.row.status" >
-            <el-option
+          <el-radio-group v-model="scope.row.status" >
+            <el-radio
               v-for="dict in salaryOptions.status"
               :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
-            />
-          </el-select>
+              :label="dict.dicNo"
+            >{{dict.dicName}}</el-radio>
+          </el-radio-group>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
@@ -70,9 +69,8 @@
 </template>
 
 <script>
-import { listPaySheetInput, getPaySheetInput, delPaySheetInput, addPaySheetInput, updatePaySheetInput } from "@/api/human/hs/paySheetInput";
+import { listPaySheetInput, addPaySheetInput, } from "@/api/human/hs/paySheetInput";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {addSocialSecurity} from "@/api/human/hs/socialSecurity";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
@@ -140,7 +138,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })
@@ -206,13 +204,7 @@ export default {
           creatorId: this.$store.state.user.name,
           createDate: getDateTime(1),
           status: "1",
-          payType: "2",
-          isPostPro: "0",
-          isEmpPro: "0",
-          payProCode: "",
-          parentid: this.queryParams.id,
-          isShowno: "0",
-          payAreaId: null,
+          compId: this.queryParams.compId,
         }
         this.index++
         this.paySheetInputList.push(newLine)

@@ -16,10 +16,12 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.JsonUtils;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.PageQuery;
 import com.jlkj.common.core.web.page.TableDataInfoPlus;
 import com.jlkj.flow.flowable.common.constant.ProcessConstants;
 import com.jlkj.flow.flowable.common.constant.TaskConstants;
+import com.jlkj.flow.flowable.common.enums.FlowComment;
 import com.jlkj.flow.flowable.core.FormConf;
 import com.jlkj.flow.flowable.core.domain.ProcessQuery;
 import com.jlkj.flow.flowable.factory.FlowServiceFactory;
@@ -596,6 +598,32 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
     }
 
     /**
+     * 根据流程定义id启动流程实例（重写）
+     * @param variables
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult startProcessOverride(Map<String, Object> variables) {
+        try {
+            LambdaQueryWrapper<SysInstanceForm> wrapper = new LambdaQueryWrapper();
+            wrapper.eq(SysInstanceForm::getFormId,variables.get("id"));
+            SysInstanceForm instanceForm = sysInstanceFormService.getOne(wrapper);
+            if (StringUtils.isNotNull(instanceForm)) {
+                ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                        .processDefinitionId(instanceForm.getDeployId()).singleResult();
+                startProcessCopy(processDefinition, variables, instanceForm);
+                return AjaxResult.success("操作成功！", FlowComment.NORMAL.getType());
+            } else {
+                return AjaxResult.error("查询流程绑定表单失败！请确认是否绑定流程！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServiceException("流程启动错误");
+        }
+
+    }
+
+    /**
      * 通过DefinitionKey启动流程
      * @param procDefKey 流程定义Key
      * @param variables 扩展参数
@@ -700,7 +728,7 @@ public class WfProcessServiceImpl extends FlowServiceFactory implements IWfProce
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDef.getId(), variables);
         // set流程实例id
         instanceForm.setInstanceId(processInstance.getId());
-        sysInstanceFormService.save(instanceForm);
+        sysInstanceFormService.updateById(instanceForm);
         // 第一个用户任务为发起人，则自动完成任务
         wfTaskService.startFirstTask(processInstance, variables);
     }

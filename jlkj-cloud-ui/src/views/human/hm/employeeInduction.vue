@@ -472,7 +472,7 @@ export default {
         this.addJsonForm.employeeInductionList.push(newLine)
       } else {
         const newLine = {
-          postTypeId: "",
+          postTypeId: "02",
           newPostName: "",
           uuid: this.index
         }
@@ -515,7 +515,6 @@ export default {
     handleQuery() {
       listPostMaintenance(this.queryParams).then(response => {
         this.postMaintenanceList = response.rows;
-        this.addJsonForm.employeeInductionList[this.index].newPostId = this.postMaintenanceList[0].postId
       });
     },
     /** 查询部门下拉树结构 */
@@ -527,7 +526,7 @@ export default {
     },
     changePostName(val) {
       this.openPostName = false
-      this.postName = val
+      this.addJsonForm.employeeInductionList[this.index].newPostId = val.postId
       this.addJsonForm.employeeInductionList[this.index].newPostName = this.compName + '-' + val.orgName + '-' + val.postName
     },
     openPostPop(val) {

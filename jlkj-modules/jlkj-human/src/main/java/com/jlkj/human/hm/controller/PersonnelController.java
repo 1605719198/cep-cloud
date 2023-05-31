@@ -1,7 +1,6 @@
 package com.jlkj.human.hm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -39,8 +38,8 @@ import java.util.List;
 @RequestMapping("/personnel/base")
 public class PersonnelController extends BaseController {
     private final IPersonnelService personnelService;
-    private final ISysUserService userService;;
-    private final ISysDeptService deptService;;
+    private final ISysUserService userService;
+    private final ISysDeptService deptService;
 
     /**
      * Mq新增人员资料
@@ -106,11 +105,7 @@ public class PersonnelController extends BaseController {
             }
         } else {
             if (list.get(0).getEmpNo().equals(personnel.getEmpNo())) {
-                LambdaUpdateWrapper<Personnel> updateWrapper = new LambdaUpdateWrapper<>();
-                updateWrapper.eq(Personnel::getEmpNo, personnel.getEmpNo())
-                             .eq(Personnel::getCertificateNumber, personnel.getCertificateNumber());
-                personnelService.update(personnel, updateWrapper);
-                return AjaxResult.success("修改成功");
+                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已经存在");
             } else {
                 SysDept dept = deptService.queryCompById(list.get(0).getCompId());
                 return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + dept.getDeptName() + "公司工号" + list.get(0).getEmpNo() + "使用");
@@ -154,11 +149,10 @@ public class PersonnelController extends BaseController {
             String compId = humanresourcePersonnelInfoDTO.getCompId();
             String empNo = humanresourcePersonnelInfoDTO.getEmpNo();
             String departmentId = humanresourcePersonnelInfoDTO.getDepartmentId();
-            LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
+            List<Personnel> list = personnelService.lambdaQuery()
+                    .eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
                     .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo)
-                    .eq(StringUtils.isNotBlank(departmentId), Personnel::getDepartmentId, departmentId);
-            List<Personnel> list = personnelService.list(queryWrapper);
+                    .eq(StringUtils.isNotBlank(departmentId), Personnel::getDepartmentId, departmentId).list();
             return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {
             return AjaxResult.error();

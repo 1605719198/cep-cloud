@@ -44,12 +44,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
     <select id="selectFinanceAaCarryRulesExecuteList"
-            resultType="com.jlkj.finance.aa.domain.FinanceAaCarryRules">
+            resultType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp">
+        <include refid="selectFinanceAaCarryRulesCorpVo"/>
         <where>
             <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
         </where>
     </select>
+
 
     <insert id="insertFinanceAaCarryRulesCorp" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRulesCorp">
         insert into finance_aa_company_carry_rules

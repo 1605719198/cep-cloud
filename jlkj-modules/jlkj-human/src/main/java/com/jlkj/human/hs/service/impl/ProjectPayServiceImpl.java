@@ -56,11 +56,11 @@ public class ProjectPayServiceImpl implements IProjectPayService
     public int insertProjectPay(List<ProjectPay> projectPayList)
     {
         for(ProjectPay projectPay :projectPayList){
+            projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+            projectPay.setCreatorNo(SecurityUtils.getUsername());
+            projectPay.setCreator(SecurityUtils.getNickName());
+            projectPay.setCreateDate(new Date());
             if(projectPay.getId()!=null){
-                projectPay.setCreatorId(SecurityUtils.getUserId().toString());
-                projectPay.setCreatorNo(SecurityUtils.getUsername());
-                projectPay.setCreator(SecurityUtils.getNickName());
-                projectPay.setCreateDate(new Date());
                 projectPayMapper.updateProjectPay(projectPay);
 
             }else{

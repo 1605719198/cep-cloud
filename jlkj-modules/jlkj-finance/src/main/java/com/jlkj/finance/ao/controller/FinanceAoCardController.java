@@ -28,10 +28,10 @@ public class FinanceAoCardController extends BaseController
      * 获取个人信息设置详细信息
      */
     @RequiresPermissions("finance:card:query")
-    @GetMapping(value = "/{uuid}")
-    public AjaxResult getInfo(@PathVariable("uuid") String uuid)
+    @GetMapping(value = "/{userNo}")
+    public AjaxResult getInfo(@PathVariable("userNo") String userNo)
     {
-        return success(financeAoCardService.selectFinanceAoCardByUuid(uuid));
+        return success(financeAoCardService.selectFinanceAoCardByUserNo(userNo));
     }
 
     /**
@@ -42,7 +42,13 @@ public class FinanceAoCardController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAoCard financeAoCard)
     {
-        return toAjax(financeAoCardService.insertFinanceAoCard(financeAoCard));
+        FinanceAoCard result = financeAoCardService.selectFinanceAoCardByUserNo(financeAoCard.getUserNo());
+        if (result.getUuid().isEmpty()) {
+            return toAjax(financeAoCardService.insertFinanceAoCard(financeAoCard));
+        } else {
+            return toAjax(financeAoCardService.updateFinanceAoCard(financeAoCard));
+        }
+
     }
 
 }

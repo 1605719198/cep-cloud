@@ -1,7 +1,9 @@
 package com.jlkj.human.hs.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hs.domain.SalaryProjectBasis;
 import com.jlkj.human.hs.mapper.SalaryProjectBasisMapper;
@@ -153,6 +155,25 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     @Override
     public int updateSalaryProjectBasis(SalaryProjectBasis salaryProjectBasis)
     {
+        SalaryProjectBasis dbSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getId());
+        if(!salaryProjectBasis.getStatus().equals(dbSalaryProjectBasis.getStatus())){
+            // 子节点有正常数据不能关闭BasisOptionsDTO(id=78, dicNo=null, dicName=null, status=0, compId=null)
+            if(salaryProjectBasis.getStatus().equals("1")){
+                List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(salaryProjectBasis.getId());
+
+                for (BasisOptionsDTO oldDatum : oldData) {
+                    if (oldDatum.getStatus().equals("0")) {
+                        throw new ServiceException("该资料下存在数据启用，不可关闭");
+                    }
+                }
+            }
+            // 当子节点启动时，父节点直接改成正常
+            if(salaryProjectBasis.getStatus().equals("0")){
+                SalaryProjectBasis parSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getParentid());
+                parSalaryProjectBasis.setStatus("0");
+                salaryProjectBasisMapper.updateSalaryProjectBasis(parSalaryProjectBasis);
+            }
+        }
         return salaryProjectBasisMapper.updateSalaryProjectBasis(salaryProjectBasis);
     }
 
@@ -169,14 +190,30 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     }
 
     /**
+    * 通过父节点id查询员工薪资基本资料维护
+    *
+    * @param parentid 员工薪资基本资料维护编码
+    * @return 员工薪资基本资料维护
+    */
+    @Override
+    public List<BasisOptionsDTO> selectSalaryProjectBasisByParentid(Long  parentid){
+         return salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(parentid);
+    }
+
+    /**
      * 删除集团级薪资项目输入维护信息
      *
      * @param id 集团级薪资项目输入维护主键
      * @return 结果
      */
     @Override
-    public int deleteSalaryProjectBasisById(Long id)
+    public int deleteSalaryProjectBasisById(Long id)throws Exception
     {
+        List oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(id);
+        if(!oldData.isEmpty()){
+            throw new Exception("该资料下存在数据，不可删除");
+        }
         return salaryProjectBasisMapper.deleteSalaryProjectBasisById(id);
     }
+
 }

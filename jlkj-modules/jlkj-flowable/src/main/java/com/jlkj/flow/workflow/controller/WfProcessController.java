@@ -209,7 +209,17 @@ public class WfProcessController extends BaseController {
     public AjaxResult start(@PathVariable(value = "processDefId") String processDefId, @RequestBody Map<String, Object> variables) {
         processService.startProcessByDefId(processDefId, variables);
         return AjaxResult.success("操作成功！", FlowComment.NORMAL.getType());
+    }
 
+    /**
+     * 根据流程定义id启动流程实例（重写）
+     *
+     * @param variables 变量集合,json对象
+     */
+    @RequiresPermissions("workflow:process:start")
+    @PostMapping("/startProcess")
+    public AjaxResult startProcess(@RequestBody Map<String, Object> variables) {
+        return processService.startProcessOverride(variables);
     }
 
     /**
