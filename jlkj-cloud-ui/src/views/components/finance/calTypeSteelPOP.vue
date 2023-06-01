@@ -200,7 +200,6 @@ export default {
     },
     // 显示弹框
     show(queryParams) {
-      debugger
       if(queryParams){
         this.queryParams = queryParams;
       }
@@ -208,7 +207,6 @@ export default {
         this.$message.error('公司别不能为空');
         return
       }
-      debugger
       this.queryParams.calTypeCode = queryParams.calTypeCode
       if (!!this.queryParams.calTypeCode){
         this.selectIf = true
@@ -238,7 +236,6 @@ export default {
       if(!!this.compId.length>0){
         this.compIdList.Id=this.compId[0].id
       }
-
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
