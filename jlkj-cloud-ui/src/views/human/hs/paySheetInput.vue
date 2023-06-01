@@ -114,7 +114,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: this.$store.state.user.userInfo.compId,
       },
       // 表单参数
       form: {},
