@@ -277,6 +277,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
+    <select id="selectFinanceAaLedgerAcctList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+        select
+        b.drcr,
+        SUM(b.qty_frnAmt) AS qty_frnAmt,
+        SUM(b.ntAmt) AS	ntAmt
+        from  finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND  b.company_id = a.company_id
+
+        <where>
+            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''"> and b.voucher_date between #{startDate} and #{endDate}</if>
+            and a.status <![CDATA[   !=  ]]> 'P'
+        </where>
+
+    </select>
     <insert id="insertFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         insert into finance_aa_voucher_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaLedgerlCal;
+import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 
 import java.util.List;
 
@@ -27,6 +28,35 @@ public interface FinanceAaLedgerlCalMapper
      * @return 账薄-核算项目余额集合
      */
     public List<FinanceAaLedgerlCal> selectFinanceAaLedgerlCalList(FinanceAaLedgerlCal financeAaLedgerlCal);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedA(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedB(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedC(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedD(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+
     /**
      * 查询账薄-核算项目余额列表
      *

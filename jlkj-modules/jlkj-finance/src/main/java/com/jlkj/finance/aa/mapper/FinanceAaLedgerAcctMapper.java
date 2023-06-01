@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaLedgerAcct;
+import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 
 import java.util.List;
 
@@ -19,7 +20,27 @@ public interface FinanceAaLedgerAcctMapper
      * @return 账薄-会计科目余额
      */
     public FinanceAaLedgerAcct selectFinanceAaLedgerAcctById(String id);
-
+    /**
+     * 查询账薄-会计科目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-会计科目余额
+     * @return 账薄-会计科目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-会计科目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-会计科目余额
+     * @return 账薄-会计科目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayed(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-会计科目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-会计科目余额
+     * @return 账薄-会计科目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectBalanceZero(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 查询账薄-会计科目余额列表
      * 
