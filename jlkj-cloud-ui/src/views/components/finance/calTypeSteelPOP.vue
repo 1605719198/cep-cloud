@@ -1,113 +1,113 @@
 <template>
-<el-dialog title="核算项目pop" :visible.sync="visible" width="1080px" top="5vh"
-           append-to-body :close-on-click-modal="false">
-<el-form :model="queryParams" ref="queryForm" size="small"
-  :inline="true" >
-  <el-form-item  prop="calTypeCode">
-    <el-select v-model="queryParams.calTypeCode"
-               filterable placeholder="请输入核算项目类别"
-               :disabled="selectIf"  >
-      <el-option
-        v-for="item in calTypeList"
-        :key="item.value"
-        :label="item.label"
-        @click.native="changCompanyId(item)"
-        :value="item.value">
-      </el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item   prop="sys"    v-if="tableIf">
-    <el-select v-model="queryParams.sys"
-               filterable placeholder="请输入系统别">
-      <el-option
-        v-for="item in calTypeCodeaSystemList"
-        :key="item.value"
-        :label="item.label"
-        @click.native="changType(item)"
-        :value="item.value"
+  <el-dialog title="核算项目pop" :visible.sync="visible" width="1080px" top="5vh"
+             append-to-body :close-on-click-modal="false">
+    <el-form :model="queryParams" ref="queryForm" size="small"
+             :inline="true" >
+      <el-form-item  prop="calTypeCode">
+        <el-select v-model="queryParams.calTypeCode"
+                   filterable placeholder="请输入核算项目类别"
+                   :disabled="selectIf"  >
+          <el-option
+            v-for="item in calTypeList"
+            :key="item.value"
+            :label="item.label"
+            @click.native="changCompanyId(item)"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item   prop="sys"    v-if="tableIf">
+        <el-select v-model="queryParams.sys"
+                   filterable placeholder="请输入系统别">
+          <el-option
+            v-for="item in calTypeCodeaSystemList"
+            :key="item.value"
+            :label="item.label"
+            @click.native="changType(item)"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-for="(item, index) in tableColumnsInput" :key="index" >
+        <el-input v-model="item.value" v-if=" item.nameEn!=='Id'&& item.nameEn!=='uuid'"></el-input>
+      </el-form-item>
+      <el-form-item label="" v-if="tableCodeIf" prop="calCode" label-width="130px">
+        <el-input
+          v-model="queryParams.calCode"
+          placeholder="请输入核算项目编码"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label=""  v-if="tableCodeIf"prop="calName" label-width="130px">
+        <el-input
+          v-model="queryParams.calName"
+          placeholder="请输入核算项目名称"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" v-if="tableIf">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQueryCode" v-if="tableCodeIf">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row>
+      <el-table  :data="detailList" ref="table"
+                 @selection-change="handleSelectionChange"
+                 @row-click="clickRow"
+                 v-if="tableIf"
       >
-      </el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item v-for="(item, index) in tableColumnsInput" :key="index" >
-    <el-input v-model="item.value" v-if=" item.nameEn!=='Id'&& item.nameEn!=='uuid'"></el-input>
-  </el-form-item>
-  <el-form-item label="" v-if="tableCodeIf" prop="calCode" label-width="130px">
-    <el-input
-      v-model="queryParams.calCode"
-      placeholder="请输入核算项目编码"
-      clearable
-      @keyup.enter.native="handleQuery"
-    />
-  </el-form-item>
-  <el-form-item label=""  v-if="tableCodeIf"prop="calName" label-width="130px">
-    <el-input
-      v-model="queryParams.calName"
-      placeholder="请输入核算项目名称"
-      clearable
-      @keyup.enter.native="handleQuery"
-    />
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" v-if="tableIf">搜索</el-button>
-    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQueryCode" v-if="tableCodeIf">搜索</el-button>
-    <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-  </el-form-item>
-</el-form>
-  <el-row>
-    <el-table  :data="detailList" ref="table"
-              @selection-change="handleSelectionChange"
-               @row-click="clickRow"
-               v-if="tableIf"
-    >
-      <el-table-column type="selection" width="55" align="center" v-if="this.tableColumns.length>0"/>
-      <el-table-column
-        v-for="(item,index) in tableColumns"
-        :key="index"
-        :prop="item.nameEn"
-        align='center'
-        :label="item.name"
-      v-if=" item.nameEn!=='Id'&&item.nameEn!=='uuid'">
-      </el-table-column>
-    </el-table>
-    <el-table  v-if="tableCodeIf"
-               :data="detailCodeList" ref="table"
-               @selection-change="handleSelectionCodeChange"
-               @row-click="clickCodeRow">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="核算项目代码" align="center" prop="calCode"/>
-      <el-table-column label="核算项目名称" align="center" prop="calName"/>
-    </el-table>
-    <el-pagination
-      v-if="tableIf"
-      background
-      :total="total"
-      :current-page="queryParams.pageNum"
-      :page-sizes="[10, 20, 30, 50]"
-      :page-size="queryParams.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      style="float: right; position: relative;height: 25px; margin-bottom: 10px;margin-top: 15px; padding: 10px 20px !important;">
-    </el-pagination>
-    <el-pagination
-      v-if="tableCodeIf"
-      background
-      :total="total"
-      :current-page="queryParams.pageNum"
-      :page-sizes="[10, 20, 30, 50]"
-      :page-size="queryParams.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeCodeChange"
-      @current-change="handleCurrentCodeChange"
-      style="float: right; position: relative;height: 25px; margin-bottom: 10px;margin-top: 15px; padding: 10px 20px !important;">
-    </el-pagination>
-  </el-row>
-  <div slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="handleSelectUser">确 定</el-button>
-    <el-button @click="visible = false">取 消</el-button>
-  </div>
-</el-dialog>
+        <el-table-column type="selection" width="55" align="center" v-if="this.tableColumns.length>0"/>
+        <el-table-column
+          v-for="(item,index) in tableColumns"
+          :key="index"
+          :prop="item.nameEn"
+          align='center'
+          :label="item.name"
+          v-if=" item.nameEn!=='Id'&&item.nameEn!=='uuid'">
+        </el-table-column>
+      </el-table>
+      <el-table  v-if="tableCodeIf"
+                 :data="detailCodeList" ref="table"
+                 @selection-change="handleSelectionCodeChange"
+                 @row-click="clickCodeRow">
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="核算项目代码" align="center" prop="calCode"/>
+        <el-table-column label="核算项目名称" align="center" prop="calName"/>
+      </el-table>
+      <el-pagination
+        v-if="tableIf"
+        background
+        :total="total"
+        :current-page="queryParams.pageNum"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="queryParams.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        style="float: right; position: relative;height: 25px; margin-bottom: 10px;margin-top: 15px; padding: 10px 20px !important;">
+      </el-pagination>
+      <el-pagination
+        v-if="tableCodeIf"
+        background
+        :total="total"
+        :current-page="queryParams.pageNum"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="queryParams.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeCodeChange"
+        @current-change="handleCurrentCodeChange"
+        style="float: right; position: relative;height: 25px; margin-bottom: 10px;margin-top: 15px; padding: 10px 20px !important;">
+      </el-pagination>
+    </el-row>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="handleSelectUser">确 定</el-button>
+      <el-button @click="visible = false">取 消</el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -117,7 +117,7 @@ import { calTypeListTable2,selectCalTypeList,selectCalTypeSystemList,calTypeList
 import { listCalcode }
   from "@/api/finance/aa/calcode";
 export default {
-  name: "calTypePOP",
+  name: "calTypeSteelPOP",
   data(){
     return{
       // 选中数组
@@ -139,7 +139,7 @@ export default {
         calTypeCode:'',
         calTypeName:"",
         companyId:'J00',
-        sys:"",
+        sys:null,
         key:{},
         value:{},
         calNo:'',
@@ -159,9 +159,7 @@ export default {
       // 系统别选单
       calTypeCodeaSystemList: [],
 
-      tableColumns: [
-
-      ],
+      tableColumns: [],
       tableIf:false,
       tableCodeIf:false,
       // 总条数
@@ -185,7 +183,6 @@ export default {
       this.$emit("pop",row);
     },
     clickCodeRow(row) {
-
       this.$refs.table.toggleRowSelection(row);
       this.$emit("pop",row);
     },
@@ -203,6 +200,7 @@ export default {
     },
     // 显示弹框
     show(queryParams) {
+      debugger
       if(queryParams){
         this.queryParams = queryParams;
       }
@@ -210,18 +208,14 @@ export default {
         this.$message.error('公司别不能为空');
         return
       }
-
+      debugger
       this.queryParams.calTypeCode = queryParams.calTypeCode
       if (!!this.queryParams.calTypeCode){
         this.selectIf = true
         this.changCompanyId(this.queryParams);
       }else {
-        this.selectIf = false
-        this.queryParams.sys=''
-        this.detailCodeList=[]
-        this.detailList=[]
-        this.tableColumns=[]
-        this.tableColumnsInput=[]
+        this.$message.error('核算项目类别不能为空');
+        return
       }
       this.getCalTypeList();
       this.visible = true;
@@ -238,7 +232,6 @@ export default {
     handleSelectionCodeChange(selection) {
       this.compId=selection
       this.compIdList=this.compId[0]
-
       if(!!this.compId.length>0){
         this.compIdList.calNo=this.compId[0].calCode
       }
@@ -322,7 +315,6 @@ export default {
     getCodeList(){
       listCalcode(this.queryParams).then(response => {
         this.detailCodeList = response.rows;
-
         this.total = response.total;
         this.loading = false;
       });
@@ -361,7 +353,6 @@ export default {
       this.queryParams.sys=''
       selectCalTypeSystemList(this.queryParams).then(response => {
         this.calTypeCodeaSystemList = response;
-        console.log(this.calTypeCodeaSystemList[0]);
         if (this.calTypeCodeaSystemList[0].calRule!="04"){
           this.tableIf = true
           this.tableCodeIf = false
@@ -369,7 +360,6 @@ export default {
             this.changType()
           }
         }else if (this.calTypeCodeaSystemList[0].calRule=="04"){
-
           this.getCodeList();
           this.tableColumnsInput=[]
           this.tableIf = false
@@ -379,6 +369,7 @@ export default {
     },
     //公司下拉选单掉用方法
     changCompanyId(val) {
+      debugger
       if (!!val.value){
         this.queryParams.calTypeCode = val.value
       }
