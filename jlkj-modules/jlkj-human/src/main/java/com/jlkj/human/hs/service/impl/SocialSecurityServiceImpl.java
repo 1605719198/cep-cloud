@@ -68,6 +68,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     @Override
     public int insertSocialSecurity(List<SocialSecurity> socialSecurityList) {
         String payAreaId = socialSecurityList.get(0).getPayAreaId();
+
         Date inEffectDate = socialSecurityList.get(0).getEffectDate();
         Date nowdate = DateUtils.getNowDate();
         if(nowdate.compareTo(inEffectDate)>0){
@@ -78,11 +79,11 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
             List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityList(socialSecurities);
             for (SocialSecurity item : socialSecurityCompanies) {
                 if (!ObjectUtil.isNull(item.getSalaryProjectId())) {
-                    num = num + 1;
-                    if (num == 1) {
-                        throw new ServiceException("社保公积金项目不允许重复");
+                        num = num + 1;
+                        if (num == 1) {
+                            throw new ServiceException("社保公积金项目不允许重复");
+                        }
                     }
-                }
             }
             //查询当前公司别 最大版次号 及 生效日期
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);

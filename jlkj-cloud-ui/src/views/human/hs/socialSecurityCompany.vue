@@ -242,6 +242,9 @@ export default {
         const newLine = {
           uuid: null,
           payAreaId: this.queryParams.payAreaId,
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
         }
         this.socialSecurityCompanyList.push(newLine)
       }

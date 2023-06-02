@@ -273,7 +273,6 @@ export default {
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
       if (this.queryParams.compId != null) {
-        if (this.queryParams.effectDate != null) {
           if (!row||this.miniStandardList.length == row.index + 1) {
             const newLine = {
               uuid: null,
@@ -283,11 +282,9 @@ export default {
               effectDate: this.queryParams.effectDate,
               compId: this.queryParams.compId,
             }
+            this.index++
             this.miniStandardList.push(newLine)
           }
-        } else {
-          this.$modal.msgError("生效日期不能为空");
-        }
       }else {
         this.$modal.msgError("公司别不能为空");
       }

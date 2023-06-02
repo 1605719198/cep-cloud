@@ -397,6 +397,7 @@ export default {
             payAreaId: this.queryParams.payAreaId,
             effectDate: this.queryParams.effectDate,
           }
+          this.index++
           this.socialSecurityList.push(newLine)
         }
     },

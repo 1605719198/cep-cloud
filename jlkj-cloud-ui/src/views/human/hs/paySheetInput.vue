@@ -148,8 +148,8 @@ export default {
       this.loading = true;
       listPaySheetInput(this.queryParams).then(response => {
         this.paySheetInputList = response.rows;
-        this.addLine();
         this.total = response.total;
+        this.addLine();
         this.loading = false;
       });
     },
@@ -198,7 +198,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.paySheetInputList.length == row.index + 1) {
+      if (!row||this.paySheetInputList.length == row.index + 1) {
         const newLine = {
           uuid: null,
           creator: this.nickName,
@@ -207,6 +207,7 @@ export default {
           status: "1",
           compId: this.queryParams.compId,
         }
+        this.index++
         this.paySheetInputList.push(newLine)
       }
     },
