@@ -60,6 +60,7 @@ public class IpmsDeBankAccountServiceImpl implements IIpmsDeBankAccountService
         ipmsDeBankAccount.setCreateTime(DateUtils.getNowDate());
         ipmsDeBankAccount.setCreateBy(SecurityUtils.getUsername());
         ipmsDeBankAccount.setCreateName(SecurityUtils.getNickName());
+        ipmsDeBankAccount.setStatus("0");
         return ipmsDeBankAccountMapper.insertIpmsDeBankAccount(ipmsDeBankAccount);
     }
 
@@ -100,5 +101,17 @@ public class IpmsDeBankAccountServiceImpl implements IIpmsDeBankAccountService
     public int deleteIpmsDeBankAccountById(String id)
     {
         return ipmsDeBankAccountMapper.deleteIpmsDeBankAccountById(id);
+    }
+
+    /**
+     * 修改银行状态
+     *
+     * @param ipmsDeBankAccount 银行信息
+     * @return 结果
+     */
+    @Override
+    public int updateStatus(IpmsDeBankAccount ipmsDeBankAccount)
+    {
+        return ipmsDeBankAccountMapper.updateStatus(ipmsDeBankAccount);
     }
 }
