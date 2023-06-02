@@ -23,7 +23,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button v-hasPermi="['human:salaryEmployedMonth:add']" icon="el-icon-edit" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:salaryEmployedMonth:add']" icon="el-icon-edit" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button

@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:paySheetInput:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:paySheetInput:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
       </el-form-item>
     </el-form>
 
