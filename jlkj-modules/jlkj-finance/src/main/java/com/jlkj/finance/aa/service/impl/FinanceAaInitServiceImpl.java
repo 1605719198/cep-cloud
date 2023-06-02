@@ -12,10 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 初始化记录Service业务层处理
@@ -201,6 +198,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
 
         for (FinanceAaInit financeAaInit2:financeAaInitList){
             if (!StringUtils.isEmpty(financeAaInit2.getErrorMessage())){
+                financeAaInitList.sort(Comparator.comparing(FinanceAaInit::getAcctCode).reversed());
                 return financeAaInitList;
             }
         }
@@ -208,7 +206,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
             FinanceAaLedgerlCal financeAaLedgerlCal =new FinanceAaLedgerlCal();
             BeanUtils.copyProperties(financeAaInit2,financeAaLedgerlCal);
             financeAaLedgerlCal.setAcctPeriod(financeAaInit2.getAcctPeriod().substring(0,7));
-            FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCal(financeAaLedgerlCal);
+            FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCalName(financeAaLedgerlCal);
             financeAaLedgerlCal.setId(IdUtils.fastSimpleUUID());
             financeAaLedgerlCal.setBgnAmt(financeAaInit2.getBgnAmt());
             financeAaLedgerlCal.setBgnQty(financeAaInit2.getBgnQty());
@@ -239,6 +237,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
         }
         financeAaInitMapper.batchFinanceAaInit(financeAaInitList);
         List<FinanceAaInit> financeAaInitList1= new ArrayList<>();
+
         return financeAaInitList1;
     }
 
