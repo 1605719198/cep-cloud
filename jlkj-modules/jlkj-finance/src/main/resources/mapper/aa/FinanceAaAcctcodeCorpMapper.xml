@@ -218,7 +218,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join finance_aa_calType ct4 on t1.company_id = ct4.company_id and  t1.cal_type_codeD = ct4.cal_type_code
         <where>
             <if test="companyId != null and companyId != ''"> and t1.company_id =  #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode} </if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code like concat('%', #{acctCode}, '%')</if>
             <if test="acctName != null and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
         </where>
         order by acct_code,acct_name
