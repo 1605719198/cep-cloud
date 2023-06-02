@@ -228,6 +228,9 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
                     substring = financeAaLedgerAcctDTO1.getAcctCode();
                 }
             }
+            if(ConstantsUtil.ISEMPTY.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
+                substring = financeAaLedgerAcctDTO1.getAcctCode();
+            }
             financeAaLedgerAcctDTO1.setAcctCode(substring);
             if ((null == financeAaLedgerAcctDTO1.getBgnAmt()?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setBgnAmtStraight(financeAaLedgerAcctDTO1.getBgnAmt());
