@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SocialSecurityCompany;
@@ -55,7 +56,19 @@ public class SocialSecurityCompanyServiceImpl implements ISocialSecurityCompanyS
      */
     @Override
     public int insertSocialSecurityCompany(List<SocialSecurityCompany> socialSecurityCompanyList) {
+        int num = 0;
         for (SocialSecurityCompany socialSecurityCompany : socialSecurityCompanyList) {
+            SocialSecurityCompany param = new SocialSecurityCompany();
+            param.setCompId(socialSecurityCompany.getCompId());
+            List<SocialSecurityCompany> socialSecurityCompanies = socialSecurityCompanyMapper.selectSocialSecurityCompanyList(param);
+            for (SocialSecurityCompany item : socialSecurityCompanies) {
+                if (!item.getCompId().isEmpty()) {
+                    num = num + 1;
+                    if (num == 1) {
+                        throw new ServiceException("公司别不允许重复");
+                    }
+                }
+            }
             if (socialSecurityCompany.getId() != null) {
                 socialSecurityCompany.setCreatorId(SecurityUtils.getUserId().toString());
                 socialSecurityCompany.setCreator(SecurityUtils.getNickName());

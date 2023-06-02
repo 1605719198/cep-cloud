@@ -174,6 +174,7 @@ export default {
       this.loading = true;
       listMiniStandard(this.queryParams).then(response => {
         this.miniStandardList = response.rows;
+        this.addLine();
         this.companyName = this.$refs.selectCompany.selectedLabel
         this.total = response.total;
         this.loading = false;
@@ -273,7 +274,7 @@ export default {
     addLine(row) {
       if (this.queryParams.compId != null) {
         if (this.queryParams.effectDate != null) {
-          if (this.miniStandardList.length == row.index + 1) {
+          if (!row||this.miniStandardList.length == row.index + 1) {
             const newLine = {
               uuid: null,
               creator: this.nickName,
@@ -282,7 +283,6 @@ export default {
               effectDate: this.queryParams.effectDate,
               compId: this.queryParams.compId,
             }
-            this.index++
             this.miniStandardList.push(newLine)
           }
         } else {

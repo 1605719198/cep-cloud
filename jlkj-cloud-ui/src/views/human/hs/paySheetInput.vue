@@ -148,6 +148,7 @@ export default {
       this.loading = true;
       listPaySheetInput(this.queryParams).then(response => {
         this.paySheetInputList = response.rows;
+        this.addLine();
         this.total = response.total;
         this.loading = false;
       });
@@ -206,7 +207,6 @@ export default {
           status: "1",
           compId: this.queryParams.compId,
         }
-        this.index++
         this.paySheetInputList.push(newLine)
       }
     },

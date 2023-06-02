@@ -331,7 +331,6 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      if(this.salaryProjectId) {
         if (this.queryParams.effectDate > getDateTime(1)) {
           for (let i = 0; i < this.multipleSelection.length; i++) {
             this.multipleSelection[i].effectDate = this.queryParams.effectDate
@@ -343,12 +342,11 @@ export default {
         } else {
           this.$modal.msgError("生效日期必须大于当前日期");
         }
-      }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
         const ids = row.id || this.ids;
-        this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
+        this.$modal.confirm('是否确认删除此数据项？').then(function () {
           return delSocialSecurity(ids);
         }).then(() => {
           this.onLoad();
@@ -372,6 +370,7 @@ export default {
       listSocialSecurity(this.queryParams).then(response => {
         this.total = response.total;
         this.socialSecurityList = response.rows;//表格数据
+        this.addLine();
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
@@ -388,7 +387,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-        if (this.socialSecurityList.length == row.index + 1) {
+        if (!row||this.socialSecurityList.length == row.index + 1) {
           const newLine = {
             id: null,
             creator: this.nickName,
@@ -398,7 +397,6 @@ export default {
             payAreaId: this.queryParams.payAreaId,
             effectDate: this.queryParams.effectDate,
           }
-          this.index++
           this.socialSecurityList.push(newLine)
         }
     },

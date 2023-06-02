@@ -171,6 +171,7 @@ export default {
       this.table.loading = true;
       listSocialSecurityCompany(this.queryParams).then(response => {
         this.socialSecurityCompanyList = response.rows;
+        this.addLine();
         this.total = response.total;
         this.table.loading = false;
       }, error => {
@@ -191,7 +192,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除社保公积金缴费公司维护编号为"' + ids + '"的数据项？').then(function () {
+      this.$modal.confirm('是否确认删除此数据项？').then(function () {
         return delSocialSecurityCompany(ids);
       }).then(() => {
         this.getList();
@@ -237,16 +238,11 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.socialSecurityCompanyList.length == row.index + 1) {
+      if (!row||this.socialSecurityCompanyList.length == row.index + 1) {
         const newLine = {
           uuid: null,
-          creator: this.nickName,
-          creatorId: this.$store.state.user.name,
           payAreaId: this.queryParams.payAreaId,
-
-          createDate: getDateTime(1),
         }
-        this.index++
         this.socialSecurityCompanyList.push(newLine)
       }
     },

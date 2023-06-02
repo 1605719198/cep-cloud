@@ -151,6 +151,7 @@ export default {
       this.loading = true;
       listPersonalIncomeTax(this.queryParams).then(response => {
         this.personalIncomeTaxList = response.rows;
+        this.addLine();
         this.total = response.total;
         this.loading = false;
       });
@@ -235,7 +236,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.personalIncomeTaxList.length == row.index + 1) {
+      if (!row||this.personalIncomeTaxList.length == row.index + 1) {
         const newLine = {
           id: null,
           creator: this.nickName,
@@ -245,7 +246,6 @@ export default {
           type: this.queryParams.type,
           effectDate: this.queryParams.effectDate,
         }
-        this.index++
         this.personalIncomeTaxList.push(newLine)
       }
     },
