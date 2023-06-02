@@ -5,7 +5,6 @@ import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerlCalMapper;
 import com.jlkj.finance.aa.mapper.FinanceAaVoucherDetailMapper;
-import com.jlkj.finance.aa.mapper.FinanceAaVoucherMapper;
 import com.jlkj.finance.aa.service.IFinanceAaAccountBalanceTonSteelService;
 import com.jlkj.finance.utils.ConstantsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
     private FinanceAaLedgerlCalMapper financeAaLedgerlCalMapper;
     @Autowired
     private FinanceAaVoucherDetailMapper financeAaVoucherDetailMapper;
-    @Autowired
-    private FinanceAaVoucherMapper financeAaVoucherMapper;
+
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
