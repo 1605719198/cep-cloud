@@ -12,10 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 初始化记录Service业务层处理
@@ -132,7 +129,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
             financeAaInit1.setAcctPeriod(acctPeriod.substring(0,7));
             if (financeAaAcctcodeCorp1 != null) {
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp1.getCalTypeCodea())) {
-                    Map<String, Object>  map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodea(), companyId, financeAaInit.getCalNamea(), ConstantsUtil.CALRULE1);
+                    Map<String, Object>  map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodea(), companyId, financeAaInit.getCalNamea(), ConstantsUtil.CALRULE1,financeAaInit.getAcctCode(),"A");
                     if (!StringUtils.isEmpty(map.get("Msg").toString())){
                           msg =msg + map.get("Msg").toString();
                         financeAaInit1.setErrorMessage(msg);
@@ -146,7 +143,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
                     }
                 }
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp1.getCalTypeCodeb())) {
-                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodeb(), companyId, financeAaInit.getCalNameb(), ConstantsUtil.CALRULE2);
+                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodeb(), companyId, financeAaInit.getCalNameb(), ConstantsUtil.CALRULE2,financeAaInit.getAcctCode(),"B");
                     if (!StringUtils.isEmpty(map.get("Msg").toString())){
                         msg =msg + map.get("Msg").toString();
                         financeAaInit1.setErrorMessage(msg);
@@ -162,7 +159,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
                 }
 
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp1.getCalTypeCodec())) {
-                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodec(), companyId, financeAaInit.getCalNamec(), ConstantsUtil.CALRULE3);
+                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCodec(), companyId, financeAaInit.getCalNamec(), ConstantsUtil.CALRULE3,financeAaInit.getAcctCode(),"C");
                     if (!StringUtils.isEmpty(map.get("Msg").toString())){
                         msg =msg + map.get("Msg").toString();
                         financeAaInit1.setErrorMessage(msg);
@@ -177,7 +174,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
                     }
                 }
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp1.getCalTypeCoded())) {
-                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCoded(), companyId, financeAaInit.getCalNamed(), ConstantsUtil.CALRULE4);
+                    Map map = interfaceImport(financeAaAcctcodeCorp1.getCalTypeCoded(), companyId, financeAaInit.getCalNamed(), ConstantsUtil.CALRULE4,financeAaInit.getAcctCode(),"D");
                     if (!StringUtils.isEmpty(map.get("Msg").toString())){
                         msg =msg + map.get("Msg").toString();
                         financeAaInit1.setErrorMessage(msg);
@@ -201,6 +198,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
 
         for (FinanceAaInit financeAaInit2:financeAaInitList){
             if (!StringUtils.isEmpty(financeAaInit2.getErrorMessage())){
+                financeAaInitList.sort(Comparator.comparing(FinanceAaInit::getAcctCode).reversed());
                 return financeAaInitList;
             }
         }
@@ -208,7 +206,7 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
             FinanceAaLedgerlCal financeAaLedgerlCal =new FinanceAaLedgerlCal();
             BeanUtils.copyProperties(financeAaInit2,financeAaLedgerlCal);
             financeAaLedgerlCal.setAcctPeriod(financeAaInit2.getAcctPeriod().substring(0,7));
-            FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCal(financeAaLedgerlCal);
+            FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCalName(financeAaLedgerlCal);
             financeAaLedgerlCal.setId(IdUtils.fastSimpleUUID());
             financeAaLedgerlCal.setBgnAmt(financeAaInit2.getBgnAmt());
             financeAaLedgerlCal.setBgnQty(financeAaInit2.getBgnQty());
@@ -239,10 +237,11 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
         }
         financeAaInitMapper.batchFinanceAaInit(financeAaInitList);
         List<FinanceAaInit> financeAaInitList1= new ArrayList<>();
+
         return financeAaInitList1;
     }
 
-    public Map interfaceImport(String calTypeCode, String companyId,String CalName,String number) {
+    public Map interfaceImport(String calTypeCode, String companyId,String CalName,String number,String acctCode,String cal) {
         Map<String, String> map = new HashMap<>(2);
         FinanceCalSysRule financeCalSysRule = new FinanceCalSysRule();
         FinanceCalcode financeCalcode = new FinanceCalcode();
@@ -251,10 +250,15 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
         financeCaltype.setCalTypeCode(calTypeCode);
         FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
         if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
-            financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
-            financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
-            FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
-            if (!ConstantsUtil.ISEMPTY.equals(CalName)){
+            if (ConstantsUtil.ISEMPTY.equals(CalName)){
+                map.put("Id",number);
+                map.put("Code","");
+                map.put("Msg", "会计科目"+acctCode+"的核算项目"+cal+"类型为"+calTypeCode+"，不可以为空！");
+            }else{
+                financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
+                financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
+                FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
+
                 List<Map<String, String>> list1 = financeAaVoucherService.selectInterfaceList(financeCalSysRule1.getSqlStringDb(), "", CalName);
                 if (list1.size()==0){
                     map.put("Id",number);
@@ -265,11 +269,10 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
                     map.put("Code", list1.get(0).get("calNo"));
                     map.put("Msg", "");
                 }
-            }else {
-                map.put("Id",number);
-                map.put("Code","");
-                map.put("Msg", "");
             }
+
+
+
 
         } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
             financeCalcode.setCompanyId(companyId);
