@@ -50,7 +50,7 @@
             <template v-slot="scope">
               <el-select v-model="scope.row.postTypeId" placeholder="请选择">
                 <el-option
-                  v-for="dict in directorData.PostType"
+                  v-for="dict in baseInfoData"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -81,7 +81,7 @@
 <script>
 import { listUnderlingEmpower, delUnderlingEmpower, addUnderlingEmpower } from "@/api/human/hs/underlingEmpower";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
+import { getPostTypeId } from "@/api/human/hm/baseInfo"
 
 export default {
   name: "UnderlingEmpower",
@@ -120,14 +120,8 @@ export default {
       // 公司别下拉选单
       companyName: [],
       index: 0,
-      salaryOptionType: {
-        id: '19',
-        optionsType: [
-          'PostType'
-        ],
-        compId:null,
-      },
-      directorData: [],
+      //选单数据
+      baseInfoData: [],
     };
   },
   created() {
@@ -135,9 +129,9 @@ export default {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getSalaryOptions(this.salaryOptionType).then(response =>{
-      this.directorData = response.data
-    })
+    getPostTypeId().then(response => {
+      this.baseInfoData = response.data
+    });
   },
   methods: {
     //初始化数据

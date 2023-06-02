@@ -60,3 +60,11 @@ export function getDegreeMajorSpecialization(data) {
     params: data
   })
 }
+
+//获取各公司主管查询下属薪资授权设定岗位类别下拉选单
+export function getPostTypeId() {
+  return request({
+    url: '/human/baseInfo/getPostTypeId',
+    method: 'get'
+  })
+}
