@@ -64,5 +64,24 @@ public class ConstantsUtil
      */
     public static final String DRCRD="D";
 
-
+    /**
+     * TYPE1
+     */
+    public static final String TYPE1="1";
+    /**
+     * TYPE2
+     */
+    public static final String TYPE2="2";
+    /**
+     * TYPE3
+     */
+    public static final String TYPE3="3";
+    /**
+     * TYPE4
+     */
+    public static final String TYPE4="4";
+    /**
+     * TYPE5
+     */
+    public static final String TYPE5="5";
 }

@@ -25,6 +25,7 @@ public class HomeLeaveHoliday extends BaseEntity
     private String id;
 
     /** 公司别 */
+    @Excel(name = "公司别")
     private String companyId;
 
     /** 公司名 */

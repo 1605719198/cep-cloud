@@ -362,7 +362,7 @@ export default {
       selectCalTypeSystemList(this.queryParams).then(response => {
         this.calTypeCodeaSystemList = response;
         console.log(this.calTypeCodeaSystemList[0]);
-        if (this.calTypeCodeaSystemList.length>0){
+        if (this.calTypeCodeaSystemList[0].calRule!="04"){
           this.tableIf = true
           this.tableCodeIf = false
           if (this.selectIf==true){

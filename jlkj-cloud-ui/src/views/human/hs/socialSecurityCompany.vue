@@ -29,7 +29,17 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button v-hasPermi="['human:socialSecurityCompany:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:socialSecurityCompany:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="danger"
+          plain
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['human:socialSecurityCompany:remove']"
+        >作废</el-button>
       </el-form-item>
     </el-form>
             </div>
@@ -75,7 +85,7 @@
 
 
 <script>
-import { listSocialSecurityCompany, addSocialSecurityCompany, } from "@/api/human/hs/socialSecurityCompany";
+import { listSocialSecurityCompany, addSocialSecurityCompany, delSocialSecurityCompany} from "@/api/human/hs/socialSecurityCompany";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
@@ -177,7 +187,17 @@ export default {
     initData(){
       this.userEmpId= this.$store.state.user.name;
       this.nickName= this.$store.state.user.userInfo.nickName;
-
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除社保公积金缴费公司维护编号为"' + ids + '"的数据项？').then(function () {
+        return delSocialSecurityCompany(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {
+      });
     },
     // 表单重置
     reset() {

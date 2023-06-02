@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoItemCompDetailMapper">
+    
+    <resultMap type="FinanceAoItemCompDetail" id="FinanceAoItemCompDetailResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="detailNo"    column="detail_no"    />
+        <result property="detailName"    column="detail_name"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="drAcctCode"    column="dr_acct_code"    />
+        <result property="crAcctCode"    column="cr_acct_code"    />
+        <result property="budgetType"    column="budget_type"    />
+        <result property="costCode"    column="cost_code"    />
+        <result property="status"    column="status"    />
+        <result property="otherType"    column="other_type"    />
+        <result property="otherDesc"    column="other_desc"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="drAcctName"    column="dr_acct_name"    />
+        <result property="drCalTypeName1"    column="dr_cal_type_name1"/>
+        <result property="drCalTypeName2"    column="dr_cal_type_name2"/>
+        <result property="crAcctName"    column="cr_acct_name"/>
+        <result property="crCalTypeName1"    column="cr_cal_type_name1"/>
+        <result property="crCalTypeName2"    column="cr_cal_type_name2"/>
+    </resultMap>
+
+    <sql id="selectFinanceAoItemCompDetailVo">
+        select id, t1.company_id, item_no, detail_no, detail_name, expense_type, dr_acct_code, cr_acct_code, budget_type, cost_code, status, other_type, other_desc, t1.create_by, t1.create_name, t1.create_time, t1.update_by, t1.update_name, t1.update_time, tdr.acct_name dr_acct_name,tcr.acct_name cr_acct_name from finance_ao_item_comp_detail t1
+        left join finance_aa_acctcode tdr on t1.company_id = tdr.company_id and t1.dr_acct_code= tdr.acct_code
+        left join finance_aa_acctcode tcr on t1.company_id = tcr.company_id and t1.cr_acct_code= tcr.acct_code
+    </sql>
+
+    <select id="selectFinanceAoItemCompDetailList" parameterType="FinanceAoItemCompDetail" resultMap="FinanceAoItemCompDetailResult">
+        <include refid="selectFinanceAoItemCompDetailVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+            <if test="detailNo != null  and detailNo != ''"> and detail_no = #{detailNo}</if>
+            <if test="detailName != null  and detailName != ''"> and detail_name like concat('%', #{detailName}, '%')</if>
+            <if test="otherDesc != null  and otherDesc != ''"> and other_desc = #{otherDesc}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoItemCompDetailById" parameterType="String" resultMap="FinanceAoItemCompDetailResult">
+        select t1.id, t1.company_id,item_no, detail_no, detail_name, expense_type, dr_acct_code, cr_acct_code, budget_type, cost_code, status, other_type, other_desc,
+               t1.create_by, t1.create_name, t1.create_time, t1.update_by, t1.update_name, t1.update_time, tdr.acct_name dr_acct_name,drct1.cal_type_name dr_cal_type_name1,
+               drct2.cal_type_name dr_cal_type_name2, tcr.acct_name cr_acct_name,crct1.cal_type_name cr_cal_type_name1, crct2.cal_type_name cr_cal_type_name2 from finance_ao_item_comp_detail t1
+        left join finance_aa_acctcode tdr on t1.company_id = tdr.company_id and t1.dr_acct_code= tdr.acct_code
+        left join finance_aa_calType drct1 on tdr.company_id = drct1.company_id and  tdr.cal_type_codeA = drct1.cal_type_code
+        left join finance_aa_calType drct2 on tdr.company_id = drct2.company_id and  tdr.cal_type_codeB = drct2.cal_type_code
+        left join finance_aa_acctcode tcr on t1.company_id = tcr.company_id and t1.cr_acct_code= tcr.acct_code
+        left join finance_aa_calType crct1 on tcr.company_id = crct1.company_id and  tcr.cal_type_codeA = crct1.cal_type_code
+        left join finance_aa_calType crct2 on tcr.company_id = crct2.company_id and  tcr.cal_type_codeB = crct2.cal_type_code
+        where t1.id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoItemCompDetail" parameterType="FinanceAoItemCompDetail">
+        insert into finance_ao_item_comp_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="itemNo != null">item_no,</if>
+            <if test="detailNo != null">detail_no,</if>
+            <if test="detailName != null">detail_name,</if>
+            <if test="expenseType != null">expense_type,</if>
+            <if test="drAcctCode != null">dr_acct_code,</if>
+            <if test="crAcctCode != null">cr_acct_code,</if>
+            <if test="budgetType != null">budget_type,</if>
+            <if test="costCode != null">cost_code,</if>
+            <if test="status != null">status,</if>
+            <if test="otherType != null">other_type,</if>
+            <if test="otherDesc != null">other_desc,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="itemNo != null">#{itemNo},</if>
+            <if test="detailNo != null">#{detailNo},</if>
+            <if test="detailName != null">#{detailName},</if>
+            <if test="expenseType != null">#{expenseType},</if>
+            <if test="drAcctCode != null">#{drAcctCode},</if>
+            <if test="crAcctCode != null">#{crAcctCode},</if>
+            <if test="budgetType != null">#{budgetType},</if>
+            <if test="costCode != null">#{costCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="otherType != null">#{otherType},</if>
+            <if test="otherDesc != null">#{otherDesc},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoItemCompDetail" parameterType="FinanceAoItemCompDetail">
+        update finance_ao_item_comp_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="itemNo != null">item_no = #{itemNo},</if>
+            <if test="detailNo != null">detail_no = #{detailNo},</if>
+            <if test="detailName != null">detail_name = #{detailName},</if>
+            <if test="expenseType != null">expense_type = #{expenseType},</if>
+            <if test="drAcctCode != null">dr_acct_code = #{drAcctCode},</if>
+            <if test="crAcctCode != null">cr_acct_code = #{crAcctCode},</if>
+            <if test="budgetType != null">budget_type = #{budgetType},</if>
+            <if test="costCode != null">cost_code = #{costCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="otherType != null">other_type = #{otherType},</if>
+            <if test="otherDesc != null">other_desc = #{otherDesc},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoItemCompDetailById" parameterType="String">
+        delete from finance_ao_item_comp_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoItemCompDetailByIds" parameterType="String">
+        delete from finance_ao_item_comp_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertBatch">
+        insert into finance_ao_item_comp_detail (id,company_id,item_no,detail_no,detail_name,expense_type,budget_type,cost_code,status,other_type,create_by,create_name,create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id},#{item.companyId},#{item.itemNo},#{item.detailNo},#{item.detailName},#{item.expenseType},#{item.budgetType},#{item.costCode},#{item.status},#{item.otherType},#{item.createBy},#{item.createName},#{item.createTime})
+        </foreach>
+    </insert>
+
+</mapper>

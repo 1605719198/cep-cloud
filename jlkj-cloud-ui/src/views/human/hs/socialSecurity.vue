@@ -36,7 +36,7 @@
                       <el-button type="primary"  plain size="mini" @click="handleQuery">搜索</el-button>
                       </el-form-item>
                       <el-form-item>
-                        <el-button v-hasPermi="['human:socialSecurity:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+                        <el-button v-hasPermi="['human:socialSecurity:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button
@@ -331,21 +331,22 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      if(this.queryParams.effectDate > getDateTime(1)) {
-        for(let i = 0;i<this.multipleSelection.length;i++){
-          this.multipleSelection[i].effectDate = this.queryParams.effectDate
+      if(this.salaryProjectId) {
+        if (this.queryParams.effectDate > getDateTime(1)) {
+          for (let i = 0; i < this.multipleSelection.length; i++) {
+            this.multipleSelection[i].effectDate = this.queryParams.effectDate
+          }
+          addSocialSecurity(this.multipleSelection).then(res => {
+            this.$modal.msgSuccess("保存成功");
+            this.onLoad();
+          })
+        } else {
+          this.$modal.msgError("生效日期必须大于当前日期");
         }
-        addSocialSecurity(this.multipleSelection).then(res => {
-          this.$modal.msgSuccess("保存成功");
-          this.onLoad();
-        })
-      }else{
-        this.$modal.msgError("生效日期必须大于当前日期");
       }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      if(this.form.effectDate > getDateTime(1)) {
         const ids = row.id || this.ids;
         this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
           return delSocialSecurity(ids);
@@ -354,9 +355,6 @@ export default {
           this.$modal.msgSuccess("删除成功");
         }).catch(() => {
         });
-      }else{
-        this.$modal.msgError("生效日期必须大于当前日期");
-      }
     },
     //点击节点方法
     changePostName(data,index){
@@ -390,7 +388,6 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if(this.queryParams.effectDate != null) {
         if (this.socialSecurityList.length == row.index + 1) {
           const newLine = {
             id: null,
@@ -404,9 +401,6 @@ export default {
           this.index++
           this.socialSecurityList.push(newLine)
         }
-      }else {
-        this.$modal.msgError("生效日期不能为空");
-      }
     },
   }
 };

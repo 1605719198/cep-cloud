@@ -40,7 +40,14 @@ public class SocialSecurityController extends BaseController
         return getDataTable(list);
     }
 
-
+    /**
+     * 查询员工社保公积金信息
+     */
+    @GetMapping("/inquery/{compId}")
+    public AjaxResult inquery( @PathVariable("compId") String compId)
+    {
+        return success(socialSecurityService.selectSocialSecurityByempNo(compId));
+    }
 
     /**
      * 导出社保公积金缴费比例设定列表
@@ -106,7 +113,4 @@ public class SocialSecurityController extends BaseController
     {
         return AjaxResult.success(socialSecurityService.getVersionList(payAreaId));
     }
-
-
-
 }

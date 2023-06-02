@@ -9,6 +9,14 @@ export function listSocialSecurity(query) {
   })
 }
 
+// 通过公司别查询员工社保公积金信息
+export function socialSecurity(compId) {
+  return request({
+    url: '/human/socialSecurity/inquery/'+ compId,
+    method: 'get',
+  })
+}
+
 // 查询社保公积金缴费比例设定详细
 export function getSocialSecurity(id) {
   return request({

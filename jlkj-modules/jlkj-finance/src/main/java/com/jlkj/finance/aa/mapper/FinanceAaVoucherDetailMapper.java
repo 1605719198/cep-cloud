@@ -27,7 +27,13 @@ public interface FinanceAaVoucherDetailMapper
      * @return 凭证维护-明细集合
      */
     public List<FinanceAaVoucherDetail> selectFinanceAaVoucherDetailList(FinanceAaVoucherDetail financeAaVoucherDetail);
-
+    /**
+     * 查询凭证维护-明细列表
+     *
+     * @param financeAaVoucherDetail 凭证维护-明细
+     * @return 凭证维护-明细集合
+     */
+    public FinanceAaVoucherDetail selectFinanceAaLedgerAcctList(FinanceAaVoucherDetail financeAaVoucherDetail);
     /**
      * 根据条件求和
      *

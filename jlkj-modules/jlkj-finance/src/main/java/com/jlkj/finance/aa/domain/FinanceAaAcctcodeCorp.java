@@ -1,12 +1,13 @@
 package com.jlkj.finance.aa.domain;
 
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
 
 /**
  * 会计科目-公司级对象 finance_aa_acctcode
@@ -124,6 +125,11 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     /** 修改时间 */
     @Excel(name = "修改时间",dateFormat="yyyy-MM-dd")
     private Date updateTime;
+
+    private String calTypeName1;
+    private String calTypeName2;
+    private String calTypeName3;
+    private String calTypeName4;
 
     /** 子节点 */
     private List<FinanceAaAcctcodeCorp> children = new ArrayList<FinanceAaAcctcodeCorp>();
@@ -399,6 +405,38 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     public List<FinanceAaAcctcodeCorp> getChildren() { return children; }
 
     public void setChildren(List<FinanceAaAcctcodeCorp> children) { this.children = children; }
+
+    public String getCalTypeName1() {
+        return calTypeName1;
+    }
+
+    public void setCalTypeName1(String calTypeName1) {
+        this.calTypeName1 = calTypeName1;
+    }
+
+    public String getCalTypeName2() {
+        return calTypeName2;
+    }
+
+    public void setCalTypeName2(String calTypeName2) {
+        this.calTypeName2 = calTypeName2;
+    }
+
+    public String getCalTypeName3() {
+        return calTypeName3;
+    }
+
+    public void setCalTypeName3(String calTypeName3) {
+        this.calTypeName3 = calTypeName3;
+    }
+
+    public String getCalTypeName4() {
+        return calTypeName4;
+    }
+
+    public void setCalTypeName4(String calTypeName4) {
+        this.calTypeName4 = calTypeName4;
+    }
 
     @Override
     public String toString() {

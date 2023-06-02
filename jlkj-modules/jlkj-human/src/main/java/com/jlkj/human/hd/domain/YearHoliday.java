@@ -23,6 +23,7 @@ public class YearHoliday extends BaseEntity
     private String id;
 
     /** 公司别 */
+    @Excel(name = "公司别")
     private String compId;
 
     /** 公司名 */

@@ -36,6 +36,18 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     }
 
     /**
+     * 查询社保公积金
+     *
+     * @param compId 社保公积金
+     * @return 社保公积金
+     */
+    @Override
+    public List<SocialSecurity> selectSocialSecurityByempNo(String compId)
+    {
+        return socialSecurityMapper.selectSocialSecurityByempNo(compId);
+    }
+
+    /**
      * 查询社保公积金缴费比例设定列表
      *
      * @param socialSecurity 社保公积金缴费比例设定

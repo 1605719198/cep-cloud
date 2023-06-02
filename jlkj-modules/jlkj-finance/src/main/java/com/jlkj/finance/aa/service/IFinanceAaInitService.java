@@ -70,7 +70,7 @@ public interface IFinanceAaInitService
      *  @param companyId 公司别
      * @return 结果
      */
-    public List<FinanceAaInit> importFinanceAaInits(List<FinanceAaInit> financeAaInits, Boolean isUpdateSupport, @Param("operName") String operName, @Param("acctPeriod")String acctPeriod,@Param("companyId") String companyId);
+    public List<FinanceAaInit> importFinanceAaInits(List<FinanceAaInit> financeAaInits, Boolean isUpdateSupport, @Param("operName") String operName ,@Param("companyId") String companyId,@Param("acctPeriod")String acctPeriod);
 }
 
 

@@ -58,6 +58,7 @@ public interface FinanceAaVoucherMapper
      * @return 凭证维护-主集合
      */
     public FinanceAaVoucher selectFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
+
     /**
      * 查询凭证维护-主列表
      *
