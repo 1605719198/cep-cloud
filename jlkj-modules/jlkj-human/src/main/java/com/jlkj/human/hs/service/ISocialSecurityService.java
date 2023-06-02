@@ -22,6 +22,14 @@ public interface ISocialSecurityService
     public SocialSecurity selectSocialSecurityById(String id);
 
     /**
+     * 查询社保公积金
+     *
+     * @param compId 公司别
+     * @return 社保公积金
+     */
+    public List<SocialSecurity> selectSocialSecurityByempNo(String compId);
+
+    /**
      * 查询社保公积金缴费比例设定列表
      * 
      * @param socialSecurity 社保公积金缴费比例设定

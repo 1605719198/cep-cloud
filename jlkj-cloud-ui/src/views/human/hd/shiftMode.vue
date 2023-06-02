@@ -42,7 +42,7 @@
 <!--          <right-toolbar :showSearch.sync="showSearch" @queryTable="getModeList"></right-toolbar>-->
         </el-row>
 
-        <el-table v-loading="loading" :data="shiftModeList" @selection-change="handleSelectionChange" height="67vh">
+        <el-table v-loading="loading" :data="shiftModeList" @selection-change="handleSelectionChange" height="60vh">
           <el-table-column label="轮班方式编码" align="center" prop="turnTypeCode"/>
           <el-table-column label="轮班方式名称" align="center" prop="turnTypeName"/>
           <el-table-column label="排班内是否计算加班" align="center" prop="resvAttr1a0">
@@ -96,6 +96,7 @@
           :limit.sync="queryParams.pageSize"
           @pagination="getModeList"
         />
+
       </el-tab-pane>
       <el-tab-pane label="班次" name="ShiftCode">
         <shift-code ref="ShiftCode"></shift-code>

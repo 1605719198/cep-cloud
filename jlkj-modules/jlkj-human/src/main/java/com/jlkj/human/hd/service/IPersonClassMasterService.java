@@ -45,6 +45,14 @@ public interface IPersonClassMasterService
     public int insertPersonClassMaster(PersonClassMaster personClassMaster);
 
     /**
+     * 批量新增出勤身份
+     *
+     * @param personClassMasterList 出勤身份
+     * @return 结果
+     */
+    public int insertBatchPersonClassMaster(List<PersonClassMaster> personClassMasterList);
+
+    /**
      * 修改出勤身份
      * 
      * @param personClassMaster 出勤身份
@@ -67,4 +75,14 @@ public interface IPersonClassMasterService
      * @return 结果
      */
     public int deletePersonClassMasterById(String id);
+
+    /**
+     * 导入批量排班资料数据
+     *
+     * @param personClassMasterList 批量排班资料列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importUser(List<PersonClassMaster> personClassMasterList, Boolean isUpdateSupport, String operName);
 }

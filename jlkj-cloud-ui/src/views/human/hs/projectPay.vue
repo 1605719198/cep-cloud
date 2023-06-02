@@ -120,19 +120,16 @@
         </el-row>
       </div>
     </div>
-    <select-project-pay ref="select" @ok="getPopData"></select-project-pay>
   </div>
 </template>
 
 <script>
 import { listProjectPay, saveProjectPay, listProjectPayTree } from '@/api/human/hs/projectPay'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
-import selectProjectPay from '@/views/components/human/selectView/hs/selectProjectPay'
 
 export default {
   name: 'SalaryProjectBasis',
   dicts: ['sys_normal_disable'],
-  components: { selectProjectPay },
   data() {
     return {
       // 选中数组
@@ -199,33 +196,6 @@ export default {
     getList() {
       this.getBaseInfoTree()
     },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        payProCode: null,
-        payProName: null,
-        isSta: null,
-        staCon: null,
-        isPostPro: null,
-        isEmpPro: null,
-        isLov: null,
-        lovConId: null,
-        salaryDescribe: null,
-        parentid: null,
-        parents: null,
-        payType: null,
-        isShowno: null,
-        num: null,
-        defaultValue: null,
-        status: null,
-        ifUsed: null,
-        creator: null,
-        creatorId: null,
-        createDate: null
-      }
-      this.resetForm('form')
-    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
@@ -242,8 +212,6 @@ export default {
     },
     // 作废按钮
     cancellation() {
-      //添加薪酬项目pop
-      // this.openPop()
       for(let i = 0;i<this.multipleSelection.length;i++){
         this.multipleSelection[i].status = "1"
       }
@@ -313,14 +281,7 @@ export default {
         this.tableData.push(newLine)
       }
     },
-    // 获取弹窗数据
-    getPopData(val) {
 
-    },
-    // 打开薪资选择弹窗
-    openPop() {
-      this.$refs.select.show(this.queryParams.compId)
-    }
   }
 }
 </script>

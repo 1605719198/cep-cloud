@@ -60,4 +60,12 @@ public interface ISysPostService
      * @return 结果
      */
     public int deleteSysPostByPostId(Long postId);
+
+    /**
+     * 岗位现员增加
+     *
+     * @param postId 岗位信息数据维护主键
+     * @return 结果
+     */
+    public int updateSysPostNowCapacity(Long postId);
 }

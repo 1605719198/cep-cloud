@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:paySheetInput:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:paySheetInput:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
       </el-form-item>
     </el-form>
 
@@ -41,14 +41,13 @@
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status" >
         <template v-slot="scope">
-          <el-select v-model="scope.row.status" >
-            <el-option
+          <el-radio-group v-model="scope.row.status" >
+            <el-radio
               v-for="dict in salaryOptions.status"
               :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
-            />
-          </el-select>
+              :label="dict.dicNo"
+            >{{dict.dicName}}</el-radio>
+          </el-radio-group>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
@@ -70,9 +69,8 @@
 </template>
 
 <script>
-import { listPaySheetInput, getPaySheetInput, delPaySheetInput, addPaySheetInput, updatePaySheetInput } from "@/api/human/hs/paySheetInput";
+import { listPaySheetInput, addPaySheetInput, } from "@/api/human/hs/paySheetInput";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {addSocialSecurity} from "@/api/human/hs/socialSecurity";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
@@ -116,7 +114,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: this.$store.state.user.userInfo.compId,
       },
       // 表单参数
       form: {},
@@ -140,7 +138,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

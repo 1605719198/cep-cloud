@@ -129,6 +129,6 @@ public class YearAmtController extends BaseController
     public void importTemplate(HttpServletResponse response) throws IOException
     {
         ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
-        util.importTemplateExcel(response, "年收入部门数据");
+        util.importTemplateExcel(response, "年收入资料数据");
     }
 }

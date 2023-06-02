@@ -326,7 +326,8 @@ export default {
           { required: true, message: "加班开始日期不能为空", trigger: "blur" }
         ],
         overtimeHours: [
-          { required: true, message: "加班时数不能为空", trigger: "blur" }
+          // { pattern: /^(0|-[1-9][0-9]*)$/, message: "加班时数不能小于零", trigger: "blur" },
+          {required: true, message: "加班时数不能为空", trigger: "blur" }
         ],
         overtimeTypeId: [
           { required: true, message: "加班类别不能为空", trigger: "blur" }
@@ -425,7 +426,9 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.workOvertimeDate = undefined
+      this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -515,8 +518,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const id = row.id;
-      this.$modal.confirm('是否确认删除加班记录编号为"' + id + '"的数据项？').then(function() {
+      const startDate = row.startDate;
+      const endDate = row.endDate;
+      this.$modal.confirm('是否确认删除加班日期为"' + startDate + '~' + endDate + '"的数据项？').then(function() {
         return delOvertimeRecord(id);
       }).then(() => {
         this.getList();

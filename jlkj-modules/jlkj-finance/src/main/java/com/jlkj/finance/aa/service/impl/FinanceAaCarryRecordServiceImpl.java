@@ -42,9 +42,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
     /*** 凭证维护-主Service业务层处理*/
     @Autowired
     private FinanceAaVoucherServiceImpl financeAaVoucherService;
-    /*** 凭证维护-主Mapper接口*/
-    @Autowired
-    private FinanceAaVoucherMapper financeAaVoucherMapper;
+
     /***  会计科目-集团级*/
     @Autowired
     private FinanceAcctcodeGroupMapper financeAcctcodeGroupMapper;
@@ -98,7 +96,6 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
         FinanceAaCarryRecord financeAaCarryRecord2 = new FinanceAaCarryRecord();
         financeAaCarryRecord2.setStatus("Y");
         financeAaCarryRecord.setStatus("Y");
-
         BigDecimal ntamt = BigDecimal.ZERO;
         String drcr = "";
         String voucherNo;

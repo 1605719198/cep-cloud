@@ -75,7 +75,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-    <el-form ref="form" :model="form" :rules="rules" v-if="showForm">
+    <el-form ref="form" :model="form" :rules="rules" >
     <el-table v-loading="loading" :data="form.yearAmtList" @selection-change="handleSelectionChange" height="67vh" :row-class-name="addIndex" @row-click="addLine">
       <el-form-item>
         <el-table-column type="selection" width="55" align="center" />
@@ -174,9 +174,9 @@
 <script>
 import { getToken } from '@/utils/auth'
 import { listYearAmt,  delYearAmt,  saveYearAmt } from "@/api/human/hs/yearAmt";
+import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
-import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {
   name: "YearAmt",
@@ -199,8 +199,6 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + '/human/yearAmt/importData'
       },
-      //是否显示表单
-      showForm:true,
       //登录用户信息
       user:{},
       //公司数据
@@ -281,13 +279,12 @@ export default {
   },
   created() {
     this.initData();
-    this.getDisc();
     this.getCompanyList();
+    this.getDisc();
   },
   methods: {
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = 'J00';
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

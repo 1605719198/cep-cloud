@@ -320,6 +320,7 @@ export default {
     },
     /** 项目1起始点击事件 */
     inputCalNamea(val) {
+      this.queryParams.calTypeCode =''
       this.$refs.selectPOP.show( this.queryParams);
 
     },
@@ -331,6 +332,7 @@ export default {
     },
     /** 项目2起始点击事件 */
     inputCalNameb(val) {
+      this.queryParams.calTypeCode =''
       this.$refs.selectPOP3.show( this.queryParams);
 
     },
@@ -355,14 +357,15 @@ export default {
       this.$set( this.queryParams, 'calCodebEnd', val.calNo);
     },
     getAcctCodeCorpPop(val){
-      this.$set( this.queryParams, 'acctCodeStart', val.acctCode);
-      this.$set( this.queryParams, 'acctNameStart', val.acctCode);
-      this.$set( this.queryParams, 'acctIdStart', val.acctId);
+      this.queryParams.acctNameStart = val[0].acctCode
+      this.$set( this.queryParams, 'acctCodeStart', val[0].acctCode);
+      this.$set( this.queryParams, 'acctNameStart', val[0].acctCode);
+      this.$set( this.queryParams, 'acctIdStart', val[0].acctId);;
     },
     getAcctCodeCorpPop1(val){
-      this.$set( this.queryParams, 'acctCodeEnd', val.acctCode);
-      this.$set( this.queryParams, 'acctNameEnd', val.acctCode);
-      this.$set( this.queryParams, 'acctIdEnd', val.acctId);
+      this.$set( this.queryParams, 'acctCodeEnd', val[0].acctCode);
+      this.$set( this.queryParams, 'acctNameEnd', val[0].acctCode);
+      this.$set( this.queryParams, 'acctIdEnd', val[0].acctId);
     },
     //查询日期切换事件
     dutyDateChange(val) {

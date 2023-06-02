@@ -307,7 +307,6 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
     public String insertHongChong(FinanceAaVoucher financeAaVoucher) {
         if (StringUtils.isEmpty(financeAaVoucher.getVoucherNo())) {
             String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
-            System.out.println(voucherNo);
             financeAaVoucher.setVoucherNo(voucherNo);
         }
         if (StringUtils.isEmpty(financeAaVoucher.getStatus())) {
@@ -1064,6 +1063,27 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             } else if (i == 2) {
                 s = sqlStringDb[i].substring(0, sqlStringDb[i].indexOf("AS"));
                 s2 = " and " + s + " LIKE " + "'%" + calName + "%'";
+            }
+        }
+        sql.append(s1 + s2);
+        List<Map<String, String>> list = financeCalSysRuleMapper.selectFinanceSqlMapList(sqlQuery + sql);
+
+        return list;
+    }
+
+    public List<Map<String, String>> selectInterfaceList(String sqlQuery, String calCode, String calName) {
+        StringBuffer sql = new StringBuffer();
+        String s;
+        String s1 = "";
+        String s2 = "";
+        sqlQuery.replaceAll("as", "AS");
+        String[] sqlStringDb = sqlQuery.split(",");
+        for (int i = 0; i < sqlStringDb.length; i++) {
+            if (i == 0) {
+                s = sqlStringDb[0].substring(sqlStringDb[0].indexOf("SELECT") + 7, sqlStringDb[0].lastIndexOf("AS"));
+            }  else if (i == 2) {
+                s = sqlStringDb[i].substring(0, sqlStringDb[i].indexOf("AS"));
+                s2 = " and " + s +  "=" +"'"+ calName +"'";
             }
         }
         sql.append(s1 + s2);

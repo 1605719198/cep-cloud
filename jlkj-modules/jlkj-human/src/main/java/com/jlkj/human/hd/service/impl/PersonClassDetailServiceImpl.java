@@ -3,9 +3,11 @@ package com.jlkj.human.hd.service.impl;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.ArrangeClass;
 import com.jlkj.human.hd.domain.PersonClassDetail;
+import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.mapper.PersonClassDetailMapper;
 import com.jlkj.human.hd.service.IArrangeClassService;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
+import com.jlkj.human.hd.service.IShiftCodeService;
 import com.jlkj.human.hp.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     private IArrangeClassService arrangeClassService;
     @Autowired
     private ISysDeptService sysDeptService;
+    @Autowired
+    private IShiftCodeService shiftCodeService;
 
     /**
      * 查询人员排班明细
@@ -81,39 +85,23 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
         Iterator<PersonClassDetail> iterator = list.iterator();
         while (iterator.hasNext()){
             PersonClassDetail detail = iterator.next();
+            if(detail.getSecShiftCode()!=null&&detail.getSecShiftId()==null){
+                String secId = null;
+                try {
+                    ShiftCode shiftCode = new ShiftCode();
+                    shiftCode.setShiftmodeId(detail.getShiftModeId());
+                    shiftCode.setShiftCode(detail.getSecShiftCode());
+                    secId = shiftCodeService.queryShiftCode(shiftCode).getId();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                detail.setSecShiftId(secId);
+            }
             if(detail.getId()!=null){
                 updatePersonClassDetail(detail);
             }else{
                 insertPersonClassDetail(detail);
             }
-        }
-        //类型为组织机构
-        String orgType ="1";
-        if(list.get(0).getClassType().equals(orgType)){
-//            String masterId = list.get(0).getPersonClassMasterId();
-//            PersonClassMaster personClassMaster = new PersonClassMaster();
-//            personClassMaster.setOrgId(masterId);
-//            List<PersonClassMaster> personClassList = personClassMasterService.selectPersonClassMasterList(personClassMaster);
-//            Iterator<PersonClassMaster> iterator2 = personClassList.iterator();
-//            while (iterator.hasNext()){
-//                PersonClassMaster personMaster = iterator2.next();
-//                PersonClassDetail personDetail = new PersonClassDetail();
-//                personDetail.setPersonClassMasterId(personMaster.getId());
-//                List<PersonClassDetail> personDetailList = personClassDetailMapper.selectPersonClassDetailList(personDetail);
-//                for(PersonClassDetail childDetail:personDetailList){
-//                    while (iterator.hasNext()){
-//                        PersonClassDetail detail = iterator.next();
-//                     if(childDetail.getArrShiDate()==detail.getArrShiDate()){
-//                         childDetail.setFirShiftCode(detail.getFirShiftCode());
-//                         childDetail.setFirShiftId(detail.getFirShiftId());
-//                         childDetail.setSecShiftCode(detail.getSecShiftCode());
-//                         childDetail.setSecShiftId(detail.getSecShiftId());
-//                         childDetail.setIsJoinShift(detail.getIsJoinShift());
-//                         personClassDetailMapper.updatePersonClassDetail(childDetail);
-//                     }
-//                    }
-//                }
-//            }
         }
         return 1;
     }

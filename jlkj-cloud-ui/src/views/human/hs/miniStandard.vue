@@ -38,7 +38,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          v-hasPermi="['human:personalIncomeTax:add']"
+          v-hasPermi="['human:miniStandard:add']"
           type="primary"
           size="mini"
           plain
@@ -118,7 +118,7 @@ export default {
       nickName: null,
       multipleSelection: [],
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       //版本号数据
@@ -156,7 +156,6 @@ export default {
       },
       // 表单参数
       form: {
-        miniStandardList: [],
       },
       // 表单校验
       rules: {
@@ -165,7 +164,6 @@ export default {
   },
   created() {
     this.initData();
-    this.getList();
     this.getCompanyList();
     this.getVersionList();
     this.getDisc();
@@ -200,7 +198,6 @@ export default {
         creatorId: null,
         createDate: null
       };
-      this.incometaxDetailListList = [],
       this.resetForm("form");
     },
     addIndex({row, rowIndex}) {
@@ -224,7 +221,7 @@ export default {
     },
     //查询薪资选单
     getDisc(){
-      this.salaryOptionType.compId = "J00"
+      this.salaryOptionType.compId = null
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

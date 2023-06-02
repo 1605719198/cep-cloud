@@ -43,9 +43,9 @@
                   <el-select :popper-append-to-body="false" v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  class="maxWidth" >
                     <el-option
                       v-for="dict in baseInfoData.HP013"
-                      :key="dict.uuid"
+                      :key="dict.dicNo"
                       :label="dict.dicName"
-                      :value="dict.uuid"
+                      :value="dict.dicNo"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -70,9 +70,9 @@
                   <el-select :popper-append-to-body="false" v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" class="maxWidth">
                     <el-option
                       v-for="dict in baseInfoData.HP003"
-                      :key="dict.uuid"
+                      :key="dict.dicNo"
                       :label="dict.dicName"
-                      :value="dict.uuid"
+                      :value="dict.dicNo"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -453,7 +453,7 @@ export default {
     },
     init(form) {
       this.getCompanyList();
-      listJobTitleidname('J00').then(response =>{
+      listJobTitleidname(form.compId).then(response =>{
         this.humanJobTitle = response.rows;
       })
       treeselect().then(response => {
@@ -536,16 +536,24 @@ export default {
       });
     },
     //专长类别-专长选项获取
-    handleChangeA(value) {
-      this.baseInfo.uuid = value
+    handleChangeA(dicNo) {
+      this.baseInfoData.HP013.forEach((value)=>{
+        if(value.dicNo===dicNo){
+          this.baseInfo.uuid = value.uuid
+        }
+      })
       this.deepOptions1 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions1 = response.data
       });
     },
     //岗位序列-岗位类别选项获取
-    handleChangeB(value) {
-      this.baseInfo.uuid = value
+    handleChangeB(dicNo) {
+      this.baseInfoData.HP003.forEach((value)=>{
+        if(value.dicNo===dicNo){
+          this.baseInfo.uuid = value.uuid
+        }
+      })
       this.deepOptions2 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions2 = response.data

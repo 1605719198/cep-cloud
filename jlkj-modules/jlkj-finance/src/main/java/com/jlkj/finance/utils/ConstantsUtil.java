@@ -8,7 +8,18 @@ package com.jlkj.finance.utils;
  */
 public class ConstantsUtil
 {
-
+    /**
+     * calRule
+     */
+    public static final String ISEMPTY="";
+    /**
+     * calRule
+     */
+    public static final String CALRULE1="01";
+    /**
+     * calRule
+     */
+    public static final String CALRULE2="02";
     /**
      * calRule
      */
@@ -17,6 +28,15 @@ public class ConstantsUtil
      * calRule
      */
     public static final String CALRULE4="04";
+    /**
+     * calRule
+     */
+    public static final String CALRULE5="05";
+    /**
+     * calRule
+     */
+    public static final String CALRULE6="06";
+
 
     /**
      * disabledCode
@@ -44,5 +64,24 @@ public class ConstantsUtil
      */
     public static final String DRCRD="D";
 
-
+    /**
+     * TYPE1
+     */
+    public static final String TYPE1="1";
+    /**
+     * TYPE2
+     */
+    public static final String TYPE2="2";
+    /**
+     * TYPE3
+     */
+    public static final String TYPE3="3";
+    /**
+     * TYPE4
+     */
+    public static final String TYPE4="4";
+    /**
+     * TYPE5
+     */
+    public static final String TYPE5="5";
 }

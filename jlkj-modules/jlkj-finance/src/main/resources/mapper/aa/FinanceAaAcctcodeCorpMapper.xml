@@ -38,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateName"    column="update_name"    />
         <result property="updateTime"    column="update_time"    />
+
+        <result property="calTypeName1"    column="cal_type_name1"    />
+        <result property="calTypeName2"    column="cal_type_name2"    />
+        <result property="calTypeName3"    column="cal_type_name3"    />
+        <result property="calTypeName4"    column="cal_type_name4"    />
     </resultMap>
 
     <sql id="selectFinanceAaAcctcodeCorpVo">
@@ -202,10 +207,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <select id="selectFinanceAaAcctcodeCorpListPop" parameterType="com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp" resultMap="FinanceAaAcctcodeCorpResult">
-        <include refid="selectFinanceAaAcctcodeCorpVo"/>
+        select acct_id, t1.company_id, group_acct_id, acct_code, acct_name, parent_id, parent_acct_code, is_voucher, dr_or_cr, is_cash, level, ancestors, is_unit,
+               cal_type_idA, cal_type_codeA, cal_type_idB, cal_type_codeB, cal_type_idC, cal_type_codeC, cal_type_idD, cal_type_codeD, is_due_date, is_lqdt,
+               is_frn_crcy, is_prvlg, disabled_code, disabled_date, t1.create_by, t1.create_name, t1.create_time, t1.update_by, t1.update_name, t1.update_time,
+               ct1.cal_type_name cal_type_name1,ct2.cal_type_name cal_type_name2,ct3.cal_type_name cal_type_name3,ct4.cal_type_name cal_type_name4
+        from finance_aa_acctcode t1
+        left join finance_aa_calType ct1 on t1.company_id = ct1.company_id and  t1.cal_type_codeA = ct1.cal_type_code
+        left join finance_aa_calType ct2 on t1.company_id = ct2.company_id and  t1.cal_type_codeB = ct2.cal_type_code
+        left join finance_aa_calType ct3 on t1.company_id = ct3.company_id and  t1.cal_type_codeC = ct3.cal_type_code
+        left join finance_aa_calType ct4 on t1.company_id = ct4.company_id and  t1.cal_type_codeD = ct4.cal_type_code
         <where>
-            <if test="companyId != null and companyId != ''"> and company_id =  #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode} </if>
+            <if test="companyId != null and companyId != ''"> and t1.company_id =  #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code like concat('%', #{acctCode}, '%')</if>
             <if test="acctName != null and acctName != ''"> and acct_name like concat('%', #{acctName}, '%')</if>
         </where>
         order by acct_code,acct_name

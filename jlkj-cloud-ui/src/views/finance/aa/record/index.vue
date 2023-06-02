@@ -304,6 +304,10 @@ export default {
           this.form.remark = this.recordListSelect[0].remark
           this.form.statusA = this.recordListSelect[0].statusA
               addExecute(this.form).then(response => {
+                if (!!response.msg){
+                  this.$message.error(response.msg);
+                  return
+                }
                 this.$modal.msgSuccess("执行成功");
                 this.open = false;
                 this.getList();

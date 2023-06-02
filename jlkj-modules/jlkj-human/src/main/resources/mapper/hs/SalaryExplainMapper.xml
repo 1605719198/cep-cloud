@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SalaryExplainMapper">
+    
+    <resultMap type="SalaryExplain" id="SalaryExplainResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="month"    column="month"    />
+        <result property="year"    column="year"    />
+        <result property="salaryDate"    column="salary_date"    />
+        <result property="salaryRemarks"    column="salary_remarks"    />
+        <result property="bounsDate"    column="bouns_date"    />
+        <result property="bounsRemarks"    column="bouns_remarks"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSalaryExplainVo">
+        select uuid, comp_id, month, year, salary_date, salary_remarks, bouns_date, bouns_remarks, creator, creator_id, creator_no, create_date from human_hs_salary_explain
+    </sql>
+
+    <select id="selectSalaryExplainList" parameterType="SalaryExplain" resultMap="SalaryExplainResult">
+        <include refid="selectSalaryExplainVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="year != null "> and year = #{year}</if>
+        </where>
+    </select>
+    
+    <select id="selectSalaryExplainByUuid" parameterType="String" resultMap="SalaryExplainResult">
+        <include refid="selectSalaryExplainVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertSalaryExplain" parameterType="SalaryExplain">
+        insert into human_hs_salary_explain
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="month != null">month,</if>
+            <if test="year != null">year,</if>
+            <if test="salaryDate != null">salary_date,</if>
+            <if test="salaryRemarks != null">salary_remarks,</if>
+            <if test="bounsDate != null">bouns_date,</if>
+            <if test="bounsRemarks != null">bouns_remarks,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="month != null">#{month},</if>
+            <if test="year != null">#{year},</if>
+            <if test="salaryDate != null">#{salaryDate},</if>
+            <if test="salaryRemarks != null">#{salaryRemarks},</if>
+            <if test="bounsDate != null">#{bounsDate},</if>
+            <if test="bounsRemarks != null">#{bounsRemarks},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalaryExplain" parameterType="SalaryExplain">
+        update human_hs_salary_explain
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="salaryDate != null">salary_date = #{salaryDate},</if>
+            <if test="salaryRemarks != null">salary_remarks = #{salaryRemarks},</if>
+            <if test="bounsDate != null">bouns_date = #{bounsDate},</if>
+            <if test="bounsRemarks != null">bouns_remarks = #{bounsRemarks},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteSalaryExplainByUuid" parameterType="String">
+        delete from human_hs_salary_explain where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteSalaryExplainByUuids" parameterType="String">
+        delete from human_hs_salary_explain where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

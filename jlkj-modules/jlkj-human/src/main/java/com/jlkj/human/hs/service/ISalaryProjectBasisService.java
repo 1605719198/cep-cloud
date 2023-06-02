@@ -1,6 +1,7 @@
 package com.jlkj.human.hs.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hs.domain.SalaryProjectBasis;
 
@@ -63,6 +64,14 @@ public interface ISalaryProjectBasisService extends IService<SalaryProjectBasis>
     public int updateSalaryProjectBasis(SalaryProjectBasis salaryProjectBasis);
 
     /**
+     * 通过父节点id查询员工薪资基本资料维护
+     *
+     * @param parentid 员工薪资基本资料维护编码
+     * @return 员工薪资基本资料维护
+     */
+    public List<BasisOptionsDTO> selectSalaryProjectBasisByParentid(Long  parentid);
+
+    /**
      * 批量删除集团级薪资项目输入维护
      * 
      * @param ids 需要删除的集团级薪资项目输入维护主键集合
@@ -76,5 +85,5 @@ public interface ISalaryProjectBasisService extends IService<SalaryProjectBasis>
      * @param id 集团级薪资项目输入维护主键
      * @return 结果
      */
-    public int deleteSalaryProjectBasisById(Long id);
+    public int deleteSalaryProjectBasisById(Long id)throws Exception;
 }

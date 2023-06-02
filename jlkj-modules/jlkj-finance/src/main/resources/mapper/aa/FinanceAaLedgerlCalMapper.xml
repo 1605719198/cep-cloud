@@ -74,11 +74,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
             <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
             <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
-     and cal_ida = #{calIda}
+            and cal_ida = #{calIda}
             and cal_idb = #{calIdb}
             and cal_idc = #{calIdc}
             and cal_idd = #{calIdd}
 
+        </where>
+    </select>
+
+    <select id="selectFinanceAaLedgerlCalName" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+            <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+
+            and cal_namea = #{calNamea}
+            and cal_nameb = #{calNameb}
+            and cal_namec = #{calNamec}
+            and cal_named = #{calNamed}
         </where>
     </select>
     <select id="selectAcctPeriodList" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
@@ -87,6 +102,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
         </where>
+    </select>
+    <select id="selectAmountNotDisplayedA" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and (cal_codea between #{calNameaStart} and #{calNameaEnd} or cal_codeb between #{calNameaStart} and #{calNameaEnd} or cal_codec between #{calNameaStart} and #{calNameaEnd} or cal_coded between #{calNameaStart} and #{calNameaEnd} )</if>
+        </where>
+        GROUP BY
+        cal_codea
+    </select>
+    <select id="selectAmountNotDisplayedB" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and (cal_codea between #{calNameaStart} and #{calNameaEnd} or cal_codeb between #{calNameaStart} and #{calNameaEnd} or cal_codec between #{calNameaStart} and #{calNameaEnd} or cal_coded between #{calNameaStart} and #{calNameaEnd} )</if>
+
+        </where>
+        GROUP BY
+        cal_codea,
+        cal_codeb
+    </select>
+    <select id="selectAmountNotDisplayedC" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and (cal_codea between #{calNameaStart} and #{calNameaEnd} or cal_codeb between #{calNameaStart} and #{calNameaEnd} or cal_codec between #{calNameaStart} and #{calNameaEnd} or cal_coded between #{calNameaStart} and #{calNameaEnd} )</if>
+        </where>
+        GROUP BY
+        cal_codea,
+        cal_codeb,
+        cal_codec
+    </select>
+    <select id="selectAmountNotDisplayedD" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        <include refid="selectFinanceAaLedgerlCalVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and (cal_codea between #{calNameaStart} and #{calNameaEnd} or cal_codeb between #{calNameaStart} and #{calNameaEnd} or cal_codec between #{calNameaStart} and #{calNameaEnd} or cal_coded between #{calNameaStart} and #{calNameaEnd} )</if>
+        </where>
+        GROUP BY
+        cal_codea,
+        cal_codeb,
+        cal_codec,
+        cal_coded
     </select>
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">

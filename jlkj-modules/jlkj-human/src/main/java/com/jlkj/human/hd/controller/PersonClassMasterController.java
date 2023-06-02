@@ -7,12 +7,15 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.domain.PersonClassMaster;
 import com.jlkj.human.hd.service.IPersonClassMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,18 +43,6 @@ public class PersonClassMasterController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出出勤身份列表
-     */
-    @RequiresPermissions("human:personClassMaster:export")
-    @Log(title = "出勤身份", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonClassMaster personClassMaster)
-    {
-        List<PersonClassMaster> list = personClassMasterService.selectPersonClassMasterList(personClassMaster);
-        ExcelUtil<PersonClassMaster> util = new ExcelUtil<PersonClassMaster>(PersonClassMaster.class);
-        util.exportExcel(response, list, "出勤身份数据");
-    }
 
     /**
      * 获取出勤身份详细信息
@@ -84,6 +75,17 @@ public class PersonClassMasterController extends BaseController
     }
 
     /**
+     * 新增批量出勤身份
+     */
+    @RequiresPermissions("human:personClassMaster:add")
+    @Log(title = "出勤身份", businessType = BusinessType.INSERT)
+    @PostMapping("/batchAdd")
+    public AjaxResult batchAdd(@RequestBody List<PersonClassMaster> personClassMasterList)
+    {
+        return toAjax(personClassMasterService.insertBatchPersonClassMaster(personClassMasterList));
+    }
+
+    /**
      * 修改出勤身份
      */
     @RequiresPermissions("human:personClassMaster:edit")
@@ -103,5 +105,36 @@ public class PersonClassMasterController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(personClassMasterService.deletePersonClassMasterByIds(ids));
+    }
+
+    /**
+     * 导入批量排班数据
+     * @param file
+     * @param updateSupport
+     * @return
+     * @throws Exception
+     */
+    @Log(title = "批量排班资料导入", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("human:personClassMaster:export")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<PersonClassMaster> util = new ExcelUtil<PersonClassMaster>(PersonClassMaster.class);
+        List<PersonClassMaster> personClassMasterList = util.importExcel(file.getInputStream());
+        String operName = SecurityUtils.getUsername();
+        String message = personClassMasterService.importUser(personClassMasterList, updateSupport, operName);
+        return success(message);
+    }
+
+    /**
+     * 导入批量排班资料数据
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException
+    {
+        ExcelUtil<PersonClassMaster> util = new ExcelUtil<PersonClassMaster>(PersonClassMaster.class);
+        util.importTemplateExcel(response, "批量排班数据");
     }
 }

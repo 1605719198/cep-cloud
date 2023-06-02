@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="68px">
           <el-form-item label="组织机构" prop="compName">
             <el-input v-model="queryParams.compName" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
@@ -268,6 +268,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        date: [
+          { required: true, message: "日期不能为空", trigger: "blur" }
+        ],
       },
       // 出勤汇总导入参数
       upload: {
@@ -389,9 +392,13 @@ export default {
     },
     /** 取消排班按钮操作 */
     handleCancelScheduling() {
-      cancelScheduling(this.queryParams).then(response => {
-        this.isDisabled = false
-        this.$modal.msgSuccess("取消排班成功");
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          cancelScheduling(this.queryParams).then(response => {
+            this.isDisabled = false
+            this.$modal.msgSuccess("取消排班成功");
+          });
+        }
       });
     },
     /** 反（取消排班）按钮操作 */

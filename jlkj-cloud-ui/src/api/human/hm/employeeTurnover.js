@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+
+//获取员工入职作业查询列表
+export function queryEmployeeTurnover(data) {
+  return request({
+    url: '/human/employeeTurnover/getList',
+    method: 'get',
+    params: data
+  })
+}
+
 //根据工号查询异动信息主表
 export function queryNewPostNameAndChangeDetail(data) {
   return request({

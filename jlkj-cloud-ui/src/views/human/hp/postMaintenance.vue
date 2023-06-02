@@ -402,7 +402,7 @@ export default {
         effectDate: getDateTime(1),
         versionNo: 1,
         ifNew: 1,
-        compId: null,
+        compId: this.compId,
         createBy: this.nickName,
         createTime: getDateTime(0),
         updateBy: this.nickName,
@@ -466,7 +466,6 @@ export default {
         this.form.versionNo++;
         this.form.updateBy = this.nickName;
         this.form.updateTime = getDateTime(0);
-        this.form.effectDate = getDateTime(1);
         this.addOrUpdateVisible = true;
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(this.form)

@@ -591,8 +591,6 @@ export default {
       let personMin1 = parseInt(String(startDate.getMinutes()).padStart(2, '0'))
       let personHour2 = parseInt(String(endDate.getHours()).padStart(2, '0'))
       let personMin2 = parseInt(String(endDate.getMinutes()).padStart(2, '0'))
-      console.log('第一天请假小时：' + personHour1 + '分钟：' + personMin1)
-      console.log('最后一天请假小时：' + personHour2 + '分钟：' + personMin2)
       //常白班逻辑
       if (e === 1) {
         //工作开始结束时间

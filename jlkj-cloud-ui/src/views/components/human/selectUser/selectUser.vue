@@ -207,6 +207,7 @@ export default {
         this.$modal.msgError("只能选择一笔数据");
         return;
       }
+      this.$refs.table.clearSelection();
       this.visible = false;
       this.$emit("ok", userIds, userName, compId, id);
     },

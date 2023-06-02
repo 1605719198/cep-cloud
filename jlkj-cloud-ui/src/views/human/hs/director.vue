@@ -66,7 +66,7 @@
           <el-table-column label="工号" align="center" prop="empId">
             <template v-slot="scope">
               <el-input v-model="scope.row.empId" placeholder="请输入工号" disabled>
-                <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </template>
           </el-table-column>
@@ -142,7 +142,7 @@ export default {
         optionsType: [
           'Responsibility'
         ],
-        compId:'J00',
+        compId:null,
       },
       directorData: [],
       key: undefined,
@@ -259,7 +259,7 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(val) {
-      this.form.directorList[0].empId = val
+      this.form.directorList[this.rowIndex].empId = val
       this.form.empNo = val
       queryNewPostNameAndChangeDetail(this.form).then(res => {
         this.form.directorList[this.rowIndex].postId = res.data.list1[0].newPostName

@@ -139,7 +139,7 @@ export default {
         pageSize: 10,
         compId: 'J00',
         empNo: null,
-        shiftDate: '',
+        shiftDate: null,
         startTime: '',
         endTime: ''
       },
@@ -200,7 +200,8 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.queryParams.empNo = undefined
+      this.queryParams.shiftDate = undefined
       this.handleQuery();
     },
     dateFormat(picker) {

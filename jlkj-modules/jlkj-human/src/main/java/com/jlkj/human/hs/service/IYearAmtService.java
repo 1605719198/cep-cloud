@@ -61,7 +61,7 @@ public interface IYearAmtService
     public int deleteYearAmtById(String id);
 
     /**
-     * 导入部门资料数据
+     * 导入年收入资料数据
      *
      * @param yearAmtList 年收入资料列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据

@@ -1,5 +1,6 @@
 package com.jlkj.human.hm.controller;
 
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -8,11 +9,14 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.Leave;
+import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.service.ILeaveService;
+import com.jlkj.human.hm.service.impl.PersonnelServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,6 +30,8 @@ import java.util.List;
 public class EmployeeLeaveController extends BaseController {
 
     private final ILeaveService iLeaveService;
+    @Resource
+    private PersonnelServiceImpl personnelService;
 
     /**
      * 查询人员离职信息列表
@@ -64,6 +70,11 @@ public class EmployeeLeaveController extends BaseController {
     public Object addEmployeeLeave(@RequestBody Leave leave) {
         leave.setCreator(SecurityUtils.getNickName());
         iLeaveService.save(leave);
+        if (leave.getLeaveEffectDate().compareTo(DateUtils.parseDate(DateUtils.getDate())) == 0){
+            personnelService.lambdaUpdate()
+                    .set(Personnel::getStatus, "0")
+                    .eq(Personnel::getEmpNo, leave.getEmpNo()).update();
+        }
         return AjaxResult.success("新增成功");
     }
 
