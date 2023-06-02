@@ -12,14 +12,14 @@ import java.util.List;
  */
 public interface IFinanceAaAccountBalanceTonSteelService {
     /**
-     * 查询凭=科目余额报表
+     * 查询科目余额报表
      *
      * @param financeAaLedgerAcctDTO 科目余额报表
      * @return 科目余额报表
      */
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
-     * 查询凭=科目余额报表
+     * 查询科目余额报表
      *
      * @param financeAaLedgerAcctDTO 科目余额报表
      * @return 科目余额报表
@@ -27,14 +27,14 @@ public interface IFinanceAaAccountBalanceTonSteelService {
     public List<FinanceAaLedgerAcctDTO> selectListNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 
     /**
-     * 查询凭=科目余额报表
+     * 查询科目余额报表
      *
      * @param financeAaLedgerAcctDTO 科目余额报表
      * @return 科目余额报表
      */
     public List<FinanceAaLedgerAcctDTO> selectListCalNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
-     * 查询凭=科目余额报表
+     * 查询科目余额报表
      *
      * @param financeAaLedgerAcctDTO 科目余额报表
      * @return 科目余额报表

@@ -68,8 +68,16 @@ public class FinanceAaLedgerAcctDTO {
     private String   calNamec;
     /** 核算项目四 */
     private String   calNamed;
-
-
+    /** 是否显示本期合计 */
+    private String    currentPeriod;
+    /** 是否显示本年累计 */
+    private String     yearAdd;
+    /** 核算项目 */
+    private String  calName;
+    /** 数量 */
+    private BigDecimal   endOfPeriodQty;
+    /** 金额 */
+    private BigDecimal   endOfPeriodAmt;
     /** 主键 */
     private String id;
 

@@ -171,7 +171,7 @@
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import selectMoreConditions from "@/views/finance/aa/accountBalanceTonSteel/selectMoreConditions";
-import {listCalNumberDetailIfSteel,listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel.js";
+import {listCalNumberDetailIfSteel,listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel";
 export default {
   name: "Voucher",
   components: {
