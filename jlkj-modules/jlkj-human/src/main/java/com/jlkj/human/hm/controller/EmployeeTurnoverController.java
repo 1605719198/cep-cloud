@@ -120,7 +120,7 @@ public class EmployeeTurnoverController extends BaseController {
                 changeMasterService.save(changeMaster);
                 changeDetailService.saveOrUpdateBatch(employeeTurnoverList);
                 if (changeMasterDTO.getEffectDate().after(new Date())) {
-                    return AjaxResult.success("生效日期大于当前日期，不更新人员基本资料表");
+                    return AjaxResult.error("生效日期大于当前日期，不更新人员基本资料表");
                 } else {
                     personnelService.lambdaUpdate()
                             .set(Personnel::getPostName, changeMasterDTO.getPostName())
@@ -132,10 +132,10 @@ public class EmployeeTurnoverController extends BaseController {
                     return AjaxResult.success("保存成功");
                 }
             } else {
-                return AjaxResult.success("生效日期小于薪资日期");
+                return AjaxResult.error("生效日期小于薪资日期");
             }
         } else {
-            return AjaxResult.success("生效日期必须大于上一版本生效日期");
+            return AjaxResult.error("生效日期必须大于上一版本生效日期");
         }
     }
 

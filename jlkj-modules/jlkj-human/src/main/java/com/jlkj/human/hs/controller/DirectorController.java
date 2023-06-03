@@ -65,8 +65,10 @@ public class DirectorController extends BaseController {
     @Operation(summary = "删除各公司人事业务负责人设定信息")
     @DeleteMapping("/{uuid}")
     @Log(title = "删除各公司人事业务负责人设定信息", businessType = BusinessType.DELETE)
-    public Object delDirector(@PathVariable String uuid) {
-        iDirectorService.lambdaUpdate().eq(Director::getUuid, uuid).remove();
+    public Object delDirector(@PathVariable List<String> uuid) {
+        for (String item : uuid) {
+            iDirectorService.lambdaUpdate().eq(Director::getUuid, item).remove();
+        }
         return AjaxResult.success("删除成功");
     }
 }

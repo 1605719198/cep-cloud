@@ -104,6 +104,7 @@
 import {baseInfoTree, getChildrenList, deleteBaseInfo} from "@/api/human/hm/baseInfo"
 import Update from "./update.vue"
 import '@/assets/styles/humanStyles.scss';
+import {uuid} from "@/plugins/package/utils";
 
 export default {
   name: "BaseInfo",
@@ -128,7 +129,8 @@ export default {
       queryParams: {
         pageSize: 10,
         pageNum: 1,
-        total: 0
+        total: 0,
+        uuid: '1633336433080074242'
       },
       uuid: '',
       table: {
@@ -152,6 +154,7 @@ export default {
   },
   created() {
     this.getBaseInfoTree()
+    this.onLoad()
   },
   methods: {
     //获取选单配置树

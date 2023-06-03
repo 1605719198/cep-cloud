@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="date != null ">and effect_date = #{date} </if>
             <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
             <if test="version != null and version != ''">and version = #{version} </if>
+            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
         </where>
     </select>
     
