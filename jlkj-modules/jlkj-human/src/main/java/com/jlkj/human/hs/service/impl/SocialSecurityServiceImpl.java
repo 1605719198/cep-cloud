@@ -74,17 +74,25 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
-        int num = 0;
+
         for (SocialSecurity socialSecurities : socialSecurityList) {
-            List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityList(socialSecurities);
-            for (SocialSecurity item : socialSecurityCompanies) {
-                if (!ObjectUtil.isNull(item.getSalaryProjectId())) {
-                        num = num + 1;
-                        if (num == 1) {
-                            throw new ServiceException("社保公积金项目不允许重复");
-                        }
+            if (socialSecurities.getId() != null) {
+                SocialSecurity dbSocialSecuritie =socialSecurityMapper.selectSocialSecurityById(socialSecurities.getId());
+                if(!dbSocialSecuritie.getSalaryProjectId().equals(socialSecurities.getSalaryProjectId())){
+                    List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
+                        throw new ServiceException("社保公积金项目不允许重复");
                     }
+                }
+            }else{
+                List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                for (SocialSecurity item : socialSecurityCompanies) {
+                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
+                        throw new ServiceException("社保公积金项目不允许重复");
+                    }
+                }
             }
+
             //查询当前公司别 最大版次号 及 生效日期
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
             Long version = 1L;
