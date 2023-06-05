@@ -2,20 +2,20 @@ package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
-import com.jlkj.human.hm.domain.PerorgTree;
-import com.jlkj.human.hm.domain.Personnel;
-import com.jlkj.human.hm.domain.Staff;
+import com.jlkj.human.hm.domain.*;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.mapper.PersonnelMapper;
-import com.jlkj.human.hm.service.IPerorgTreeService;
-import com.jlkj.human.hm.service.IPersonnelService;
-import com.jlkj.human.hm.service.IStaffService;
+import com.jlkj.human.hm.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,6 +36,11 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     private IStaffService humanresourceStaffService;
     @Autowired
     private PersonnelMapper personnelMapper;
+    @Resource
+    private IContractService contractService;
+    @Resource
+    private ILeaveService leaveService;
+
     /**
      * 新增人员资料
      * @param personnelDTO
@@ -117,5 +122,22 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     @Override
     public List<HumanresourcePersonnelInfoDTO> selectOrgPerson(String deptId) {
         return personnelMapper.selectOrgPerson(deptId);
+    }
+
+    /**
+     * 获取人员基本信息
+     * @param empNo 工号
+     * @return 人员信息集合
+     */
+    @Override
+    public Object selectPersonnelInfo(String empNo) {
+        List<Personnel> personnelList = lambdaQuery().eq(Personnel::getEmpNo, empNo).list();
+        List<Contract> contractList = contractService.lambdaQuery().eq(Contract::getEmpNo, empNo).list();
+        List<Leave> leaveList = leaveService.lambdaQuery().eq(Leave::getEmpNo, empNo).list();
+        Map<String, Object> resultMap = new HashMap<>(32);
+        resultMap.put("personnelList", personnelList);
+        resultMap.put("contractList", contractList);
+        resultMap.put("leaveList", leaveList);
+        return AjaxResult.success(resultMap);
     }
 }
