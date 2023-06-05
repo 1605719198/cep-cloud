@@ -64,15 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.pastuser_name,
         a.STATUS,
         a.srlNo_count,
-        a.print_count,
-        b.acct_name,
-        b.acct_code,
-        b.crcy_unit,
-        b.qty_frnAmt,
-        b.srl_desc,
-        a.create_by,
-        b.drcr,
-        b.ntAmt
+        a.print_count
         FROM
         finance_aa_voucher a
         LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
@@ -229,6 +221,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by b.voucher_no
     </select>
+
 
     <insert id="insertFinanceAaVoucher" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
         insert into finance_aa_voucher

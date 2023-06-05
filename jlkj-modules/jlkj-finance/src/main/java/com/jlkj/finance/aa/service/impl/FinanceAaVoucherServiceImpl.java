@@ -242,6 +242,55 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
     }
 
     /**
+     * 新增凭证维护-主
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 结果
+     */
+    @Override
+    public List<Map<String, String>> insertFinanceAaVoucherSubmitForm(FinanceAaVoucher financeAaVoucher) {
+        List<Map<String, String>> maps = new ArrayList<>();
+        Map map = new HashMap(16);
+        String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
+        financeAaVoucher.setVoucherNo(voucherNo);
+        financeAaVoucher.setStatus("N");
+        financeAaVoucher.setApid("AA");
+        if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
+            financeAaVoucher.setPgrmid("voucherAA");
+        }
+        financeAaVoucher.setPgrmid(financeAaVoucher.getDetailList().get(0).getSrlDesc());
+        BigDecimal ntamtD = BigDecimal.ZERO;
+        BigDecimal ntamtC = BigDecimal.ZERO;
+        List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
+        if (detailList.size() > 0) {
+            for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
+                financeAaVoucherDetail.setVoucherId(financeAaVoucher.getId());
+                if ("D".equals(financeAaVoucherDetail.getDrcr())) {
+                    ntamtD = ntamtD.add(financeAaVoucherDetail.getNtamt());
+                }
+                if ("C".equals(financeAaVoucherDetail.getDrcr())) {
+                    ntamtC = ntamtC.add(financeAaVoucherDetail.getNtamt());
+                }
+            }
+        }
+        financeAaVoucher.setDrAmt(ntamtD);
+        financeAaVoucher.setCrAmt(ntamtC);
+        if (financeAaVoucher.getPastuserName() == null) {
+            financeAaVoucher.setPastuserName(getUsername());
+        }
+        String inspectionCollection = inspectionCollection(financeAaVoucher);
+        if (StringUtils.isEmpty(inspectionCollection)) {
+            insertFinanceAaVoucherDetail(financeAaVoucher);
+            financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher);
+        }
+        map.put("msg", inspectionCollection);
+        map.put("voucherNo", financeAaVoucher.getVoucherNo());
+        maps.add(map);
+        return maps;
+
+    }
+
+    /**
      * 红冲凭证维护-主
      *
      * @param financeAaVoucher 凭证维护-主
@@ -442,7 +491,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
      * @return 结果
      */
     @Override
-    public int updateFinanceAaVoucher(FinanceAaVoucher financeAaVoucher) {
+    public List<Map<String,String>> updateFinanceAaVoucher(FinanceAaVoucher financeAaVoucher) {
+        List<Map<String, String>> maps = new ArrayList<>();
+        Map map = new HashMap(16);
         financeAaVoucher.setUpdateTime(DateUtils.getNowDate());
         String status = "N";
         if (!status.equals(financeAaVoucher.getStatus())) {
@@ -455,9 +506,13 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(inspectionCollection)) {
             financeAaVoucherMapper.deleteFinanceAaVoucherDetailByVoucherNo(financeAaVoucher.getVoucherNo());
             insertFinanceAaVoucherDetail(financeAaVoucher);
+            financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
         }
+        map.put("msg", inspectionCollection);
+        map.put("voucherNo", financeAaVoucher.getVoucherNo());
+        maps.add(map);
+        return maps;
 
-        return financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
     }
 
     /**
@@ -483,6 +538,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
 
         return financeAaVoucherMapper.updateFinanceAaVoucher(financeAaVoucher);
     }
+
     /**
      * 过账凭证维护-主
      *
@@ -512,7 +568,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             for (FinanceAaVoucherDetail financeAaVoucherDetail : list) {
                 FinanceAaLedgerAcct financeAaLedgerAcct = new FinanceAaLedgerAcct();
                 financeAaLedgerAcct.setCompanyId(financeAaVoucherDetail.getCompanyId());
-                financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                 financeAaLedgerAcct.setAcctId(financeAaVoucherDetail.getAcctId());
                 FinanceAaLedgerAcct financeAaLedgerAcct1 = financeAaLedgerAcctService.selectFinanceAaLedgerAcct(financeAaLedgerAcct);
                 FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAdd(financeAaVoucherDetail);
@@ -525,7 +581,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         drAmt = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrAmt().negate());
                         drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrQty().negate());
                         drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrAmt().negate());
-                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerAcct1.getCrQty().negate());
+                        drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getCrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrQty().negate());
                         if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct1.setDrAmt(drAmt);
                             financeAaLedgerAcct1.setDrQty(drQty);
@@ -558,8 +614,8 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         financeAaLedgerAcct1.setId(id);
 
                         drAmt = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrAmt());
-                        drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrQty() );
-                        drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrAmt() );
+                        drQty = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getDrQty());
+                        drAmtC = (null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt()).add(null == financeAaLedgerAcct1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrAmt());
                         drQtyC = (null == financeAaVoucherDetail1.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getQtyFrnamt()).add(null == financeAaLedgerAcct1.getCrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getCrQty());
                         if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerAcct1.setDrAmt(drAmt);
@@ -593,7 +649,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (detailList.size() > 0) {
             for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
                 FinanceAaLedgerlCal financeAaLedgerlCal = new FinanceAaLedgerlCal();
-                financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0,7));
+                financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                 BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal);
                 FinanceAaLedgerlCal financeAaLedgerlCal1 = financeAaLedgerlCalService.selectFinanceAaLedgerlCal(financeAaLedgerlCal);
                 FinanceAaVoucherDetail financeAaVoucherDetail2 = financeAaVoucherDetailMapper.selectFinancecalCodeAdd(financeAaVoucherDetail);
@@ -603,9 +659,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal1);
                         financeAaLedgerlCal1.setId(id);
                         drQtyCal = (null == financeAaLedgerlCal1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerlCal1.getDrQty()).subtract((null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()));
-                        drAmtCal =(null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getDrAmt()) .subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
-                        drQtyCalC = (null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrQty()).subtract(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
-                        drAmtCalC = (null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrAmt()).subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
+                        drAmtCal = (null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerlCal1.getDrAmt()).subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
+                        drQtyCalC = (null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO : financeAaLedgerlCal1.getCrQty()).subtract(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
+                        drAmtCalC = (null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerlCal1.getCrAmt()).subtract(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt());
                         if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal1.setDrAmt(drAmtCal);
                             financeAaLedgerlCal1.setDrQty(drQtyCal);
@@ -633,9 +689,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         BeanUtils.copyProperties(financeAaVoucherDetail, financeAaLedgerlCal1);
                         financeAaLedgerlCal1.setId(id);
                         drQtyCal = (null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(null == financeAaLedgerlCal1.getDrQty() ? BigDecimal.ZERO : financeAaLedgerlCal1.getDrQty());
-                        drAmtCal = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getDrAmt());
-                        drQtyCalC = (null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrQty());
-                        drAmtCalC = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO :financeAaLedgerlCal1.getCrAmt());
+                        drAmtCal = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerlCal1.getDrAmt());
+                        drQtyCalC = (null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt()).add(null == financeAaLedgerlCal1.getCrQty() ? BigDecimal.ZERO : financeAaLedgerlCal1.getCrQty());
+                        drAmtCalC = (null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt()).add(null == financeAaLedgerlCal1.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerlCal1.getCrAmt());
                         if (ConstantsUtil.DRCRD.equals(financeAaVoucherDetail.getDrcr())) {
                             financeAaLedgerlCal1.setDrAmt(drAmtCal);
                             financeAaLedgerlCal1.setDrQty(drQtyCal);
@@ -841,7 +897,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodea(), detailList.get(i).getCalNamea(), "第" + (i + 1) + "笔" + "一");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodea())) {
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         financeCalcode.setCalCode(detailList.get(i).getCalCodea());
@@ -862,7 +918,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodeb(), detailList.get(i).getCalNameb(), "第" + (i + 1) + "笔" + "二");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodeb())) {
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         financeCalcode.setCalCode(detailList.get(i).getCalCodeb());
@@ -883,7 +939,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodec(), detailList.get(i).getCalNamec(), "第" + (i + 1) + "笔" + "三");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodec())) {
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         financeCalcode.setCalCode(detailList.get(i).getCalCodec());
@@ -904,7 +960,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
                         String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCoded(), detailList.get(i).getCalNamed(), "第" + (i + 1) + "笔" + "四");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalNamed())) {
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         financeCalcode.setCalCode(detailList.get(i).getCalCoded());
@@ -1041,7 +1097,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         }
         sql.append(s1 + s2);
         List<Map<String, String>> list = financeCalSysRuleMapper.selectFinanceSqlMapList(sqlQuery + sql);
-        if (list.size() == 0) {
+        if (list.size() != 1) {
             successMsg.append("所选择的核算项目" + number + "内容不正确！");
         }
         return successMsg.toString();
@@ -1081,9 +1137,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         for (int i = 0; i < sqlStringDb.length; i++) {
             if (i == 0) {
                 s = sqlStringDb[0].substring(sqlStringDb[0].indexOf("SELECT") + 7, sqlStringDb[0].lastIndexOf("AS"));
-            }  else if (i == 2) {
+            } else if (i == 2) {
                 s = sqlStringDb[i].substring(0, sqlStringDb[i].indexOf("AS"));
-                s2 = " and " + s +  "=" +"'"+ calName +"'";
+                s2 = " and " + s + "=" + "'" + calName + "'";
             }
         }
         sql.append(s1 + s2);

@@ -147,6 +147,17 @@ public class FinanceAaVoucherController extends BaseController
         return success(financeAaVoucherService.insertFinanceAaVoucher(financeAaVoucher));
     }
     /**
+     * 新增凭证维护-主
+     */
+    @RequiresPermissions("aa:voucher:add")
+    @Log(title = "凭证维护-主", businessType = BusinessType.INSERT)
+    @PostMapping("/addVoucher")
+    public AjaxResult addVoucher(@RequestBody FinanceAaVoucher financeAaVoucher)
+    {
+        financeAaVoucher.setCreateBy(getUsername());
+        return success(financeAaVoucherService.insertFinanceAaVoucherSubmitForm(financeAaVoucher));
+    }
+    /**
      * 红冲凭证维护-主
      */
     @RequiresPermissions("aa:voucher:add")
@@ -167,7 +178,7 @@ public class FinanceAaVoucherController extends BaseController
     public AjaxResult edit(@RequestBody FinanceAaVoucher financeAaVoucher)
     {
         financeAaVoucher.setUpdateBy(getUsername());
-        return toAjax(financeAaVoucherService.updateFinanceAaVoucher(financeAaVoucher));
+        return success(financeAaVoucherService.updateFinanceAaVoucher(financeAaVoucher));
     }
     /**
      * 确认和取消确认凭证维护-主
