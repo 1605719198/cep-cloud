@@ -41,11 +41,11 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             financeAaLedgerAcctDTOS1 = selectList(financeAaLedgerAcctDTOS);
         }
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectBalanceZero(financeAaLedgerAcctDTO);
+            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectListAdd(financeAaLedgerAcctDTOS);
         }
         if (ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getBalanceZero())&& ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectListDetailIfSteel(financeAaLedgerAcctDTO);
+            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
         }
         if (financeAaLedgerAcctDTOS.size()>0){
             financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
@@ -267,7 +267,6 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             }else {
                 financeAaLedgerAcctDTO1.setEndingBalanceQtyCr(subtract.negate());
             }
-
             BigDecimal subtract1 = (( null == financeAaLedgerAcctDTO1.getBgnAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).add(null == financeAaLedgerAcctDTO1.getDrAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getDrAmt())).subtract(null == financeAaLedgerAcctDTO1.getCrAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getCrAmt());
             if (subtract1.compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setEndingBalanceDr(subtract1);

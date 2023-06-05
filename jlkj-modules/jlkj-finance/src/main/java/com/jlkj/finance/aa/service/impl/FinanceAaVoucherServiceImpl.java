@@ -3,7 +3,6 @@ package com.jlkj.finance.aa.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.SpringUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.finance.aa.domain.*;
@@ -157,6 +156,30 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
      * @return 凭证维护-主
      */
     @Override
+    public FinanceAaVoucher selectFinanceAaVoucherHead(FinanceAaVoucher financeAaVoucher) {
+
+        FinanceAaVoucher financeAaVoucher1 = new FinanceAaVoucher();
+        if (StringUtils.isEmpty(financeAaVoucher.getVoucherNo())) {
+            financeAaVoucher1 = new FinanceAaVoucher();
+        } else {
+            List<FinanceAaVoucher> financeAaVouchers = financeAaVoucherMapper.selectFinanceAaVoucherHead(financeAaVoucher);
+            if (financeAaVouchers != null) {
+                for (int i = 0; i < financeAaVouchers.size(); i++) {
+                    financeAaVoucher1 = financeAaVouchers.get(i);
+                }
+            }
+
+        }
+
+        return financeAaVoucher1;
+    }
+    /**
+     * 次笔笔查询凭证维护-主列表
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主
+     */
+    @Override
     public FinanceAaVoucher selectFinanceAaVoucherOrder(FinanceAaVoucher financeAaVoucher) {
 
         FinanceAaVoucher financeAaVoucher1 = new FinanceAaVoucher();
@@ -174,7 +197,6 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
 
         return financeAaVoucher1;
     }
-
     /**
      * 末笔查询凭证维护-主列表
      *
@@ -298,7 +320,10 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
      * @return 结果
      */
     @Override
-    public String insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher) {
+    public List<Map<String,String>> insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher) {
+        List<Map<String, String>> maps = new ArrayList<>();
+        Map map = new HashMap(16);
+        String voucherNo1 = financeAaVoucher.getVoucherNo();
         if (StringUtils.isEmpty(financeAaVoucher.getVoucherNo())) {
             String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
             financeAaVoucher.setVoucherNo(voucherNo);
@@ -321,7 +346,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (detailList.size() > 0) {
             for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
                 financeAaVoucherDetail.setQtyFrnamt((null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt()).negate());
-                financeAaVoucherDetail.setSrlDesc("红冲凭证号" + financeAaVoucher.getVoucherNo());
+                financeAaVoucherDetail.setSrlDesc("红冲凭证" + voucherNo1);
                 financeAaVoucherDetail.setNtamt((null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt()).negate());
                 financeAaVoucherDetail.setVoucherId(financeAaVoucher.getId());
                 if ("D".equals(financeAaVoucherDetail.getDrcr())) {
@@ -342,8 +367,10 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             insertFinanceAaVoucherDetail(financeAaVoucher);
             financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher);
         }
-
-        return inspectionCollection;
+        map.put("msg", inspectionCollection);
+        map.put("voucherNo", financeAaVoucher.getVoucherNo());
+        maps.add(map);
+        return maps;
 
     }
 
@@ -355,6 +382,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
      */
 
     public String insertHongChong(FinanceAaVoucher financeAaVoucher) {
+        String voucherNo1 = financeAaVoucher.getVoucherNo();
         if (StringUtils.isEmpty(financeAaVoucher.getVoucherNo())) {
             String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
             financeAaVoucher.setVoucherNo(voucherNo);
@@ -370,14 +398,13 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setSrlDesc("红冲凭证" + financeAaVoucher.getVoucherNo());
         BigDecimal ntamtD = BigDecimal.ZERO;
         BigDecimal ntamtC = BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
         if (detailList.size() > 0) {
             for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
                 financeAaVoucherDetail.setQtyFrnamt((null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt()).negate());
-                financeAaVoucherDetail.setSrlDesc("红冲凭证" + financeAaVoucher.getVoucherNo());
+                financeAaVoucherDetail.setSrlDesc("红冲凭证" + voucherNo1);
                 financeAaVoucherDetail.setNtamt((null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt()).negate());
                 financeAaVoucherDetail.setVoucherId(financeAaVoucher.getId());
                 if ("D".equals(financeAaVoucherDetail.getDrcr())) {
@@ -836,8 +863,6 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                 ntamtC = ntamtC.add(detailList.get(i1).getNtamt());
             }
         }
-
-        System.out.println(ntamtD.subtract(ntamtC).compareTo(BigDecimal.ZERO) == 0);
         if ((ntamtD.subtract(ntamtC).compareTo(BigDecimal.ZERO) != 0)) {
             successMsg.append("金额借贷金额必须平衡！");
         }
@@ -891,84 +916,101 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                     financeCaltype.setCompanyId(financeAaAcctcodeCorp.getCompanyId());
                     financeCaltype.setCalTypeCode(financeAaAcctcodeCorp.getCalTypeCodea());
                     FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
-                    if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
+                    if (StringUtils.isEmpty(detailList.get(i).getCalCodea())){
+                        successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目一内容不能为空!");
+                    }else  if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
                         financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalSysRule.setSys(financeAaVoucher.getSysa());
                         financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
-                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodea(), detailList.get(i).getCalNamea(), "第" + (i + 1) + "笔" + "一");
+                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodea(), detailList.get(i).getCalNamea(), "第" + (i + 1) + "笔" , "一");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodea())) {
-                        financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
-                        financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
-                        financeCalcode.setCalCode(detailList.get(i).getCalCodea());
-                        FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
-                        if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamea())) {
-                            successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目一内容不正确");
-                        }
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) ) {
+
+                            financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
+                            financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
+                            financeCalcode.setCalCode(detailList.get(i).getCalCodea());
+                            FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
+                            if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamea())) {
+                                successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目一内容不正确!");
+                            }
+
+
                     }
                 }
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp.getCalTypeCodeb())) {
                     financeCaltype.setCompanyId(financeAaAcctcodeCorp.getCompanyId());
                     financeCaltype.setCalTypeCode(financeAaAcctcodeCorp.getCalTypeCodeb());
                     FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
-                    if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
+                    if (StringUtils.isEmpty(detailList.get(i).getCalCodeb())){
+                        successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目二内容不能为空!");
+                    }else if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
                         financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalSysRule.setSys(financeAaVoucher.getSysb());
                         financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
-                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodeb(), detailList.get(i).getCalNameb(), "第" + (i + 1) + "笔" + "二");
+                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodeb(), detailList.get(i).getCalNameb(), "第" + (i + 1) + "笔" , "二");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodeb())) {
-                        financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
-                        financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
-                        financeCalcode.setCalCode(detailList.get(i).getCalCodeb());
-                        FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
-                        if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNameb())) {
-                            successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目二内容不正确");
-                        }
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) ) {
+
+                            financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
+                            financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
+                            financeCalcode.setCalCode(detailList.get(i).getCalCodeb());
+                            FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
+                            if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNameb())) {
+                                successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目二内容不正确!");
+                            }
+
                     }
                 }
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp.getCalTypeCodec())) {
                     financeCaltype.setCompanyId(financeAaAcctcodeCorp.getCompanyId());
                     financeCaltype.setCalTypeCode(financeAaAcctcodeCorp.getCalTypeCodec());
                     FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
-                    if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
+                    if (StringUtils.isEmpty(detailList.get(i).getCalNamec())){
+                        successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目三内容不能为空!");
+                    }else if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
                         financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalSysRule.setSys(financeAaVoucher.getSysc());
                         financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
-                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodec(), detailList.get(i).getCalNamec(), "第" + (i + 1) + "笔" + "三");
+                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCodec(), detailList.get(i).getCalNamec(), "第" + (i + 1) + "笔" , "三");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalCodec())) {
-                        financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
-                        financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
-                        financeCalcode.setCalCode(detailList.get(i).getCalCodec());
-                        FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
-                        if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamec())) {
-                            successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目三内容不正确");
-                        }
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) ) {
+
+                            financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
+                            financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
+                            financeCalcode.setCalCode(detailList.get(i).getCalCodec());
+                            FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
+                            if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamec())) {
+                                successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目三内容不正确!");
+                            }
+
+
                     }
                 }
                 if (!StringUtils.isEmpty(financeAaAcctcodeCorp.getCalTypeCoded())) {
                     financeCaltype.setCompanyId(financeAaAcctcodeCorp.getCompanyId());
                     financeCaltype.setCalTypeCode(financeAaAcctcodeCorp.getCalTypeCoded());
                     FinanceCaltype financeCaltype1 = financeCaltypeMapper.selectCalTypeSystemList(financeCaltype);
-                    if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
+                    if (StringUtils.isEmpty(detailList.get(i).getCalCoded())){
+                        successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目四内容不能为空");
+                    }else if (ConstantsUtil.CALRULE3.equals(financeCaltype1.getCalRule())) {
                         financeCalSysRule.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalSysRule.setSys(financeAaVoucher.getSysd());
                         financeCalSysRule.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         FinanceCalSysRule financeCalSysRule1 = financeCalSysRuleMapper.selectFinanceCalSysRule(financeCalSysRule);
-                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCoded(), detailList.get(i).getCalNamed(), "第" + (i + 1) + "笔" + "四");
+                        String s = selectFinanceAaBaseSql(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCoded(), detailList.get(i).getCalNamed(), "第" + (i + 1) + "笔" , "四");
                         successMsg.append(s);
-                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule()) && !StringUtils.isEmpty(detailList.get(i).getCalNamed())) {
-                        financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
-                        financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
-                        financeCalcode.setCalCode(detailList.get(i).getCalCoded());
-                        FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
-                        if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamed())) {
-                            successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目四内容不正确");
-                        }
+                    } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+                            financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
+                            financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
+                            financeCalcode.setCalCode(detailList.get(i).getCalCoded());
+                            FinanceCalcode financeCalcode1 = financeCalcodeMapper.selectFinanceCalcode(financeCalcode);
+                            if (!financeCalcode1.getCalName().equals(detailList.get(i).getCalNamed())) {
+                                successMsg.append("第" + (i + 1) + "笔" + "所选择的核算项目四内容不正确");
+                            }
+
                     }
                 }
             }
@@ -1006,6 +1048,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                         List<Map<String, String>> list = selectFinanceAaBaseSqlList(financeCalSysRule1.getSqlStringDb(), detailList.get(i).getCalCoded(), detailList.get(i).getCalNamed());
                         detailList.get(i).setCalIda(list.get(0).get("Id"));
                     } else if (ConstantsUtil.CALRULE4.equals(financeCaltype1.getCalRule())) {
+
                         financeCalcode.setCompanyId(financeCaltype1.getCompanyId());
                         financeCalcode.setCalTypeCode(financeCaltype1.getCalTypeCode());
                         financeCalcode.setCalCode(detailList.get(i).getCalCodea());
@@ -1077,7 +1120,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         return financeAaVoucher;
     }
 
-    public String selectFinanceAaBaseSql(String sqlQuery, String calCode, String calName, String number) {
+    public String selectFinanceAaBaseSql(String sqlQuery, String calCode, String calName, String number,String name) {
         StringBuilder successMsg = new StringBuilder();
         StringBuffer sql = new StringBuffer();
         String s;
@@ -1099,7 +1142,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         sql.append(s1 + s2);
         List<Map<String, String>> list = financeCalSysRuleMapper.selectFinanceSqlMapList(sqlQuery + sql);
         if (list.size() != 1) {
-            successMsg.append("所选择的核算项目" + number + "内容不正确！");
+            successMsg.append("所选择的" + number + "核算项目"+name+"内容不正确！");
         }
         return successMsg.toString();
     }

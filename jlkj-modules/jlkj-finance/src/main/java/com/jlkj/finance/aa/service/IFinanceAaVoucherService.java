@@ -67,6 +67,13 @@ public interface IFinanceAaVoucherService
      */
     public FinanceAaVoucher selectFinanceAaVoucherLast(FinanceAaVoucher financeAaVoucher);
     /**
+     * 首笔笔查询凭证维护-主列表
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主集合
+     */
+    public FinanceAaVoucher selectFinanceAaVoucherHead(FinanceAaVoucher financeAaVoucher);
+    /**
      * 次笔查询凭证维护-主列表
      *
      * @param financeAaVoucher 凭证维护-主
@@ -102,7 +109,7 @@ public interface IFinanceAaVoucherService
      * @param financeAaVoucher 凭证维护-主
      * @return 结果
      */
-    public String insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher);
+    public List<Map<String,String>> insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher);
 
     /**
      * 修改凭证维护-主

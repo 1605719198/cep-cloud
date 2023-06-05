@@ -88,7 +88,7 @@ public class FinanceAaLedgerAcctDTO {
     /** 会计周期 */
 
     private String acctPeriod;
-    /** 会计周期 */
+    /** 会计科目 */
 
     private String acctCode;
 

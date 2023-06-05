@@ -77,6 +77,15 @@ public class FinanceAaVoucherController extends BaseController
         return success(financeAaVoucherService.selectFinanceAaVoucher(financeAaVoucher));
     }
     /**
+     * 首笔笔查询凭证维护-主列表
+     */
+    @RequiresPermissions("aa:voucher:list")
+    @GetMapping("/listFrontVoucherHead")
+    public AjaxResult listFrontVoucherHead(FinanceAaVoucher financeAaVoucher)
+    {
+        return success(financeAaVoucherService.selectFinanceAaVoucherHead(financeAaVoucher));
+    }
+    /**
      * 次笔查询凭证维护-主列表
      */
     @RequiresPermissions("aa:voucher:list")

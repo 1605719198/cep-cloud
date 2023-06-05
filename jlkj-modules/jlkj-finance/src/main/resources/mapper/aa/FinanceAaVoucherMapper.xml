@@ -221,6 +221,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by b.voucher_no
     </select>
+    <select id="selectFinanceAaVoucherHead" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
+        <include refid="selectFinanceAaVoucherVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+
+            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ < ]]> #{voucherNo}</if>
+        </where>
+        order by voucher_no
+    </select>
 
 
     <insert id="insertFinanceAaVoucher" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucher">
