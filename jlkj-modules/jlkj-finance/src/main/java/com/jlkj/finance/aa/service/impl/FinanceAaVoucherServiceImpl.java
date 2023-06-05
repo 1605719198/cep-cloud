@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.SpringUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.finance.aa.domain.*;
@@ -369,14 +370,14 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setPgrmid(financeAaVoucher.getDetailList().get(0).getSrlDesc());
+        financeAaVoucher.setSrlDesc("红冲凭证" + financeAaVoucher.getVoucherNo());
         BigDecimal ntamtD = BigDecimal.ZERO;
         BigDecimal ntamtC = BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
         if (detailList.size() > 0) {
             for (FinanceAaVoucherDetail financeAaVoucherDetail : detailList) {
                 financeAaVoucherDetail.setQtyFrnamt((null == financeAaVoucherDetail.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getQtyFrnamt()).negate());
-                financeAaVoucherDetail.setSrlDesc("红冲凭证号" + financeAaVoucher.getVoucherNo());
+                financeAaVoucherDetail.setSrlDesc("红冲凭证" + financeAaVoucher.getVoucherNo());
                 financeAaVoucherDetail.setNtamt((null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt()).negate());
                 financeAaVoucherDetail.setVoucherId(financeAaVoucher.getId());
                 if ("D".equals(financeAaVoucherDetail.getDrcr())) {
