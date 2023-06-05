@@ -1005,8 +1005,8 @@ export default {
         this.form.companyId=this.queryParams.companyId
         this.form.detailList =  this.formDetail.detailList;
         addVoucher(this.form).then(response => {
-          if (!!response.msg){
-            this.$message.error(response.msg);
+          if (!!response.data[0].msg){
+            this.$message.error(response.data[0].msg);
             return
           }
           this.$modal.msgSuccess("复制成功");
