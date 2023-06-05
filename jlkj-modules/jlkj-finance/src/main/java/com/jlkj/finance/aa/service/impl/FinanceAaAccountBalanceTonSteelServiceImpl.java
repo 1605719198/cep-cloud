@@ -179,6 +179,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO2.getUnpostedVoucher())){
                 financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
+                financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
                 financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate()+"-01");
                 financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate()+"-31");
                 FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
