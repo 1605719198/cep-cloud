@@ -1049,19 +1049,27 @@ export default {
               this.form.detailList =  this.formDetail.detailList;
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
+                  if (!!response.data[0].msg){
+                    this.$message.error(response.data[0].msg);
+                    return
+                  }
                   this.$modal.msgSuccess("修改成功");
                   this.open = false;
+                  this.queryParams.companyId = this.form.companyId
+                  this.queryParams.voucherDate= this.form.voucherDate
+                  this.queryParams.voucherNo=response.data[0].voucherNo
                   this.getList();
                   this.getListDetailList()
                 });
               } else {
                 addVoucher(this.form).then(response => {
-                  if (!!response.msg){
-                    this.$message.error(response.msg);
+                  if (!!response.data[0].msg){
+                    this.$message.error(response.data[0].msg);
                     return
                   }
                   this.$modal.msgSuccess("新增成功");
                   this.open = false;
+                  this.queryParams.voucherNo=response.data[0].voucherNo
                   this.getList();
                   this.getListDetailList()
                 });

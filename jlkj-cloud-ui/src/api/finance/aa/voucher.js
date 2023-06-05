@@ -75,7 +75,7 @@ export function getVoucher(id) {
 // 新增凭证维护-主
 export function addVoucher(data) {
   return request({
-    url: '/finance/voucher',
+    url: '/finance/voucher/addVoucher',
     method: 'post',
     data: data
   })
