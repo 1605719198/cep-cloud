@@ -66,12 +66,69 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     <select id="selectAmountNotDisplayed" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
-        <include refid="selectFinanceAaLedgerAcctVo"/>
-        <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
-            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
-        </where>
+        SELECT
+            acct_period,
+            acct_name,
+            acct_code,
+            sum( bgn_amt ),
+            sum( dr_amt ),
+            sum( cr_amt ),
+            sum( bgn_qty ),
+            sum( dr_qty ),
+            sum( cr_qty )
+        FROM
+            (
+                SELECT
+                    acct_period AS acct_period,
+                    acct_name AS acct_name,
+                    acct_code AS acct_code,
+                    bgn_amt AS bgn_amt,
+                    dr_amt AS dr_amt,
+                    cr_amt AS cr_amt,
+                    bgn_qty AS bgn_qty,
+                    dr_qty AS dr_qty,
+                    cr_qty AS cr_qty
+                FROM
+                    finance_aa_ledger_acct
+                WHERE
+                    acct_period between #{startDate} and #{endDate}
+                UNION
+                SELECT
+                    substr( b.voucher_date, 1, 7 ) AS acct_period,
+                    b.acct_name AS acct_name,
+                    b.acct_code AS acct_code,
+                    0 AS bgn_amt,
+                    CASE
+
+                        WHEN DRCR = 'D' THEN
+                            SUM( b.ntAmt ) ELSE 0
+                        END AS dr_amt,
+                    CASE
+
+                        WHEN DRCR = 'C' THEN
+                            SUM( b.ntAmt ) ELSE 0
+                        END AS cr_amt,
+                    0 AS bgn_qty,
+                    CASE
+
+                        WHEN DRCR = 'D' THEN
+                            SUM( b.qty_frnAmt ) ELSE 0
+                        END AS dr_qty,
+                    CASE
+
+                        WHEN DRCR = 'C' THEN
+                            SUM( b.qty_frnAmt ) ELSE 0
+                        END AS cr_qty
+                FROM
+                    finance_aa_voucher a
+                        LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
+                        AND b.company_id = a.company_id
+                WHERE
+                    b.voucher_date between #{startDate} and #{endDate}
+                group by acct_name
+            ) T1
+        GROUP BY
+            acct_name
     </select>
     <select id="selectBalanceZero" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         <include refid="selectFinanceAaLedgerAcctVo"/>
@@ -80,6 +137,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
         </where>
+    </select>
+    <select id="selectFinanceAaGeneralLedger" resultType="String">
+SELECT
+        acct_code
+            from
+        finance_aa_ledger_acct
+<where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+        </where>
+    </select>
+    <select id="selectFinanceAaGeneralLedgerAcctCode1"
+            resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        <include refid="selectFinanceAaLedgerAcctVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+        </where>
+        ORDER BY
+        acct_period
     </select>
 
     <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">

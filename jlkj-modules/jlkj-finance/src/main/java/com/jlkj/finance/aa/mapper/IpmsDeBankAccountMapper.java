@@ -59,4 +59,12 @@ public interface IpmsDeBankAccountMapper
      * @return 结果
      */
     public int deleteIpmsDeBankAccountByIds(String[] ids);
+
+    /**
+     * 修改银行信息
+     *
+     * @param ipmsDeBankAccount 银行信息
+     * @return 结果
+     */
+    public int updateStatus(IpmsDeBankAccount ipmsDeBankAccount);
 }

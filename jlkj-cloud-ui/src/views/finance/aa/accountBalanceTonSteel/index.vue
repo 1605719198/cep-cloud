@@ -93,10 +93,10 @@
                 >
           <el-table-column label="会计科目"prop="acctCode" align="center"/>
           <el-table-column  label="会计科目名称" prop="acctName" align="center" />
-          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf"/>
-          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf"/>
-          <el-table-column  label="核算项目三" prop="calNamec" align="center"v-if="calNamecIf" />
-          <el-table-column  label="核算项目四" prop="calNamed" align="center" v-if="calNamedIf"/>
+          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" :key="0"/>
+          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" :key="1"/>
+          <el-table-column  label="核算项目三" prop="calNamec" align="center"v-if="calNamecIf" :key="2"/>
+          <el-table-column  label="核算项目四" prop="calNamed" align="center" v-if="calNamedIf" :key="3"/>
           <el-table-column label="初期余额"  align="center">
             <el-table-column label="借方" prop="bgnAmtStraight"align="center"/>
             <el-table-column label="贷方" prop="bgnAmtBurden"align="center"/>
@@ -123,10 +123,10 @@
                   :data="formCalNumberDetail.detailList">
           <el-table-column label="会计科目"prop="acctCode" align="center" />
           <el-table-column  label="会计科目名称" prop="acctName" align="center" />
-          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf"/>
-          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf"/>
-          <el-table-column  label="核算项目三" prop="calNamec" align="center" v-if="calNamecIf"/>
-          <el-table-column  label="核算项目四" prop="calNamed" align="center"v-if="calNamedIf"/> >
+          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" :key="4"/>
+          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" :key="5"/>
+          <el-table-column  label="核算项目三" prop="calNamec" align="center" v-if="calNamecIf" :key="6"/>
+          <el-table-column  label="核算项目四" prop="calNamed" align="center"v-if="calNamedIf" :key="7"/>
           <el-table-column label="余额初期"  align="center">
             <el-table-column label="借方金额" prop="bgnAmtStraight"align="center"/>
             <el-table-column label="贷方金额" prop="bgnAmtBurden"align="center"/>
@@ -171,7 +171,7 @@
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import selectMoreConditions from "@/views/finance/aa/accountBalanceTonSteel/selectMoreConditions";
-import {listCalNumberDetailIfSteel,listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel.js";
+import {listCalNumberDetailIfSteel,listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel";
 export default {
   name: "Voucher",
   components: {

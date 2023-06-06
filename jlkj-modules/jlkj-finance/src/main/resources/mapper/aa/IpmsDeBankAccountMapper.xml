@@ -161,4 +161,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <update id="updateStatus" parameterType="IpmsDeBankAccount">
+        update ipms_de_bank_account
+        <set>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

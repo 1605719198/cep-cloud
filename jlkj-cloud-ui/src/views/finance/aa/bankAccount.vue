@@ -76,7 +76,16 @@
       <el-table-column label="账户类别" align="center" prop="acctType" />
       <el-table-column label="账号" align="center" prop="remitAcctno" />
       <el-table-column label="账户名称" align="center" prop="acctTypeName" />
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="状态" align="center" prop="status">
+        <template v-slot="scope">
+          <el-switch
+            v-model="scope.row.status"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -133,7 +142,10 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="金融机构" prop="branchNo">
-              <el-input v-model="form.branchNo" placeholder="请输入金融机构" class="input"/>
+              <el-input v-model="form.branchNo"  class="input">
+                <el-button slot="append" icon="el-icon-search" @click="inputBankName"
+                ></el-button>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -154,10 +166,14 @@
           <el-input v-model="form.bankName" placeholder="请输入银行名称" class="input1"/>
         </el-form-item>
 
+        <el-form-item label="银行账号" prop="remitAcctno">
+          <el-input v-model="form.remitAcctno" placeholder="请输入银行名称" class="input2"/>
+        </el-form-item>
+
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="会计科目" prop="acctName">
-              <el-input v-model="form.acctName" placeholder="请输入会计科目" class="input">
+            <el-form-item label="会计科目" prop="acctCode">
+              <el-input v-model="form.acctCode" class="input">
                 <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
                 ></el-button>
               </el-input>
@@ -221,20 +237,29 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
       <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
+      <bankPop ref="selectBankPop" @ok="getBankPop"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { listAccount, getAccount, delAccount, addAccount, updateAccount } from "@/api/finance/aa/bankAccount";
+import {
+  listAccount,
+  getAccount,
+  delAccount,
+  addAccount,
+  updateAccount,
+  changeBankAccount
+} from "@/api/finance/aa/bankAccount";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
+import bankPop from "@/views/finance/aa/bank/bankPop";
 
 export default {
   name: "BankAccount",
   dicts: ['aa_bank_account_type'],
   components: {
-    acctcodeCorpPop
+    acctcodeCorpPop,bankPop
   },
   data() {
     return {
@@ -308,9 +333,16 @@ export default {
     getAcctCodeCorpPop(val){
       console.log(val);
       this.form.acctId= val[0].acctId
-      this.form.acctName= val[0].acctName
+      this.form.acctCode= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;
       this.form.calTypeCodeb = val[0].calTypeCodeb;
+    },
+    getBankPop(val){
+      console.log(val);
+      // this.form.acctId= val[0].acctId
+      this.form.branchNo= val[0].bankchnName
+      // this.form.calTypeCodea = val[0].calTypeCodea;
+      // this.form.calTypeCodeb = val[0].calTypeCodeb;
     },
     // 取消按钮
     cancel() {
@@ -354,6 +386,10 @@ export default {
     /** 会计科目点击事件 */
     inputAcctName() {
       this.$refs.selectAcctCodeCorpPop.show();
+    },
+    /** 会计科目点击事件 */
+    inputBankName() {
+      this.$refs.selectBankPop.show();
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -417,6 +453,17 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
+    // 用户状态修改
+    handleStatusChange(row) {
+      let text = row.status === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要"' + text + '""' + row.bankName + '"用户吗？').then(function () {
+        return changeBankAccount(row.id, row.status);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
   }
 };
 </script>
@@ -427,5 +474,8 @@ export default {
 }
 .input1 {
   width: 93%;
+}
+.input2 {
+  width: 50%;
 }
 </style>

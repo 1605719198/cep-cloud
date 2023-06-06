@@ -7,6 +7,7 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.aa.domain.IpmsDeBankAccount;
 import com.jlkj.finance.aa.service.IIpmsDeBankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,17 @@ public class IpmsDeBankAccountController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(ipmsDeBankAccountService.deleteIpmsDeBankAccountByIds(ids));
+    }
+
+    /**
+     * 状态修改
+     */
+    @RequiresPermissions("finance:account:edit")
+    @Log(title = "往来银行", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody IpmsDeBankAccount ipmsDeBankAccount)
+    {
+        ipmsDeBankAccount.setUpdateBy(SecurityUtils.getUsername());
+        return toAjax(ipmsDeBankAccountService.updateStatus(ipmsDeBankAccount));
     }
 }

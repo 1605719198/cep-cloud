@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="date != null ">and effect_date = #{date} </if>
             <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
             <if test="version != null and version != ''">and version = #{version} </if>
+            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
         </where>
     </select>
     
@@ -130,4 +131,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteSocialSecurityByVersion" parameterType="map">
         delete from human_hs_social_security where pay_area_id = #{payAreaId} and  version= #{version}
     </delete>
+
+    <select id="selectSocialSecurityListBySalaryProjectId" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
+        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+        <where>
+            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
+        </where>
+    </select>
 </mapper>

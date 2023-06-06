@@ -39,7 +39,7 @@
 
           <el-table-column label="会计周期" align="center" prop="acctPeriod" width="180">
             <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.acctPeriod, '{y}-{m}-{d}') }}</span>
+              <span>{{ parseTime(scope.row.acctPeriod, '{y}-{m}') }}</span>
             </template>
           </el-table-column>
           <el-table-column label="会计科目编号" align="center" prop="acctCode" />
@@ -309,7 +309,9 @@ export default {
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
       this.initList = response.data
-      if (response.data !=null){
+      console.log(response.data);
+
+      if (  this.initList.length>0 ){
         this.$modal.msgError("上传文件失败，请重试");
       }else {
         this.$message({message: '上传成功', type: 'success'});

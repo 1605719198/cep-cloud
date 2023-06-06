@@ -62,7 +62,6 @@ public class ProjectPayServiceImpl implements IProjectPayService
             projectPay.setCreateDate(new Date());
             if(projectPay.getId()!=null){
                 projectPayMapper.updateProjectPay(projectPay);
-
             }else{
                 projectPayMapper.insertProjectPay(projectPay);
             }

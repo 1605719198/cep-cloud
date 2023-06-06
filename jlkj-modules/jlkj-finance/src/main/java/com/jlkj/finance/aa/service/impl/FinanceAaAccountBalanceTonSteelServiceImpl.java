@@ -5,7 +5,6 @@ import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerlCalMapper;
 import com.jlkj.finance.aa.mapper.FinanceAaVoucherDetailMapper;
-import com.jlkj.finance.aa.mapper.FinanceAaVoucherMapper;
 import com.jlkj.finance.aa.service.IFinanceAaAccountBalanceTonSteelService;
 import com.jlkj.finance.utils.ConstantsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
     private FinanceAaLedgerlCalMapper financeAaLedgerlCalMapper;
     @Autowired
     private FinanceAaVoucherDetailMapper financeAaVoucherDetailMapper;
-    @Autowired
-    private FinanceAaVoucherMapper financeAaVoucherMapper;
+
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
@@ -43,11 +41,11 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             financeAaLedgerAcctDTOS1 = selectList(financeAaLedgerAcctDTOS);
         }
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectBalanceZero(financeAaLedgerAcctDTO);
+            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectListAdd(financeAaLedgerAcctDTOS);
         }
         if (ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getBalanceZero())&& ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectListDetailIfSteel(financeAaLedgerAcctDTO);
+            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
         }
         if (financeAaLedgerAcctDTOS.size()>0){
             financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
@@ -181,6 +179,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO2.getUnpostedVoucher())){
                 financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
+                financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
                 financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate()+"-01");
                 financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate()+"-31");
                 FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
@@ -230,6 +229,9 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
                     substring = financeAaLedgerAcctDTO1.getAcctCode();
                 }
             }
+            if(ConstantsUtil.ISEMPTY.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
+                substring = financeAaLedgerAcctDTO1.getAcctCode();
+            }
             financeAaLedgerAcctDTO1.setAcctCode(substring);
             if ((null == financeAaLedgerAcctDTO1.getBgnAmt()?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setBgnAmtStraight(financeAaLedgerAcctDTO1.getBgnAmt());
@@ -265,7 +267,6 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             }else {
                 financeAaLedgerAcctDTO1.setEndingBalanceQtyCr(subtract.negate());
             }
-
             BigDecimal subtract1 = (( null == financeAaLedgerAcctDTO1.getBgnAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).add(null == financeAaLedgerAcctDTO1.getDrAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getDrAmt())).subtract(null == financeAaLedgerAcctDTO1.getCrAmt() ?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getCrAmt());
             if (subtract1.compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setEndingBalanceDr(subtract1);
