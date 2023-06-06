@@ -670,6 +670,11 @@ export default {
     headFirstQuery() {
       this.$refs["queryForm"].validate(valid => {
         if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
           listFrontVoucherHead(this.queryParams).then(response => {
             this.form = response.data;
             if(this.form.voucherNo !=null){
@@ -681,9 +686,9 @@ export default {
               this.queryParams.companyId = this.form.companyId
               this.getListDetailList()
             }else {
-              this.queryParams.voucherNo=''
-              this.queryParams.companyId=''
-              this.getListDetailList()
+              this.getList()
+              this.$message.error('已经是第一笔数据！');
+              return
             }
             this.loading = false;
           });
@@ -694,6 +699,11 @@ export default {
     headFrontQuery: function () {
       this.$refs["queryForm"].validate(valid => {
         if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
       listFrontVoucher(this.queryParams).then(response => {
         this.form = response.data;
         if(this.form.voucherNo !=null){
@@ -704,6 +714,10 @@ export default {
           this.queryParams.voucherNo = this.form.voucherNo
           this.queryParams.companyId = this.form.companyId
           this.getListDetailList()
+        }else {
+          this.getList()
+          this.$message.error('已经是第一笔数据！');
+          return
         }
         this.loading = false;
       });
@@ -714,6 +728,11 @@ export default {
     headOrderQuery() {
       this.$refs["queryForm"].validate(valid => {
         if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
       listOrderVoucher(this.queryParams).then(response => {
         this.form = response.data;
         if(this.form.voucherNo !=null){
@@ -724,6 +743,10 @@ export default {
           this.queryParams.voucherNo = this.form.voucherNo
           this.queryParams.companyId = this.form.companyId
           this.getListDetailList()
+        }else {
+          this.getList()
+          this.$message.error('已经是最后一笔数据！');
+          return
         }
         this.loading = false;
       });
@@ -734,6 +757,12 @@ export default {
     headLastQuery() {
       this.$refs["queryForm"].validate(valid => {
         if (valid) {
+
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
       listLastVoucher(this.queryParams).then(response => {
         this.form = response.data;
         if(this.form.voucherNo !=null){
@@ -743,6 +772,10 @@ export default {
           this.queryParams.voucherNo = this.form.voucherNo
           this.queryParams.companyId = this.form.companyId
           this.getListDetailList()
+        }else {
+          this.getList()
+          this.$message.error('已经是最后一笔数据！');
+          return
         }
         this.loading = false;
       });
