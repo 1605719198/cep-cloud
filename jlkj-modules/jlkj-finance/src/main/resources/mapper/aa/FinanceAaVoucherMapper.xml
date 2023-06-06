@@ -157,6 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and voucher_date between #{startDate} and #{endDate}</if>
             <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ < ]]> #{voucherNo}</if>
         </where>
         order by voucher_no
@@ -166,7 +167,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
-
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and voucher_date between #{startDate} and #{endDate}</if>
             <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ > ]]> #{voucherNo}</if>
         </where>
         order by voucher_no
@@ -176,6 +177,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and voucher_date between #{startDate} and #{endDate}</if>
             <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ > ]]> #{voucherNo}</if>
         </where>
         order by voucher_no
@@ -226,7 +228,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="voucherDate != null "> and voucher_date = #{voucherDate}</if>
-
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and voucher_date between #{startDate} and #{endDate}</if>
             <if test="voucherNo != null  and voucherNo != ''"> and voucher_no <![CDATA[ < ]]> #{voucherNo}</if>
         </where>
         order by voucher_no

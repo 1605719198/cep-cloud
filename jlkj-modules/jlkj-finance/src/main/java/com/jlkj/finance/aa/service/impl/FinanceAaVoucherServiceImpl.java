@@ -162,6 +162,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getVoucherNo())) {
             financeAaVoucher1 = new FinanceAaVoucher();
         } else {
+
             List<FinanceAaVoucher> financeAaVouchers = financeAaVoucherMapper.selectFinanceAaVoucherHead(financeAaVoucher);
             if (financeAaVouchers != null) {
                 for (int i = 0; i < financeAaVouchers.size(); i++) {
