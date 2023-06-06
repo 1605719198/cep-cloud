@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.AccountRulesMapper">
+    
+    <resultMap type="AccountRules" id="AccountRulesResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="apprgroup"    column="apprGroup"    />
+        <result property="infocode"    column="infoCode"    />
+        <result property="infoname"    column="infoName"    />
+        <result property="costunit"    column="costUnit"    />
+        <result property="costtype"    column="costType"    />
+        <result property="acctcoded"    column="acctCodeD"    />
+        <result property="efnod"    column="efNoD"    />
+        <result property="idcoded"    column="idCodeD"    />
+        <result property="duedated"    column="dueDateD"    />
+        <result property="acctcodec"    column="acctCodeC"    />
+        <result property="idcodec"    column="idCodeC"    />
+        <result property="refnoc"    column="refNoC"    />
+        <result property="duedatec"    column="dueDateC"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectAccountRulesVo">
+        select id, code, apprGroup, infoCode, infoName, costUnit, costType, acctCodeD, efNoD, idCodeD, dueDateD, acctCodeC, idCodeC, refNoC, dueDateC, comp_id, creator, creator_no, creator_id, create_date from human_hs_account_rules
+    </sql>
+
+    <select id="selectAccountRulesList" parameterType="AccountRules" resultMap="AccountRulesResult">
+        <include refid="selectAccountRulesVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="apprgroup != null  and apprgroup != ''"> and apprGroup = #{apprgroup}</if>
+            <if test="infocode != null  and infocode != ''"> and infoCode = #{infocode}</if>
+            <if test="infoname != null  and infoname != ''"> and infoName like concat('%', #{infoname}, '%')</if>
+            <if test="costunit != null  and costunit != ''"> and costUnit = #{costunit}</if>
+            <if test="costtype != null  and costtype != ''"> and costType = #{costtype}</if>
+            <if test="acctcoded != null  and acctcoded != ''"> and acctCodeD = #{acctcoded}</if>
+            <if test="efnod != null  and efnod != ''"> and efNoD = #{efnod}</if>
+            <if test="idcoded != null  and idcoded != ''"> and idCodeD = #{idcoded}</if>
+            <if test="duedated != null  and duedated != ''"> and dueDateD = #{duedated}</if>
+            <if test="acctcodec != null  and acctcodec != ''"> and acctCodeC = #{acctcodec}</if>
+            <if test="idcodec != null  and idcodec != ''"> and idCodeC = #{idcodec}</if>
+            <if test="refnoc != null  and refnoc != ''"> and refNoC = #{refnoc}</if>
+            <if test="duedatec != null  and duedatec != ''"> and dueDateC = #{duedatec}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="creatorNo != null  and creatorNo != ''"> and creator_no = #{creatorNo}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectAccountRulesById" parameterType="String" resultMap="AccountRulesResult">
+        <include refid="selectAccountRulesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAccountRules" parameterType="AccountRules">
+        insert into human_hs_account_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="apprgroup != null">apprGroup,</if>
+            <if test="infocode != null">infoCode,</if>
+            <if test="infoname != null">infoName,</if>
+            <if test="costunit != null">costUnit,</if>
+            <if test="costtype != null">costType,</if>
+            <if test="acctcoded != null">acctCodeD,</if>
+            <if test="efnod != null">efNoD,</if>
+            <if test="idcoded != null">idCodeD,</if>
+            <if test="duedated != null">dueDateD,</if>
+            <if test="acctcodec != null">acctCodeC,</if>
+            <if test="idcodec != null">idCodeC,</if>
+            <if test="refnoc != null">refNoC,</if>
+            <if test="duedatec != null">dueDateC,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="apprgroup != null">#{apprgroup},</if>
+            <if test="infocode != null">#{infocode},</if>
+            <if test="infoname != null">#{infoname},</if>
+            <if test="costunit != null">#{costunit},</if>
+            <if test="costtype != null">#{costtype},</if>
+            <if test="acctcoded != null">#{acctcoded},</if>
+            <if test="efnod != null">#{efnod},</if>
+            <if test="idcoded != null">#{idcoded},</if>
+            <if test="duedated != null">#{duedated},</if>
+            <if test="acctcodec != null">#{acctcodec},</if>
+            <if test="idcodec != null">#{idcodec},</if>
+            <if test="refnoc != null">#{refnoc},</if>
+            <if test="duedatec != null">#{duedatec},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAccountRules" parameterType="AccountRules">
+        update human_hs_account_rules
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="apprgroup != null">apprGroup = #{apprgroup},</if>
+            <if test="infocode != null">infoCode = #{infocode},</if>
+            <if test="infoname != null">infoName = #{infoname},</if>
+            <if test="costunit != null">costUnit = #{costunit},</if>
+            <if test="costtype != null">costType = #{costtype},</if>
+            <if test="acctcoded != null">acctCodeD = #{acctcoded},</if>
+            <if test="efnod != null">efNoD = #{efnod},</if>
+            <if test="idcoded != null">idCodeD = #{idcoded},</if>
+            <if test="duedated != null">dueDateD = #{duedated},</if>
+            <if test="acctcodec != null">acctCodeC = #{acctcodec},</if>
+            <if test="idcodec != null">idCodeC = #{idcodec},</if>
+            <if test="refnoc != null">refNoC = #{refnoc},</if>
+            <if test="duedatec != null">dueDateC = #{duedatec},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAccountRulesById" parameterType="String">
+        delete from human_hs_account_rules where id = #{id}
+    </delete>
+
+    <delete id="deleteAccountRulesByIds" parameterType="String">
+        delete from human_hs_account_rules where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
