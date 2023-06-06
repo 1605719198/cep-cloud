@@ -282,6 +282,7 @@ export default {
     //载入数据
     onLoad() {
       this.table.loading = true;//加载状态
+      console.log("111",345)
       listBasis(this.queryParams).then(response => {
         this.total = response.total;
         this.tableData = response.rows;//表格数据

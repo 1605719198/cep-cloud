@@ -29,16 +29,17 @@
               @change="dateFormat">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="处理情况" prop="disposeId">
-            <el-select v-model="form.disposeId" placeholder="请选择处理情况" clearable>
+          <el-form-item label="处理情况" prop="compId">
+            <el-select v-model="queryParams.disposeId" placeholder="请选择处理情况">
               <el-option
                 v-for="dict in attendenceOptions.DisposeStatus"
                 :key="dict.dicNo"
                 :label="dict.dicName"
                 :value="dict.dicNo"
-              />
+              ></el-option>
             </el-select>
           </el-form-item>
+
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -53,13 +54,21 @@
           <el-table-column label="岗位" align="center" prop="postName"/>
           <el-table-column label="正常出勤时段" align="center" prop="norOndutyBegin" />
           <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" />
-          <el-table-column label="异常原因" align="center" prop="excReaId" />
+          <el-table-column label="异常原因" align="center" prop="excReaId">
+            <template v-slot="scope">
+              <dict-tag-human :options="attendenceOptions.AbnormalReason" :value="scope.row.excReaId"/>
+            </template>
+          </el-table-column>
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
               <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
-          <el-table-column label="处理情况" align="center" prop="disposeId" />
+          <el-table-column label="处理情况" align="center" prop="disposeId" >
+            <template v-slot="scope">
+              <dict-tag-human :options="attendenceOptions.DisposeStatus" :value="scope.row.disposeId"/>
+            </template>
+          </el-table-column>
         </el-table>
 
         <pagination
@@ -100,7 +109,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['DisposeStatus']
+        optionsType: ['DisposeStatus','AbnormalReason']
       },
       //出勤选单选项列表
       attendenceOptions: {},
@@ -229,6 +238,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.queryParams.empNo = undefined
+      this.queryParams.disposeId = undefined
       this.queryParams.slotCardOnduty = undefined
       this.handleQuery();
     },
