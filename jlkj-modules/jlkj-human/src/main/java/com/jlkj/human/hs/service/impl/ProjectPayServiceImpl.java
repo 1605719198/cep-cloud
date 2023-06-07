@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.ProjectPay;
 import com.jlkj.human.hs.mapper.ProjectPayMapper;
@@ -35,6 +36,17 @@ public class ProjectPayServiceImpl implements IProjectPayService
     }
 
     /**
+     * 通过编码类型查询薪酬项目
+     *
+     * @param projectPay 薪酬项目
+     * @return 薪酬项目
+     */
+    @Override
+    public ProjectPay selectProjectPayByCode(ProjectPay projectPay){
+        return projectPayMapper.selectProjectPayByCode(projectPay);
+    }
+
+    /**
      * 查询薪酬项目列表
      *
      * @param projectPay 薪酬项目
@@ -60,6 +72,11 @@ public class ProjectPayServiceImpl implements IProjectPayService
             projectPay.setCreatorNo(SecurityUtils.getUsername());
             projectPay.setCreator(SecurityUtils.getNickName());
             projectPay.setCreateDate(new Date());
+            ProjectPay parent = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+            if("1".equals(parent.getIfEnd())){
+                parent.setIfEnd("0");
+                projectPayMapper.updateProjectPay(parent);
+            }
             if(projectPay.getId()!=null){
                 projectPayMapper.updateProjectPay(projectPay);
             }else{
@@ -78,6 +95,30 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int updateProjectPay(ProjectPay projectPay)
     {
+        //状态启动停用
+        String status1 = "0",status2 = "1";
+        ProjectPay preData = projectPayMapper.selectProjectPayById(projectPay.getId());
+        if(!projectPay.getStatus().equals(preData.getStatus())){
+            // 子节点有正常数据不能关闭BasisOptionsDTO(id=78, dicNo=null, dicName=null, status=0, compId=null)
+            if(status2.equals(projectPay.getStatus())){
+                List<ProjectPay> childData = projectPayMapper.selectProjectPayByParentid(projectPay.getId());
+                for (ProjectPay oldDatum : childData) {
+                    if (status1.equals(oldDatum.getStatus())) {
+                        throw new ServiceException("该资料下存在数据启用，不可关闭");
+                    }
+                }
+            }
+            // 当子节点启动时，父节点直接改成正常
+            if(status1.equals(projectPay.getStatus())){
+                ProjectPay parendData = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+                parendData.setStatus("0");
+                projectPayMapper.updateProjectPay(parendData);
+            }
+        }
+        projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+        projectPay.setCreatorNo(SecurityUtils.getUsername());
+        projectPay.setCreator(SecurityUtils.getNickName());
+        projectPay.setCreateDate(new Date());
         return projectPayMapper.updateProjectPay(projectPay);
     }
 

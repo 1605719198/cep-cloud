@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PersonalSalaryDetailMapper">
+    
+    <resultMap type="PersonalSalaryDetail" id="PersonalSalaryDetailResult">
+        <result property="id"    column="id"    />
+        <result property="salaryId"    column="salary_id"    />
+        <result property="payCheckRea"    column="pay_check_rea"    />
+        <result property="payProName"    column="pay_pro_name"    />
+        <result property="twoTitle"    column="two_title"    />
+        <result property="thrIsLov"    column="thr_is_lov"    />
+        <result property="thrSta"    column="thr_sta"    />
+        <result property="thrIdSta"    column="thr_id_sta"    />
+        <result property="foutTitle"    column="fout_title"    />
+        <result property="fivIsLov"    column="fiv_is_lov"    />
+        <result property="fivSta"    column="fiv_sta"    />
+        <result property="fivIdSta"    column="fiv_id_sta"    />
+        <result property="sixTitle"    column="six_title"    />
+        <result property="sevIsLov"    column="sev_is_lov"    />
+        <result property="sevSta"    column="sev_sta"    />
+        <result property="sevIdSta"    column="sev_id_sta"    />
+        <result property="serialNo"    column="serial_no"    />
+        <result property="postFlag"    column="post_flag"    />
+        <result property="postEffectDate"    column="post_effect_date"    />
+        <result property="msgld"    column="msgld"    />
+        <result property="istax"    column="istax"    />
+        <result property="isEmpPro"    column="is_emp_pro"    />
+        <result property="lovConId"    column="lov_con_id"    />
+        <result property="isSalaryBasis"    column="is_salary_basis"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="isCheck"    column="is_check"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonalSalaryDetailVo">
+        select id, salary_id, pay_check_rea, pay_pro_name, two_title, thr_is_lov, thr_sta, thr_id_sta, fout_title, fiv_is_lov, fiv_sta, fiv_id_sta, six_title, sev_is_lov, sev_sta, sev_id_sta, serial_no, post_flag, post_effect_date, msgld, istax, is_emp_pro, lov_con_id, is_salary_basis, comp_id, emp_id, emp_no, version_no, is_check, creator, creator_id, creator_no, create_date from human_hs_salary_detail
+    </sql>
+
+    <select id="selectPersonalSalaryDetailList" parameterType="PersonalSalaryDetail" resultMap="PersonalSalaryDetailResult">
+        <include refid="selectPersonalSalaryDetailVo"/>
+        <where>  
+            <if test="salaryId != null  and salaryId != ''"> and salary_id = #{salaryId}</if>
+            <if test="payCheckRea != null  and payCheckRea != ''"> and pay_check_rea = #{payCheckRea}</if>
+            <if test="payProName != null  and payProName != ''"> and pay_pro_name like concat('%', #{payProName}, '%')</if>
+            <if test="twoTitle != null  and twoTitle != ''"> and two_title = #{twoTitle}</if>
+            <if test="thrIsLov != null  and thrIsLov != ''"> and thr_is_lov = #{thrIsLov}</if>
+            <if test="thrSta != null  and thrSta != ''"> and thr_sta = #{thrSta}</if>
+            <if test="thrIdSta != null  and thrIdSta != ''"> and thr_id_sta = #{thrIdSta}</if>
+            <if test="foutTitle != null  and foutTitle != ''"> and fout_title = #{foutTitle}</if>
+            <if test="fivIsLov != null  and fivIsLov != ''"> and fiv_is_lov = #{fivIsLov}</if>
+            <if test="fivSta != null  and fivSta != ''"> and fiv_sta = #{fivSta}</if>
+            <if test="fivIdSta != null  and fivIdSta != ''"> and fiv_id_sta = #{fivIdSta}</if>
+            <if test="sixTitle != null  and sixTitle != ''"> and six_title = #{sixTitle}</if>
+            <if test="sevIsLov != null  and sevIsLov != ''"> and sev_is_lov = #{sevIsLov}</if>
+            <if test="sevSta != null  and sevSta != ''"> and sev_sta = #{sevSta}</if>
+            <if test="sevIdSta != null  and sevIdSta != ''"> and sev_id_sta = #{sevIdSta}</if>
+            <if test="serialNo != null  and serialNo != ''"> and serial_no = #{serialNo}</if>
+            <if test="postFlag != null  and postFlag != ''"> and post_flag = #{postFlag}</if>
+            <if test="postEffectDate != null  and postEffectDate != ''"> and post_effect_date = #{postEffectDate}</if>
+            <if test="msgld != null  and msgld != ''"> and msgld = #{msgld}</if>
+            <if test="istax != null  and istax != ''"> and istax = #{istax}</if>
+            <if test="isEmpPro != null  and isEmpPro != ''"> and is_emp_pro = #{isEmpPro}</if>
+            <if test="lovConId != null  and lovConId != ''"> and lov_con_id = #{lovConId}</if>
+            <if test="isSalaryBasis != null  and isSalaryBasis != ''"> and is_salary_basis = #{isSalaryBasis}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="empId != null  and empId != ''"> and emp_id = #{empId}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="versionNo != null  and versionNo != ''"> and version_no = #{versionNo}</if>
+            <if test="isCheck != null  and isCheck != ''"> and is_check = #{isCheck}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="creatorNo != null  and creatorNo != ''"> and creator_no = #{creatorNo}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectPersonalSalaryDetailById" parameterType="String" resultMap="PersonalSalaryDetailResult">
+        <include refid="selectPersonalSalaryDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonalSalaryDetail" parameterType="PersonalSalaryDetail">
+        insert into human_hs_salary_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="salaryId != null">salary_id,</if>
+            <if test="payCheckRea != null">pay_check_rea,</if>
+            <if test="payProName != null">pay_pro_name,</if>
+            <if test="twoTitle != null">two_title,</if>
+            <if test="thrIsLov != null">thr_is_lov,</if>
+            <if test="thrSta != null">thr_sta,</if>
+            <if test="thrIdSta != null">thr_id_sta,</if>
+            <if test="foutTitle != null">fout_title,</if>
+            <if test="fivIsLov != null">fiv_is_lov,</if>
+            <if test="fivSta != null">fiv_sta,</if>
+            <if test="fivIdSta != null">fiv_id_sta,</if>
+            <if test="sixTitle != null">six_title,</if>
+            <if test="sevIsLov != null">sev_is_lov,</if>
+            <if test="sevSta != null">sev_sta,</if>
+            <if test="sevIdSta != null">sev_id_sta,</if>
+            <if test="serialNo != null">serial_no,</if>
+            <if test="postFlag != null">post_flag,</if>
+            <if test="postEffectDate != null">post_effect_date,</if>
+            <if test="msgld != null">msgld,</if>
+            <if test="istax != null">istax,</if>
+            <if test="isEmpPro != null">is_emp_pro,</if>
+            <if test="lovConId != null">lov_con_id,</if>
+            <if test="isSalaryBasis != null">is_salary_basis,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="isCheck != null">is_check,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="salaryId != null">#{salaryId},</if>
+            <if test="payCheckRea != null">#{payCheckRea},</if>
+            <if test="payProName != null">#{payProName},</if>
+            <if test="twoTitle != null">#{twoTitle},</if>
+            <if test="thrIsLov != null">#{thrIsLov},</if>
+            <if test="thrSta != null">#{thrSta},</if>
+            <if test="thrIdSta != null">#{thrIdSta},</if>
+            <if test="foutTitle != null">#{foutTitle},</if>
+            <if test="fivIsLov != null">#{fivIsLov},</if>
+            <if test="fivSta != null">#{fivSta},</if>
+            <if test="fivIdSta != null">#{fivIdSta},</if>
+            <if test="sixTitle != null">#{sixTitle},</if>
+            <if test="sevIsLov != null">#{sevIsLov},</if>
+            <if test="sevSta != null">#{sevSta},</if>
+            <if test="sevIdSta != null">#{sevIdSta},</if>
+            <if test="serialNo != null">#{serialNo},</if>
+            <if test="postFlag != null">#{postFlag},</if>
+            <if test="postEffectDate != null">#{postEffectDate},</if>
+            <if test="msgld != null">#{msgld},</if>
+            <if test="istax != null">#{istax},</if>
+            <if test="isEmpPro != null">#{isEmpPro},</if>
+            <if test="lovConId != null">#{lovConId},</if>
+            <if test="isSalaryBasis != null">#{isSalaryBasis},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="isCheck != null">#{isCheck},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonalSalaryDetail" parameterType="PersonalSalaryDetail">
+        update human_hs_salary_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="salaryId != null">salary_id = #{salaryId},</if>
+            <if test="payCheckRea != null">pay_check_rea = #{payCheckRea},</if>
+            <if test="payProName != null">pay_pro_name = #{payProName},</if>
+            <if test="twoTitle != null">two_title = #{twoTitle},</if>
+            <if test="thrIsLov != null">thr_is_lov = #{thrIsLov},</if>
+            <if test="thrSta != null">thr_sta = #{thrSta},</if>
+            <if test="thrIdSta != null">thr_id_sta = #{thrIdSta},</if>
+            <if test="foutTitle != null">fout_title = #{foutTitle},</if>
+            <if test="fivIsLov != null">fiv_is_lov = #{fivIsLov},</if>
+            <if test="fivSta != null">fiv_sta = #{fivSta},</if>
+            <if test="fivIdSta != null">fiv_id_sta = #{fivIdSta},</if>
+            <if test="sixTitle != null">six_title = #{sixTitle},</if>
+            <if test="sevIsLov != null">sev_is_lov = #{sevIsLov},</if>
+            <if test="sevSta != null">sev_sta = #{sevSta},</if>
+            <if test="sevIdSta != null">sev_id_sta = #{sevIdSta},</if>
+            <if test="serialNo != null">serial_no = #{serialNo},</if>
+            <if test="postFlag != null">post_flag = #{postFlag},</if>
+            <if test="postEffectDate != null">post_effect_date = #{postEffectDate},</if>
+            <if test="msgld != null">msgld = #{msgld},</if>
+            <if test="istax != null">istax = #{istax},</if>
+            <if test="isEmpPro != null">is_emp_pro = #{isEmpPro},</if>
+            <if test="lovConId != null">lov_con_id = #{lovConId},</if>
+            <if test="isSalaryBasis != null">is_salary_basis = #{isSalaryBasis},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="isCheck != null">is_check = #{isCheck},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonalSalaryDetailById" parameterType="String">
+        delete from human_hs_salary_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePersonalSalaryDetailByIds" parameterType="String">
+        delete from human_hs_salary_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,7 +1,7 @@
 package com.jlkj.human.hs.service.impl;
 
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
-import com.jlkj.human.hd.dto.OptinonTypeDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 import com.jlkj.human.hs.mapper.SalaryBasisMapper;
 import com.jlkj.human.hs.service.ISalaryBasisService;
@@ -118,7 +118,7 @@ public class SalaryBasisServiceImpl implements ISalaryBasisService
     @Override
     public int deleteSalaryBasisById(Long id)throws Exception
     {
-        List oldData = salaryBasisMapper.selectSalaryBasisByParentid(id);
+        List oldData = salaryBasisMapper.selectSalaryByParentid(id);
         if(!oldData.isEmpty()){
             throw new Exception("该资料下存在子节点，不可删除");
         }
@@ -132,8 +132,8 @@ public class SalaryBasisServiceImpl implements ISalaryBasisService
      * @return 员工薪资基本资料维护
      */
     @Override
-    public List<SalaryBasis> selectSalaryBasisByParentid(Long  parentid){
-        return salaryBasisMapper.selectSalaryBasisByParentid(parentid);
+    public List<BasisOptionsDTO> selectSalaryByParentid(Long  parentid){
+        return salaryBasisMapper.selectSalaryByParentid(parentid);
     }
 
     /**
@@ -152,18 +152,18 @@ public class SalaryBasisServiceImpl implements ISalaryBasisService
     /**
      * 获取薪资作业下拉选单主项
      *
-     * @param optinonType 选单查询条件
+     * @param optionType 选单查询条件
      * @return 结果
      */
     @Override
-    public HashMap<String, List<BasisOptionsDTO>> getBasisOptions(OptinonTypeDTO optinonType) {
-        List<String> optionsType = optinonType.getOptionsType();
+    public HashMap<String, List<BasisOptionsDTO>> getBasisOptions(OptionTypeDTO optionType) {
+        List<String> optionsType = optionType.getOptionsType();
         HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
         for (String item : optionsType) {
             try{
                 SalaryBasis items = new SalaryBasis();
                 items.setInfoCode(item);
-                items.setCompId(optinonType.getCompId());
+                items.setCompId(optionType.getCompId());
                 List<BasisOptionsDTO> list = selectBasisOptions(items);
                 map.put(item, list);
             } catch (Exception e) {
@@ -176,14 +176,14 @@ public class SalaryBasisServiceImpl implements ISalaryBasisService
     /**
      * 获取薪资作业下拉选单细项
      *
-     * @param optinonType 选单查询条件
+     * @param optionType 选单查询条件
      * @return 结果
      */
     @Override
-    public List<BasisOptionsDTO> getDeepOptions(OptinonTypeDTO optinonType){
+    public List<BasisOptionsDTO> getDeepOptions(OptionTypeDTO optionType){
         List<BasisOptionsDTO> list = null;
         try{
-            list = salaryBasisMapper.selectSalaryByParentid(optinonType.getId());
+            list = salaryBasisMapper.selectSalaryByParentid(optionType.getId());
         } catch (Exception e) {
 
         }

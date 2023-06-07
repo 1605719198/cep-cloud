@@ -7,6 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SocialSecurity" id="SocialSecurityResult">
         <result property="id"    column="id"    />
         <result property="salaryProjectId"    column="salary_project_id"    />
+        <result property="payProCode"    column="pay_pro_code"    />
+        <result property="payProName"    column="pay_pro_name"    />
         <result property="comPro"    column="com_pro"    />
         <result property="comMon"    column="com_mon"    />
         <result property="perPro"    column="per_pro"    />
@@ -43,8 +45,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectSocialSecurityByempNo" parameterType="String" resultMap="SocialSecurityResult">
-        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
-        where pay_area_id = (select  pay_area_id from human_hs_social_security_company where comp_id = #{compId})
+        select s.id, s.salary_project_id,p.pay_pro_code,pay_pro_name, s.com_pro, s.com_mon, s.per_pro, s.per_mon, s.base_ucl, s.base_ll, s.deci_bit, s.carry_mode, s.pay_area_id, s.effect_date, s.version, s.creator, s.creator_id, s.create_date from human_hs_social_security s
+        left join human_hs_salary_project_basis p
+        on s.salary_project_id = p.id
+        where s.pay_area_id = (select  pay_area_id from human_hs_social_security_company where comp_id = #{compId})
     </select>
         
     <insert id="insertSocialSecurity" parameterType="SocialSecurity">

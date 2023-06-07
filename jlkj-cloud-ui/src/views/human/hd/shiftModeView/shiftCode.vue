@@ -18,22 +18,10 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['human:shiftCode:add']"
+            v-hasPermi="['human:shiftMode:add']"
           >新增</el-button>
       </el-form-item>
     </el-form>
-<!--    <el-row :gutter="10" class="mb8">-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button type="primary"-->
-<!--                   plain-->
-<!--                   icon="el-icon-plus"-->
-<!--                   size="mini"-->
-<!--                   @click="handleAdd"-->
-<!--                   v-hasPermi="['human:shiftCode:add']"-->
-<!--        >新增</el-button>-->
-<!--      </el-col>-->
-<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
-<!--    </el-row>-->
     <el-table v-loading="loading" :data="shiftCodeList" @selection-change="handleSelectionChange" height="60vh">
       <el-table-column label="班次编码" align="center" prop="shiftCode" />
       <el-table-column label="班次开始时间" align="center" prop="startHour" >
@@ -77,14 +65,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:shiftCode:edit']"
+            v-hasPermi="['human:shiftMode:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:shiftCode:remove']"
+            v-hasPermi="['human:shiftMode:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

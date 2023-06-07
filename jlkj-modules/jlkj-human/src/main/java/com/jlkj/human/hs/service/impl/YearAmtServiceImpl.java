@@ -59,11 +59,11 @@ public class YearAmtServiceImpl implements IYearAmtService {
     @Override
     public int insertYearAmt(List<YearAmt> yearAmtList) {
         for (YearAmt yearAmt : yearAmtList) {
+            yearAmt.setCreatorId(SecurityUtils.getUserId().toString());
+            yearAmt.setCreatorNo(SecurityUtils.getUsername());
+            yearAmt.setCreator(SecurityUtils.getNickName());
+            yearAmt.setCreateDate(new Date());
             if (yearAmt.getId() != null) {
-                yearAmt.setCreatorId(SecurityUtils.getUserId().toString());
-                yearAmt.setCreatorNo(SecurityUtils.getUsername());
-                yearAmt.setCreator(SecurityUtils.getNickName());
-                yearAmt.setCreateDate(new Date());
                 yearAmtMapper.updateYearAmt(yearAmt);
             } else {
                 yearAmt.setId(UUID.randomUUID().toString().substring(0, 32));
@@ -107,7 +107,7 @@ public class YearAmtServiceImpl implements IYearAmtService {
     }
 
     /**
-     * 导入部门资料数据
+     * 导入年收入资料数据
      *
      * @param yearAmtList     年收入数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据

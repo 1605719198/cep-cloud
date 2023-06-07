@@ -29,18 +29,25 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button type="primary" size="mini" plain @click="handleSave" :disabled="multiple">保存</el-button>
-                      </el-form-item>
-                      <el-form-item>
                         <el-button
-                          type="danger"
-                          plain
-                          :disabled="multiple"
+                          type="primary"
                           size="mini"
-                          @click="cancellation"
-                        >作废
-                        </el-button>
+                          plain
+                          @click="handleSave"
+                          v-hasPermi="['human:projectPay:save']"
+                          :disabled="multiple">保存</el-button>
                       </el-form-item>
+<!--                      <el-form-item>-->
+<!--                        <el-button-->
+<!--                          type="danger"-->
+<!--                          plain-->
+<!--                          :disabled="multiple"-->
+<!--                          size="mini"-->
+<!--                          @click="handleDelete"-->
+<!--                          v-hasPermi="['human:projectPay:edit']"-->
+<!--                        >删除-->
+<!--                        </el-button>-->
+<!--                      </el-form-item>-->
                     </el-form>
                   </el-col>
                 </el-row>
@@ -95,9 +102,17 @@
                       <el-input v-model="scope.row.salaryDescribe" placeholder="请输入内容"></el-input>
                     </template>
                   </el-table-column>
-                  <el-table-column label="状态" align="center" prop="status" width="80">
+                  <el-table-column label="状态" align="center" prop="status" width="80" >
                     <template v-slot="scope">
-                      <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+                      <el-switch
+                        v-if="scope.row.id!=null"
+                        v-model="scope.row.status"
+                        active-color="#ff4949"
+                        inactive-color="#13ce66"
+                        active-value="1"
+                        inactive-value="0"
+                        @change="handleStatusChange(scope.row)"
+                      ></el-switch>
                     </template>
                   </el-table-column>
                   <el-table-column label="输入人" align="center" prop="creator" width="80"/>
@@ -124,7 +139,7 @@
 </template>
 
 <script>
-import { listProjectPay, saveProjectPay, listProjectPayTree } from '@/api/human/hs/projectPay'
+import { listProjectPay, saveProjectPay, listProjectPayTree, changeStatus, delProjectPay } from '@/api/human/hs/projectPay'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 
 export default {
@@ -220,6 +235,17 @@ export default {
         this.getList();
       })
     },
+    // 数据状态修改
+    handleStatusChange(row) {
+      let text = row.status === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要' + text + '吗？').then(function () {
+        return changeStatus(row.id,row.parentid, row.status);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
     //获取选单配置树
     getBaseInfoTree() {
       var param = {
@@ -246,7 +272,9 @@ export default {
       listProjectPay(this.queryParams).then(response => {
         this.total = response.total
         this.tableData = response.rows
-        this.addLine();
+        if(this.tableData.length===0){
+          this.addLine();
+        }
         this.table.loading = false
       }, error => {
         this.table.loading = false
@@ -258,7 +286,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.tableData.length == row.index + 1) {
+      if (!row||this.tableData.length === row.index + 1) {
         const newLine = {
           payProCode: '',
           payProName: '',
@@ -273,15 +301,25 @@ export default {
           payType: '1',
           parentid: this.queryParams.id,
           isShowno: '0',
-          creator: this.user.empName,
-          creatorId: this.user.empId,
-          creatorNo: this.user.empNo,
-          createDate: getDateTime(1)
+          ifEnd: '1',
+          creator: null,
+          creatorId: null,
+          creatorNo: null,
+          createDate: null,
         }
         this.tableData.push(newLine)
       }
     },
-
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除薪酬项目编号为所选择的数据项？').then(function() {
+        return delProjectPay(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
   }
 }
 </script>

@@ -44,7 +44,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['human:personColock:add']"
+          v-hasPermi="['human:personClassMaster:add']"
         >排班</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -84,7 +84,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:personColock:edit']"
+            v-hasPermi="['human:personClassMaster:edit']"
           >调班</el-button>
         </template>
       </el-table-column>

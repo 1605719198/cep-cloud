@@ -18,24 +18,10 @@
                    icon="el-icon-plus"
                    size="mini"
                    @click="handleAdd"
-                   v-hasPermi="['human:shiftClass:add']"
+                   v-hasPermi="['human:shiftMode:add']"
         >新增</el-button>
       </el-form-item>
     </el-form>
-
-<!--    <el-row :gutter="10" class="mb8">-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          icon="el-icon-plus"-->
-<!--          size="mini"-->
-<!--          @click="handleAdd"-->
-<!--          v-hasPermi="['human:shiftClass:add']"-->
-<!--        >新增</el-button>-->
-<!--      </el-col>-->
-<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
-<!--    </el-row>-->
 
     <el-table v-loading="loading" :data="shiftClassList" @selection-change="handleSelectionChange" height="60vh">
       <el-table-column label="班别编码" align="center" prop="classMode" />
@@ -59,14 +45,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:shiftClass:edit']"
+            v-hasPermi="['human:shiftMode:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:shiftClass:remove']"
+            v-hasPermi="['human:shiftMode:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

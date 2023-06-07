@@ -49,9 +49,9 @@ public class SalaryExplainServiceImpl implements ISalaryExplainService
         String maxMonth = "12";
         String yearMonth= null;
         // 创建 HashMap 对象 Sites
-        HashMap<String, SalaryExplain> Sites = new HashMap<String, SalaryExplain>();
+        HashMap<String, SalaryExplain> sites = new HashMap<String, SalaryExplain>(64);
         for(String month:monthArray){
-            Sites.put(month,null);
+            sites.put(month,null);
         }
         List<SalaryExplain> salaryExplainList = salaryExplainMapper.selectSalaryExplainList(salaryExplain);
         for(SalaryExplain salaryExplain1 : salaryExplainList){
@@ -61,11 +61,11 @@ public class SalaryExplainServiceImpl implements ISalaryExplainService
                 yearMonth = (salaryExplain1.getYear() - 1) +salaryExplain1.getMonth();
             }
             salaryExplain1.setYearMonth(yearMonth);
-            Sites.put(salaryExplain1.getMonth(),salaryExplain1);
+            sites.put(salaryExplain1.getMonth(),salaryExplain1);
         }
-        Set<String> set = Sites.keySet();
+        Set<String> set = sites.keySet();
         for (String month : set) {
-            if(Sites.get(month)==null){
+            if(sites.get(month)==null){
                 SalaryExplain salaryExplain2 = new SalaryExplain();
                 salaryExplain2.setCompId(compId);
                 salaryExplain2.setYear(year);
@@ -76,13 +76,13 @@ public class SalaryExplainServiceImpl implements ISalaryExplainService
                     yearMonth = (year-1)+month;
                 }
                 salaryExplain2.setYearMonth(yearMonth);
-                Sites.put(month,salaryExplain2);
+                sites.put(month,salaryExplain2);
             }
         }
-        Collection<SalaryExplain> list = Sites.values();
+        Collection<SalaryExplain> list = sites.values();
         List<SalaryExplain> finnalList = new ArrayList<>();
         for(String month:monthArray){
-            finnalList.add(Sites.get(month));
+            finnalList.add(sites.get(month));
         }
         return finnalList;
     }

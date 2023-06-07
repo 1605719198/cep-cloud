@@ -329,13 +329,12 @@ export default {
     colockType(val){
       this.queryParams.empId=null;
       this.queryParams.deptId=null;
-      this.getList();
+      this.ColockList=[];
     },
     'queryParams.compId':{
       deep:true,
       immediate:true,
       handler:function( newV){
-        this.getList();
         this.getTreeselect();
       }
     },
@@ -343,7 +342,6 @@ export default {
   created() {
     this.getDisc();
     this.getCompanyList();
-    this.getList();
   },
   methods: {
     //获取出勤字典(假别类型查询)
@@ -372,7 +370,6 @@ export default {
     getJobNumber(val, userName,compId) {
       if(this.open == false){
         this.queryParams.empId = val;
-        this.getList();
       }else {
         this.form.empId = val;
         queryFirstdeptByPerson(val).then(response =>{
@@ -491,6 +488,7 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      this.ColockList=[];
       this.getList();
     },
     /** 重置按钮操作 */
@@ -501,7 +499,6 @@ export default {
       this.queryParams.deptId = null;
       this.colockType = '1';
       this.empId = null;
-      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

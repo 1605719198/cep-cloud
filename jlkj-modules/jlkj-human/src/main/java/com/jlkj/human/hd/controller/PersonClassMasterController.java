@@ -115,7 +115,7 @@ public class PersonClassMasterController extends BaseController
      * @throws Exception
      */
     @Log(title = "批量排班资料导入", businessType = BusinessType.IMPORT)
-    @RequiresPermissions("human:personClassMaster:export")
+    @RequiresPermissions("human:batchScheduling:import")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {

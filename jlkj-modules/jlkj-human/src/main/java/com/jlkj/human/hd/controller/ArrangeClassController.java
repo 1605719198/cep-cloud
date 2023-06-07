@@ -31,7 +31,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 查询排班明细列表
      */
-    @RequiresPermissions("human:arrangeClass:list")
+    @RequiresPermissions("human:shiftMode:list")
     @GetMapping("/list")
     public TableDataInfo list(ArrangeClass arrangeClass)
     {
@@ -42,7 +42,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 导出排班明细列表
      */
-    @RequiresPermissions("human:arrangeClass:export")
+    @RequiresPermissions("human:shiftMode:export")
     @Log(title = "排班明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ArrangeClass arrangeClass)
@@ -55,7 +55,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 获取排班明细详细信息
      */
-    @RequiresPermissions("human:arrangeClass:query")
+    @RequiresPermissions("human:shiftMode:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -65,7 +65,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 新增排班明细
      */
-    @RequiresPermissions("human:arrangeClass:add")
+    @RequiresPermissions("human:shiftMode:add")
     @Log(title = "排班明细", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ArrangeClass arrangeClass)
@@ -76,7 +76,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 修改排班明细
      */
-    @RequiresPermissions("human:arrangeClass:edit")
+    @RequiresPermissions("human:shiftMode:edit")
     @Log(title = "排班明细", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ArrangeClass arrangeClass)
@@ -87,7 +87,7 @@ public class ArrangeClassController extends BaseController
     /**
      * 删除排班明细
      */
-    @RequiresPermissions("human:arrangeClass:remove")
+    @RequiresPermissions("human:shiftMode:remove")
     @Log(title = "排班明细", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
