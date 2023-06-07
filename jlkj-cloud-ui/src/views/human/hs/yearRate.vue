@@ -90,7 +90,7 @@ export default {
       //公司列表
       companyList:[],
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -129,7 +129,6 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getList();
   },
   methods: {
     /** 查询公司列表 */
@@ -144,6 +143,7 @@ export default {
       this.loading = true;
       listYearRate(this.queryParams).then(response => {
         this.yearRateList = response.rows;
+        this.form = response.rows[0];
         this.total = response.total;
         this.loading = false;
       });

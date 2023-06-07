@@ -70,15 +70,7 @@ public class YearRateServiceImpl implements IYearRateService
                     yearRate.setCreateDate(new Date());
                     yearRateMapper.updateYearRate(yearRate);
                 } else {
-                    if (yearRates.isEmpty()) {
-                        yearRate.setId(UUID.randomUUID().toString().substring(0, 32));
-                        yearRate.setCreatorId(SecurityUtils.getUserId().toString());
-                        yearRate.setCreator(SecurityUtils.getNickName());
-                        yearRate.setCreateDate(new Date());
-                        yearRateMapper.insertYearRate(yearRate);
-                    }else{
                         throw new ServiceException("不可修改历史年份");
-                    }
                 }
             }
         }else{

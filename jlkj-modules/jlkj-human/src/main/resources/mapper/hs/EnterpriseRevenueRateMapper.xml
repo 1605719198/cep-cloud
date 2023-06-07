@@ -2,44 +2,44 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hs.mapper.YearRateMapper">
+<mapper namespace="com.jlkj.human.hs.mapper.EnterpriseRevenueRateMapper">
     
-    <resultMap type="YearRate" id="YearRateResult">
+    <resultMap type="EnterpriseRevenueRate" id="EnterpriseRevenueRateResult">
         <result property="id"    column="id"    />
         <result property="compId"    column="comp_id"    />
-        <result property="year"    column="year"    />
-        <result property="bonRate"    column="bon_rate"    />
+        <result property="month"    column="month"    />
+        <result property="enterpriseRevenueRate"    column="enterprise_revenue_rate"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="creatorNo"    column="creator_no"    />
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
-    <sql id="selectYearRateVo">
-        select id, comp_id, year, bon_rate, creator, creator_id, creator_no, create_date from human_hs_year_rate
+    <sql id="selectEnterpriseRevenueRateVo">
+        select id, comp_id, month, enterprise_revenue_rate, creator, creator_id, creator_no, create_date from human_hs_enterprise_revenue_rate
     </sql>
 
-    <select id="selectYearRateList" parameterType="YearRate" resultMap="YearRateResult">
-        <include refid="selectYearRateVo"/>
+    <select id="selectEnterpriseRevenueRateList" parameterType="EnterpriseRevenueRate" resultMap="EnterpriseRevenueRateResult">
+        <include refid="selectEnterpriseRevenueRateVo"/>
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="month != null  and month != ''"> and month = #{month}</if>
         </where>
-        ORDER BY year DESC
+        ORDER BY month DESC
     </select>
     
-    <select id="selectYearRateById" parameterType="String" resultMap="YearRateResult">
-        <include refid="selectYearRateVo"/>
+    <select id="selectEnterpriseRevenueRateById" parameterType="String" resultMap="EnterpriseRevenueRateResult">
+        <include refid="selectEnterpriseRevenueRateVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertYearRate" parameterType="YearRate">
-        insert into human_hs_year_rate
+    <insert id="insertEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
+        insert into human_hs_enterprise_revenue_rate
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
-            <if test="year != null">year,</if>
-            <if test="bonRate != null">bon_rate,</if>
+            <if test="month != null">month,</if>
+            <if test="enterpriseRevenueRate != null">enterprise_revenue_rate,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="creatorNo != null">creator_no,</if>
@@ -48,8 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="compId != null">#{compId},</if>
-            <if test="year != null">#{year},</if>
-            <if test="bonRate != null">#{bonRate},</if>
+            <if test="month != null">#{month},</if>
+            <if test="enterpriseRevenueRate != null">#{enterpriseRevenueRate},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="creatorNo != null">#{creatorNo},</if>
@@ -57,12 +57,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateYearRate" parameterType="YearRate">
-        update human_hs_year_rate
+    <update id="updateEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
+        update human_hs_enterprise_revenue_rate
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
-            <if test="year != null">year = #{year},</if>
-            <if test="bonRate != null">bon_rate = #{bonRate},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="enterpriseRevenueRate != null">enterprise_revenue_rate = #{enterpriseRevenueRate},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>
@@ -71,12 +71,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteYearRateById" parameterType="String">
-        delete from human_hs_year_rate where id = #{id}
+    <delete id="deleteEnterpriseRevenueRateById" parameterType="String">
+        delete from human_hs_enterprise_revenue_rate where id = #{id}
     </delete>
 
-    <delete id="deleteYearRateByIds" parameterType="String">
-        delete from human_hs_year_rate where id in 
+    <delete id="deleteEnterpriseRevenueRateByIds" parameterType="String">
+        delete from human_hs_enterprise_revenue_rate where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
