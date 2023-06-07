@@ -9,7 +9,6 @@
             <result property="payType" column="pay_type" jdbcType="VARCHAR"/>
             <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
             <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
-            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
             <result property="mark" column="mark" jdbcType="VARCHAR"/>
             <result property="creator" column="creator" jdbcType="VARCHAR"/>
             <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
@@ -19,7 +18,7 @@
 
     <sql id="Base_Column_List">
         id,pay_type,comp_id,
-        emp_no,emp_id,mark,
+        emp_no,mark,
         creator,creator_id,creator_no,
         create_date
     </sql>

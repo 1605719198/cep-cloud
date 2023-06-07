@@ -16,7 +16,7 @@
           <el-form-item prop="type">
             <el-select v-model="queryParams.type" :popper-append-to-body="false">
               <el-option
-                v-for="dict in baseInfoData.CancellationPersonType"
+                v-for="dict in attendenceOptions.CancellationPersonType"
                 :key="dict.dicNo"
                 :label="dict.dicName"
                 :value="dict.dicNo"
@@ -36,7 +36,7 @@
           <el-form-item v-else>
             <el-select v-model="queryParams.clockWorkId" :popper-append-to-body="false">
               <el-option
-                v-for="dict in baseInfoData.CancellationPersonType"
+                v-for="dict in attendenceOptions.CancellationPersonType"
                 :key="dict.dicNo"
                 :label="dict.dicName"
                 :value="dict.dicNo"
@@ -77,7 +77,7 @@
         <el-table v-loading="loading" :data="cancellationPersonList">
           <el-table-column label="类别" align="center" prop="type" >
             <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.CancellationPersonType" :value="scope.row.type"/>
+              <dict-tag-human :options="attendenceOptions.CancellationPersonType" :value="scope.row.type"/>
             </template>
           </el-table-column>
           <el-table-column
@@ -129,8 +129,20 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="员工编码" prop="empNo">
-                  <el-input v-model="form.empNo" placeholder="请输入员工编码" />
+                <el-form-item label="员工编码" v-if="this.form.type === 'user'">
+                  <el-input v-model="form.empNo" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="组织机构" v-else-if="this.form.type === 'org'">
+                  <el-input v-model="form.orgId" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="openOrgPop1"></el-button>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="刷卡钟" v-else>
+                  <el-input v-model="form.clockWorkId" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                  </el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -177,6 +189,7 @@
           </div>
         </el-dialog>
         <select-org-person ref="selectOrg" @ok="getOrg"/>
+        <select-org-person ref="selectOrg1" @ok="getOrg1"/>
         <select-user ref="select" @ok="getJobNumber"/>
       </el-col>
     </el-row>
@@ -186,10 +199,10 @@
 <script>
 import { listCancellationPerson, addCancellationPerson } from "@/api/human/hd/cancellationPerson";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import selectOrgPerson from "@/views/components/human/selectUser/selectOrgPerson";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
+import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 
 export default {
   name: "CancellationPerson",
@@ -224,22 +237,23 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      // 选单数据
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'CancellationPersonType']
-      },
       tableColumns: [],
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['CancellationPersonType']
+      },
+      //出勤选单选项列表
+      attendenceOptions: {},
     };
   },
   created() {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
+    getAttendenceOptions(this.attendenceOptionType).then(response => {
+      this.attendenceOptions = response.data
+    })
   },
   methods: {
     /** 查询人事注销记录列表 */
@@ -326,15 +340,21 @@ export default {
     openOrgPop() {
       this.$refs.selectOrg.show();
     },
+    openOrgPop1() {
+      this.$refs.selectOrg1.show();
+    },
     /** 工号点击事件 */
     inputClick() {
       this.$refs.select.show();
     },
     /** 获取工号 */
-    getOrg(deptCode, deptId) {
+    getOrg(deptCode) {
       this.queryParams.orgId = deptCode
-      this.form.departmentId = deptId
       this.getList();
+    },
+    getOrg1(deptCode, deptId) {
+      this.form.departmentId = deptId
+      this.form.orgId = deptCode
     },
     /** 获取工号 */
     getJobNumber(val) {

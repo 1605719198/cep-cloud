@@ -44,7 +44,7 @@
           <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" width="300"/>
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
+              <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
           <el-table-column label="辅助说明" align="center" prop="description" />
@@ -59,6 +59,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
+                :disabled="scope.row.status!=='01'"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['human:attendanceAbnormal:edit']"
               >修改</el-button>
@@ -125,7 +126,7 @@
                 <el-form-item label="出勤证明原因">
                   <el-select v-model="form.proveReason" style="width: 100%">
                     <el-option
-                      v-for="dict in baseInfoData.ProveReason"
+                      v-for="dict in attendenceOptions.ProveReason"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -223,27 +224,19 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      baseInfoData: [],
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['HolidayStatus']
+        optionsType: ['HolidayStatus','ProveReason']
       },
       //出勤选单选项列表
       attendenceOptions: {},
-      baseInfo: {
-        baseInfoList: [
-          'ProveReason']
-      },
     };
   },
   created() {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
     /** 查询出勤字典 */
     getAttendenceOptions(this.attendenceOptionType).then(response => {
       this.attendenceOptions = response.data;

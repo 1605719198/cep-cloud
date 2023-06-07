@@ -44,7 +44,8 @@ public class AttendenceRecordController extends BaseController {
         List<AttendenceRecord> list = iAttendenceRecordService.lambdaQuery()
                 .eq(StringUtils.isNotBlank(attendenceRecord.getCompId()), AttendenceRecord::getCompId, attendenceRecord.getCompId())
                 .eq(AttendenceRecord::getEmpNo, attendenceRecord.getEmpNo())
-                .between(AttendenceRecord::getSlotCardDate, attendenceRecordDTO.getStartTime(), attendenceRecordDTO.getEndTime()).list();
+                .apply("date_format (slot_card_date,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", attendenceRecordDTO.getStartTime())
+                .apply("date_format (slot_card_date,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", attendenceRecordDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 }

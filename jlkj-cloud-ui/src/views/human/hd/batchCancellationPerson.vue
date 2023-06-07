@@ -167,12 +167,6 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      // 选单数据
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'CancellationPersonType']
-      },
       // 基于表格注销参数
       upload: {
         // 是否显示弹出层（基于表格注销）
@@ -194,9 +188,6 @@ export default {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
   },
   methods: {
     /** 查询人事注销记录列表 */

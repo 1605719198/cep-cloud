@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -72,6 +73,7 @@ public class SalaryAdd implements Serializable {
     /**
      * 员工ID
      */
+    @Excel(name = "工号", cellType = Excel.ColumnType.NUMERIC, type = Excel.Type.IMPORT)
     private String empId;
 
     /**
