@@ -85,8 +85,7 @@ public class SalaryAddServiceImpl extends ServiceImpl<SalaryAddMapper, SalaryAdd
                     Personnel personnel = personnelService.lambdaQuery().eq(Personnel::getCompId, salaryAdd.getCompId()).eq(Personnel::getEmpNo, salaryAdd.getEmpId()).one();
                     // 验证薪资项目编码是否正确
                     SalaryProjectBasis salaryProjectBasis = salaryProjectBasisService.lambdaQuery().eq(SalaryProjectBasis::getPayProCode, salaryAdd.getPayTabCode()).one();
-                    // 差导入公司不允许导入父项信息验证  salaryProjectBasis.getIsEnd == "Y"
-                    if (StringUtils.isNull(u) && StringUtils.isNotNull(personnel) && StringUtils.isNotNull(salaryProjectBasis))
+                    if (StringUtils.isNull(u) && StringUtils.isNotNull(personnel) && StringUtils.isNotNull(salaryProjectBasis) && "Y".equals(salaryProjectBasis.getIfEnd()))
                     {
                         BeanValidators.validateWithException(validator, salaryAdd);
                         salaryAdd.setCreator(operName);

@@ -25,3 +25,12 @@ export function delSalaryAdd(id) {
     method: 'delete'
   })
 }
+
+// 查询导入状态
+export function queryStatus(query) {
+  return request({
+    url: '/human/salaryAdd/queryStatus',
+    method: 'get',
+    params: query
+  })
+}

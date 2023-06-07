@@ -66,4 +66,15 @@ public class PayFormationController extends BaseController {
         iPayFormationService.lambdaUpdate().eq(PayFormation::getUuid, uuid).remove();
         return AjaxResult.success("删除成功");
     }
+
+    /**
+     * 查询薪酬项目列表接口
+     */
+    @GetMapping("/getListPayFormation")
+    public List<PayFormation> getListPayFormation(PayFormation payFormation) {
+        startPage();
+        List<PayFormation> list = iPayFormationService.lambdaQuery()
+                .eq(PayFormation::getCompId, payFormation.getCompId()).list();
+        return list;
+    }
 }

@@ -8,9 +8,10 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hs.domain.SalaryPunishment;
-import com.jlkj.human.hs.domain.SalaryStatus;
+import com.jlkj.human.hs.domain.*;
 import com.jlkj.human.hs.dto.SalaryPunishmentDTO;
+import com.jlkj.human.hs.service.ISalaryErrorService;
+import com.jlkj.human.hs.service.ISalaryNoteService;
 import com.jlkj.human.hs.service.ISalaryPunishmentService;
 import com.jlkj.human.hs.service.ISalaryStatusService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +37,8 @@ public class SalaryPunishmentController extends BaseController {
 
     private final ISalaryPunishmentService iSalaryPunishmentService;
     private final ISalaryStatusService iSalaryStatusService;
+    private final ISalaryNoteService iSalaryNoteService;
+    private final ISalaryErrorService iSalaryErrorService;
 
     /**
      * 查询薪资项目金额追补扣列表
@@ -127,5 +130,32 @@ public class SalaryPunishmentController extends BaseController {
     {
         ExcelUtil<SalaryPunishment> util = new ExcelUtil<SalaryPunishment>(SalaryPunishment.class);
         util.importTemplateExcel(response, "专业奖罚数据");
+    }
+
+    /**
+     * 查询导入状态
+     */
+    @GetMapping("/queryStatus")
+    public Object queryStatus(SalaryPunishment salaryPunishment) {
+        List<SalaryNote> list = iSalaryNoteService.lambdaQuery()
+                .select(SalaryNote::getStatus)
+                .eq(SalaryNote::getCompId, salaryPunishment.getCompId())
+                .eq(SalaryNote::getPayType, "5")
+                .eq(SalaryNote::getMonth, salaryPunishment.getMonth()).list();
+        return AjaxResult.success(list);
+
+    }
+
+    /**
+     * 下载导入错误清单
+     */
+    @Log(title = "下载导入错误清单", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SalaryPunishment salaryPunishment)
+    {
+        List<SalaryError> list = iSalaryErrorService.lambdaQuery()
+                .eq(SalaryError::getPayType, "5").list();
+        ExcelUtil<SalaryError> util = new ExcelUtil<SalaryError>(SalaryError.class);
+        util.exportExcel(response, list, "导入错误清单");
     }
 }

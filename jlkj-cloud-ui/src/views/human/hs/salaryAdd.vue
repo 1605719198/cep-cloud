@@ -94,8 +94,7 @@
               plain
               icon="el-icon-download"
               size="mini"
-              @click="handleDelete"
-              v-hasPermi="['human:salaryAdd:export']"
+              @click="downloadErrorList"
             >下载导入错误清单</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -111,7 +110,7 @@
             <el-button
               type="primary"
               plain
-              icon="el-icon-download"
+              icon="el-icon-upload2"
               size="mini"
               @click="handleImport1"
               v-hasPermi="['human:salaryAdd:import']"
@@ -245,7 +244,7 @@
 </template>
 
 <script>
-import { listSalaryAdd, delSalaryAdd, addSalaryAdd } from "@/api/human/hs/salaryAdd";
+import {listSalaryAdd, delSalaryAdd, addSalaryAdd, queryStatus} from "@/api/human/hs/salaryAdd";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 import selectUser from "@/views/components/human/selectUser/selectUser";
@@ -550,6 +549,26 @@ export default {
     // 提交上传文件
     submitFileForm1() {
       this.$refs.upload1.submit();
+    },
+    handleQueryStatus() {
+      if (this.queryParams.date != null) {
+        this.queryParams.month = this.queryParams.date.substr(6,1)
+      }
+      queryStatus(this.queryParams).then(res =>{
+        if (res.data[0].status === '1'){
+          this.$modal.msgWarning("导入中");
+        } else if (res.data[0].status === '2') {
+          this.$modal.msgError("导入失败");
+        } else {
+          this.$modal.msgSuccess("导入成功");
+        }
+      })
+    },
+    /** 下载导入错误清单 */
+    downloadErrorList(){
+      this.download('human/salaryAdd/export', {
+        ...this.queryParams
+      }, `salaryAddError_${new Date().getTime()}.xlsx`)
     }
   }
 };
