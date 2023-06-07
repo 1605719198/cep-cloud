@@ -148,12 +148,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTOS2.addAll(financeAaLedgerAcctDTOS);
             }
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
-                financeAaLedgerAcctDTOS2 = selectList(financeAaLedgerAcctDTOS2);
-            }
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
-                financeAaLedgerAcctDTOS2 = selectListAdd(financeAaLedgerAcctDTOS2);
-            }
+
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getYearAdd())) {
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO.setAcctCode(acctCode1.getAcctCode());
@@ -176,6 +171,12 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
+            }
+            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
+                financeAaLedgerAcctDTOS2 = selectList(financeAaLedgerAcctDTOS2);
+            }
+            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
+                financeAaLedgerAcctDTOS2 = selectListAdd(financeAaLedgerAcctDTOS2);
             }
             Map mapTemp = new HashMap(16);
             mapTemp.put("acctCode1", acctCode1.getAcctCode() + acctCode1.getAcctName());
@@ -350,32 +351,27 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
     }
 
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS = financeAaLedgerAcctDTO;
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
             if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
                 if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0 &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0) {
-                    finalFinanceAaLedgerAcctDTOS.remove(vo);
+                    financeAaLedgerAcctDTO.remove(vo);
                 }
             }
             return vo;
         });
-
         return financeAaLedgerAcctDTO;
     }
 
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS1 = financeAaLedgerAcctDTO;
-        BigDecimal duration = new BigDecimal("0.00");
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
             if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
                 if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0  &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0  && vo.getBgnAmt().compareTo(BigDecimal.ZERO)==0) {
-                    finalFinanceAaLedgerAcctDTOS1.remove(vo);
+                    financeAaLedgerAcctDTO.remove(vo);
                 }
             }
             return vo;
 
         });
-
         return financeAaLedgerAcctDTO;
     }
 
@@ -386,7 +382,6 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 : financeAaLedgerAcctDTO) {
             FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
-
             financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
             financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
             financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate() + "-01");
