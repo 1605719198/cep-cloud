@@ -140,30 +140,50 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         return null;
     }
 
-    public List<FinanceAaLedgerAcctDTO> selectList(  List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
+    public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS = financeAaLedgerAcctDTO;
+        BigDecimal duration = new BigDecimal("0.00");
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() !=null && vo.getCrAmt()!=null ){
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO)){
+            if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
+                if (vo.getDrAmt().equals(duration) && vo.getCrAmt().equals(duration)) {
                     finalFinanceAaLedgerAcctDTOS.remove(vo);
                 }
             }
             return vo;
         });
-        return  financeAaLedgerAcctDTO;
-    }
-    public List<FinanceAaLedgerAcctDTO> selectListAdd(  List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS1 = financeAaLedgerAcctDTO;
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() !=null && vo.getCrAmt()!=null && vo.getBgnAmt()!=null){
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO) && vo.getBgnAmt().equals(BigDecimal.ZERO)){
+            if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
+                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO)) {
+                    finalFinanceAaLedgerAcctDTOS.remove(vo);
+                }
+            }
+            return vo;
+        });
+        return financeAaLedgerAcctDTO;
+    }
+
+    public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
+        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS1 = financeAaLedgerAcctDTO;
+        BigDecimal duration = new BigDecimal("0.00");
+        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
+            if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
+                if (vo.getDrAmt().equals(duration) && vo.getCrAmt().equals(duration) && vo.getBgnAmt().equals(duration)) {
                     finalFinanceAaLedgerAcctDTOS1.remove(vo);
                 }
             }
             return vo;
 
         });
-        return  financeAaLedgerAcctDTO;
+        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
+            if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
+                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO) && vo.getBgnAmt().equals(BigDecimal.ZERO)) {
+                    finalFinanceAaLedgerAcctDTOS1.remove(vo);
+                }
+            }
+            return vo;
+
+        });
+        return financeAaLedgerAcctDTO;
     }
     /**
      * 根据科目级截取会计科目编号
