@@ -351,23 +351,15 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS = financeAaLedgerAcctDTO;
-        BigDecimal duration = new BigDecimal("0.00");
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
             if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
-                if (vo.getDrAmt().equals(duration) && vo.getCrAmt().equals(duration)) {
+                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0 &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0) {
                     finalFinanceAaLedgerAcctDTOS.remove(vo);
                 }
             }
             return vo;
         });
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO)) {
-                    finalFinanceAaLedgerAcctDTOS.remove(vo);
-                }
-            }
-            return vo;
-        });
+
         return financeAaLedgerAcctDTO;
     }
 
@@ -376,22 +368,14 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         BigDecimal duration = new BigDecimal("0.00");
         financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
             if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
-                if (vo.getDrAmt().equals(duration) && vo.getCrAmt().equals(duration) && vo.getBgnAmt().equals(duration)) {
+                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0  &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0  && vo.getBgnAmt().compareTo(BigDecimal.ZERO)==0) {
                     finalFinanceAaLedgerAcctDTOS1.remove(vo);
                 }
             }
             return vo;
 
         });
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO) && vo.getBgnAmt().equals(BigDecimal.ZERO)) {
-                    finalFinanceAaLedgerAcctDTOS1.remove(vo);
-                }
-            }
-            return vo;
 
-        });
         return financeAaLedgerAcctDTO;
     }
 
