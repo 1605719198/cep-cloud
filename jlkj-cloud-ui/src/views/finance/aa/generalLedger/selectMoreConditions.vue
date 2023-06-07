@@ -260,7 +260,7 @@ export default {
         calculate:'Y',
         unpostedVoucher:'N',
         amountNotDisplayed:'N',
-        balanceZero:'Y',
+        balanceZero:'N',
         isNoCurrentPeriodAdd:'Y',
         isNoThisYearAdd:'Y',
         mainItems:'01',

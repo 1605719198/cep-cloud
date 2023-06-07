@@ -309,27 +309,25 @@ export default {
     handleExport() {
     },
     getVoucherNo(val) {
-
       this.detailIf = false
       this.calNameIf = false
       this.bgnAmtIf = false
       this.bgnQtyIf = false
       this.numberDetailIf = false
       this.calNameIf02=false,
-        this.bgnAmtIf02= false,
+      this.bgnAmtIf02= false,
         this.bgnQtyIf02=false,
       this.queryParams = val
       if ( val.accountingItems =='Y'){
         this.calNameIf = true
       }  if (  val.isNoNumber =='Y'){
         this.bgnQtyIf = true
-        console.log(11111111111111111111)
+
       }  if ( val.isNoNumber =='N') {
         this.bgnAmtIf = true
-        console.log(22222222222222222222222222222)
+
 
       }
-      console.log(this.bgnQtyIf+"数量+金额", this.bgnAmtIf+"金额");
       if (val.mainItems =='01'){
         this.detailIf = true
         listDetailIfSteel(this.queryParams).then(response => {
