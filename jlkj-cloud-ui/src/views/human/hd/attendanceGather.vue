@@ -88,6 +88,7 @@ import { listAttendanceGather } from "@/api/human/hd/attendanceGather";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {validateNumber} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceGather",

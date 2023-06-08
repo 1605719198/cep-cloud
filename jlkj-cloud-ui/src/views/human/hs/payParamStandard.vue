@@ -124,6 +124,7 @@
 import { listPayParamStandard, addPayParamStandard, copyPayParamStandard  } from "@/api/human/hs/payParamStandard";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "PayParamStandard",

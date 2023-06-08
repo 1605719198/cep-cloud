@@ -258,6 +258,7 @@ import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getSalaryOptions, getSalaryDeepOptions } from '@/api/human/hs/salaryBasis'
 import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "PersonalSalary",
