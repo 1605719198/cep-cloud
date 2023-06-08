@@ -141,33 +141,29 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
     }
 
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS = financeAaLedgerAcctDTO;
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
-                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0 &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0) {
-                    finalFinanceAaLedgerAcctDTOS.remove(vo);
+
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
                 }
             }
-            return vo;
-        });
-
-        return financeAaLedgerAcctDTO;
+        }
+        return financeAaLedgerAcctDTOS;
     }
 
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS1 = financeAaLedgerAcctDTO;
-        BigDecimal duration = new BigDecimal("0.00");
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
-                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0  &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0  && vo.getBgnAmt().compareTo(BigDecimal.ZERO)==0) {
-                    finalFinanceAaLedgerAcctDTOS1.remove(vo);
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null && financeAaLedgerAcctDTO1.getBgnAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getBgnAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
                 }
             }
-            return vo;
+        }
+        return financeAaLedgerAcctDTOS;
 
-        });
-
-        return financeAaLedgerAcctDTO;
     }
 
     /**

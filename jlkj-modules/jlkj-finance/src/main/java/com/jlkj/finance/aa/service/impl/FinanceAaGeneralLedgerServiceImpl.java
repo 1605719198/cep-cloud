@@ -46,6 +46,12 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();
+            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
+                financeAaLedgerAcctDTOS = selectList(financeAaLedgerAcctDTOS);
+            }
+            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
+                financeAaLedgerAcctDTOS = selectListAdd(financeAaLedgerAcctDTOS);
+            }
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getCurrentPeriod())) {
                 BigDecimal bgnAmt;
                 BigDecimal bgnQty;
@@ -172,12 +178,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
             }
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
-                financeAaLedgerAcctDTOS2 = selectList(financeAaLedgerAcctDTOS2);
-            }
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
-                financeAaLedgerAcctDTOS2 = selectListAdd(financeAaLedgerAcctDTOS2);
-            }
+
             Map mapTemp = new HashMap(16);
             mapTemp.put("acctCode1", acctCode1.getAcctCode() + acctCode1.getAcctName());
             mapTemp.put("list", financeAaLedgerAcctDTOS2);
@@ -351,28 +352,29 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
     }
 
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null) {
-                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0 &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0) {
-                    financeAaLedgerAcctDTO.remove(vo);
+
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
                 }
             }
-            return vo;
-        });
-        return financeAaLedgerAcctDTO;
+        }
+        return financeAaLedgerAcctDTOS;
     }
 
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() != null && vo.getCrAmt() != null && vo.getBgnAmt() != null) {
-                if (vo.getDrAmt().compareTo(BigDecimal.ZERO)==0  &&  vo.getCrAmt().compareTo(BigDecimal.ZERO)==0  && vo.getBgnAmt().compareTo(BigDecimal.ZERO)==0) {
-                    financeAaLedgerAcctDTO.remove(vo);
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null && financeAaLedgerAcctDTO1.getBgnAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getBgnAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
                 }
             }
-            return vo;
+        }
+        return financeAaLedgerAcctDTOS;
 
-        });
-        return financeAaLedgerAcctDTO;
     }
 
     public List<FinanceAaLedgerAcctDTO> selectAccountLevel(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO, FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2) {
