@@ -39,9 +39,9 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
+          type="info"
           plain
-          icon="el-icon-download"
+          icon="el-icon-upload2"
           size="mini"
           @click="handleImport"
           v-hasPermi="['human:socialSecurityBasis:import']"
