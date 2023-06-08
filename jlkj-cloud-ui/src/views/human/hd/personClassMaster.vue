@@ -22,10 +22,10 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="" prop="empId" v-if="this.personClassType==2">
+      <el-form-item label="" prop="empId" v-if="this.personClassType==='2'">
         <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择机构"  style="width: 200px;"/>
       </el-form-item>
-      <el-form-item label="" prop="empId" v-if="this.personClassType==1">
+      <el-form-item label="" prop="empId" v-if="this.personClassType==='1'">
         <el-input maxlength="32"  v-model="queryParams.empId" placeholder="请输入员工工号" style="width: 200px;">
           <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
         </el-input>
@@ -50,9 +50,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="ClassList" @selection-change="handleSelectionChange" height="67vh" v-if="this.personClassType!=''">
-      <el-table-column label="员工工号" align="center" prop="empId" v-if="this.personClassType==1"/>
-      <el-table-column label="机构id" align="center" prop="deptId" v-else-if="this.personClassType==2" />
+    <el-table v-loading="loading" :data="classList" @selection-change="handleSelectionChange" height="67vh" v-if="this.personClassType!==''">
+      <el-table-column label="员工工号" align="center" prop="empId" v-if="this.personClassType==='1'"/>
+      <el-table-column label="机构id" align="center" prop="deptId" v-else-if="this.personClassType==='2'" />
       <el-table-column label="一级机构" align="center" prop="firstDeptName" />
       <el-table-column label="轮班方式" align="center" prop="shiftmodeName" width="180" />
       <el-table-column label="班别" align="center" prop="className" />
@@ -134,10 +134,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="this.form.id!=null">
-            <el-form-item label="机构ID" prop="deptId" v-if="this.formpersonClassType==2" >
+            <el-form-item label="机构ID" prop="deptId" v-if="this.formpersonClassType==='2'" >
               <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择机构" :normalizer="normalizer" @select="deptChange" />
             </el-form-item>
-            <el-form-item label="员工工号" prop="empId" v-if="this.formpersonClassType==1">
+            <el-form-item label="员工工号" prop="empId" v-if="this.formpersonClassType==='1'">
               <el-input maxlength="20"  v-model="form.empId" placeholder="请选择员工工号" disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
@@ -146,7 +146,6 @@
         </el-row>
 
         <el-row :gutter="20" v-if="this.form.id==null">
-
           <el-col :span="12">
             <el-form-item  prop="type" label="出勤身份类型" >
               <el-select v-model="formpersonClassType" placeholder="请选择出勤身份类型" style="width: 100%"  clearable>
@@ -160,26 +159,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="机构ID" prop="deptId" v-if="this.formpersonClassType==2">
+            <el-form-item label="机构ID" prop="deptId" v-if="this.formpersonClassType==='2'">
               <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择机构" :normalizer="normalizer" @select="deptChange" />
             </el-form-item>
-            <el-form-item label="员工工号" prop="empId" v-if="this.formpersonClassType==1">
+            <el-form-item label="员工工号" prop="empId" v-if="this.formpersonClassType==='1'">
               <el-input maxlength="20"  v-model="form.empId" placeholder="请选择员工工号" disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>
           </el-col>
-<!--          <el-col :span="12" style="display: flex;flex-direction: row" v-if="this.form.id!=null">-->
-<!--            <el-form-item  prop="type" label="卡钟类型"  >-->
-<!--              <dict-tag-human-base :options="attendenceOptions.PersonClassType" :value="formpersonClassType"/>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item label="机构ID"   v-if="this.formpersonClassType==2">-->
-<!--              {{form.deptId}}-->
-<!--            </el-form-item>-->
-<!--            <el-form-item label="员工工号"  v-if="this.formpersonClassType==1">-->
-<!--              {{form.empId}}-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -303,28 +291,8 @@
                         {{options.dicName}}
                       </option>
                     </select>
-
-<!--                    <el-select v-model="form.classId" placeholder="请选择班别" clearable>-->
-<!--                      <el-option-->
-<!--                        v-for="dict in shiftClassList"-->
-<!--                        :key="dict.id"-->
-<!--                        :label="dict.className"-->
-<!--                        :value="dict.id"-->
-<!--                      />-->
-<!--                    </el-select>-->
-
                   </div>
                 </div>
-<!--                <span style="width: 100%">日期{{ data.day.split('-').slice(2).join('-') }}</span>-->
-<!--                <span style="width: 100%">班次一 {{shiftChangeObj[data.day].firShiftCode}}</span>-->
-<!--                <span style="width: 100%">班次二 {{shiftChangeObj[data.day].secShiftCode}}</span>-->
-<!--                <span style="width: 100%">连班   {{shiftChangeObj[data.day].isJoinShift}}</span>-->
-                <!--              <span-->
-                <!--                style="display: flex;justify-content: center;align-items: center; flex-direction: row"-->
-                <!--                v-show="data.type==='current-month'"-->
-                <!--              ><<dict-tag-human-base :options="attendenceOptions.dateType"-->
-                <!--                                     :value="+holidayTableList[parseInt(data.day.substring(5,7))-1]['day'+parseInt(data.day.substring(8,10))]"-->
-                <!--              />></span>-->
               </div>
             </template>
           </human-calendar>
@@ -383,7 +351,7 @@ export default {
       //登录人信息
       user: {},
       // 遮罩层
-      loading: true,
+      loading: false,
       //部门选单树数据
       deptOptions: [],
       // 选中数组
@@ -397,7 +365,7 @@ export default {
       // 总条数
       total: 0,
       // 出勤身份表格数据
-      ClassList: [],
+      classList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -435,15 +403,13 @@ export default {
   },
   watch:{
     personClassType(val){
-      this.queryParams.empId=null,
-        this.queryParams.deptId=null,
-        this.getList();
+      this.queryParams.empId=null
+        this.queryParams.deptId=null
     },
     'queryParams.compId':{
       deep:true,
       immediate:false,
       handler:function( newV){
-        this.getList();
         this.getTreeselect();
         this.getShiftList();
       }
@@ -482,10 +448,10 @@ export default {
       var year = '2023'
       for (var i = 1; i <  13; i++) {
         var monthDays ;
-        if (bigMonth.indexOf(i) != -1) {
+        if (bigMonth.indexOf(i) !== -1) {
           monthDays = 32;
-        } else if (i == 2) {
-          var o = ((year%400 ==0)||(year % 4 == 0 && year%100 != 0)) ? 1 : 0;
+        } else if (i === 2) {
+          var o = ((year%400 ===0)||(year % 4 === 0 && year%100 !== 0)) ? 1 : 0;
           monthDays = 29+o;
         } else {
           monthDays = 31
@@ -615,29 +581,47 @@ export default {
       };
     },
     /** 查询人员数据 */
-    getList(){
-      if(this.personClassType==1){
-        this.getListPerspn();
-      }else if(this.personClassType==2){
-        this.getListOrg();
+    getList(e){
+      if(this.personClassType==="1"){
+        if(!this.queryParams.empId){
+          if(!e){
+            this.$modal.msgWarning("请输入工号");
+          }
+        }else{
+          this.getListPerspn();
+        }
+      }else if(this.personClassType==="2"){
+        if(!this.queryParams.deptId){
+          if(!e){
+            this.$modal.msgWarning("请选择部门");
+          }
+        }else{
+          this.getListOrg();
+        }
       }
     },
     /** 查询人员排班列表 */
     getListPerspn() {
       this.loading = true;
       listPersonClassMaster(this.queryParams).then(response => {
-        this.ClassList = response.rows;
+        this.classList = response.rows;
         this.total = response.total;
         this.loading = false;
+        if(this.total===0){
+          this.$modal.msgWarning("未查询到数据")
+        }
       });
     },
     /** 查询组织机构排班列表 */
     getListOrg() {
       this.loading = true;
       listOrgClassMaster(this.queryParams).then(response => {
-        this.ClassList = response.rows;
+        this.classList = response.rows;
         this.total = response.total;
         this.loading = false;
+        if(this.total===0){
+          this.$modal.msgWarning("未查询到数据")
+        }
       });
     },
     // 取消按钮
@@ -681,7 +665,8 @@ export default {
       this.queryParams.deptId = null;
       this.personClassType = '1';
       this.empId = null;
-      this.handleQuery();
+      this.classList = [];
+      this.total = 0;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -691,7 +676,7 @@ export default {
     },
     // 轮班方式，班次，班别查看
     runShiftView(){
-      // this.$router.push("/system/user-auth/role/");
+      this.$router.push("/human/hd/hd01/shiftMode")
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -704,7 +689,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id
-      if(this.personClassType==1){
+      if(this.personClassType==="1"){
         getPersonClassMaster(id).then(response => {
           this.form = response.data;
           var params={
@@ -741,9 +726,9 @@ export default {
     },
     /** 提交按钮 */
     submitForm(){
-      if(this.formpersonClassType==1){
+      if(this.formpersonClassType==='1'){
         this.submitFormPerson();
-      }else if(this.formpersonClassType==2){
+      }else if(this.formpersonClassType==='2'){
         this.submitFormDept();
       }
     },
@@ -755,13 +740,13 @@ export default {
             updatePersonClassMaster(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           } else {
             addPersonClassMaster(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           }
         }
@@ -775,13 +760,13 @@ export default {
             updateOrgClassMaster(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           } else {
             addOrgClassMaster(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           }
         }
@@ -789,9 +774,9 @@ export default {
     },
     /** 删除按钮 */
     handleDelete(row){
-      if(this.personClassType==1){
+      if(this.personClassType==='1'){
         this.handleDeletePerson(row)
-      }else if(this.personClassType==2){
+      }else if(this.personClassType==='2'){
         this.handleDeleteDept(row)
       }
     },
@@ -801,7 +786,7 @@ export default {
       this.$modal.confirm('是否确认删除人员卡钟编号为"' + ids + '"的数据项？').then(function() {
         return delPersonClassMaster(ids);
       }).then(() => {
-        this.getList();
+        this.getList(1);
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
@@ -810,7 +795,7 @@ export default {
       this.$modal.confirm('是否确认删除部门卡钟编号为"' + ids + '"的数据项？').then(function() {
         return delOrgClassMaster(ids);
       }).then(() => {
-        this.getList();
+        this.getList(1);
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },

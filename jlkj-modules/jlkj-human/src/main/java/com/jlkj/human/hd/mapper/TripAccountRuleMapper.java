@@ -29,6 +29,14 @@ public interface TripAccountRuleMapper
     public List<TripAccountRule> selectTripAccountRuleList(TripAccountRule tripAccountRule);
 
     /**
+     * 查询相同出差会计科目
+     *
+     * @param tripAccountRule 出差会计科目
+     * @return 出差会计科目
+     */
+    public TripAccountRule querySameData(TripAccountRule tripAccountRule);
+
+    /**
      * 新增出差会计科目
      * 
      * @param tripAccountRule 出差会计科目

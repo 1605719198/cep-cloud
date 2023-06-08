@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="轮班方式" prop="shiftmodeId">
-        <el-select v-model="queryParams.shiftmodeId" placeholder="请选择轮班方式" clearable>
+        <el-select v-model="queryParams.shiftmodeId" placeholder="请选择轮班方式">
           <el-option
             v-for="dict in modeList"
             :key="dict.id"
@@ -153,7 +153,7 @@ export default {
       //轮班方式列表数据
       modeList:[],
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -198,7 +198,6 @@ export default {
     init(modeData) {
       this.modeList = modeData.modeList;
       this.queryParams.compId = modeData.compId;
-      this.getList();
     },
     //设置表单值
     setForm(e){
@@ -212,13 +211,19 @@ export default {
       }
     },
     /** 查询班别数据列表 */
-    getList() {
-      this.loading = true;
-      listShiftClass(this.queryParams).then(response => {
-        this.shiftClassList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+    getList(e) {
+      if(this.queryParams.shiftmodeId){
+        this.loading = true;
+        listShiftClass(this.queryParams).then(response => {
+          this.shiftClassList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        });
+      }else{
+        if(!e){
+          this.$modal.msgWarning("请选择轮班方式")
+        }
+      }
     },
     // 取消按钮
     cancel() {
@@ -284,13 +289,13 @@ export default {
             updateShiftClass(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           } else {
             addShiftClass(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           }
         }
@@ -302,7 +307,7 @@ export default {
       this.$modal.confirm('是否确认删除班别数据编号为"' + ids + '"的数据项？').then(function() {
         return delShiftClass(ids);
       }).then(() => {
-        this.getList();
+        this.getList(1);
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
@@ -317,7 +322,8 @@ export default {
       this.queryParams.compId = val;
       this.queryParams.shiftmodeId =null;
       this.modeList = list;
-      this.getList();
+      this.shiftClassList = [];
+      this.total = 0;
     }
   }
 };
