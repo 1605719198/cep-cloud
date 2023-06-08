@@ -31,7 +31,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 查询出勤身份列表
      */
-    @RequiresPermissions("human:orgClassMaster:list")
+    @RequiresPermissions("human:personClassMaster:list")
     @GetMapping("/list")
     public TableDataInfo list(OrgClassMaster orgClassMaster)
     {
@@ -43,7 +43,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 导出出勤身份列表
      */
-    @RequiresPermissions("human:orgClassMaster:export")
+    @RequiresPermissions("human:personClassMaster:export")
     @Log(title = "出勤身份", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, OrgClassMaster orgClassMaster)
@@ -56,7 +56,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 获取出勤身份详细信息
      */
-    @RequiresPermissions("human:orgClassMaster:query")
+    @RequiresPermissions("human:personClassMaster:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +66,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 新增出勤身份
      */
-    @RequiresPermissions("human:orgClassMaster:add")
+    @RequiresPermissions("human:personClassMaster:add")
     @Log(title = "出勤身份", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OrgClassMaster orgClassMaster)
@@ -77,7 +77,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 修改出勤身份
      */
-    @RequiresPermissions("human:orgClassMaster:edit")
+    @RequiresPermissions("human:personClassMaster:edit")
     @Log(title = "出勤身份", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OrgClassMaster orgClassMaster)
@@ -88,7 +88,7 @@ public class OrgClassMasterController extends BaseController
     /**
      * 删除出勤身份
      */
-    @RequiresPermissions("human:orgClassMaster:remove")
+    @RequiresPermissions("human:personClassMaster:remove")
     @Log(title = "出勤身份", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

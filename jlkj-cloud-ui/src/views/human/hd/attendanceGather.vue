@@ -44,23 +44,23 @@
           <el-table-column label="小夜班次数" align="center" prop="smaNig" />
           <el-table-column label="大小夜班次数" align="center" prop="bigSmaNig" />
           <el-table-column label="请假天数" align="center">
-            <el-table-column label="病假" align="center" prop="holOveType" />
-            <el-table-column label="工作假" align="center" prop="holOveType" />
-            <el-table-column label="事假" align="center" prop="holOveType" />
-            <el-table-column label="婚假" align="center" prop="holOveType" />
-            <el-table-column label="产假" align="center" prop="holOveType" />
-            <el-table-column label="丧假" align="center" prop="holOveType" />
-            <el-table-column label="探亲假" align="center" prop="holOveType" />
-            <el-table-column label="公假" align="center" prop="holOveType" />
-            <el-table-column label="年休假" align="center" prop="holOveType" />
-            <el-table-column label="护理假" align="center" prop="holOveType" />
-            <el-table-column label="合计" align="center" prop="hourNum" />
+            <el-table-column label="病假" align="center" prop="sickLeave" />
+            <el-table-column label="工伤假" align="center" prop="workInjuryLeave" />
+            <el-table-column label="事假" align="center" prop="leaveOfAbsence" />
+            <el-table-column label="婚假" align="center" prop="marriageLeave" />
+            <el-table-column label="产假" align="center" prop="maternityLeave" />
+            <el-table-column label="丧假" align="center" prop="bereavementLeave" />
+            <el-table-column label="探亲假" align="center" prop="homeLeave" />
+            <el-table-column label="公假" align="center" prop="commonLeave" />
+            <el-table-column label="年休假" align="center" prop="annualLeave" />
+            <el-table-column label="护理假" align="center" prop="nursingLeave" />
+            <el-table-column label="合计" align="center" prop="totalLeave" />
           </el-table-column>
           <el-table-column label="加班小时数" align="center">
-            <el-table-column label="延时加班" align="center" prop="holOveType" />
-            <el-table-column label="休息日加班" align="center" prop="holOveType" />
-            <el-table-column label="法定假加班" align="center" prop="holOveType" />
-            <el-table-column label="合计" align="center" prop="hourNum" />
+            <el-table-column label="延时加班" align="center" prop="delayedOvertime" />
+            <el-table-column label="休息日加班" align="center" prop="overtimeOnRestDays" />
+            <el-table-column label="法定假加班" align="center" prop="overtimeOnStatutoryHolidays" />
+            <el-table-column label="合计" align="center" prop="totalOvertime" />
           </el-table-column>
           <el-table-column label="月初未上岗天数" align="center" prop="befEntDuty" />
           <el-table-column label="月末未上岗天数" align="center" prop="aftEntDuty" />
@@ -118,6 +118,9 @@ export default {
         pageSize: 10,
         compId: 'J00',
         empNo: null,
+        shiftDate: null,
+        year: null,
+        month: null,
       },
       // 表单参数
       form: {},
@@ -144,6 +147,8 @@ export default {
     /** 查询月出勤统计汇总列表 */
     getList() {
       this.loading = true;
+      this.queryParams.year = this.queryParams.shiftDate.substr(0,4)
+      this.queryParams.month = this.queryParams.shiftDate.substr(5,2)
       listAttendanceGather(this.queryParams).then(response => {
         this.attendanceGatherList = response.data.rows;
         this.total = response.data.total;

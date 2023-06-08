@@ -140,31 +140,32 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         return null;
     }
 
-    public List<FinanceAaLedgerAcctDTO> selectList(  List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS = financeAaLedgerAcctDTO;
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() !=null && vo.getCrAmt()!=null ){
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO)){
-                    finalFinanceAaLedgerAcctDTOS.remove(vo);
-                }
-            }
-            return vo;
-        });
-        return  financeAaLedgerAcctDTO;
-    }
-    public List<FinanceAaLedgerAcctDTO> selectListAdd(  List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-        List<FinanceAaLedgerAcctDTO> finalFinanceAaLedgerAcctDTOS1 = financeAaLedgerAcctDTO;
-        financeAaLedgerAcctDTO.stream().findFirst().map(vo -> {
-            if (vo.getDrAmt() !=null && vo.getCrAmt()!=null && vo.getBgnAmt()!=null){
-                if (vo.getDrAmt().equals(BigDecimal.ZERO) && vo.getCrAmt().equals(BigDecimal.ZERO) && vo.getBgnAmt().equals(BigDecimal.ZERO)){
-                    finalFinanceAaLedgerAcctDTOS1.remove(vo);
-                }
-            }
-            return vo;
+    public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
 
-        });
-        return  financeAaLedgerAcctDTO;
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
+                }
+            }
+        }
+        return financeAaLedgerAcctDTOS;
     }
+
+    public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
+        for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
+            if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null && financeAaLedgerAcctDTO1.getBgnAmt() != null) {
+                if (financeAaLedgerAcctDTO1.getDrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getCrAmt().compareTo(BigDecimal.ZERO) != 0 || financeAaLedgerAcctDTO1.getBgnAmt().compareTo(BigDecimal.ZERO) != 0) {
+                    financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
+                }
+            }
+        }
+        return financeAaLedgerAcctDTOS;
+
+    }
+
     /**
      * 根据科目级截取会计科目编号
      *

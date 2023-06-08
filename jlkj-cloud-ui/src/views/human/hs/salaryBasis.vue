@@ -34,12 +34,15 @@
             <div>
               <div class="avue-crud__search" style="border: 0">
                 <el-row>
-                  <el-col :span="20">
-                    <el-form :inline="true">
+                  <el-col :span="24">
+                    <el-form :inline="true" >
                       <!-- 操作按钮 -->
                       <el-form-item>
                         <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini" v-hasPermi="['human:salaryBasis:add']" >新增
                         </el-button>
+                      </el-form-item>
+                      <el-form-item label="父节点编码:" v-show="this.parentCode!=null">
+                        {{parentCode}}
                       </el-form-item>
                     </el-form>
                   </el-col>
@@ -110,11 +113,6 @@
                   </el-radio-group>
                 </el-form-item>
               </el-col>
-              <!--              <el-col :span="12">-->
-              <!--                <el-form-item label="排序序号" prop="orderNum">-->
-              <!--                  <el-input v-model="form.orderNum" placeholder="请输入排序序号" type="number"/>-->
-              <!--                </el-form-item>-->
-              <!--              </el-col>-->
             </el-row>
 
             <el-row :gutter="20">
@@ -215,6 +213,8 @@ export default {
       options: [],
       //默认显示id
       defaultShowNodes: [],
+      //父节点编码
+      parentCode:null,
       // 表单校验
       rules: {
         infoCode: [
@@ -298,6 +298,7 @@ export default {
     //点击节点方法
     handleNodeClick(data) {
       this.queryParams.id = data.id;
+      this.parentCode = data.infoCode;
       this.tableData = []
       this.onLoad()
     },

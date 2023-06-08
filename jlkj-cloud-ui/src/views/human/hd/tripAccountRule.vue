@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公司别" prop="compId">
-        <el-select :popper-append-to-body="false" v-model="queryParams.compId" placeholder="请选择公司别" clearable ref="selectCompany">
+        <el-select :popper-append-to-body="false" v-model="queryParams.compId" placeholder="请选择公司别" ref="selectCompany">
           <el-option
             v-for="dict in companyList"
             :key="dict.compId"
@@ -279,7 +279,7 @@ export default {
   data() {
     return {
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -347,7 +347,6 @@ export default {
   created() {
     this.initData()
     this.getCompanyList()
-    this.getList()
     this.getDisc()
   },
   methods: {

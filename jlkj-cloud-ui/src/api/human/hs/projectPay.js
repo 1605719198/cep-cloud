@@ -51,3 +51,17 @@ export function delProjectPay(id) {
     method: 'delete'
   })
 }
+
+// 状态修改
+export function changeStatus(id, parentid,status) {
+  const data = {
+    id,
+    parentid,
+    status
+  }
+  return request({
+    url: '/human/projectPay/changeStatus',
+    method: 'put',
+    data: data
+  })
+}

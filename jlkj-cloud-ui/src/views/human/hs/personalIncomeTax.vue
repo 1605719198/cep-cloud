@@ -23,8 +23,8 @@
           </el-select>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:personalIncomeTax:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button v-hasPermi="['human:personalIncomeTax:add']" :disabled="multiple" icon="el-icon-edit" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
       </el-form-item>
         </el-col>
       </el-row>
@@ -169,9 +169,6 @@ export default {
       this.queryParams.effectDate = null;
       this.queryParams.date = null;
       this.getVersionList()
-
-      // this.personalIncomeTaxList = []
-      // this.handleQuery();
     },
     //查询薪资选单
     getDisc(){
@@ -230,6 +227,7 @@ export default {
       }else{
           this.$modal.msgError("生效日期必须大于当前日期");
         }
+
     },
     addIndex({row, rowIndex}) {
       row.index = rowIndex

@@ -7,7 +7,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
-import com.jlkj.human.hd.dto.OptinonTypeDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hs.domain.SalaryBasis;
 import com.jlkj.human.hs.service.ISalaryBasisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,19 +98,19 @@ public class SalaryBasisController extends BaseController
      * 获取薪资作业下拉选单列表
      */
     @GetMapping(value = "/getBasisOptions")
-    public Object getBasisOptions(OptinonTypeDTO optinonType)
+    public Object getBasisOptions(OptionTypeDTO optionType)
     {
 
-        return AjaxResult.success(salaryBasisService.getBasisOptions(optinonType));
+        return AjaxResult.success(salaryBasisService.getBasisOptions(optionType));
     }
 
     /**
      * 获取薪资作业下拉选单细项
      */
     @GetMapping(value = "/getDeepOptions")
-    public AjaxResult getDeepOptions(OptinonTypeDTO optinonType)
+    public AjaxResult getDeepOptions(OptionTypeDTO optionType)
     {
-        List<BasisOptionsDTO> options = salaryBasisService.getDeepOptions(optinonType);
+        List<BasisOptionsDTO> options = salaryBasisService.getDeepOptions(optionType);
         return AjaxResult.success(options);
     }
 }

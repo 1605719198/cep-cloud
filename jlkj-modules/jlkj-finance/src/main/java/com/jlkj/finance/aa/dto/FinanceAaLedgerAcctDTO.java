@@ -61,6 +61,8 @@ public class FinanceAaLedgerAcctDTO {
     /** 余额为零且无发生额不显示 */
     private String   balanceZero;
     /** 核算项目一 */
+    private String   calCodea;
+    /** 核算项目一 */
     private String   calNamea;
     /** 核算项目二 */
     private String   calNameb;
@@ -78,6 +80,8 @@ public class FinanceAaLedgerAcctDTO {
     private BigDecimal   endOfPeriodQty;
     /** 金额 */
     private BigDecimal   endOfPeriodAmt;
+    /** 是否显示主项 */
+    private String  MainItems;
     /** 主键 */
     private String id;
 

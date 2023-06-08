@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.YearRateMapper">
+    
+    <resultMap type="YearRate" id="YearRateResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="year"    column="year"    />
+        <result property="bonRate"    column="bon_rate"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectYearRateVo">
+        select id, comp_id, year, bon_rate, creator, creator_id, creator_no, create_date from human_hs_year_rate
+    </sql>
+
+    <select id="selectYearRateList" parameterType="YearRate" resultMap="YearRateResult">
+        <include refid="selectYearRateVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+        ORDER BY year DESC
+    </select>
+    
+    <select id="selectYearRateById" parameterType="String" resultMap="YearRateResult">
+        <include refid="selectYearRateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYearRate" parameterType="YearRate">
+        insert into human_hs_year_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="year != null">year,</if>
+            <if test="bonRate != null">bon_rate,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="bonRate != null">#{bonRate},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYearRate" parameterType="YearRate">
+        update human_hs_year_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="bonRate != null">bon_rate = #{bonRate},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYearRateById" parameterType="String">
+        delete from human_hs_year_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteYearRateByIds" parameterType="String">
+        delete from human_hs_year_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

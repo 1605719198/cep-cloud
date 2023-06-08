@@ -104,7 +104,6 @@
 import {baseInfoTree, getChildrenList, deleteBaseInfo} from "@/api/human/hm/baseInfo"
 import Update from "./update.vue"
 import '@/assets/styles/humanStyles.scss';
-import {uuid} from "@/plugins/package/utils";
 
 export default {
   name: "BaseInfo",

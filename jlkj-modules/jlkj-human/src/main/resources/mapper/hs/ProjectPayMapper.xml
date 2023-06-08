@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="defaultValue"    column="default_value"    />
         <result property="status"    column="status"    />
         <result property="ifUsed"    column="if_used"    />
+        <result property="ifEnd"    column="if_end"    />
         <result property="creator"    column="creator"    />
         <result property="creatorNo"    column="creator_no"    />
         <result property="creatorId"    column="creator_id"    />
@@ -30,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectProjectPayVo">
-        select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id,creator_no, create_date from human_hs_salary_project_basis
+        select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, if_end, creator, creator_id,creator_no, create_date from human_hs_salary_project_basis
     </sql>
 
     <select id="selectProjectPayList" parameterType="ProjectPay" resultMap="ProjectPayResult">
@@ -40,10 +41,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
         </where>
     </select>
+
+    <select id="selectProjectPayByParentid" parameterType="Long" resultMap="ProjectPayResult">
+        <include refid="selectProjectPayVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and parentid = #{id}</if>
+        </where>
+    </select>
     
     <select id="selectProjectPayById" parameterType="Long" resultMap="ProjectPayResult">
         <include refid="selectProjectPayVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectProjectPayByCode" parameterType="ProjectPay" resultMap="ProjectPayResult">
+        <include refid="selectProjectPayVo"/>
+        where pay_pro_code = #{payProCode}
+        and pay_type = #{payType}
     </select>
         
     <insert id="insertProjectPay" parameterType="ProjectPay" useGeneratedKeys="true" keyProperty="id">
@@ -66,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="defaultValue != null">default_value,</if>
             <if test="status != null">status,</if>
             <if test="ifUsed != null">if_used,</if>
+            <if test="ifEnd != null">if_end,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorNo != null">creator_no,</if>
             <if test="creatorId != null">creator_id,</if>
@@ -89,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="defaultValue != null">#{defaultValue},</if>
             <if test="status != null">#{status},</if>
             <if test="ifUsed != null">#{ifUsed},</if>
+            <if test="ifEnd != null">#{ifEnd},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="creatorNo != null">#{creatorNo},</if>
@@ -116,6 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="defaultValue != null">default_value = #{defaultValue},</if>
             <if test="status != null">status = #{status},</if>
             <if test="ifUsed != null">if_used = #{ifUsed},</if>
+            <if test="ifEnd != null">if_end = #{ifEnd},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>

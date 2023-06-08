@@ -8,7 +8,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
-import com.jlkj.human.hd.dto.OptinonTypeDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.pa.domain.PerformanceBasis;
 import com.jlkj.human.pa.service.IPerformanceBasisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,9 +113,9 @@ public class PerformanceBasisController extends BaseController
      * 获取绩效作业下拉选单列表
      */
     @GetMapping(value = "/getBasisOptions")
-    public Object getBasisOptions(OptinonTypeDTO optinonType)
+    public Object getBasisOptions(OptionTypeDTO optionType)
     {
-        List<String> optionsType = optinonType.getOptionsType();
+        List<String> optionsType = optionType.getOptionsType();
         HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
         for (String item : optionsType) {
             List<BasisOptionsDTO> list = performanceBasisService.selectBasisOptions(item);

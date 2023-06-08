@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hd.service.IOvertimeWorkSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -40,18 +38,6 @@ public class OvertimeWorkSettingController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出加班补休参数设定列表
-     */
-    @RequiresPermissions("human:overtimeWorksetting:export")
-    @Log(title = "加班补休参数设定", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, OvertimeWorkSetting overtimeWorkSetting)
-    {
-        List<OvertimeWorkSetting> list = overtimeWorkSettingService.selectOvertimeWorkSettingList(overtimeWorkSetting);
-        ExcelUtil<OvertimeWorkSetting> util = new ExcelUtil<OvertimeWorkSetting>(OvertimeWorkSetting.class);
-        util.exportExcel(response, list, "加班补休参数设定数据");
-    }
 
     /**
      * 获取加班补休参数设定详细信息
@@ -66,7 +52,7 @@ public class OvertimeWorkSettingController extends BaseController
     /**
      * 新增加班补休参数设定
      */
-    @RequiresPermissions("human:overtimeWorksetting:add")
+    @RequiresPermissions("human:overtimeWorksetting:save")
     @Log(title = "加班补休参数设定", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OvertimeWorkSetting overtimeWorkSetting)
@@ -77,7 +63,7 @@ public class OvertimeWorkSettingController extends BaseController
     /**
      * 修改加班补休参数设定
      */
-    @RequiresPermissions("human:overtimeWorksetting:edit")
+    @RequiresPermissions("human:overtimeWorksetting:save")
     @Log(title = "加班补休参数设定", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OvertimeWorkSetting overtimeWorkSetting)
@@ -85,14 +71,4 @@ public class OvertimeWorkSettingController extends BaseController
         return toAjax(overtimeWorkSettingService.updateOvertimeWorkSetting(overtimeWorkSetting));
     }
 
-    /**
-     * 删除加班补休参数设定
-     */
-    @RequiresPermissions("human:overtimeWorksetting:remove")
-    @Log(title = "加班补休参数设定", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
-        return toAjax(overtimeWorkSettingService.deleteOvertimeWorkSettingByIds(ids));
-    }
 }

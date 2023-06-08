@@ -6,8 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import java.util.List;
  * @date 2023-05-08
  */
 @TableName(value ="human_hs_salary_project_basis")
+@Data
 public class SalaryProjectBasis implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -86,12 +86,18 @@ public class SalaryProjectBasis implements Serializable
     /** 该代码是否在使用 */
     private String ifUsed;
 
+    /** 该节点是否最最终节点 */
+    private String ifEnd;
+
     /** 输入人 */
     @Excel(name = "输入人")
     private String creator;
 
     /** 输入人ID */
     private String creatorId;
+
+    /** 输入人工号 */
+    private String creatorNo;
 
     /** 输入日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -102,230 +108,4 @@ public class SalaryProjectBasis implements Serializable
     @TableField(exist = false)
     private List<SalaryProjectBasis> children = new ArrayList<>();
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-    public void setPayProCode(String payProCode)
-    {
-        this.payProCode = payProCode;
-    }
-
-    public String getPayProCode()
-    {
-        return payProCode;
-    }
-    public void setPayProName(String payProName)
-    {
-        this.payProName = payProName;
-    }
-
-    public String getPayProName()
-    {
-        return payProName;
-    }
-    public void setIsSta(String isSta)
-    {
-        this.isSta = isSta;
-    }
-
-    public String getIsSta()
-    {
-        return isSta;
-    }
-    public void setStaCon(String staCon)
-    {
-        this.staCon = staCon;
-    }
-
-    public String getStaCon()
-    {
-        return staCon;
-    }
-    public void setIsPostPro(Long isPostPro)
-    {
-        this.isPostPro = isPostPro;
-    }
-
-    public Long getIsPostPro()
-    {
-        return isPostPro;
-    }
-    public void setIsEmpPro(String isEmpPro)
-    {
-        this.isEmpPro = isEmpPro;
-    }
-
-    public String getIsEmpPro()
-    {
-        return isEmpPro;
-    }
-    public void setIsLov(String isLov)
-    {
-        this.isLov = isLov;
-    }
-
-    public String getIsLov()
-    {
-        return isLov;
-    }
-    public void setLovConId(String lovConId)
-    {
-        this.lovConId = lovConId;
-    }
-
-    public String getLovConId()
-    {
-        return lovConId;
-    }
-    public void setSalaryDescribe(String salaryDescribe)
-    {
-        this.salaryDescribe = salaryDescribe;
-    }
-
-    public String getSalaryDescribe()
-    {
-        return salaryDescribe;
-    }
-    public void setParentid(Long parentid)
-    {
-        this.parentid = parentid;
-    }
-
-    public Long getParentid()
-    {
-        return parentid;
-    }
-    public void setParents(String parents)
-    {
-        this.parents = parents;
-    }
-
-    public String getParents()
-    {
-        return parents;
-    }
-    public void setPayType(String payType)
-    {
-        this.payType = payType;
-    }
-
-    public String getPayType()
-    {
-        return payType;
-    }
-    public void setIsShowno(String isShowno)
-    {
-        this.isShowno = isShowno;
-    }
-
-    public String getIsShowno()
-    {
-        return isShowno;
-    }
-    public void setNum(String num)
-    {
-        this.num = num;
-    }
-
-    public String getNum()
-    {
-        return num;
-    }
-    public void setDefaultValue(String defaultValue)
-    {
-        this.defaultValue = defaultValue;
-    }
-
-    public String getDefaultValue()
-    {
-        return defaultValue;
-    }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setIfUsed(String ifUsed)
-    {
-        this.ifUsed = ifUsed;
-    }
-
-    public String getIfUsed()
-    {
-        return ifUsed;
-    }
-    public void setCreator(String creator)
-    {
-        this.creator = creator;
-    }
-
-    public String getCreator()
-    {
-        return creator;
-    }
-    public void setCreatorId(String creatorId)
-    {
-        this.creatorId = creatorId;
-    }
-
-    public String getCreatorId()
-    {
-        return creatorId;
-    }
-    public void setCreateDate(Date createDate)
-    {
-        this.createDate = createDate;
-    }
-
-    public Date getCreateDate()
-    {
-        return createDate;
-    }
-
-    public List<SalaryProjectBasis> getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren(List<SalaryProjectBasis> children)
-    {
-        this.children = children;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("payProCode", getPayProCode())
-            .append("payProName", getPayProName())
-            .append("isSta", getIsSta())
-            .append("staCon", getStaCon())
-            .append("isPostPro", getIsPostPro())
-            .append("isEmpPro", getIsEmpPro())
-            .append("isLov", getIsLov())
-            .append("lovConId", getLovConId())
-            .append("salaryDescribe", getSalaryDescribe())
-            .append("parentid", getParentid())
-            .append("parents", getParents())
-            .append("payType", getPayType())
-            .append("isShowno", getIsShowno())
-            .append("num", getNum())
-            .append("defaultValue", getDefaultValue())
-            .append("status", getStatus())
-            .append("ifUsed", getIfUsed())
-            .append("creator", getCreator())
-            .append("creatorId", getCreatorId())
-            .append("createDate", getCreateDate())
-            .toString();
-    }
 }

@@ -32,7 +32,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 查询班次数据列表
      */
-    @RequiresPermissions("human:shiftCode:list")
+    @RequiresPermissions("human:shiftMode:list")
     @GetMapping("/list")
     public TableDataInfo list(ShiftCode shiftCode)
     {
@@ -53,7 +53,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 导出班次数据列表
      */
-    @RequiresPermissions("human:shiftCode:export")
+    @RequiresPermissions("human:shiftMode:export")
     @Log(title = "班次数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ShiftCode shiftCode)
@@ -66,7 +66,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 获取班次数据详细信息
      */
-    @RequiresPermissions("human:shiftCode:query")
+    @RequiresPermissions("human:shiftMode:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -86,7 +86,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 新增班次数据
      */
-    @RequiresPermissions("human:shiftCode:add")
+    @RequiresPermissions("human:shiftMode:add")
     @Log(title = "班次数据", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ShiftCode shiftCode)
@@ -97,7 +97,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 修改班次数据
      */
-    @RequiresPermissions("human:shiftCode:edit")
+    @RequiresPermissions("human:shiftMode:edit")
     @Log(title = "班次数据", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ShiftCode shiftCode)
@@ -108,7 +108,7 @@ public class ShiftCodeController extends BaseController
     /**
      * 删除班次数据
      */
-    @RequiresPermissions("human:shiftCode:remove")
+    @RequiresPermissions("human:shiftMode:remove")
     @Log(title = "班次数据", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

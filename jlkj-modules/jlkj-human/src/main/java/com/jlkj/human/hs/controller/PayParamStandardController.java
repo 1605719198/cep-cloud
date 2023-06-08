@@ -73,4 +73,16 @@ public class PayParamStandardController extends BaseController {
         }
         return iPayParamStandardService.saveBatch(payParamStandardDTO.getPayParamStandardList().stream().filter(item -> null != item.getStandardCode() && null != item.getStandard()).filter(item -> !item.getStandardCode().isEmpty() && !item.getStandard().isEmpty()).collect(Collectors.toList()));
     }
+
+    /**
+     * 查询各公司薪资参数设定列表接口
+     */
+    @GetMapping("/getListPayParamStandard")
+    public List<PayParamStandard> getListPayParamStandard(PayParamStandard payParamStandard) {
+        List<PayParamStandard> list = iPayParamStandardService.lambdaQuery()
+                .eq(PayParamStandard::getCompId, payParamStandard.getCompId())
+                .eq(PayParamStandard::getPayParaId, payParamStandard.getPayParaId())
+                .eq(PayParamStandard::getStatus, "1").list();
+        return list;
+    }
 }

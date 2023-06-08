@@ -69,6 +69,16 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          icon="el-icon-edit"
+          type="success"
+          plain
+          size="mini"
+          @click="setScheduling"
+        >排班
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="info"
           plain
           icon="el-icon-upload2"
@@ -79,22 +89,14 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          icon="el-icon-view"
           type="primary"
           plain
           size="mini"
-          @click="setScheduling"
-        >排班
+          @click="showShift"
+        >轮班方式/班次/班别查看
         </el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          size="mini"-->
-<!--          @click="showShift"-->
-<!--        >轮班方式/班次/班别查看-->
-<!--        </el-button>-->
-<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -272,7 +274,7 @@ export default {
   methods: {
     //轮班方式/班次/班别查看
     showShift() {
-      // alert(JSON.stringify(this.ids))
+      this.$router.push("/human/hd/hd01/shiftMode")
     },
     //排班
     setScheduling() {

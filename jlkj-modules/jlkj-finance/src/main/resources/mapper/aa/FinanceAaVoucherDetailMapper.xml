@@ -280,6 +280,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceAaLedgerAcctList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         select
         b.drcr,
+               b.acct_code,
+               b.cal_namea,
+               b.cal_nameb,
+               b.cal_namec,
+        b.cal_named,
+        b.voucher_date,
+               b.acct_name,
         SUM(b.qty_frnAmt) AS qty_frnAmt,
         SUM(b.ntAmt) AS	ntAmt
         from  finance_aa_voucher a

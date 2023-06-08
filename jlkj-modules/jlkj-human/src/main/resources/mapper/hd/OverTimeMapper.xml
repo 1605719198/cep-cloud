@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hd.mapper.OverTimeMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.OverTime">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="year" column="year" jdbcType="DECIMAL"/>
+            <result property="month" column="month" jdbcType="DECIMAL"/>
+            <result property="holOveType" column="hol_ove_type" jdbcType="VARCHAR"/>
+            <result property="isHolType" column="is_hol_type" jdbcType="VARCHAR"/>
+            <result property="dutyNum" column="duty_num" jdbcType="DECIMAL"/>
+            <result property="hourNum" column="hour_num" jdbcType="DECIMAL"/>
+            <result property="morDutyNum" column="mor_duty_num" jdbcType="DECIMAL"/>
+            <result property="morHourNum" column="mor_hour_num" jdbcType="DECIMAL"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="resvAttr1a" column="resv_attr1A" jdbcType="VARCHAR"/>
+            <result property="dataFrom" column="data_from" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,year,month,
+        hol_ove_type,is_hol_type,duty_num,
+        hour_num,mor_duty_num,mor_hour_num,
+        emp_id,emp_no,post_id,
+        post_name,emp_name,comp_id,
+        creator,creator_id,create_date,
+        resv_attr1A,data_from
+    </sql>
+</mapper>

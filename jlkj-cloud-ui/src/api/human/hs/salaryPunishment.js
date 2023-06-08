@@ -25,3 +25,12 @@ export function delSalaryPunishment(id) {
     method: 'delete'
   })
 }
+
+// 查询导入状态
+export function queryStatus(query) {
+  return request({
+    url: '/human/salaryPunishment/queryStatus',
+    method: 'get',
+    params: query
+  })
+}

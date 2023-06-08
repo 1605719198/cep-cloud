@@ -340,7 +340,7 @@ import duty from './duty'
 import qualification from './qualification'
 import { listPostVersion, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
 import { getBaseInfo, getDegreeMajorSpecialization } from "@/api/human/hm/baseInfo"
-import selectPost from "@/views/components/human/selectView/selectPost";
+import selectPost from "@/views/components/human/selectView/hp/selectPost";
 export default {
   name: 'AddOrUpdate',
   components: {

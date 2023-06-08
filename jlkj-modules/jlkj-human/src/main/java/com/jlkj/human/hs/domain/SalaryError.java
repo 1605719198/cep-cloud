@@ -39,11 +39,6 @@ public class SalaryError implements Serializable {
     private String empNo;
 
     /**
-     * 员工ID
-     */
-    private String empId;
-
-    /**
      * 信息
      */
     private String mark;

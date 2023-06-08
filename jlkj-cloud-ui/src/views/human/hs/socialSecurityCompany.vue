@@ -29,11 +29,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button v-hasPermi="['human:socialSecurityCompany:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:socialSecurityCompany:add']" icon="el-icon-edit" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
       </el-form-item>
       <el-form-item>
         <el-button
           type="danger"
+          icon="el-icon-delete"
           plain
           size="mini"
           :disabled="multiple"

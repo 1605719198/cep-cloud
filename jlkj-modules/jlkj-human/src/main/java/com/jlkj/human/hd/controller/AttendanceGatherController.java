@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
@@ -46,11 +45,7 @@ public class AttendanceGatherController extends BaseController {
     @GetMapping("/list")
     public Object listAttendanceGather(AttendanceGatherDTO attendanceGatherDTO) {
         startPage();
-        AttendanceGather attendanceGather = new AttendanceGather();
-        BeanUtils.copyProperties(attendanceGatherDTO, attendanceGather);
-        List<AttendanceGather> list = iAttendanceGatherService.lambdaQuery()
-                .eq(StringUtils.isNotBlank(attendanceGather.getCompId()), AttendanceGather::getCompId, attendanceGather.getCompId())
-                .eq(AttendanceGather::getEmpNo, attendanceGather.getEmpNo()).list();
+        List<AttendanceGatherDTO> list = iAttendanceGatherService.selectJoinList(attendanceGatherDTO);
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 
@@ -63,8 +58,6 @@ public class AttendanceGatherController extends BaseController {
     @GetMapping("/attendanceList")
     public Object listAttendance(AttendanceGatherDTO attendanceGatherDTO) {
         startPage();
-        AttendanceGather attendanceGather = new AttendanceGather();
-        BeanUtils.copyProperties(attendanceGatherDTO, attendanceGather);
         String real = "true";
         if (real.equals(attendanceGatherDTO.getIncludingSubsidiaries())) {
             SysDept sysDept = iSysDeptService.selectSysDeptByDeptCode(attendanceGatherDTO.getCompId());

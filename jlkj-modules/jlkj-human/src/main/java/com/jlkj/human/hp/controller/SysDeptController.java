@@ -53,6 +53,7 @@ public class SysDeptController extends BaseController
     /**
      * 查询部门资料变更版本列表
      */
+    @RequiresPermissions("human:deptMaintenance:query")
     @GetMapping("/deptVersionlist")
     public TableDataInfo list(SysDeptVersion sysDeptVersion)
     {
@@ -61,17 +62,6 @@ public class SysDeptController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出部门资料维护列表
-     */
-    @Log(title = "部门资料维护", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, SysDept sysDept)
-    {
-        List<SysDept> list = sysDeptService.selectSysDeptList(sysDept);
-        ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
-        util.exportExcel(response, list, "部门资料维护数据");
-    }
 
     /**
      * 获取部门资料维护详细信息
@@ -147,6 +137,7 @@ public class SysDeptController extends BaseController
     /**
      * 获取部门岗位下拉树列表
      */
+    @RequiresPermissions("human:deptPostView:list")
     @GetMapping("/deptpostTree")
     public AjaxResult deptpostTree(DeptUnionPostDTO deptpost)
     {

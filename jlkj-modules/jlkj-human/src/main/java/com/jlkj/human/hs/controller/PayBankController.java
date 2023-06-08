@@ -57,7 +57,6 @@ public class PayBankController extends BaseController {
         return iPayBankService.saveOrUpdateBatch(payBankDTO.getPayBankList().stream().filter(item -> null != item.getBankCode() && null != item.getBankName()).filter(item -> !item.getBankCode().isEmpty() && !item.getBankName().isEmpty()).collect(Collectors.toList()));
     }
 
-
     /**
      * 删除各公司薪资薪资支付银行维护信息
      */
@@ -68,5 +67,16 @@ public class PayBankController extends BaseController {
     public Object delPayBank(@PathVariable String uuid) {
         iPayBankService.lambdaUpdate().eq(PayBank::getUuid, uuid).remove();
         return AjaxResult.success("删除成功");
+    }
+
+    /**
+     * 通过compID获取正常状态的薪资支付银行编码、名称ID
+     */
+    @PostMapping("/getBank")
+    public Object getBank(String compId) {
+        List<PayBank> list = iPayBankService.lambdaQuery()
+                .eq(PayBank::getCompId, compId)
+                .eq(PayBank::getStatus, "1").list();
+        return AjaxResult.success(list);
     }
 }

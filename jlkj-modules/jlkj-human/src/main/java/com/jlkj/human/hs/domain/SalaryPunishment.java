@@ -1,8 +1,11 @@
 package com.jlkj.human.hs.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,44 +26,14 @@ public class SalaryPunishment implements Serializable {
     private String id;
 
     /**
-     * 年
-     */
-    private String year;
-
-    /**
-     * 月
-     */
-    private String month;
-
-    /**
      * 公司薪资表项目ID（(human_hs_pay_table的ID）
      */
     private String payTableId;
 
     /**
-     * 薪资表项目编码
-     */
-    private String payTabCode;
-
-    /**
-     * 薪资表项目名称
-     */
-    private String payTabName;
-
-    /**
-     * 金额
-     */
-    private BigDecimal mon;
-
-    /**
      * 备注
      */
     private String comm;
-
-    /**
-     * 薪资类别ID（5-专项奖罚）
-     */
-    private String payType;
 
     /**
      * 公司ID
@@ -70,7 +43,44 @@ public class SalaryPunishment implements Serializable {
     /**
      * 员工ID
      */
+    @Excel(name = "工号*", cellType = Excel.ColumnType.NUMERIC, type = Excel.Type.IMPORT)
     private String empId;
+
+    /**
+     * 薪资类别ID（5-专项奖罚）
+     */
+    @Excel(name = "薪资类别", type = Excel.Type.IMPORT)
+    private String payType;
+
+    /**
+     * 年
+     */
+    @Excel(name = "年", type = Excel.Type.IMPORT)
+    private String year;
+
+    /**
+     * 月
+     */
+    @Excel(name = "月", type = Excel.Type.IMPORT)
+    private String month;
+
+    /**
+     * 薪资表项目编码
+     */
+    @Excel(name = "薪资表项目编码*", type = Excel.Type.IMPORT)
+    private String payTabCode;
+
+    /**
+     * 薪资表项目名称
+     */
+    @Excel(name = "薪资表项目名称", type = Excel.Type.IMPORT)
+    private String payTabName;
+
+    /**
+     * 金额
+     */
+    @Excel(name = "金额*", type = Excel.Type.IMPORT)
+    private BigDecimal mon;
 
     /**
      * 输入人
@@ -80,6 +90,8 @@ public class SalaryPunishment implements Serializable {
     /**
      * 输入日期
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 
     /**

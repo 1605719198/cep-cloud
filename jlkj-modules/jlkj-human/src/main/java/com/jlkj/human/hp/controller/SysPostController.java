@@ -1,6 +1,5 @@
 package com.jlkj.human.hp.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -14,7 +13,6 @@ import com.jlkj.human.hp.service.ISysPostVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -54,18 +52,6 @@ public class SysPostController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出岗位信息数据维护列表
-     */
-    @RequiresPermissions("human:postMaintenance:export")
-    @Log(title = "岗位信息数据维护", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, SysPost sysPost)
-    {
-        List<SysPost> list = sysPostService.selectSysPostList(sysPost);
-        ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
-        util.exportExcel(response, list, "岗位信息数据维护数据");
-    }
 
     /**
      * 获取岗位信息数据维护详细信息

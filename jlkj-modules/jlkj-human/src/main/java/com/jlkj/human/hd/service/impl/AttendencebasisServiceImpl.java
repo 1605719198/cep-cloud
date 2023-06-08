@@ -3,6 +3,7 @@ package com.jlkj.human.hd.service.impl;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hd.mapper.AttendencebasisMapper;
 import com.jlkj.human.hd.service.IAttendencebasisService;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -198,15 +200,69 @@ public class AttendencebasisServiceImpl implements IAttendencebasisService
     }
 
     /**
+     * 通过父节点id查询员工出勤基本资料维护
+     *
+     * @param parentid 员工出勤基本资料维护编码
+     * @return 员工出勤基本资料维护
+     */
+    @Override
+    public List<BasisOptionsDTO> selectAttendenceBasisByParentid(Long  parentid){
+        return attendencebasisMapper.selectAttendencebasisByParentid(parentid);
+    }
+
+    /**
      * 查询员工出勤基本资料维护选单
      *
-     * @param code 员工出勤基本资料维护编码
+     * @param attendencebasis 员工出勤基本资料
      * @return 结果
      */
     @Override
-    public List<BasisOptionsDTO> selectBasisOptions(String code) {
-        Long parentid = attendencebasisMapper.selectAttendencebasisParentByCode(code).getId();
+    public List<BasisOptionsDTO> selectBasisOptions(Attendencebasis attendencebasis) {
+        Long parentid = attendencebasisMapper.selectAttendencebasisParentByCode(attendencebasis).getId();
         List<BasisOptionsDTO> list = attendencebasisMapper.selectAttendencebasisByParentid(parentid);
         return list;
     }
+
+    /**
+     * 获取出勤作业下拉选单主项
+     *
+     * @param optionType 选单查询条件
+     * @return 结果
+     */
+    @Override
+    public HashMap<String, List<BasisOptionsDTO>> getBasisOptions(OptionTypeDTO optionType) {
+        List<String> optionsType = optionType.getOptionsType();
+        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
+        for (String item : optionsType) {
+            try{
+                Attendencebasis items = new Attendencebasis();
+                items.setCode(item);
+                items.setCompId(optionType.getCompId());
+                List<BasisOptionsDTO> list = selectBasisOptions(items);
+                map.put(item, list);
+            } catch (Exception e) {
+
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 获取出勤作业下拉选单细项
+     *
+     * @param optionType 选单查询条件
+     * @return 结果
+     */
+    @Override
+    public List<BasisOptionsDTO> getDeepOptions(OptionTypeDTO optionType) {
+        List<BasisOptionsDTO> list = null;
+        try{
+            list = attendencebasisMapper.selectAttendencebasisByParentid(optionType.getId());
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+
 }
