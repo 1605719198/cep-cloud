@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别集团设置Controller
@@ -60,7 +61,7 @@ public class FinanceApItemController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
-        return success(financeApItemService.selectFinanceApItemById(id));
+        return success(financeApItemService.selectFinanceApItemByIdcal(id));
     }
 
     /**
@@ -94,5 +95,19 @@ public class FinanceApItemController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(financeApItemService.deleteFinanceApItemByIds(ids));
+    }
+
+    /**
+     * 选取集团报支类别(公司级报支类别用)
+     * @param companyId
+     * @return
+     */
+    @RequiresPermissions("finance:item:list")
+    @GetMapping("/itemList/{companyId}")
+    public TableDataInfo selectItemAndDetailList(@PathVariable("companyId") String companyId)
+    {
+        startPage();
+        List<Map<String, Object>> list = financeApItemService.selectItemAndDetailList(companyId);
+        return getDataTable(list);
     }
 }

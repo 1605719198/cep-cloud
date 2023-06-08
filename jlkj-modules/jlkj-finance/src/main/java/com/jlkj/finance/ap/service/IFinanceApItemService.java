@@ -3,6 +3,7 @@ package com.jlkj.finance.ap.service;
 import com.jlkj.finance.ap.domain.FinanceApItem;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别集团设置Service接口
@@ -19,6 +20,14 @@ public interface IFinanceApItemService
      * @return 报支类别集团设置
      */
     public FinanceApItem selectFinanceApItemById(String id);
+    /**
+     * 查询报支类别集团设置
+     *
+     * @param id 报支类别集团设置主键
+     * @return 报支类别集团设置
+     */
+    public FinanceApItem selectFinanceApItemByIdcal(String id);
+
 
     /**
      * 查询报支类别集团设置列表
@@ -59,4 +68,11 @@ public interface IFinanceApItemService
      * @return 结果
      */
     public int deleteFinanceApItemById(String id);
+
+    /**
+     *  选取集团报支类别(公司级报支类别用)
+     * @param companyId
+     * @return
+     */
+    public List<Map<String,Object>> selectItemAndDetailList(String companyId);
 }

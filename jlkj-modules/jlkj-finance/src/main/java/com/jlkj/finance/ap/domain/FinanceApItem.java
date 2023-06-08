@@ -30,6 +30,17 @@ public class FinanceApItem extends BaseEntity
     @Excel(name = "贷方会计科目")
     private String crAcctCode;
 
+
+
+    /** 核算项目一 */
+    @Excel(name = "核算项目一")
+    private String calTypeCodea;
+
+
+    /** 核算项目二 */
+    @Excel(name = "核算项目二")
+    private String calTypeCodeb;
+
     /** 资金项目 */
     @Excel(name = "资金项目")
     private String otherType;
@@ -88,6 +99,20 @@ public class FinanceApItem extends BaseEntity
         this.otherType = otherType;
     }
 
+    public String getCalTypeCodeb() {
+        return calTypeCodeb;
+    }
+
+    public String getCalTypeCodea() {
+        return calTypeCodea;
+    }
+
+    public void setCalTypeCodea(String calTypeCodea) {
+        this.calTypeCodea = calTypeCodea;
+    }
+    public void setCalTypeCodeb(String calTypeCodeb) {
+        this.calTypeCodeb = calTypeCodeb;
+    }
     public String getOtherType()
     {
         return otherType;
@@ -145,6 +170,8 @@ public class FinanceApItem extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateName", getUpdateName())
             .append("updateTime", getUpdateTime())
+            .append("calTypeCodea", getCalTypeCodea())
+             .append("calTypeCodeb", getCalTypeCodeb())
             .toString();
     }
 }

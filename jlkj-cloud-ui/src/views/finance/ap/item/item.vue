@@ -118,7 +118,6 @@
           <el-input v-model="form.calTypeCodeb" :disabled="true" class="input"/>
         </el-form-item>
         <el-form-item label="贷方到期天数" prop="dueDay">
-<!--          <el-input-number v-model="form.dueDay" controls-position="right" @change="handleChange" :min="1" :max="100" class="input"/>-->
           <el-input v-model="form.dueDay" placeholder="请输入贷方到期天数" class="input"/>
         </el-form-item>
         <el-form-item label="资金项目" prop="otherType">
