@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
             <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
         </where>
+        ORDER BY ent_date DESC
     </select>
     
     <select id="selectSalaryEmployedMonthById" parameterType="String" resultMap="SalaryEmployedMonthResult">

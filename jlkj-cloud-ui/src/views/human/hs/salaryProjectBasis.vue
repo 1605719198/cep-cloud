@@ -28,11 +28,13 @@
               <el-form :inline="true">
                 <!-- 操作按钮 -->
                 <el-form-item>
-                  <el-button v-hasPermi="['human:salaryProjectBasis:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+                  <el-button v-hasPermi="['human:salaryProjectBasis:add']" :disabled="multiple" icon="el-icon-edit" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
                 </el-form-item>
                 <el-form-item>
                   <el-button
                     type="danger"
+                    :disabled="multiple"
+                    icon="el-icon-delete"
                     plain
                     size="mini"
                     @click="handleDelete"

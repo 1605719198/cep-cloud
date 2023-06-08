@@ -21,7 +21,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:yearRate:add']" type="primary" size="mini" plain @click="handleSave">保存</el-button>
+        <el-button v-hasPermi="['human:yearRate:add']" icon="el-icon-edit" type="primary" size="mini" plain @click="handleSave">保存</el-button>
       </el-form-item>
     </el-form>
 
@@ -58,7 +58,7 @@
       </el-row>
     </el-form>
 
-    <el-table v-loading="loading" :data="yearRateList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="yearRateList" >
       <el-table-column label="年份" align="center" prop="year" />
       <el-table-column label="年度奖金比例" align="center" prop="bonRate" />
       <el-table-column label="输入人" align="center" prop="creator" />
@@ -143,7 +143,8 @@ export default {
       this.loading = true;
       listYearRate(this.queryParams).then(response => {
         this.yearRateList = response.rows;
-        this.form = response.rows[0];
+        var formdata = JSON.parse(JSON.stringify(response.rows[0]));
+        this.form =formdata
         this.total = response.total;
         this.loading = false;
       });
