@@ -1,5 +1,7 @@
 package com.jlkj.human.hd.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.TripAccountRule;
 import com.jlkj.human.hd.mapper.TripAccountRuleMapper;
@@ -54,8 +56,12 @@ public class TripAccountRuleServiceImpl implements ITripAccountRuleService
     @Override
     public int insertTripAccountRule(TripAccountRule tripAccountRule)
     {
-        tripAccountRule.setId(UUID.randomUUID().toString().substring(0,32));
-        return tripAccountRuleMapper.insertTripAccountRule(tripAccountRule);
+        if(StringUtils.isNull(tripAccountRuleMapper.querySameData(tripAccountRule))){
+            tripAccountRule.setId(UUID.randomUUID().toString().substring(0,32));
+            return tripAccountRuleMapper.insertTripAccountRule(tripAccountRule);
+        }else{
+            throw new ServiceException("已有相同类型数据");
+        }
     }
 
     /**
@@ -67,7 +73,11 @@ public class TripAccountRuleServiceImpl implements ITripAccountRuleService
     @Override
     public int updateTripAccountRule(TripAccountRule tripAccountRule)
     {
-        return tripAccountRuleMapper.updateTripAccountRule(tripAccountRule);
+        if(StringUtils.isNull(tripAccountRuleMapper.querySameData(tripAccountRule))){
+            return tripAccountRuleMapper.updateTripAccountRule(tripAccountRule);
+        }else{
+            throw new ServiceException("已有相同类型数据");
+        }
     }
 
     /**

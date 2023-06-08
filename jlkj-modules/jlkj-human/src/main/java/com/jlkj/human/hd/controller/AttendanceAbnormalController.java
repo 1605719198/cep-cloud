@@ -60,11 +60,10 @@ public class AttendanceAbnormalController extends BaseController {
         BeanUtils.copyProperties(attendanceAbnormalDTO, attendanceAbnormal);
         List<AttendanceAbnormal> list = iAttendanceAbnormalService.lambdaQuery()
                 .eq(StringUtils.isNotBlank(attendanceAbnormal.getCompId()), AttendanceAbnormal::getCompId, attendanceAbnormal.getCompId())
+                .eq(StringUtils.isNotBlank(attendanceAbnormal.getDisposeId()),AttendanceAbnormal::getDisposeId, attendanceAbnormal.getDisposeId())
                 .eq(AttendanceAbnormal::getEmpNo, attendanceAbnormal.getEmpNo())
-                .eq(AttendanceAbnormal::getDisposeId, attendanceAbnormal.getDisposeId())
-                .between(AttendanceAbnormal::getSlotCardOnduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime())
-                .or()
-                .between(AttendanceAbnormal::getSlotCardOffduty, attendanceAbnormalDTO.getStartTime(), attendanceAbnormalDTO.getEndTime()).list();
+                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getStartTime())
+                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 

@@ -128,7 +128,8 @@ export default {
       queryParams: {
         pageSize: 10,
         pageNum: 1,
-        total: 0
+        total: 0,
+        uuid: '1633336433080074242'
       },
       uuid: '',
       table: {
@@ -152,6 +153,7 @@ export default {
   },
   created() {
     this.getBaseInfoTree()
+    this.onLoad()
   },
   methods: {
     //获取选单配置树

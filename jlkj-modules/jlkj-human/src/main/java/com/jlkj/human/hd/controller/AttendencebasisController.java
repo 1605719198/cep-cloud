@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -9,13 +8,11 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
-import com.jlkj.human.hd.dto.OptinonTypeDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hd.service.IAttendencebasisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,8 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/attendenceBasis")
-public class AttendencebasisController extends BaseController
-{
+public class AttendencebasisController extends BaseController {
     @Autowired
     private IAttendencebasisService attendencebasisService;
 
@@ -36,33 +32,19 @@ public class AttendencebasisController extends BaseController
      */
     @RequiresPermissions("human:attendenceBasis:list")
     @GetMapping("/list")
-    public TableDataInfo list(Attendencebasis attendencebasis)
-    {
+    public TableDataInfo list(Attendencebasis attendencebasis) {
         startPage();
         List<Attendencebasis> list = attendencebasisService.selectAttendencebasisList(attendencebasis);
         return getDataTable(list);
     }
 
-    /**
-     * 导出员工出勤基本资料维护列表
-     */
-    @RequiresPermissions("human:attendenceBasis:export")
-    @Log(title = "员工出勤基本资料维护", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Attendencebasis attendencebasis)
-    {
-        List<Attendencebasis> list = attendencebasisService.selectAttendencebasisList(attendencebasis);
-        ExcelUtil<Attendencebasis> util = new ExcelUtil<Attendencebasis>(Attendencebasis.class);
-        util.exportExcel(response, list, "员工出勤基本资料维护数据");
-    }
 
     /**
      * 获取员工出勤基本资料维护详细信息
      */
     @RequiresPermissions("human:attendenceBasis:query")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(attendencebasisService.selectAttendencebasisById(id));
     }
 
@@ -72,8 +54,7 @@ public class AttendencebasisController extends BaseController
     @RequiresPermissions("human:attendenceBasis:add")
     @Log(title = "员工出勤基本资料维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Attendencebasis attendencebasis)throws Exception
-    {
+    public AjaxResult add(@RequestBody Attendencebasis attendencebasis) throws Exception {
         return toAjax(attendencebasisService.insertAttendencebasis(attendencebasis));
     }
 
@@ -83,8 +64,7 @@ public class AttendencebasisController extends BaseController
     @RequiresPermissions("human:attendenceBasis:edit")
     @Log(title = "员工出勤基本资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Attendencebasis attendencebasis) throws Exception
-    {
+    public AjaxResult edit(@RequestBody Attendencebasis attendencebasis) throws Exception {
         return toAjax(attendencebasisService.updateAttendencebasis(attendencebasis));
     }
 
@@ -93,33 +73,36 @@ public class AttendencebasisController extends BaseController
      */
     @RequiresPermissions("human:attendenceBasis:remove")
     @Log(title = "员工出勤基本资料维护", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{id}")
-    public AjaxResult remove(@PathVariable Long id)throws Exception
-    {
+    @DeleteMapping("/{id}")
+    public AjaxResult remove(@PathVariable Long id) throws Exception {
         return toAjax(attendencebasisService.deleteAttendencebasisById(id));
     }
+
     /**
      * 获取出勤设定下拉树列表
      */
     @GetMapping("/treeselect")
-    public AjaxResult treeselect(Attendencebasis attendencebasis)
-    {
+    public AjaxResult treeselect(Attendencebasis attendencebasis) {
         List<Attendencebasis> attendencebasiss = attendencebasisService.selectAttendencebasisList(attendencebasis);
         return AjaxResult.success(attendencebasisService.buildAttendenceTreeSelect(attendencebasiss));
     }
+
 
     /**
      * 获取出勤作业下拉选单列表
      */
     @GetMapping(value = "/getBasisOptions")
-    public Object getBasisOptions(OptinonTypeDTO optinonType)
-    {
-        List<String> optionsType = optinonType.getOptionsType();
-        HashMap<String, List<BasisOptionsDTO>> map = new HashMap<>(16);
-        for (String item : optionsType) {
-                List<BasisOptionsDTO> list = attendencebasisService.selectBasisOptions(item);
-                map.put(item, list);
-        }
-        return AjaxResult.success(map);
+    public Object getBasisOptions(OptionTypeDTO optionType) {
+
+        return AjaxResult.success(attendencebasisService.getBasisOptions(optionType));
+    }
+
+    /**
+     * 获取出勤作业下拉选单细项
+     */
+    @GetMapping(value = "/getDeepOptions")
+    public AjaxResult getDeepOptions(OptionTypeDTO optionType) {
+        List<BasisOptionsDTO> options = attendencebasisService.getDeepOptions(optionType);
+        return AjaxResult.success(options);
     }
 }

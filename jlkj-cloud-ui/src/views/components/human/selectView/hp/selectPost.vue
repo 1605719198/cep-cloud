@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="head-container">
-          <el-select v-model="queryParams.compId" placeholder="请选择公司名称" clearable size="small" :popper-append-to-body="false">
+          <el-select v-model="queryParams.compId" placeholder="请选择公司名称" size="small" :popper-append-to-body="false">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"

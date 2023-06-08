@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PersonalSalaryMapper">
+    
+    <resultMap type="PersonalSalary" id="PersonalSalaryResult">
+        <result property="id"    column="id"    />
+        <result property="payCheckReaId"    column="pay_check_rea_id"    />
+        <result property="payCheckRea"    column="pay_check_rea"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="mainPostName"    column="main_post_name"    />
+        <result property="postLevel"    column="post_level"    />
+        <result property="endPayDate"    column="end_pay_date"    />
+        <result property="payCheckDesc"    column="pay_check_desc"    />
+        <result property="salBank"    column="sal_bank"    />
+        <result property="salBankId"    column="sal_bank_id"    />
+        <result property="salBankNo"    column="sal_bank_no"    />
+        <result property="bonBank"    column="bon_bank"    />
+        <result property="bonBankId"    column="bon_bank_id"    />
+        <result property="bonBankNo"    column="bon_bank_no"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="compName"    column="comp_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postFlag"    column="post_flag"    />
+        <result property="postEffectDate"    column="post_effect_date"    />
+        <result property="msgld"    column="msgld"    />
+        <result property="istax"    column="istax"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="isCheck"    column="is_check"    />
+        <result property="isNew"    column="is_new"    />
+        <result property="achievementType"    column="achievement_type"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonalSalaryVo">
+        select s.id, s.pay_check_rea_id, s.pay_check_rea, s.effect_date, s.main_post_name, s.post_level, s.end_pay_date, s.pay_check_desc, s.sal_bank, s.sal_bank_id, s.sal_bank_no, s.bon_bank, s.bon_bank_id, s.bon_bank_no, s.comp_id, s.comp_name, s.post_id, s.post_flag, s.post_effect_date, s.msgld, s.istax,e.full_name as emp_name, s.emp_id, s.emp_no, s.version_no, s.is_check, s.is_new, s.achievement_type, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_salary s
+        left join human_hm_personnel_info as e on e.emp_no = s.emp_no
+    </sql>
+
+    <select id="selectPersonalSalaryList" parameterType="PersonalSalary" resultMap="PersonalSalaryResult">
+        <include refid="selectPersonalSalaryVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and s.comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and s.emp_no = #{empNo}</if>
+        </where>
+        order by version_no desc
+    </select>
+    
+    <select id="selectPersonalSalaryById" parameterType="String" resultMap="PersonalSalaryResult">
+        <include refid="selectPersonalSalaryVo"/>
+        where s.id = #{id}
+    </select>
+
+    <select id="selectPersonalSalaryByEmp" parameterType="PersonalSalary" resultMap="PersonalSalaryResult">
+        select s.id, s.pay_check_rea_id, s.pay_check_rea, s.effect_date, s.main_post_name, s.post_level, s.end_pay_date, s.pay_check_desc, s.sal_bank, s.sal_bank_id, s.sal_bank_no, s.bon_bank, s.bon_bank_id, s.bon_bank_no, s.comp_id, s.comp_name, s.post_id, s.post_flag,  if(s.effect_date>CURDATE(),s.effect_date,CURDATE()) as effect_date, s.msgld, s.istax,e.full_name as emp_name, s.emp_id, s.emp_no, s.version_no, s.is_check, s.is_new, s.achievement_type, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_salary s
+        left join human_hm_personnel_info as e on e.emp_no = s.emp_no
+        where s.emp_no = #{empNo}
+        order by version_no desc
+    </select>
+        
+    <insert id="insertPersonalSalary" parameterType="PersonalSalary">
+        insert into human_hs_salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="payCheckReaId != null">pay_check_rea_id,</if>
+            <if test="payCheckRea != null">pay_check_rea,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="mainPostName != null">main_post_name,</if>
+            <if test="postLevel != null">post_level,</if>
+            <if test="endPayDate != null">end_pay_date,</if>
+            <if test="payCheckDesc != null">pay_check_desc,</if>
+            <if test="salBank != null">sal_bank,</if>
+            <if test="salBankId != null">sal_bank_id,</if>
+            <if test="salBankNo != null">sal_bank_no,</if>
+            <if test="bonBank != null">bon_bank,</if>
+            <if test="bonBankId != null">bon_bank_id,</if>
+            <if test="bonBankNo != null">bon_bank_no,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="compName != null">comp_name,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postFlag != null">post_flag,</if>
+            <if test="postEffectDate != null">post_effect_date,</if>
+            <if test="msgld != null">msgld,</if>
+            <if test="istax != null">istax,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="isCheck != null">is_check,</if>
+            <if test="isNew != null">is_new,</if>
+            <if test="achievementType != null">achievement_type,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="payCheckReaId != null">#{payCheckReaId},</if>
+            <if test="payCheckRea != null">#{payCheckRea},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="mainPostName != null">#{mainPostName},</if>
+            <if test="postLevel != null">#{postLevel},</if>
+            <if test="endPayDate != null">#{endPayDate},</if>
+            <if test="payCheckDesc != null">#{payCheckDesc},</if>
+            <if test="salBank != null">#{salBank},</if>
+            <if test="salBankId != null">#{salBankId},</if>
+            <if test="salBankNo != null">#{salBankNo},</if>
+            <if test="bonBank != null">#{bonBank},</if>
+            <if test="bonBankId != null">#{bonBankId},</if>
+            <if test="bonBankNo != null">#{bonBankNo},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="compName != null">#{compName},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postFlag != null">#{postFlag},</if>
+            <if test="postEffectDate != null">#{postEffectDate},</if>
+            <if test="msgld != null">#{msgld},</if>
+            <if test="istax != null">#{istax},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="isCheck != null">#{isCheck},</if>
+            <if test="isNew != null">#{isNew},</if>
+            <if test="achievementType != null">#{achievementType},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonalSalary" parameterType="PersonalSalary">
+        update human_hs_salary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payCheckReaId != null">pay_check_rea_id = #{payCheckReaId},</if>
+            <if test="payCheckRea != null">pay_check_rea = #{payCheckRea},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="mainPostName != null">main_post_name = #{mainPostName},</if>
+            <if test="postLevel != null">post_level = #{postLevel},</if>
+            <if test="endPayDate != null">end_pay_date = #{endPayDate},</if>
+            <if test="payCheckDesc != null">pay_check_desc = #{payCheckDesc},</if>
+            <if test="salBank != null">sal_bank = #{salBank},</if>
+            <if test="salBankId != null">sal_bank_id = #{salBankId},</if>
+            <if test="salBankNo != null">sal_bank_no = #{salBankNo},</if>
+            <if test="bonBank != null">bon_bank = #{bonBank},</if>
+            <if test="bonBankId != null">bon_bank_id = #{bonBankId},</if>
+            <if test="bonBankNo != null">bon_bank_no = #{bonBankNo},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="compName != null">comp_name = #{compName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postFlag != null">post_flag = #{postFlag},</if>
+            <if test="postEffectDate != null">post_effect_date = #{postEffectDate},</if>
+            <if test="msgld != null">msgld = #{msgld},</if>
+            <if test="istax != null">istax = #{istax},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="isCheck != null">is_check = #{isCheck},</if>
+            <if test="isNew != null">is_new = #{isNew},</if>
+            <if test="achievementType != null">achievement_type = #{achievementType},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonalSalaryById" parameterType="String">
+        delete from human_hs_salary where id = #{id}
+    </delete>
+
+    <delete id="deletePersonalSalaryByIds" parameterType="String">
+        delete from human_hs_salary where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

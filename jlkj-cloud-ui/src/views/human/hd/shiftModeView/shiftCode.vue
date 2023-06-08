@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="轮班方式" prop="shiftmodeId">
-        <el-select v-model="queryParams.shiftmodeId" placeholder="请选择轮班方式" clearable>
+        <el-select v-model="queryParams.shiftmodeId" placeholder="请选择轮班方式">
           <el-option
             v-for="dict in modeList"
             :key="dict.id"
@@ -18,22 +18,10 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['human:shiftCode:add']"
+            v-hasPermi="['human:shiftMode:add']"
           >新增</el-button>
       </el-form-item>
     </el-form>
-<!--    <el-row :gutter="10" class="mb8">-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button type="primary"-->
-<!--                   plain-->
-<!--                   icon="el-icon-plus"-->
-<!--                   size="mini"-->
-<!--                   @click="handleAdd"-->
-<!--                   v-hasPermi="['human:shiftCode:add']"-->
-<!--        >新增</el-button>-->
-<!--      </el-col>-->
-<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
-<!--    </el-row>-->
     <el-table v-loading="loading" :data="shiftCodeList" @selection-change="handleSelectionChange" height="60vh">
       <el-table-column label="班次编码" align="center" prop="shiftCode" />
       <el-table-column label="班次开始时间" align="center" prop="startHour" >
@@ -77,14 +65,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:shiftCode:edit']"
+            v-hasPermi="['human:shiftMode:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:shiftCode:remove']"
+            v-hasPermi="['human:shiftMode:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -303,7 +291,7 @@ export default {
       //轮班方式列表数据
       modeList:[],
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -448,7 +436,6 @@ export default {
       this.getDisc();
       this.modeList = modeData.modeList;
       this.queryParams.compId = modeData.compId;
-      this.getList();
     },
     //设置表单值
     setForm(e){
@@ -462,13 +449,19 @@ export default {
       }
     },
     /** 查询班次数据列表 */
-    getList() {
-      this.loading = true;
-      listShiftCode(this.queryParams).then(response => {
-        this.shiftCodeList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+    getList(e) {
+      if(this.queryParams.shiftmodeId){
+        this.loading = true;
+        listShiftCode(this.queryParams).then(response => {
+          this.shiftCodeList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        });
+      }else{
+        if(!e){
+          this.$modal.msgWarning("请选择轮班方式")
+        }
+      }
     },
     // 取消按钮
     cancel() {
@@ -567,13 +560,13 @@ export default {
             updateShiftCode(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           } else {
             addShiftCode(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              this.getList(1);
             });
           }
         }
@@ -585,7 +578,7 @@ export default {
       this.$modal.confirm('是否确认删除班次数据编号为"' + ids + '"的数据项？').then(function() {
         return delShiftCode(ids);
       }).then(() => {
-        this.getList();
+        this.getList(1);
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
@@ -716,16 +709,16 @@ export default {
       var min =this.form.conMin
       if (!hour){
         this.form.conTime = null;
-        callback(new Error('班次开始时间不可为空'))
+        callback(new Error('班次工作时间不可为空'))
       }else if (!numberTest.test(hour)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字小时数'))
-      }else if(hour>23||this.form.startHour<0){
+      }else if(hour>48||this.form.startHour<0){
         this.form.conTime = null;
-        callback(new Error('请输入0-23之间的小时值'))
+        callback(new Error('请输入0-48之间的小时值'))
       }else if (!min){
         this.form.conTime = null;
-        callback(new Error('班次开始时间不可为空'))
+        callback(new Error('班次工作时间不可为空'))
       }else if (!numberTest.test(min)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字分钟数'))
@@ -872,7 +865,8 @@ export default {
       this.queryParams.compId = val;
       this.queryParams.shiftmodeId =null;
       this.modeList = list;
-      this.getList();
+      this.shiftCodeList = [];
+      this.total = 0;
     },
   }
 };

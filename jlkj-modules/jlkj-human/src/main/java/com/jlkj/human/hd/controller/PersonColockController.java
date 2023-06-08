@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hd.service.IPersonColockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,19 +36,6 @@ public class PersonColockController extends BaseController
         startPage();
         List<PersonColock> list = personColockService.selectPersonColockList(personColock);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出人员卡钟列表
-     */
-    @RequiresPermissions("human:personColock:export")
-    @Log(title = "人员卡钟", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonColock personColock)
-    {
-        List<PersonColock> list = personColockService.selectPersonColockList(personColock);
-        ExcelUtil<PersonColock> util = new ExcelUtil<PersonColock>(PersonColock.class);
-        util.exportExcel(response, list, "人员卡钟数据");
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -14,7 +13,6 @@ import com.jlkj.human.hd.service.IHolidaysettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -51,18 +49,6 @@ public class HolidaysettingController extends BaseController
         return success(holidaysettingService.getHolidaySetting(holidaysetting));
     }
 
-    /**
-     * 导出假别参数设定列表
-     */
-    @RequiresPermissions("human:holidaysetting:export")
-    @Log(title = "假别参数设定", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Holidaysetting holidaysetting)
-    {
-        List<Holidaysetting> list = holidaysettingService.selectHolidaysettingList(holidaysetting);
-        ExcelUtil<Holidaysetting> util = new ExcelUtil<Holidaysetting>(Holidaysetting.class);
-        util.exportExcel(response, list, "假别参数设定数据");
-    }
 
     /**
      * 获取假别参数设定详细信息

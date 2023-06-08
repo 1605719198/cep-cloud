@@ -15,13 +15,13 @@ export function getDateTime(e,dates){
   var time =yyyy + '-' + MM + '-' + DD+' '+hh+':'+mm+':'+ss;
   var date = yyyy + '-' + MM + '-' + DD;
   var ymdhms = yyyy+MM+DD+hh+mm+ss
-  if(e==0){
+  if(e===0){
     return time;
-  }else if(e==1){
+  }else if(e===1){
     return date;
-  }else if(e=='year'){
+  }else if(e==='year'){
     return yyyy
-  }else if(e=='ymdhms'){
+  }else if(e==='ymdhms'){
     return ymdhms
   }
 }

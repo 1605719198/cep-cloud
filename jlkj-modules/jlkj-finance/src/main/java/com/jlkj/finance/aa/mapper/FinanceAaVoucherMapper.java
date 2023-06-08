@@ -72,6 +72,13 @@ public interface FinanceAaVoucherMapper
      * @param financeAaVoucher 凭证维护-主
      * @return 凭证维护-主集合
      */
+    public  List<FinanceAaVoucher> selectFinanceAaVoucherHead(FinanceAaVoucher financeAaVoucher);
+    /**
+     * 查询凭证维护-主列表
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主集合
+     */
     public  List<FinanceAaVoucher> selectFinanceAaVoucherOrder(FinanceAaVoucher financeAaVoucher);
     /**
      * 查询凭证维护-主列表

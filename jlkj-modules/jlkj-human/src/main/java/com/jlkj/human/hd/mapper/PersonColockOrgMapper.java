@@ -29,6 +29,14 @@ public interface PersonColockOrgMapper
     public PersonColockOrg queryLastEffectData(PersonColockOrg personColockOrg);
 
     /**
+     * 查询未生效卡钟
+     *
+     * @param personColockOrg 部门卡钟
+     * @return 人员卡钟
+     */
+    public PersonColockOrg queryNoEffectData(PersonColockOrg personColockOrg);
+
+    /**
      * 查询人员卡钟组织机构列表
      * 
      * @param personColockOrg 人员卡钟组织机构

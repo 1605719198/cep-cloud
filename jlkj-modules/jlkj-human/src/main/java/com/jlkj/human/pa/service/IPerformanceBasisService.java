@@ -40,9 +40,9 @@ public interface IPerformanceBasisService
 
     /**
      * 修改绩效管理基本资料维护
-     * 
-     * @param performanceBasis 绩效管理基本资料维护
-     * @return 结果
+     * @param performanceBasis
+     * @return
+     * @throws Exception
      */
     public int updatePerformanceBasis(PerformanceBasis performanceBasis) throws Exception;;
 
@@ -56,9 +56,9 @@ public interface IPerformanceBasisService
 
     /**
      * 删除绩效管理基本资料维护信息
-     * 
-     * @param id 绩效管理基本资料维护主键
-     * @return 结果
+     * @param id
+     * @return
+     * @throws Exception
      */
     public int deletePerformanceBasisById(Long id) throws Exception;
 

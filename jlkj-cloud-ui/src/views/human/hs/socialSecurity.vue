@@ -33,15 +33,16 @@
                       </el-form-item>
                       <!-- 操作按钮 -->
                       <el-form-item>
-                      <el-button type="primary"  plain size="mini" @click="handleQuery">搜索</el-button>
+                      <el-button type="primary" icon="el-icon-search" plain size="mini" @click="handleQuery">搜索</el-button>
                       </el-form-item>
                       <el-form-item>
-                        <el-button v-hasPermi="['human:socialSecurity:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
+                        <el-button v-hasPermi="['human:socialSecurity:add']" icon="el-icon-edit" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button
                           type="danger"
                           plain
+                          icon="el-icon-delete"
                           size="mini"
                           :disabled="multiple"
                           @click="handleDelete"
@@ -331,7 +332,6 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      if(this.salaryProjectId) {
         if (this.queryParams.effectDate > getDateTime(1)) {
           for (let i = 0; i < this.multipleSelection.length; i++) {
             this.multipleSelection[i].effectDate = this.queryParams.effectDate
@@ -343,18 +343,24 @@ export default {
         } else {
           this.$modal.msgError("生效日期必须大于当前日期");
         }
-      }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
         const ids = row.id || this.ids;
-        this.$modal.confirm('是否确认删除社保公积金缴费比例设定编号为"' + ids + '"的数据项？').then(function () {
+      if (this.socialSecurityList.effectDate > getDateTime(1)) {
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          this.multipleSelection[i].effectDate = this.socialSecurityList.effectDate
+        }
+        this.$modal.confirm('是否确认删除此数据项？').then(function () {
           return delSocialSecurity(ids);
         }).then(() => {
           this.onLoad();
           this.$modal.msgSuccess("删除成功");
         }).catch(() => {
-        });
+        })
+      }else {
+        this.$modal.msgError("生效日期必须大于当前日期");
+      };
     },
     //点击节点方法
     changePostName(data,index){
@@ -372,6 +378,7 @@ export default {
       listSocialSecurity(this.queryParams).then(response => {
         this.total = response.total;
         this.socialSecurityList = response.rows;//表格数据
+        this.addLine();
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
@@ -388,7 +395,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-        if (this.socialSecurityList.length == row.index + 1) {
+        if (!row||this.socialSecurityList.length == row.index + 1) {
           const newLine = {
             id: null,
             creator: this.nickName,

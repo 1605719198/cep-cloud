@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.EnterpriseRevenueRateMapper">
+    
+    <resultMap type="EnterpriseRevenueRate" id="EnterpriseRevenueRateResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="month"    column="month"    />
+        <result property="enterpriseRevenueRate"    column="enterprise_revenue_rate"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectEnterpriseRevenueRateVo">
+        select id, comp_id, month, enterprise_revenue_rate, creator, creator_id, creator_no, create_date from human_hs_enterprise_revenue_rate
+    </sql>
+
+    <select id="selectEnterpriseRevenueRateList" parameterType="EnterpriseRevenueRate" resultMap="EnterpriseRevenueRateResult">
+        <include refid="selectEnterpriseRevenueRateVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="month != null  and month != ''"> and month = #{month}</if>
+        </where>
+        ORDER BY month DESC
+    </select>
+    
+    <select id="selectEnterpriseRevenueRateById" parameterType="String" resultMap="EnterpriseRevenueRateResult">
+        <include refid="selectEnterpriseRevenueRateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
+        insert into human_hs_enterprise_revenue_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="month != null">month,</if>
+            <if test="enterpriseRevenueRate != null">enterprise_revenue_rate,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="month != null">#{month},</if>
+            <if test="enterpriseRevenueRate != null">#{enterpriseRevenueRate},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
+        update human_hs_enterprise_revenue_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="enterpriseRevenueRate != null">enterprise_revenue_rate = #{enterpriseRevenueRate},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnterpriseRevenueRateById" parameterType="String">
+        delete from human_hs_enterprise_revenue_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteEnterpriseRevenueRateByIds" parameterType="String">
+        delete from human_hs_enterprise_revenue_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

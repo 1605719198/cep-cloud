@@ -20,7 +20,7 @@
         <el-button type="primary" size="mini" @click="handleExport">导出</el-button>
       </el-form-item>
     </el-form>
-    <el-form ref="formDetail" :model="formDetail" :rules="rulesDetail" v-if="detailIf">
+    <el-form ref="formDetail" :model="formDetail" :rules="rulesDetail" v-if="detailIf" :key="tableKey">
       <el-form-item label="科目余额表" prop="">
         <el-table v-loading="loading"
                   show-summary
@@ -48,7 +48,7 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <el-form ref="formNumberDetail" :model="formNumberDetail" :rules="rulesNumberDetail"  v-if="numberDetailIf">
+    <el-form ref="formNumberDetail" :model="formNumberDetail" :rules="rulesNumberDetail"  v-if="numberDetailIf" :key="tableKey2">
       <el-form-item label="科目余额数量表" prop="">
         <el-table v-loading="loading"
                   show-summary
@@ -84,7 +84,7 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <el-form ref="formCalDetail" :model="formCalDetail" :rules="rulesCalDetail"  v-if="calDetailIf">
+    <el-form ref="formCalDetail" :model="formCalDetail" :rules="rulesCalDetail"  v-if="calDetailIf":key="tableKey2">
       <el-form-item label="核算项目余额表" prop="">
         <el-table v-loading="loading"
                   show-summary
@@ -93,10 +93,10 @@
                 >
           <el-table-column label="会计科目"prop="acctCode" align="center"/>
           <el-table-column  label="会计科目名称" prop="acctName" align="center" />
-          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" :key="0"/>
-          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" :key="1"/>
-          <el-table-column  label="核算项目三" prop="calNamec" align="center"v-if="calNamecIf" :key="2"/>
-          <el-table-column  label="核算项目四" prop="calNamed" align="center" v-if="calNamedIf" :key="3"/>
+          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" />
+          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" />
+          <el-table-column  label="核算项目三" prop="calNamec" align="center"v-if="calNamecIf" />
+          <el-table-column  label="核算项目四" prop="calNamed" align="center" v-if="calNamedIf" />
           <el-table-column label="初期余额"  align="center">
             <el-table-column label="借方" prop="bgnAmtStraight"align="center"/>
             <el-table-column label="贷方" prop="bgnAmtBurden"align="center"/>
@@ -116,17 +116,17 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <el-form ref="formCalDetail" :model="formCalNumberDetail" :rules="rulesCalNumberDetail"  v-if="calNumberDetailIf">
+    <el-form ref="formCalDetail" :model="formCalNumberDetail" :rules="rulesCalNumberDetail"  v-if="calNumberDetailIf" :key="tableKey4">
       <el-form-item label="核算项目数量金额余额表" prop="">
         <el-table v-loading="loading"
                   show-summary
                   :data="formCalNumberDetail.detailList">
           <el-table-column label="会计科目"prop="acctCode" align="center" />
           <el-table-column  label="会计科目名称" prop="acctName" align="center" />
-          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" :key="4"/>
-          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" :key="5"/>
-          <el-table-column  label="核算项目三" prop="calNamec" align="center" v-if="calNamecIf" :key="6"/>
-          <el-table-column  label="核算项目四" prop="calNamed" align="center"v-if="calNamedIf" :key="7"/>
+          <el-table-column  label="核算项目一" prop="calNamea" align="center" v-if="calNameaIf" />
+          <el-table-column  label="核算项目二" prop="calNameb" align="center" v-if="calNamebIf" />
+          <el-table-column  label="核算项目三" prop="calNamec" align="center" v-if="calNamecIf" />
+          <el-table-column  label="核算项目四" prop="calNamed" align="center"v-if="calNamedIf" />
           <el-table-column label="余额初期"  align="center">
             <el-table-column label="借方金额" prop="bgnAmtStraight"align="center"/>
             <el-table-column label="贷方金额" prop="bgnAmtBurden"align="center"/>
@@ -263,6 +263,10 @@ export default {
       calNamebIf: false,
       calNamecIf: false,
       calNamedIf: false,
+      tableKey:0,
+      tableKey2:1,
+      tableKey3:3,
+      tableKey4:4
     };
   },
   created() {
@@ -306,7 +310,9 @@ export default {
           this.total = response.total;
           this.loading = false;
         })
+
       }
+      this.tableKey+=1;
       if(val.reportType=='1'&& val.isNoNumber=='Y'){
         this.numberDetailIf=true
         listDetailIfSteel(this.queryParams).then(response => {
@@ -314,7 +320,9 @@ export default {
           this.total = response.total;
           this.loading = false;
         })
+
       }
+      this.tableKey2+=1;
       if(val.reportType!='1'&& val.isNoNumber=='N'){
         this.calDetailIf=true
         listCalNumberDetailIfSteel(this.queryParams).then(response => {
@@ -323,6 +331,7 @@ export default {
           this.loading = false;
         })
       }
+      this.tableKey3+=1;
       if(val.reportType!='1'&& val.isNoNumber=='Y'){
         this.calNumberDetailIf=true
         listCalNumberDetailIfSteel(this.queryParams).then(response => {
@@ -331,6 +340,7 @@ export default {
           this.loading = false;
         })
       }
+      this.tableKey4+=1;
       if (val.reportType=='2'){
         this.calNameaIf= true
       }
@@ -349,6 +359,7 @@ export default {
         this.calNamecIf= true
         this.calNamedIf= true
       }
+      this.tableKey2+=1;
     },
     moreQuery() {
       this.$refs.selectMoreConditions.show(this.queryParams);

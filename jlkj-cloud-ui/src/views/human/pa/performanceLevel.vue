@@ -191,7 +191,6 @@ export default {
     this.initData();
     this.getDisc();
     this.loading = false;
-    //this.addLine();
     this.getCompanyList();
   },
   methods: {
@@ -276,7 +275,6 @@ export default {
        // this.$modal.msgError("请至少勾选一笔数据");
      // }
       this.form.levelList =   this.multipleSelection;
-console.log(this.form.levelList)
       this.$nextTick(() => {
 
         this.$refs["form"].validate(valid => {

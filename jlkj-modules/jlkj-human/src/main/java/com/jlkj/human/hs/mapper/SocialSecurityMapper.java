@@ -38,6 +38,7 @@ public interface SocialSecurityMapper
      */
     public List<SocialSecurity> selectSocialSecurityList(SocialSecurity socialSecurity);
 
+
     /**
      * 新增社保公积金缴费比例设定
      * 
@@ -74,4 +75,7 @@ public interface SocialSecurityMapper
 
     Map<String,Object> selectMaxVersion(String payAreaId);
     public int deleteSocialSecurityByVersion(@Param("payAreaId") String payAreaId, @Param("version") Long version);
+
+
+    public List<SocialSecurity> selectSocialSecurityListBySalaryProjectId(SocialSecurity socialSecurity);
 }

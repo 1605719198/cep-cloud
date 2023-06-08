@@ -69,9 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="getPersonByDept" parameterType="String" resultMap="FirstDeptResult">
-        select child_person_id from human_first_dept
-        where child_dept_id= #{deptId}
-        group by child_person_id
+        select emp_no as child_person_id, department_id as child_dept_id from human_hm_personnel_info
+        where department_id in (select dept_id from sys_dept
+                                where dept_id = #{deptId} or ancestors like  concat((select ancestors from sys_dept where dept_id = #{deptId}),',',(select dept_id from sys_dept where dept_id = #{deptId}),'%'))
     </select>
 
 

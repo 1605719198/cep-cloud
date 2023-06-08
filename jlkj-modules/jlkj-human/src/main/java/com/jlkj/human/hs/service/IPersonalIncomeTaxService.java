@@ -63,6 +63,7 @@ public interface IPersonalIncomeTaxService
 
     /**
      * 版本号列表
+     * @param type
      * @return
      */
     List<Map<String,Long>> getVersionList(String type);

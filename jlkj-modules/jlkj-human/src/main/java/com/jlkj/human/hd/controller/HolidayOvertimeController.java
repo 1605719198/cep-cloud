@@ -44,7 +44,8 @@ public class HolidayOvertimeController extends BaseController {
         List<HolidayOvertime> list = iHolidayOvertimeService.lambdaQuery()
                 .eq(StringUtils.isNotBlank(holidayOvertime.getCompId()), HolidayOvertime::getCompId, holidayOvertime.getCompId())
                 .eq(HolidayOvertime::getEmpNo, holidayOvertime.getEmpNo())
-                .between(HolidayOvertime::getLegalHolDate, holidayOvertimeDTO.getStartTime(), holidayOvertimeDTO.getEndTime()).list();
+                .apply("date_format (legal_hol_date,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", holidayOvertimeDTO.getStartTime())
+                .apply("date_format (legal_hol_date,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", holidayOvertimeDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 }

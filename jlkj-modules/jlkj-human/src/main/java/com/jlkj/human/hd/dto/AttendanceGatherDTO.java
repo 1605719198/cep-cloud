@@ -236,6 +236,81 @@ public class AttendanceGatherDTO implements Serializable {
      * 日期
      */
     private String date;
+
+    /**
+     * 假别ID/加班类别ID（假别编码）
+     */
+    private String holOveType;
+
+    /**
+     * 请假类的为1，加班类的为0
+     */
+    private String isHolType;
+
+    /**
+     * 事假
+     */
+    private String leaveOfAbsence;
+
+    /**
+     * 病假
+     */
+    private String sickLeave;
+
+    /**
+     * 工伤假
+     */
+    private String workInjuryLeave;
+
+    /**
+     * 婚假
+     */
+    private String marriageLeave;
+
+    /**
+     * 产假
+     */
+    private String maternityLeave;
+
+    /**
+     * 丧假
+     */
+    private String bereavementLeave;
+
+    /**
+     * 探亲假
+     */
+    private String homeLeave;
+
+    /**
+     * 公假
+     */
+    private String commonLeave;
+
+    /**
+     * 年休假
+     */
+    private String annualLeave;
+
+    /**
+     * 护理假
+     */
+    private String nursingLeave;
+
+    /**
+     * 延时加班
+     */
+    private String delayedOvertime;
+
+    /**
+     * 休息日加班
+     */
+    private String overtimeOnRestDays;
+
+    /**
+     * 法定假日加班
+     */
+    private String overtimeOnStatutoryHolidays;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

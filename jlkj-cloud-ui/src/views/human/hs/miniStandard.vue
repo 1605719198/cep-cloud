@@ -174,6 +174,7 @@ export default {
       this.loading = true;
       listMiniStandard(this.queryParams).then(response => {
         this.miniStandardList = response.rows;
+        this.addLine();
         this.companyName = this.$refs.selectCompany.selectedLabel
         this.total = response.total;
         this.loading = false;
@@ -272,8 +273,7 @@ export default {
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
       if (this.queryParams.compId != null) {
-        if (this.queryParams.effectDate != null) {
-          if (this.miniStandardList.length == row.index + 1) {
+          if (!row||this.miniStandardList.length == row.index + 1) {
             const newLine = {
               uuid: null,
               creator: this.nickName,
@@ -285,9 +285,6 @@ export default {
             this.index++
             this.miniStandardList.push(newLine)
           }
-        } else {
-          this.$modal.msgError("生效日期不能为空");
-        }
       }else {
         this.$modal.msgError("公司别不能为空");
       }

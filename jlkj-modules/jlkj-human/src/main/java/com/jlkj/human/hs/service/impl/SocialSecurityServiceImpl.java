@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
@@ -67,48 +68,68 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     @Override
     public int insertSocialSecurity(List<SocialSecurity> socialSecurityList) {
         String payAreaId = socialSecurityList.get(0).getPayAreaId();
+
         Date inEffectDate = socialSecurityList.get(0).getEffectDate();
         Date nowdate = DateUtils.getNowDate();
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
-        //查询当前公司别 最大版次号 及 生效日期
-        Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
-        Long version = 1L;
-        version = Long.parseLong(versionMap.get("version").toString())+1;
-        if(versionMap != null && versionMap.get("version") != null){
-            Date effectDate= (Date) versionMap.get("effectDate");
-            if(nowdate.compareTo(effectDate)<0){
-                for (SocialSecurity socialSecurity : socialSecurityList) {
-                    if (socialSecurity.getId() != null) {
-                        socialSecurityMapper.deleteSocialSecurityById(socialSecurity.getId());
+
+        for (SocialSecurity socialSecurities : socialSecurityList) {
+            if (socialSecurities.getId() != null) {
+                SocialSecurity dbSocialSecuritie =socialSecurityMapper.selectSocialSecurityById(socialSecurities.getId());
+                if(!dbSocialSecuritie.getSalaryProjectId().equals(socialSecurities.getSalaryProjectId())){
+                    List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
+                        throw new ServiceException("社保公积金项目不允许重复");
+                    }
+                }
+            }else{
+                List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                for (SocialSecurity item : socialSecurityCompanies) {
+                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
+                        throw new ServiceException("社保公积金项目不允许重复");
                     }
                 }
             }
-            for (SocialSecurity socialSecurity : socialSecurityList) {
-                socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
-                socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
-                socialSecurity.setCreator(SecurityUtils.getNickName());
-                socialSecurity.setCreateDate(new Date());
-                socialSecurity.setVersion(version);
-                socialSecurityMapper.insertSocialSecurity(socialSecurity);
-            }
-        }
-        else{
-            for (SocialSecurity socialSecurity : socialSecurityList) {
-                if (socialSecurity.getId() != null) {
+
+            //查询当前公司别 最大版次号 及 生效日期
+            Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
+            Long version = 1L;
+            version = Long.parseLong(versionMap.get("version").toString()) + 1;
+            if (versionMap != null && versionMap.get("version") != null) {
+                Date effectDate = (Date) versionMap.get("effectDate");
+                if (nowdate.compareTo(effectDate) < 0) {
+                    for (SocialSecurity socialSecurity : socialSecurityList) {
+                        if (socialSecurity.getId() != null) {
+                            socialSecurityMapper.deleteSocialSecurityById(socialSecurity.getId());
+                        }
+                    }
+                }
+                for (SocialSecurity socialSecurity : socialSecurityList) {
+                    socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
                     socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
                     socialSecurity.setCreator(SecurityUtils.getNickName());
                     socialSecurity.setCreateDate(new Date());
                     socialSecurity.setVersion(version);
-                    socialSecurityMapper.updateSocialSecurity(socialSecurity);
-                } else {
-                    socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
-                    socialSecurity.setVersion(version);
                     socialSecurityMapper.insertSocialSecurity(socialSecurity);
                 }
+            } else {
+                for (SocialSecurity socialSecurity : socialSecurityList) {
+                    if (socialSecurity.getId() != null) {
+                        socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
+                        socialSecurity.setCreator(SecurityUtils.getNickName());
+                        socialSecurity.setCreateDate(new Date());
+                        socialSecurity.setVersion(version);
+                        socialSecurityMapper.updateSocialSecurity(socialSecurity);
+                    } else {
+                        socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
+                        socialSecurity.setVersion(version);
+                        socialSecurityMapper.insertSocialSecurity(socialSecurity);
+                    }
+                }
             }
-         }
+        }
         return 1;
     }
 

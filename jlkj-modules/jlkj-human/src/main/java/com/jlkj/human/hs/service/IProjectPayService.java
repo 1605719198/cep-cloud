@@ -21,6 +21,14 @@ public interface IProjectPayService
     public ProjectPay selectProjectPayById(Long id);
 
     /**
+     * 通过编码类型查询薪酬项目
+     *
+     * @param projectPay 薪酬项目
+     * @return 薪酬项目
+     */
+    public ProjectPay selectProjectPayByCode(ProjectPay projectPay);
+
+    /**
      * 查询薪酬项目列表
      * 
      * @param projectPay 薪酬项目

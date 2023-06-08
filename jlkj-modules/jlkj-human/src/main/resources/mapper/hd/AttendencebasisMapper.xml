@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="name!=null and name!=''"> and name like concat('%', #{name}, '%')</if>
             <if test="code!=null and code!=''"> and code =#{code}</if>
-            <if test="compId==null or compId==''.toString()"> and (comp_id =#{compId} or isNull(comp_id) or id=1) </if>
+            <if test="compId==null or compId==''.toString()"> and (comp_id ='' or isNull(comp_id) or id=1) </if>
             <if test="compId!=null and compId!=''"> and (comp_id =#{compId} or id =1) </if>
             <if test="id!=null and id!=''"> and parentid =#{id}</if>
         </where>
@@ -49,6 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="compId!=null and compId!=''"> and comp_id =#{compId}</if>
             <if test="code!=null and code!=''"> and code =#{code}</if>
+            <if test="compId==null or compId==''.toString()"> and (comp_id =''or isNull(comp_id)) </if>
             <if test="id!=null and id!=''"> and id !=#{id}</if>
             and parentid = 1
         </where>
@@ -60,9 +61,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
-    <select id="selectAttendencebasisParentByCode" parameterType="String" resultMap="AttendencebasisResult">
+    <select id="selectAttendencebasisParentByCode" parameterType="Attendencebasis" resultMap="AttendencebasisResult">
         select id, code, name, status, comp_id, is_showno, is_checked, order_num, parentid, parents, creator, creator_id, create_date from human_hd_attendence_basis
-        where code = #{code}
+        <where>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="compId==null or compId==''.toString()"> and (comp_id ='' or isNull(comp_id)) </if>
+            <if test="compId!=null and compId!=''"> and (comp_id =#{compId} ) </if>
+            and parentid = 1
+        </where>
     </select>
 
     <select id="selectAttendencebasisByParentid" parameterType="Long" resultMap="BasisOptions">

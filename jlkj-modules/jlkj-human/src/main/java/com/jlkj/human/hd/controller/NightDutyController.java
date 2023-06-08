@@ -50,7 +50,8 @@ public class NightDutyController extends BaseController {
         List<NightDuty> list = iNightDutyService.lambdaQuery()
                 .eq(StringUtils.isNotBlank(nightDuty.getCompId()), NightDuty::getCompId, nightDuty.getCompId())
                 .eq(NightDuty::getEmpNo, nightDuty.getEmpNo())
-                .between(NightDuty::getShiftDate, nightDutyDTO.getStartTime(), nightDutyDTO.getEndTime()).list();
+                .apply("date_format (shift_date,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", nightDutyDTO.getStartTime())
+                .apply("date_format (shift_date,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", nightDutyDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
 

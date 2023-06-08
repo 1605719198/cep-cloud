@@ -37,14 +37,12 @@ public class SalaryEmployedMonth extends BaseEntity
     private String post;
 
     /** 受雇月 */
-    @JsonFormat(pattern = "yyyy-MM")
-    @Excel(name = "受雇月", width = 30, dateFormat = "yyyy-MM")
-    private Date entDate;
+    @Excel(name = "受雇月")
+    private String entDate;
 
     /** 薪资月 */
-    @JsonFormat(pattern = "yyyy-MM")
-    @Excel(name = "薪资月", width = 30, dateFormat = "yyyy-MM")
-    private Date salaryDate;
+    @Excel(name = "薪资月")
+    private String salaryDate;
 
     /** 简要说明 */
     @Excel(name = "简要说明")
@@ -128,21 +126,21 @@ public class SalaryEmployedMonth extends BaseEntity
     {
         return post;
     }
-    public void setEntDate(Date entDate)
+    public void setEntDate(String entDate)
     {
         this.entDate = entDate;
     }
 
-    public Date getEntDate()
+    public String getEntDate()
     {
         return entDate;
     }
-    public void setSalaryDate(Date salaryDate)
+    public void setSalaryDate(String salaryDate)
     {
         this.salaryDate = salaryDate;
     }
 
-    public Date getSalaryDate()
+    public String getSalaryDate()
     {
         return salaryDate;
     }

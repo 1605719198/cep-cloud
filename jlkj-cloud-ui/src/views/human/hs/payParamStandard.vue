@@ -73,14 +73,11 @@
           </el-table-column>
           <el-table-column label="状态" align="center" prop="status">
             <template v-slot="scope">
-              <el-select v-model="scope.row.status" placeholder="请选择">
-                <el-option
-                  v-for="dict in payParamStandard.status"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                ></el-option>
-              </el-select>
+              <el-switch
+                v-model="scope.row.status"
+                active-value="1"
+                inactive-value="2"
+              ></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="输入人" align="center" prop="creator" />
@@ -156,8 +153,7 @@ export default {
       salaryOptionType: {
         id: '19',
         optionsType: [
-          'SalaryParameters',
-          'status'
+          'SalaryParameters'
         ],
         compId:null,
       },

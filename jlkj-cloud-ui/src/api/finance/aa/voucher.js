@@ -32,10 +32,18 @@ export function listFrontVoucher(query) {
     params: query
   })
 }
-// 查询首笔笔凭证维护-主列表
+// 查询次笔笔凭证维护-主列表
 export function listOrderVoucher(query) {
   return request({
     url: '/finance/voucher/listOrderVoucher',
+    method: 'get',
+    params: query
+  })
+}
+// 查询首笔笔凭证维护-主列表
+export function listFrontVoucherHead(query) {
+  return request({
+    url: '/finance/voucher/listFrontVoucherHead',
     method: 'get',
     params: query
   })
@@ -75,7 +83,7 @@ export function getVoucher(id) {
 // 新增凭证维护-主
 export function addVoucher(data) {
   return request({
-    url: '/finance/voucher',
+    url: '/finance/voucher/addVoucher',
     method: 'post',
     data: data
   })

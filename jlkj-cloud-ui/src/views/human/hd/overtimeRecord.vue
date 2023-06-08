@@ -154,9 +154,9 @@
             </el-row>
             <el-row>
               <el-col :span="16">
-                <el-form-item label="加班日期" prop="workOvertimeDate">
+                <el-form-item label="加班日期" prop="workOvertimeDate1">
                   <el-date-picker
-                    v-model="form.workOvertimeDate"
+                    v-model="form.workOvertimeDate1"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetimerange"
                     range-separator="~"
@@ -178,7 +178,7 @@
                 <el-form-item label="加班类别">
                   <el-select v-model="form.overtimeTypeId" style="width: 100%">
                     <el-option
-                      v-for="dict in baseInfoData.OvertimeType"
+                      v-for="dict in attendenceOptions.OvertimeType"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -190,7 +190,7 @@
                 <el-form-item label="加班原因">
                   <el-select v-model="form.overtimeReaId" style="width: 100%">
                     <el-option
-                      v-for="dict in baseInfoData.OvertimeReason"
+                      v-for="dict in attendenceOptions.OvertimeReason"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -282,6 +282,9 @@ import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {getToken} from "@/utils/auth";
+import {listOvertimeWorksetting} from "@/api/human/hd/overtimeWorksetting";
+import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
+import {listCardRecord} from "@/api/human/hd/cardRecord";
 
 export default {
   name: "OvertimeRecord",
@@ -315,7 +318,9 @@ export default {
         endTime: ''
       },
       // 表单参数
-      form: {},
+      form: {
+        overtimeHours: null
+      },
       // 表单校验
       rules: {
         empNo: [
@@ -323,6 +328,9 @@ export default {
           { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
         ],
         workOvertimeDate: [
+          { required: true, message: "加班开始日期不能为空", trigger: "blur" }
+        ],
+        workOvertimeDate1: [
           { required: true, message: "加班开始日期不能为空", trigger: "blur" }
         ],
         overtimeHours: [
@@ -335,13 +343,6 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      // 选单数据
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'OvertimeType',
-          'OvertimeReason']
-      },
       // 加班资料导入参数
       upload: {
         // 是否显示弹出层（加班资料导入）
@@ -357,15 +358,24 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/human/overtimeRecord/importData"
       },
+      oveUnit: null,
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['OvertimeType','OvertimeReason']
+      },
+      //出勤选单选项列表
+      attendenceOptions: {},
     };
   },
   created() {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
+    this.getOveUnit();
+    getAttendenceOptions(this.attendenceOptionType).then(response => {
+      this.attendenceOptions = response.data
+    })
   },
   methods: {
     /** 查询加班记录列表 */
@@ -454,8 +464,8 @@ export default {
         this.form = response.data;
         //修改审核状态
         this.form.status = '审核中';
-        this.form.startTime = this.form.workOvertimeDate[0]
-        this.form.endTime = this.form.workOvertimeDate[1]
+        this.form.startTime = this.form.workOvertimeDate1[0]
+        this.form.endTime = this.form.workOvertimeDate1[1]
         updateOvertimeRecord(this.form).then(response => {
           this.$modal.msgSuccess("修改状态成功");
           this.getList();
@@ -484,12 +494,17 @@ export default {
         this.form = response.data;
         //修改审核状态
         this.form.status = '未送出';
-        this.form.startTime = this.form.workOvertimeDate[0]
-        this.form.endTime = this.form.workOvertimeDate[1]
+        this.form.startTime = this.form.workOvertimeDate1[0]
+        this.form.endTime = this.form.workOvertimeDate1[1]
         updateOvertimeRecord(this.form).then(response => {
           this.$modal.msgSuccess("修改状态成功");
           this.getList();
         });
+      });
+    },
+    getOveUnit() {
+      listOvertimeWorksetting(this.queryParams).then(response => {
+        this.oveUnit = response.rows[0].oveUnit
       });
     },
     /** 提交按钮 */
@@ -497,27 +512,36 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            this.form.startTime = this.form.workOvertimeDate[0]
-            this.form.endTime = this.form.workOvertimeDate[1]
+            this.form.startTime = this.form.workOvertimeDate1[0]
+            this.form.endTime = this.form.workOvertimeDate1[1]
             updateOvertimeRecord(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            this.form.compId = this.queryParams.compId
-            addOvertimeRecord(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.queryParams.workOvertimeDate = this.form.workOvertimeDate
-              this.getList();
-            });
+            if (this.form.overtimeHours < this.oveUnit) {
+              this.$modal.msgError("加班时数小于加班最小单位");
+            } else {
+              this.form.compId = this.queryParams.compId
+              addOvertimeRecord(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.open = false;
+                this.form.workOvertimeDate1[0] = this.form.workOvertimeDate1[0].substring(0, 10)
+                this.form.workOvertimeDate1[1] = this.form.workOvertimeDate1[1].substring(0, 10)
+                this.queryParams.workOvertimeDate = this.form.workOvertimeDate1;
+                this.queryParams.startTime = this.form.workOvertimeDate1[0].substring(0, 10)
+                this.queryParams.endTime = this.form.workOvertimeDate1[1].substring(0, 10)
+                this.getList();
+              });
+            }
           }
         }
       });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
+      const id = row.id;
       const startDate = row.startDate;
       const endDate = row.endDate;
       this.$modal.confirm('是否确认删除加班日期为"' + startDate + '~' + endDate + '"的数据项？').then(function() {
@@ -547,11 +571,16 @@ export default {
     dateFormat1(picker) {
       this.form.startTime=picker[0]
       this.form.endTime=picker[1]
-      if (this.form.startTime.substring(11, 13) === '08') {
-        this.form.overtimeHours = '8'
-      } else {
-        this.form.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
-      }
+      this.form.date1=picker[0]
+      this.form.date2=picker[1]
+      // if (this.form.startTime.substring(11, 13) === '08') {
+      //   this.form.overtimeHours = 8
+      // } else {
+      //   this.form.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+      // }
+      listCardRecord(this.form).then(response => {
+        this.form.cardTime = response.rows[0].cardTime
+      });
     },
     /**是否显示按钮 */
     isShow(status) {

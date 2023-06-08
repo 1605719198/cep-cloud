@@ -64,7 +64,6 @@ public class UnderlingEmpowerController extends BaseController {
 
     }
 
-
     /**
      * 删除各公司主管查询下属薪资授权设定信息
      */

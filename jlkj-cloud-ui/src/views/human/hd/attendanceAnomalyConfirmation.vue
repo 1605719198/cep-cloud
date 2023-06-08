@@ -55,7 +55,7 @@
           <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" />
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
+              <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
           <el-table-column label="辅助说明" align="center" prop="description" />
@@ -84,6 +84,7 @@ import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {validateNumber} from "@/utils/jlkj";
 import {listAttendanceAnomalyConfirmationList} from "@/api/human/hd/attendanceAbnormal";
 import {addBatchCancellationPerson, confirmAttendanceAnomaly} from "@/api/human/hd/cancellationPerson";
+import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 
 export default {
   name: "AttendanceAnomalyConfirmation",
@@ -120,21 +121,23 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      // 选单数据
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'ProveReason']
+      //出勤选单类型查询
+      attendenceOptionType: {
+        id: '',
+        optionsType: ['ProveReason']
       },
+      //出勤选单选项列表
+      attendenceOptions: {},
     };
   },
   created() {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
+    /** 查询出勤字典 */
+    getAttendenceOptions(this.attendenceOptionType).then(response => {
+      this.attendenceOptions = response.data;
+    })
   },
   methods: {
     /** 查询出勤异常列表 */

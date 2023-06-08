@@ -36,6 +36,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="apprGroup != null  and apprGroup != ''"> and appr_group = #{apprGroup}</if>
         </where>
     </select>
+
+    <select id="querySameData" parameterType="TripAccountRule" resultMap="TripAccountRuleResult">
+        <include refid="selectTripAccountRuleVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id != #{id}</if>
+            <if test="acctType != null  and acctType != ''"> and acct_type = #{acctType}</if>
+            <if test="apprGroup != null  and apprGroup != ''"> and appr_group = #{apprGroup}</if>
+            <if test="acctClassify != null  and acctClassify != ''"> and acct_classify = #{acctClassify}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
     
     <select id="selectTripAccountRuleById" parameterType="String" resultMap="TripAccountRuleResult">
         <include refid="selectTripAccountRuleVo"/>

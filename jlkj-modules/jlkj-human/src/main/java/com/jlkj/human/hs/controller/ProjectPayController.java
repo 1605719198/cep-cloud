@@ -70,5 +70,16 @@ public class ProjectPayController extends BaseController
         return projectPayService.insertProjectPay(projectPayList);
     }
 
+    /**
+     * 状态修改
+     */
+    @RequiresPermissions("human:projectPay:edit")
+    @Log(title = "启用禁用", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody ProjectPay projectPay)
+    {
+        return toAjax(projectPayService.updateProjectPay(projectPay));
+    }
+
 
 }
