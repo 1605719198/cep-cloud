@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column label="作业时点" align="center" >
         <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.operTimeType" :value="scope.row.operTime"/>
+          <dict-tag-human :options="salaryOptions.operTimeType" :value="scope.row.operTime"/>
         </template>
       </el-table-column>
       <el-table-column label="申请人" align="center" prop="sendEmpNo" />
@@ -127,9 +127,9 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="作业时点" prop="operTime">
-              <el-select v-model="form.operTime" placeholder="请选择作业时点" clearable>
+                <el-select :popper-append-to-body="false" v-model="form.operTime" placeholder="请选择作业时点">
                 <el-option
-                  v-for="dict in attendenceOptions.operTimeType"
+                  v-for="dict in salaryOptions.operTimeType"
                   :key="dict.dicNo"
                   :label="dict.dicName"
                   :value="dict.dicNo"
@@ -137,6 +137,10 @@
               </el-select>
 
             </el-form-item>
+
+
+
+
           </el-col>
         </el-row>
         <el-row>
@@ -224,8 +228,8 @@ import { listPayAmt, getPayAmt, delPayAmt, addPayAmt, updatePayAmt,getListPayAmt
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import payAmtView from "@/views/human/hs/payAmtView";
+import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 export default {
   name: "PayAmt",
   components: { DictTagHuman ,payAmtView},
@@ -303,14 +307,14 @@ export default {
       // 查看详情弹框
       viewopen: false,
       //出勤选单类型查询
-      attendenceOptionType: {
+      salaryOptionType: {
         id: '',
-        optionsType: ['operTimeType']
+        optionsType: ['operTimeType'],
       },
       // 公司列表
       companyList:[],
       //出勤选单选项列表
-      attendenceOptions: {},
+      salaryOptions: {},
       // 附件相关
       number: 0,
       uploadList: [],
@@ -326,10 +330,10 @@ export default {
     };
   },
   created() {
+    this.getDisc();
     this.getCompanyList();
     //假别类型查询
     this.getList();
-    this.getDisc();
   },
   methods: {
     //获取公司列表
@@ -339,10 +343,9 @@ export default {
       })
     },
     /** 查询数据字典 */
-    getDisc() {
-      this.attendenceOptionType.compId = this.queryParams.compId;
-      getSalaryOptions(this.attendenceOptionType).then(response => {
-        this.attendenceOptions = response.data
+    getDisc(){
+      getSalaryOptions(this.salaryOptionType).then(response=>{
+        this.salaryOptions = response.data;
       })
     },
     /** 详情按钮操作 */
@@ -469,31 +472,14 @@ export default {
     /** 薪资应付明细添加按钮操作 */
     handleAddHumanHsAmtDetail() {
       //查询薪资计算明细 汇总list
-
-      getListPayAmtDetail(this.form).then(response => {
-        debugger
-        this.humanHsAmtDetailList = response;
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          getListPayAmtDetail(this.form).then(response => {
+            debugger
+            this.humanHsAmtDetailList = response;
+          });
+        }
       });
-      // //查询
-      // let obj = {};
-      // obj.compId = "";
-      // obj.amtPayable = "";
-      // obj.amtNet = "";
-      // obj.amtDeferred = "";
-      // obj.amtBenefitMeal = "";
-      // obj.amtBenefitHouse = "";
-      // obj.amtTraining = "";
-      // obj.amtA = "";
-      // obj.amtB = "";
-      // obj.amtC = "";
-      // obj.salBank = "";
-      // obj.salBankId = "";
-      // obj.salBankNo = "";
-      // obj.bonBank = "";
-      // obj.bonBankId = "";
-      // obj.bonBankNo = "";
-      // obj.createName = "";
-      // this.humanHsAmtDetailList.push(obj);
     },
     /** 复选框选中数据 */
     handleHumanHsAmtDetailSelectionChange(selection) {
