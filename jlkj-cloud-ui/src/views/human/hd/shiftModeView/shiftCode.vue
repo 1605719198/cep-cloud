@@ -709,16 +709,16 @@ export default {
       var min =this.form.conMin
       if (!hour){
         this.form.conTime = null;
-        callback(new Error('班次开始时间不可为空'))
+        callback(new Error('班次工作时间不可为空'))
       }else if (!numberTest.test(hour)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字小时数'))
-      }else if(hour>23||this.form.startHour<0){
+      }else if(hour>48||this.form.startHour<0){
         this.form.conTime = null;
-        callback(new Error('请输入0-23之间的小时值'))
+        callback(new Error('请输入0-48之间的小时值'))
       }else if (!min){
         this.form.conTime = null;
-        callback(new Error('班次开始时间不可为空'))
+        callback(new Error('班次工作时间不可为空'))
       }else if (!numberTest.test(min)) {
         this.form.conTime = null;
         callback(new Error('请输入纯数字分钟数'))
