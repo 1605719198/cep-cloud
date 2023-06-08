@@ -200,9 +200,6 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="细项说明" prop="description">
-          <el-input v-model="form.description" placeholder="请输入细项说明" maxlength="100" show-word-limit class="input1"/>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -387,6 +384,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.itemNo = this.itemNo
             addDetail(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
