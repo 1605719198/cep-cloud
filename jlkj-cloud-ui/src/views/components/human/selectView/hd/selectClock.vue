@@ -1,11 +1,11 @@
 <template>
-  <el-dialog title="选择公司卡钟" :visible.sync="visible" width="1280px" top="5vh" append-to-body>
-    <el-form :model="queryParams" ref="queryForm" :inline="true">
-      <el-form-item>
-        <!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
-        <!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
-      </el-form-item>
-    </el-form>
+  <el-dialog title="选择公司卡钟" :visible.sync="visible" width="1280px" top="5vh" append-to-body class="customDialogStyle">
+<!--    <el-form :model="queryParams" ref="queryForm" :inline="true">-->
+<!--      <el-form-item>-->
+<!--                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="clockList" @selection-change="handleSelectionChange"
                 height="360px">
@@ -37,8 +37,8 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listClockwork } from "@/api/human/hd/clockwork";
-
 export default {
   dicts: ['sys_normal_disable'],
   data() {

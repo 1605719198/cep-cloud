@@ -593,7 +593,7 @@ export default {
         var restMin = 0
         if(this.form.restCount>0){
           if(this.judge(this.form.restConMin)){
-            var restConMin = parseInt(this.form.restConMin);
+            restConMin = parseInt(this.form.restConMin);
             restMin += restConMin
           }
           if(this.form.restCount >1){
@@ -644,7 +644,6 @@ export default {
       var plusHour = ((min+con)>59)? Math.floor((min+con)/60):0
       var min2 = ((con+min)>59)? (con+min)%60:(con+min)
       var hour2;
-      var finalHour ;
       if(hour +plusHour>23){
         hour2 =(hour +plusHour)-24
       }else{
@@ -680,22 +679,22 @@ export default {
       var hour = this.form.startHour;
       var min =this.form.startMin
       if (!hour){
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(hour)) {
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('请输入纯数字小时数'))
       }else if(hour>23||this.form.startHour<0){
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('请输入0-23之间的小时值'))
       }else if (!min){
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('班次开始时间不可为空'))
       }else if (!numberTest.test(min)) {
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('请输入纯数字分钟数'))
       }else if(min>60||min<0){
-        this.form.startTime = null,
+        this.form.startTime = null;
         callback(new Error('请输入0-59之间的分钟值'))
       }else {
         callback();
@@ -736,22 +735,22 @@ export default {
       var restHour = this.form.restStartHour;
       var restMin =this.form.restStartMin;
       if (!restHour){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('请输入纯数字小时数'))
       }else if(restHour>23||restHour<0){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('请输入纯数字分钟数'))
       }else if(restMin>59||restMin<0){
-        this.form.restStartTime = null,
+        this.form.restStartTime = null;
         callback(new Error('请输入0-59之间的分钟值'))
       }else{
         callback();
@@ -768,22 +767,22 @@ export default {
       var restHour = this.form.restStartHour2;
       var restMin =this.form.restStartMin2;
       if (!restHour){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('请输入纯数字小时数'))
       }else if(restHour>23||restHour<0){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('请输入纯数字分钟数'))
       }else if(restMin>59||restMin<0){
-        this.form.restStartTime2 = null,
+        this.form.restStartTime2 = null;
           callback(new Error('请输入0-59之间的分钟值'))
       }else{
         callback();
@@ -800,22 +799,22 @@ export default {
       var restHour = this.form.restStartHour3;
       var restMin =this.form.restStartMin3;
       if (!restHour){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restHour)){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('请输入纯数字小时数'))
       }else if(restHour>23||restHour<0){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('请输入0-23之间的小时值'))
       }else if(!restMin){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('休息开始时间不可为空'))
       }else if(!numberTest.test(restMin)){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('请输入纯数字分钟数'))
       }else if(restMin>59||restMin<0){
-        this.form.restStartTime3 = null,
+        this.form.restStartTime3 = null;
           callback(new Error('请输入0-59之间的分钟值'))
       }else{
         callback();

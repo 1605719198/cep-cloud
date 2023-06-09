@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="选择一级机构" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
+  <el-dialog title="选择一级机构" :visible.sync="visible" width="1080px" top="5vh" append-to-body class="customDialogStyle">
     <el-form :model="queryParams" ref="queryForm" :inline="true">
       <el-form-item>
 <!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listDeptmaintenance} from "@/api/human/hp/deptMaintenance";
 
 export default {

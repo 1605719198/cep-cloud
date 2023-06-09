@@ -1,6 +1,8 @@
 package com.jlkj.human.hs.service;
 
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.PersonalSalary;
+import com.jlkj.human.hs.domain.ProjectPay;
 
 import java.util.List;
 
@@ -59,4 +61,21 @@ public interface IPersonalSalaryService
      * @return 结果
      */
     public int deletePersonalSalaryById(String id);
+
+    /**
+     * 查询公司薪资支付银行编码，名称ID
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
+    public List<BasisOptionsDTO> getSalaryBank(String compId);
+
+
+    /**
+     * 查询公司薪资薪酬项目
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
+    public List<ProjectPay> getPayFormation(String compId);
 }

@@ -65,3 +65,12 @@ export function changeStatus(id, parentid,status) {
     data: data
   })
 }
+
+// 查询各公司薪资参数设定列表
+export function getListPayFormation(data) {
+  return request({
+    url: '/human/payFormation/getListPayFormation',
+    method: 'get',
+    params: data
+  })
+}

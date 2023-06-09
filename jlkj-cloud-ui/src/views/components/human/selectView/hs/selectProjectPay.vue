@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加薪酬项目" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
+  <el-dialog title="添加薪酬项目" :visible.sync="visible" width="1080px" top="5vh" append-to-body class="customDialogStyle">
     <el-row :gutter="20">
       <!-- 左侧选单配置树 -->
       <el-col :span="4" class="left_tree">
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {
   listProjectPayTree, listProjectPay,
 } from '@/api/human/hs/projectPay'

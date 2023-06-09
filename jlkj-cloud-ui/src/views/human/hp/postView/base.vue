@@ -459,7 +459,7 @@ export default {
       treeselect().then(response => {
         this.allDeptOptions = response.data;
       });
-      if(this.baseInfoData.length==0){
+      if(this.baseInfoData.length===0){
         this.getHumandisc();
       }
       this.form=form;
@@ -537,11 +537,13 @@ export default {
     },
     //专长类别-专长选项获取
     handleChangeA(dicNo) {
-      this.baseInfoData.HP013.forEach((value)=>{
-        if(value.dicNo===dicNo){
-          this.baseInfo.uuid = value.uuid
-        }
-      })
+      if(this.baseInfoData.HP013){
+        this.baseInfoData.HP013.forEach((value)=>{
+          if(value.dicNo===dicNo){
+            this.baseInfo.uuid = value.uuid
+          }
+        })
+      }
       this.deepOptions1 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions1 = response.data
@@ -549,11 +551,13 @@ export default {
     },
     //岗位序列-岗位类别选项获取
     handleChangeB(dicNo) {
-      this.baseInfoData.HP003.forEach((value)=>{
-        if(value.dicNo===dicNo){
-          this.baseInfo.uuid = value.uuid
-        }
-      })
+      if(this.baseInfoData.HP003){
+        this.baseInfoData.HP003.forEach((value)=>{
+          if(value.dicNo===dicNo){
+            this.baseInfo.uuid = value.uuid
+          }
+        })
+      }
       this.deepOptions2 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions2 = response.data

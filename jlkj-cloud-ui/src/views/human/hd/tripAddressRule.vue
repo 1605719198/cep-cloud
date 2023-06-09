@@ -95,10 +95,10 @@
           </label>
         </el-form-item>
         <el-form-item label="地点" prop="address">
-          <el-input v-model="form.address" placeholder="请输入地点" />
+          <el-input v-model="form.address" placeholder="请输入地点" maxlength="100" />
         </el-form-item>
         <el-form-item label="拼音缩写" prop="simpl">
-          <el-input v-model="form.simpl" placeholder="请输入拼音缩写" />
+          <el-input v-model="form.simpl" placeholder="请输入拼音缩写" maxlength="20" />
         </el-form-item>
         <el-form-item label="地点属性" prop="type">
           <el-select v-model="form.type" placeholder="请选择地点属性">

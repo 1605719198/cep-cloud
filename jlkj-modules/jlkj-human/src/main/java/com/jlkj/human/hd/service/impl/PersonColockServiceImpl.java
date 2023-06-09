@@ -44,9 +44,15 @@ public class PersonColockServiceImpl implements IPersonColockService
     public PersonColock selectPersonColockById(String id)
     {
         PersonColock personColock = personColockMapper.selectPersonColockById(id);
-        FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(personColock.getEmpId());
-        personColock.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-        personColock.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        personColock.setFirstDeptId(null);
+        personColock.setFirstDeptName(null);
+        try{
+            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(personColock.getEmpId());
+            personColock.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+            personColock.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personColock;
     }
 
@@ -62,6 +68,8 @@ public class PersonColockServiceImpl implements IPersonColockService
 
         List<PersonColock> colockList = personColockMapper.selectPersonColockList(personColock);
         colockList.forEach(item->{
+            item.setFirstDeptId(null);
+            item.setFirstDeptName(null);
             try{
                 FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(item.getEmpId());
                 item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
@@ -172,7 +180,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         oldPersonColock.setEmpId(personColock.getEmpId());
         oldPersonColock.setId(personColock.getId());
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
-        Boolean bool = oldList.size()==0;
+        boolean bool = oldList.size()==0;
         if(bool){
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() >= lastEffectData.getEffectDate().getTime()){
