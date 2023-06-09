@@ -200,6 +200,7 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {listPayFormation} from "@/api/human/hs/payFormation";
 import {getToken} from "@/utils/auth";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "SalaryPunishment",

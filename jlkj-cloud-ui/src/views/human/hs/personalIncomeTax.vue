@@ -216,18 +216,22 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      if(this.queryParams.effectDate > getDateTime(1)) {
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.multipleSelection[i].effectDate = this.queryParams.effectDate
-        }
-        addPersonalIncomeTax(this.multipleSelection).then(res => {
-          this.$modal.msgSuccess("保存成功");
-          this.getList();
-        })
-      }else{
+      if(this.queryParams.effectDate != null) {
+        if (this.queryParams.effectDate > getDateTime(1)) {
+          for (let i = 0; i < this.multipleSelection.length; i++) {
+            this.multipleSelection[i].effectDate = this.queryParams.effectDate
+          }
+          addPersonalIncomeTax(this.multipleSelection).then(res => {
+            this.$modal.msgSuccess("保存成功");
+            this.getList();
+            this.getVersionList();
+          })
+        } else {
           this.$modal.msgError("生效日期必须大于当前日期");
         }
-
+      }else {
+        this.$modal.msgError("生效日期不能为空");
+      }
     },
     addIndex({row, rowIndex}) {
       row.index = rowIndex

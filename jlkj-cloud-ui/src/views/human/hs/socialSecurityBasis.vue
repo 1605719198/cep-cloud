@@ -595,6 +595,7 @@ import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import { socialSecurity } from '@/api/human/hs/socialSecurity'
 import { queryImportNote } from '@/api/human/hs/importNote'
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: 'SocialSecurityBasis',

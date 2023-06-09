@@ -75,7 +75,7 @@
           </el-table-column>
           <el-table-column label="加班类别" align="center" prop="overtimeTypeId" >
             <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.OvertimeType" :value="scope.row.overtimeTypeId"/>
+              <dict-tag-human :options="attendenceOptions.OvertimeType" :value="scope.row.overtimeTypeId"/>
             </template>
           </el-table-column>
           <el-table-column label="加班时数" align="center" prop="overtimeHours" />
@@ -280,11 +280,11 @@ import {validateNumber} from "@/utils/jlkj";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {getToken} from "@/utils/auth";
 import {listOvertimeWorksetting} from "@/api/human/hd/overtimeWorksetting";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import {listCardRecord} from "@/api/human/hd/cardRecord";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "OvertimeRecord",

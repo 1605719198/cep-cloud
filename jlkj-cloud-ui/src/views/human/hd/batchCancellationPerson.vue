@@ -128,9 +128,9 @@ import {
   listCancellationPerson,
 } from "@/api/human/hd/cancellationPerson";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import selectCancellationUser from "@/views/components/human/selectUser/selectCancellationUser";
 import {getToken} from "@/utils/auth";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "BatchCancellationPerson",

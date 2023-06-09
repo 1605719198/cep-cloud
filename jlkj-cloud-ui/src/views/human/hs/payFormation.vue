@@ -126,6 +126,7 @@
 import { listPayFormation, delPayFormation, addPayFormation } from "@/api/human/hs/payFormation";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import { listProjectPayTree, listProjectPay} from '@/api/human/hs/projectPay'
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "PayFormation",
