@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="公司" prop="compId">
+          <el-form-item label="公司别" prop="compId">
             <el-select v-model="queryParams.compId" placeholder="请选择公司">
               <el-option
                 v-for="dict in companyName"
@@ -114,7 +114,7 @@
                 </el-col>
               </el-row>
             </el-form>
-            <el-table :data="deptKpiDetailList" border>
+            <el-table v-loading="deptKpiLoading" :data="deptKpiDetailList" border>
               <el-table-column label="编码" width="55" align="center" prop="num"/>
               <el-table-column label="指标项目" align="center" prop="item"/>
               <el-table-column label="数据提供单位" align="center" prop="dataDept"/>
@@ -266,6 +266,7 @@ export default {
     // 表单重置
     reset() {
       this.evaluationForm = {
+        num: null,
         item: null,
         dataDept: null,
         weight: null
@@ -316,7 +317,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete() {
       const id = this.form.id
-      this.$modal.confirm('是否确认删除KPI指标明细档编号为"' + id + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除KPI指标主档编号为"' + id + '"的数据项？').then(function() {
         return delDeptKpi(id);
       }).then(() => {
         this.form = {}

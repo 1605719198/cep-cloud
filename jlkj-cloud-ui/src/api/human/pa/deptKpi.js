@@ -9,7 +9,7 @@ export function listDeptKpi(query) {
   })
 }
 
-// 查询KPI指标主档列表
+// 查询KPI指标明细档列表
 export function listDeptKpiDetail(query) {
   return request({
     url: '/human/deptKpi/listDeptKpiDetail',
@@ -18,7 +18,7 @@ export function listDeptKpiDetail(query) {
   })
 }
 
-// 新增KPI指标明细档
+// 新增KPI指标主档
 export function addDeptKpi(data) {
   return request({
     url: '/human/deptKpi',
@@ -27,7 +27,7 @@ export function addDeptKpi(data) {
   })
 }
 
-// 修改KPI指标明细档
+// 修改KPI指标主档
 export function updateDeptKpi(data) {
   return request({
     url: '/human/deptKpi',
@@ -36,7 +36,7 @@ export function updateDeptKpi(data) {
   })
 }
 
-// 删除KPI指标明细档
+// 删除KPI指标主档和明细档
 export function delDeptKpi(id) {
   return request({
     url: '/human/deptKpi/' + id,

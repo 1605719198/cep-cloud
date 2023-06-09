@@ -7,7 +7,7 @@ import java.util.List;
 
 
 /**
- * 公司薪酬项目设定表
+ * 单位KPI指标设定表
  * @author HuangBing
  * @TableName human_pa_dept_kpi
  */
@@ -15,7 +15,7 @@ import java.util.List;
 public class DeptKpiDetailDTO {
 
     /**
-     * 薪酬项目List
+     * 单位KPI指标明细档List
      */
     private List<DeptKpiDetail> deptKpiDetailList;
 
