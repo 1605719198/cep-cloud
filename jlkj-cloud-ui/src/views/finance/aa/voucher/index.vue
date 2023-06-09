@@ -424,6 +424,7 @@ export default {
     },
     getAcctCodeCorpPop(val){
       this.formDetail.detailList[this.indexRow-1].acctCode=val[0].acctCode
+      this.formDetail.detailList[this.indexRow-1].groupAcctId=val[0].groupAcctId
       this.formDetail.detailList[this.indexRow-1].acctName=val[0].acctName
       this.formDetail.detailList[this.indexRow-1].acctId=val[0].acctId
       this.form.isFrnCrcy=val[0].isFrnCrcy
@@ -435,7 +436,6 @@ export default {
       this.formDetail.detailList[this.indexRow-1].calNameb=""
       this.formDetail.detailList[this.indexRow-1].calNamec=""
       this.formDetail.detailList[this.indexRow-1].calNamed=""
-      console.log(this.formDetail.detailList[this.indexRow - 1].calNamea);
     },
 
     getVoucherNo(val) {
