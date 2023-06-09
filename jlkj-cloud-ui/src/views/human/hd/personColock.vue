@@ -360,6 +360,7 @@ export default {
       immediate: true,
       handler: function(newV) {
         this.getTreeselect()
+        this.getAllcolock(this.queryParams.compId)
       }
     }
   },
@@ -378,8 +379,6 @@ export default {
     getAllcolock(compId) {
       getCompClockwork(compId).then(response => {
         this.clockworkList = response.rows
-        this.open = true;
-        console.log(JSON.stringify(this.clockworkList))
       })
     },
     /** 人员选单事件 */
@@ -397,8 +396,8 @@ export default {
         this.queryParams.empId = val
       } else {
         this.form.empId = val
+        this.checkList = []
         queryFirstdeptByPerson(val).then(response => {
-          this.checkList = []
           if(response.data.firstDeptId){
             this.form.firstDeptId = response.data.firstDeptId
             this.form.firstDeptName = response.data.firstDeptName
@@ -427,8 +426,8 @@ export default {
     },
     /** 上级部门切换事件 */
     deptChange(val) {
+      this.checkList = []
       queryFirstdeptByDept(val.id).then(response => {
-        this.checkList = []
         this.form.firstDeptId = response.data.firstDeptId
         this.form.firstDeptName = response.data.firstDeptName
         this.clockworkList.forEach((value, index, array) => {
@@ -525,8 +524,7 @@ export default {
         firstDeptId: null,
         colockList: [],
       }
-      this.resetForm('form')
-
+      // this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -556,23 +554,23 @@ export default {
       this.reset()
       this.formcolockType = this.colockType
       this.title = '添加卡钟'
-      this.checkList = []
-      this.getAllcolock(this.queryParams.compId)
+      this.checkList = [];
+      this.open = true;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
+      this.open = true;
+      this.checkList = [];
       this.formcolockType = this.colockType
       const id = row.id || this.ids
       if (this.colockType === '1') {
         getPersonColock(id).then(response => {
           this.form = response.data
           this.title = '修改人员卡钟'
-          this.getAllcolock(this.queryParams.compId)
         })
         var param = { personColockId: id }
         listPersonColockDetail(param).then(response => {
-          console.log("----------"+JSON.stringify(response.rows))
           response.rows.forEach((value) => {
             this.checkList.push(value.macId)
           })
@@ -581,7 +579,6 @@ export default {
         getPersonColockOrg(id).then(response => {
           this.form = response.data
           this.title = '修改部门卡钟'
-          this.getAllcolock(this.queryParams.compId)
         })
         var params = { personColockId: id }
         listPersonColockDetail(params).then(response => {
