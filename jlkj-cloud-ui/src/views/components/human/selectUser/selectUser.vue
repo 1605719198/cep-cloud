@@ -31,19 +31,10 @@
       </el-col>
       <el-col :span="18">
         <el-form :model="queryParams" ref="queryForm" :inline="true">
-          <el-form-item label="用户工号" prop="empNo">
+          <el-form-item label="关键字" prop="keywords">
             <el-input
-              v-model="queryParams.empNo"
-              placeholder="请输入用户工号"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="手机号码" prop="myMobilePhone">
-            <el-input
-              v-model="queryParams.myMobilePhone"
-              placeholder="请输入手机号码"
+              v-model="queryParams.keywords"
+              placeholder="输入关键字查询"
               clearable
               size="small"
               @keyup.enter.native="handleQuery"
@@ -114,8 +105,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        empNo: undefined,
-        myMobilePhone: undefined,
+        keywords: '',
         departmentId: undefined,
         compId: undefined
       },
