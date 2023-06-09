@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import { listSocialSecurity, delSocialSecurity, addSocialSecurity, selectVersion} from "@/api/human/hs/socialSecurity";
+import { listSocialSecurity, delSocialSecurity, addSocialSecurity, selectVersion, updateSocialSecurity} from "@/api/human/hs/socialSecurity";
 import { listSalaryProjectBasis} from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
@@ -332,6 +332,7 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
+      if (this.queryParams.effectDate != null) {
         if (this.queryParams.effectDate > getDateTime(1)) {
           for (let i = 0; i < this.multipleSelection.length; i++) {
             this.multipleSelection[i].effectDate = this.queryParams.effectDate
@@ -339,28 +340,33 @@ export default {
           addSocialSecurity(this.multipleSelection).then(res => {
             this.$modal.msgSuccess("保存成功");
             this.onLoad();
+            this.getVersionList();
           })
         } else {
           this.$modal.msgError("生效日期必须大于当前日期");
         }
+      }else {
+        this.$modal.msgError("生效日期不能为空");
+      }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
         const ids = row.id || this.ids;
-      if (this.socialSecurityList.effectDate > getDateTime(1)) {
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.multipleSelection[i].effectDate = this.socialSecurityList.effectDate
+      for (const idsKey in  this.multipleSelection) {
+        if ( this.multipleSelection[idsKey].effectDate > getDateTime(1)) {
+          this.$modal.confirm('是否确认删除此数据项？').then(function () {
+            return delSocialSecurity(ids);
+          }).then(() => {
+            this.onLoad();
+            this.$modal.msgSuccess("删除成功");
+          }).catch(() => {
+          })
+        }else {
+          this.$modal.msgError("生效日期必须大于当前日期");
+          break;
         }
-        this.$modal.confirm('是否确认删除此数据项？').then(function () {
-          return delSocialSecurity(ids);
-        }).then(() => {
-          this.onLoad();
-          this.$modal.msgSuccess("删除成功");
-        }).catch(() => {
-        })
-      }else {
-        this.$modal.msgError("生效日期必须大于当前日期");
-      };
+      }
+      // this.multipleSelection()
     },
     //点击节点方法
     changePostName(data,index){

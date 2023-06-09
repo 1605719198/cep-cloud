@@ -140,6 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
         <where>
             <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
+            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
         </where>
     </select>
 </mapper>

@@ -68,13 +68,11 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     @Override
     public int insertSocialSecurity(List<SocialSecurity> socialSecurityList) {
         String payAreaId = socialSecurityList.get(0).getPayAreaId();
-
         Date inEffectDate = socialSecurityList.get(0).getEffectDate();
         Date nowdate = DateUtils.getNowDate();
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
-
         for (SocialSecurity socialSecurities : socialSecurityList) {
             if (socialSecurities.getId() != null) {
                 SocialSecurity dbSocialSecuritie =socialSecurityMapper.selectSocialSecurityById(socialSecurities.getId());
@@ -92,7 +90,6 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                     }
                 }
             }
-
             //查询当前公司别 最大版次号 及 生效日期
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
             Long version = 1L;
@@ -141,6 +138,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
      */
     @Override
     public int updateSocialSecurity(SocialSecurity socialSecurity) {
+
         return socialSecurityMapper.updateSocialSecurity(socialSecurity);
     }
 
