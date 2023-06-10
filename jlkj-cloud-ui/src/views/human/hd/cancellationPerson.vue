@@ -23,17 +23,17 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="this.queryParams.type === 'org'">
+          <el-form-item v-if="this.queryParams.type === 'org'" prop="orgId">
             <el-input v-model="queryParams.orgId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else-if="this.queryParams.type === 'user'">
+          <el-form-item v-else-if="this.queryParams.type === 'user'" prop="empNo">
             <el-input v-model="queryParams.empNo" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else>
+          <el-form-item v-else prop="clockWorkId">
             <el-input v-model="queryParams.clockWorkId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openMacPop"></el-button>
             </el-input>
@@ -228,7 +228,9 @@ export default {
         companyId: 'J00',
         checkStartDate: null,
         type: 'org',
-        orgId: null
+        orgId: null,
+        empNo: null,
+        clockWorkId: null
       },
       // 表单参数
       form: {},
@@ -309,7 +311,6 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {

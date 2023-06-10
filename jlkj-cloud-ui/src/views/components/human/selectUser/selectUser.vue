@@ -37,7 +37,6 @@
               placeholder="输入关键字查询"
               clearable
               size="small"
-              @keyup.enter.native="handleQuery"
             />
           </el-form-item>
           <el-form-item>

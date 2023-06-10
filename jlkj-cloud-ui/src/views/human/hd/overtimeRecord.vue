@@ -175,7 +175,7 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="加班类别">
+                <el-form-item label="加班类别" prop="overtimeTypeId">
                   <el-select v-model="form.overtimeTypeId" style="width: 100%">
                     <el-option
                       v-for="dict in attendenceOptions.OvertimeType"
@@ -187,7 +187,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="加班原因">
+                <el-form-item label="加班原因" prop="overtimeReaId">
                   <el-select v-model="form.overtimeReaId" style="width: 100%">
                     <el-option
                       v-for="dict in attendenceOptions.OvertimeReason"
@@ -230,7 +230,7 @@
             </el-row>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button type="primary" @click="submitForm" :disabled="form.cardTime==null">确 定</el-button>
             <el-button @click="cancel">取 消</el-button>
           </div>
         </el-dialog>
@@ -319,7 +319,8 @@ export default {
       },
       // 表单参数
       form: {
-        overtimeHours: null
+        overtimeHours: null,
+        cardTime: null
       },
       // 表单校验
       rules: {
@@ -339,6 +340,9 @@ export default {
         ],
         overtimeTypeId: [
           { required: true, message: "加班类别不能为空", trigger: "blur" }
+        ],
+        overtimeReaId: [
+          { required: true, message: "加班原因不能为空", trigger: "blur" }
         ]
       },
       // 公司别数据
@@ -366,6 +370,8 @@ export default {
       },
       //出勤选单选项列表
       attendenceOptions: {},
+      // 加班时数校验值
+      overtimeHours: 0
     };
   },
   created() {
@@ -452,6 +458,10 @@ export default {
       const id = row.id
       getOvertimeRecord(id).then(response => {
         this.form = response.data;
+        this.form.workOvertimeDate1 = response.data.workOvertimeDate
+        listCardRecord(this.form).then(response => {
+          this.form.cardTime = response.rows[0].cardTime
+        });
         this.open = true;
         this.title = "修改加班记录";
       });
@@ -512,28 +522,40 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            this.form.startTime = this.form.workOvertimeDate1[0]
-            this.form.endTime = this.form.workOvertimeDate1[1]
-            updateOvertimeRecord(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
+            if (this.form.overtimeHours < this.oveUnit) {
+              this.$modal.msgError("加班时数小于加班最小单位");
+            } else {
+              if (this.form.overtimeHours == this.overtimeHours) {
+                this.form.startTime = this.form.workOvertimeDate1[0]
+                this.form.endTime = this.form.workOvertimeDate1[1]
+                updateOvertimeRecord(this.form).then(response => {
+                  this.$modal.msgSuccess("修改成功");
+                  this.open = false;
+                  this.getList();
+                });
+              } else {
+                this.$modal.msgError("加班时数计算错误，请重新输入");
+              }
+            }
           } else {
             if (this.form.overtimeHours < this.oveUnit) {
               this.$modal.msgError("加班时数小于加班最小单位");
             } else {
-              this.form.compId = this.queryParams.compId
-              addOvertimeRecord(this.form).then(response => {
-                this.$modal.msgSuccess("新增成功");
-                this.open = false;
-                this.form.workOvertimeDate1[0] = this.form.workOvertimeDate1[0].substring(0, 10)
-                this.form.workOvertimeDate1[1] = this.form.workOvertimeDate1[1].substring(0, 10)
-                this.queryParams.workOvertimeDate = this.form.workOvertimeDate1;
-                this.queryParams.startTime = this.form.workOvertimeDate1[0].substring(0, 10)
-                this.queryParams.endTime = this.form.workOvertimeDate1[1].substring(0, 10)
-                this.getList();
-              });
+              if (this.form.overtimeHours == this.overtimeHours){
+                this.form.compId = this.queryParams.compId
+                addOvertimeRecord(this.form).then(response => {
+                  this.$modal.msgSuccess("新增成功");
+                  this.open = false;
+                  this.form.workOvertimeDate1[0] = this.form.workOvertimeDate1[0].substring(0, 10)
+                  this.form.workOvertimeDate1[1] = this.form.workOvertimeDate1[1].substring(0, 10)
+                  this.queryParams.workOvertimeDate = this.form.workOvertimeDate1;
+                  this.queryParams.startTime = this.form.workOvertimeDate1[0].substring(0, 10)
+                  this.queryParams.endTime = this.form.workOvertimeDate1[1].substring(0, 10)
+                  this.getList();
+                });
+              } else {
+                this.$modal.msgError("加班时数计算错误，请重新输入");
+              }
             }
           }
         }
@@ -573,13 +595,17 @@ export default {
       this.form.endTime=picker[1]
       this.form.date1=picker[0]
       this.form.date2=picker[1]
-      // if (this.form.startTime.substring(11, 13) === '08') {
-      //   this.form.overtimeHours = 8
-      // } else {
-      //   this.form.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
-      // }
+      if (this.form.startTime.substring(11, 13) === '08') {
+        this.overtimeHours = 8
+      } else {
+        this.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+      }
       listCardRecord(this.form).then(response => {
-        this.form.cardTime = response.rows[0].cardTime
+        if (response.rows.length===0){
+          this.$modal.msgSuccess("加班时间段没有刷卡记录！！");
+        } else {
+          this.form.cardTime = response.rows[0].cardTime
+        }
       });
     },
     /**是否显示按钮 */
