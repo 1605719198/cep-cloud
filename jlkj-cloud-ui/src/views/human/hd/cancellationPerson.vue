@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="68px">
           <el-form-item label="公司别" prop="companyId">
             <el-select v-model="queryParams.companyId" placeholder="请选择公司" :popper-append-to-body="false">
               <el-option
@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="type">
-            <el-select v-model="queryParams.type" :popper-append-to-body="false">
+            <el-select v-model="queryParams.type" :popper-append-to-body="false" @change="resetType">
               <el-option
                 v-for="dict in attendenceOptions.CancellationPersonType"
                 :key="dict.dicNo"
@@ -236,6 +236,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        checkStartDate: [
+          { required: true, message: "注销时间不能为空", trigger: "blur" }
+        ],
       },
       // 公司别数据
       companyName: [],
@@ -382,6 +385,11 @@ export default {
     getJobNumber1(val) {
       this.form.empNo = val
     },
+    resetType() {
+      this.queryParams.orgId = null
+      this.queryParams.empNo = null
+      this.queryParams.clockWorkId = null
+    }
   }
 };
 </script>

@@ -541,6 +541,8 @@ export default {
             if (this.form.overtimeHours < this.oveUnit) {
               this.$modal.msgError("加班时数小于加班最小单位");
             } else {
+              console.log(this.form.overtimeHours);
+              console.log(this.overtimeHours);
               if (this.form.overtimeHours == this.overtimeHours){
                 this.form.compId = this.queryParams.compId
                 addOvertimeRecord(this.form).then(response => {
@@ -595,7 +597,7 @@ export default {
       this.form.endTime=picker[1]
       this.form.date1=picker[0]
       this.form.date2=picker[1]
-      if (this.form.startTime.substring(11, 13) === '08') {
+      if (this.form.startTime.substring(11, 13) === '08' && this.form.endTime.substring(11, 13) === '17') {
         this.overtimeHours = 8
       } else {
         this.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
