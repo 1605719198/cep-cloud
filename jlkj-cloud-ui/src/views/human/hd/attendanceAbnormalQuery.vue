@@ -53,13 +53,21 @@
           <el-table-column label="岗位" align="center" prop="postName"/>
           <el-table-column label="正常出勤时段" align="center" prop="norOndutyBegin" />
           <el-table-column label="实际出勤时段" align="center" prop="slotCardOnduty" />
-          <el-table-column label="异常原因" align="center" prop="excReaId" />
+          <el-table-column label="异常原因" align="center" prop="excReaId" >
+            <template v-slot="scope">
+              <dict-tag-human :options="attendenceOptions.AbnormalReason" :value="scope.row.excReaId"/>
+            </template>
+          </el-table-column>
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
               <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
-          <el-table-column label="处理情况" align="center" prop="disposeId" />
+          <el-table-column label="处理情况" align="center" prop="disposeId" >
+            <template v-slot="scope">
+              <dict-tag-human :options="attendenceOptions.DisposeStatus" :value="scope.row.disposeId"/>
+            </template>
+          </el-table-column>
         </el-table>
 
         <pagination
@@ -100,7 +108,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['DisposeStatus','ProveReason']
+        optionsType: ['AbnormalReason','DisposeStatus','ProveReason']
       },
       //出勤选单选项列表
       attendenceOptions: {},
