@@ -177,7 +177,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    <acctcodeCorpPop ref="selectAcctCodeCorpPop" :companyId="pCompanyId" @ok="getAcctCodeCorpPop"/>
+    <acctcodeGroupPop ref="selectAcctcodeGroupPop" :companyId="pCompanyId" @ok="getAcctCodeCorpPop"/>
     <projectFormulaPop ref="selectProjectFormulaPop" @ok="getProjectFormulaPop"/>
   </div>
 </template>
@@ -185,13 +185,13 @@
 <script>
 import { listProjectContent, addProjectContent, delProjectContent, changeUserStatus } from "@/api/finance/aa/projectContent";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
-import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
+import acctcodeGroupPop from "@/views/finance/aa/acctcodeGroupPop";
 import projectFormulaPop from "@/views/finance/aa/projectFormulaPop";
 import {parseTime} from "@/utils/jlkj";
 export default {
   name: "Item",
   dicts: ['aa_formula_sign','aa_content_kind','aa_content_drcrkind','aa_content_amtqty'],
-  components: { acctcodeCorpPop,projectFormulaPop },
+  components: { acctcodeGroupPop,projectFormulaPop },
   data() {
     return {
       // 父组件传值
@@ -287,7 +287,7 @@ export default {
     inputAcctName(val) {
       this.indexRow= val.index
       if(this.form.itemList[this.indexRow-1].kind=='A'){
-        this.$refs.selectAcctCodeCorpPop.show();
+        this.$refs.selectAcctcodeGroupPop.show();
       }else if(this.form.itemList[this.indexRow-1].kind=='B'){
         this.$refs.selectProjectFormulaPop.show();
       }else{
@@ -297,7 +297,7 @@ export default {
 
     },
     getAcctCodeCorpPop(val){
-      this.form.itemList[this.indexRow-1].code=val[0].acctCode
+      this.form.itemList[this.indexRow-1].code=val[0].groupAcctCode
     },
     getProjectFormulaPop(val){
       this.form.itemList[this.indexRow-1].code=val[0].itemCode

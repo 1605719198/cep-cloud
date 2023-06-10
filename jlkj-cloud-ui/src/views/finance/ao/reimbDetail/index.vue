@@ -306,7 +306,7 @@ export default {
         crAcctCode: null,
         budgetType: null,
         costCode: null,
-        status: null,
+        status: '0',
         otherType: null,
         otherDesc: null,
         createBy: null,

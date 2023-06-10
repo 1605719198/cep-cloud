@@ -22,7 +22,7 @@
                       @keyup.enter.native="handleQuery">
                     </el-option>
                   </el-select>
-                  <el-input placeholder="搜索科目索引"
+                  <el-input placeholder="搜索代码或名称索引"
                             v-model="filterText"
                             style="margin-bottom: 20px">
                   </el-input>
@@ -45,10 +45,10 @@
                      style="border: 0">
                   <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
                            label-width="148px">
-                    <el-form-item label="现金流量表代码名称" prop="cashFlowName">
+                    <el-form-item label="现金流量表名称" prop="cashFlowName">
                       <el-input
                         v-model="queryParams.cashFlowName"
-                        placeholder="请输入现金流量表代码名称"
+                        placeholder="请输入现金流量表名称"
                         clearable
                         @keyup.enter.native="handleQuery"
                       />
@@ -104,18 +104,18 @@
                       <el-form-item  >
                       <el-table-column type="selection" width="55" align="center"/>
                       </el-form-item>
-                      <el-table-column prop="cashFlowCode" label="现金流量表代码">
+                      <el-table-column prop="cashFlowCode" label="现金流量代码">
                         <template slot-scope="scope">
                           <el-form-item
                             :prop="'tCodeList.' + scope.$index + '.cashFlowCode'" :rules="rules.cashFlowCode">
-                            <el-input v-model="scope.row.cashFlowCode" placeholder="请输入现金流量表代码"/>
+                            <el-input v-model="scope.row.cashFlowCode" placeholder="请输入现金流量代码"/>
                           </el-form-item>
                         </template>
                       </el-table-column>
-                      <el-table-column label="现金流量表代码名称" align="center" prop="cashFlowName">
+                      <el-table-column label="现金流量名称" align="center" prop="cashFlowName">
                         <template slot-scope="scope">
                           <el-form-item :prop="'tCodeList.' + scope.$index + '.cashFlowName'" :rules="rules.cashFlowName">
-                          <el-input v-model="scope.row.cashFlowName" placeholder="请输入现金流量表代码名称"/>
+                          <el-input v-model="scope.row.cashFlowName" placeholder="请输入现金流量名称"/>
                           </el-form-item>
                         </template>
                       </el-table-column>
