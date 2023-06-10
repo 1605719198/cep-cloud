@@ -24,10 +24,10 @@ public interface AttendencebasisMapper
     /**
      * 通过编码查询员工出勤基本资料维护
      *
-     * @param code 员工出勤基本资料维护编码
+     * @param attendencebasis 员工出勤基本资料维护
      * @return 员工出勤基本资料维护
      */
-    public Attendencebasis selectAttendencebasisParentByCode(String  code);
+    public Attendencebasis selectAttendencebasisParentByCode(Attendencebasis  attendencebasis);
 
     /**
      * 查询是否有重复编码数据

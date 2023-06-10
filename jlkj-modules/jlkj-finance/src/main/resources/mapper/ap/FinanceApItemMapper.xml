@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ap.mapper.FinanceApItemMapper">
+    
+    <resultMap type="FinanceApItem" id="FinanceApItemResult">
+        <result property="id"    column="id"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="crAcctCode"    column="cr_acct_code"    />
+        <result property="otherType"    column="other_type"    />
+        <result property="status"    column="status"    />
+        <result property="dueDay"    column="due_day"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="calTypeCodea"    column="cal_type_codea"    />
+        <result property="calTypeCodeb"    column="cal_type_codeb"    />
+    </resultMap>
+
+    <sql id="selectFinanceApItemVo">
+        select id, item_no, item_name, cr_acct_code, other_type, status, due_day, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_item
+    </sql>
+
+    <select id="selectFinanceApItemList" parameterType="FinanceApItem" resultMap="FinanceApItemResult">
+        <include refid="selectFinanceApItemVo"/>
+        <where>  
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+            <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceApItemById" parameterType="String" resultMap="FinanceApItemResult">
+        <include refid="selectFinanceApItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceApItem" parameterType="FinanceApItem">
+        insert into finance_ap_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemNo != null">item_no,</if>
+            <if test="itemName != null">item_name,</if>
+            <if test="crAcctCode != null">cr_acct_code,</if>
+            <if test="otherType != null">other_type,</if>
+            <if test="status != null">status,</if>
+            <if test="dueDay != null">due_day,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="itemNo != null">#{itemNo},</if>
+            <if test="itemName != null">#{itemName},</if>
+            <if test="crAcctCode != null">#{crAcctCode},</if>
+            <if test="otherType != null">#{otherType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="dueDay != null">#{dueDay},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceApItem" parameterType="FinanceApItem">
+        update finance_ap_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemNo != null">item_no = #{itemNo},</if>
+            <if test="itemName != null">item_name = #{itemName},</if>
+            <if test="crAcctCode != null">cr_acct_code = #{crAcctCode},</if>
+            <if test="otherType != null">other_type = #{otherType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="dueDay != null">due_day = #{dueDay},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceApItemById" parameterType="String">
+        delete from finance_ap_item where id = #{id}
+    </delete>
+
+    <update id="updateCheckUnique" parameterType="String">
+        update finance_ap_item set item_no=item_no  where item_no = #{itemNo}
+    </update>
+
+    <delete id="deleteFinanceApItemByIds" parameterType="String">
+        delete from finance_ap_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectItemNosByIds" parameterType="String" resultType="map">
+        select item_no from finance_ap_item_detail where item_no in (
+        select item_no from finance_ap_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+
+
+    <select id="selectFinanceApItemByIdcal" parameterType="String" resultMap="FinanceApItemResult">
+        select a.*,b.cal_type_codea,b.cal_type_codeb from  finance_ap_item a left outer join  finance_aa_acctcode b on a.cr_acct_code = b.acct_name
+        where id = #{id}
+    </select>
+
+    <select id="selectItemAndDetailList" parameterType="String" resultType="map">
+        SELECT a.item_no itemNo,a.item_name itemName,a.cr_acct_code crAcctCode,a.status,a.other_type otherType FROM finance_ap_item a
+        WHERE a.item_no not in (select item_no from finance_ap_item_comp where company_id = #{companyId})
+        order by a.item_no
+    </select>
+
+</mapper>

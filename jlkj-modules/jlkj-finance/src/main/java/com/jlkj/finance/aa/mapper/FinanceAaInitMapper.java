@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaInit;
+import io.lettuce.core.dynamic.annotation.Param;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public interface FinanceAaInitMapper
      * @return 初始化记录集合
      */
     public List<FinanceAaInit> selectFinanceAaInitList(FinanceAaInit financeAaInit);
+
 
     /**
      * 新增初始化记录
@@ -59,6 +61,16 @@ public interface FinanceAaInitMapper
      * @return 结果
      */
     public int deleteFinanceAaInitByIds(String[] ids);
+
+    /**
+     * 批量删除初始化记录
+     *
+     * @param companyId
+     * @param acctPeriod
+     * @return 结果
+     */
+    public int deleteFinanceAaInit( @Param("companyId") String companyId, @Param("acctPeriod") String acctPeriod);
+
 
     /**
      * 批量新增初始化记录

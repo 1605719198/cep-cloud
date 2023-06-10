@@ -314,7 +314,6 @@ export default {
       this.handleQuery();
     },
     rowClick(row, column, e) {
-
       this.$emit('change', 'second', row.id,row.bankNo,row.bankchnName);
     },
 

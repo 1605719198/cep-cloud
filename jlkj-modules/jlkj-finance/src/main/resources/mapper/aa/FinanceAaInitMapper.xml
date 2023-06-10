@@ -50,7 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY
         acct_code
     </select>
-        
+
+
     <insert id="insertFinanceAaInit" parameterType="com.jlkj.finance.aa.domain.FinanceAaInit">
         insert into finance_aa_init
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -149,5 +150,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </delete>
+    <delete id="deleteFinanceAaInit"   parameterType="String">
+        delete from finance_aa_init where company_id = #{arg0} and acct_period = #{arg1}
     </delete>
 </mapper>

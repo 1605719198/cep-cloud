@@ -33,6 +33,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="area != null  and area != ''"> and area = #{area}</if>
         </where>
     </select>
+    
+    <select id="querySameData" parameterType="TripDayRule" resultMap="TripDayRuleResult">
+        <include refid="selectTripDayRuleVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id != #{id}</if>
+            <if test="titleKind != null  and titleKind != ''"> and title_kind = #{titleKind}</if>
+            <if test="nation != null  and nation != ''"> and nation = #{nation}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+             and status = 0
+        </where>
+    </select>
+    
     <select id="selectTripDayRuleArea" resultMap="TripDayRuleResult" >
         select id, area from human_hd_trip_day_rule
         group by area

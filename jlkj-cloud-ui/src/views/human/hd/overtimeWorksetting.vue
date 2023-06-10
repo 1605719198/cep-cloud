@@ -177,7 +177,24 @@ export default {
       },
       // 表单校验
       rules: {
-
+        holUnit: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        oveUnit: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        monthOve: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        resvAttr1: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        resvAttr2: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        resvAttr3: [
+          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
       }
     };
   },
@@ -217,7 +234,7 @@ export default {
     getList() {
       this.loading = true;
       listOvertimeWorksetting(this.queryParams).then(response => {
-        if(response.rows[0]!=undefined){
+        if(response.rows[0]!==undefined){
           this.form = response.rows[0];
           this.total = response.total;
         }else{

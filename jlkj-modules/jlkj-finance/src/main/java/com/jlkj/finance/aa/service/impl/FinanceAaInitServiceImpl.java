@@ -235,9 +235,9 @@ public class FinanceAaInitServiceImpl implements IFinanceAaInitService {
             }
 
         }
+        financeAaInitMapper.deleteFinanceAaInit( companyId, acctPeriod);
         financeAaInitMapper.batchFinanceAaInit(financeAaInitList);
         List<FinanceAaInit> financeAaInitList1= new ArrayList<>();
-
         return financeAaInitList1;
     }
 

@@ -63,6 +63,14 @@ public class SalaryEmployedMonthServiceImpl implements ISalaryEmployedMonthServi
     @Override
     public int insertSalaryEmployedMonth(List<SalaryEmployedMonth> salaryEmployedMonthList) {
         for (SalaryEmployedMonth salaryEmployedMonth : salaryEmployedMonthList) {
+            SalaryEmployedMonth param = new SalaryEmployedMonth();
+            param.setEmpNo(salaryEmployedMonth.getEmpNo());
+            List<SalaryEmployedMonth> salaryEmployedMonths = salaryEmployedMonthMapper.selectSalaryEmployedMonthList(param);
+            for (SalaryEmployedMonth item : salaryEmployedMonths) {
+                if (!item.getEmpNo().isEmpty()) {
+                    throw new ServiceException("员工不允许重复");
+                }
+            }
             if (salaryEmployedMonth.getId() != null) {
                 salaryEmployedMonth.setCreatorId(SecurityUtils.getUserId().toString());
                 salaryEmployedMonth.setCreator(SecurityUtils.getNickName());

@@ -126,6 +126,7 @@
 import { listPayFormation, delPayFormation, addPayFormation } from "@/api/human/hs/payFormation";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import { listProjectPayTree, listProjectPay} from '@/api/human/hs/projectPay'
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "PayFormation",
@@ -148,6 +149,7 @@ export default {
       form:{
         payFormationList: [],
       },
+      addForm: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -171,10 +173,6 @@ export default {
       expandedKeys: [],
       //添加薪酬项目弹窗表格数据
       tableData: [],
-      //选中薪酬项目编码
-      payProCode: undefined,
-      //选中薪酬项目名称
-      payProName: undefined,
       //选中薪酬项目ID
       id: undefined,
       //登录人信息
@@ -219,8 +217,15 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.id = selection.map(item => item.id)
-      this.payProCode = selection.map(item => item.payProCode)
-      this.payProName = selection.map(item => item.payProName)
+      this.addForm = []
+      for (let i = 0; i < selection.length; i++) {
+        const form = {
+          id: selection[i].id,
+          payProCode: selection[i].payProCode,
+          payProName: selection[i].payProName
+        }
+        this.addForm.push(form)
+      }
     },
     // 多选框选中数据
     handleSelectionChange1(selection) {
@@ -228,21 +233,20 @@ export default {
       this.multiple = !selection.length;
     },
     handleSelect() {
-      const form = {
-        payProId: this.id[0],
-        payProCode: this.payProCode[0],
-        payProName: this.payProName[0]
-      }
-      if (this.id == "") {
+      if (this.id === undefined) {
         this.$modal.msgError("请选择要分配的用户");
         return;
       }
-      if (this.id.length > 1) {
-        this.$modal.msgError("只能选择一笔数据");
-        return;
+      for (let i = 0; i < this.addForm.length; i++) {
+        for (let j = 0; j < this.form.payFormationList.length; j++) {
+          if (this.addForm[i].payProCode === this.form.payFormationList[j].payProCode) {
+            this.$modal.msgError("不允许重复添加");
+            return;
+          }
+        }
+        this.form.payFormationList.push(this.addForm[i])
       }
       this.open = false
-      this.form.payFormationList.push(form)
       this.total = this.form.payFormationList.length
     },
     /** 新增按钮操作 */

@@ -23,8 +23,8 @@
           </el-select>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:personalIncomeTax:add']" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button v-hasPermi="['human:personalIncomeTax:add']" :disabled="multiple" icon="el-icon-edit" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
       </el-form-item>
         </el-col>
       </el-row>
@@ -151,6 +151,7 @@ export default {
       this.loading = true;
       listPersonalIncomeTax(this.queryParams).then(response => {
         this.personalIncomeTaxList = response.rows;
+        this.addLine();
         this.total = response.total;
         this.loading = false;
       });
@@ -168,9 +169,6 @@ export default {
       this.queryParams.effectDate = null;
       this.queryParams.date = null;
       this.getVersionList()
-
-      // this.personalIncomeTaxList = []
-      // this.handleQuery();
     },
     //查询薪资选单
     getDisc(){
@@ -218,24 +216,29 @@ export default {
     },
     /** 保存按钮 */
     handleSave() {
-      if(this.queryParams.effectDate > getDateTime(1)) {
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.multipleSelection[i].effectDate = this.queryParams.effectDate
-        }
-        addPersonalIncomeTax(this.multipleSelection).then(res => {
-          this.$modal.msgSuccess("保存成功");
-          this.getList();
-        })
-      }else{
+      if(this.queryParams.effectDate != null) {
+        if (this.queryParams.effectDate > getDateTime(1)) {
+          for (let i = 0; i < this.multipleSelection.length; i++) {
+            this.multipleSelection[i].effectDate = this.queryParams.effectDate
+          }
+          addPersonalIncomeTax(this.multipleSelection).then(res => {
+            this.$modal.msgSuccess("保存成功");
+            this.getList();
+            this.getVersionList();
+          })
+        } else {
           this.$modal.msgError("生效日期必须大于当前日期");
         }
+      }else {
+        this.$modal.msgError("生效日期不能为空");
+      }
     },
     addIndex({row, rowIndex}) {
       row.index = rowIndex
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.personalIncomeTaxList.length == row.index + 1) {
+      if (!row||this.personalIncomeTaxList.length == row.index + 1) {
         const newLine = {
           id: null,
           creator: this.nickName,
@@ -245,7 +248,6 @@ export default {
           type: this.queryParams.type,
           effectDate: this.queryParams.effectDate,
         }
-        this.index++
         this.personalIncomeTaxList.push(newLine)
       }
     },

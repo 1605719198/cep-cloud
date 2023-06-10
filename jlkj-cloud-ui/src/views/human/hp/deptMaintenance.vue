@@ -897,15 +897,15 @@ export default {
       switch (e) {
         case 1:
           this.open = false
-          setTimeout(() => {
+          this.$nextTick(()=>{
             this.reset()
-          }, 100)
+          })
           break
         case 2:
           this.openDetail = false
-          setTimeout(() => {
+          this.$nextTick(()=>{
             this.reset()
-          }, 100)
+          })
           break
         case 3:
           this.versionDetail = false

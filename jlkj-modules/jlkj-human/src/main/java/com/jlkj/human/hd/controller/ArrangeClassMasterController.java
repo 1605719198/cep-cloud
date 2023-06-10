@@ -31,7 +31,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 查询排班记录列表
      */
-    @RequiresPermissions("human:arrangeClassMaster:list")
+    @RequiresPermissions("human:shiftMode:list")
     @GetMapping("/list")
     public TableDataInfo list(ArrangeClassMaster arrangeClassMaster)
     {
@@ -43,7 +43,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 导出排班记录列表
      */
-    @RequiresPermissions("human:arrangeClassMaster:export")
+    @RequiresPermissions("human:shiftMode:export")
     @Log(title = "排班记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ArrangeClassMaster arrangeClassMaster)
@@ -56,7 +56,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 获取排班记录详细信息
      */
-    @RequiresPermissions("human:arrangeClassMaster:query")
+    @RequiresPermissions("human:shiftMode:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +66,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 新增排班记录
      */
-    @RequiresPermissions("human:arrangeClassMaster:add")
+    @RequiresPermissions("human:shiftMode:add")
     @Log(title = "排班记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ArrangeClassMaster arrangeClassMaster)
@@ -77,7 +77,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 修改排班记录
      */
-    @RequiresPermissions("human:arrangeClassMaster:edit")
+    @RequiresPermissions("human:shiftMode:edit")
     @Log(title = "排班记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ArrangeClassMaster arrangeClassMaster)
@@ -88,7 +88,7 @@ public class ArrangeClassMasterController extends BaseController
     /**
      * 删除排班记录
      */
-    @RequiresPermissions("human:arrangeClassMaster:remove")
+    @RequiresPermissions("human:shiftMode:remove")
     @Log(title = "排班记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

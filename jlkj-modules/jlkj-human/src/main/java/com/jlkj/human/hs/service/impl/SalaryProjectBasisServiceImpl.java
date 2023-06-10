@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasisMapper, SalaryProjectBasis>
-    implements ISalaryProjectBasisService
-            {
+        implements ISalaryProjectBasisService
+{
     @Autowired
     private SalaryProjectBasisMapper salaryProjectBasisMapper;
 
@@ -143,7 +143,7 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     @Override
     public Object insertSalaryProjectBasis(List<SalaryProjectBasis> salaryProjectBasisList)
     {
-       return saveOrUpdateBatch(salaryProjectBasisList);
+        return saveOrUpdateBatch(salaryProjectBasisList);
     }
 
     /**
@@ -190,14 +190,14 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     }
 
     /**
-    * 通过父节点id查询员工薪资基本资料维护
-    *
-    * @param parentid 员工薪资基本资料维护编码
-    * @return 员工薪资基本资料维护
-    */
+     * 通过父节点id查询员工薪资基本资料维护
+     *
+     * @param parentid 员工薪资基本资料维护编码
+     * @return 员工薪资基本资料维护
+     */
     @Override
     public List<BasisOptionsDTO> selectSalaryProjectBasisByParentid(Long  parentid){
-         return salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(parentid);
+        return salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(parentid);
     }
 
     /**

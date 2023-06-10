@@ -229,6 +229,7 @@ import selectOrgPerson from "@/views/components/human/selectUser/selectOrgPerson
 import quarter from "@/views/components/human/quarter/quarter";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {getToken} from "@/utils/auth";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceSummaryTable",

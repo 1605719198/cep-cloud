@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.ImportNoteMapper">
+    
+    <resultMap type="ImportNote" id="ImportNoteResult">
+        <result property="id"    column="id"    />
+        <result property="status"    column="status"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="month"    column="month"    />
+        <result property="mark"    column="mark"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectImportNoteVo">
+        select id, status, pay_type, comp_id, month, mark, creator, creator_id, creator_no, create_date from human_hs_salary_note
+    </sql>
+
+    <select id="selectImportNote" parameterType="ImportNote" resultMap="ImportNoteResult">
+        <include refid="selectImportNoteVo"/>
+        <where>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+    
+    <select id="selectImportNoteById" parameterType="String" resultMap="ImportNoteResult">
+        <include refid="selectImportNoteVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="queryImportNote" parameterType="ImportNote" resultMap="ImportNoteResult">
+        <include refid="selectImportNoteVo"/>
+        <where>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+        
+    <insert id="insertImportNote" parameterType="ImportNote">
+        insert into human_hs_salary_note
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="status != null">status,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="month != null">month,</if>
+            <if test="mark != null">mark,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="status != null">#{status},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="month != null">#{month},</if>
+            <if test="mark != null">#{mark},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateImportNote" parameterType="ImportNote">
+        update human_hs_salary_note
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{status},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="mark != null">mark = #{mark},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteImportNoteById" parameterType="String">
+        delete from human_hs_salary_note where id = #{id}
+    </delete>
+
+    <delete id="deleteImportNoteByIds" parameterType="String">
+        delete from human_hs_salary_note where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

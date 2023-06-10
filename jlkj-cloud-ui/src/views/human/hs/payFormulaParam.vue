@@ -62,7 +62,6 @@
         <template slot-scope="scope">
           <dict-tag-human-base :options="salaryOptions.SalaryFormulaParamType" :value="scope.row.paramTypeId"/>
         </template>
-<!--        {{scope.row.paramTypeId}}-->
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">

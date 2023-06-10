@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SocialSecurityBasisDetailMapper">
+    
+    <resultMap type="SocialSecurityBasisDetail" id="SocialSecurityBasisDetailResult">
+        <result property="id"    column="id"    />
+        <result property="socialSecurityId"    column="social_security_id"    />
+        <result property="payProId"    column="pay_pro_id"    />
+        <result property="payProName"    column="pay_pro_name"    />
+        <result property="payProCode"    column="pay_pro_code"    />
+        <result property="twoTitle"    column="two_title"    />
+        <result property="thrIsLov"    column="thr_is_lov"    />
+        <result property="thrSta"    column="thr_sta"    />
+        <result property="thrIdSta"    column="thr_id_sta"    />
+        <result property="fourTitle"    column="four_title"    />
+        <result property="fivIsLov"    column="fiv_is_lov"    />
+        <result property="fivSta"    column="fiv_sta"    />
+        <result property="fivIdSta"    column="fiv_id_sta"    />
+        <result property="sixTitle"    column="six_title"    />
+        <result property="sevIsLov"    column="sev_is_lov"    />
+        <result property="sevSta"    column="sev_sta"    />
+        <result property="sevIdSta"    column="sev_id_sta"    />
+        <result property="eigTitle"    column="eig_title"    />
+        <result property="ninIsLov"    column="nin_is_lov"    />
+        <result property="ninSta"    column="nin_sta"    />
+        <result property="ninIdSta"    column="nin_id_sta"    />
+        <result property="tenTitle"    column="ten_title"    />
+        <result property="eleIsLov"    column="ele_is_lov"    />
+        <result property="eleSta"    column="ele_sta"    />
+        <result property="eleIdSta"    column="ele_id_sta"    />
+        <result property="serialNo"    column="serial_no"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSocialSecurityBasisDetailVo">
+        select id, social_security_id, pay_pro_id, pay_pro_name, pay_pro_code, two_title, thr_is_lov, thr_sta, thr_id_sta, four_title, fiv_is_lov, fiv_sta, fiv_id_sta, six_title, sev_is_lov, sev_sta, sev_id_sta, eig_title, nin_is_lov, nin_sta, nin_id_sta, ten_title, ele_is_lov, ele_sta, ele_id_sta, serial_no, creator, creator_id, creator_no, create_date from human_hs_social_security_basis_detail
+    </sql>
+
+    <select id="selectSocialSecurityBasisDetailList" parameterType="SocialSecurityBasisDetail" resultMap="SocialSecurityBasisDetailResult">
+        <include refid="selectSocialSecurityBasisDetailVo"/>
+        <where>  
+            <if test="socialSecurityId != null  and socialSecurityId != ''"> and social_security_id = #{socialSecurityId}</if>
+            <if test="payProId != null  and payProId != ''"> and pay_pro_id = #{payProId}</if>
+            <if test="payProName != null  and payProName != ''"> and pay_pro_name like concat('%', #{payProName}, '%')</if>
+            <if test="payProCode != null  and payProCode != ''"> and pay_pro_code = #{payProCode}</if>
+            <if test="twoTitle != null  and twoTitle != ''"> and two_title = #{twoTitle}</if>
+            <if test="thrIsLov != null  and thrIsLov != ''"> and thr_is_lov = #{thrIsLov}</if>
+            <if test="thrSta != null  and thrSta != ''"> and thr_sta = #{thrSta}</if>
+            <if test="thrIdSta != null  and thrIdSta != ''"> and thr_id_sta = #{thrIdSta}</if>
+            <if test="fourTitle != null  and fourTitle != ''"> and four_title = #{fourTitle}</if>
+            <if test="fivIsLov != null  and fivIsLov != ''"> and fiv_is_lov = #{fivIsLov}</if>
+            <if test="fivSta != null  and fivSta != ''"> and fiv_sta = #{fivSta}</if>
+            <if test="fivIdSta != null  and fivIdSta != ''"> and fiv_id_sta = #{fivIdSta}</if>
+            <if test="sixTitle != null  and sixTitle != ''"> and six_title = #{sixTitle}</if>
+            <if test="sevIsLov != null  and sevIsLov != ''"> and sev_is_lov = #{sevIsLov}</if>
+            <if test="sevSta != null  and sevSta != ''"> and sev_sta = #{sevSta}</if>
+            <if test="sevIdSta != null  and sevIdSta != ''"> and sev_id_sta = #{sevIdSta}</if>
+            <if test="eigTitle != null  and eigTitle != ''"> and eig_title = #{eigTitle}</if>
+            <if test="ninIsLov != null  and ninIsLov != ''"> and nin_is_lov = #{ninIsLov}</if>
+            <if test="ninSta != null  and ninSta != ''"> and nin_sta = #{ninSta}</if>
+            <if test="ninIdSta != null  and ninIdSta != ''"> and nin_id_sta = #{ninIdSta}</if>
+            <if test="tenTitle != null  and tenTitle != ''"> and ten_title = #{tenTitle}</if>
+            <if test="eleIsLov != null  and eleIsLov != ''"> and ele_is_lov = #{eleIsLov}</if>
+            <if test="eleSta != null  and eleSta != ''"> and ele_sta = #{eleSta}</if>
+            <if test="eleIdSta != null  and eleIdSta != ''"> and ele_id_sta = #{eleIdSta}</if>
+            <if test="serialNo != null  and serialNo != ''"> and serial_no = #{serialNo}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="creatorNo != null  and creatorNo != ''"> and creator_no = #{creatorNo}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectSocialSecurityBasisDetailById" parameterType="String" resultMap="SocialSecurityBasisDetailResult">
+        <include refid="selectSocialSecurityBasisDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSocialSecurityBasisDetail" parameterType="SocialSecurityBasisDetail">
+        insert into human_hs_social_security_basis_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="socialSecurityId != null">social_security_id,</if>
+            <if test="payProId != null">pay_pro_id,</if>
+            <if test="payProName != null">pay_pro_name,</if>
+            <if test="payProCode != null">pay_pro_code,</if>
+            <if test="twoTitle != null">two_title,</if>
+            <if test="thrIsLov != null">thr_is_lov,</if>
+            <if test="thrSta != null">thr_sta,</if>
+            <if test="thrIdSta != null">thr_id_sta,</if>
+            <if test="fourTitle != null">four_title,</if>
+            <if test="fivIsLov != null">fiv_is_lov,</if>
+            <if test="fivSta != null">fiv_sta,</if>
+            <if test="fivIdSta != null">fiv_id_sta,</if>
+            <if test="sixTitle != null">six_title,</if>
+            <if test="sevIsLov != null">sev_is_lov,</if>
+            <if test="sevSta != null">sev_sta,</if>
+            <if test="sevIdSta != null">sev_id_sta,</if>
+            <if test="eigTitle != null">eig_title,</if>
+            <if test="ninIsLov != null">nin_is_lov,</if>
+            <if test="ninSta != null">nin_sta,</if>
+            <if test="ninIdSta != null">nin_id_sta,</if>
+            <if test="tenTitle != null">ten_title,</if>
+            <if test="eleIsLov != null">ele_is_lov,</if>
+            <if test="eleSta != null">ele_sta,</if>
+            <if test="eleIdSta != null">ele_id_sta,</if>
+            <if test="serialNo != null">serial_no,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="socialSecurityId != null">#{socialSecurityId},</if>
+            <if test="payProId != null">#{payProId},</if>
+            <if test="payProName != null">#{payProName},</if>
+            <if test="payProCode != null">#{payProCode},</if>
+            <if test="twoTitle != null">#{twoTitle},</if>
+            <if test="thrIsLov != null">#{thrIsLov},</if>
+            <if test="thrSta != null">#{thrSta},</if>
+            <if test="thrIdSta != null">#{thrIdSta},</if>
+            <if test="fourTitle != null">#{fourTitle},</if>
+            <if test="fivIsLov != null">#{fivIsLov},</if>
+            <if test="fivSta != null">#{fivSta},</if>
+            <if test="fivIdSta != null">#{fivIdSta},</if>
+            <if test="sixTitle != null">#{sixTitle},</if>
+            <if test="sevIsLov != null">#{sevIsLov},</if>
+            <if test="sevSta != null">#{sevSta},</if>
+            <if test="sevIdSta != null">#{sevIdSta},</if>
+            <if test="eigTitle != null">#{eigTitle},</if>
+            <if test="ninIsLov != null">#{ninIsLov},</if>
+            <if test="ninSta != null">#{ninSta},</if>
+            <if test="ninIdSta != null">#{ninIdSta},</if>
+            <if test="tenTitle != null">#{tenTitle},</if>
+            <if test="eleIsLov != null">#{eleIsLov},</if>
+            <if test="eleSta != null">#{eleSta},</if>
+            <if test="eleIdSta != null">#{eleIdSta},</if>
+            <if test="serialNo != null">#{serialNo},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSocialSecurityBasisDetail" parameterType="SocialSecurityBasisDetail">
+        update human_hs_social_security_basis_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="socialSecurityId != null">social_security_id = #{socialSecurityId},</if>
+            <if test="payProId != null">pay_pro_id = #{payProId},</if>
+            <if test="payProName != null">pay_pro_name = #{payProName},</if>
+            <if test="payProCode != null">pay_pro_code = #{payProCode},</if>
+            <if test="twoTitle != null">two_title = #{twoTitle},</if>
+            <if test="thrIsLov != null">thr_is_lov = #{thrIsLov},</if>
+            <if test="thrSta != null">thr_sta = #{thrSta},</if>
+            <if test="thrIdSta != null">thr_id_sta = #{thrIdSta},</if>
+            <if test="fourTitle != null">four_title = #{fourTitle},</if>
+            <if test="fivIsLov != null">fiv_is_lov = #{fivIsLov},</if>
+            <if test="fivSta != null">fiv_sta = #{fivSta},</if>
+            <if test="fivIdSta != null">fiv_id_sta = #{fivIdSta},</if>
+            <if test="sixTitle != null">six_title = #{sixTitle},</if>
+            <if test="sevIsLov != null">sev_is_lov = #{sevIsLov},</if>
+            <if test="sevSta != null">sev_sta = #{sevSta},</if>
+            <if test="sevIdSta != null">sev_id_sta = #{sevIdSta},</if>
+            <if test="eigTitle != null">eig_title = #{eigTitle},</if>
+            <if test="ninIsLov != null">nin_is_lov = #{ninIsLov},</if>
+            <if test="ninSta != null">nin_sta = #{ninSta},</if>
+            <if test="ninIdSta != null">nin_id_sta = #{ninIdSta},</if>
+            <if test="tenTitle != null">ten_title = #{tenTitle},</if>
+            <if test="eleIsLov != null">ele_is_lov = #{eleIsLov},</if>
+            <if test="eleSta != null">ele_sta = #{eleSta},</if>
+            <if test="eleIdSta != null">ele_id_sta = #{eleIdSta},</if>
+            <if test="serialNo != null">serial_no = #{serialNo},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSocialSecurityBasisDetailById" parameterType="String">
+        delete from human_hs_social_security_basis_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteSocialSecurityBasisDetailByMain" parameterType="String">
+        delete from human_hs_social_security_basis_detail where social_security_id = #{socialSecurityId}
+    </delete>
+
+    <delete id="deleteSocialSecurityBasisDetailByIds" parameterType="String">
+        delete from human_hs_social_security_basis_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

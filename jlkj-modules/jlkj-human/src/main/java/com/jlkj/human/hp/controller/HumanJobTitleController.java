@@ -1,6 +1,5 @@
 package com.jlkj.human.hp.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hp.service.HumanJobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -48,19 +46,6 @@ public class HumanJobTitleController extends BaseController
     {
         List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleidname(compId);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出职位名称数据维护列表
-     */
-    @RequiresPermissions("human:jobTitle:export")
-    @Log(title = "职位名称数据维护", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, HumanJobTitle humanJobTitle)
-    {
-        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleList(humanJobTitle);
-        ExcelUtil<HumanJobTitle> util = new ExcelUtil<HumanJobTitle>(HumanJobTitle.class);
-        util.exportExcel(response, list, "职位名称数据维护数据");
     }
 
     /**

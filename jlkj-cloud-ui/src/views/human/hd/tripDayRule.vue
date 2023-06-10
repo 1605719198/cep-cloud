@@ -345,7 +345,16 @@ export default {
       rules: {
         compId: [
           { required: true, message: '公司别不能为空', trigger: 'blur' }
-        ]
+        ],
+        lodgAllow: [
+          {max:22, message: '住宿费长度不能超过22', trigger: 'blur' }
+        ],
+        trafficAllow: [
+          {max:22, message: '交通费长度不能超过22', trigger: 'blur' }
+        ],
+        foodAllow: [
+          {max:22, message: '伙食费长度不能超过22', trigger: 'blur' }
+        ],
       }
     }
   },
@@ -490,7 +499,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认删除出差日标准维护编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delTripDayRule(ids)
       }).then(() => {
         this.getList()

@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { listNightDuty } from "@/api/human/hd/nightDuty";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {validateNumber} from "@/utils/jlkj";

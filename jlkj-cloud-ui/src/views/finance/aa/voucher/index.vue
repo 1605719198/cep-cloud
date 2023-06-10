@@ -272,13 +272,14 @@
 import {
   listVoucher, getVoucher, delVoucher,
   addVoucher, updateVoucher, listHeadVoucher, listFrontVoucher, listOrderVoucher,
-  updateVoucherStatus,updateVoucherCross,addHongChongVoucher} from "@/api/finance/aa/voucher";
+  updateVoucherStatus,updateVoucherCross,addHongChongVoucher,listFrontVoucherHead,listLastVoucher} from "@/api/finance/aa/voucher";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import {listDetail} from "@/api/finance/aa/voucherdetail";
 import selectVoucher from "@/views/finance/aa/voucher/selectVoucher";
 import calTypePOP from "@/views/components/finance/calTypePOP";
 import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
+
 export default {
   name: "Voucher",
   components: {
@@ -423,6 +424,7 @@ export default {
     },
     getAcctCodeCorpPop(val){
       this.formDetail.detailList[this.indexRow-1].acctCode=val[0].acctCode
+      this.formDetail.detailList[this.indexRow-1].groupAcctId=val[0].groupAcctId
       this.formDetail.detailList[this.indexRow-1].acctName=val[0].acctName
       this.formDetail.detailList[this.indexRow-1].acctId=val[0].acctId
       this.form.isFrnCrcy=val[0].isFrnCrcy
@@ -434,7 +436,6 @@ export default {
       this.formDetail.detailList[this.indexRow-1].calNameb=""
       this.formDetail.detailList[this.indexRow-1].calNamec=""
       this.formDetail.detailList[this.indexRow-1].calNamed=""
-      console.log(this.formDetail.detailList[this.indexRow - 1].calNamea);
     },
 
     getVoucherNo(val) {
@@ -667,37 +668,102 @@ export default {
     },
     /** 首笔按钮操作 */
     headFirstQuery() {
-      listDetail(this.queryParams).then(response => {
-         this.formDetail.detailList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-        let list =  this.formDetail.detailList[0]
-         this.formDetail.detailList = []
-         this.formDetail.detailList.push(list)
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
+          listFrontVoucherHead(this.queryParams).then(response => {
+            this.form = response.data;
+            if(this.form.voucherNo !=null){
+              this.form.voucherType =this.form.voucherNo.substring(0,1)
+            }
+            if (this.form.voucherNo != null) {
+              this.queryParams.voucherDate = this.form.voucherDate
+              this.queryParams.voucherNo = this.form.voucherNo
+              this.queryParams.companyId = this.form.companyId
+              this.getListDetailList()
+            }else {
+              this.getList()
+              this.$message.error('已经是第一笔数据！');
+              return
+            }
+            this.loading = false;
+          });
+        }
       });
     },
     /** 前笔按钮操作 */
     headFrontQuery: function () {
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
       listFrontVoucher(this.queryParams).then(response => {
         this.form = response.data;
         if(this.form.voucherNo !=null){
           this.form.voucherType =this.form.voucherNo.substring(0,1)
         }
         if (this.form.voucherNo != null) {
+          this.queryParams.voucherDate = this.form.voucherDate
           this.queryParams.voucherNo = this.form.voucherNo
           this.queryParams.companyId = this.form.companyId
           this.getListDetailList()
         }else {
-          this.queryParams.voucherNo=''
-          this.queryParams.companyId=''
-          this.getListDetailList()
+          this.getList()
+          this.$message.error('已经是第一笔数据！');
+          return
         }
         this.loading = false;
+      });
+        }
       });
     },
     /** 次笔按钮操作 */
     headOrderQuery() {
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
       listOrderVoucher(this.queryParams).then(response => {
+        this.form = response.data;
+        if(this.form.voucherNo !=null){
+          this.form.voucherType =this.form.voucherNo.substring(0,1)
+        }
+        if (this.form.voucherNo != null) {
+          this.queryParams.voucherDate = this.form.voucherDate
+          this.queryParams.voucherNo = this.form.voucherNo
+          this.queryParams.companyId = this.form.companyId
+          this.getListDetailList()
+        }else {
+          this.getList()
+          this.$message.error('已经是最后一笔数据！');
+          return
+        }
+        this.loading = false;
+      });
+        }
+      });
+    },
+    /** 末笔按钮操作 */
+    headLastQuery() {
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+
+          if (this.queryParams.startDate!=null || this.queryParams.endDate!=null ){
+            this.queryParams.voucherDate = null
+          }else {
+            this.queryParams.voucherDate =this.form.voucherDate
+          }
+      listLastVoucher(this.queryParams).then(response => {
         this.form = response.data;
         if(this.form.voucherNo !=null){
           this.form.voucherType =this.form.voucherNo.substring(0,1)
@@ -707,29 +773,14 @@ export default {
           this.queryParams.companyId = this.form.companyId
           this.getListDetailList()
         }else {
-          this.queryParams.voucherNo=''
-          this.queryParams.companyId=''
-          this.getListDetailList()
+          this.getList()
+          this.$message.error('已经是最后一笔数据！');
+          return
         }
-
         this.loading = false;
       });
-      this.getListDetailList()
-    },
-    /** 末笔按钮操作 */
-    headLastQuery() {
-      let list;
-      listDetail(this.queryParams).then(response => {
-         this.formDetail.detailList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-        for (let i = 0; i <  this.formDetail.detailList.length; i++) {
-          list =  this.formDetail.detailList[i]
         }
-         this.formDetail.detailList = []
-         this.formDetail.detailList.push(list)
       });
-
     },
     handleCreateBlankQuery(){
       this.reset()
@@ -983,12 +1034,14 @@ export default {
         this.form.isInspect = 'Y'
         this.form.detailList =  this.formDetail.detailList;
         addHongChongVoucher(this.form).then(response => {
-          if (!!response.msg){
-            this.$message.error(response.msg);
+          if (!!response.data[0].msg){
+            this.$message.error(response.data[0].msg);
             return
           }
+
           this.$modal.msgSuccess("红冲成功");
           this.open = false;
+          this.queryParams.voucherNo=response.data[0].voucherNo
           this.getList();
           this.getListDetailList()
         });
@@ -1005,10 +1058,11 @@ export default {
         this.form.companyId=this.queryParams.companyId
         this.form.detailList =  this.formDetail.detailList;
         addVoucher(this.form).then(response => {
-          if (!!response.msg){
-            this.$message.error(response.msg);
+          if (!!response.data[0].msg){
+            this.$message.error(response.data[0].msg);
             return
           }
+          this.queryParams.voucherNo=response.data[0].voucherNo
           this.$modal.msgSuccess("复制成功");
           this.open = false;
           this.getList();
@@ -1049,19 +1103,27 @@ export default {
               this.form.detailList =  this.formDetail.detailList;
               if (this.form.id != null) {
                 updateVoucher(this.form).then(response => {
+                  if (!!response.data[0].msg){
+                    this.$message.error(response.data[0].msg);
+                    return
+                  }
                   this.$modal.msgSuccess("修改成功");
                   this.open = false;
+                  this.queryParams.companyId = this.form.companyId
+                  this.queryParams.voucherDate= this.form.voucherDate
+                  this.queryParams.voucherNo=response.data[0].voucherNo
                   this.getList();
                   this.getListDetailList()
                 });
               } else {
                 addVoucher(this.form).then(response => {
-                  if (!!response.msg){
-                    this.$message.error(response.msg);
+                  if (!!response.data[0].msg){
+                    this.$message.error(response.data[0].msg);
                     return
                   }
                   this.$modal.msgSuccess("新增成功");
                   this.open = false;
+                  this.queryParams.voucherNo=response.data[0].voucherNo
                   this.getList();
                   this.getListDetailList()
                 });

@@ -155,4 +155,20 @@ public class BaseInfoController extends BaseController {
             return AjaxResult.error();
         }
     }
+
+    /**
+     * 获取各公司主管查询下属薪资授权设定岗位类别下拉选单
+     */
+    @Log(title = "获取各公司主管查询下属薪资授权设定岗位类别下拉选单",businessType = BusinessType.OTHER)
+    @Operation(summary = "获取各公司主管查询下属薪资授权设定岗位类别下拉选单")
+    @GetMapping("/getPostTypeId")
+    public Object getPostTypeId() {
+        try {
+            List<Baseinfo> list = baseinfoService.lambdaQuery()
+                    .eq(Baseinfo::getParentId, "1635868462557556737").list();
+            return AjaxResult.success("查询成功！", list);
+        } catch (Exception e) {
+            return AjaxResult.error();
+        }
+    }
 }

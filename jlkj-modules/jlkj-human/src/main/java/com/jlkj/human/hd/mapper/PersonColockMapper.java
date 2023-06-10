@@ -37,6 +37,14 @@ public interface PersonColockMapper
     public List<PersonColock> selectPersonColockList(PersonColock personColock);
 
     /**
+     * 查询某人员未生效卡钟
+     *
+     * @param personColock 人员卡钟
+     * @return 人员卡钟集合
+     */
+    public PersonColock queryNoEffectData(PersonColock personColock);
+
+    /**
      * 新增人员卡钟
      *
      * @param personColock 人员卡钟

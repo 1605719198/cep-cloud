@@ -62,7 +62,8 @@ public interface TravelApplicationMapper
     public int deleteTravelApplicationByIds(String[] ids);
 
     /**
-     *
+     * 查询历史出差记录
+     *@param id 工号
      * @param empNo 工号
      * @param startDate  出差开始日期
      * @param endDate   出差结束日期

@@ -1,26 +1,23 @@
 <template>
-  <el-dialog title="选择一级机构" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
-    <el-form :model="queryParams" ref="queryForm" :inline="true">
-      <el-form-item>
-<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
-<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
-      </el-form-item>
-    </el-form>
+  <el-dialog title="选择公司卡钟" :visible.sync="visible" width="1280px" top="5vh" append-to-body class="customDialogStyle">
+<!--    <el-form :model="queryParams" ref="queryForm" :inline="true">-->
+<!--      <el-form-item>-->
+<!--                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
     <el-row>
-      <el-table @row-click="clickRow" ref="table" :data="deptList" @selection-change="handleSelectionChange"
+      <el-table @row-click="clickRow" ref="table" :data="clockList" @selection-change="handleSelectionChange"
                 height="360px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="部门id" prop="deptId" :show-overflow-tooltip="true"/>
-        <el-table-column label="部门编码" prop="deptCode" :show-overflow-tooltip="true"/>
-        <el-table-column label="部门名称" prop="deptName" :show-overflow-tooltip="true"/>
-        <el-table-column label="状态" align="center" prop="status">
+        <el-table-column label="刷卡钟编码" align="center" prop="code" width="120" sortable/>
+        <el-table-column label="刷卡钟名称" align="center" prop="name" width="180" sortable/>
+        <el-table-column label="一级机构" align="center" prop="firstDeptName" show-overflow-tooltip width="300" sortable/>
+        <el-table-column label="备注" align="center" prop="note" show-overflow-tooltip sortable/>
+        <el-table-column label="输入人" align="center" prop="creator" width="120" sortable/>
+        <el-table-column label="输入日期" align="center" prop="createDate" width="180" sortable>
           <template v-slot="scope">
-            <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-          <template v-slot="scope">
-            <span>{{ parseTime(scope.row.createTime) }}</span>
+            <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -40,8 +37,8 @@
 </template>
 
 <script>
-import { listDeptmaintenance} from "@/api/human/hp/deptMaintenance";
-
+import '@/assets/styles/humanStyles.scss';
+import { listClockwork } from "@/api/human/hd/clockwork";
 export default {
   dicts: ['sys_normal_disable'],
   data() {
@@ -55,7 +52,7 @@ export default {
       // 总条数
       total: 0,
       // 一级部门
-      deptList: [],
+      clockList: [],
       // 部门树选项
       deptOptionsa: undefined,
       // 查询参数
@@ -63,8 +60,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId:null,
-        orgTierId:'01',
-        status:'0',
       }
     };
   },
@@ -88,8 +83,8 @@ export default {
     },
     // 查询表数据
     getList() {
-      listDeptmaintenance(this.queryParams).then(res => {
-        this.deptList = res.rows;
+      listClockwork(this.queryParams).then(res => {
+        this.clockList = res.rows;
         this.total = res.total;
       });
     },
@@ -103,7 +98,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    /** 选择授权用户操作 */
+    /** 选择卡钟操作 */
     handleSelectUser() {
       if (this.userIds.length === 0) {
         this.$modal.msgError("请选择要分配的用户");

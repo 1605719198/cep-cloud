@@ -31,7 +31,7 @@ public class ShiftClassController extends BaseController
     /**
      * 查询班别数据列表
      */
-    @RequiresPermissions("human:shiftClass:list")
+    @RequiresPermissions("human:shiftMode:list")
     @GetMapping("/list")
     public TableDataInfo list(ShiftClass shiftClass)
     {
@@ -43,7 +43,7 @@ public class ShiftClassController extends BaseController
     /**
      * 导出班别数据列表
      */
-    @RequiresPermissions("human:shiftClass:export")
+    @RequiresPermissions("human:shiftMode:export")
     @Log(title = "班别数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ShiftClass shiftClass)
@@ -56,7 +56,7 @@ public class ShiftClassController extends BaseController
     /**
      * 获取班别数据详细信息
      */
-    @RequiresPermissions("human:shiftClass:query")
+    @RequiresPermissions("human:shiftMode:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -66,7 +66,7 @@ public class ShiftClassController extends BaseController
     /**
      * 新增班别数据
      */
-    @RequiresPermissions("human:shiftClass:add")
+    @RequiresPermissions("human:shiftMode:add")
     @Log(title = "班别数据", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ShiftClass shiftClass)
@@ -77,7 +77,7 @@ public class ShiftClassController extends BaseController
     /**
      * 修改班别数据
      */
-    @RequiresPermissions("human:shiftClass:edit")
+    @RequiresPermissions("human:shiftMode:edit")
     @Log(title = "班别数据", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ShiftClass shiftClass)
@@ -88,7 +88,7 @@ public class ShiftClassController extends BaseController
     /**
      * 删除班别数据
      */
-    @RequiresPermissions("human:shiftClass:remove")
+    @RequiresPermissions("human:shiftMode:remove")
     @Log(title = "班别数据", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

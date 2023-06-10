@@ -74,6 +74,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import { listAttendenceRecord } from "@/api/human/hd/attendenceRecord";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {validateNumber} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendenceRecord",

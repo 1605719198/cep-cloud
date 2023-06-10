@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @Data
-public class OptinonTypeDTO {
+public class OptionTypeDTO {
     /**
      * uuid 主键ID
      */

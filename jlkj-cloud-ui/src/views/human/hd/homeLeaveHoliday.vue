@@ -52,7 +52,8 @@
       <el-table-column label="已休次数" align="center" prop="restHomeNums" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.year === '2023'"
+          <el-button
+            v-if="scope.row.year == nowtime"
                      size="mini"
                      type="text"
                      icon="el-icon-edit"
@@ -214,8 +215,9 @@ export default {
   components:{selectUser},
   data() {
     return {
+      nowtime:'',
       //年度
-      year:2023,
+      year:null,
       //用户公司别
       userCompId: this.$store.state.user.userInfo.compId,
       //公司列表
@@ -277,6 +279,7 @@ export default {
   },
   created() {
     this.getCompanyList();
+    this.yeared()
   },
   methods: {
     /** 查询公司列表 */
@@ -294,6 +297,13 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    //获取当前年
+    yeared(){
+      var years = new Date().getFullYear()
+      this.nowtime = years
+      console.log(years)
+      console.log(this.nowtime)
     },
     // 取消按钮
     cancel() {

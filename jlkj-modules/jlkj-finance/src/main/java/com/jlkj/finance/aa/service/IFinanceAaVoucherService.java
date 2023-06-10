@@ -4,6 +4,7 @@ import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 凭证维护-主Service接口
@@ -66,6 +67,13 @@ public interface IFinanceAaVoucherService
      */
     public FinanceAaVoucher selectFinanceAaVoucherLast(FinanceAaVoucher financeAaVoucher);
     /**
+     * 首笔笔查询凭证维护-主列表
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 凭证维护-主集合
+     */
+    public FinanceAaVoucher selectFinanceAaVoucherHead(FinanceAaVoucher financeAaVoucher);
+    /**
      * 次笔查询凭证维护-主列表
      *
      * @param financeAaVoucher 凭证维护-主
@@ -87,13 +95,21 @@ public interface IFinanceAaVoucherService
      * @return 结果
      */
     public String insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
+
+    /**
+     * 新增凭证维护-主
+     *
+     * @param financeAaVoucher 凭证维护-主
+     * @return 结果
+     */
+    public List<Map<String,String>> insertFinanceAaVoucherSubmitForm(FinanceAaVoucher financeAaVoucher);
     /**
      * 红冲凭证维护-主
      *
      * @param financeAaVoucher 凭证维护-主
      * @return 结果
      */
-    public String insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher);
+    public List<Map<String,String>> insertFinanceAaVoucherHongChong(FinanceAaVoucher financeAaVoucher);
 
     /**
      * 修改凭证维护-主
@@ -101,7 +117,7 @@ public interface IFinanceAaVoucherService
      * @param financeAaVoucher 凭证维护-主
      * @return 结果
      */
-    public int updateFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
+    public List<Map<String,String>> updateFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
 
     /**
      * 确认和取消确认凭证维护-主

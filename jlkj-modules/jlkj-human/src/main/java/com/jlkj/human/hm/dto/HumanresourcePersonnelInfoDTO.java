@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -666,6 +667,9 @@ public class HumanresourcePersonnelInfoDTO implements Serializable {
      * 签章图片
      */
     private String signature;
+
+    @NotNull(message = "关键词为必需")
+    private String keywords;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

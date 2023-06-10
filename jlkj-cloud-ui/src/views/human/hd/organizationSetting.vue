@@ -253,27 +253,8 @@
         <el-form-item label="备注：" prop="description"   >
           {{formHistory.description}}
         </el-form-item>
-
-
-        <!--        <el-form-item label="公司别" prop="compId">-->
-        <!--          <el-input  type="number" v-model="form.compId" placeholder="请输入公司别" />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="公司名" prop="compName">-->
-        <!--          <el-input  type="number" v-model="form.compName" placeholder="请输入公司名" />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="组织机构" prop="organizationId">-->
-        <!--          <el-input  type="number" v-model="form.organizationId" placeholder="请输入组织机构" />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="组织机构名" prop="organizationName">-->
-        <!--          <el-input  type="number" v-model="form.organizationName" placeholder="请输入组织机构名" />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="输入人id" prop="creatorId">-->
-        <!--          <el-input  type="number" v-model="form.creatorId" placeholder="请输入输入人id" />-->
-        <!--        </el-form-item>-->
-
       </el-form>
       <div slot="footer" class="dialog-footer">
-<!--        <el-button type="primary" @click="submitForm">确 定</el-button>-->
         <el-button @click="cancel">确认</el-button>
       </div>
     </el-dialog>
@@ -328,39 +309,48 @@ export default {
       form: {
 
       },
-      //最新表单数据
-      lastform:{
-
-      },
-      //历史版本表单
-      oldform:{
-
-      },
       //修改前生效日期
       oldeffectDate:null,
       // 表单校验
       rules: {
         onDutyTime: [
-          { required: true, message: "上班打卡有效时间不能为空", trigger: "blur" }
+          { required: true, message: "上班打卡有效时间不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         offDutyTime: [
-          { required: true, message: "下班打卡有效时间不能为空", trigger: "blur" }
+          { required: true, message: "下班打卡有效时间不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         lateTime: [
-          { required: true, message: "迟到时间不能为空", trigger: "blur" }
+          { required: true, message: "迟到时间不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         leaTime: [
-          { required: true, message: "早退时间不能为空", trigger: "blur" }
+          { required: true, message: "早退时间不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         delayTime: [
-          { required: true, message: "缓冲时间不能为空", trigger: "blur" }
+          { required: true, message: "缓冲时间不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         effectDate: [
-          { required: true, message: "生效日期不能为空", trigger: "blur" }
+          { required: true, message: "生效日期不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         beforeCheckDays: [
-          { required: true, message: "往前审核天数不能为空", trigger: "blur" }
+          { required: true, message: "往前审核天数不能为空", trigger: "blur" },
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
+        offDutyAm: [
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        onDutyPm: [
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+        spaceTime: [
+          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+        ],
+
       }
     };
   },

@@ -51,3 +51,26 @@ export function delProjectPay(id) {
     method: 'delete'
   })
 }
+
+// 状态修改
+export function changeStatus(id, parentid,status) {
+  const data = {
+    id,
+    parentid,
+    status
+  }
+  return request({
+    url: '/human/projectPay/changeStatus',
+    method: 'put',
+    data: data
+  })
+}
+
+// 查询各公司薪资参数设定列表
+export function getListPayFormation(data) {
+  return request({
+    url: '/human/payFormation/getListPayFormation',
+    method: 'get',
+    params: data
+  })
+}

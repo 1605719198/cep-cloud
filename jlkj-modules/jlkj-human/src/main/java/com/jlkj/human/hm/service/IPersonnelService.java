@@ -36,8 +36,16 @@ public interface IPersonnelService extends IService<Personnel> {
     /**
      * 查询机构下所有人员
      *
-     * @param deptId 人事注销信息
+     * @param deptId 部门Id
      * @return 人员信息集合
      */
     List<HumanresourcePersonnelInfoDTO> selectOrgPerson(String deptId);
+
+    /**
+     * 获取人员基本信息
+     *
+     * @param empNo 工号
+     * @return 人员信息集合
+     */
+    Object selectPersonnelInfo(String empNo);
 }

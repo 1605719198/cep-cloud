@@ -12,8 +12,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button v-hasPermi="['human:paySheetInput:add']" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button v-hasPermi="['human:paySheetInput:add']" icon="el-icon-edit" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
       </el-form-item>
     </el-form>
 
@@ -149,6 +149,7 @@ export default {
       listPaySheetInput(this.queryParams).then(response => {
         this.paySheetInputList = response.rows;
         this.total = response.total;
+        this.addLine();
         this.loading = false;
       });
     },
@@ -197,7 +198,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.paySheetInputList.length == row.index + 1) {
+      if (!row||this.paySheetInputList.length == row.index + 1) {
         const newLine = {
           uuid: null,
           creator: this.nickName,

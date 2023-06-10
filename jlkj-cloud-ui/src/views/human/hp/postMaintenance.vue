@@ -332,17 +332,6 @@ export default {
     // 筛选节点
     filterNode(value, data) {
       return true;
-      // this.collapseAll(this.deptOptions)
-    },
-    //折叠节点
-    collapseAll(data) {
-      let self = this;
-      data.forEach((el) => {
-        self.$refs.tree.store.nodesMap[el.id].expanded = false;
-        el.children && el.children.length > 0
-          ? self.collapseAll(el.children)
-          : ""; // 子级递归
-      });
     },
     // 节点单击事件
     handleNodeClick(data) {
@@ -470,6 +459,7 @@ export default {
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(this.form)
         })
+
       });
     },
     /** 作废按钮操作 */

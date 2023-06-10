@@ -56,7 +56,7 @@
           <el-table-column label="异常原因" align="center" prop="excReaId" />
           <el-table-column label="出勤证明原因" align="center" prop="proveReason" >
             <template v-slot="scope">
-              <dict-tag-human :options="baseInfoData.ProveReason" :value="scope.row.proveReason"/>
+              <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
             </template>
           </el-table-column>
           <el-table-column label="处理情况" align="center" prop="disposeId" />
@@ -79,7 +79,6 @@
 
 <script>
 import {
-  listAttendanceAbnormal,
   getAttendanceAbnormal,
   updateAttendanceAbnormal,
   recallAttendanceAbnormal,
@@ -91,6 +90,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceAbnormalQuery",
@@ -100,7 +100,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['DisposeStatus']
+        optionsType: ['DisposeStatus','ProveReason']
       },
       //出勤选单选项列表
       attendenceOptions: {},
@@ -145,11 +145,6 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'ProveReason']
-      },
     };
   },
   created() {

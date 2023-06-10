@@ -6,7 +6,6 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.PersonClassDetail;
 import com.jlkj.human.hd.dto.ChangeClassDetailDTO;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
@@ -32,7 +31,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 查询人员排班明细列表
      */
-    @RequiresPermissions("human:personClassDetail:list")
     @GetMapping("/list")
     public TableDataInfo list(PersonClassDetail personClassDetail)
     {
@@ -43,7 +41,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 导出人员排班明细列表
      */
-    @RequiresPermissions("human:personClassDetail:export")
     @Log(title = "人员排班明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, PersonClassDetail personClassDetail)
@@ -56,7 +53,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 获取人员排班明细详细信息
      */
-    @RequiresPermissions("human:personClassDetail:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -67,7 +63,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 修改人员排班明细
      */
-    @RequiresPermissions("human:personClassDetail:edit")
     @Log(title = "人员排班明细", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PersonClassDetail personClassDetail)
@@ -78,7 +73,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 删除人员排班明细
      */
-    @RequiresPermissions("human:personClassDetail:remove")
     @Log(title = "人员排班明细", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
@@ -108,7 +102,6 @@ public class PersonClassDetailController extends BaseController
     /**
      * 新增人员排班明细
      */
-    @RequiresPermissions("human:personClassDetail:add")
     @Log(title = "人员排班明细", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PersonClassDetail personClassDetail)

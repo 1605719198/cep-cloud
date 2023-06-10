@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.alibaba.nacos.common.utils.CollectionUtils;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
@@ -44,9 +44,15 @@ public class PersonColockServiceImpl implements IPersonColockService
     public PersonColock selectPersonColockById(String id)
     {
         PersonColock personColock = personColockMapper.selectPersonColockById(id);
-        FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(personColock.getEmpId());
-        personColock.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-        personColock.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        personColock.setFirstDeptId(null);
+        personColock.setFirstDeptName(null);
+        try{
+            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(personColock.getEmpId());
+            personColock.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+            personColock.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personColock;
     }
 
@@ -62,6 +68,8 @@ public class PersonColockServiceImpl implements IPersonColockService
 
         List<PersonColock> colockList = personColockMapper.selectPersonColockList(personColock);
         colockList.forEach(item->{
+            item.setFirstDeptId(null);
+            item.setFirstDeptName(null);
             try{
                 FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByPerson(item.getEmpId());
                 item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
@@ -90,26 +98,31 @@ public class PersonColockServiceImpl implements IPersonColockService
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
         if(oldList.size()==0){
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
+            PersonColock noEffectData = personColockMapper.queryNoEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
-                personColock.setId(UUID.randomUUID().toString().substring(0, 32));
-                if(personColock.getOrgColockId()!=null){
-                    type = "2";
+                if(noEffectData==null){
+                    personColock.setId(UUID.randomUUID().toString().substring(0, 32));
+                    if(personColock.getOrgColockId()!=null){
+                        type = "2";
+                    }else{
+                        type = "1";
+                    }
+                    personColock.setType(type);
+                    PersonColockDetail personColockDetail =new PersonColockDetail();
+                    ArrayList<String> arrayList  = personColock.getColockList();
+                    for (String strTemp : arrayList){
+                        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+                        personColockDetail.setPersonColockId(personColock.getId());
+                        personColockDetail.setCreator(personColock.getCreator());
+                        personColockDetail.setCreatorId(personColock.getCreatorId());
+                        personColockDetail.setCreateDate(personColock.getCreateDate());
+                        personColockDetail.setMacId(strTemp);
+                        personColockDetailService.insertPersonColockDetail(personColockDetail);
+                    }
+                    return personColockMapper.insertPersonColock(personColock);
                 }else{
-                    type = "1";
+                    throw new ServiceException("该人员已有未生效数据，无法进行新增");
                 }
-                personColock.setType(type);
-                PersonColockDetail personColockDetail =new PersonColockDetail();
-                ArrayList<String> arrayList  = personColock.getColockList();
-                for (String strTemp : arrayList){
-                    personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
-                    personColockDetail.setPersonColockId(personColock.getId());
-                    personColockDetail.setCreator(personColock.getCreator());
-                    personColockDetail.setCreatorId(personColock.getCreatorId());
-                    personColockDetail.setCreateDate(personColock.getCreateDate());
-                    personColockDetail.setMacId(strTemp);
-                    personColockDetailService.insertPersonColockDetail(personColockDetail);
-                }
-                return personColockMapper.insertPersonColock(personColock);
             }else{
                 SimpleDateFormat ymddate = new SimpleDateFormat("yyyy-MM-dd");
                 throw new Exception("该人员新的生效日期必须大于"+ymddate.format(lastEffectData.getEffectDate()));
@@ -136,7 +149,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         String deptId = personColockOrg.getDeptId();
         PersonColock personColock = new PersonColock();
         ArrayList<FirstDeptDTO> personList= sysDeptService.getPersonByDept(deptId);
-        if(CollectionUtils.isEmpty(personList)||personList.get(0)!=null){
+        if(personList.size()!=0){
             for (FirstDeptDTO strTemp : personList){
                 BeanUtils.copyProperties(personColockOrg,personColock);
                 personColock.setEmpId(strTemp.getChildPersonId());
@@ -167,7 +180,7 @@ public class PersonColockServiceImpl implements IPersonColockService
         oldPersonColock.setEmpId(personColock.getEmpId());
         oldPersonColock.setId(personColock.getId());
         List<PersonColock> oldList = personColockMapper.selectPersonColockList(oldPersonColock);
-        Boolean bool = oldList.size()==0;
+        boolean bool = oldList.size()==0;
         if(bool){
             PersonColock lastEffectData = personColockMapper.queryLastEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() >= lastEffectData.getEffectDate().getTime()){

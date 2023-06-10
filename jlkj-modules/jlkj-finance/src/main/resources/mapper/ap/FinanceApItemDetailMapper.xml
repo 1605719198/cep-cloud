@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ap.mapper.FinanceApItemDetailMapper">
+    
+    <resultMap type="FinanceApItemDetail" id="FinanceApItemDetailResult">
+        <result property="id"    column="id"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="detailNo"    column="detail_no"    />
+        <result property="detailName"    column="detail_name"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="drAcctCode"    column="dr_acct_code"    />
+        <result property="crAcctCode"    column="cr_acct_code"    />
+        <result property="budgetType"    column="budget_type"    />
+        <result property="costCode"    column="cost_code"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceApItemDetailVo">
+        select id, item_no, detail_no, detail_name, expense_type, dr_acct_code, cr_acct_code, budget_type, cost_code, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_item_detail
+    </sql>
+
+    <select id="selectFinanceApItemDetailList" parameterType="FinanceApItemDetail" resultMap="FinanceApItemDetailResult">
+        <include refid="selectFinanceApItemDetailVo"/>
+        <where>  
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+        </where>
+        order by detail_no
+    </select>
+    
+    <select id="selectFinanceApItemDetailById" parameterType="String" resultMap="FinanceApItemDetailResult">
+        <include refid="selectFinanceApItemDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceApItemDetail" parameterType="FinanceApItemDetail">
+        insert into finance_ap_item_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemNo != null">item_no,</if>
+            <if test="detailNo != null">detail_no,</if>
+            <if test="detailName != null">detail_name,</if>
+            <if test="expenseType != null">expense_type,</if>
+            <if test="drAcctCode != null">dr_acct_code,</if>
+            <if test="crAcctCode != null">cr_acct_code,</if>
+            <if test="budgetType != null">budget_type,</if>
+            <if test="costCode != null">cost_code,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="itemNo != null">#{itemNo},</if>
+            <if test="detailNo != null">#{detailNo},</if>
+            <if test="detailName != null">#{detailName},</if>
+            <if test="expenseType != null">#{expenseType},</if>
+            <if test="drAcctCode != null">#{drAcctCode},</if>
+            <if test="crAcctCode != null">#{crAcctCode},</if>
+            <if test="budgetType != null">#{budgetType},</if>
+            <if test="costCode != null">#{costCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceApItemDetail" parameterType="FinanceApItemDetail">
+        update finance_ap_item_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemNo != null">item_no = #{itemNo},</if>
+            <if test="detailNo != null">detail_no = #{detailNo},</if>
+            <if test="detailName != null">detail_name = #{detailName},</if>
+            <if test="expenseType != null">expense_type = #{expenseType},</if>
+            <if test="drAcctCode != null">dr_acct_code = #{drAcctCode},</if>
+            <if test="crAcctCode != null">cr_acct_code = #{crAcctCode},</if>
+            <if test="budgetType != null">budget_type = #{budgetType},</if>
+            <if test="costCode != null">cost_code = #{costCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceApItemDetailById" parameterType="String">
+        delete from finance_ap_item_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceApItemDetailByIds" parameterType="String">
+        delete from finance_ap_item_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSocialSecurityCompanyVo"/>
         <where>  
             <if test="payAreaId != null  and payAreaId != ''"> and pay_area_id = #{payAreaId}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
         </where>
     </select>
     

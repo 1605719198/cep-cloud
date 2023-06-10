@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.ProjectPay;
 import com.jlkj.human.hs.mapper.ProjectPayMapper;
@@ -35,6 +36,17 @@ public class ProjectPayServiceImpl implements IProjectPayService
     }
 
     /**
+     * 通过编码类型查询薪酬项目
+     *
+     * @param projectPay 薪酬项目
+     * @return 薪酬项目
+     */
+    @Override
+    public ProjectPay selectProjectPayByCode(ProjectPay projectPay){
+        return projectPayMapper.selectProjectPayByCode(projectPay);
+    }
+
+    /**
      * 查询薪酬项目列表
      *
      * @param projectPay 薪酬项目
@@ -55,16 +67,26 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int insertProjectPay(List<ProjectPay> projectPayList)
     {
+        //状态启动停用
+        String status1 = "0",status2 = "1";
         for(ProjectPay projectPay :projectPayList){
-            projectPay.setCreatorId(SecurityUtils.getUserId().toString());
-            projectPay.setCreatorNo(SecurityUtils.getUsername());
-            projectPay.setCreator(SecurityUtils.getNickName());
-            projectPay.setCreateDate(new Date());
-            if(projectPay.getId()!=null){
-                projectPayMapper.updateProjectPay(projectPay);
-
-            }else{
-                projectPayMapper.insertProjectPay(projectPay);
+            if(status1.equals(projectPay.getStatus())){
+                projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+                projectPay.setCreatorNo(SecurityUtils.getUsername());
+                projectPay.setCreator(SecurityUtils.getNickName());
+                projectPay.setCreateDate(new Date());
+                ProjectPay parent = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+                if("1".equals(parent.getIfEnd())){
+                    parent.setIfEnd("0");
+                    projectPayMapper.updateProjectPay(parent);
+                }
+                if(projectPay.getId()!=null){
+                    projectPayMapper.updateProjectPay(projectPay);
+                }else{
+                    String parents = parent.getParents()+","+parent.getId();
+                    projectPay.setParents(parents);
+                    projectPayMapper.insertProjectPay(projectPay);
+                }
             }
         }
         return 1;
@@ -79,6 +101,30 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int updateProjectPay(ProjectPay projectPay)
     {
+        //状态启动停用
+        String status1 = "0",status2 = "1";
+        ProjectPay preData = projectPayMapper.selectProjectPayById(projectPay.getId());
+        if(!projectPay.getStatus().equals(preData.getStatus())){
+            // 子节点有正常数据不能关闭BasisOptionsDTO(id=78, dicNo=null, dicName=null, status=0, compId=null)
+            if(status2.equals(projectPay.getStatus())){
+                List<ProjectPay> childData = projectPayMapper.selectProjectPayByParentid(projectPay.getId());
+                for (ProjectPay oldDatum : childData) {
+                    if (status1.equals(oldDatum.getStatus())) {
+                        throw new ServiceException("该资料下存在数据启用，不可关闭");
+                    }
+                }
+            }
+            // 当子节点启动时，父节点直接改成正常
+            if(status1.equals(projectPay.getStatus())){
+                ProjectPay parentData = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+                parentData.setStatus("0");
+                projectPayMapper.updateProjectPay(parentData);
+            }
+        }
+        projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+        projectPay.setCreatorNo(SecurityUtils.getUsername());
+        projectPay.setCreator(SecurityUtils.getNickName());
+        projectPay.setCreateDate(new Date());
         return projectPayMapper.updateProjectPay(projectPay);
     }
 

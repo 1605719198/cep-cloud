@@ -29,18 +29,25 @@
                     <el-form :inline="true">
                       <!-- 操作按钮 -->
                       <el-form-item>
-                        <el-button type="primary" size="mini" plain @click="handleSave" :disabled="multiple">保存</el-button>
-                      </el-form-item>
-                      <el-form-item>
                         <el-button
-                          type="danger"
-                          plain
-                          :disabled="multiple"
+                          type="primary"
                           size="mini"
-                          @click="cancellation"
-                        >作废
-                        </el-button>
+                          plain
+                          @click="handleSave"
+                          v-hasPermi="['human:projectPay:save']"
+                          :disabled="multiple">保存</el-button>
                       </el-form-item>
+<!--                      <el-form-item>-->
+<!--                        <el-button-->
+<!--                          type="danger"-->
+<!--                          plain-->
+<!--                          :disabled="multiple"-->
+<!--                          size="mini"-->
+<!--                          @click="handleDelete"-->
+<!--                          v-hasPermi="['human:projectPay:edit']"-->
+<!--                        >删除-->
+<!--                        </el-button>-->
+<!--                      </el-form-item>-->
                     </el-form>
                   </el-col>
                 </el-row>
@@ -49,55 +56,71 @@
                 <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex"
                           :data="tableData" @selection-change="handleSelectionChange" @row-click="addLine" stripe
                 >
-                  <el-table-column type="selection" width="45" align="center"/>
+                  <el-table-column type= "selection"  width="45" align="center" />
                   <el-table-column label="薪酬项目编码" align="center" prop="payProCode">
                     <template v-slot="scope">
-                      <el-input v-model="scope.row.payProCode" placeholder="请输入内容"></el-input>
+                      <el-input v-model="scope.row.payProCode" placeholder="请输入内容" :disabled="scope.row.status==='1'"></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column label="薪酬项目名称" align="center" prop="payProName">
                     <template v-slot="scope">
-                      <el-input v-model="scope.row.payProName" placeholder="请输入内容"></el-input>
+                      <el-input v-model="scope.row.payProName" placeholder="请输入内容" :disabled="scope.row.status==='1'"></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column label="需设定标准" align="center" prop="isSta" width="90">
                     <template v-slot="scope">
-                      <el-checkbox v-model="scope.row.isSta" true-label="1" false-label="0"></el-checkbox>
+                      <el-checkbox v-model="scope.row.isSta" true-label="1" false-label="0" :disabled="scope.row.status==='1'"></el-checkbox>
                     </template>
                   </el-table-column>
                   <el-table-column label="标准的内容" align="center" prop="staCon">
                     <template v-slot="scope">
-                      <el-input v-model="scope.row.staCon" placeholder="请输入内容"></el-input>
+                      <el-input v-model="scope.row.staCon" placeholder="请输入内容" :disabled="scope.row.status==='1'"></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column label="是否岗位定薪项目" align="center" prop="isPostPro" width="80">
                     <template v-slot="scope">
-                      <el-checkbox v-model="scope.row.isPostPro" true-label="1" false-label="0"></el-checkbox>
+                      <el-checkbox v-model="scope.row.isPostPro" true-label="1" false-label="0" :disabled="scope.row.status==='1'"></el-checkbox>
                     </template>
                   </el-table-column>
                   <el-table-column label="是否员工定薪项目" align="center" prop="isEmpPro" width="80">
                     <template v-slot="scope">
-                      <el-checkbox v-model="scope.row.isEmpPro" true-label="1" false-label="0"></el-checkbox>
+                      <el-checkbox v-model="scope.row.isEmpPro" true-label="1" false-label="0" :disabled="scope.row.status==='1'"></el-checkbox>
                     </template>
                   </el-table-column>
                   <el-table-column label="是否下拉选单" align="center" prop="isLov" width="80">
                     <template v-slot="scope">
-                      <el-checkbox v-model="scope.row.isLov" true-label="1" false-label="0"></el-checkbox>
+                      <el-checkbox v-model="scope.row.isLov" true-label="1" false-label="0" :disabled="scope.row.status==='1'"></el-checkbox>
                     </template>
                   </el-table-column>
                   <el-table-column label="下拉选单的内容" align="center" prop="lovConId">
                     <template v-slot="scope">
-                      <el-input v-model="scope.row.lovConId" placeholder="请输入内容"></el-input>
+                      <el-select v-model="scope.row.lovConId" placeholder="请选择"  v-show="scope.row.isLov==='1'" :disabled="scope.row.status==='1'">
+                        <el-option
+                          v-for="dict in salaryOptions.SalaryParameters"
+                          :key="dict.id"
+                          :label="dict.dicName"
+                          :value="dict.id.toString()"
+                        />
+                      </el-select>
+                      <el-input v-model="scope.row.lovConId" placeholder="请输入" maxlength="32" v-show="scope.row.isLov!=='1'" :disabled="scope.row.status==='1'"></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column label="说明" align="center" prop="salaryDescribe">
                     <template v-slot="scope">
-                      <el-input v-model="scope.row.salaryDescribe" placeholder="请输入内容"></el-input>
+                      <el-input v-model="scope.row.salaryDescribe" placeholder="请输入内容" :disabled="scope.row.status==='1'"></el-input>
                     </template>
                   </el-table-column>
-                  <el-table-column label="状态" align="center" prop="status" width="80">
+                  <el-table-column label="状态" align="center" prop="status" width="80" >
                     <template v-slot="scope">
-                      <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+                      <el-switch
+                        v-if="scope.row.id!=null"
+                        v-model="scope.row.status"
+                        active-color="#ff4949"
+                        inactive-color="#13ce66"
+                        active-value="1"
+                        inactive-value="0"
+                        @change="handleStatusChange(scope.row)"
+                      ></el-switch>
                     </template>
                   </el-table-column>
                   <el-table-column label="输入人" align="center" prop="creator" width="80"/>
@@ -124,9 +147,8 @@
 </template>
 
 <script>
-import { listProjectPay, saveProjectPay, listProjectPayTree } from '@/api/human/hs/projectPay'
-import { getDateTime } from '@/api/human/hd/ahumanUtils'
-
+import { listProjectPay, saveProjectPay, listProjectPayTree, changeStatus, delProjectPay } from '@/api/human/hs/projectPay'
+import { getSalaryOptions } from '@/api/human/hs/salaryBasis'
 export default {
   name: 'SalaryProjectBasis',
   dicts: ['sys_normal_disable'],
@@ -146,6 +168,14 @@ export default {
       total: 0,
       // 弹出层标题
       title: '',
+      //薪资选单类型查询
+      salaryOptionType: {
+        id: '',
+        optionsType: ['SalaryParameters'],
+        compId: null
+      },
+      //薪资选单选项列表
+      salaryOptions: [],
       //表格属性
       table: {
         border: true,
@@ -179,10 +209,10 @@ export default {
       multipleSelection: []
     }
   },
-  watch: {},
   created() {
     this.initData()
     this.getBaseInfoTree()
+    this.getDisc();
   },
   methods: {
     //初始化数据
@@ -195,6 +225,12 @@ export default {
     /** 查询集团级薪资项目输入维护列表 */
     getList() {
       this.getBaseInfoTree()
+    },
+    //查询薪资选单
+    getDisc() {
+      getSalaryOptions(this.salaryOptionType).then(response => {
+        this.salaryOptions = response.data
+      })
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -219,6 +255,17 @@ export default {
         this.$modal.msgSuccess("保存成功");
         this.getList();
       })
+    },
+    // 数据状态修改
+    handleStatusChange(row) {
+      let text = row.status === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要' + text + '吗？').then(function () {
+        return changeStatus(row.id,row.parentid, row.status);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "0" ? "1" : "0";
+      });
     },
     //获取选单配置树
     getBaseInfoTree() {
@@ -246,7 +293,9 @@ export default {
       listProjectPay(this.queryParams).then(response => {
         this.total = response.total
         this.tableData = response.rows
-        this.addLine();
+        if(this.tableData.length===0){
+          this.addLine();
+        }
         this.table.loading = false
       }, error => {
         this.table.loading = false
@@ -258,7 +307,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.tableData.length == row.index + 1) {
+      if (!row||this.tableData.length === row.index + 1) {
         const newLine = {
           payProCode: '',
           payProName: '',
@@ -266,22 +315,32 @@ export default {
           staCon: '',
           isPostPro: '',
           isEmpPro: '',
-          isLov: '',
+          isLov: '0',
           lovConId: '',
           salaryDescribe: '',
           status: '0',
           payType: '1',
           parentid: this.queryParams.id,
           isShowno: '0',
-          creator: this.user.empName,
-          creatorId: this.user.empId,
-          creatorNo: this.user.empNo,
-          createDate: getDateTime(1)
+          ifEnd: '1',
+          creator: null,
+          creatorId: null,
+          creatorNo: null,
+          createDate: null,
         }
         this.tableData.push(newLine)
       }
     },
-
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除薪酬项目编号为所选择的数据项？').then(function() {
+        return delProjectPay(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
   }
 }
 </script>

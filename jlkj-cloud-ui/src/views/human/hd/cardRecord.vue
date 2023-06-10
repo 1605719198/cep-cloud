@@ -123,12 +123,12 @@ export default {
     },
     /** 查询刷卡记录列表 */
     getList() {
-      this.loading = true;
-      listCardRecord(this.queryParams).then(response => {
+      this.loading = true;listCardRecord(this.queryParams).then(response => {
         this.recordList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
+
     },
     // 取消按钮
     cancel() {

@@ -1,9 +1,9 @@
 <template>
-  <el-dialog title="选择岗位" :visible.sync="visible" width="1080px" top="5vh" append-to-body>
+  <el-dialog title="选择岗位" :visible.sync="visible" width="1080px" top="5vh" append-to-body class="customDialogStyle">
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="head-container">
-          <el-select v-model="queryParams.compId" placeholder="请选择公司名称" clearable size="small" :popper-append-to-body="false">
+          <el-select v-model="queryParams.compId" placeholder="请选择公司名称" size="small" :popper-append-to-body="false">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
 import { listPostMaintenance, getPostMaintenance, delPostMaintenance, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo"

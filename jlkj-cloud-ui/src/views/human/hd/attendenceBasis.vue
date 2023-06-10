@@ -41,6 +41,9 @@
                         <el-button @click="handleAdd" plain type="primary" icon="el-icon-plus" size="mini" v-hasPermi="['human:attendenceBasis:add']" >新增
                         </el-button>
                       </el-form-item>
+                      <el-form-item label="父节点编码:" v-show="this.parentCode!=null" >
+                        {{parentCode}}
+                      </el-form-item>
                     </el-form>
                   </el-col>
                 </el-row>
@@ -212,6 +215,8 @@ export default {
       tableData: [],
       //默认显示id
       defaultShowNodes: [],
+      //父节点编码
+      parentCode:null,
       // 表单校验
       rules: {
         code: [
@@ -284,6 +289,7 @@ export default {
     handleNodeClick(data) {
       this.queryParams.id = data.id;
       this.tableData = []
+      this.parentCode = data.label;
       this.onLoad()
     },
     //载入数据

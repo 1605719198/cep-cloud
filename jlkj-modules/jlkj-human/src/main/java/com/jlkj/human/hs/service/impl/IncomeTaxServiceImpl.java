@@ -70,7 +70,6 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
             incomeTax.setVersion(1L);
         }else{
             //判断当前数据生效日期 必须要大于最大班次生效日期
-           // String  effectDate = versionMap.get("effectDate");
             Long version = Long.parseLong(versionMap.get("version").toString());
             incomeTax.setVersion(version+ 1);
         }

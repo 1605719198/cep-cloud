@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.HumanHsAmtMapper">
+
+    <resultMap type="HumanHsAmt" id="HumanHsAmtResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="yyMonth"    column="yy_month"    />
+        <result property="operTime"    column="oper_time"    />
+        <result property="sendEmpNo"    column="send_emp_no"    />
+        <result property="sendDate"    column="send_date"    />
+        <result property="sendReason"    column="send_reason"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="status"    column="status"    />
+        <result property="vchrno"    column="vchrno"    />
+        <result property="vchrDate"    column="vchr_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <resultMap id="HumanHsAmtHumanHsAmtDetailResult" type="HumanHsAmt" extends="HumanHsAmtResult">
+        <collection property="humanHsAmtDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="HumanHsAmtDetailResult" />
+    </resultMap>
+
+    <resultMap type="HumanHsAmtDetail" id="HumanHsAmtDetailResult">
+        <result property="id"    column="sub_id"    />
+        <result property="amtId"    column="sub_amt_id"    />
+        <result property="compId"    column="sub_comp_id"    />
+        <result property="amtPayable"    column="sub_amt_payable"    />
+        <result property="amtNet"    column="sub_amt_net"    />
+        <result property="amtDeferred"    column="sub_amt_deferred"    />
+        <result property="amtBenefitMeal"    column="sub_amt_benefit_meal"    />
+        <result property="amtBenefitHouse"    column="sub_amt_benefit_house"    />
+        <result property="amtTraining"    column="sub_amt_training"    />
+        <result property="amtA"    column="sub_amt_a"    />
+        <result property="amtB"    column="sub_amt_b"    />
+        <result property="amtC"    column="sub_amt_c"    />
+        <result property="salBank"    column="sub_sal_bank"    />
+        <result property="salBankId"    column="sub_sal_bank_id"    />
+        <result property="salBankNo"    column="sub_sal_bank_no"    />
+        <result property="bonBank"    column="sub_bon_bank"    />
+        <result property="bonBankId"    column="sub_bon_bank_id"    />
+        <result property="bonBankNo"    column="sub_bon_bank_no"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createName"    column="sub_create_name"    />
+        <result property="createTime"    column="sub_create_time"    />
+    </resultMap>
+
+    <sql id="selectHumanHsAmtVo">
+        select id, comp_id, yy_month, oper_time, send_emp_no, send_date, send_reason, file_url, status, vchrno, vchr_date, create_by, create_name, create_time from human_hs_amt
+    </sql>
+
+    <select id="selectHumanHsAmtList" parameterType="HumanHsAmt" resultMap="HumanHsAmtResult">
+        <include refid="selectHumanHsAmtVo"/>
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="yyMonth != null  and yyMonth != ''"> and yy_month = #{yyMonth}</if>
+            <if test="operTime != null  and operTime != ''"> and oper_time = #{operTime}</if>
+            <if test="sendEmpNo != null  and sendEmpNo != ''"> and send_emp_no = #{sendEmpNo}</if>
+            <if test="sendDate != null "> and send_date = #{sendDate}</if>
+            <if test="sendReason != null  and sendReason != ''"> and send_reason = #{sendReason}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="vchrno != null  and vchrno != ''"> and vchrno = #{vchrno}</if>
+            <if test="vchrDate != null "> and vchr_date = #{vchrDate}</if>
+            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectHumanHsAmtById" parameterType="String" resultMap="HumanHsAmtHumanHsAmtDetailResult">
+        select a.id, a.comp_id, a.yy_month, a.oper_time, a.send_emp_no, a.send_date, a.send_reason, a.file_url, a.status, a.vchrno, a.vchr_date, a.create_by, a.create_name, a.create_time,
+               b.id as sub_id, b.amt_id as sub_amt_id, b.comp_id as sub_comp_id, b.amt_payable as sub_amt_payable, b.amt_net as sub_amt_net, b.amt_deferred as sub_amt_deferred, b.amt_benefit_meal as sub_amt_benefit_meal, b.amt_benefit_house as sub_amt_benefit_house, b.amt_training as sub_amt_training, b.amt_a as sub_amt_a, b.amt_b as sub_amt_b, b.amt_c as sub_amt_c, b.sal_bank as sub_sal_bank, b.sal_bank_id as sub_sal_bank_id, b.sal_bank_no as sub_sal_bank_no, b.bon_bank as sub_bon_bank, b.bon_bank_id as sub_bon_bank_id, b.bon_bank_no as sub_bon_bank_no, b.create_by as sub_create_by, b.create_name as sub_create_name, b.create_time as sub_create_time
+        from human_hs_amt a
+                 left join human_hs_amt_detail b on b.amt_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <insert id="insertHumanHsAmt" parameterType="HumanHsAmt">
+        insert into human_hs_amt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="yyMonth != null">yy_month,</if>
+            <if test="operTime != null">oper_time,</if>
+            <if test="sendEmpNo != null">send_emp_no,</if>
+            <if test="sendDate != null">send_date,</if>
+            <if test="sendReason != null">send_reason,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="status != null">status,</if>
+            <if test="vchrno != null">vchrno,</if>
+            <if test="vchrDate != null">vchr_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="yyMonth != null">#{yyMonth},</if>
+            <if test="operTime != null">#{operTime},</if>
+            <if test="sendEmpNo != null">#{sendEmpNo},</if>
+            <if test="sendDate != null">#{sendDate},</if>
+            <if test="sendReason != null">#{sendReason},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="vchrno != null">#{vchrno},</if>
+            <if test="vchrDate != null">#{vchrDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHumanHsAmt" parameterType="HumanHsAmt">
+        update human_hs_amt
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="yyMonth != null">yy_month = #{yyMonth},</if>
+            <if test="operTime != null">oper_time = #{operTime},</if>
+            <if test="sendEmpNo != null">send_emp_no = #{sendEmpNo},</if>
+            <if test="sendDate != null">send_date = #{sendDate},</if>
+            <if test="sendReason != null">send_reason = #{sendReason},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="vchrno != null">vchrno = #{vchrno},</if>
+            <if test="vchrDate != null">vchr_date = #{vchrDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHumanHsAmtById" parameterType="String">
+        delete from human_hs_amt where id = #{id}
+    </delete>
+
+    <delete id="deleteHumanHsAmtByIds" parameterType="String">
+        delete from human_hs_amt where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteHumanHsAmtDetailByAmtIds" parameterType="String">
+        delete from human_hs_amt_detail where amt_id in
+        <foreach item="amtId" collection="array" open="(" separator="," close=")">
+            #{amtId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteHumanHsAmtDetailByAmtId" parameterType="String">
+        delete from human_hs_amt_detail where amt_id = #{amtId}
+    </delete>
+
+    <insert id="batchHumanHsAmtDetail">
+        insert into human_hs_amt_detail( id, amt_id, comp_id, amt_payable, amt_net, amt_deferred, amt_benefit_meal, amt_benefit_house, amt_training, amt_a, amt_b, amt_c, sal_bank, sal_bank_id, sal_bank_no, bon_bank, bon_bank_id, bon_bank_no, create_by, create_name, create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.amtId}, #{item.compId}, #{item.amtPayable}, #{item.amtNet}, #{item.amtDeferred}, #{item.amtBenefitMeal}, #{item.amtBenefitHouse}, #{item.amtTraining}, #{item.amtA}, #{item.amtB}, #{item.amtC}, #{item.salBank}, #{item.salBankId}, #{item.salBankNo}, #{item.bonBank}, #{item.bonBankId}, #{item.bonBankNo}, #{item.createBy}, #{item.createName}, #{item.createTime})
+        </foreach>
+    </insert>
+
+
+    <select id="selectFileList" parameterType="String" resultType="map">
+        select id, file_name name from sys_fileresource where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <update id="updateCheckUnique" parameterType="String">
+        update human_hs_amt set comp_id=comp_id  where comp_id = #{compId} and yy_month = #{yyMonth} and oper_time = #{operTime}
+    </update>
+
+    <select id="selectDetailAmtList01" parameterType="String" resultMap="HumanHsAmtDetailResult">
+        select  sum(k.amt) amt_payable,k.bank sal_bank_id from (select  b.sal_bank_id  bank,a.emp_id, sum(case a.salary_sheet_location when '01' then a.result else 0 end)-sum(case a.salary_sheet_location when '02' then a.result else 0 end) amt
+         from human_hs_salary_result a  left join human_hs_salary b  on  a.emp_id =b.emp_id
+         where  a.year = #{year} and  a.month = #{month} and a.pay_type_id ='01'   group by  a.emp_id,b.sal_bank_id) k   group by  k.bank
+    </select>
+
+    <select id="selectDetailAmtList02" parameterType="String" resultMap="HumanHsAmtDetailResult">
+    select  sum(k.amt) sub_amt_payable ,k.bank sub_sal_bank_id from (select  b.bon_bank_id  bank,a.emp_id, sum(case a.salary_sheet_location when '01' then a.result else 0 end)-sum(case a.salary_sheet_location when '02' then a.result else 0 end) amt
+    from human_hs_salary_result a  left join human_hs_salary b  on  a.emp_id =b.emp_id
+    where  a.year = #{year} and  a.month = #{month} and a.pay_type_id ='02'   group by  a.emp_id,b.sal_bank_id) k   group by  k.bank
+    </select>
+</mapper>

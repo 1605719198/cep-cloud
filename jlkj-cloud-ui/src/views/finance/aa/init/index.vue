@@ -39,7 +39,7 @@
 
           <el-table-column label="会计周期" align="center" prop="acctPeriod" width="180">
             <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.acctPeriod, '{y}-{m}-{d}') }}</span>
+              <span>{{ parseTime(scope.row.acctPeriod, '{y}-{m}') }}</span>
             </template>
           </el-table-column>
           <el-table-column label="会计科目编号" align="center" prop="acctCode" />

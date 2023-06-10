@@ -243,11 +243,11 @@
 import { listComptime, getComptime, delComptime, addComptime, updateComptime } from "@/api/human/hd/comptime";
 import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {validateNumber} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "Comptime",
@@ -297,13 +297,6 @@ export default {
       },
       // 公司别数据
       companyName: [],
-      // 选单数据
-      baseInfoData: [],
-      baseInfo: {
-        baseInfoList: [
-          'OvertimeType',
-          'OvertimeReason']
-      },
       // 补休资料导入参数
       upload: {
         // 是否显示弹出层（补休资料导入）
@@ -325,9 +318,6 @@ export default {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
   },
   methods: {
     /** 查询补休记录列表 */
@@ -452,11 +442,11 @@ export default {
     dateFormat1(picker) {
       this.form.startTime=picker[0]
       this.form.endTime=picker[1]
-      if (this.form.startTime.substring(11, 13) === '08') {
-        this.form.compHours = '8'
-      } else {
-        this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
-      }
+      // if (this.form.startTime.substring(11, 13) === '08') {
+      //   this.form.compHours = 8
+      // } else {
+      //   this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+      // }
     },
     /**是否显示按钮 */
     isShow(status) {

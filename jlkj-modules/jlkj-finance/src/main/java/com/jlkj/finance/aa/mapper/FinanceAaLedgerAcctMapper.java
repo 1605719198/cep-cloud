@@ -40,7 +40,7 @@ public interface FinanceAaLedgerAcctMapper
      * @param financeAaLedgerAcctDTO 账薄-会计科目余额
      * @return 账薄-会计科目余额集合
      */
-    public List<String> selectFinanceAaGeneralLedger(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    public List<FinanceAaLedgerAcctDTO> selectFinanceAaGeneralLedger(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 查询账薄-会计科目余额列表
      *
@@ -48,6 +48,13 @@ public interface FinanceAaLedgerAcctMapper
      * @return 账薄-会计科目余额集合
      */
     public List<FinanceAaLedgerAcctDTO> selectFinanceAaGeneralLedgerAcctCode1(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-会计科目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-会计科目余额
+     * @return 账薄-会计科目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectFinanceAaGeneralLedgerCalName(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 查询账薄-会计科目余额列表
      *

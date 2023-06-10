@@ -60,7 +60,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport"
-          v-hasPermi="['human:yearAmt:export']"
+          v-hasPermi="['human:yearAmt:import']"
         >导入</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -172,6 +172,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getToken } from '@/utils/auth'
 import { listYearAmt,  delYearAmt,  saveYearAmt } from "@/api/human/hs/yearAmt";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
@@ -180,7 +181,6 @@ import { getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBas
 import selectUser from "@/views/components/human/selectUser/selectUser";
 export default {
   name: "YearAmt",
-  dicts: ['sys_yes_no'],
   components: {selectUser},
   data() {
     return {
@@ -357,7 +357,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.form.yearAmtList.length == row.index + 1) {
+      if (!row||this.form.yearAmtList.length === row.index + 1) {
         const newLine = {
           id: null,
           compId: this.queryParams.compId,
@@ -368,10 +368,10 @@ export default {
           ifFullTax: null,
           ifIncomeGreaterSix: null,
           sumIncome: null,
-          creator: this.user.empName,
-          creatorId: this.user.empId,
-          creatorNo: this.user.empNo,
-          createDate: getDateTime(0),
+          creator: null,
+          creatorId: null,
+          creatorNo: null,
+          createDate: null,
         }
         this.form.yearAmtList.push(newLine)
       }

@@ -27,7 +27,7 @@ public class FinanceAoCardController extends BaseController
     /**
      * 获取个人信息设置详细信息
      */
-    @RequiresPermissions("finance:card:query")
+//    @RequiresPermissions("finance:card:query")
     @GetMapping(value = "/{userNo}")
     public AjaxResult getInfo(@PathVariable("userNo") String userNo)
     {
@@ -43,7 +43,7 @@ public class FinanceAoCardController extends BaseController
     public AjaxResult add(@RequestBody FinanceAoCard financeAoCard)
     {
         FinanceAoCard result = financeAoCardService.selectFinanceAoCardByUserNo(financeAoCard.getUserNo());
-        if (result.getUuid().isEmpty()) {
+        if (result == null || result.getUuid().isEmpty()) {
             return toAjax(financeAoCardService.insertFinanceAoCard(financeAoCard));
         } else {
             return toAjax(financeAoCardService.updateFinanceAoCard(financeAoCard));

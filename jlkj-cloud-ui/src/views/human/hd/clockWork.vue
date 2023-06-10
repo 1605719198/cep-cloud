@@ -70,7 +70,7 @@
     />
 
     <!-- 添加或修改公司卡钟设定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -79,8 +79,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="一级机构" prop="leader">
-              <el-input   v-model="form.deptName"   disabled>
+            <el-form-item label="一级机构" prop="leader" v-if="refresh">
+              <el-input  v-model="form.deptName" disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>
@@ -120,7 +120,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-dept ref="select" @ok="getJobNumber"></select-dept>
+    <select-dept ref="select" @ok="getDept"></select-dept>
   </div>
 </template>
 
@@ -128,15 +128,16 @@
 import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
-import { getAvatorByUserName} from "@/api/system/user";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";
-import selectDept from "@/views/components/human/selectView/selectDept";
+import selectDept from "@/views/components/human/selectView/hd/selectClock";
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 export default {
   name: "Clockwork",
   components: {selectDept,DictTagHuman},
   data() {
     return {
+      //刷新标识
+      refresh:true,
       //公司数据
       companyList:[],
       //一级部门选单部门号
@@ -215,24 +216,26 @@ export default {
       }
     },
     /** 点选获取部门信息 */
-    getJobNumber(val) {
+    getDept(val) {
       var firstDeptId = [];
-      var firstDeptName = '' ;
+      var firstDeptName ='' ;
       val.forEach((value,index,array)=>{
         firstDeptId.push(value.deptId);
-        if(firstDeptName==''){
+        if(firstDeptName===''){
           firstDeptName+=(value.deptName)
         }else{
           firstDeptName+=(','+value.deptName)
         }
-        this.form.firstDeptName = firstDeptName;
-        if(this.form.firstDeptName.length>10){
-          this.form.deptName = this.form.firstDeptName.substring(0,10)+'...'
-        }else{
-          this.form.deptName = this.form.firstDeptName
-        }
-        this.form.firstDeptId = firstDeptId.toString()
       })
+      if(firstDeptName.length>12){
+        this.form.deptName = firstDeptName.substring(0,12)+'...'
+      }else{
+        this.form.deptName = firstDeptName
+      }
+      this.form.firstDeptName = firstDeptName;
+      this.form.firstDeptId = firstDeptId.toString()
+      this.refresh = false;
+      this.refresh = true;
     },
     //初始化数据
     initData() {

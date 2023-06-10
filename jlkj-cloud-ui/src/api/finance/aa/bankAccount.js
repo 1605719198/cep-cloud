@@ -42,3 +42,16 @@ export function delAccount(id) {
     method: 'delete'
   })
 }
+
+// 银行状态修改
+export function changeBankAccount(id, status) {
+  const data = {
+    id,
+    status
+  }
+  return request({
+    url: '/finance/account/changeStatus',
+    method: 'put',
+    data: data
+  })
+}

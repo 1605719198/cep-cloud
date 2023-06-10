@@ -59,4 +59,13 @@ public interface IIpmsDeBankAccountService
      * @return 结果
      */
     public int deleteIpmsDeBankAccountById(String id);
+
+
+    /**
+     * 修改银行状态
+     *
+     * @param ipmsDeBankAccount 银行信息
+     * @return 结果
+     */
+    public int updateStatus(IpmsDeBankAccount ipmsDeBankAccount);
 }

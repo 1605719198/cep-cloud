@@ -49,19 +49,68 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        uuid,year,month,
-        due_att_duty,due_att_hou,sho_att_duty,
-        sho_att_hou,act_att_duty,act_att_hou,
-        late_num,lea_num,hol_duty,
-        hol_hou,tru_duty,tru_hou,
-        bef_ent_duty,bef_ent_hou,big_nig,
-        sma_nig,aft_ent_duty,aft_ent_hou,
-        sav_hou,emp_id,comp_id,
-        creator,creator_id,create_date,
-        over_time_hou,rest_hou,big_sma_nig,
-        res_hou,emp_no,post_id,
-        post_name,emp_name,upd_due_att_duty,
-        upd_due_att_hou,upd_sho_att_duty,upd_sho_att_hou,
-        upd_act_att_duty,upd_act_att_hou
+        uuid,emp_no,emp_name,
+        post_name,late_num,lea_num,
+        big_nig,sma_nig,big_sma_nig,
+        bef_ent_duty,aft_ent_duty,sav_hou,
+        tru_duty,due_att_duty,act_att_duty,
+        sum(leaveOfAbsence) leaveOfAbsence,
+        sum(sickLeave) sickLeave,
+        sum(workInjuryLeave) workInjuryLeave,
+        sum(marriageLeave) marriageLeave,
+        sum(maternityLeave) maternityLeave,
+        sum(bereavementLeave) bereavementLeave,
+        sum(homeLeave) homeLeave,
+        sum(commonLeave) commonLeave,
+        sum(annualLeave) annualLeave,
+        sum(nursingLeave) nursingLeave,
+        sum(antiFamilyLeave) antiFamilyLeave,
+        sum(outsideLeave) outsideLeave,
+        sum(parentalLeave) parentalLeave,
+        sum(delayedOvertime) delayedOvertime,
+        sum(overtimeOnRestDays) overtimeOnRestDays,
+        sum(overtimeOnStatutoryHolidays) overtimeOnStatutoryHolidays
     </sql>
+    <sql id="Base_Column_List1">
+        a.uuid,a.emp_no,a.emp_name,
+        a.post_name,a.late_num,a.lea_num,
+        a.big_nig,a.sma_nig,a.big_sma_nig,
+        b.is_hol_type,b.hol_ove_type,b.hour_num,
+        a.bef_ent_duty,a.aft_ent_duty,a.sav_hou,
+        a.tru_duty,a.due_att_duty,a.act_att_duty,
+    </sql>
+
+    <select id="selectJoinList" resultType="com.jlkj.human.hd.dto.AttendanceGatherDTO">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+        (SELECT
+        <include refid="Base_Column_List1" />
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '01' THEN b.hour_num/8 END AS leaveOfAbsence ,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '02' THEN b.hour_num/8 END AS sickLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '03' THEN b.hour_num/8 END AS workInjuryLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '04' THEN b.hour_num/8 END AS marriageLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '05' THEN b.hour_num/8 END AS maternityLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '06' THEN b.hour_num/8 END AS bereavementLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '07' THEN b.hour_num/8 END AS homeLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '08' THEN b.hour_num/8 END AS commonLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '09' THEN b.hour_num/8 END AS annualLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '10' THEN b.hour_num/8 END AS nursingLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '11' THEN b.hour_num/8 END AS antiFamilyLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '12' THEN b.hour_num/8 END AS outsideLeave,
+        CASE WHEN  b.is_hol_type = '1' AND b.hol_ove_type = '13' THEN b.hour_num/8 END AS parentalLeave,
+        CASE WHEN  b.is_hol_type = '0' AND b.hol_ove_type = '1' THEN b.hour_num/8 END AS delayedOvertime,
+        CASE WHEN  b.is_hol_type = '0' AND b.hol_ove_type = '2' THEN b.hour_num/8 END AS overtimeOnRestDays,
+        CASE WHEN  b.is_hol_type = '0' AND b.hol_ove_type = '3' THEN b.hour_num/8 END AS overtimeOnStatutoryHolidays
+        FROM human_hd_attendance_gather a
+                 LEFT JOIN human_hd_over_time b
+                           ON a.emp_no = b.emp_no
+        WHERE a.comp_id = #{compId} AND a.emp_no = #{empNo} AND a.year = #{year} AND a.month = #{month}) AS t1
+        GROUP BY
+        uuid,emp_no,emp_name,
+        post_name,late_num,lea_num,
+        big_nig,sma_nig,big_sma_nig,
+        bef_ent_duty,aft_ent_duty,sav_hou,
+        tru_duty,due_att_duty,act_att_duty
+    </select>
 </mapper>

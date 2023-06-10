@@ -2,8 +2,10 @@ package com.jlkj.human.hd.service;
 
 import com.jlkj.human.hd.domain.Attendencebasis;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
+import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -83,11 +85,35 @@ public interface IAttendencebasisService
 
 
     /**
+     * 通过父节点id查询员工出勤基本资料维护
+     *
+     * @param parentid 员工出勤基本资料维护编码
+     * @return 员工出勤基本资料维护
+     */
+    public List<BasisOptionsDTO> selectAttendenceBasisByParentid(Long  parentid);
+
+    /**
      * 查询员工出勤基本资料维护选单
      *
-     * @param code 员工出勤基本资料维护编码
+     * @param attendencebasis 员工出勤基本资料
      * @return 结果
      */
-    public List<BasisOptionsDTO> selectBasisOptions(String code) ;
+    public List<BasisOptionsDTO> selectBasisOptions(Attendencebasis attendencebasis) ;
+
+    /**
+     * 获取出勤作业下拉选单主项
+     *
+     * @param optionType 选单查询条件
+     * @return 结果
+     */
+    public HashMap<String, List<BasisOptionsDTO>> getBasisOptions(OptionTypeDTO optionType) ;
+
+    /**
+     * 获取出勤作业下拉选单细项
+     *
+     * @param optionType 选单查询条件
+     * @return 结果
+     */
+    public List<BasisOptionsDTO> getDeepOptions(OptionTypeDTO optionType) ;
 
 }

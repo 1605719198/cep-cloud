@@ -148,6 +148,7 @@ import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getToken} from "@/utils/auth";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "SalaryEmployedMonth",
@@ -238,6 +239,7 @@ export default {
       this.loading = true;
       listSalaryEmployedMonth(this.queryParams).then(response => {
         this.form.salaryEmployedMonthList = response.rows;
+        this.addLine();
         this.total = response.total;
         this.loading = false;
       });
@@ -348,7 +350,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (this.form.salaryEmployedMonthList.length == row.index + 1) {
+      if (!row||this.form.salaryEmployedMonthList.length == row.index + 1) {
         const newLine = {
           uuid: null,
           creator: this.nickName,

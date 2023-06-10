@@ -88,10 +88,10 @@ public class CancellationPersonController extends BaseController {
         String user = "user";
         String org = "org";
         List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, cancellationPerson.getEmpNo()).list();
-        if (personnelList.isEmpty()) {
-            return AjaxResult.error("工号不存在，不能注销");
-        } else {
-            if (user.equals(cancellationPerson.getType())) {
+        if (user.equals(cancellationPerson.getType())) {
+            if (personnelList.isEmpty()){
+                return AjaxResult.error("工号不存在，不能注销");
+            } else {
                 List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
                         .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
                         .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
@@ -100,7 +100,7 @@ public class CancellationPersonController extends BaseController {
                         .list();
 
                 if (attendanceAbnormalList.isEmpty()) {
-                    return AjaxResult.error("已处理不能注销");
+                    return AjaxResult.error("查无可注销出勤异常数据");
                 } else {
                     boolean update = iAttendanceAbnormalService.lambdaUpdate()
                             .set(AttendanceAbnormal::getStatus, "05")
@@ -121,42 +121,42 @@ public class CancellationPersonController extends BaseController {
 //                                .remove();
                     }
                 }
-            } else if (org.equals(cancellationPerson.getType())) {
-                List<HumanresourcePersonnelInfoDTO> list = OrgPersonUtils.orgPersonUtils.selectOrgPerson(cancellationPersonDTO.getDepartmentId());
-                for (HumanresourcePersonnelInfoDTO item : list) {
-                    List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
-                            .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())
+            }
+        } else if (org.equals(cancellationPerson.getType())) {
+            List<HumanresourcePersonnelInfoDTO> list = OrgPersonUtils.orgPersonUtils.selectOrgPerson(cancellationPersonDTO.getDepartmentId());
+            for (HumanresourcePersonnelInfoDTO item : list) {
+                List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
+                        .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())
+                        .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
+                        .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
+                        .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
+                        .list();
+                if (attendanceAbnormalList.isEmpty()) {
+                    boolean update = iAttendanceAbnormalService.lambdaUpdate()
+                            .set(AttendanceAbnormal::getStatus, "05")
+                            .set(AttendanceAbnormal::getDisposeId, "03")
+                            .set(AttendanceAbnormal::getExcReaId, "03")
+                            .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
                             .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
                             .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
                             .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
-                            .list();
-                    if (attendanceAbnormalList.isEmpty()) {
-                        boolean update = iAttendanceAbnormalService.lambdaUpdate()
-                                .set(AttendanceAbnormal::getStatus, "05")
-                                .set(AttendanceAbnormal::getDisposeId, "03")
-                                .set(AttendanceAbnormal::getExcReaId, "03")
-                                .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
-                                .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
-                                .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
-                                .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
-                                .update();
-                        if (update) {
-                            iCancellationPersonService.save(cancellationPerson);
+                            .update();
+                    if (update) {
+                        iCancellationPersonService.save(cancellationPerson);
 //                            iAttendanceAbnormalService.lambdaUpdate()
 //                                    .eq(AttendanceAbnormal::getEmpNo, cancellationPerson.getEmpNo())
 //                                    .and(i -> i.eq(AttendanceAbnormal::getDisposeId, "09").or().eq(AttendanceAbnormal::getDisposeId, "08"))
 //                                    .apply("date_format (slot_card_onduty,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
 //                                    .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
 //                                    .remove();
-                        }
-                    } else {
-                        return AjaxResult.error("已处理不能注销");
                     }
+                } else {
+                    return AjaxResult.error("已处理不能注销");
                 }
-            } else {
-                // 刷卡钟：查询卡钟配置下的人员的注销日期区间内的出勤异常
-                return null;
             }
+        } else {
+            // 刷卡钟：查询卡钟配置下的人员的注销日期区间内的出勤异常
+            return null;
         }
         return null;
     }
@@ -180,7 +180,7 @@ public class CancellationPersonController extends BaseController {
         for (CancellationPerson item : cancellationPersonDTO.getUserInfo()){
             List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, item.getEmpNo()).list();
             if (personnelList.isEmpty()) {
-                return AjaxResult.error("工号:" + item.getEmpNo() + "不存在，不能注销");
+                return AjaxResult.error("查无可注销出勤异常数据");
             } else {
                 List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
                         .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())

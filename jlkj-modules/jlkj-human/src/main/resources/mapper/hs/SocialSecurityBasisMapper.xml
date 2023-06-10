@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SocialSecurityBasisMapper">
+    
+    <resultMap type="SocialSecurityBasis" id="SocialSecurityBasisResult">
+        <result property="id"    column="id"    />
+        <result property="insureRea"    column="insure_rea"    />
+        <result property="insureReaId"    column="insure_rea_id"    />
+        <result property="insureNo"    column="insure_no"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="mainPostName"    column="main_post_name"    />
+        <result property="posLevel"    column="pos_level"    />
+        <result property="birthDate"    column="birth_date"    />
+        <result property="lastExper"    column="last_exper"    />
+        <result property="joinWorkDate"    column="join_work_date"    />
+        <result property="nation"    column="nation"    />
+        <result property="reg"    column="reg"    />
+        <result property="regFea"    column="reg_fea"    />
+        <result property="cerNo"    column="cer_no"    />
+        <result property="entCorDate"    column="ent_cor_date"    />
+        <result property="nowAddr"    column="now_addr"    />
+        <result property="mobPhone"    column="mob_phone"    />
+        <result property="basicPay"    column="basic_pay"    />
+        <result property="leaveEffectDate"    column="leave_effect_date"    />
+        <result property="empIde"    column="emp_ide"    />
+        <result property="workAddr"    column="work_addr"    />
+        <result property="empFea"    column="emp_fea"    />
+        <result property="payAreaType"    column="pay_area_type"    />
+        <result property="payAreaTypeId"    column="pay_area_type_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="msgid"    column="msgId"    />
+        <result property="medicalInsuranceNo"    column="medical_insurance_no"    />
+        <result property="compInsureBookNo"    column="comp_insure_book_no"    />
+        <result property="houseAccount"    column="house_account"    />
+        <result property="isNew"    column="is_new"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSocialSecurityBasisVo">
+        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, s.effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
+        left join human_hm_personnel_info as e on e.emp_no = s.emp_no
+    </sql>
+
+    <select id="selectSocialSecurityBasisList" parameterType="SocialSecurityBasis" resultMap="SocialSecurityBasisResult">
+        <include refid="selectSocialSecurityBasisVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and s.comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and s.emp_no = #{empNo}</if>
+        </where>
+        order by version_no desc
+    </select>
+    
+    <select id="selectSocialSecurityBasisById" parameterType="String" resultMap="SocialSecurityBasisResult">
+        <include refid="selectSocialSecurityBasisVo"/>
+        where s.id = #{id}
+    </select>
+
+    <select id="selectSocialSecurityBasisByEmp" parameterType="SocialSecurityBasis" resultMap="SocialSecurityBasisResult">
+        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, if(s.effect_date>CURDATE(),s.effect_date,CURDATE()) as effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
+        left join human_hm_personnel_info as e on e.emp_no = s.emp_no
+        where s.emp_no = #{empNo}
+        order by version_no desc
+    </select>
+
+        
+    <insert id="insertSocialSecurityBasis" parameterType="SocialSecurityBasis">
+        insert into human_hs_social_security_basis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="insureRea != null">insure_rea,</if>
+            <if test="insureReaId != null">insure_rea_id,</if>
+            <if test="insureNo != null">insure_no,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="mainPostName != null">main_post_name,</if>
+            <if test="posLevel != null">pos_level,</if>
+            <if test="birthDate != null">birth_date,</if>
+            <if test="lastExper != null">last_exper,</if>
+            <if test="joinWorkDate != null">join_work_date,</if>
+            <if test="nation != null">nation,</if>
+            <if test="reg != null">reg,</if>
+            <if test="regFea != null">reg_fea,</if>
+            <if test="cerNo != null">cer_no,</if>
+            <if test="entCorDate != null">ent_cor_date,</if>
+            <if test="nowAddr != null">now_addr,</if>
+            <if test="mobPhone != null">mob_phone,</if>
+            <if test="basicPay != null">basic_pay,</if>
+            <if test="leaveEffectDate != null">leave_effect_date,</if>
+            <if test="empIde != null">emp_ide,</if>
+            <if test="workAddr != null">work_addr,</if>
+            <if test="empFea != null">emp_fea,</if>
+            <if test="payAreaType != null">pay_area_type,</if>
+            <if test="payAreaTypeId != null">pay_area_type_id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="msgid != null">msgId,</if>
+            <if test="medicalInsuranceNo != null">medical_insurance_no,</if>
+            <if test="compInsureBookNo != null">comp_insure_book_no,</if>
+            <if test="houseAccount != null">house_account,</if>
+            <if test="isNew != null">is_new,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="insureRea != null">#{insureRea},</if>
+            <if test="insureReaId != null">#{insureReaId},</if>
+            <if test="insureNo != null">#{insureNo},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="mainPostName != null">#{mainPostName},</if>
+            <if test="posLevel != null">#{posLevel},</if>
+            <if test="birthDate != null">#{birthDate},</if>
+            <if test="lastExper != null">#{lastExper},</if>
+            <if test="joinWorkDate != null">#{joinWorkDate},</if>
+            <if test="nation != null">#{nation},</if>
+            <if test="reg != null">#{reg},</if>
+            <if test="regFea != null">#{regFea},</if>
+            <if test="cerNo != null">#{cerNo},</if>
+            <if test="entCorDate != null">#{entCorDate},</if>
+            <if test="nowAddr != null">#{nowAddr},</if>
+            <if test="mobPhone != null">#{mobPhone},</if>
+            <if test="basicPay != null">#{basicPay},</if>
+            <if test="leaveEffectDate != null">#{leaveEffectDate},</if>
+            <if test="empIde != null">#{empIde},</if>
+            <if test="workAddr != null">#{workAddr},</if>
+            <if test="empFea != null">#{empFea},</if>
+            <if test="payAreaType != null">#{payAreaType},</if>
+            <if test="payAreaTypeId != null">#{payAreaTypeId},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="msgid != null">#{msgid},</if>
+            <if test="medicalInsuranceNo != null">#{medicalInsuranceNo},</if>
+            <if test="compInsureBookNo != null">#{compInsureBookNo},</if>
+            <if test="houseAccount != null">#{houseAccount},</if>
+            <if test="isNew != null">#{isNew},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSocialSecurityBasis" parameterType="SocialSecurityBasis">
+        update human_hs_social_security_basis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="insureRea != null">insure_rea = #{insureRea},</if>
+            <if test="insureReaId != null">insure_rea_id = #{insureReaId},</if>
+            <if test="insureNo != null">insure_no = #{insureNo},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="mainPostName != null">main_post_name = #{mainPostName},</if>
+            <if test="posLevel != null">pos_level = #{posLevel},</if>
+            <if test="birthDate != null">birth_date = #{birthDate},</if>
+            <if test="lastExper != null">last_exper = #{lastExper},</if>
+            <if test="joinWorkDate != null">join_work_date = #{joinWorkDate},</if>
+            <if test="nation != null">nation = #{nation},</if>
+            <if test="reg != null">reg = #{reg},</if>
+            <if test="regFea != null">reg_fea = #{regFea},</if>
+            <if test="cerNo != null">cer_no = #{cerNo},</if>
+            <if test="entCorDate != null">ent_cor_date = #{entCorDate},</if>
+            <if test="nowAddr != null">now_addr = #{nowAddr},</if>
+            <if test="mobPhone != null">mob_phone = #{mobPhone},</if>
+            <if test="basicPay != null">basic_pay = #{basicPay},</if>
+            <if test="leaveEffectDate != null">leave_effect_date = #{leaveEffectDate},</if>
+            <if test="empIde != null">emp_ide = #{empIde},</if>
+            <if test="workAddr != null">work_addr = #{workAddr},</if>
+            <if test="empFea != null">emp_fea = #{empFea},</if>
+            <if test="payAreaType != null">pay_area_type = #{payAreaType},</if>
+            <if test="payAreaTypeId != null">pay_area_type_id = #{payAreaTypeId},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="msgid != null">msgId = #{msgid},</if>
+            <if test="medicalInsuranceNo != null">medical_insurance_no = #{medicalInsuranceNo},</if>
+            <if test="compInsureBookNo != null">comp_insure_book_no = #{compInsureBookNo},</if>
+            <if test="houseAccount != null">house_account = #{houseAccount},</if>
+            <if test="isNew != null">is_new = #{isNew},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSocialSecurityBasisById" parameterType="String">
+        delete from human_hs_social_security_basis where id = #{id}
+    </delete>
+
+    <delete id="deleteSocialSecurityBasisByIds" parameterType="String">
+        delete from human_hs_social_security_basis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

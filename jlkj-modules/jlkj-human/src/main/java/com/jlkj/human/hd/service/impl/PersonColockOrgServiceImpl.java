@@ -46,10 +46,15 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
     public PersonColockOrg selectPersonColockOrgById(String id)
     {
         PersonColockOrg personColockOrg = personColockOrgMapper.selectPersonColockOrgById(id);
-        FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(personColockOrg.getDeptId());
-        personColockOrg.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-        personColockOrg.setFirstDeptName(firstDeptDTO.getFirstDeptName());
-
+        personColockOrg.setFirstDeptId(null);
+        personColockOrg.setFirstDeptName(null);
+        try {
+            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(personColockOrg.getDeptId());
+            personColockOrg.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+            personColockOrg.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personColockOrg;
     }
 
@@ -65,6 +70,8 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
 
         List<PersonColockOrg> colockList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
         colockList.forEach(item->{
+            item.setFirstDeptId(null);
+            item.setFirstDeptName(null);
             try{
                 FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(item.getDeptId());
                 item.setFirstDeptId(firstDeptDTO.getFirstDeptId());
@@ -89,31 +96,37 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
         oldPersonColockOrg.setEffectDate(personColockOrg.getEffectDate());
         oldPersonColockOrg.setDeptId(personColockOrg.getDeptId());
         List<PersonColockOrg> oldList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
-        Boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColockOrg.getId()));
+        boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColockOrg.getId()));
         if(bool){
             PersonColockOrg lastEffectData = personColockOrgMapper.queryLastEffectData(personColockOrg);
             if(lastEffectData == null || personColockOrg.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
-                personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));
-                PersonColockDetail personColockDetail =new PersonColockDetail();
-                ArrayList<String> arrayList  = personColockOrg.getColockList();
-                for (String strTemp : arrayList){
-                    personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
-                    personColockDetail.setPersonColockId(personColockOrg.getId());
-                    personColockDetail.setCreator(personColockOrg.getCreator());
-                    personColockDetail.setCreatorId(personColockOrg.getCreatorId());
-                    personColockDetail.setCreateDate(personColockOrg.getCreateDate());
-                    personColockDetail.setMacId(strTemp);
-                    personColockDetailService.insertPersonColockDetail(personColockDetail);
+                PersonColockOrg noEffectData = personColockOrgMapper.queryNoEffectData(personColockOrg);
+                if(noEffectData==null){
+                    personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));
+                    PersonColockDetail personColockDetail =new PersonColockDetail();
+                    ArrayList<String> arrayList  = personColockOrg.getColockList();
+                    for (String strTemp : arrayList){
+                        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+                        personColockDetail.setPersonColockId(personColockOrg.getId());
+                        personColockDetail.setCreator(personColockOrg.getCreator());
+                        personColockDetail.setCreatorId(personColockOrg.getCreatorId());
+                        personColockDetail.setCreateDate(personColockOrg.getCreateDate());
+                        personColockDetail.setMacId(strTemp);
+                        personColockDetailService.insertPersonColockDetail(personColockDetail);
+                    }
+                    int result = personColockService.insertPersonColockByDept(personColockOrg);
+                    if(result==0){
+                        throw new Exception("该部门下无员工，请重新选择部门");
+                    }
+                    return personColockOrgMapper.insertPersonColockOrg(personColockOrg);
+                }else{
+                    throw new Exception("该部门已有未生效数据，无法进行新增");
                 }
-                int result = personColockService.insertPersonColockByDept(personColockOrg);
-                if(result==0){
-                    throw new Exception("该部门下无员工，请重新选择部门");
-                }
-                return personColockOrgMapper.insertPersonColockOrg(personColockOrg);
             }else{
                 SimpleDateFormat ymddate = new SimpleDateFormat("yyyy-MM-dd");
                 throw new Exception("该部门新的生效日期必须大于"+ymddate.format(lastEffectData.getEffectDate()));
             }
+
         }else{
             throw new Exception("该部门在所选生效日期下已有数据，请重新选择生效日期");
         }
