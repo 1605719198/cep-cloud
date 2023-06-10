@@ -155,7 +155,8 @@
                     range-separator="~"
                     start-placeholder="补休开始时间"
                     end-placeholder="补休结束时间"
-                    :default-time="['08:00:00', '17:00:00']">
+                    :default-time="['08:00:00', '17:00:00']"
+                    @change="dateFormat1">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -246,6 +247,7 @@ import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {validateNumber} from "@/utils/jlkj";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "Comptime",
@@ -437,15 +439,15 @@ export default {
       this.queryParams.startTime=picker[0]
       this.queryParams.endTime=picker[1]
     },
-    // dateFormat1(picker) {
-    //   this.form.startTime=picker[0]
-    //   this.form.endTime=picker[1]
-    //   if (this.form.startTime.substring(11, 13) === '08') {
-    //     this.form.compHours = 8
-    //   } else {
-    //     this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
-    //   }
-    // },
+    dateFormat1(picker) {
+      this.form.startTime=picker[0]
+      this.form.endTime=picker[1]
+      // if (this.form.startTime.substring(11, 13) === '08') {
+      //   this.form.compHours = 8
+      // } else {
+      //   this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+      // }
+    },
     /**是否显示按钮 */
     isShow(status) {
       if (status === '未送出') {

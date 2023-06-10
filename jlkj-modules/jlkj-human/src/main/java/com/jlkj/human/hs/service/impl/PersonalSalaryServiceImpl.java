@@ -4,9 +4,11 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.service.IPersonnelService;
 import com.jlkj.human.hs.domain.PersonalSalary;
+import com.jlkj.human.hs.domain.ProjectPay;
 import com.jlkj.human.hs.mapper.PersonalSalaryMapper;
 import com.jlkj.human.hs.service.IPersonalSalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,5 +184,27 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService
     public int deletePersonalSalaryById(String id)
     {
         return personalSalaryMapper.deletePersonalSalaryById(id);
+    }
+
+    /**
+     * 查询公司薪资支付银行编码，名称ID
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
+    @Override
+    public List<BasisOptionsDTO> getSalaryBank(String compId){
+        return personalSalaryMapper.getSalaryBank(compId);
+    }
+
+    /**
+     * 查询公司薪资薪酬项目
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
+    @Override
+    public List<ProjectPay> getPayFormation(String compId){
+        return personalSalaryMapper.getPayFormation(compId);
     }
 }

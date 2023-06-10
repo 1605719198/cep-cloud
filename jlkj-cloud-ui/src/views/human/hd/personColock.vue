@@ -61,7 +61,6 @@
 <!--        >导入-->
 <!--        </el-button>-->
 <!--      </el-col>-->
-
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -361,6 +360,7 @@ export default {
       immediate: true,
       handler: function(newV) {
         this.getTreeselect()
+        this.getAllcolock(this.queryParams.compId)
       }
     }
   },
@@ -379,7 +379,6 @@ export default {
     getAllcolock(compId) {
       getCompClockwork(compId).then(response => {
         this.clockworkList = response.rows
-        this.open = true
       })
     },
     /** 人员选单事件 */
@@ -393,24 +392,28 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(val, userName, compId) {
-      if (this.open == false) {
+      if (this.open === false) {
         this.queryParams.empId = val
       } else {
         this.form.empId = val
+        this.checkList = []
         queryFirstdeptByPerson(val).then(response => {
-          this.checkList = []
-          this.form.firstDeptId = response.data.firstDeptId
-          this.form.firstDeptName = response.data.firstDeptName
-          this.clockworkList.forEach((value, index, array) => {
-            if (value.firstDeptId) {
-              var array = value.firstDeptId.split(',')
-              array.forEach((values, indexs, arrays) => {
-                if (values === this.form.firstDeptId && this.form.firstDeptId != null) {
-                  this.checkList.push(value.code)
-                }
-              })
-            }
-          })
+          if(response.data.firstDeptId){
+            this.form.firstDeptId = response.data.firstDeptId
+            this.form.firstDeptName = response.data.firstDeptName
+            this.clockworkList.forEach((value, index, array) => {
+              console.log(JSON.stringify(value))
+              if (value.firstDeptId) {
+                var array = value.firstDeptId.split(',')
+                array.forEach((values, indexs, arrays) => {
+                  if (values === this.form.firstDeptId && this.form.firstDeptId != null) {
+                    console.log(JSON.stringify(value))
+                    this.checkList.push(value.code)
+                  }
+                })
+              }
+            })
+          }
         })
       }
     },
@@ -423,8 +426,8 @@ export default {
     },
     /** 上级部门切换事件 */
     deptChange(val) {
+      this.checkList = []
       queryFirstdeptByDept(val.id).then(response => {
-        this.checkList = []
         this.form.firstDeptId = response.data.firstDeptId
         this.form.firstDeptName = response.data.firstDeptName
         this.clockworkList.forEach((value, index, array) => {
@@ -517,10 +520,11 @@ export default {
         creator: null,
         creatorId: null,
         createDate: null,
-        colockList: null,
         firstDeptName: null,
-        firstDeptId: null
+        firstDeptId: null,
+        colockList: [],
       }
+      // this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -548,22 +552,22 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
-      this.resetForm('form')
       this.formcolockType = this.colockType
       this.title = '添加卡钟'
-      this.checkList = []
-      this.getAllcolock(this.queryParams.compId)
+      this.checkList = [];
+      this.open = true;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
+      this.open = true;
+      this.checkList = [];
       this.formcolockType = this.colockType
       const id = row.id || this.ids
       if (this.colockType === '1') {
         getPersonColock(id).then(response => {
           this.form = response.data
           this.title = '修改人员卡钟'
-          this.getAllcolock(this.queryParams.compId)
         })
         var param = { personColockId: id }
         listPersonColockDetail(param).then(response => {
@@ -575,7 +579,6 @@ export default {
         getPersonColockOrg(id).then(response => {
           this.form = response.data
           this.title = '修改部门卡钟'
-          this.getAllcolock(this.queryParams.compId)
         })
         var params = { personColockId: id }
         listPersonColockDetail(params).then(response => {

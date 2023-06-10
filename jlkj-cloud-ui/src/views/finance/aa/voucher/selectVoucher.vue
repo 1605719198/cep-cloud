@@ -359,11 +359,13 @@ export default {
     getAcctCodeCorpPop(val){
       this.queryParams.acctNameStart = val[0].acctCode
       this.$set( this.queryParams, 'acctCodeStart', val[0].acctCode);
+      this.$set( this.queryParams, 'groupAcctId', val[0].groupAcctId);
       this.$set( this.queryParams, 'acctNameStart', val[0].acctCode);
       this.$set( this.queryParams, 'acctIdStart', val[0].acctId);;
     },
     getAcctCodeCorpPop1(val){
       this.$set( this.queryParams, 'acctCodeEnd', val[0].acctCode);
+      this.$set( this.queryParams, 'groupAcctId', val[0].groupAcctId);
       this.$set( this.queryParams, 'acctNameEnd', val[0].acctCode);
       this.$set( this.queryParams, 'acctIdEnd', val[0].acctId);
     },

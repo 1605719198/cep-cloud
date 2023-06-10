@@ -42,3 +42,22 @@ export function delPersonalSalary(id) {
     method: 'delete'
   })
 }
+
+// 查询公司薪资支付银行编码，名称ID
+export function getSalaryBank(compId) {
+  return request({
+    url: '/human/personalSalary/getBank/' + compId,
+    method: 'get'
+  })
+}
+
+//查询公司薪酬项目
+export function getPayFormation(compId) {
+  return request({
+    url: '/human/personalSalary/getPayFormation/' + compId,
+    method: 'get',
+  })
+}
+
+
+

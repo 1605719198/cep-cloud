@@ -129,7 +129,7 @@ import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import { selectCompany } from "@/api/human/hp/deptMaintenance";
 import { listClockwork, getClockwork, delClockwork, addClockwork, updateClockwork } from "@/api/human/hd/clockwork";
-import selectDept from "@/views/components/human/selectView/hd/selectDept";
+import selectDept from "@/views/components/human/selectView/hd/selectClock";
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 export default {
   name: "Clockwork",

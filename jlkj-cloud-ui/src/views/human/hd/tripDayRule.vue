@@ -345,7 +345,16 @@ export default {
       rules: {
         compId: [
           { required: true, message: '公司别不能为空', trigger: 'blur' }
-        ]
+        ],
+        lodgAllow: [
+          {max:22, message: '住宿费长度不能超过22', trigger: 'blur' }
+        ],
+        trafficAllow: [
+          {max:22, message: '交通费长度不能超过22', trigger: 'blur' }
+        ],
+        foodAllow: [
+          {max:22, message: '伙食费长度不能超过22', trigger: 'blur' }
+        ],
       }
     }
   },

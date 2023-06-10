@@ -202,6 +202,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import selectClock from "@/views/components/human/selectView/hd/selectClock";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "CancellationPerson",
@@ -343,10 +344,10 @@ export default {
       this.$refs.selectOrg1.show();
     },
     openMacPop() {
-      this.$refs.selectMac.show();
+      this.$refs.selectMac.show(this.queryParams.companyId);
     },
     openMacPop1() {
-      this.$refs.selectMac1.show();
+      this.$refs.selectMac1.show(this.queryParams.companyId);
     },
     /** 工号点击事件 */
     inputClick() {
@@ -359,7 +360,6 @@ export default {
     /** 获取工号 */
     getOrg(deptCode) {
       this.queryParams.orgId = deptCode
-      this.getList();
     },
     getOrg1(deptCode, deptId) {
       this.form.departmentId = deptId
@@ -368,7 +368,6 @@ export default {
     /** 获取刷卡钟 */
     getMac(userIds) {
       this.queryParams.clockWorkId = userIds[0].name
-      this.getList();
     },
     /** 获取刷卡钟 */
     getMac1(userIds) {
@@ -377,7 +376,6 @@ export default {
     /** 获取工号 */
     getJobNumber(val) {
       this.queryParams.empNo = val
-      this.getList();
     },
     /** 获取工号 */
     getJobNumber1(val) {

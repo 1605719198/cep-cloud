@@ -30,8 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceApItemDetailList" parameterType="FinanceApItemDetail" resultMap="FinanceApItemDetailResult">
         <include refid="selectFinanceApItemDetailVo"/>
         <where>  
-            <if test="itemNo != null  and itemNo != ''"> and detail_no = #{itemNo}</if>
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
         </where>
+        order by detail_no
     </select>
     
     <select id="selectFinanceApItemDetailById" parameterType="String" resultMap="FinanceApItemDetailResult">

@@ -148,6 +148,7 @@ import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getToken} from "@/utils/auth";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "SalaryEmployedMonth",

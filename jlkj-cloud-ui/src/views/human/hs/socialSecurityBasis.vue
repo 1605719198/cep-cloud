@@ -121,7 +121,7 @@
     />
 
     <!-- 添加或修改社保公积金标准核定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1400px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1400px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -344,7 +344,7 @@
     </el-dialog>
 
     <!-- 社保公积金标准核定详情对话框 -->
-    <el-dialog :title="title" :visible.sync="openView" width="1400px" append-to-body>
+    <el-dialog :title="title" :visible.sync="openView" width="1400px" append-to-body class="customDialogStyle">
       <el-form ref="formView" :model="form" label-width="100px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -543,7 +543,7 @@
     </el-dialog>
     <select-user ref="select" @ok="getJobNumber"/>
     <!-- 社保公积金核定资料导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="450px" append-to-body class="customDialogStyle">
       <el-upload
         ref="upload"
         :limit="1"
@@ -579,6 +579,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import {
   listSocialSecurityBasis,
   getSocialSecurityBasis,
@@ -595,6 +596,7 @@ import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import { socialSecurity } from '@/api/human/hs/socialSecurity'
 import { queryImportNote } from '@/api/human/hs/importNote'
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: 'SocialSecurityBasis',
@@ -749,12 +751,12 @@ export default {
       let stop = false
       this.socialSecurityDetail.forEach((value) => {
         if (value.thrIdSta === '1') {
-          if (value.fivSta && stop != true) {
-            if (stop != true && (parseInt(value.fivSta) > parseInt(value.eleSta) || parseInt(value.fivSta) < parseInt(value.ninSta))) {
+          if (value.fivSta && stop !== true) {
+            if (stop !== true && (parseInt(value.fivSta) > parseInt(value.eleSta) || parseInt(value.fivSta) < parseInt(value.ninSta))) {
               errorMsg = value.payProName + '基数大小不符合要求'
               stop = true
             }
-          } else if (!value.fivSta && stop != true) {
+          } else if (!value.fivSta && stop !== true) {
             errorMsg = value.payProName + '基数不可为空'
             stop = true
           }
@@ -814,7 +816,7 @@ export default {
       if (e === 1) {
         this.socialSecurityDetail.forEach((values, indexs) => {
           this.form.detailList.forEach((value, index) => {
-            if (value.payProId == values.payProId) {
+            if (value.payProId === values.payProId) {
               this.socialSecurityDetail[indexs] = value
               this.form.detailList.splice(index, 1)
             }

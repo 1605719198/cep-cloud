@@ -18,6 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateName"    column="update_name"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="calTypeCodea"    column="cal_type_codea"    />
+        <result property="calTypeCodeb"    column="cal_type_codeb"    />
     </resultMap>
 
     <sql id="selectFinanceApItemVo">
@@ -94,10 +96,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from finance_ap_item where id = #{id}
     </delete>
 
+    <update id="updateCheckUnique" parameterType="String">
+        update finance_ap_item set item_no=item_no  where item_no = #{itemNo}
+    </update>
+
     <delete id="deleteFinanceApItemByIds" parameterType="String">
         delete from finance_ap_item where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectItemNosByIds" parameterType="String" resultType="map">
+        select item_no from finance_ap_item_detail where item_no in (
+        select item_no from finance_ap_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+
+
+    <select id="selectFinanceApItemByIdcal" parameterType="String" resultMap="FinanceApItemResult">
+        select a.*,b.cal_type_codea,b.cal_type_codeb from  finance_ap_item a left outer join  finance_aa_acctcode b on a.cr_acct_code = b.acct_name
+        where id = #{id}
+    </select>
+
+    <select id="selectItemAndDetailList" parameterType="String" resultType="map">
+        SELECT a.item_no itemNo,a.item_name itemName,a.cr_acct_code crAcctCode,a.status,a.other_type otherType FROM finance_ap_item a
+        WHERE a.item_no not in (select item_no from finance_ap_item_comp where company_id = #{companyId})
+        order by a.item_no
+    </select>
+
 </mapper>

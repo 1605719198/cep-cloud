@@ -46,10 +46,15 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
     public PersonColockOrg selectPersonColockOrgById(String id)
     {
         PersonColockOrg personColockOrg = personColockOrgMapper.selectPersonColockOrgById(id);
-        FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(personColockOrg.getDeptId());
-        personColockOrg.setFirstDeptId(firstDeptDTO.getFirstDeptId());
-        personColockOrg.setFirstDeptName(firstDeptDTO.getFirstDeptName());
-
+        personColockOrg.setFirstDeptId(null);
+        personColockOrg.setFirstDeptName(null);
+        try {
+            FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(personColockOrg.getDeptId());
+            personColockOrg.setFirstDeptId(firstDeptDTO.getFirstDeptId());
+            personColockOrg.setFirstDeptName(firstDeptDTO.getFirstDeptName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personColockOrg;
     }
 
@@ -65,6 +70,8 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
 
         List<PersonColockOrg> colockList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
         colockList.forEach(item->{
+            item.setFirstDeptId(null);
+            item.setFirstDeptName(null);
             try{
                 FirstDeptDTO firstDeptDTO = sysDeptService.getFirstDeptByDept(item.getDeptId());
                 item.setFirstDeptId(firstDeptDTO.getFirstDeptId());

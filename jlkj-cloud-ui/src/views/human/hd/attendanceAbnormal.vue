@@ -173,11 +173,11 @@
 import { listAttendanceAbnormal, getAttendanceAbnormal, updateAttendanceAbnormal, recallAttendanceAbnormal, sendAttendanceAbnormal } from "@/api/human/hd/attendanceAbnormal";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {validateNumber} from "@/utils/jlkj";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import DictTagHumanBasis from "@/views/components/human/dictTag/humanBaseInfo";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceAbnormal",

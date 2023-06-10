@@ -7,7 +7,9 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.PersonalSalary;
+import com.jlkj.human.hs.domain.ProjectPay;
 import com.jlkj.human.hs.service.IPersonalSalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/personalSalary")
-public class PersonalSalaryController extends BaseController
-{
+public class PersonalSalaryController extends BaseController {
     @Autowired
     private IPersonalSalaryService personalSalaryService;
 
@@ -33,8 +34,7 @@ public class PersonalSalaryController extends BaseController
      */
     @RequiresPermissions("human:personalSalary:list")
     @GetMapping("/list")
-    public TableDataInfo list(PersonalSalary personalSalary)
-    {
+    public TableDataInfo list(PersonalSalary personalSalary) {
         startPage();
         List<PersonalSalary> list = personalSalaryService.selectPersonalSalaryList(personalSalary);
         return getDataTable(list);
@@ -46,8 +46,7 @@ public class PersonalSalaryController extends BaseController
     @RequiresPermissions("human:personalSalary:export")
     @Log(title = "薪资核定", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonalSalary personalSalary)
-    {
+    public void export(HttpServletResponse response, PersonalSalary personalSalary) {
         List<PersonalSalary> list = personalSalaryService.selectPersonalSalaryList(personalSalary);
         ExcelUtil<PersonalSalary> util = new ExcelUtil<PersonalSalary>(PersonalSalary.class);
         util.exportExcel(response, list, "薪资核定数据");
@@ -58,8 +57,7 @@ public class PersonalSalaryController extends BaseController
      */
     @RequiresPermissions("human:personalSalary:query")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(personalSalaryService.selectPersonalSalaryById(id));
     }
 
@@ -69,8 +67,7 @@ public class PersonalSalaryController extends BaseController
     @RequiresPermissions("human:personalSalary:add")
     @Log(title = "薪资核定", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody PersonalSalary personalSalary)
-    {
+    public AjaxResult add(@RequestBody PersonalSalary personalSalary) {
         int result = personalSalaryService.insertPersonalSalary(personalSalary);
         if (result > 0) {
             return success("新增成功");
@@ -85,8 +82,7 @@ public class PersonalSalaryController extends BaseController
     @RequiresPermissions("human:personalSalary:edit")
     @Log(title = "薪资核定", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody PersonalSalary personalSalary)
-    {
+    public AjaxResult edit(@RequestBody PersonalSalary personalSalary) {
         int result = personalSalaryService.updatePersonalSalary(personalSalary);
         if (result > 0) {
             return AjaxResult.success("修改成功");
@@ -100,9 +96,24 @@ public class PersonalSalaryController extends BaseController
      */
     @RequiresPermissions("human:personalSalary:remove")
     @Log(title = "薪资核定", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(personalSalaryService.deletePersonalSalaryByIds(ids));
+    }
+
+    /**
+     * 通过公司别获取薪资支付银行编码、名称ID
+     */
+    @GetMapping("/getBank/{compId}")
+    public List<BasisOptionsDTO> getBank(@PathVariable String compId) {
+        return personalSalaryService.getSalaryBank(compId);
+    }
+
+    /**
+     * 查询薪酬项目列表接口
+     */
+    @GetMapping("/getPayFormation/{compId}")
+    public List<ProjectPay> getPayFormation(@PathVariable String compId) {
+        return personalSalaryService.getPayFormation(compId);
     }
 }

@@ -42,3 +42,10 @@ export function delItem(id) {
     method: 'delete'
   })
 }
+
+export function listItemAndDetail(companyId) {
+  return request({
+    url: '/finance/apItem/itemList/' + companyId,
+    method: 'get'
+  })
+}

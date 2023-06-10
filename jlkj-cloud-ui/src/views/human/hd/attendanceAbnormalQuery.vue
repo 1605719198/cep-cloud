@@ -87,7 +87,6 @@
 
 <script>
 import {
-  listAttendanceAbnormal,
   getAttendanceAbnormal,
   updateAttendanceAbnormal,
   recallAttendanceAbnormal,
@@ -99,6 +98,7 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceAbnormalQuery",

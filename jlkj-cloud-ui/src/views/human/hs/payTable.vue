@@ -292,6 +292,7 @@ import {listPayTable, delPayTable, addPayTable, addPayTableFormula, listPayTable
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {listProjectPay, listProjectPayTree} from "@/api/human/hs/projectPay";
 import {getSalaryDeepOptions, getSalaryOptions} from "@/api/human/hs/salaryBasis";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "PayTable",

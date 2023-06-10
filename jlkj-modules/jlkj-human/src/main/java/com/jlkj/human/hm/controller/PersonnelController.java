@@ -147,12 +147,17 @@ public class PersonnelController extends BaseController {
         try {
             startPage();
             String compId = humanresourcePersonnelInfoDTO.getCompId();
-            String empNo = humanresourcePersonnelInfoDTO.getEmpNo();
             String departmentId = humanresourcePersonnelInfoDTO.getDepartmentId();
             List<Personnel> list = personnelService.lambdaQuery()
                     .eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
-                    .eq(StringUtils.isNotBlank(empNo), Personnel::getEmpNo, empNo)
-                    .eq(StringUtils.isNotBlank(departmentId), Personnel::getDepartmentId, departmentId).list();
+                    .eq(StringUtils.isNotBlank(departmentId), Personnel::getDepartmentId, departmentId)
+                    .and(!humanresourcePersonnelInfoDTO.getKeywords().isEmpty(), wrapper -> wrapper
+                            .like(!humanresourcePersonnelInfoDTO.getKeywords().isEmpty(), Personnel::getEmpNo, humanresourcePersonnelInfoDTO.getKeywords())
+                            .or()
+                            .like(!humanresourcePersonnelInfoDTO.getKeywords().isEmpty(), Personnel::getFullName, humanresourcePersonnelInfoDTO.getKeywords())
+                            .or(true)
+                            .like(!humanresourcePersonnelInfoDTO.getKeywords().isEmpty(), Personnel::getFullNamePinyin, humanresourcePersonnelInfoDTO.getKeywords())
+                    ).list();
             return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {
             return AjaxResult.error();

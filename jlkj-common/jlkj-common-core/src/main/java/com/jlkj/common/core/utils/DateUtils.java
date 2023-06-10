@@ -107,6 +107,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     }
 
     /**
+     * 日期路径 即年-月-日 如2018-08-08
+     */
+    public static final String dateTime1()
+    {
+        Date now = new Date();
+        return DateFormatUtils.format(now, "yyyy-MM-dd");
+    }
+
+    /**
      * 日期型字符串转化为日期 格式
      */
     public static Date parseDate(Object str)

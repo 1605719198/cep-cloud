@@ -100,7 +100,7 @@ public class CancellationPersonController extends BaseController {
                         .list();
 
                 if (attendanceAbnormalList.isEmpty()) {
-                    return AjaxResult.error("已处理不能注销");
+                    return AjaxResult.error("查无可注销出勤异常数据");
                 } else {
                     boolean update = iAttendanceAbnormalService.lambdaUpdate()
                             .set(AttendanceAbnormal::getStatus, "05")
@@ -180,7 +180,7 @@ public class CancellationPersonController extends BaseController {
         for (CancellationPerson item : cancellationPersonDTO.getUserInfo()){
             List<Personnel> personnelList = personnelService.lambdaQuery().eq(Personnel::getEmpNo, item.getEmpNo()).list();
             if (personnelList.isEmpty()) {
-                return AjaxResult.error("工号:" + item.getEmpNo() + "不存在，不能注销");
+                return AjaxResult.error("查无可注销出勤异常数据");
             } else {
                 List<AttendanceAbnormal> attendanceAbnormalList = iAttendanceAbnormalService.lambdaQuery()
                         .eq(AttendanceAbnormal::getEmpNo, item.getEmpNo())

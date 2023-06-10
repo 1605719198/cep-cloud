@@ -276,7 +276,14 @@ export default {
           { required: true, message: "是否含假日不能为空", trigger: "change" }
         ],
         minUnitDay: [
-          { required: true, message: "常白班请假最小单位不能为空", trigger: "blur" }
+          { required: true, message: "常白班请假最小单位不能为空", trigger: "blur" },
+          { max: 5, message: "该字段最长为5", trigger: "blur" }
+        ],
+        isNeedCheck: [
+          { max: 5, message: "该字段最长为5", trigger: "blur" }
+        ],
+        minUnitTurns: [
+          { max: 5, message: "该字段最长为5", trigger: "blur" }
         ],
       },
       rulescopy:{

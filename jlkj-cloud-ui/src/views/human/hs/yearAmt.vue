@@ -136,7 +136,7 @@
     />
     <select-user ref="select" @ok="getJobNumber"/>
     <!-- 年收入维护资料导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="450px" append-to-body class="customDialogStyle">
       <el-upload
         ref="upload"
         :limit="1"
@@ -172,6 +172,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getToken } from '@/utils/auth'
 import { listYearAmt,  delYearAmt,  saveYearAmt } from "@/api/human/hs/yearAmt";
 import { getDateTime } from '@/api/human/hd/ahumanUtils'

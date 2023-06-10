@@ -67,20 +67,26 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int insertProjectPay(List<ProjectPay> projectPayList)
     {
+        //状态启动停用
+        String status1 = "0",status2 = "1";
         for(ProjectPay projectPay :projectPayList){
-            projectPay.setCreatorId(SecurityUtils.getUserId().toString());
-            projectPay.setCreatorNo(SecurityUtils.getUsername());
-            projectPay.setCreator(SecurityUtils.getNickName());
-            projectPay.setCreateDate(new Date());
-            ProjectPay parent = projectPayMapper.selectProjectPayById(projectPay.getParentid());
-            if("1".equals(parent.getIfEnd())){
-                parent.setIfEnd("0");
-                projectPayMapper.updateProjectPay(parent);
-            }
-            if(projectPay.getId()!=null){
-                projectPayMapper.updateProjectPay(projectPay);
-            }else{
-                projectPayMapper.insertProjectPay(projectPay);
+            if(status1.equals(projectPay.getStatus())){
+                projectPay.setCreatorId(SecurityUtils.getUserId().toString());
+                projectPay.setCreatorNo(SecurityUtils.getUsername());
+                projectPay.setCreator(SecurityUtils.getNickName());
+                projectPay.setCreateDate(new Date());
+                ProjectPay parent = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+                if("1".equals(parent.getIfEnd())){
+                    parent.setIfEnd("0");
+                    projectPayMapper.updateProjectPay(parent);
+                }
+                if(projectPay.getId()!=null){
+                    projectPayMapper.updateProjectPay(projectPay);
+                }else{
+                    String parents = parent.getParents()+","+parent.getId();
+                    projectPay.setParents(parents);
+                    projectPayMapper.insertProjectPay(projectPay);
+                }
             }
         }
         return 1;
@@ -110,9 +116,9 @@ public class ProjectPayServiceImpl implements IProjectPayService
             }
             // 当子节点启动时，父节点直接改成正常
             if(status1.equals(projectPay.getStatus())){
-                ProjectPay parendData = projectPayMapper.selectProjectPayById(projectPay.getParentid());
-                parendData.setStatus("0");
-                projectPayMapper.updateProjectPay(parendData);
+                ProjectPay parentData = projectPayMapper.selectProjectPayById(projectPay.getParentid());
+                parentData.setStatus("0");
+                projectPayMapper.updateProjectPay(parentData);
             }
         }
         projectPay.setCreatorId(SecurityUtils.getUserId().toString());

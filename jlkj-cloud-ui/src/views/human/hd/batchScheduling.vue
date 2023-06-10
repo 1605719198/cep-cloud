@@ -128,7 +128,7 @@
     />
     <select-user ref="select" @ok="getJobNumber"/>
     <!-- 批量排班资料导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="450px" append-to-body class="customDialogStyle">
       <el-upload
         ref="upload"
         :limit="1"
@@ -164,6 +164,7 @@
 </template>
 
 <script>
+import '@/assets/styles/humanStyles.scss';
 import { getToken } from '@/utils/auth'
 import { listPersonClassMaster,  batchAddPersonClassMaster } from "@/api/human/hd/personClassMaster";
 import { listShiftClass } from '@/api/human/hd/shiftClass'

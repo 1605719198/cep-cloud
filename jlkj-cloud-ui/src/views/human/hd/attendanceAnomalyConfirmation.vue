@@ -78,13 +78,13 @@
 
 <script>
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {validateNumber} from "@/utils/jlkj";
 import {listAttendanceAnomalyConfirmationList} from "@/api/human/hd/attendanceAbnormal";
-import {addBatchCancellationPerson, confirmAttendanceAnomaly} from "@/api/human/hd/cancellationPerson";
+import {confirmAttendanceAnomaly} from "@/api/human/hd/cancellationPerson";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
+import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: "AttendanceAnomalyConfirmation",
