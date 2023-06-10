@@ -346,7 +346,7 @@
 
                   <el-select :popper-append-to-body="false" v-model="form.resvAttr1"  placeholder="请选择出差地点" >
                     <el-option
-                      v-for="dict in attendenceOptions.TravelAbroad"
+                      v-for="dict in attendenceOptions.Country"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -358,7 +358,7 @@
                 <el-form-item label="出差地点2" prop="resvAttr2">
                   <el-select :popper-append-to-body="false" v-model="form.resvAttr2"  placeholder="请选择出差地点" >
                     <el-option
-                      v-for="dict in attendenceOptions.TravelAbroad"
+                      v-for="dict in attendenceOptions.Country"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -371,7 +371,7 @@
 
                   <el-select :popper-append-to-body="false" v-model="form.resvAttr3"  placeholder="请选择出差地点" >
                     <el-option
-                      v-for="dict in attendenceOptions.TravelAbroad"
+                      v-for="dict in attendenceOptions.Country"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -385,7 +385,7 @@
 
                   <el-select :popper-append-to-body="false" v-model="form.resvAttr4"  placeholder="请选择出差地点" >
                     <el-option
-                      v-for="dict in attendenceOptions.TravelAbroad"
+                      v-for="dict in attendenceOptions.Country"
                       :key="dict.dicNo"
                       :label="dict.dicName"
                       :value="dict.dicNo"
@@ -480,7 +480,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer','TravelAbroad']
+        optionsType: ['TravelReason','TravelType','FlowStatus','IsEngineer','Country']
       },
       //出勤选单选项列表
       attendenceOptions: {},
