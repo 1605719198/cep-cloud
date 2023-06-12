@@ -206,6 +206,9 @@ export default {
               case null :
                 item.status = '未执行';
                 break;
+              case '' :
+                item.status = '未执行';
+                break;
               case 'Y' :
                 item.status = '已执行';
                 break;
@@ -221,6 +224,23 @@ export default {
       } else if (this.queryParams.carry === 'B') {
         listRecordCompanyId(this.queryParams).then(response => {
           this.recordList = response.rows;
+          this.recordList = this.recordList.map(item => {
+            switch (item.status) {
+              case null :
+                item.status = '未执行';
+                break;
+              case '' :
+                item.status = '未执行';
+                break;
+              case 'Y' :
+                item.status = '已执行';
+                break;
+              case 'N' :
+                item.status = '已取消';
+                break;
+            }
+            return item;
+          })
           this.total = response.total;
           this.loading = false;
         });
