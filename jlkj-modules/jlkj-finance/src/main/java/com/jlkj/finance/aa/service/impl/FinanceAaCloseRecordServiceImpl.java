@@ -77,7 +77,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
     {
         List<FinanceAaCloseRecord> financeAaCloseRecords = new ArrayList<>();
         StringBuilder successMsg = new StringBuilder();
-        String acctPeriod = financeAaCloseRecord.getAcctPeriod().substring(0,10);
+        String acctPeriod = financeAaCloseRecord.getAcctPeriod();
         financeAaCloseRecord.setCreateTime(DateUtils.getNowDate());
         financeAaCloseRecord.setId(UUID.fastUUID().toString());
         financeAaCloseRecord.setCreateBy(SecurityUtils.getUsername());
@@ -175,7 +175,10 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
                 return financeAaCloseRecords;
             }
-            financeAaLedgerlCalMapper.batchFinanceAaLedgerlCal(financeAaLedger);
+            if (financeAaLedger.size()>0){
+                financeAaLedgerlCalMapper.batchFinanceAaLedgerlCal(financeAaLedger);
+            }
+
             List<FinanceAaLedgerAcct> financeAaAccts = new ArrayList<>();
             List<FinanceAaLedgerAcct> financeAaLedgerAccts = financeAaLedgerAcctMapper.selectLedgerAcctPeriodList(financeAaLedgerAcct);
             for (FinanceAaLedgerAcct financeAaLedgerAcct1 : financeAaLedgerAccts) {
@@ -217,7 +220,10 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
                 return financeAaCloseRecords;
             }
-            financeAaLedgerAcctMapper.batchFinanceAcct(financeAaAccts);
+            if (financeAaAccts.size()>0){
+                financeAaLedgerAcctMapper.batchFinanceAcct(financeAaAccts);
+            }
+
         }catch (Exception e)
             {
                 successMsg.append( e.getMessage());
