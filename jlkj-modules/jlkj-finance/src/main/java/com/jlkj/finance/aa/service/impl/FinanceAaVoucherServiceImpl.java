@@ -141,7 +141,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             List<FinanceAaVoucher> financeAaVouchers = financeAaVoucherMapper.selectFinanceAaVoucherFront(financeAaVoucher);
             if (financeAaVouchers != null) {
                 for (int i = 0; i < financeAaVouchers.size(); i++) {
-                    financeAaVoucher1 = financeAaVouchers.get(0);
+                    financeAaVoucher1 = financeAaVouchers.get(i);
                 }
             }
 
@@ -166,7 +166,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             List<FinanceAaVoucher> financeAaVouchers = financeAaVoucherMapper.selectFinanceAaVoucherHead(financeAaVoucher);
             if (financeAaVouchers != null) {
                 for (int i = 0; i < financeAaVouchers.size(); i++) {
-                    financeAaVoucher1 = financeAaVouchers.get(i);
+                    financeAaVoucher1 = financeAaVouchers.get(0);
                 }
             }
 

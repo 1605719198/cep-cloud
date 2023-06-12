@@ -51,7 +51,6 @@ public class FinanceAaVoucherController extends BaseController
     public TableDataInfo listVoucherDetailSelect(FinanceAaVoucher financeAaVoucher)
     {
         startPage();
-
         List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherDetailList(financeAaVoucher);
         return getDataTable(list);
     }
@@ -129,7 +128,7 @@ public class FinanceAaVoucherController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAaVoucher financeAaVoucher)
     {
-        List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherDetailList(financeAaVoucher);
+        List<FinanceAaVoucher> list = financeAaVoucherService.selectFinanceAaVoucherLinkList(financeAaVoucher);
         ExcelUtil<FinanceAaVoucher> util = new ExcelUtil<FinanceAaVoucher>(FinanceAaVoucher.class);
         util.exportExcel(response, list, "凭证维护-主数据");
     }
