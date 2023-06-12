@@ -195,6 +195,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
 </where>
+        ORDER  BY
+        cal_namea
     </select>
     <select id="selecMaxMonth" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT

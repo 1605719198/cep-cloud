@@ -157,6 +157,8 @@ SELECT
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
 </where>
+        ORDER  BY
+        acct_code
     </select>
     <select id="selectFinanceAaGeneralLedgerAcctCode1"
             resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
@@ -173,7 +175,7 @@ SELECT
             <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
             <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
         </where>
-        ORDER BY
+        ORDER  BY
         acct_period
     </select>
     <select id="selectFinanceAaGeneralLedgerCalName"
