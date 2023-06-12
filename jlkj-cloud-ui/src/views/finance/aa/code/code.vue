@@ -372,7 +372,7 @@ export default {
       if (row.quedataway == '02') {
         this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName,row.id);
       } else {
-        this.$modal.msgError("请将取值方式不是取值，不能进入科目设置");
+        this.$modal.msgError("请将取值方式不是公式，不能进入科目设置");
       }
 
     },
