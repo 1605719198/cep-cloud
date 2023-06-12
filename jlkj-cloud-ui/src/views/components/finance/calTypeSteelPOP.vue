@@ -366,7 +366,6 @@ export default {
     },
     //公司下拉选单掉用方法
     changCompanyId(val) {
-      debugger
       if (!!val.value){
         this.queryParams.calTypeCode = val.value
       }

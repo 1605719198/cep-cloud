@@ -41,7 +41,6 @@
         <el-table v-loading="loading" :data="formDetail.detailList"
                   @row-dblclick="rowClick"
                   @selection-change="handleSelectionChange">
-
           <el-table-column label="凭证号" align="center" prop="voucherNo"   :show-overflow-tooltip='true'>
             <template slot-scope="scope">
               <el-button size="mini" @click="voucherNoClick(scope.row)" type="text">{{scope.row.voucherNo}}</el-button>
@@ -134,7 +133,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         companyId: "",
-        voucherDate: "",
+
         voucherNo: "",
         printCount: "",
         startDate: "",
@@ -203,7 +202,8 @@ export default {
       voucherType:null,
       ntamtDDisabled:false,
       ntamtCDisabled:false,
-      indexRow:''
+      indexRow:'',
+      voucherDateList:[]
     };
   },
   created() {
@@ -218,6 +218,7 @@ export default {
     },
     //查询日期切换事件
     dutyDateChange(val) {
+      this.voucherDateList=val
       if (val!=null){
         this.queryParams.startDate = val[0]
         this.queryParams.endDate = val[1]
@@ -297,7 +298,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         companyId: "",
-        voucherDate: "",
+
         voucherNo: "",
         printCount: "",
         startDate: "",
@@ -337,9 +338,11 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
+      this.queryParams.voucherDate=''
       this.download('finance/voucher/export', {
         ...this.queryParams
       }, `voucher_${new Date().getTime()}.xlsx`)
+      this.queryParams.voucherDate=this.voucherDateList
     }
   }
 };

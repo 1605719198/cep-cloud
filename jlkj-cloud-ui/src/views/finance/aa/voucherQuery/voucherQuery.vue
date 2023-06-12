@@ -37,7 +37,6 @@
               format="yyyy-MM-dd"
               @change="dutyDateChange">
             </el-date-picker>
-
           </el-form-item>
         </el-col>
 
@@ -222,7 +221,6 @@ export default {
         pageSize: 10,
         companyId: null,
         voucherType:null,
-        voucherDate: null,
         voucherNo: null,
         status:null,
         apid:null,
@@ -317,9 +315,9 @@ export default {
         this.queryParams.startDate = ''
         this.queryParams.endDate = ''
       }
-
     },
     handleSelectCoder(){
+
       this.$emit("ok",this.queryParams);
       this.visible = false;
     },
