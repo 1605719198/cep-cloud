@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules" v-show="showSearch" label-width="68px">
           <el-form-item label="公司别" prop="companyId">
             <el-select v-model="queryParams.companyId" placeholder="请选择公司" :popper-append-to-body="false">
               <el-option
@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="type">
-            <el-select v-model="queryParams.type" :popper-append-to-body="false">
+            <el-select v-model="queryParams.type" :popper-append-to-body="false" @change="resetType">
               <el-option
                 v-for="dict in attendenceOptions.CancellationPersonType"
                 :key="dict.dicNo"
@@ -23,17 +23,17 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="this.queryParams.type === 'org'">
+          <el-form-item v-if="this.queryParams.type === 'org'" prop="orgId">
             <el-input v-model="queryParams.orgId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else-if="this.queryParams.type === 'user'">
+          <el-form-item v-else-if="this.queryParams.type === 'user'" prop="empNo">
             <el-input v-model="queryParams.empNo" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
             </el-input>
           </el-form-item>
-          <el-form-item v-else>
+          <el-form-item v-else prop="clockWorkId">
             <el-input v-model="queryParams.clockWorkId" :disabled="true">
               <el-button slot="append" icon="el-icon-search" @click="openMacPop"></el-button>
             </el-input>
@@ -228,12 +228,17 @@ export default {
         companyId: 'J00',
         checkStartDate: null,
         type: 'org',
-        orgId: null
+        orgId: null,
+        empNo: null,
+        clockWorkId: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        checkStartDate: [
+          { required: true, message: "注销时间不能为空", trigger: "blur" }
+        ],
       },
       // 公司别数据
       companyName: [],
@@ -309,7 +314,6 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -381,6 +385,11 @@ export default {
     getJobNumber1(val) {
       this.form.empNo = val
     },
+    resetType() {
+      this.queryParams.orgId = null
+      this.queryParams.empNo = null
+      this.queryParams.clockWorkId = null
+    }
   }
 };
 </script>

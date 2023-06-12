@@ -312,6 +312,7 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/human/comptime/importData"
       },
+      compHours: 0
     };
   },
   created() {
@@ -395,19 +396,27 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateComptime(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
+            if (this.form.overtimeHours == this.overtimeHours){
+              updateComptime(this.form).then(response => {
+                this.$modal.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              });
+            } else {
+              this.$modal.msgError("加班时数计算错误，请重新输入");
+            }
           } else {
-            this.form.compId = this.queryParams.compId
-            addComptime(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.queryParams.workOvertimeDate = this.form.workOvertimeDate
-              this.getList();
-            });
+            if (this.form.overtimeHours == this.overtimeHours){
+              this.form.compId = this.queryParams.compId
+              addComptime(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.open = false;
+                this.queryParams.workOvertimeDate = this.form.workOvertimeDate
+                this.getList();
+              });
+            } else {
+              this.$modal.msgError("加班时数计算错误，请重新输入");
+            }
           }
         }
       });
@@ -442,11 +451,11 @@ export default {
     dateFormat1(picker) {
       this.form.startTime=picker[0]
       this.form.endTime=picker[1]
-      // if (this.form.startTime.substring(11, 13) === '08') {
-      //   this.form.compHours = 8
-      // } else {
-      //   this.form.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
-      // }
+      if (this.form.startTime.substring(11, 13) === '08' && this.form.endTime.substring(11, 13) === '17') {
+        this.compHours = 8
+      } else {
+        this.compHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
+      }
     },
     /**是否显示按钮 */
     isShow(status) {

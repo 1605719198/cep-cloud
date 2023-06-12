@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
@@ -57,7 +56,7 @@ public class CancellationPersonController extends BaseController {
         CancellationPerson cancellationPerson = new CancellationPerson();
         BeanUtils.copyProperties(cancellationPersonDTO, cancellationPerson);
         List<CancellationPerson> list = iCancellationPersonService.lambdaQuery()
-                .eq(StringUtils.isNotBlank(cancellationPerson.getCompanyId()), CancellationPerson::getCompanyId, cancellationPerson.getCompanyId())
+                .eq(CancellationPerson::getCompanyId, cancellationPerson.getCompanyId())
                 .eq(CancellationPerson::getOrgId, cancellationPerson.getOrgId())
                 .or()
                 .eq(CancellationPerson::getEmpNo, cancellationPerson.getEmpNo())

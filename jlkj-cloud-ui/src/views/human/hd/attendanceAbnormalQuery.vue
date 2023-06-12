@@ -159,9 +159,9 @@ export default {
     selectCompany().then(res => {
       this.companyName = res.data
     })
-    getBaseInfo(this.baseInfo).then(response => {
-      this.baseInfoData = response.data
-    });
+    // getBaseInfo(this.baseInfo).then(response => {
+    //   this.baseInfoData = response.data
+    // });
     this.getDisc()
   },
   methods: {
