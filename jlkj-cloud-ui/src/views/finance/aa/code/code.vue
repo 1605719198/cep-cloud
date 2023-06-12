@@ -369,7 +369,7 @@ export default {
       this.handleQuery();
     },
     rowClick(row, column, e) {
-      if (row.quedataway == '01') {
+      if (row.quedataway == '02') {
         this.$emit('change', 'second', row.cashFlowCode, row.cashFlowName,row.id);
       } else {
         this.$modal.msgError("请将取值方式不是取值，不能进入科目设置");
