@@ -64,6 +64,7 @@
                   </el-col>
                   <el-col :span="1.5">
                     <el-button
+                      v-if="false"
                       type="success"
                       plain
                       icon="el-icon-edit"

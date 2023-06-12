@@ -330,6 +330,7 @@ export default {
       }
       if (val.mainItems =='01'){
         this.detailIf = true
+
         listDetailIfSteel(this.queryParams).then(response => {
           this.formDetail.detailList=response
           this.fundsList1 =response;
