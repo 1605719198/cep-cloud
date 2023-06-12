@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.domain;
 
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
@@ -11,6 +12,7 @@ import com.jlkj.common.core.web.domain.BaseEntity;
  * @author 116514
  * @date 2023-04-25
  */
+@Data
 public class FinanceAaCarryRules extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -56,7 +58,8 @@ public class FinanceAaCarryRules extends BaseEntity
     private String acctNameOut;
     /** 转入会计科目名称 */
     private String acctNameIn;
-
+    /** 备注 */
+    private String remark;
 
     public void setId(String id)
     {

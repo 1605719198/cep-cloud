@@ -90,10 +90,17 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
         financeAaLedgerlCal.setCompanyId(financeAaCloseRecord.getCompanyId());
         financeAaLedgerlCal.setAcctPeriod(financeAaCloseRecord.getAcctPeriod().substring(0,7));
         QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
-        wrapper.le("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+financeAaCloseRecord.getAcctPeriod().substring(5,7))
-                .ge("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+"01")
-                .eq("comp_id", financeAaCloseRecord.getCompanyId())
-                .orderByDesc("account_period");
+        if (ConstantsUtil.CALRULE1.equals(financeAaCloseRecord.getAcctPeriod().substring(5,7))){
+            wrapper.eq("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+financeAaCloseRecord.getAcctPeriod().substring(5,7))
+                    .eq("comp_id", financeAaCloseRecord.getCompanyId())
+                    .orderByDesc("account_period");
+        }else {
+            wrapper.lt("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+financeAaCloseRecord.getAcctPeriod().substring(5,7))
+                    .ge("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+"01")
+                    .eq("comp_id", financeAaCloseRecord.getCompanyId())
+                    .orderByDesc("account_period");
+        }
+
         List<FinanceAccountYear> list = financeAccountYearService.list(wrapper);
         for (FinanceAccountYear financeAccountYear:list){
             if (!ConstantsUtil.DISABLEDCODE.equals(financeAccountYear.getIsClosed())){
@@ -133,7 +140,6 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 financeAaLedgerlCal.setCrAmt(BigDecimal.ZERO);
                 financeAaLedgerlCal.setDrQty(BigDecimal.ZERO);
                 financeAaLedgerlCal.setCrQty(BigDecimal.ZERO);
-                financeAaLedgerlCal.setId(UUID.fastUUID().toString());
                 financeAaLedgerlCal.setAcctId(financeAaLedgerlCal1.getAcctId());
                 financeAaLedgerlCal.setAcctName(financeAaLedgerlCal1.getAcctName());
                 bgnAmt = null == financeAaLedgerlCal1.getBgnAmt() ? BigDecimal.ZERO : financeAaLedgerlCal1.getBgnAmt();
@@ -153,12 +159,14 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 yearCrQty = null == financeAaLedgerlCal1.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerlCal1.getYearCrQty();
                 financeAaLedgerlCal.setYearCrQty(yearCrQty.add(crQty));
                 financeAaLedgerlCal.setAcctPeriod(DateUtils.addMonth(acctPeriod, 1).substring(0, 7));
-                if (BigDecimal.ZERO.equals(bgnAmt)||BigDecimal.ZERO.equals(drAmt)||BigDecimal.ZERO.equals(crAmt)
-                        ||BigDecimal.ZERO.equals(bgnQty)||BigDecimal.ZERO.equals(drQty)||BigDecimal.ZERO.equals(crQty)||
-                        BigDecimal.ZERO.equals(yearDrAmt)||BigDecimal.ZERO.equals(yearCrAmt)||BigDecimal.ZERO.equals(yearDrQty)|| BigDecimal.ZERO.equals(yearCrQty)){
-                    successMsg.append(financeAaLedgerlCal1.getAcctName()+"数量金额都为空不能结转！");
+                if (BigDecimal.ZERO.equals(bgnAmt)&&BigDecimal.ZERO.equals(drAmt)&&BigDecimal.ZERO.equals(crAmt)
+                        &&BigDecimal.ZERO.equals(bgnQty)&&BigDecimal.ZERO.equals(drQty)&&BigDecimal.ZERO.equals(crQty)&&
+                        BigDecimal.ZERO.equals(yearDrAmt)&&BigDecimal.ZERO.equals(yearCrAmt)&&BigDecimal.ZERO.equals(yearDrQty)&& BigDecimal.ZERO.equals(yearCrQty)){
+                    successMsg.append(financeAaLedgerlCal1.getAcctName()+"金额都为空不能结转！");
                 }
+                financeAaLedgerlCal.setId(UUID.fastUUID().toString());
                 financeAaLedger.add(financeAaLedgerlCal);
+                financeAaLedgerlCal = new FinanceAaLedgerlCal();
             }
             if(!StringUtils.isEmpty(successMsg)){
                 financeAaCloseRecord.setDesc(successMsg.toString());
@@ -171,7 +179,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
             List<FinanceAaLedgerAcct> financeAaAccts = new ArrayList<>();
             List<FinanceAaLedgerAcct> financeAaLedgerAccts = financeAaLedgerAcctMapper.selectLedgerAcctPeriodList(financeAaLedgerAcct);
             for (FinanceAaLedgerAcct financeAaLedgerAcct1 : financeAaLedgerAccts) {
-                financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                financeAaLedgerAcct.setAcctCode(financeAaLedgerAcct1.getAcctCode());
                 financeAaLedgerAcct.setAcctId(financeAaLedgerAcct1.getAcctId());
                 financeAaLedgerAcct.setAcctName(financeAaLedgerAcct1.getAcctName());
                 bgnAmt = null == financeAaLedgerAcct1.getBgnAmt() ? BigDecimal.ZERO : financeAaLedgerAcct1.getBgnAmt();
@@ -191,13 +199,16 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 yearCrQty = null == financeAaLedgerAcct1.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerAcct1.getYearCrQty();
                 financeAaLedgerAcct.setYearCrQty(yearCrQty.add(crQty));
                 financeAaLedgerAcct.setAcctPeriod(DateUtils.addMonth(acctPeriod, 1).substring(0, 7));
-                if (BigDecimal.ZERO.equals(bgnAmt)||BigDecimal.ZERO.equals(drAmt)||BigDecimal.ZERO.equals(crAmt)
-                        ||BigDecimal.ZERO.equals(bgnQty)||BigDecimal.ZERO.equals(drQty)||BigDecimal.ZERO.equals(crQty)||
-                        BigDecimal.ZERO.equals(yearDrAmt)||BigDecimal.ZERO.equals(yearCrAmt)||BigDecimal.ZERO.equals(yearDrQty)|| BigDecimal.ZERO.equals(yearCrQty)){
-                    successMsg.append(financeAaLedgerAcct1.getAcctName()+"数量金额都为空不能结转！");
+                if (BigDecimal.ZERO.equals(bgnAmt)&&BigDecimal.ZERO.equals(drAmt)&&BigDecimal.ZERO.equals(crAmt)
+                        &&BigDecimal.ZERO.equals(bgnQty)&&BigDecimal.ZERO.equals(drQty)&&BigDecimal.ZERO.equals(crQty)&&
+                        BigDecimal.ZERO.equals(yearDrAmt)&&BigDecimal.ZERO.equals(yearCrAmt)&&BigDecimal.ZERO.equals(yearDrQty)&& BigDecimal.ZERO.equals(yearCrQty)){
+                    successMsg.append(financeAaLedgerAcct1.getAcctName()+"数量都为空不能结转！");
 
                 }
+                financeAaLedgerAcct.setId(UUID.fastUUID().toString());
                 financeAaAccts.add(financeAaLedgerAcct);
+                financeAaLedgerAcct = new FinanceAaLedgerAcct();
+
             }
             if(!StringUtils.isEmpty(successMsg)){
                 financeAaCloseRecord.setDesc(successMsg.toString());

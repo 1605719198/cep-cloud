@@ -235,7 +235,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setPgrmid(financeAaVoucher.getDetailList().get(0).getSrlDesc());
+        financeAaVoucher.setVoucherDesc(financeAaVoucher.getDetailList().get(0).getSrlDesc());
         BigDecimal ntamtD = BigDecimal.ZERO;
         BigDecimal ntamtC = BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
@@ -282,7 +282,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setPgrmid(financeAaVoucher.getDetailList().get(0).getSrlDesc());
+        financeAaVoucher.setVoucherDesc(financeAaVoucher.getDetailList().get(0).getSrlDesc());
         BigDecimal ntamtD = BigDecimal.ZERO;
         BigDecimal ntamtC = BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();
@@ -340,7 +340,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setPgrmid(financeAaVoucher.getDetailList().get(0).getSrlDesc());
+        financeAaVoucher.setVoucherDesc(financeAaVoucher.getDetailList().get(0).getSrlDesc());
         BigDecimal ntamtD = BigDecimal.ZERO;
         BigDecimal ntamtC = BigDecimal.ZERO;
         List<FinanceAaVoucherDetail> detailList = financeAaVoucher.getDetailList();

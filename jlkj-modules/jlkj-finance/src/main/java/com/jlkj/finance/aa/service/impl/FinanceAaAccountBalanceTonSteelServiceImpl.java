@@ -276,7 +276,10 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             }
             financeAaLedgerAcctList.add(financeAaLedgerAcctDTO1);
         }
-        financeAaLedgerAcctList.sort(Comparator.comparing(FinanceAaLedgerAcctDTO::getAcctCode));
+        if (financeAaLedgerAcctList.size()>0){
+            financeAaLedgerAcctList.sort(Comparator.comparing(FinanceAaLedgerAcctDTO::getAcctCode));
+        }
+
         return financeAaLedgerAcctList;
     }
 

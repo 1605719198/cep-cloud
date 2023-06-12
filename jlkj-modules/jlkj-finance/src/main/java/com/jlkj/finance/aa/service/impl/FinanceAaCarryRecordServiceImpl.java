@@ -123,7 +123,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     financeAaVoucherDetail1.setVoucherDate(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
                     ntamt = ntamt.add(null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt());
                     BeanUtils.copyProperties(financeAaCarryRecord, financeAaVoucherDetail1);
-                    financeAaVoucherDetail1.setSrlDesc(financeAaCarryRecord.getRemark());
+                    financeAaVoucherDetail1.setSrlDesc(financeAaCarryRules.getRemark());
                     financeAaVoucherDetailsList.add(financeAaVoucherDetail1);
                 }
                 if (ConstantsUtil.DRCRD.equals(financeAaCarryRules.getCarryType())) {
@@ -243,6 +243,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     financeAaVoucherDetail.setVoucherDate(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
                     ntamt = ntamt.add(null == financeAaVoucherDetail1.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail1.getNtamt());
                     BeanUtils.copyProperties(financeAaCarryRecord, financeAaVoucherDetail1);
+
                     financeAaVoucherDetail1.setSrlDesc(financeAaCarryRecord.getRemark());
                     financeAaVoucherDetailsList.add(financeAaVoucherDetail1);
                 }
