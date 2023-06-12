@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams"
              :rules="rulesQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="87px">
-      <el-form-item label="凭证维护">
+      <el-form-item label="凭证查询">
         <el-form-item label="会计公司" prop="companyId">
           <el-select v-model="queryParams.companyId" filterable placeholder="请输入会计公司">
             <el-option

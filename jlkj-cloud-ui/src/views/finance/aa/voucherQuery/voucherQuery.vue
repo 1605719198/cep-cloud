@@ -6,7 +6,7 @@
     <el-form :model="queryParams" ref="queryForm" size="small"
              :inline="true" label-width="106px">
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleSelectCoder">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
 
@@ -25,6 +25,22 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col   :span="12">
+          <el-form-item label="凭证日期" prop="voucherDate">
+            <el-date-picker
+              v-model="queryParams.voucherDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
+              format="yyyy-MM-dd"
+              @change="dutyDateChange">
+            </el-date-picker>
+
+          </el-form-item>
+        </el-col>
+
         <el-col   :span="12">
           <el-form-item label="凭证类型" prop="voucherType">
             <el-select v-model="queryParams.voucherType"
@@ -150,10 +166,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleSelectCoder">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
-    </div>
+
     <calTypePOP ref="selectPOP" @pop="getCalTypePOP"/>
     <calTypePOP ref="selectPOP2" @pop="getCalTypePOP2"/>
     <calTypePOP ref="selectPOP3" @pop="getCalTypePOP3"/>

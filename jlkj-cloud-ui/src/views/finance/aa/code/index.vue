@@ -4,9 +4,7 @@
       <el-tab-pane label="现金流量代码" name="first">
         <index @change="changeData"></index>
       </el-tab-pane>
-      <el-tab-pane label="科目设
-
-      置" name="second">
+      <el-tab-pane label="科目设置" name="second">
         <item :cashFlowCode="cashFlowCode"  :cashFlowName="cashFlowName" :id="id"></item>
       </el-tab-pane>
     </el-tabs>
