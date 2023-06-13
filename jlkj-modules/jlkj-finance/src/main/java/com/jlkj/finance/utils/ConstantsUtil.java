@@ -45,6 +45,7 @@ public class ConstantsUtil
 
 
     public static final String CODE_N="N";
+    public static final String CODE_Y="Y";
 
     public static final String STATUS_P="P";
     /**
