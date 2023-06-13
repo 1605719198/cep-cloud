@@ -120,6 +120,10 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
         wrapperYearPost.eq("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+financeAaCloseRecord.getAcctPeriod().substring(5,7))
                 .eq("comp_id", financeAaCloseRecord.getCompanyId());
         financeAccountYear =  financeAccountYearService.getOne(wrapperYearPost);
+        //检查如果状态是己关账状态 ，不可重复关账
+        if (financeAccountYear.getIsClosed().equals("Y")){
+            throw new Exception(financeAaCloseRecord.getAcctPeriod().substring(0,7)+"己关账，不能重复关账！");
+        }
         financeAccountYear.setIsClosed("Y");
          financeAccountYearService.updateById(financeAccountYear);
             List<FinanceAaLedgerlCal> financeAaLedger = new ArrayList<>();
