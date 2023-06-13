@@ -363,13 +363,7 @@ export default {
       if (  val.isNoNumber =='N') {
         this.bgnAmtIf02 = true
       }
-
-
       this.tableKey+=1;
-
-
-
-
       if (val.mainItems =='02'){
         this.numberDetailIf = true
         listCalNumberDetailIfSteel(this.queryParams).then(response => {
