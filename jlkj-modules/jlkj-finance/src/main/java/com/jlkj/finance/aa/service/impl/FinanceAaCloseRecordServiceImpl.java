@@ -90,7 +90,9 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
         financeAaLedgerlCal.setCompanyId(financeAaCloseRecord.getCompanyId());
         financeAaLedgerlCal.setAcctPeriod(financeAaCloseRecord.getAcctPeriod().substring(0,7));
         QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
-        if (ConstantsUtil.CALRULE1.equals(financeAaCloseRecord.getAcctPeriod().substring(5,7))){
+        int i = 5;
+        int b = 7;
+        if (ConstantsUtil.CALRULE1.equals(financeAaCloseRecord.getAcctPeriod().substring(i,b))){
             wrapper.eq("account_period", financeAaCloseRecord.getAcctPeriod().substring(0,4)+financeAaCloseRecord.getAcctPeriod().substring(5,7))
                     .eq("comp_id", financeAaCloseRecord.getCompanyId())
                     .orderByDesc("account_period");
@@ -109,7 +111,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
         }
         if(!StringUtils.isEmpty(successMsg)){
             financeAaCloseRecord.setDesc(successMsg.toString());
-            financeAaCloseRecord.setStatus("N");
+            financeAaCloseRecord.setStatus(ConstantsUtil.CODE_N);
             financeAaCloseRecords.add(financeAaCloseRecord);
             financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
             return financeAaCloseRecords;
@@ -121,10 +123,10 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                 .eq("comp_id", financeAaCloseRecord.getCompanyId());
         financeAccountYear =  financeAccountYearService.getOne(wrapperYearPost);
         //检查如果状态是己关账状态 ，不可重复关账
-        if (financeAccountYear.getIsClosed().equals("Y")){
+        if (financeAccountYear.getIsClosed().equals(ConstantsUtil.CODE_Y)){
             throw new Exception(financeAaCloseRecord.getAcctPeriod().substring(0,7)+"己关账，不能重复关账！");
         }
-        financeAccountYear.setIsClosed("Y");
+        financeAccountYear.setIsClosed(ConstantsUtil.CODE_Y);
          financeAccountYearService.updateById(financeAccountYear);
             List<FinanceAaLedgerlCal> financeAaLedger = new ArrayList<>();
         List<FinanceAaLedgerlCal> financeAaLedgerlCals = financeAaLedgerlCalMapper.selectAcctPeriodList(financeAaLedgerlCal);
@@ -219,7 +221,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
             }
             if(!StringUtils.isEmpty(successMsg)){
                 financeAaCloseRecord.setDesc(successMsg.toString());
-                financeAaCloseRecord.setStatus("N");
+                financeAaCloseRecord.setStatus(ConstantsUtil.CODE_N);
                 financeAaCloseRecords.add(financeAaCloseRecord);
                 financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
                 return financeAaCloseRecords;
@@ -232,12 +234,12 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
             {
                 successMsg.append( e.getMessage());
                 financeAaCloseRecord.setDesc(successMsg.toString());
-                financeAaCloseRecord.setStatus("N");
+                financeAaCloseRecord.setStatus(ConstantsUtil.CODE_N);
                 financeAaCloseRecords.add(financeAaCloseRecord);
                 financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
                 return financeAaCloseRecords;
             }
-        financeAaCloseRecord.setStatus("Y");
+        financeAaCloseRecord.setStatus(ConstantsUtil.CODE_Y);
         financeAaCloseRecordMapper.insertFinanceAaCloseRecord(financeAaCloseRecord);
         financeAaCloseRecords.add(financeAaCloseRecord);
         return financeAaCloseRecords;
