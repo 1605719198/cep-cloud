@@ -22,6 +22,7 @@ jlkj-system:9201</br>
 jlkj-gen:9202</br>
 jlkj-job:9203</br>
 jlkj-ureport:9204</br>
+jlkj-imageIdentify:9205</br>
 jlkj-file:9300</br>
 jlkj-equip:9900</br>
 jlkj-energy:9910</br>
