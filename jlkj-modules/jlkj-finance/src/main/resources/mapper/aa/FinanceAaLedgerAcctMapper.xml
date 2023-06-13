@@ -94,7 +94,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     finance_aa_ledger_acct
                 WHERE
                     acct_period between #{startDate} and #{endDate}
-                  and acct_code between #{acctCodeStart} and #{acctCodeEnd}
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+
+
                   and company_id = #{companyId}
                 UNION
                 SELECT
@@ -130,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         AND b.company_id = a.company_id
                 WHERE
                     b.voucher_date between #{startDate} and #{endDate}
-                  and acct_code between #{acctCodeStart} and #{acctCodeEnd}
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
                   and  b.company_id = #{companyId}
                 group by acct_name
             ) T1

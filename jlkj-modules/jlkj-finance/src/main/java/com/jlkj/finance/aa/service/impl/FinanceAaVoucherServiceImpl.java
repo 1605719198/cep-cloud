@@ -803,7 +803,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             for (FinanceAccountYear financeAccountYear : list) {
                 if ("N".equals(financeAccountYear.getIsClosed())) {
                 } else {
-                    successMsg.append("资料不是未关账状态");
+                    successMsg.append("当前会计周期己经是关账状态，不可重复执行");
 
                 }
             }
@@ -865,7 +865,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             }
         }
         if ((ntamtD.subtract(ntamtC).compareTo(BigDecimal.ZERO) != 0)) {
-            successMsg.append("金额借贷金额必须平衡！");
+            successMsg.append("借贷金额必须平衡！");
         }
         return successMsg.toString();
     }

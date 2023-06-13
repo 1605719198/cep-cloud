@@ -79,7 +79,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaCarryRecordVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectList" resultType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord">
+        <include refid="selectFinanceAaCarryRecordVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> company_id = #{companyId}</if>
+            <if test="carry != null  and carry != ''"> and carry = #{carry}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
+            <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
+        </where>
+    </select>
+
     <insert id="insertFinanceAaCarryRecord" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryRecord">
         insert into finance_aa_carry_record
         <trim prefix="(" suffix=")" suffixOverrides=",">

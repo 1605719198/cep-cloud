@@ -28,6 +28,13 @@ public interface FinanceAaCarryRecordMapper
      */
     public List<FinanceAaCarryRecord> selectFinanceAaCarryRecordList(FinanceAaCarryRecord financeAaCarryRecord);
     /**
+     * 查询自动结转规则-执行记录列表(集团)
+     *
+     * @param financeAaCarryRecord 自动结转规则-执行记录
+     * @return 自动结转规则-执行记录集合
+     */
+    public List<FinanceAaCarryRecord> selectList (FinanceAaCarryRecord financeAaCarryRecord);
+    /**
      * 查询自动结转规则-执行记录列表(公司)
      *
      * @param financeAaCarryRecord 自动结转规则-执行记录

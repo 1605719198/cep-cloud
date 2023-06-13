@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceAaVoucherExecuteList"
             resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         SELECT
-        voucher_no,
+
         drcr,
         group_acct_id,
         acct_id,
@@ -109,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         cal_coded,
         cal_named,
         crcy_unit,
-        sum( qty_frnAmt )AS qty_frnAmt,
+        sum( qty_frnAmt ) AS qty_frnAmt,
         sum( ntAmt ) AS ntAmt
         FROM
         finance_aa_voucher_detail
@@ -117,9 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
             <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+            <if test="voucherDate != '' and voucherDate != ''"> and voucher_date like concat('%',#{voucherDate},'%')</if>
         </where>
         GROUP BY
-        voucher_no,
         drcr,
         group_acct_id,
         acct_id,
