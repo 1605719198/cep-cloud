@@ -123,7 +123,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and company_id = #{companyId}
                 group by acct_name , company_id,acct_code
 
-        <if test="unpostedVoucher == 'Y' ">
+        <if test='unpostedVoucher == "Y"'>
+
        UNION
             select company_id,acct_name,acct_code,sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
                 sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty from (
@@ -154,7 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
                     AND b.company_id = a.company_id
                 WHERE
-                    b.voucher_date between #{startDate} and #{endDate}
+                    b.voucher_date between #{startDetailDate} and #{endDetailDate}
                     <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
                     <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
                         and (cal_namea between #{calNameaStart} and #{calNameaEnd}
@@ -226,6 +227,47 @@ SELECT
         </where>
         ORDER BY
         acct_period
+    </select>
+    <select id="selectAcctCode" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT DISTINCT
+            acct_code,
+            acct_name
+        FROM
+            (
+                SELECT DISTINCT
+                    acct_code,
+                    acct_name
+                FROM
+                    finance_aa_ledgerl_cal
+                WHERE
+        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+        <if test="startDate != '' and startDate!= null "> and acct_period =  substr(#{startDate}, 1, 7 )</if>
+                UNION ALL
+                SELECT DISTINCT
+                    acct_code,
+                    acct_name
+                FROM
+                    finance_aa_voucher_detail
+                WHERE
+        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+        <if test="startDate != '' and endDate != ''"> and voucher_date between   substr(#{startDate}, 1, 10 )and substr(#{endDate}, 1, 10 )</if>
+            )
+                T1
+        ORDER BY
+            acct_code
+    </select>
+    <select id="selectBgnAmtAndBgnQty" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        IFNULL( sum( bgn_amt ),0.00) as bgn_amt,
+        IFNULL( sum( bgn_qty ),0.00) as bgn_qty
+        FROM
+            finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+            <if test="startDate != '' and startDate!= null"> and acct_period  =  substr(#{startDate}, 1, 7 )</if>
+            and cal_namea = #{calName}
+        </where>
     </select>
 
     <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
