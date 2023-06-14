@@ -114,7 +114,9 @@
           <el-input v-model="form.deptCode" placeholder="请输入对应人事公司" style="width:400px"/>
         </el-form-item>
         <el-form-item label="对应厂商" prop="manufacturerNo">
-          <el-input v-model="form.manufacturerNo" placeholder="请输入对应厂商编码NO" style="width:400px"/>
+          <el-input v-model="form.manufacturerNo" placeholder="请输入对应厂商编码NO" disabled style="width:400px">
+            <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+          </el-input>
         </el-form-item>
         <el-row>
           <el-col :span="12">
@@ -147,17 +149,20 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+  <selectManufacturer ref="select" @ok="getJobNumber"/>
   </div>
 </template>
 
 <script>
 import { listCompanyGroup, getCompanyGroup, delCompanyGroup, addCompanyGroup, updateCompanyGroup } from "@/api/finance/aa/companyGroup";
-
+import selectManufacturer from "@/views/components/finance/selectManufacturer";
 export default {
   name: "CompanyGroup",
+  components: {selectManufacturer},
   data() {
     return {
       // 遮罩层
+      selectManufacturer:false,
       loading: true,
       // 选中数组
       ids: [],
@@ -310,7 +315,14 @@ export default {
       this.download('finance/companyGroup/export', {
         ...this.queryParams
       }, `companyGroup_${new Date().getTime()}.xlsx`)
-    }
+    },
+    inputClick(){
+      this.selectManufacturer = true
+      this.$refs.select.show();
+    },
+    getJobNumber(val,userName) {
+      this.form.manufacturerNo = val
+    },
   }
 };
 </script>
