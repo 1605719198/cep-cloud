@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.dto;
 
+import com.jlkj.common.core.annotation.Excel;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,12 @@ import java.math.BigDecimal;
 @Data
 public class FinanceAaLedgerAcctDTO {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 记帐币金额
+     */
+
+    private BigDecimal ntAmt;
     /**
      * 期初贷余额
      */
@@ -70,6 +77,15 @@ public class FinanceAaLedgerAcctDTO {
      * 截止日期
      */
     private String endDate;
+
+    /**
+     * 起始日期
+     */
+    private String startDetailDate;
+    /**
+     * 截止日期
+     */
+    private String endDetailDate;
     /**
      * 科目级别
      */
@@ -325,4 +341,120 @@ public class FinanceAaLedgerAcctDTO {
      *   余额
      */
     private BigDecimal  balance;
+
+
+    private String calNamebStart;
+    private String calNamebEnd;
+
+    /** 核算项目1编号 */
+
+    private String calTypeCodea;
+    /** 核算项目2编号 */
+
+    private String calTypeCodeb;
+    /** 核算项目3编号 */
+
+    private String calTypeCodec;
+    /** 核算项目4编号 */
+
+    private String calTypeCoded;
+
+
+    /**
+     * 凭证id
+     */
+    @Excel(name = "凭证id")
+    private String voucherId;
+
+
+    /**
+     * 凭证号码
+     */
+    @Excel(name = "凭证号码")
+    private String voucherNo;
+
+    /**
+     * 分录序号
+     */
+    @Excel(name = "分录序号")
+    private Long srlno;
+
+
+
+    /**
+     * 集团级会计科目主键
+     */
+    @Excel(name = "集团级会计科目主键")
+    private String groupAcctId;
+
+
+
+
+    /**
+     * 核算项目一id
+     */
+    @Excel(name = "核算项目一id")
+    private String calIda;
+
+
+
+    /**
+     * 核算项目二id
+     */
+    @Excel(name = "核算项目二id")
+    private String calIdb;
+
+    /**
+     * 核算项目二代码
+     */
+    @Excel(name = "核算项目二代码")
+    private String calCodeb;
+
+
+    /**
+     * 核算项目三id
+     */
+    @Excel(name = "核算项目三id")
+    private String calIdc;
+
+    /**
+     * 核算项目三代码
+     */
+    @Excel(name = "核算项目三代码")
+    private String calCodec;
+
+
+    /**
+     * 核算项目四id
+     */
+    @Excel(name = "核算项目四id")
+    private String calIdd;
+
+    /**
+     * 核算项目四代码
+     */
+    @Excel(name = "核算项目四代码")
+    private String calCoded;
+
+
+
+    /**
+     * 数量单位/币别
+     */
+
+    private String crcyUnit;
+
+    /**
+     * 数量/外币金额
+     */
+
+    private BigDecimal qtyFrnamt;
+
+
+
+    /**
+     * 凭证分录摘要
+     */
+
+    private String srlDesc;
 }

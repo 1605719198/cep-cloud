@@ -67,77 +67,220 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectAmountNotDisplayed" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
-            company_id,
-            acct_period,
-            acct_name,
-            acct_code,
-            sum( bgn_amt ),
-            sum( dr_amt ),
-            sum( cr_amt ),
-            sum( bgn_qty ),
-            sum( dr_qty ),
-            sum( cr_qty )
+        T1.company_id,
+        T3.acct_name,
+        T1.acct_code,
+        sum(T1.bgn_amt )as  bgn_amt,
+        sum(T1.dr_amt )as  dr_amt,
+        sum(T1.cr_amt )as  cr_amt,
+        sum(T1.bgn_qty )as bgn_qty,
+        sum(T1.dr_qty )as dr_qty,
+        sum(T1.cr_qty )as cr_qty,
+        sum(T1.year_dr_amt )+ sum( T1.dr_amt)  as  year_dr_amt,
+        sum(T1.year_cr_amt  )+ sum(T1. cr_amt)  as  year_cr_amt,
+        sum(T1.year_dr_qty  )+ sum( T1.dr_qty)  as  year_dr_qty,
+        sum(T1.year_cr_qty )+ sum(T1. cr_qty)  as  year_cr_qty
         FROM
             (
+
+        SELECT
+            company_id AS company_id ,
+            acct_name AS acct_name,
+            <if test='accountLevel == "01"'>
+                substr( acct_code, 1, 4 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "02"'>
+                substr( acct_code, 1, 6 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "03"'>
+                substr( acct_code, 1, 8 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "04"'>
+                substr( acct_code, 1, 10)     AS acct_code,
+            </if>
+            <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                substr( acct_code, 1, 12)     AS acct_code,
+            </if>
+            0 AS bgn_amt,
+            0 AS dr_amt,
+            0 AS cr_amt,
+            0 AS bgn_qty,
+            0 AS dr_qty,
+            0 AS cr_qty,
+            sum(year_dr_amt) as year_dr_amt,
+            sum( year_cr_amt) as year_cr_amt,
+            sum(year_dr_qty) as year_dr_qty,
+            sum(year_cr_qty) as year_cr_qty
+        FROM
+            finance_aa_ledgerl_cal
+        WHERE
+            acct_period between #{endDate} and #{endDate}
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            and company_id = #{companyId}
+        group by acct_name , company_id,acct_code
+
+        UNION
                 SELECT
                     company_id AS company_id ,
-                    acct_period AS acct_period,
                     acct_name AS acct_name,
-                    acct_code AS acct_code,
-                    bgn_amt AS bgn_amt,
-                    dr_amt AS dr_amt,
-                    cr_amt AS cr_amt,
-                    bgn_qty AS bgn_qty,
-                    dr_qty AS dr_qty,
-                    cr_qty AS cr_qty
+                    <if test='accountLevel == "01"'>
+                        substr( acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( acct_code, 1, 12)     AS acct_code,
+                    </if>
+                    sum(bgn_amt) AS bgn_amt,
+                    0 AS dr_amt,
+                    0 AS cr_amt,
+                    sum(bgn_qty) AS bgn_qty,
+                    0 AS dr_qty,
+                    0 AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
                 FROM
-                    finance_aa_ledger_acct
+                    finance_aa_ledgerl_cal
                 WHERE
-                    acct_period between #{startDate} and #{endDate}
-        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+                    acct_period between #{startDate} and #{startDate}
+                    <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+                    and company_id = #{companyId}
+                    group by acct_name , company_id,acct_code
 
+        UNION
+                SELECT
+                    company_id AS company_id ,
+                    acct_name AS acct_name,
+                    <if test='accountLevel == "01"'>
+                        substr( acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( acct_code, 1, 12)     AS acct_code,
+                    </if>
+                    0 AS bgn_amt,
+                    sum(dr_amt) AS dr_amt,
+                    sum(cr_amt) AS cr_amt,
+                    0 AS bgn_qty,
+                    sum(dr_qty) AS dr_qty,
+                    sum(cr_qty) AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
+                FROM
+                    finance_aa_ledgerl_cal
+                WHERE
+                acct_period between #{startDate} and #{endDate}
+                <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+                <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+                    and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+                         or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+                         or cal_namec between #{calNameaStart} and #{calNameaEnd}
+                         or cal_named between #{calNameaStart} and #{calNameaEnd}
+                         )
+                    </if>
+                and company_id = #{companyId}
+                group by acct_name , company_id,acct_code
 
-                  and company_id = #{companyId}
-                UNION
+        <if test='unpostedVoucher == "Y"'>
+
+       UNION
+            select company_id,acct_name,acct_code,sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
+                sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty ,
+                SUM(year_dr_amt) AS  year_dr_amt,
+                SUM(year_cr_amt) AS year_cr_amt,
+                SUM(year_dr_qty) AS  year_dr_qty,
+                SUM(year_cr_qty) AS year_cr_qty
+            from (
                 SELECT
                     b.company_id AS company_id,
-                    substr( b.voucher_date, 1, 7 ) AS acct_period,
                     b.acct_name AS acct_name,
-                    b.acct_code AS acct_code,
+                    <if test='accountLevel == "01"'>
+                        substr( b.acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( b.acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( b.acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( b.acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( b.acct_code, 1, 12)     AS acct_code,
+                    </if>
+
                     0 AS bgn_amt,
                     CASE
-
-                        WHEN DRCR = 'D' THEN
-                            SUM( b.ntAmt ) ELSE 0
-                        END AS dr_amt,
+                    WHEN DRCR = 'D' THEN
+                    b.ntAmt  ELSE 0
+                    END AS dr_amt,
                     CASE
-
-                        WHEN DRCR = 'C' THEN
-                            SUM( b.ntAmt ) ELSE 0
-                        END AS cr_amt,
+                    WHEN DRCR = 'C' THEN
+                     b.ntAmt ELSE 0
+                    END AS cr_amt,
                     0 AS bgn_qty,
                     CASE
-
-                        WHEN DRCR = 'D' THEN
-                            SUM( b.qty_frnAmt ) ELSE 0
-                        END AS dr_qty,
+                    WHEN DRCR = 'D' THEN
+                     b.qty_frnAmt  ELSE 0
+                    END AS dr_qty,
                     CASE
-
-                        WHEN DRCR = 'C' THEN
-                            SUM( b.qty_frnAmt ) ELSE 0
-                        END AS cr_qty
-                FROM
+                    WHEN DRCR = 'C' THEN
+                     b.qty_frnAmt  ELSE 0
+                    END AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
+                    FROM
                     finance_aa_voucher a
-                        LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
-                        AND b.company_id = a.company_id
+                    LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
+                    AND b.company_id = a.company_id
                 WHERE
-                    b.voucher_date between #{startDate} and #{endDate}
-        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
-                  and  b.company_id = #{companyId}
-                group by acct_name
+                    b.voucher_date between #{startDetailDate} and #{endDetailDate}
+                    <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+                    <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+                        and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+                        or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+                        or cal_namec between #{calNameaStart} and #{calNameaEnd}
+                        or cal_named between #{calNameaStart} and #{calNameaEnd}
+                        )
+                    </if>
+                    and  b.company_id = #{companyId}
+                    and a.status <![CDATA[   !=  ]]> 'P'
+                ) t2
+                group by acct_name , company_id,acct_code
+           </if>
             ) T1
+        left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
         GROUP BY
-            acct_name
+        T1.company_id,
+        T3.acct_name,
+        T1.acct_code
+        order BY
+        T1.company_id,
+        T1.acct_code,
+        T3.acct_name
+
     </select>
     <select id="selectBalanceZero" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         <include refid="selectFinanceAaLedgerAcctVo"/>
@@ -193,6 +336,47 @@ SELECT
         </where>
         ORDER BY
         acct_period
+    </select>
+    <select id="selectAcctCode" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT DISTINCT
+            acct_code,
+            acct_name
+        FROM
+            (
+                SELECT DISTINCT
+                    acct_code,
+                    acct_name
+                FROM
+                    finance_aa_ledgerl_cal
+                WHERE
+        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+        <if test="startDate != '' and startDate!= null "> and acct_period =  substr(#{startDate}, 1, 7 )</if>
+                UNION ALL
+                SELECT DISTINCT
+                    acct_code,
+                    acct_name
+                FROM
+                    finance_aa_voucher_detail
+                WHERE
+        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+        <if test="startDate != '' and endDate != ''"> and voucher_date between   substr(#{startDate}, 1, 10 )and substr(#{endDate}, 1, 10 )</if>
+            )
+                T1
+        ORDER BY
+            acct_code
+    </select>
+    <select id="selectBgnAmtAndBgnQty" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        IFNULL( sum( bgn_amt ),0.00) as bgn_amt,
+        IFNULL( sum( bgn_qty ),0.00) as bgn_qty
+        FROM
+            finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+            <if test="startDate != '' and startDate!= null"> and acct_period  =  substr(#{startDate}, 1, 7 )</if>
+            and cal_namea = #{calName}
+        </where>
     </select>
 
     <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">

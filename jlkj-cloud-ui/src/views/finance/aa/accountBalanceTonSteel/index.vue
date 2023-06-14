@@ -29,15 +29,15 @@
                >
               <el-table-column label="会计科目" prop="acctCode" align="center" />
               <el-table-column  label="会计科目名称"  prop="acctName" align="center" />
-              <el-table-column label="余额初期"  align="center">
+              <el-table-column label="初期余额"  align="center">
                 <el-table-column label="借方" prop="bgnAmtStraight"align="center"/>
                 <el-table-column label="贷方" prop="bgnAmtBurden"align="center"/>
               </el-table-column>
-              <el-table-column label="本期发生额初期" align="center">
+              <el-table-column label="本期发生额" align="center">
                 <el-table-column label="借方" prop="drAmt"align="center"/>
                 <el-table-column label="贷方" prop="crAmt"align="center"/>
               </el-table-column>
-              <el-table-column label="本年发生额初期" align="center">
+              <el-table-column label="本年累计发生额" align="center">
                 <el-table-column label="借方" prop="yearDrAmt"align="center"/>
                 <el-table-column label="贷方" prop="yearCrAmt"align="center"/>
               </el-table-column>

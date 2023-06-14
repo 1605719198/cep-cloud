@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,25 +34,32 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
 
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
+        Date dateStart = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getStartDate());
+        String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS  = new ArrayList<>();
+        financeAaLedgerAcctDTO.getUnpostedVoucher();
+        financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
+       //无发生额不显示 Y
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectList(financeAaLedgerAcctDTOS);
         }
+        // 余额为零且无发生额不显示 Y
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectListAdd(financeAaLedgerAcctDTOS);
         }
-        if (ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getBalanceZero())&& ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
-        }
+
+        //合并层级
         if (financeAaLedgerAcctDTOS.size()>0){
-            financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
+           // financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
         }
-        return financeAaLedgerAcctDTOS1;
+        return financeAaLedgerAcctDTOS;
     }
 
     @Override
@@ -61,8 +70,18 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
 
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListCalNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
+
+
+        Date dateStart = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getStartDate());
+        String startDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateStart));
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
+
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
+
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS ;
         if (ConstantsUtil.TYPE2.equals(financeAaLedgerAcctDTO.getReportType())){
@@ -175,65 +194,13 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
 
     public  List<FinanceAaLedgerAcctDTO>  selectAccountLevel(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO,FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2){
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctList = new ArrayList<>();
-        String substring="";
+
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO2.getUnpostedVoucher())){
-                financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
-                financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
-                financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate()+"-01");
-                financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate()+"-31");
-                FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
-                if (financeAaVoucherDetail1!=null){
-                    if (ConstantsUtil.DRCRC.equals(financeAaVoucherDetail1.getDrcr())){
-                        financeAaLedgerAcctDTO1.setDrAmt(financeAaVoucherDetail1.getNtamt());
-                        financeAaLedgerAcctDTO1.setDrQty(financeAaVoucherDetail1.getQtyFrnamt());
-                    }else {
-                        financeAaLedgerAcctDTO1.setCrAmt(financeAaVoucherDetail1.getNtamt());
-                        financeAaLedgerAcctDTO1.setCrQty(financeAaVoucherDetail1.getQtyFrnamt());
-                    }
 
-                }
-            }
-            if (ConstantsUtil.CALRULE1.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                if (financeAaLedgerAcctDTO1.getAcctCode().length()>4){
-                    substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 4);
-                }else {
-                    substring = financeAaLedgerAcctDTO1.getAcctCode();
-                }
-            }
-            if (ConstantsUtil.CALRULE2.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                if (financeAaLedgerAcctDTO1.getAcctCode().length()>6){
-                    substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 6);
-                }else {
-                    substring = financeAaLedgerAcctDTO1.getAcctCode();
-                }
-            }
-            if (ConstantsUtil.CALRULE3.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                if (financeAaLedgerAcctDTO1.getAcctCode().length()>8){
-                    substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 8);
-                }else {
-                    substring = financeAaLedgerAcctDTO1.getAcctCode();
-                }
-            }
-            if (ConstantsUtil.CALRULE4.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                if (financeAaLedgerAcctDTO1.getAcctCode().length()>10){
-                    substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 10);
-                }else {
-                    substring = financeAaLedgerAcctDTO1.getAcctCode();
-                }
-            }
-            if (ConstantsUtil.CALRULE5.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                if (financeAaLedgerAcctDTO1.getAcctCode().length()>12){
-                    substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 12);
-                }else {
-                    substring = financeAaLedgerAcctDTO1.getAcctCode();
-                }
-            }
-            if(ConstantsUtil.ISEMPTY.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
-                substring = financeAaLedgerAcctDTO1.getAcctCode();
-            }
-            financeAaLedgerAcctDTO1.setAcctCode(substring);
+
+
+
             if ((null == financeAaLedgerAcctDTO1.getBgnAmt()?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setBgnAmtStraight(financeAaLedgerAcctDTO1.getBgnAmt());
             }else {

@@ -67,7 +67,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
         Map<String, Object> versionMap = miniStandardMapper.selectMaxVersion(compId);
         Long version = 1L;
         version = Long.parseLong(versionMap.get("version").toString())+1;
-        if(versionMap != null && versionMap.get("version") != null){
+        if(versionMap.get("version") != null){
             Date effectDate= (Date) versionMap.get("effectDate");
             if(nowdate.compareTo(effectDate)<0){
                 for (MiniStandard miniStandard : miniStandardList) {

@@ -1,28 +1,5 @@
 <template>
   <div>
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="报表代号" prop="reportNo">
-        <el-input
-          v-model="queryParams.reportNo"
-          placeholder="请输入报表代号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="报表名称">
-        <el-input
-          v-model="queryParams.reportName"
-          placeholder="请输入报表名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <div style="margin-top: 3px;font-size:14px">报表代号：</div>
@@ -203,7 +180,7 @@ export default {
       pItemName: "",
       indexRow:'',
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -260,7 +237,7 @@ export default {
   },
 
   created() {
-    this.getList();
+    //this.getList();
     this.getCompanyList();
   },
   methods: {
@@ -269,6 +246,7 @@ export default {
       // 根据传递过来的值进行查询
       this.queryParams.companyId = obj.companyId
       this.queryParams.reportNo = obj.reportNo
+      this.queryParams.itemCode = obj.itemCode
       this.pCompanyId = obj.companyId
       this.pReportId = obj.reportId
       this.pReportNo = obj.reportNo
@@ -276,6 +254,7 @@ export default {
       this.pItemCode = obj.itemCode
       this.pItemName = obj.itemName
       this.getList()
+
     },
     getCompanyList() {
       selectCompanyList().then(response => {
