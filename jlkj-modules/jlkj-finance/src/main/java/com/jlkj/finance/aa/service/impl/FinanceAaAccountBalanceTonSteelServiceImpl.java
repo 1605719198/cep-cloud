@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,12 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
 
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
+        Date dateStart = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getStartDate());
+        String startDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateStart));
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
