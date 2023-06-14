@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.YearPerformanceMapper">
+    
+    <resultMap type="YearPerformance" id="YearPerformanceResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="dept"    column="dept"    />
+        <result property="postId"    column="post_id"    />
+        <result property="year"    column="year"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="yearScore"    column="year_score"    />
+        <result property="rank"    column="rank"    />
+        <result property="admScore"    column="adm_score"    />
+        <result property="admEmpId"    column="adm_emp_id"    />
+        <result property="score"    column="score"    />
+        <result property="status"    column="status"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="people"    column="people"    />
+        <result property="proportion"    column="proportion"    />
+    </resultMap>
+
+    <sql id="selectYearPerformanceVo">
+        select id, comp_id, dept, post_id, year, people, proportion, emp_id, year_score, adm_score, adm_emp_id, score, status, creator, creator_id, creator_no, create_date from human_pa_year_performance
+    </sql>
+
+    <select id="selectYearPerformanceList" parameterType="YearPerformance" resultMap="YearPerformanceResult">
+        select status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_year_performance
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+         )*100,2),'%') as 'proportion' from human_pa_year_performance
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+       GROUP BY status
+    </select>
+    
+    <select id="selectYearPerformanceById" parameterType="String" resultMap="YearPerformanceResult">
+        <include refid="selectYearPerformanceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYearPerformance" parameterType="YearPerformance">
+        insert into human_pa_year_performance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="dept != null">dept,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="year != null">year,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="yearScore != null">year_score,</if>
+            <if test="rank != null">rank,</if>
+            <if test="admScore != null">adm_score,</if>
+            <if test="admEmpId != null">adm_emp_id,</if>
+            <if test="score != null">score,</if>
+            <if test="status != null">status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="dept != null">#{dept},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="yearScore != null">#{yearScore},</if>
+            <if test="rank != null">#{rank},</if>
+            <if test="admScore != null">#{admScore},</if>
+            <if test="admEmpId != null">#{admEmpId},</if>
+            <if test="score != null">#{score},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYearPerformance" parameterType="YearPerformance">
+        update human_pa_year_performance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="yearScore != null">year_score = #{yearScore},</if>
+            <if test="rank != null">rank = #{rank},</if>
+            <if test="admScore != null">adm_score = #{admScore},</if>
+            <if test="admEmpId != null">adm_emp_id = #{admEmpId},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYearPerformanceById" parameterType="String">
+        delete from human_pa_year_performance where id = #{id}
+    </delete>
+
+    <delete id="deleteYearPerformanceByIds" parameterType="String">
+        delete from human_pa_year_performance where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
