@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
             <if test="reportNo != null  and reportNo != ''"> and t1.report_no like concat('%', #{reportNo}, '%')</if>
             <if test="reportName != null  and reportName != ''"> and t2.report_name like concat('%', #{reportName}, '%')</if>
+            <if test="itemCode != null  and itemCode != ''"> and t1.item_code = #{itemCode}</if>
         </where>
     </select>
     
