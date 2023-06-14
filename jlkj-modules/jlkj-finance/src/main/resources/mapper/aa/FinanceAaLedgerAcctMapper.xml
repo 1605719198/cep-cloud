@@ -94,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='accountLevel == "04"'>
             substr( acct_code, 1, 10)     AS acct_code,
         </if>
-        <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
             substr( acct_code, 1, 12)     AS acct_code,
         </if>
                     bgn_amt AS bgn_amt,
@@ -127,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='accountLevel == "04"'>
             substr( acct_code, 1, 10)     AS acct_code,
         </if>
-        <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
             substr( acct_code, 1, 12)     AS acct_code,
         </if>
                 0 AS bgn_amt,
@@ -171,7 +171,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test='accountLevel == "04"'>
                 substr( b.acct_code, 1, 10)     AS acct_code,
             </if>
-            <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+            <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
                 substr( b.acct_code, 1, 12)     AS acct_code,
             </if>
 
@@ -215,7 +215,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ) T1
         left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
         GROUP BY
-        T1.acct_code
+        T3.acct_code
     </select>
     <select id="selectBalanceZero" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         <include refid="selectFinanceAaLedgerAcctVo"/>
