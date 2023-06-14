@@ -106,6 +106,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <select id="selectItemNosByIds" parameterType="String" resultType="map">
+        select item_no from finance_ap_item_detail_company where item_no in (
+        select item_no from finance_ap_item_comp where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
+
     <delete id="deleteFinanceApItemCompByIds" parameterType="String">
         delete from finance_ap_item_comp where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
