@@ -37,7 +37,7 @@
                 <el-table-column label="借方" prop="drAmt"align="center"/>
                 <el-table-column label="贷方" prop="crAmt"align="center"/>
               </el-table-column>
-              <el-table-column label="本年发生额" align="center">
+              <el-table-column label="本年累计发生额" align="center">
                 <el-table-column label="借方" prop="yearDrAmt"align="center"/>
                 <el-table-column label="贷方" prop="yearCrAmt"align="center"/>
               </el-table-column>
