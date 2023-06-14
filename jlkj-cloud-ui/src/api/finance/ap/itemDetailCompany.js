@@ -42,3 +42,12 @@ export function delItemDetailCompany(id) {
     method: 'delete'
   })
 }
+
+// 复制集团表数据
+export function copyToComp(data) {
+  return request({
+    url: '/finance/itemComp/copyToComp',
+    method: 'post',
+    data: data
+  })
+}

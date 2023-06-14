@@ -1,6 +1,7 @@
 package com.jlkj.finance.ap.mapper;
 
 import com.jlkj.finance.ap.domain.FinanceApItemDetailCompany;
+import com.jlkj.finance.ap.dto.FinanceApItemDetailDTO;
 
 import java.util.List;
 
@@ -59,4 +60,9 @@ public interface FinanceApItemDetailCompanyMapper
      * @return 结果
      */
     public int deleteFinanceApItemDetailCompanyByIds(String[] ids);
+
+    /**
+     * 新增该报支类别的同时新增该类别下所有细项资料
+     */
+    public int insertBatch(List<FinanceApItemDetailDTO> financeApItemDetails);
 }
