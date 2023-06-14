@@ -36,17 +36,20 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS  = new ArrayList<>();
+        financeAaLedgerAcctDTO.getUnpostedVoucher();
+        financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
+       //无发生额不显示 Y
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectList(financeAaLedgerAcctDTOS);
         }
+        // 余额为零且无发生额不显示 Y
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
             financeAaLedgerAcctDTOS1 = selectListAdd(financeAaLedgerAcctDTOS);
         }
-        if (ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getBalanceZero())&& ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
-        }
+        //余额为零且无发生额不显示 == N  &&  无发生额不显示==N
+        //if (ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getBalanceZero())&& ConstantsUtil.CODE_N.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
+       // }
+        //合并层级
         if (financeAaLedgerAcctDTOS.size()>0){
             financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
         }
@@ -178,23 +181,23 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         String substring="";
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
-            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO2.getUnpostedVoucher())){
-                financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
-                financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
-                financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate()+"-01");
-                financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate()+"-31");
-                FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
-                if (financeAaVoucherDetail1!=null){
-                    if (ConstantsUtil.DRCRC.equals(financeAaVoucherDetail1.getDrcr())){
-                        financeAaLedgerAcctDTO1.setDrAmt(financeAaVoucherDetail1.getNtamt());
-                        financeAaLedgerAcctDTO1.setDrQty(financeAaVoucherDetail1.getQtyFrnamt());
-                    }else {
-                        financeAaLedgerAcctDTO1.setCrAmt(financeAaVoucherDetail1.getNtamt());
-                        financeAaLedgerAcctDTO1.setCrQty(financeAaVoucherDetail1.getQtyFrnamt());
-                    }
-
-                }
-            }
+//            if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO2.getUnpostedVoucher())){
+//                financeAaVoucherDetail.setCompanyId(financeAaLedgerAcctDTO2.getCompanyId());
+//                financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
+//                financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate()+"-01");
+//                financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate()+"-31");
+//                FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
+//                if (financeAaVoucherDetail1!=null){
+//                    if (ConstantsUtil.DRCRC.equals(financeAaVoucherDetail1.getDrcr())){
+//                        financeAaLedgerAcctDTO1.setDrAmt(financeAaVoucherDetail1.getNtamt());
+//                        financeAaLedgerAcctDTO1.setDrQty(financeAaVoucherDetail1.getQtyFrnamt());
+//                    }else {
+//                        financeAaLedgerAcctDTO1.setCrAmt(financeAaVoucherDetail1.getNtamt());
+//                        financeAaLedgerAcctDTO1.setCrQty(financeAaVoucherDetail1.getQtyFrnamt());
+//                    }
+//
+//                }
+//            }
             if (ConstantsUtil.CALRULE1.equals(financeAaLedgerAcctDTO2.getAccountLevel())){
                 if (financeAaLedgerAcctDTO1.getAcctCode().length()>4){
                     substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 4);
