@@ -67,22 +67,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectAmountNotDisplayed" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
-            company_id,
-            acct_name,
-            acct_code,
-            sum( bgn_amt ) as  bgn_amt,
-            sum( dr_amt ) as  dr_amt,
-            sum( cr_amt ) as  cr_amt,
-            sum( bgn_qty ) as bgn_qty,
-            sum( dr_qty ) as dr_qty,
-            sum( cr_qty ) as cr_qty
+        T1.company_id,
+        T3.acct_name,
+        T1.acct_code,
+        sum(T1.bgn_amt )as  bgn_amt,
+        sum(T1.dr_amt )as  dr_amt,
+        sum(T1.cr_amt )as  cr_amt,
+        sum(T1.bgn_qty )as bgn_qty,
+        sum(T1.dr_qty )as dr_qty,
+        sum(T1.cr_qty )as cr_qty
         FROM
             (
 
                 SELECT
                     company_id AS company_id ,
                     acct_name AS acct_name,
-                    acct_code AS acct_code,
+        <if test='accountLevel == "01"'>
+            substr( acct_code, 1, 4 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "02"'>
+            substr( acct_code, 1, 6 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "03"'>
+            substr( acct_code, 1, 8 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "04"'>
+            substr( acct_code, 1, 10)     AS acct_code,
+        </if>
+        <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+            substr( acct_code, 1, 12)     AS acct_code,
+        </if>
                     bgn_amt AS bgn_amt,
                     0 AS dr_amt,
                     0 AS cr_amt,
@@ -101,7 +115,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 SELECT
                 company_id AS company_id ,
                 acct_name AS acct_name,
-                acct_code AS acct_code,
+        <if test='accountLevel == "01"'>
+            substr( acct_code, 1, 4 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "02"'>
+            substr( acct_code, 1, 6 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "03"'>
+            substr( acct_code, 1, 8 )     AS acct_code,
+        </if>
+        <if test='accountLevel == "04"'>
+            substr( acct_code, 1, 10)     AS acct_code,
+        </if>
+        <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+            substr( acct_code, 1, 12)     AS acct_code,
+        </if>
                 0 AS bgn_amt,
                 sum(dr_amt) AS dr_amt,
                 sum(cr_amt) AS cr_amt,
@@ -131,7 +159,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 SELECT
                     b.company_id AS company_id,
                     b.acct_name AS acct_name,
-                    b.acct_code AS acct_code,
+            <if test='accountLevel == "01"'>
+                substr( b.acct_code, 1, 4 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "02"'>
+                substr( b.acct_code, 1, 6 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "03"'>
+                substr( b.acct_code, 1, 8 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "04"'>
+                substr( b.acct_code, 1, 10)     AS acct_code,
+            </if>
+            <if test='accountLevel == "05" and accountLevel == "" and accountLevel == null'>
+                substr( b.acct_code, 1, 12)     AS acct_code,
+            </if>
+
                     0 AS bgn_amt,
                     CASE
                     WHEN DRCR = 'D' THEN
@@ -170,8 +213,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 group by acct_name , company_id,acct_code
            </if>
             ) T1
+        left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
         GROUP BY
-            acct_name
+        T1.acct_code
     </select>
     <select id="selectBalanceZero" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         <include refid="selectFinanceAaLedgerAcctVo"/>
