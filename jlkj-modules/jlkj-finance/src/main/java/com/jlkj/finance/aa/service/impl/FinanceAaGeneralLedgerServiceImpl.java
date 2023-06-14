@@ -37,21 +37,27 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
         BeanUtils.copyProperties(financeAaLedgerAcctDTO, financeAaLedgerAcctDTO1);
         Map<String, String> dateMap = new HashMap<>(16);
+        //获取finance_aa_ledgerl_cal表会计科目编码、名称
         List<FinanceAaLedgerAcctDTO> acctCode = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedger(financeAaLedgerAcctDTO);
         for (FinanceAaLedgerAcctDTO acctCode1 : acctCode) {
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS;
             financeAaLedgerAcctDTO1.setAcctCode(acctCode1.getAcctCode());
+            //获取当前会计科目的金额、数量的值
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerAcctCode1(financeAaLedgerAcctDTO1);
+            //是否为凭过账
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getUnpostedVoucher())) {
                 financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();
+            //无发生额是否显示
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
                 financeAaLedgerAcctDTOS = selectList(financeAaLedgerAcctDTOS);
             }
+            //余额为零且无发生额是否显示
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
                 financeAaLedgerAcctDTOS = selectListAdd(financeAaLedgerAcctDTOS);
             }
+            //是否显示本期合计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getCurrentPeriod())) {
                 BigDecimal bgnAmt;
                 BigDecimal bgnQty;
@@ -71,6 +77,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 BigDecimal endOfPeriodAmtAdd = BigDecimal.ZERO;
                 for (int i = 0; i < financeAaLedgerAcctDTOS.size(); i++) {
                     FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
+                    //list大于1时的本期合计逻辑，根据Map数组放初次放key之后进行本期合计计算所以要求大于1
                     if (financeAaLedgerAcctDTOS.size() > 1) {
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
@@ -118,6 +125,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                     endOfPeriodQtyAdd = endOfPeriodQtyAdd.add((bgnQty.add(drQty)).subtract(crQty));
                     endOfPeriodAmtAdd = endOfPeriodAmtAdd.add((bgnAmt.add(drAmt)).subtract(crAmt));
                 }
+                //list=1时或最后一笔时的本期合计
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setCalName("本期合计");
@@ -131,7 +139,9 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 financeAaLedgerAcctDTO2.setEndOfPeriodAmt(endOfPeriodAmtAdd);
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO2);
 
-            } else {
+            }
+            //不显示本期合计时
+            else {
                 BigDecimal bgnAmt;
                 BigDecimal bgnQty;
                 BigDecimal drQty;
@@ -154,7 +164,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTOS2.addAll(financeAaLedgerAcctDTOS);
             }
-
+            //是否显示本年合计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getYearAdd())) {
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO.setAcctCode(acctCode1.getAcctCode());
@@ -197,15 +207,20 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
         BeanUtils.copyProperties(financeAaLedgerAcctDTO, financeAaLedgerAcctDTO1);
         Map<String, String> dateMap = new HashMap<>(16);
+        //获取finance_aa_ledgerl_cal满足核算项目1区间、会计科目区间，会计科目编码、名称
         List<FinanceAaLedgerAcctDTO> calName = financeAaLedgerlCalMapper.selectCalName(financeAaLedgerAcctDTO);
         for (FinanceAaLedgerAcctDTO acctCode1 : calName) {
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS;
             financeAaLedgerAcctDTO1.setCalName(acctCode1.getCalNamea());
+            //获取finance_aa_ledgerl_cal满足核算项目1，会计科目编码、名称
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerCalName(financeAaLedgerAcctDTO1);
+            //是否为凭过账
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getUnpostedVoucher())) {
                 financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
+
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();
+            //是否显示本期合计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getCurrentPeriod())) {
                 BigDecimal bgnAmt;
                 BigDecimal bgnQty;
@@ -225,6 +240,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 BigDecimal endOfPeriodAmtAdd = BigDecimal.ZERO;
                 for (int i = 0; i < financeAaLedgerAcctDTOS.size(); i++) {
                     FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
+                    //list大于1时的本期合计逻辑，根据Map数组放初次放key之后进行本期合计计算所以要求大于1
                     if (financeAaLedgerAcctDTOS.size() > 1) {
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
@@ -272,6 +288,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                     endOfPeriodQtyAdd = endOfPeriodQtyAdd.add((bgnQty.add(drQty)).subtract(crQty));
                     endOfPeriodAmtAdd = endOfPeriodAmtAdd.add((bgnAmt.add(drAmt)).subtract(crAmt));
                 }
+                //list=1时或最后一笔时的本期合计
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setAcctName("本期合计");
@@ -285,7 +302,9 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 financeAaLedgerAcctDTO2.setEndOfPeriodAmt(endOfPeriodAmtAdd);
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO2);
 
-            } else {
+            }
+            //不显示本期合计时
+            else {
                 BigDecimal bgnAmt;
                 BigDecimal bgnQty;
                 BigDecimal drQty;
@@ -308,15 +327,17 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTOS2.addAll(financeAaLedgerAcctDTOS);
             }
+            //无发生额是否显示
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())) {
                 financeAaLedgerAcctDTOS2 = selectList(financeAaLedgerAcctDTOS2);
             }
+            //余额为零且无发生额是否显示
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())) {
                 financeAaLedgerAcctDTOS2 = selectListAdd(financeAaLedgerAcctDTOS2);
             }
             FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
+            //是否显示本年累计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getYearAdd())) {
-
                 financeAaLedgerAcctDTO.setCalCodea(acctCode1.getCalCodea());
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = financeAaLedgerlCalMapper.selecMaxMonth(financeAaLedgerAcctDTO);
                 if (financeAaLedgerAcctDTO2!=null){
@@ -350,9 +371,8 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
         return maps;
     }
-
+    //筛选无发生额
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
-
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
             if (financeAaLedgerAcctDTO1.getDrAmt() != null && financeAaLedgerAcctDTO1.getCrAmt() != null) {
@@ -363,7 +383,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         }
         return financeAaLedgerAcctDTOS;
     }
-
+    //筛选余额为零且无发生额
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
@@ -377,6 +397,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
     }
 
+    //凭过账组数逻辑
     public List<FinanceAaLedgerAcctDTO> selectAccountLevel(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO, FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctList = new ArrayList<>();
         String substring = "";
@@ -388,6 +409,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             financeAaVoucherDetail.setAcctCode(financeAaLedgerAcctDTO1.getAcctCode());
             financeAaVoucherDetail.setStartDate(financeAaLedgerAcctDTO2.getStartDate() + "-01");
             financeAaVoucherDetail.setEndDate(financeAaLedgerAcctDTO2.getEndDate() + "-31");
+            //满足状态不为P的明细表数据
             FinanceAaVoucherDetail financeAaVoucherDetail1 = financeAaVoucherDetailMapper.selectFinanceAaLedgerAcctList(financeAaVoucherDetail);
             if (financeAaVoucherDetail1 != null) {
                 if (ConstantsUtil.DRCRC.equals(financeAaVoucherDetail1.getDrcr())) {
@@ -402,7 +424,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 financeAaLedgerAcctDTO3.setAcctName(financeAaVoucherDetail1.getAcctName());
 
             }
-
+            //科目级别截取
             if (ConstantsUtil.CALRULE1.equals(financeAaLedgerAcctDTO2.getAccountLevel())) {
                 if (financeAaLedgerAcctDTO1.getAcctCode().length() > 4) {
                     substring = financeAaLedgerAcctDTO1.getAcctCode().substring(0, 4);
@@ -442,11 +464,13 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 substring = financeAaLedgerAcctDTO1.getAcctCode();
             }
             financeAaLedgerAcctDTO3.setAcctCode(substring);
+            //是否显示主项
             if (ConstantsUtil.CALRULE2.equals(financeAaLedgerAcctDTO2.getMainItems())) {
                 financeAaLedgerAcctDTO3.setCalName((financeAaVoucherDetail1.getCalNameb() + "_" + financeAaVoucherDetail1.getCalNamec() + "_" + financeAaVoucherDetail1.getCalNamed())); financeAaLedgerAcctDTO3.setCalName((financeAaVoucherDetail1.getCalNameb() + "_" + financeAaVoucherDetail1.getCalNamec() + "_" + financeAaVoucherDetail1.getCalNamed()));
             }
             financeAaLedgerAcctList.add(financeAaLedgerAcctDTO3);
         }
+        //根据会计周期排序
         financeAaLedgerAcctList.sort(Comparator.comparing(FinanceAaLedgerAcctDTO::getAcctPeriod));
         return financeAaLedgerAcctList;
     }

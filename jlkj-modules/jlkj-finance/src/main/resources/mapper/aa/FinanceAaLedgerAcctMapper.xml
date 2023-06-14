@@ -75,34 +75,79 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         sum(T1.cr_amt )as  cr_amt,
         sum(T1.bgn_qty )as bgn_qty,
         sum(T1.dr_qty )as dr_qty,
-        sum(T1.cr_qty )as cr_qty
+        sum(T1.cr_qty )as cr_qty,
+        sum(T1.year_dr_amt )+ sum( T1.dr_amt)  as  year_dr_amt,
+        sum(T1.year_cr_amt  )+ sum(T1. cr_amt)  as  year_cr_amt,
+        sum(T1.year_dr_qty  )+ sum( T1.dr_qty)  as  year_dr_qty,
+        sum(T1.year_cr_qty )+ sum(T1. cr_qty)  as  year_cr_qty
         FROM
             (
 
+        SELECT
+            company_id AS company_id ,
+            acct_name AS acct_name,
+            <if test='accountLevel == "01"'>
+                substr( acct_code, 1, 4 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "02"'>
+                substr( acct_code, 1, 6 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "03"'>
+                substr( acct_code, 1, 8 )     AS acct_code,
+            </if>
+            <if test='accountLevel == "04"'>
+                substr( acct_code, 1, 10)     AS acct_code,
+            </if>
+            <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                substr( acct_code, 1, 12)     AS acct_code,
+            </if>
+            0 AS bgn_amt,
+            0 AS dr_amt,
+            0 AS cr_amt,
+            0 AS bgn_qty,
+            0 AS dr_qty,
+            0 AS cr_qty,
+            sum(year_dr_amt) as year_dr_amt,
+            sum( year_cr_amt) as year_cr_amt,
+            sum(year_dr_qty) as year_dr_qty,
+            sum(year_cr_qty) as year_cr_qty
+        FROM
+            finance_aa_ledgerl_cal
+        WHERE
+            acct_period between #{endDate} and #{endDate}
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            and company_id = #{companyId}
+        group by acct_name , company_id,acct_code
+
+        UNION
                 SELECT
                     company_id AS company_id ,
                     acct_name AS acct_name,
-        <if test='accountLevel == "01"'>
-            substr( acct_code, 1, 4 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "02"'>
-            substr( acct_code, 1, 6 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "03"'>
-            substr( acct_code, 1, 8 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "04"'>
-            substr( acct_code, 1, 10)     AS acct_code,
-        </if>
-        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
-            substr( acct_code, 1, 12)     AS acct_code,
-        </if>
-                    bgn_amt AS bgn_amt,
+                    <if test='accountLevel == "01"'>
+                        substr( acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( acct_code, 1, 12)     AS acct_code,
+                    </if>
+                    sum(bgn_amt) AS bgn_amt,
                     0 AS dr_amt,
                     0 AS cr_amt,
-                    bgn_qty AS bgn_qty,
+                    sum(bgn_qty) AS bgn_qty,
                     0 AS dr_qty,
-                    0 AS cr_qty
+                    0 AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
                 FROM
                     finance_aa_ledgerl_cal
                 WHERE
@@ -113,33 +158,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         UNION
                 SELECT
-                company_id AS company_id ,
-                acct_name AS acct_name,
-        <if test='accountLevel == "01"'>
-            substr( acct_code, 1, 4 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "02"'>
-            substr( acct_code, 1, 6 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "03"'>
-            substr( acct_code, 1, 8 )     AS acct_code,
-        </if>
-        <if test='accountLevel == "04"'>
-            substr( acct_code, 1, 10)     AS acct_code,
-        </if>
-        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
-            substr( acct_code, 1, 12)     AS acct_code,
-        </if>
-                0 AS bgn_amt,
-                sum(dr_amt) AS dr_amt,
-                sum(cr_amt) AS cr_amt,
-                0 AS bgn_qty,
-                sum(dr_qty) AS dr_qty,
-                sum(cr_qty) AS cr_qty
+                    company_id AS company_id ,
+                    acct_name AS acct_name,
+                    <if test='accountLevel == "01"'>
+                        substr( acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( acct_code, 1, 12)     AS acct_code,
+                    </if>
+                    0 AS bgn_amt,
+                    sum(dr_amt) AS dr_amt,
+                    sum(cr_amt) AS cr_amt,
+                    0 AS bgn_qty,
+                    sum(dr_qty) AS dr_qty,
+                    sum(cr_qty) AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
                 FROM
                     finance_aa_ledgerl_cal
                 WHERE
-                acct_period between #{startDate} and #{startDate}
+                acct_period between #{startDate} and #{endDate}
                 <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
                 <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
                     and (cal_namea between #{calNameaStart} and #{calNameaEnd}
@@ -155,25 +204,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
        UNION
             select company_id,acct_name,acct_code,sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
-                sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty from (
+                sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty ,
+                SUM(year_dr_amt) AS  year_dr_amt,
+                SUM(year_cr_amt) AS year_cr_amt,
+                SUM(year_dr_qty) AS  year_dr_qty,
+                SUM(year_cr_qty) AS year_cr_qty
+            from (
                 SELECT
                     b.company_id AS company_id,
                     b.acct_name AS acct_name,
-            <if test='accountLevel == "01"'>
-                substr( b.acct_code, 1, 4 )     AS acct_code,
-            </if>
-            <if test='accountLevel == "02"'>
-                substr( b.acct_code, 1, 6 )     AS acct_code,
-            </if>
-            <if test='accountLevel == "03"'>
-                substr( b.acct_code, 1, 8 )     AS acct_code,
-            </if>
-            <if test='accountLevel == "04"'>
-                substr( b.acct_code, 1, 10)     AS acct_code,
-            </if>
-            <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
-                substr( b.acct_code, 1, 12)     AS acct_code,
-            </if>
+                    <if test='accountLevel == "01"'>
+                        substr( b.acct_code, 1, 4 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "02"'>
+                        substr( b.acct_code, 1, 6 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "03"'>
+                        substr( b.acct_code, 1, 8 )     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "04"'>
+                        substr( b.acct_code, 1, 10)     AS acct_code,
+                    </if>
+                    <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+                        substr( b.acct_code, 1, 12)     AS acct_code,
+                    </if>
 
                     0 AS bgn_amt,
                     CASE
@@ -192,7 +246,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     CASE
                     WHEN DRCR = 'C' THEN
                      b.qty_frnAmt  ELSE 0
-                    END AS cr_qty
+                    END AS cr_qty,
+                    0 AS  year_dr_amt,
+                    0 AS year_cr_amt,
+                    0 AS  year_dr_qty,
+                    0 AS year_cr_qty
                     FROM
                     finance_aa_voucher a
                     LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
@@ -215,7 +273,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ) T1
         left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
         GROUP BY
-        T3.acct_code
+        T1.company_id,
+        T3.acct_name,
+        T1.acct_code
+        order BY
+        T1.company_id,
+        T1.acct_code,
+        T3.acct_name
+
     </select>
     <select id="selectBalanceZero" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         <include refid="selectFinanceAaLedgerAcctVo"/>
