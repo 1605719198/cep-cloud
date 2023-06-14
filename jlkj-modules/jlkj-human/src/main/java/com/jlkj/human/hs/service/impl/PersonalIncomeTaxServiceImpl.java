@@ -68,7 +68,7 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
         Map<String, Object> versionNoMap = personalIncomeTaxMapper.selectMaxVersionNo(type);
         Long versionNo = 1L;
         versionNo = Long.parseLong(versionNoMap.get("versionNo").toString()) + 1;
-        if(versionNoMap != null && versionNoMap.get("versionNo") != null) {
+        if(versionNoMap.get("versionNo") != null) {
             Date effectDate= (Date) versionNoMap.get("effectDate");
             if(nowdate.compareTo(effectDate)<0){
                 for (PersonalIncomeTax personalIncomeTax : personalIncomeTaxList) {

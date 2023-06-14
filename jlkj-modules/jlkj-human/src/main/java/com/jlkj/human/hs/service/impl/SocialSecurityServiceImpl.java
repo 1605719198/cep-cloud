@@ -94,7 +94,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
             Long version = 1L;
             version = Long.parseLong(versionMap.get("version").toString()) + 1;
-            if (versionMap != null && versionMap.get("version") != null) {
+            if (versionMap.get("version") != null) {
                 Date effectDate = (Date) versionMap.get("effectDate");
                 if (nowdate.compareTo(effectDate) < 0) {
                     for (SocialSecurity socialSecurity : socialSecurityList) {

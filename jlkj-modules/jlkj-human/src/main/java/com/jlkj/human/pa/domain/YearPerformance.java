@@ -22,6 +22,22 @@ public class YearPerformance extends BaseEntity
     @Excel(name = "id")
     private String id;
 
+    /** 公司别 */
+    @Excel(name = "公司")
+    private String compId;
+
+    /** 年度 */
+    @Excel(name = "年度")
+    private String year;
+
+    /** 一级单位 */
+    @Excel(name = "一级单位")
+    private String dept;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private String status;
+
     /** 人数 */
     @Excel(name = "人数")
     private String people;
@@ -30,20 +46,8 @@ public class YearPerformance extends BaseEntity
     @Excel(name = "比例")
     private String proportion;
 
-    /** 公司别 */
-    @Excel(name = "公司")
-    private String compId;
-
-    /** 一级单位 */
-    @Excel(name = "一级单位")
-    private String dept;
-
     /** 岗位 */
     private String postId;
-
-    /** 年度 */
-    @Excel(name = "年度")
-    private String year;
 
     /** 员工ID */
     private String empId;
@@ -62,10 +66,6 @@ public class YearPerformance extends BaseEntity
 
     /** 年度绩效最终得分 */
     private BigDecimal score;
-
-    /** 状态 */
-    @Excel(name = "状态")
-    private String status;
 
     /** 输入人 */
     private String creator;

@@ -148,20 +148,20 @@ public class SalaryEmployedMonthServiceImpl implements ISalaryEmployedMonthServi
                     salaryEmployedMonth.setCreator(operName);
                     salaryEmployedMonthMapper.insertSalaryEmployedMonth(salaryEmployedMonth);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工号 " + salaryEmployedMonth.getEmpNo() + " 导入成功");
+                    successMsg.append("<br/>").append(successNum).append("、工号 ").append(salaryEmployedMonth.getEmpNo()).append(" 导入成功");
                 if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, salaryEmployedMonth);
                     salaryEmployedMonthMapper.updateSalaryEmployedMonth(salaryEmployedMonth);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工号 " + salaryEmployedMonth.getEmpNo() + " 更新成功");
+                    successMsg.append("<br/>").append(successNum).append("、工号 ").append(salaryEmployedMonth.getEmpNo()).append(" 更新成功");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
                 String msg = "<br/>" + failureNum + "、工号 " + salaryEmployedMonth.getEmpNo() + " 导入失败：";
-                failureMsg.append(msg + e.getMessage());
+                failureMsg.append(msg).append(e.getMessage());
             }
         }
         if (failureNum > 0)

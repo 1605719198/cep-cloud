@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,12 +101,8 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     private List<SalaryProjectBasis> getChildList(List<SalaryProjectBasis> list, SalaryProjectBasis t)
     {
         List<SalaryProjectBasis> tlist = new ArrayList<SalaryProjectBasis>();
-        Iterator<SalaryProjectBasis> it = list.iterator();
-        while (it.hasNext())
-        {
-            SalaryProjectBasis n = (SalaryProjectBasis) it.next();
-            if (StringUtils.isNotNull(n.getParentid()) && n.getParentid().longValue() == t.getId().longValue())
-            {
+        for (SalaryProjectBasis n : list) {
+            if (StringUtils.isNotNull(n.getParentid()) && n.getParentid().longValue() == t.getId().longValue()) {
                 tlist.add(n);
             }
         }
@@ -119,7 +114,7 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
      */
     private boolean hasChild(List<SalaryProjectBasis> list, SalaryProjectBasis t)
     {
-        return getChildList(list, t).size() > 0 ? true : false;
+        return getChildList(list, t).size() > 0;
     }
 
     /**
@@ -158,17 +153,17 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
         SalaryProjectBasis dbSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getId());
         if(!salaryProjectBasis.getStatus().equals(dbSalaryProjectBasis.getStatus())){
             // 子节点有正常数据不能关闭BasisOptionsDTO(id=78, dicNo=null, dicName=null, status=0, compId=null)
-            if(salaryProjectBasis.getStatus().equals("1")){
+            if("1".equals(salaryProjectBasis.getStatus())){
                 List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(salaryProjectBasis.getId());
 
                 for (BasisOptionsDTO oldDatum : oldData) {
-                    if (oldDatum.getStatus().equals("0")) {
+                    if ("0".equals(oldDatum.getStatus())) {
                         throw new ServiceException("该资料下存在数据启用，不可关闭");
                     }
                 }
             }
             // 当子节点启动时，父节点直接改成正常
-            if(salaryProjectBasis.getStatus().equals("0")){
+            if("0".equals(salaryProjectBasis.getStatus())){
                 SalaryProjectBasis parSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getParentid());
                 parSalaryProjectBasis.setStatus("0");
                 salaryProjectBasisMapper.updateSalaryProjectBasis(parSalaryProjectBasis);
@@ -209,7 +204,7 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
     @Override
     public int deleteSalaryProjectBasisById(Long id)throws Exception
     {
-        List oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(id);
+        List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(id);
         if(!oldData.isEmpty()){
             throw new Exception("该资料下存在数据，不可删除");
         }

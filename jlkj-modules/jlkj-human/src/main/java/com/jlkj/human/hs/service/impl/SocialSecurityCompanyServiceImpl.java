@@ -56,17 +56,13 @@ public class SocialSecurityCompanyServiceImpl implements ISocialSecurityCompanyS
      */
     @Override
     public int insertSocialSecurityCompany(List<SocialSecurityCompany> socialSecurityCompanyList) {
-        int num = 0;
         for (SocialSecurityCompany socialSecurityCompany : socialSecurityCompanyList) {
             SocialSecurityCompany param = new SocialSecurityCompany();
             param.setCompId(socialSecurityCompany.getCompId());
             List<SocialSecurityCompany> socialSecurityCompanies = socialSecurityCompanyMapper.selectSocialSecurityCompanyList(param);
             for (SocialSecurityCompany item : socialSecurityCompanies) {
                 if (!item.getCompId().isEmpty()) {
-                    num = num + 1;
-                    if (num == 1) {
-                        throw new ServiceException("公司别不允许重复");
-                    }
+                    throw new ServiceException("公司别不允许重复");
                 }
             }
             if (socialSecurityCompany.getId() != null) {

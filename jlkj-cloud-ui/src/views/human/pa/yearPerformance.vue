@@ -180,9 +180,12 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      if (this.queryParams.year != null) {
       this.queryParams.pageNum = 1;
       this.getList();
-    },
+    } else {
+      this.$modal.msgError("年度不能为空");
+    }},
     /** 导出按钮操作 */
     handleExport() {
       this.download('human/yearPerformance/export', {
