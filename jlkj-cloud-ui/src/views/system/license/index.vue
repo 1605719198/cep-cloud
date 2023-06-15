@@ -18,22 +18,22 @@
         <el-divider><i class="el-icon-mobile-phone"></i>设备信息</el-divider>
         <el-col :span="4">
           <el-form-item label="IP地址：" prop="ipAddress">
-            {{ form.ipAddress }}
+            {{ form.licenseCheckModel.ipAddress }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="Mac地址：" prop="macAddress">
-            {{ form.macAddress }}
+            {{ form.licenseCheckModel.macAddress }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="CPU序列号：" prop="cpuSerial">
-            {{ form.cpuSerial }}
+            {{ form.licenseCheckModel.cpuSerial }}
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="主板序列号：" prop="mainBoardSerial">
-            {{ form.mainBoardSerial }}
+            {{ form.licenseCheckModel.mainBoardSerial }}
           </el-form-item>
         </el-col>
       </el-row>
@@ -41,7 +41,7 @@
         <el-divider><i class="el-icon-truck"></i>操作系统</el-divider>
         <el-col :span="10">
           <el-form-item label="操作系统：">
-            <el-radio-group v-model="form.osName">
+            <el-radio-group v-model="form.licenseCheckModel.osName">
               <el-radio label="windows">Windows</el-radio>
               <el-radio label="linux">Linux</el-radio>
               <el-radio label="mac">Mac OS</el-radio>
@@ -51,7 +51,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="机器码：" prop="machineCode">
-            <el-input v-model="form.machineCode"/>
+            <el-input v-model="form.licenseCheckModel.machineCode"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -159,14 +159,26 @@ export default {
       },
       // 表单参数
       form: {
-        isNoTimeLimit: 'N',
-        consumerAmount: 10,
-        description: "",
+        subject: "",
         privateAlias: "privateKey",
-        expiryTime: "",
+        keyPass: "",
+        storePass: "",
         licensePath: "",
         privateKeysStorePath: "",
         issuedTime: "",
+        expiryTime: "",
+        consumerType:"User",
+        consumerAmount: 10,
+        description: "",
+        isNoTimeLimit: 'N',
+        licenseCheckModel:{
+          ipAddress: "",
+          macAddress: "",
+          cpuSerial: "",
+          mainBoardSerial: "",
+          osName: "",
+          machineCode: ""
+        }
       },
     };
   },
@@ -178,16 +190,16 @@ export default {
     getInfos() {
       this.loading = true;
       getServerInfos().then(response => {
-          this.form = response.data;
-          this.form.isNoTimeLimit = 'N';
-          this.form.consumerAmount = 10;
-          this.form.privateAlias = "privateKey";
-          this.form.consumerType = "User";
-          this.form.licensePath = "";
-          this.form.privateKeysStorePath = "";
-          this.form.issuedTime = dateFormat(new Date());
-          this.form.jsonData = JSON.stringify(response.data);
-          this.loading = false;
+        this.form.licenseCheckModel.ipAddress = response.data.ipAddress
+        this.form.licenseCheckModel.macAddress = response.data.macAddress
+        this.form.licenseCheckModel.cpuSerial = response.data.cpuSerial
+        this.form.licenseCheckModel.mainBoardSerial = response.data.mainBoardSerial
+        this.form.licenseCheckModel.osName = response.data.osName
+        this.form.licenseCheckModel.machineCode = response.data.machineCode
+        this.form.privateKeysStorePath = "D:/license/privateKeys.keystore";
+        this.form.issuedTime = dateFormat(new Date());
+        this.form.jsonData = JSON.stringify(response.data);
+        this.loading = false;
         }
       );
     },
