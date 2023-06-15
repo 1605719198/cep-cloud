@@ -65,3 +65,13 @@ export function changeStatus(id, status) {
     data: data
   })
 }
+
+
+
+// 查询报支类别下拉选单
+export function getItemNoList(companyId) {
+  return request({
+    url: '/finance/reimbItemComp/itemNoList/' + companyId,
+    method: 'get'
+  })
+}
