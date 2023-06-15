@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -97,7 +97,7 @@ public class LicenseCreatorParam implements Serializable {
      * @Date 上午 11:13:12 2023年4月2日, 0002
      * @param null
      */
-    private Integer consumerAmount = 10;
+    private Integer consumerAmount = 1;
     /**
      * 描述信息
      *

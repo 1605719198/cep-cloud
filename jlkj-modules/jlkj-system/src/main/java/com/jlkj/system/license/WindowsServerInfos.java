@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import java.io.IOException;
 import java.net.InetAddress;

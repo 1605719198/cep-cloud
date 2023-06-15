@@ -21,6 +21,13 @@ public interface AttendanceGatherMapper extends BaseMapper<AttendanceGather> {
      */
     public List<AttendanceGatherDTO> selectJoinList(AttendanceGatherDTO attendanceGatherDTO);
 
+    /**
+     * 连表查询加班/请假出勤汇总记录
+     * @param attendanceGatherDTO
+     * @return 结果
+     */
+    public List<AttendanceGatherDTO> selectCompJoinList(AttendanceGatherDTO attendanceGatherDTO);
+
 }
 
 

@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import org.apache.commons.lang3.StringUtils;
 

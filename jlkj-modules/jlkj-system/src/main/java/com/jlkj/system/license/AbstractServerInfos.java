@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import cn.hutool.crypto.digest.MD5;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,11 @@ import java.util.*;
 public abstract class AbstractServerInfos {
 
     private static final int SPLITLENGTH = 4;
+    public static final String WINDOWS = "windows";
+    public static final String CENT = "cent";
+    public static final String MAC = "mac";
+    public static final String LINUX = "linux";
+    public static final String OS_NAME = "os.name";
 /**
  * 参数检查项
  * @author 111191
@@ -33,15 +38,15 @@ public abstract class AbstractServerInfos {
             result.setCpuSerial(this.getCPUSerial());
             result.setMainBoardSerial(this.getMainBoardSerial());
             result.setMachineCode(this.getMachineCode());
-            String osName = System.getProperty("os.name").toLowerCase();
-            if (osName.startsWith("windows")) {
-                result.setOsName("windows");
-            }else if(osName.startsWith("cent")){
-                result.setOsName("cent");
-            }else if(osName.startsWith("mac")){
-                result.setOsName("mac");
+            String osName = System.getProperty(OS_NAME).toLowerCase();
+            if (osName.startsWith(WINDOWS)) {
+                result.setOsName(WINDOWS);
+            }else if(osName.startsWith(CENT)){
+                result.setOsName(CENT);
+            }else if(osName.startsWith(MAC)){
+                result.setOsName(MAC);
             }else {
-                result.setOsName("linux");
+                result.setOsName(LINUX);
             }
         } catch (Exception e) {
             log.error("获取服务器硬件信息失败", e);
@@ -51,37 +56,29 @@ public abstract class AbstractServerInfos {
 
     /**
      * 获取IP 地址
-     *
-     * @return List<String>
-     * @author 111191
-     * @Date 下午 12:35:22 2023年4月2日, 0002
+     * @return
+     * @throws Exception
      */
     protected abstract List<String> getIpAddress() throws Exception;
 
     /**
      * 获取Mac地址
-     *
-     * @return List<String>
-     * @author 111191
-     * @Date 下午 12:35:05 2023年4月2日, 0002
+     * @return
+     * @throws Exception
      */
     protected abstract List<String> getMacAddress() throws Exception;
 
     /**
      * 获取CPU序列号
-     *
-     * @return String
-     * @author 111191
-     * @Date 下午 12:34:35 2023年4月2日, 0002
+     * @return
+     * @throws Exception
      */
     protected abstract String getCPUSerial() throws Exception;
 
     /**
      * 获取主板序列号
-     *
-     * @return String
-     * @author 111191
-     * @Date 下午 12:34:51 2023年4月2日, 0002
+     * @return
+     * @throws Exception
      */
     protected abstract String getMainBoardSerial() throws Exception;
 

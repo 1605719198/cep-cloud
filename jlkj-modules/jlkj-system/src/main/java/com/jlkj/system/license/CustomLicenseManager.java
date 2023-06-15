@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import de.schlichtherle.license.*;
 import de.schlichtherle.xml.GenericCertificate;
@@ -22,10 +22,17 @@ import java.util.List;
 
 @Slf4j
 public class CustomLicenseManager extends LicenseManager {
-    //XML编码
+    /**
+     * XML编码
+     */
     private static final String XML_CHARSET = "UTF-8";
-    //默认BUFSIZE
+    /**
+     * 默认BUFSIZE
+     */
     private static final int DEFAULT_BUFSIZE = 8 * 1024;
+
+    public static final String WINDOWS = "windows";
+    public static final String LINUX = "linux";
 
     public CustomLicenseManager() {}
 
@@ -203,9 +210,9 @@ public class CustomLicenseManager extends LicenseManager {
         AbstractServerInfos abstractServerInfos = null;
 
         //根据不同操作系统类型选择不同的数据获取方法
-        if (osName.startsWith("windows")) {
+        if (osName.startsWith(WINDOWS)) {
             abstractServerInfos = new WindowsServerInfos();
-        } else if (osName.startsWith("linux")) {
+        } else if (osName.startsWith(LINUX)) {
             abstractServerInfos = new LinuxServerInfos();
         } else {//其他服务器类型
             abstractServerInfos = new LinuxServerInfos();
