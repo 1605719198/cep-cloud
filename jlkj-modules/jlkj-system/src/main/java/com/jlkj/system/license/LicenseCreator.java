@@ -1,4 +1,4 @@
-package com.jlkj.common.core.license;
+package com.jlkj.system.license;
 
 import de.schlichtherle.license.*;
 import lombok.extern.slf4j.Slf4j;

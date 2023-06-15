@@ -1,11 +1,11 @@
 package com.jlkj.system.controller;
 
-import com.jlkj.common.core.license.*;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
+import com.jlkj.system.license.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
