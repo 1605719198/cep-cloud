@@ -106,5 +106,4 @@ public class FinanceApItemCompController extends BaseController
     {
         return toAjax(financeApItemCompService.insertBatch(financeApItemComps));
     }
-
 }

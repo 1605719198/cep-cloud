@@ -4,6 +4,7 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.ap.domain.FinanceApItemDetail;
+import com.jlkj.finance.ap.dto.FinanceApItemDetailDTO;
 import com.jlkj.finance.ap.mapper.FinanceApItemDetailMapper;
 import com.jlkj.finance.ap.service.IFinanceApItemDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,17 @@ public class FinanceApItemDetailServiceImpl implements IFinanceApItemDetailServi
         return financeApItemDetailMapper.selectFinanceApItemDetailList(financeApItemDetail);
     }
 
+    /**
+     * 查询报支类别集团细项列表
+     *
+     * @param financeApItemDetail 报支类别集团细项
+     * @return 报支类别集团细项
+     */
+    @Override
+    public List<FinanceApItemDetailDTO> selectFinanceApItemDetailList1(FinanceApItemDetail financeApItemDetail)
+    {
+        return financeApItemDetailMapper.selectFinanceApItemDetailList1(financeApItemDetail);
+    }
     /**
      * 新增报支类别集团细项
      *

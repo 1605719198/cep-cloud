@@ -11,8 +11,8 @@ export function getServerInfos(query) {
 // 生成License 授权信息
 export function generater(data) {
   return request({
-    url: '/system/license',
-    method: 'put',
+    url: '/system/license/generateLicense',
+    method: 'post',
     data: data
   })
 }

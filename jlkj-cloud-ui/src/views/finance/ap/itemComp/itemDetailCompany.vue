@@ -90,38 +90,138 @@
     <!-- 添加或修改报支类别公司细项对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="报支类别编码" prop="itemNo">
-          <el-input v-model="form.itemNo" placeholder="请输入报支类别编码" />
-        </el-form-item>
-        <el-form-item label="细项编码" prop="detailNo">
-          <el-input v-model="form.detailNo" placeholder="请输入细项编码" />
-        </el-form-item>
-        <el-form-item label="细项名称" prop="detailName">
-          <el-input v-model="form.detailName" placeholder="请输入细项名称" />
-        </el-form-item>
-        <el-form-item label="借方会计科目" prop="drAcctCode">
-          <el-input v-model="form.drAcctCode" placeholder="请输入借方会计科目" />
-        </el-form-item>
-        <el-form-item label="贷方会计科目" prop="crAcctCode">
-          <el-input v-model="form.crAcctCode" placeholder="请输入贷方会计科目" />
-        </el-form-item>
-        <el-form-item label="成本科目" prop="costCode">
-          <el-input v-model="form.costCode" placeholder="请输入成本科目" />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="报支类别编码" prop="itemNo">
+              {{this.itemNo}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="报支类别名称" prop="itemName">
+              {{this.itemName}}
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="细项编码" prop="detailNo">
+              <el-input v-model="form.detailNo" placeholder="请输入细项编码" class="input"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="细项名称" prop="detailName">
+              <el-input v-model="form.detailName" placeholder="请输入细项名称" class="input"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="费用类别" prop="expenseType">
+              <el-select v-model="form.expenseType" placeholder="请选择" class="input">
+                <el-option
+                  v-for="dict in dict.type.ao_expense_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="预算类别" prop="budgetType">
+              <el-select v-model="form.budgetType" placeholder="请选择" class="input">
+                <el-option
+                  v-for="dict in dict.type.ao_budget_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="借方科目" prop="drAcctCode">
+              <el-input v-model="form.drAcctCode" class="input">
+                <el-button slot="append" icon="el-icon-search" @click="inputAcctName"
+                ></el-button>
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="贷方科目" prop="crAcctCode">
+              <el-input v-model="form.crAcctCode" class="input">
+                <el-button slot="append" icon="el-icon-search" @click="inputAcctName1"
+                ></el-button>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="借方核算项目一" prop="calTypeCodea">
+              <el-input v-model="form.calTypeCodea" :disabled="true" class="input"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="贷方核算项目一" prop="calTypeCodec">
+              <el-input v-model="form.calTypeCodec" :disabled="true" class="input"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="借方核算项目二" prop="calTypeCodeb">
+              <el-input v-model="form.calTypeCodeb" :disabled="true" class="input"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="贷方核算项目二" prop="calTypeCoded">
+              <el-input v-model="form.calTypeCoded" :disabled="true" class="input"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="成本科目" prop="costCode">
+              <el-input v-model="form.costCode" placeholder="请输入成本科目" class="input"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="状态" prop="status">
+              <el-input v-model="form.status" placeholder="请输入状态" class="input"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
+      <acctcodeCorpPop ref="selectAcctCodeCorpPop" @ok="getAcctCodeCorpPop"/>
+      <acctcodeCorpPop ref="selectAcctCodeCorpPop1" @ok="getAcctCodeCorpPop1"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { listItemDetailCompany, getItemDetailCompany, delItemDetailCompany, addItemDetailCompany, updateItemDetailCompany } from "@/api/finance/ap/itemDetailCompany";
+import acctcodeCorpPop from "@/views/finance/aa/acctcodeCorpPop";
 
 export default {
   name: "ItemDetailCompany",
+  dicts: ['ao_expense_type','ao_budget_type'],
+  props: ['applyId','itemNo','itemName'],
+  components: {
+    acctcodeCorpPop
+  },
   data() {
     return {
       // 遮罩层
@@ -169,6 +269,20 @@ export default {
         this.loading = false;
       });
     },
+    getAcctCodeCorpPop(val){
+      console.log(val);
+      this.form.acctId= val[0].acctId
+      this.form.drAcctCode= val[0].acctName
+      this.form.calTypeCodea = val[0].calTypeCodea;
+      this.form.calTypeCodeb = val[0].calTypeCodeb;
+    },
+    getAcctCodeCorpPop1(val){
+      console.log(val);
+      // this.form.acctId= val[0].acctId
+      this.form.crAcctCode= val[0].acctName
+      this.form.calTypeCodec = val[0].calTypeCodec;
+      this.form.calTypeCoded = val[0].calTypeCoded;
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -196,6 +310,13 @@ export default {
         updateTime: null
       };
       this.resetForm("form");
+    },
+    /** 会计科目点击事件 */
+    inputAcctName() {
+      this.$refs.selectAcctCodeCorpPop.show();
+    },
+    inputAcctName1() {
+      this.$refs.selectAcctCodeCorpPop1.show();
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -259,6 +380,19 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
+    getVal(applyId,itemNo,itemName) {
+      this.queryParams.itemNo = itemNo
+      this.getList();
+    }
   }
 };
 </script>
+
+<style scoped>
+.input {
+  width: 83%;
+}
+.input1 {
+  width: 93%;
+}
+</style>

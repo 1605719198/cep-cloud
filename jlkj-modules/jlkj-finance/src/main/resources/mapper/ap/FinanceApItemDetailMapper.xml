@@ -23,6 +23,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
+    <resultMap type="FinanceApItemDetailDTO" id="FinanceApItemDetailDTOResult">
+        <result property="id"    column="id"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="detailNo"    column="detail_no"    />
+        <result property="detailName"    column="detail_name"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="drAcctCode"    column="dr_acct_code"    />
+        <result property="crAcctCode"    column="cr_acct_code"    />
+        <result property="budgetType"    column="budget_type"    />
+        <result property="costCode"    column="cost_code"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
     <sql id="selectFinanceApItemDetailVo">
         select id, item_no, detail_no, detail_name, expense_type, dr_acct_code, cr_acct_code, budget_type, cost_code, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_item_detail
     </sql>
@@ -30,6 +50,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceApItemDetailList" parameterType="FinanceApItemDetail" resultMap="FinanceApItemDetailResult">
         <include refid="selectFinanceApItemDetailVo"/>
         <where>  
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+        </where>
+        order by detail_no
+    </select>
+
+
+    <select id="selectFinanceApItemDetailList1" parameterType="FinanceApItemDetailDTO" resultMap="FinanceApItemDetailDTOResult">
+        <include refid="selectFinanceApItemDetailVo"/>
+        <where>
             <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
         </where>
         order by detail_no

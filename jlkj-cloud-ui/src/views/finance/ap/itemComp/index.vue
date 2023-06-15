@@ -5,14 +5,13 @@
         <itemComp ref="itemComp"  @change="changeData"></itemComp>
       </el-tab-pane>
       <el-tab-pane label="报支细项" name="second">
-      <itemDetailCompany :applyId="applyId" :itemNo="itemNo" :itemName="itemName"></itemDetailCompany>
+      <itemDetailCompany ref="itemDetailCompany" :applyId="applyId" :itemNo="itemNo" :itemName="itemName"></itemDetailCompany>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-
 import itemComp from "@/views/finance/ap/itemComp/itemComp";
 import itemDetailCompany from "@/views/finance/ap/itemComp/itemDetailCompany";
 
@@ -39,7 +38,7 @@ export default {
       this.applyId = id;
       this.itemNo=itemNo;
       this.itemName=itemName
-      this.$refs.itemDetail.getVal(id, itemNo, itemName)
+      this.$refs.itemDetailCompany.getVal(id, itemNo, itemName)
     },
 
   }

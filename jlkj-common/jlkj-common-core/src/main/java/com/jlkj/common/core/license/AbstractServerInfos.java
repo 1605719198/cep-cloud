@@ -2,7 +2,6 @@ package com.jlkj.common.core.license;
 
 import cn.hutool.crypto.digest.MD5;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.crypto.digests.MD5Digest;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -95,10 +94,13 @@ public abstract class AbstractServerInfos {
      */
     protected List<InetAddress> getLocalAllInetAddress() throws Exception {
         List<InetAddress> result = new ArrayList<>(4);
+        // 遍历所有的网络接口
         for (Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces(); networkInterfaces.hasMoreElements(); ) {
             NetworkInterface iface = networkInterfaces.nextElement();
+            // 在所有的接口下再遍历IP
             for (Enumeration<InetAddress> inetAddresses = iface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
                 InetAddress inetAddr = inetAddresses.nextElement();
+                // 排除LoopbackAddress、SiteLocalAddress、LinkLocalAddress、MulticastAddress类型的IP地址
                 if (!inetAddr.isLoopbackAddress() && !inetAddr.isLinkLocalAddress() && !inetAddr.isMulticastAddress()) {
                     result.add(inetAddr);
                 }

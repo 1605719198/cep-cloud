@@ -1,6 +1,7 @@
 package com.jlkj.finance.ap.mapper;
 
 import com.jlkj.finance.ap.domain.FinanceApItemDetail;
+import com.jlkj.finance.ap.dto.FinanceApItemDetailDTO;
 
 import java.util.List;
 
@@ -27,6 +28,15 @@ public interface FinanceApItemDetailMapper
      * @return 报支类别集团细项集合
      */
     public List<FinanceApItemDetail> selectFinanceApItemDetailList(FinanceApItemDetail financeApItemDetail);
+
+
+    /**
+     * 查询报支类别集团细项列表
+     *
+     * @param financeApItemDetail 报支类别集团细项
+     * @return 报支类别集团细项集合
+     */
+    public List<FinanceApItemDetailDTO> selectFinanceApItemDetailList1(FinanceApItemDetail financeApItemDetail);
 
     /**
      * 新增报支类别集团细项

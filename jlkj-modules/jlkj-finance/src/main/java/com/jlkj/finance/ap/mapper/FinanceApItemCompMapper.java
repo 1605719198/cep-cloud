@@ -3,6 +3,7 @@ package com.jlkj.finance.ap.mapper;
 import com.jlkj.finance.ap.domain.FinanceApItemComp;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设置Mapper接口
@@ -66,4 +67,11 @@ public interface FinanceApItemCompMapper
      * @return
      */
     public int insertBatch(List<FinanceApItemComp> financeApItemComps);
+
+    /**
+     * 通过id查询是否有细项数据
+     * @param ids
+     * @return
+     */
+    public List<Map<String,String>> selectItemNosByIds(String[] ids);
 }
