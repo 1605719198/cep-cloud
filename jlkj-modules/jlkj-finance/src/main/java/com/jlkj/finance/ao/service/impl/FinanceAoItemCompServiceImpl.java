@@ -163,4 +163,14 @@ public class FinanceAoItemCompServiceImpl implements IFinanceAoItemCompService
         // 新增主档
         return financeAoItemCompMapper.insertBatch(financeAoItemComps);
     }
+
+
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectItemNoList(String companyId){
+        return financeAoItemCompMapper.selectItemNoList(companyId);
+    }
 }

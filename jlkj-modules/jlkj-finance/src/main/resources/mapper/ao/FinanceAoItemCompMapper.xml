@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemNo != null  and itemNo != ''"> and item_no like concat('%', #{itemNo}, '%')</if>
             <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
         </where>
+        order by item_no
     </select>
     
     <select id="selectFinanceAoItemCompById" parameterType="String" resultMap="FinanceAoItemCompResult">
@@ -120,5 +121,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
         )
+    </select>
+
+
+    <select id="selectItemNoList"  parameterType="String" resultType="map">
+        select item_no value, item_name label from finance_ao_item_comp
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+        </where>
+        order by item_no
     </select>
 </mapper>

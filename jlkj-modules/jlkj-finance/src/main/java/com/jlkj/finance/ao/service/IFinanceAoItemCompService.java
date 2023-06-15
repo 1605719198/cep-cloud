@@ -3,6 +3,7 @@ package com.jlkj.finance.ao.service;
 import com.jlkj.finance.ao.domain.FinanceAoItemComp;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别-公司级-设定主档Service接口
@@ -67,4 +68,11 @@ public interface IFinanceAoItemCompService
      * @return
      */
     public int insertBatch(List<FinanceAoItemComp> financeAoItemComps);
+
+
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    public List<Map<String,String>> selectItemNoList(String companyId);
 }

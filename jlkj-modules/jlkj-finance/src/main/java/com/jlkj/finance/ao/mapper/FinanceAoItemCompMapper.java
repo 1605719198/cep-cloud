@@ -75,4 +75,11 @@ public interface FinanceAoItemCompMapper
      */
     public List<Map<String,String>>selectDetailsByIds(String[] ids);
 
+
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    public List<Map<String,String>> selectItemNoList(String companyId);
+
 }
