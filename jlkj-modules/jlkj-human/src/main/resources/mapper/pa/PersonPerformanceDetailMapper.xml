@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.PersonPerformanceDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.pa.domain.PersonPerformanceDetail">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="personPerformanceId" column="person_performance_id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="num" column="num" jdbcType="VARCHAR"/>
+            <result property="item" column="item" jdbcType="VARCHAR"/>
+            <result property="itemGoal" column="item_goal" jdbcType="VARCHAR"/>
+            <result property="completeTime" column="complete_time" jdbcType="DATE"/>
+            <result property="weight" column="weight" jdbcType="DECIMAL"/>
+            <result property="completeStatue" column="complete_statue" jdbcType="VARCHAR"/>
+            <result property="selfScore" column="self_score" jdbcType="VARCHAR"/>
+            <result property="admScore" column="adm_score" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="fieldS" column="field_s" jdbcType="VARCHAR"/>
+            <result property="fieldA" column="field_a" jdbcType="VARCHAR"/>
+            <result property="fieldB" column="field_b" jdbcType="VARCHAR"/>
+            <result property="fieldC" column="field_c" jdbcType="VARCHAR"/>
+            <result property="fieldD" column="field_d" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,person_performance_id,comp_id,
+        type,num,item,
+        item_goal,complete_time,weight,
+        complete_statue,self_score,adm_score,
+        remark,field_s,field_a,
+        field_b,field_c,field_d,
+        creator,creator_id,create_date
+    </sql>
+</mapper>

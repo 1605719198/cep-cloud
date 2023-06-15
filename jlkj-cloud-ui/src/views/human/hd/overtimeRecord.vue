@@ -599,6 +599,8 @@ export default {
       this.form.date2=picker[1]
       if (this.form.startTime.substring(11, 13) === '08' && this.form.endTime.substring(11, 13) === '17') {
         this.overtimeHours = 8
+      } else if (this.form.startTime.substring(11, 13) < 12 && this.form.endTime.substring(11, 13) > 13){
+        this.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13) - 1
       } else {
         this.overtimeHours = this.form.endTime.substring(11, 13) - this.form.startTime.substring(11, 13)
       }
