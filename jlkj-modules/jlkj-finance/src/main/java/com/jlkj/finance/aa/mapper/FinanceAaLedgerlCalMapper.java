@@ -145,4 +145,13 @@ public interface FinanceAaLedgerlCalMapper
      * @return 结果
      */
     public int deleteFinanceAaLedgerlCalByIds(String[] ids);
+
+    /**
+     * 科目余额查询
+     * @param financeAaLedgerAcctDTO
+     * @return
+     */
+    List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedCal(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+
+
 }

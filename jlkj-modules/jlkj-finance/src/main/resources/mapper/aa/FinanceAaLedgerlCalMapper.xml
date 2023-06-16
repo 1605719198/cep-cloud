@@ -223,6 +223,284 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              and cal_codea = #{calCodea}
         </where>
     </select>
+    <select id="selectAmountNotDisplayedCal" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+       SELECT
+        T1.company_id,
+        T3.acct_name,
+        T1.acct_code,
+        <if test='reportType == "2"'>T1.cal_namea,T1.cal_codea, </if>
+        <if test='reportType == "3"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,  </if>
+        <if test='reportType == "4"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec, </if>
+        <if test='reportType == "5"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec,T1.cal_named,T1.cal_coded, </if>
+        sum(T1.bgn_amt )as  bgn_amt,
+        sum(T1.dr_amt )as  dr_amt,
+        sum(T1.cr_amt )as  cr_amt,
+        sum(T1.bgn_qty )as bgn_qty,
+        sum(T1.dr_qty )as dr_qty,
+        sum(T1.cr_qty )as cr_qty,
+        sum(T1.year_dr_amt )+ sum( T1.dr_amt)  as  year_dr_amt,
+        sum(T1.year_cr_amt  )+ sum(T1. cr_amt)  as  year_cr_amt,
+        sum(T1.year_dr_qty  )+ sum( T1.dr_qty)  as  year_dr_qty,
+        sum(T1.year_cr_qty )+ sum(T1. cr_qty)  as  year_cr_qty
+        FROM
+        (
+
+        SELECT
+        company_id AS company_id ,
+        acct_name AS acct_name,
+        ifnull(cal_namea,'') as cal_namea,
+        ifnull(cal_codea,'') as cal_codea,
+        ifnull(cal_nameb,'') as cal_nameb,
+        ifnull(cal_codeb,'') as cal_codeb,
+        ifnull(cal_namec,'') as cal_namec,
+        ifnull(cal_codec,'') as cal_codec,
+        ifnull(cal_named,'') as cal_named,
+        ifnull(cal_coded,'') as cal_coded,
+        <if test='accountLevel == "01"'>substr( acct_code, 1, 4 ) AS acct_code,</if>
+        <if test='accountLevel == "02"'>substr( acct_code, 1, 6 ) AS acct_code,</if>
+        <if test='accountLevel == "03"'>substr( acct_code, 1, 8 ) AS acct_code,</if>
+        <if test='accountLevel == "04"'>substr( acct_code, 1, 10) AS acct_code,</if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>substr( acct_code, 1, 12) AS acct_code,</if>
+        0 AS bgn_amt,
+        0 AS dr_amt,
+        0 AS cr_amt,
+        0 AS bgn_qty,
+        0 AS dr_qty,
+        0 AS cr_qty,
+        sum(year_dr_amt) as year_dr_amt,
+        sum( year_cr_amt) as year_cr_amt,
+        sum(year_dr_qty) as year_dr_qty,
+        sum(year_cr_qty) as year_cr_qty
+        FROM
+        finance_aa_ledgerl_cal
+        WHERE
+        acct_period between #{endDate} and #{endDate}
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+        <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+            and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+            or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+            or cal_namec between #{calNameaStart} and #{calNameaEnd}
+            or cal_named between #{calNameaStart} and #{calNameaEnd}
+            )
+        </if>
+        and company_id = #{companyId}
+        group by
+                 company_id,
+                 acct_name,
+                ifnull(cal_namea,''),
+                ifnull(cal_codea,''),
+                ifnull(cal_nameb,''),
+                ifnull(cal_codeb,''),
+                ifnull(cal_namec,''),
+                ifnull(cal_codec,''),
+                ifnull(cal_named,''),
+                ifnull(cal_coded,''),
+                acct_code
+
+        UNION
+        SELECT
+        company_id AS company_id ,
+        acct_name AS acct_name,
+        ifnull(cal_namea,'') as cal_namea,
+        ifnull(cal_codea,'') as cal_codea,
+        ifnull(cal_nameb,'') as cal_nameb,
+        ifnull(cal_codeb,'') as cal_codeb,
+        ifnull(cal_namec,'') as cal_namec,
+        ifnull(cal_codec,'') as cal_codec,
+        ifnull(cal_named,'') as cal_named,
+        ifnull(cal_coded,'') as cal_coded,
+        <if test='accountLevel == "01"'> substr(acct_code, 1, 4 )  AS acct_code,</if>
+        <if test='accountLevel == "02"'> substr(acct_code, 1, 6 )  AS acct_code,</if>
+        <if test='accountLevel == "03"'> substr(acct_code, 1, 8 )  AS acct_code,</if>
+        <if test='accountLevel == "04"'> substr(acct_code, 1, 10)  AS acct_code,</if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>substr( acct_code, 1, 12) AS acct_code,</if>
+        sum(bgn_amt) AS bgn_amt,
+        0 AS dr_amt,
+        0 AS cr_amt,
+        sum(bgn_qty) AS bgn_qty,
+        0 AS dr_qty,
+        0 AS cr_qty,
+        0 AS  year_dr_amt,
+        0 AS year_cr_amt,
+        0 AS  year_dr_qty,
+        0 AS year_cr_qty
+        FROM
+        finance_aa_ledgerl_cal
+        WHERE
+        acct_period between #{startDate} and #{startDate}
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+        <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+            and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+            or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+            or cal_namec between #{calNameaStart} and #{calNameaEnd}
+            or cal_named between #{calNameaStart} and #{calNameaEnd}
+            )
+        </if>
+        and company_id = #{companyId}
+        group by
+        company_id,
+
+        acct_name,
+        ifnull(cal_namea,''),
+        ifnull(cal_codea,''),
+        ifnull(cal_nameb,''),
+        ifnull(cal_codeb,''),
+        ifnull(cal_namec,''),
+        ifnull(cal_codec,''),
+        ifnull(cal_named,''),
+        ifnull(cal_coded,''),
+        acct_code
+        UNION
+        SELECT
+        company_id AS company_id ,
+        acct_name AS acct_name,
+        ifnull(cal_namea,'') as cal_namea,
+        ifnull(cal_codea,'') as cal_codea,
+        ifnull(cal_nameb,'') as cal_nameb,
+        ifnull(cal_codeb,'') as cal_codeb,
+        ifnull(cal_namec,'') as cal_namec,
+        ifnull(cal_codec,'') as cal_codec,
+        ifnull(cal_named,'') as cal_named,
+        ifnull(cal_coded,'') as cal_coded,
+        <if test='accountLevel == "01"'>substr( acct_code, 1, 4 ) AS acct_code,</if>
+        <if test='accountLevel == "02"'> substr( acct_code, 1, 6 ) AS acct_code,</if>
+        <if test='accountLevel == "03"'>substr( acct_code, 1, 8 ) AS acct_code,</if>
+        <if test='accountLevel == "04"'> substr( acct_code, 1, 10) AS acct_code,</if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'> substr( acct_code, 1, 12)  AS acct_code,</if>
+        0 AS bgn_amt,
+        sum(dr_amt) AS dr_amt,
+        sum(cr_amt) AS cr_amt,
+        0 AS bgn_qty,
+        sum(dr_qty) AS dr_qty,
+        sum(cr_qty) AS cr_qty,
+        0 AS  year_dr_amt,
+        0 AS year_cr_amt,
+        0 AS  year_dr_qty,
+        0 AS year_cr_qty
+        FROM
+        finance_aa_ledgerl_cal
+        WHERE
+        acct_period between #{startDate} and #{endDate}
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+        <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+            and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+            or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+            or cal_namec between #{calNameaStart} and #{calNameaEnd}
+            or cal_named between #{calNameaStart} and #{calNameaEnd}
+            )
+        </if>
+        and company_id = #{companyId}
+        group by
+        company_id,
+        acct_name,
+
+        ifnull(cal_namea,''),
+        ifnull(cal_codea,''),
+        ifnull(cal_nameb,''),
+        ifnull(cal_codeb,''),
+        ifnull(cal_namec,''),
+        ifnull(cal_codec,''),
+        ifnull(cal_named,''),
+        ifnull(cal_coded,''),
+        acct_code
+        <if test='unpostedVoucher == "Y"'>
+         UNION
+            select company_id,acct_name,
+            cal_namea,cal_codea,cal_nameb,cal_codeb,cal_namec,cal_codec,cal_named,cal_coded,
+            acct_code,
+            sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
+            sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty ,
+            SUM(year_dr_amt) AS  year_dr_amt,
+            SUM(year_cr_amt) AS year_cr_amt,
+            SUM(year_dr_qty) AS  year_dr_qty,
+            SUM(year_cr_qty) AS year_cr_qty
+            from (
+            SELECT
+            b.company_id AS company_id,
+            b.acct_name AS acct_name,
+            ifnull(b.cal_namea,'') as cal_namea,
+            ifnull(b.cal_codea,'') as cal_codea,
+            ifnull(b.cal_nameb,'') as cal_nameb,
+            ifnull(b.cal_codeb,'') as cal_codeb,
+            ifnull(b.cal_namec,'') as cal_namec,
+            ifnull(b.cal_codec,'') as cal_codec,
+            ifnull(b.cal_named,'') as cal_named,
+            ifnull(b.cal_coded,'') as cal_coded,
+            <if test='accountLevel == "01"'>substr( b.acct_code, 1, 4 ) AS acct_code,</if>
+            <if test='accountLevel == "02"'>substr( b.acct_code, 1, 6 ) AS acct_code,</if>
+            <if test='accountLevel == "03"'>substr( b.acct_code, 1, 8 ) AS acct_code,</if>
+            <if test='accountLevel == "04"'>substr( b.acct_code, 1, 10) AS acct_code,</if>
+            <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>substr( b.acct_code, 1, 12) AS acct_code,</if>
+
+            0 AS bgn_amt,
+            CASE
+            WHEN DRCR = 'D' THEN
+            b.ntAmt  ELSE 0
+            END AS dr_amt,
+            CASE
+            WHEN DRCR = 'C' THEN
+            b.ntAmt ELSE 0
+            END AS cr_amt,
+            0 AS bgn_qty,
+            CASE
+            WHEN DRCR = 'D' THEN
+            b.qty_frnAmt  ELSE 0
+            END AS dr_qty,
+            CASE
+            WHEN DRCR = 'C' THEN
+            b.qty_frnAmt  ELSE 0
+            END AS cr_qty,
+            0 AS  year_dr_amt,
+            0 AS year_cr_amt,
+            0 AS  year_dr_qty,
+            0 AS year_cr_qty
+            FROM
+            finance_aa_voucher a
+            LEFT JOIN finance_aa_voucher_detail b ON b.voucher_no = a.voucher_no
+            AND b.company_id = a.company_id
+            WHERE
+            b.voucher_date between #{startDetailDate} and #{endDetailDate}
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+                and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+                or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+                or cal_namec between #{calNameaStart} and #{calNameaEnd}
+                or cal_named between #{calNameaStart} and #{calNameaEnd}
+                )
+            </if>
+            and  b.company_id = #{companyId}
+            and a.status <![CDATA[   !=  ]]> 'P'
+            ) t2
+            group by acct_name , company_id,acct_code,
+
+            ifnull(cal_namea,''),
+            ifnull(cal_codea,''),
+            ifnull(cal_nameb,''),
+            ifnull(cal_codeb,''),
+            ifnull(cal_namec,''),
+            ifnull(cal_codec,''),
+            ifnull(cal_named,''),
+            ifnull(cal_coded,'')
+        </if>
+        ) T1
+        left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
+        GROUP BY
+        T1.company_id,
+        T1.acct_code,
+        <if test='reportType == "2"'>T1.cal_namea,T1.cal_codea, </if>
+        <if test='reportType == "3"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,  </if>
+        <if test='reportType == "4"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec, </if>
+        <if test='reportType == "5"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec,T1.cal_named,T1.cal_coded, </if>
+        T3.acct_name
+        order BY
+        T1.company_id,
+        T1.acct_code,
+        <if test='reportType == "2"'>T1.cal_namea,T1.cal_codea, </if>
+        <if test='reportType == "3"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,  </if>
+        <if test='reportType == "4"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec, </if>
+        <if test='reportType == "5"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec,T1.cal_named,T1.cal_coded, </if>
+        T3.acct_name
+    </select>
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
         insert into finance_aa_ledgerl_cal

@@ -116,6 +116,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE
             acct_period between #{endDate} and #{endDate}
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+                and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+                or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+                or cal_namec between #{calNameaStart} and #{calNameaEnd}
+                or cal_named between #{calNameaStart} and #{calNameaEnd}
+                )
+            </if>
             and company_id = #{companyId}
         group by acct_name , company_id,acct_code
 
@@ -153,6 +160,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 WHERE
                     acct_period between #{startDate} and #{startDate}
                     <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+                    <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">
+                        and (cal_namea between #{calNameaStart} and #{calNameaEnd}
+                        or cal_nameb between #{calNameaStart} and #{calNameaEnd}
+                        or cal_namec between #{calNameaStart} and #{calNameaEnd}
+                        or cal_named between #{calNameaStart} and #{calNameaEnd}
+                        )
+                    </if>
                     and company_id = #{companyId}
                     group by acct_name , company_id,acct_code
 
@@ -196,7 +210,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                          or cal_namec between #{calNameaStart} and #{calNameaEnd}
                          or cal_named between #{calNameaStart} and #{calNameaEnd}
                          )
-                    </if>
+                 </if>
                 and company_id = #{companyId}
                 group by acct_name , company_id,acct_code
 
@@ -378,6 +392,7 @@ SELECT
             and cal_namea = #{calName}
         </where>
     </select>
+
 
     <insert id="insertFinanceAaLedgerAcct" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerAcct">
         insert into finance_aa_ledger_acct
