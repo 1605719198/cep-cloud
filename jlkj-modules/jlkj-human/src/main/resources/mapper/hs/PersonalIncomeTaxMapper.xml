@@ -101,4 +101,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deletePersonalIncomeTaxByVersion" parameterType="map">
         delete from human_hs_personal_income_tax where type = #{type} and  version_no= #{versionNo}
     </delete>
+
+    <update id="updatePersonalIncomeTaxById" parameterType="String">
+        update from human_hs_personal_income_tax set effectDate where type = #{type} and  version_no= #{versionNo}
+    </update>
 </mapper>

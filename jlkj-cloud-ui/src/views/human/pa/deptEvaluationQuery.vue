@@ -11,39 +11,52 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="年度" prop="year">
+      <el-form-item label="考核年月" prop="meritMonth">
         <el-date-picker
-          v-model="queryParams.year"
-          type="year"
-          value-format="yyyy"
-          placeholder="选择年">
+          v-model="queryParams.meritMonth"
+          value-format="yyyy-MM"
+          type="monthrange"
+          range-separator="~"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change="dateFormat">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="组织机构" prop="dept">
+      <el-form-item label="考评类别" prop="meritType">
+        <el-select v-model="queryParams.meritType">
+          <el-option
+            v-for="dict in performanceOptions.MeritType"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="一级单位" prop="dept">
         <el-input v-model="queryParams.dept" disabled>
           <el-button slot="append" icon="el-icon-search" @click="openOrgPop"></el-button>
         </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-          <el-button
-            type="warning"
-            plain
-            icon="el-icon-download"
-            size="mini"
-            @click="handleExport"
-            v-hasPermi="['human:yearPerformance:export']"
-          >导出</el-button>
+        <el-button
+        type="warning"
+        plain
+        icon="el-icon-download"
+        size="mini"
+        @click="handleExport"
+        v-hasPermi="['human:deptEvaluationQuery:export']"
+      >导出</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="yearPerformanceList">
+    <el-table v-loading="loading" :data="deptEvaluationQueryList" >
       <el-table-column label="序号" align="center" prop="id" width="60"/>
       <el-table-column label="一级单位" align="center" prop="dept" />
-      <el-table-column label="状态" align="center" prop="status" >
-      <template v-slot="scope">
-        <dict-tag-human :options="performanceOptions.Status" :value="scope.row.status"/>
-      </template>
+      <el-table-column label="考评状态" align="center" prop="meritStatus" >
+        <template v-slot="scope">
+          <dict-tag-human :options="performanceOptions.MeritStatus" :value="scope.row.meritStatus"/>
+        </template>
       </el-table-column>
       <el-table-column label="人数" align="center" prop="people" />
       <el-table-column label="比例%" align="center" prop="proportion" />
@@ -61,15 +74,14 @@
 </template>
 
 <script>
-import { listYearPerformance } from "@/api/human/pa/yearPerformance";
+import { listDeptEvaluationQuery } from "@/api/human/pa/deptEvaluationQuery";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getPerformanceOptions} from "@/api/human/pa/basis";
 import selectOrg from "@/views/components/human/selectUser/selectOrgPerson";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
-import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 
 export default {
-  name: "YearPerformance",
+  name: "DeptEvaluationQuery",
   components: { selectOrg,DictTagHuman },
   data() {
     return {
@@ -78,7 +90,7 @@ export default {
       //绩效选单类型查询
       performanceOptionType:{
         id:'',
-        optionsType:['Status']
+        optionsType:['MeritStatus','MeritType']
       },
       //公司列表
       companyList:[],
@@ -94,8 +106,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 年度绩效主档表格数据
-      yearPerformanceList: [],
+      // 个人绩效主档表格数据
+      deptEvaluationQueryList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -104,14 +116,20 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: this.$store.state.user.userInfo.compId,
         dept: null,
-        year: null,
+        compId: this.$store.state.user.userInfo.compId,
+        meritMonth: null,
+        meritType: null,
+        month1:null,
+        month2:null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        meritStatus: [
+          { required: true, message: "考评状态不能为空", trigger: "change" }
+        ],
       }
     };
   },
@@ -120,18 +138,11 @@ export default {
     this.getCompanyList()
   },
   methods: {
-    /** 查询公司列表 */
-    getCompanyList(){
-      selectCompany().then(response =>{
-          this.companyList = response.data
-        }
-      )
-    },
-    /** 查询年度绩效主档列表 */
+    /** 查询个人绩效主档列表 */
     getList() {
       this.loading = true;
-      listYearPerformance(this.queryParams).then(response => {
-        this.yearPerformanceList = response.rows;
+      listDeptEvaluationQuery(this.queryParams).then(response => {
+        this.deptEvaluationQueryList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -142,55 +153,80 @@ export default {
         this.performanceOptions=response.data;
       })
     },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        compId: null,
-        dept: null,
-        postId: null,
-        year: null,
-        empId: null,
-        yearScore: null,
-        rank: null,
-        admScore: null,
-        admEmpId: null,
-        score: null,
-        status: null,
-        creator: null,
-        creatorId: null,
-        creatorNo: null,
-        createDate: null
-      };
-      this.resetForm("form");
-    },
-    /** 获取单位 */
-    getJobNumber() {
-        queryNewPostNameAndChangeDetail(this.table.yearPerformanceList).then(res => {
-          this.table.yearPerformanceList.dept = res.data
-        })
+    /** 单位按钮操作 */
+    openOrgPop() {
+      this.$refs.selectOrg.show();
     },
     /** 获取单位 */
     getOrg(val,val1,deptName) {
       this.queryParams.dept = val
     },
-    /** 单位按钮操作 */
-    openOrgPop() {
-      this.$refs.selectOrg.show();
+    /** 查询公司列表 */
+    getCompanyList(){
+      selectCompany().then(response =>{
+          this.companyList = response.data
+        }
+      )
+    },
+    /** 日期查询范围变更*/
+    dateFormat(val){
+      this.queryParams.month1 =val[0];
+      this.queryParams.month2 =val[1];
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        compId: null,
+        meritType: null,
+        meritMonth: null,
+        empId: null,
+        deptType: null,
+        dept: null,
+        postId: null,
+        isTeam: null,
+        teamRatio: null,
+        teamScore: null,
+        isPoint: null,
+        pointRatio: null,
+        pointScore: null,
+        isFix: null,
+        fixRatio: null,
+        fixScore: null,
+        fixId: null,
+        isKpi: null,
+        kpiRatio: null,
+        kpiScore: null,
+        selfAppr: null,
+        admAppr: null,
+        pdAdjust: null,
+        pbAdjust: null,
+        otherAdjust: null,
+        score: null,
+        selfScore: null,
+        admScore: null,
+        rank: null,
+        meritStatus: null,
+        creator: null,
+        creatorId: null,
+        createDate: null
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      if (this.queryParams.year != null) {
+      if (this.queryParams.meritMonth != null) {
       this.queryParams.pageNum = 1;
       this.getList();
     } else {
-      this.$modal.msgError("年度不能为空");
-    }},
+      this.$modal.msgError("考核年月不能为空");
+    }
+      },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('human/yearPerformance/export', {
+      this.download('human/deptEvaluationQuery/export', {
         ...this.queryParams
-      }, `yearPerformance_${new Date().getTime()}.xlsx`)
+      }, `deptEvaluationQuery_${new Date().getTime()}.xlsx`)
     }
   }
 };
