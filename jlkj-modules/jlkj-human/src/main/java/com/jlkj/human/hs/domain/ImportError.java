@@ -23,7 +23,6 @@ public class ImportError extends BaseEntity
     private String id;
 
     /** 薪资类别ID */
-//    @Excel(name = "薪资类别ID")
     private String payType;
 
     /** 公司别 */
