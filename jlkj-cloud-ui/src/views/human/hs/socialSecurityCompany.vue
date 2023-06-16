@@ -151,6 +151,7 @@ export default {
     this.initData();
     this.getCompanyList();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询公司列表 */
@@ -172,7 +173,9 @@ export default {
       this.table.loading = true;
       listSocialSecurityCompany(this.queryParams).then(response => {
         this.socialSecurityCompanyList = response.rows;
-        this.addLine();
+        if(this.socialSecurityCompanyList.length===0){
+          this.addLine();
+        }
         this.total = response.total;
         this.table.loading = false;
       }, error => {
