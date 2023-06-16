@@ -1096,7 +1096,7 @@ export default {
     submitFormcopy() {
       this.$refs['formcopy'].validate(valid => {
         if (valid) {
-          if (this.formcopy.newCompId == this.formcopy.oldCompId) {
+          if (this.formcopy.newCompId === this.formcopy.oldCompId) {
             this.$modal.msgError('请选择两个不同的公司')
           } else {
             copySysDept(this.formcopy).then(response => {

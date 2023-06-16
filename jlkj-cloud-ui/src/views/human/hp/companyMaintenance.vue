@@ -655,6 +655,9 @@ export default {
         ],
         fax: [
           { pattern: /^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/, message: '传真格式不正确', trigger: 'blur' }
+        ],
+        orderNum:[
+          // { required: true, validator: this.onePoint, trigger: "blur" }
         ]
       }
     }
@@ -678,10 +681,18 @@ export default {
     this.getHumandisc()
     this.getTreeselect()
     this.treeandtable = true
-
-    // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
+    // 数字长度校验
+    onePoint(rule, value, callback) {
+      let str = value.toString.length;
+      alert(str)
+      if (1) {
+        callback(new Error('最多一位小数！！！'))
+      } else {
+        callback()
+      }
+    },
     //初始化数据
     initData() {
       this.user.empNo = this.$store.state.user.name

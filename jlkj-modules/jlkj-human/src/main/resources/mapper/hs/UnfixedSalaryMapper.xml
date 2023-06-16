@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.UnfixedSalaryMapper">
+    
+    <resultMap type="UnfixedSalary" id="UnfixedSalaryResult">
+        <result property="id"    column="id"    />
+        <result property="groupType"    column="group_type"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="UnfixedSalaryDTO" id="UnfixedDTOResult">
+        <result property="id"    column="id"    />
+        <result property="groupType"    column="group_type"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="isCheck"    column="is_check"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+
+    <sql id="selectUncheckedVo">
+        select  group_type, comp_id, type_id, emp_no, emp_name, effect_date, creator, create_date, is_check from human_hs_unchecked
+    </sql>
+
+    <sql id="selectUnfixedSalaryVo">
+        select id, group_type, type_id, comp_id, effect_date, emp_no, creator, creator_no, creator_id, create_date from human_hs_unfixed_salary
+    </sql>
+
+    <select id="selectUncheckedList" parameterType="UnfixedSalaryDTO" resultMap="UnfixedDTOResult">
+        <include refid="selectUncheckedVo"/>
+        <where>
+            <if test="groupType != null  and groupType != ''"> and group_type = #{groupType}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="startDate != null "> and effect_date &gt;= #{startDate}</if>
+            <if test="endDate != null "> and effect_date &lt;= #{endDate}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+        </where>
+    </select>
+
+    <select id="selectUnfixedSalaryList" parameterType="UnfixedSalaryDTO" resultMap="UnfixedSalaryResult">
+        <include refid="selectUnfixedSalaryVo"/>
+        <where>
+            <if test="groupType != null  and groupType != ''"> and group_type = #{groupType}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="startDate != null "> and effect_date &gt;= #{startDate}</if>
+            <if test="endDate != null "> and effect_date &lt;= #{endDate}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+        </where>
+    </select>
+
+    <select id="selectUnfixedSalaryById" parameterType="String" resultMap="UnfixedSalaryResult">
+        <include refid="selectUnfixedSalaryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnfixedSalary" parameterType="UnfixedSalary">
+        insert into human_hs_unfixed_salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="groupType != null">group_type,</if>
+            <if test="typeId != null">type_id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="groupType != null">#{groupType},</if>
+            <if test="typeId != null">#{typeId},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnfixedSalary" parameterType="UnfixedSalary">
+        update human_hs_unfixed_salary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupType != null">group_type = #{groupType},</if>
+            <if test="typeId != null">type_id = #{typeId},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnfixedSalaryById" parameterType="String">
+        delete from human_hs_unfixed_salary where id = #{id}
+    </delete>
+
+    <delete id="deletePreDataByParam" parameterType="UnfixedSalaryDTO">
+        delete from human_hs_unfixed_salary
+        <where>
+            <if test="groupType != null  and groupType != ''"> and group_type = #{groupType}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+<!--            <if test="startDate != null "> and effect_date &gt;= #{startDate}</if>-->
+<!--            <if test="endDate != null "> and effect_date &lt;= #{endDate}</if>-->
+<!--            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>-->
+        </where>
+    </delete>
+
+    <delete id="deleteUnfixedSalaryByIds" parameterType="String">
+        delete from human_hs_unfixed_salary where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

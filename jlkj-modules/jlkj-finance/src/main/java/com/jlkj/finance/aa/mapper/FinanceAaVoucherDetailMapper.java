@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
+import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 
 import java.util.List;
 
@@ -30,10 +31,40 @@ public interface FinanceAaVoucherDetailMapper
     /**
      * 查询凭证维护-明细列表
      *
+     * @param financeAaLedgerAcctDTO 凭证维护-明细
+     * @return 凭证维护-明细集合
+     */
+    public String[]  seleAcctCode(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+    /**
+     * 查询凭证维护-明细列表
+     *
+     * @param financeAaLedgerAcctDTO 凭证维护-明细
+     * @return 凭证维护-明细集合
+     */
+    public List<FinanceAaLedgerAcctDTO>  seleClName(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     /**
+     * 查询凭证维护-明细列表
+     *
+     * @param financeAaLedgerAcctDTO 凭证维护-明细
+     * @return 凭证维护-明细集合
+     */
+    public List<FinanceAaLedgerAcctDTO>  selectcalNameList(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询凭证维护-明细列表
+     *
      * @param financeAaVoucherDetail 凭证维护-明细
      * @return 凭证维护-明细集合
      */
     public FinanceAaVoucherDetail selectFinanceAaLedgerAcctList(FinanceAaVoucherDetail financeAaVoucherDetail);
+    /**
+     * 查询凭证维护-明细列表
+     *
+     * @param financeAaLedgerAcctDTO 凭证维护-明细
+     * @return 凭证维护-明细集合
+     */
+    public FinanceAaLedgerAcctDTO selectFinanceAaLedgerAcctDTOList(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 根据条件求和
      *

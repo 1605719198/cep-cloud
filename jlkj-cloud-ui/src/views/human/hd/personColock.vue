@@ -50,17 +50,17 @@
         >新增
         </el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="info"-->
-<!--          plain-->
-<!--          icon="el-icon-upload2"-->
-<!--          size="mini"-->
-<!--          @click="handleImport"-->
-<!--          v-hasPermi="['human:personColock:import']"-->
-<!--        >导入-->
-<!--        </el-button>-->
-<!--      </el-col>-->
+      <!--      <el-col :span="1.5">-->
+      <!--        <el-button-->
+      <!--          type="info"-->
+      <!--          plain-->
+      <!--          icon="el-icon-upload2"-->
+      <!--          size="mini"-->
+      <!--          @click="handleImport"-->
+      <!--          v-hasPermi="['human:personColock:import']"-->
+      <!--        >导入-->
+      <!--        </el-button>-->
+      <!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -68,7 +68,7 @@
               v-if="this.colockType!=null"
     >
       <el-table-column label="工号" align="center" prop="empId" v-if="this.colockType==='1'"/>
-      <el-table-column label="机构id" align="center" prop="deptId" v-else-if="this.colockType==='2'"/>
+      <el-table-column label="机构id" align="center" prop="deptId" v-if="this.colockType==='2'"/>
       <el-table-column label="一级机构" align="center" prop="firstDeptName"/>
       <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
         <template v-slot="scope">
@@ -94,6 +94,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button
+            v-show="isEffect(scope.row.effectDate)"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -102,7 +103,7 @@
           >修改
           </el-button>
           <el-button
-            v-show="scope.row.isEffect!=='1'"
+            v-show="isEffect(scope.row.effectDate)"
             size="mini"
             type="text"
             icon="el-icon-error"
@@ -128,7 +129,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
         <el-row :gutter="20">
-          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id==null">
+
+          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id===null">
             <el-form-item prop="type" label="卡钟类型" style="width: 260px;">
               <el-select v-model="formcolockType" placeholder="请选择卡钟设定类型">
                 <el-option
@@ -153,14 +155,14 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id!=null">
+          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id!==null">
             <el-form-item prop="type" label="卡钟类型" style="width: 260px;">
               <dict-tag-human-base :options="attendenceOptions.ColockType" :value="formcolockType"/>
             </el-form-item>
-            <el-form-item label="机构ID" v-if="this.formcolockType==='2'" style="width: 200px;">
+            <el-form-item label="机构ID" v-if="this.formcolockType==='2'" style="width: 200px;" prop="deptId">
               {{ form.deptId }}
             </el-form-item>
-            <el-form-item label="员工工号" v-if="this.formcolockType==='1'" style="width: 200px;">
+            <el-form-item label="员工工号" v-if="this.formcolockType==='1'" style="width: 200px;" prop="empId">
               {{ form.empId }}
             </el-form-item>
           </el-col>
@@ -196,10 +198,10 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <div v-if="this.form.checkcard==='Y'">
+        <div v-show="this.form.checkcard==='Y'">
           <el-divider content-position="center">刷卡地点清单</el-divider>
         </div>
-        <div v-if="this.form.checkcard==='Y'">
+        <div v-show="this.form.checkcard==='Y'">
           <el-checkbox-group v-model="checkList">
             <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>
           </el-checkbox-group>
@@ -338,15 +340,18 @@ export default {
         deptId: [
           { required: true, message: '部门不可为空', trigger: 'blur' }
         ],
-        checkcard: [
+        checkca: [
           { required: true, message: '是否打卡不可为空', trigger: 'change' }
         ],
         effectDate: [
-          { required: true, message: '请选择生效日期', trigger: 'change' }
+          { required: true, message: '请选择生效日期', trigger: 'change' },
+          { required: true, validator: this.validateEffectDate, trigger: 'change' }
         ]
       },
       //选单数据
-      humanOptions: []
+      humanOptions: [],
+      //弹窗刷新参数
+      refresh: true
     }
   },
   watch: {
@@ -369,6 +374,9 @@ export default {
     this.getCompanyList()
   },
   methods: {
+    isEffect(date){
+      return new Date(date)>new Date();
+    },
     //获取出勤字典(假别类型查询)
     getDisc() {
       getAttendenceOptions(this.attendenceOptionType).then(response => {
@@ -396,18 +404,18 @@ export default {
         this.queryParams.empId = val
       } else {
         this.form.empId = val
+        //选中表单清空
         this.checkList = []
+        //查员工一级机构
         queryFirstdeptByPerson(val).then(response => {
-          if(response.data.firstDeptId){
+          if (response.data.firstDeptId) {
             this.form.firstDeptId = response.data.firstDeptId
             this.form.firstDeptName = response.data.firstDeptName
             this.clockworkList.forEach((value, index, array) => {
-              console.log(JSON.stringify(value))
               if (value.firstDeptId) {
-                var array = value.firstDeptId.split(',')
-                array.forEach((values, indexs, arrays) => {
+                var arr = value.firstDeptId.split(',')
+                arr.forEach((values, indexs, arrays) => {
                   if (values === this.form.firstDeptId && this.form.firstDeptId != null) {
-                    console.log(JSON.stringify(value))
                     this.checkList.push(value.code)
                   }
                 })
@@ -432,9 +440,9 @@ export default {
         this.form.firstDeptName = response.data.firstDeptName
         this.clockworkList.forEach((value, index, array) => {
           if (value.firstDeptId) {
-            var array = value.firstDeptId.split(',')
-            array.forEach((values, indexs, arrays) => {
-              if (values == this.form.firstDeptId && this.form.firstDeptId != null) {
+            var arr = value.firstDeptId.split(',')
+            arr.forEach((values, indexs, arrays) => {
+              if (values === this.form.firstDeptId && this.form.firstDeptId != null) {
                 this.checkList.push(value.code)
               }
             })
@@ -504,7 +512,9 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
-      this.reset()
+      this.$nextTick(() => {
+        this.reset()
+      })
     },
     // 表单重置
     reset() {
@@ -522,15 +532,23 @@ export default {
         createDate: null,
         firstDeptName: null,
         firstDeptId: null,
-        colockList: [],
+        colockList: []
       }
-      // this.resetForm('form')
+      this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1
       this.colockList = []
       this.getList()
+    },
+    //生效日期校验方法
+    validateEffectDate(rule, value, callback) {
+      if(new Date(value)<=new Date()){
+        callback(new Error('生效日期不可小于等于当天'))
+      }else{
+        callback();
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -554,14 +572,14 @@ export default {
       this.reset()
       this.formcolockType = this.colockType
       this.title = '添加卡钟'
-      this.checkList = [];
-      this.open = true;
+      this.checkList = []
+      this.open = true
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
-      this.open = true;
-      this.checkList = [];
+      this.open = true
+      this.checkList = []
       this.formcolockType = this.colockType
       const id = row.id || this.ids
       if (this.colockType === '1') {
