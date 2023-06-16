@@ -166,13 +166,19 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             }
             //是否显示本年合计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getYearAdd())) {
+                BigDecimal yearCrAmt=BigDecimal.ZERO;
+                BigDecimal yearCrQty=BigDecimal.ZERO;
+                BigDecimal yearDrAmt=BigDecimal.ZERO;
+                BigDecimal yearDrQty=BigDecimal.ZERO;
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO.setAcctCode(acctCode1.getAcctCode());
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCalMaxMonth(financeAaLedgerAcctDTO);
-                BigDecimal yearCrAmt = (null == financeAaLedgerAcctDTO2.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getCrAmt()).add(null == financeAaLedgerAcctDTO2.getYearCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrAmt());
-                BigDecimal yearCrQty = (null == financeAaLedgerAcctDTO2.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
-                BigDecimal yearDrAmt = (null == financeAaLedgerAcctDTO2.getYearDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrAmt()).add(null == financeAaLedgerAcctDTO2.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrAmt());
-                BigDecimal yearDrQty = (null == financeAaLedgerAcctDTO2.getYearDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                if (financeAaLedgerAcctDTO2!=null){
+                     yearCrAmt = (null == financeAaLedgerAcctDTO2.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getCrAmt()).add(null == financeAaLedgerAcctDTO2.getYearCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrAmt());
+                     yearCrQty = (null == financeAaLedgerAcctDTO2.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                     yearDrAmt = (null == financeAaLedgerAcctDTO2.getYearDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrAmt()).add(null == financeAaLedgerAcctDTO2.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrAmt());
+                     yearDrQty = (null == financeAaLedgerAcctDTO2.getYearDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                }
                 if (!yearCrAmt.equals(BigDecimal.ZERO)) {
                     financeAaLedgerAcctDTO3.setCrAmt(yearCrAmt);
                 }
@@ -187,6 +193,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
+
             }
 
             Map mapTemp = new HashMap(16);
