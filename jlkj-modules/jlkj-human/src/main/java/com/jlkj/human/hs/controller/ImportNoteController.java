@@ -2,7 +2,6 @@ package com.jlkj.human.hs.controller;
 
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hs.domain.ImportNote;
 import com.jlkj.human.hs.service.IImportNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class ImportNoteController extends BaseController
     /**
      * 查询薪资导入记录列表
      */
-    @RequiresPermissions("human:importNote:query")
     @PostMapping("/query")
     public AjaxResult query(@RequestBody ImportNote importNote)
     {

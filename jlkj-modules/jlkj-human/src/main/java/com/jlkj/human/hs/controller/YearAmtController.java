@@ -44,41 +44,6 @@ public class YearAmtController extends BaseController
     }
 
     /**
-     * 导出年收入维护列表
-     */
-    @RequiresPermissions("human:yearAmt:export")
-    @Log(title = "年收入维护", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, YearAmt yearAmt)
-    {
-        List<YearAmt> list = yearAmtService.selectYearAmtList(yearAmt);
-        ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
-        util.exportExcel(response, list, "年收入维护数据");
-    }
-
-    /**
-     * 获取年收入维护详细信息
-     */
-    @RequiresPermissions("human:yearAmt:query")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
-        return success(yearAmtService.selectYearAmtById(id));
-    }
-
-
-    /**
-     * 修改年收入维护
-     */
-    @RequiresPermissions("human:yearAmt:edit")
-    @Log(title = "年收入维护", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody YearAmt yearAmt)
-    {
-        return toAjax(yearAmtService.updateYearAmt(yearAmt));
-    }
-
-    /**
      * 删除年收入维护
      */
     @RequiresPermissions("human:yearAmt:remove")
@@ -92,7 +57,7 @@ public class YearAmtController extends BaseController
     /**
      * 保存年收入维护
      */
-    @RequiresPermissions("human:yearAmt:add")
+    @RequiresPermissions("human:yearAmt:save")
     @Log(title = "年收入保存", businessType = BusinessType.INSERT)
     @PostMapping("/save")
     public int save(@RequestBody List<YearAmt> yearAmtList)
@@ -103,20 +68,20 @@ public class YearAmtController extends BaseController
 
     /**
      * 导入年收入数据
-     * @param file
+     * @param file 文件
      * @param updateSupport
      * @return
      * @throws Exception
      */
     @Log(title = "年收入资料导入", businessType = BusinessType.IMPORT)
-    @RequiresPermissions("human:yearAmt:export")
+    @RequiresPermissions("human:yearAmt:import")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
         ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
         List<YearAmt> yearAmtList = util.importExcel(file.getInputStream());
         String operName = SecurityUtils.getUsername();
-        String message = yearAmtService.importUser(yearAmtList, updateSupport, operName);
+        String message = yearAmtService.importYearAmt(yearAmtList, updateSupport, operName);
         return success(message);
     }
 
@@ -125,10 +90,24 @@ public class YearAmtController extends BaseController
      * @param response
      * @throws IOException
      */
+    @RequiresPermissions("human:yearAmt:import")
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response) throws IOException
     {
         ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
         util.importTemplateExcel(response, "年收入资料数据");
+    }
+
+    /**
+     * 导出年收入维护列表
+     */
+    @RequiresPermissions("human:yearAmt:export")
+    @Log(title = "年收入维护", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, YearAmt yearAmt)
+    {
+        List<YearAmt> list = yearAmtService.selectYearAmtList(yearAmt);
+        ExcelUtil<YearAmt> util = new ExcelUtil<YearAmt>(YearAmt.class);
+        util.exportExcel(response, list, "年收入维护数据");
     }
 }

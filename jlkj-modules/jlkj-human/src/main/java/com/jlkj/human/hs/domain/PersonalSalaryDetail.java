@@ -1,11 +1,10 @@
 package com.jlkj.human.hs.domain;
 
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 个人薪资核定明细对象 human_hs_salary_detail
@@ -13,6 +12,7 @@ import com.jlkj.common.core.web.domain.BaseEntity;
  * @author 266861
  * @date 2023-06-01
  */
+@Data
 public class PersonalSalaryDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class PersonalSalaryDetail extends BaseEntity
 
     /** 第四列标题 */
     @Excel(name = "第四列标题")
-    private String foutTitle;
+    private String fourTitle;
 
     /** 第五列是否下拉选单 */
     @Excel(name = "第五列是否下拉选单")
@@ -132,6 +132,9 @@ public class PersonalSalaryDetail extends BaseEntity
     @Excel(name = "是否定薪确认")
     private String isCheck;
 
+    /** 祖级列表 */
+    private String parents;
+
     /** 输入人 */
     @Excel(name = "输入人")
     private String creator;
@@ -148,340 +151,4 @@ public class PersonalSalaryDetail extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date createDate;
 
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-    public void setSalaryId(String salaryId)
-    {
-        this.salaryId = salaryId;
-    }
-
-    public String getSalaryId()
-    {
-        return salaryId;
-    }
-    public void setPayCheckRea(String payCheckRea)
-    {
-        this.payCheckRea = payCheckRea;
-    }
-
-    public String getPayCheckRea()
-    {
-        return payCheckRea;
-    }
-    public void setPayProName(String payProName)
-    {
-        this.payProName = payProName;
-    }
-
-    public String getPayProName()
-    {
-        return payProName;
-    }
-    public void setTwoTitle(String twoTitle)
-    {
-        this.twoTitle = twoTitle;
-    }
-
-    public String getTwoTitle()
-    {
-        return twoTitle;
-    }
-    public void setThrIsLov(String thrIsLov)
-    {
-        this.thrIsLov = thrIsLov;
-    }
-
-    public String getThrIsLov()
-    {
-        return thrIsLov;
-    }
-    public void setThrSta(String thrSta)
-    {
-        this.thrSta = thrSta;
-    }
-
-    public String getThrSta()
-    {
-        return thrSta;
-    }
-    public void setThrIdSta(String thrIdSta)
-    {
-        this.thrIdSta = thrIdSta;
-    }
-
-    public String getThrIdSta()
-    {
-        return thrIdSta;
-    }
-    public void setFoutTitle(String foutTitle)
-    {
-        this.foutTitle = foutTitle;
-    }
-
-    public String getFoutTitle()
-    {
-        return foutTitle;
-    }
-    public void setFivIsLov(String fivIsLov)
-    {
-        this.fivIsLov = fivIsLov;
-    }
-
-    public String getFivIsLov()
-    {
-        return fivIsLov;
-    }
-    public void setFivSta(String fivSta)
-    {
-        this.fivSta = fivSta;
-    }
-
-    public String getFivSta()
-    {
-        return fivSta;
-    }
-    public void setFivIdSta(String fivIdSta)
-    {
-        this.fivIdSta = fivIdSta;
-    }
-
-    public String getFivIdSta()
-    {
-        return fivIdSta;
-    }
-    public void setSixTitle(String sixTitle)
-    {
-        this.sixTitle = sixTitle;
-    }
-
-    public String getSixTitle()
-    {
-        return sixTitle;
-    }
-    public void setSevIsLov(String sevIsLov)
-    {
-        this.sevIsLov = sevIsLov;
-    }
-
-    public String getSevIsLov()
-    {
-        return sevIsLov;
-    }
-    public void setSevSta(String sevSta)
-    {
-        this.sevSta = sevSta;
-    }
-
-    public String getSevSta()
-    {
-        return sevSta;
-    }
-    public void setSevIdSta(String sevIdSta)
-    {
-        this.sevIdSta = sevIdSta;
-    }
-
-    public String getSevIdSta()
-    {
-        return sevIdSta;
-    }
-    public void setSerialNo(String serialNo)
-    {
-        this.serialNo = serialNo;
-    }
-
-    public String getSerialNo()
-    {
-        return serialNo;
-    }
-    public void setPostFlag(String postFlag)
-    {
-        this.postFlag = postFlag;
-    }
-
-    public String getPostFlag()
-    {
-        return postFlag;
-    }
-    public void setPostEffectDate(String postEffectDate)
-    {
-        this.postEffectDate = postEffectDate;
-    }
-
-    public String getPostEffectDate()
-    {
-        return postEffectDate;
-    }
-    public void setMsgld(String msgld)
-    {
-        this.msgld = msgld;
-    }
-
-    public String getMsgld()
-    {
-        return msgld;
-    }
-    public void setIstax(String istax)
-    {
-        this.istax = istax;
-    }
-
-    public String getIstax()
-    {
-        return istax;
-    }
-    public void setIsEmpPro(String isEmpPro)
-    {
-        this.isEmpPro = isEmpPro;
-    }
-
-    public String getIsEmpPro()
-    {
-        return isEmpPro;
-    }
-    public void setLovConId(String lovConId)
-    {
-        this.lovConId = lovConId;
-    }
-
-    public String getLovConId()
-    {
-        return lovConId;
-    }
-    public void setIsSalaryBasis(String isSalaryBasis)
-    {
-        this.isSalaryBasis = isSalaryBasis;
-    }
-
-    public String getIsSalaryBasis()
-    {
-        return isSalaryBasis;
-    }
-    public void setCompId(String compId)
-    {
-        this.compId = compId;
-    }
-
-    public String getCompId()
-    {
-        return compId;
-    }
-    public void setEmpId(String empId)
-    {
-        this.empId = empId;
-    }
-
-    public String getEmpId()
-    {
-        return empId;
-    }
-    public void setEmpNo(String empNo)
-    {
-        this.empNo = empNo;
-    }
-
-    public String getEmpNo()
-    {
-        return empNo;
-    }
-    public void setVersionNo(String versionNo)
-    {
-        this.versionNo = versionNo;
-    }
-
-    public String getVersionNo()
-    {
-        return versionNo;
-    }
-    public void setIsCheck(String isCheck)
-    {
-        this.isCheck = isCheck;
-    }
-
-    public String getIsCheck()
-    {
-        return isCheck;
-    }
-    public void setCreator(String creator)
-    {
-        this.creator = creator;
-    }
-
-    public String getCreator()
-    {
-        return creator;
-    }
-    public void setCreatorId(String creatorId)
-    {
-        this.creatorId = creatorId;
-    }
-
-    public String getCreatorId()
-    {
-        return creatorId;
-    }
-    public void setCreatorNo(String creatorNo)
-    {
-        this.creatorNo = creatorNo;
-    }
-
-    public String getCreatorNo()
-    {
-        return creatorNo;
-    }
-    public void setCreateDate(Date createDate)
-    {
-        this.createDate = createDate;
-    }
-
-    public Date getCreateDate()
-    {
-        return createDate;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("salaryId", getSalaryId())
-            .append("payCheckRea", getPayCheckRea())
-            .append("payProName", getPayProName())
-            .append("twoTitle", getTwoTitle())
-            .append("thrIsLov", getThrIsLov())
-            .append("thrSta", getThrSta())
-            .append("thrIdSta", getThrIdSta())
-            .append("foutTitle", getFoutTitle())
-            .append("fivIsLov", getFivIsLov())
-            .append("fivSta", getFivSta())
-            .append("fivIdSta", getFivIdSta())
-            .append("sixTitle", getSixTitle())
-            .append("sevIsLov", getSevIsLov())
-            .append("sevSta", getSevSta())
-            .append("sevIdSta", getSevIdSta())
-            .append("serialNo", getSerialNo())
-            .append("postFlag", getPostFlag())
-            .append("postEffectDate", getPostEffectDate())
-            .append("msgld", getMsgld())
-            .append("istax", getIstax())
-            .append("isEmpPro", getIsEmpPro())
-            .append("lovConId", getLovConId())
-            .append("isSalaryBasis", getIsSalaryBasis())
-            .append("compId", getCompId())
-            .append("empId", getEmpId())
-            .append("empNo", getEmpNo())
-            .append("versionNo", getVersionNo())
-            .append("isCheck", getIsCheck())
-            .append("creator", getCreator())
-            .append("creatorId", getCreatorId())
-            .append("creatorNo", getCreatorNo())
-            .append("createDate", getCreateDate())
-            .toString();
-    }
 }

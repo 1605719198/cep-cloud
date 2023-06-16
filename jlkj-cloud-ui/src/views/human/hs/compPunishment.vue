@@ -39,7 +39,7 @@
       <el-table-column label="专业奖罚项目编码" align="center" prop="payProCode" />
       <el-table-column label="专业奖罚项目名称" align="center" prop="payProName" />
       <el-table-column label="说明" align="center" prop="salaryDescribe" />
-      <el-table-column label="排序序号" align="center" prop="srino" >
+      <el-table-column label="排序序号" align="center" prop="srino" width="100" >
         <template v-slot="scope">
           <el-input type="number" v-model="scope.row.srino" placeholder=""></el-input>
         </template>

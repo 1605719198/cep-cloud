@@ -49,31 +49,27 @@ public class ProjectPayController extends BaseController
         return list;
     }
 
-    /**
-     * 获取薪酬项目详细信息
-     */
-    @RequiresPermissions("human:projectPay:query")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
-        return success(projectPayService.selectProjectPayById(id));
-    }
 
     /**
      * 保存薪酬项目
      */
-    @RequiresPermissions("human:projectPay:add")
+    @RequiresPermissions("human:projectPay:save")
     @Log(title = "薪酬项目保存", businessType = BusinessType.INSERT)
     @PostMapping("/save")
-    public int save(@RequestBody List<ProjectPay> projectPayList)
+    public AjaxResult save(@RequestBody List<ProjectPay> projectPayList)
     {
-        return projectPayService.insertProjectPay(projectPayList);
+        int result = projectPayService.insertProjectPay(projectPayList);
+        if(result==0){
+            return error("保存失败，已停用数据无法进行修改");
+        }else{
+            return success("保存成功");
+        }
     }
 
     /**
      * 状态修改
      */
-    @RequiresPermissions("human:projectPay:edit")
+    @RequiresPermissions("human:projectPay:save")
     @Log(title = "启用禁用", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody ProjectPay projectPay)

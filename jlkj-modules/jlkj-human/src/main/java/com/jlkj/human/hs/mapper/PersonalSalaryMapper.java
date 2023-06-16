@@ -2,7 +2,7 @@ package com.jlkj.human.hs.mapper;
 
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.PersonalSalary;
-import com.jlkj.human.hs.domain.ProjectPay;
+import com.jlkj.human.hs.dto.PersonalSalaryDetailDTO;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface PersonalSalaryMapper
     public PersonalSalary selectPersonalSalaryById(String id);
 
     /**
-     * 查询薪资核定列表
+     * 查询某员工薪资核定列表(生效日期做处理后)
      * 
      * @param personalSalary 薪资核定
      * @return 薪资核定集合
@@ -38,6 +38,14 @@ public interface PersonalSalaryMapper
      * @return 薪资核定集合
      */
     public List<PersonalSalary> selectPersonalSalaryList(PersonalSalary personalSalary);
+
+    /**
+     * 查询某员工已定薪的薪资核定列表
+     *
+     * @param personalSalary 薪资核定
+     * @return 薪资核定集合
+     */
+    public List<PersonalSalary> selectPersonalSalaryChecked(PersonalSalary personalSalary);
 
     /**
      * 新增薪资核定
@@ -85,5 +93,5 @@ public interface PersonalSalaryMapper
      * @param compId 公司别
      * @return 结果
      */
-    public List<ProjectPay> getPayFormation(String compId);
+    public List<PersonalSalaryDetailDTO> getPayFormation(String compId);
 }

@@ -39,7 +39,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleSave"
-          v-hasPermi="['human:yearAmt:edit']"
+          v-hasPermi="['human:yearAmt:save']"
         >保存</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -98,16 +98,28 @@
       <el-table-column label="是否全年缴税" align="center" prop="ifFullTax">
         <template slot-scope="scope">
           <el-form-item :prop="'yearAmtList.' + scope.$index + '.ifFullTax'" :rules="rules.ifFullTax">
-            <el-radio v-model="scope.row.ifFullTax" label="0">是</el-radio>
-            <el-radio v-model="scope.row.ifFullTax" label="1">否</el-radio>
+            <el-radio-group v-model="scope.row.ifFullTax" >
+              <el-radio
+                v-for="dict in salaryOptions.HsYN"
+                :key="dict.id"
+                :label="dict.dicNo"
+              >{{ dict.dicName }}
+              </el-radio>
+            </el-radio-group>
           </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="全年累计是否大于6万" align="center" prop="ifIncomeGreaterSix">
         <template slot-scope="scope">
           <el-form-item :prop="'yearAmtList.' + scope.$index + '.ifIncomeGreaterSix'" :rules="rules.ifIncomeGreaterSix">
-            <el-radio v-model="scope.row.ifIncomeGreaterSix" label="0">是</el-radio>
-            <el-radio v-model="scope.row.ifIncomeGreaterSix" label="1">否</el-radio>
+            <el-radio-group v-model="scope.row.ifIncomeGreaterSix" >
+              <el-radio
+                v-for="dict in salaryOptions.HsYN"
+                :key="dict.id"
+                :label="dict.dicNo"
+              >{{ dict.dicName }}
+              </el-radio>
+            </el-radio-group>
           </el-form-item>
         </template>
       </el-table-column>
@@ -175,7 +187,6 @@
 import '@/assets/styles/humanStyles.scss';
 import { getToken } from '@/utils/auth'
 import { listYearAmt,  delYearAmt,  saveYearAmt } from "@/api/human/hs/yearAmt";
-import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
 import selectUser from "@/views/components/human/selectUser/selectUser";
@@ -206,7 +217,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['YearAmtIf'],
+        optionsType: ['HsYN'],
         compId:null,
       },
       //薪资选单选项列表
@@ -316,10 +327,11 @@ export default {
       this.$refs.select.show(queryParams);
     },
     /** 获取工号 */
-    getJobNumber(userNo, userName,compId) {
+    getJobNumber(userNo, userName,compId,userId) {
       if(this.index!=null){
         this.form.yearAmtList[this.index].empNo = userNo;
         this.form.yearAmtList[this.index].empName = userName;
+        this.form.yearAmtList[this.index].empId = userId;
       }else{
         this.queryParams.empNo = userNo;
       }

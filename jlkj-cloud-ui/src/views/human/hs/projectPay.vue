@@ -37,17 +37,6 @@
                           v-hasPermi="['human:projectPay:save']"
                           :disabled="multiple">保存</el-button>
                       </el-form-item>
-<!--                      <el-form-item>-->
-<!--                        <el-button-->
-<!--                          type="danger"-->
-<!--                          plain-->
-<!--                          :disabled="multiple"-->
-<!--                          size="mini"-->
-<!--                          @click="handleDelete"-->
-<!--                          v-hasPermi="['human:projectPay:edit']"-->
-<!--                        >删除-->
-<!--                        </el-button>-->
-<!--                      </el-form-item>-->
                     </el-form>
                   </el-col>
                 </el-row>

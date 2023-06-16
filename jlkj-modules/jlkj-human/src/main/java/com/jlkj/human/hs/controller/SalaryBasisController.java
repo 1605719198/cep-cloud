@@ -54,7 +54,7 @@ public class SalaryBasisController extends BaseController
     /**
      * 获取薪资资料详细信息
      */
-    @RequiresPermissions("human:salaryBasis:query")
+    @RequiresPermissions("human:salaryBasis:edit")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {

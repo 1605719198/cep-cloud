@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service;
 
+import com.jlkj.human.hs.domain.PersonalSalary;
 import com.jlkj.human.hs.domain.PersonalSalaryDetail;
 
 import java.util.List;
@@ -35,6 +36,14 @@ public interface IPersonalSalaryDetailService
      * @return 结果
      */
     public int insertPersonalSalaryDetail(PersonalSalaryDetail personalSalaryDetail);
+
+    /**
+     * 新增个人薪资核定明细
+     *
+     * @param personalSalary 个人薪资核定主档
+     * @return 结果
+     */
+    public int insertPersonalSalaryDetailByMain(PersonalSalary personalSalary);
 
     /**
      * 修改个人薪资核定明细

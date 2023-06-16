@@ -8,50 +8,51 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 薪资导入错误信息对象 human_hs_salary_error
+ * 未定薪人员挑选作业对象 human_hs_unfixed_salary
  *
  * @author 266861
- * @date 2023-06-05
+ * @date 2023-06-15
  */
 @Data
-public class ImportError extends BaseEntity
+public class UnfixedSalary extends BaseEntity
 {
-
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
     private String id;
 
-    /** 薪资类别ID */
-//    @Excel(name = "薪资类别ID")
-    private String payType;
+    /** 参数编码 */
+    @Excel(name = "参数编码")
+    private String groupType;
+
+    /** 参数名称 */
+    private String typeId;
 
     /** 公司别 */
     @Excel(name = "公司别")
     private String compId;
 
-    /** 员工编码 */
-    @Excel(name = "员工编码")
+    /** 生效日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "生效日期", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date effectDate;
+
+    /** 人员编码 */
+    @Excel(name = "人员编码")
     private String empNo;
-
-
-    /** 信息 */
-    @Excel(name = "信息")
-    private String mark;
 
     /** 输入人 */
     @Excel(name = "输入人")
     private String creator;
 
+    /** 输入人工号 */
+    private String creatorNo;
+
     /** 输入人ID */
     private String creatorId;
 
-    /** 输入人工号 */
-    @Excel(name = "输入人工号")
-    private String creatorNo;
-
     /** 输入日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "输入日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 }

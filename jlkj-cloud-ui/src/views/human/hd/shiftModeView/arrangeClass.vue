@@ -173,16 +173,15 @@ export default {
       this.setTableData()
     },
     'queryParams.shiftmodeId':{
-      handler(preItem,newItem){
-        this.getShiftClass();
+      handler(newItem,preItem){
+        if(newItem){
+          this.getShiftClass();
+        }
       },
       immediate:false,
     },
 
   },
-  // created() {
-  //   this.init()
-  // },
   methods: {
     //表格单元样式调整
     cellStyle({row,column,rowIndex, columnIndex}){
@@ -191,22 +190,11 @@ export default {
         const rsCheck = re.test(i);
         if(rsCheck){
           // console.log(JSON.stringify(column))
-          if(row[i]=='00'&&column.property==i){
+          if(row[i]==='00'&&column.property===i){
             return "color:red"
           }
         }
       }
-      // let cellStyle;
-      // switch (row.order) {
-      //   case '5':
-      //     cellStyle = 'background: green;color:white';
-      //     break;
-      //   default:
-      //     cellStyle = '';
-      // }
-      // if (column.property)
-      //   return cellStyle;
-      // // if(row.day)
     },
     //排班按钮点击事件
     setCycleData(){
@@ -225,8 +213,8 @@ export default {
       if(strings){
         arr  = strings.split(',')
         arr.forEach(value => {
-          if(!(classArray.indexOf(value)!=-1)){
-            if(judge==1){
+          if(!(classArray.indexOf(value)!==-1)){
+            if(judge===1){
               this.resetData(0)
               this.$modal.msgError("请检查班次输入项是否正确")
               judge=0
@@ -238,7 +226,7 @@ export default {
         this.$modal.msgError("请输入周期设定")
         judge = 0;
       }
-      if(judge==1){
+      if(judge===1){
         this.cycleSetData.cycleArray = arr
         var interVal = this.cycleSetData.interval
         if(interVal){
@@ -399,7 +387,7 @@ export default {
           var day = value.arrShiDate.substring(8,10)
           this.arrangeClassList[parseInt(month)-1][('day'+parseInt(day))] = value.shiftCode;
         }))
-        if(this.detailList.length ==0){
+        if(this.detailList.length ===0){
           this.resetData(0)
           this.$modal.msgWarning("未查询到数据")
         }else{
@@ -410,12 +398,19 @@ export default {
       })
     },
     init(modeData) {
+      if(this.queryParams.compId!==modeData.compId){
+        this.queryParams.shiftmodeId =null;
+        this.queryParams.classId =null;
+        this.queryParams.classYear =null;
+        this.queryParams.arrShiDate =null;
+      }
       this.modeList = modeData.modeList;
       this.queryParams.compId = modeData.compId;
       this.setInitialData();
     },
     //获取班别班次数据
     getShiftClass(){
+      this.queryParams.classId = null;
       listShiftClass(this.queryParams).then(response => {
         this.classList = response.rows
       });
@@ -557,7 +552,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .tableBox {
   th {
     padding: 0 !important;
