@@ -68,7 +68,6 @@
       </el-form-item>
     </el-form>
     <el-pagination
-
       background
       :total="total"
       :current-page="queryParams.pageNum"

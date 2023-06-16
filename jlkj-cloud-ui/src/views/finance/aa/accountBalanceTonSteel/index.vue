@@ -20,11 +20,11 @@
         <el-button type="primary" size="mini" @click="handleExport">导出</el-button>
       </el-form-item>
     </el-form>
-    <el-form ref="formDetail" :model="formDetail" :rules="rulesDetail" v-if="detailIf" :key="tableKey">
+    <el-form ref="formDetail" :model="formCalNumberDetail" :rules="rulesDetail" v-if="detailIf" :key="tableKey">
       <el-form-item label="科目余额表" prop="">
         <el-table v-loading="loading"
                   show-summary
-                  :data="formDetail.detailList"
+                  :data="formCalNumberDetail.detailList"
                   :cell-style="{'text-align':'center'}"
                >
               <el-table-column label="会计科目" prop="acctCode" align="center" />
@@ -48,12 +48,12 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <el-form ref="formNumberDetail" :model="formNumberDetail" :rules="rulesNumberDetail"  v-if="numberDetailIf" :key="tableKey2">
+    <el-form ref="formNumberDetail" :model="formCalNumberDetail" :rules="rulesNumberDetail"  v-if="numberDetailIf" :key="tableKey2">
       <el-form-item label="科目余额数量表" prop="">
         <el-table v-loading="loading"
                   show-summary
                   border
-                  :data="formNumberDetail.detailList"
+                  :data="formCalNumberDetail.detailList"
                  >
           <el-table-column label="会计科目" prop="acctCode" align="center" />
           <el-table-column  label="会计科目名称"  prop="acctName" align="center" />
@@ -84,11 +84,11 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <el-form ref="formCalDetail" :model="formCalDetail" :rules="rulesCalDetail"  v-if="calDetailIf":key="tableKey2">
+    <el-form ref="formCalDetail" :model="formCalNumberDetail" :rules="rulesCalDetail"  v-if="calDetailIf":key="tableKey2">
       <el-form-item label="核算项目余额表" prop="">
         <el-table v-loading="loading"
                   show-summary
-                  :data="formCalDetail.detailList"
+                  :data="formCalNumberDetail.detailList"
                   :cell-style="{'text-align':'center'}"
                 >
           <el-table-column label="会计科目"prop="acctCode" align="center"/>
@@ -154,13 +154,24 @@
         </el-table>
       </el-form-item>
     </el-form>
-    <pagination
+    <el-pagination
+      background
+      :total="total"
+      :current-page="queryParams.pageNum"
+      :page-sizes="[10, 20, 30, 50]"
+      :page-size="queryParams.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="handleSizeCodeChange"
+      @current-change="handleCurrentCodeChange"
+      style="float: right; position: relative;height: 25px; margin-bottom: 10px;margin-top: 15px; padding: 10px 20px !important;">
+    </el-pagination>
+<!--    <pagination
       v-show="total>0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getListDetailList"
-    />
+    />-->
     <!-- 更多条件查询弹窗 -->
     <selectMoreConditions ref="selectMoreConditions" @ok="getVoucherNo"/>
 
@@ -171,7 +182,7 @@
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectVoucherTypeList} from "@/api/finance/aa/voucherType";
 import selectMoreConditions from "@/views/finance/aa/accountBalanceTonSteel/selectMoreConditions";
-import {listCalNumberDetailIfSteel,listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel";
+import {listDetailIfSteel} from "@/api/finance/aa/accountBalanceTonSteel";
 export default {
   name: "Voucher",
   components: {
@@ -266,19 +277,50 @@ export default {
       tableKey:0,
       tableKey2:1,
       tableKey3:3,
-      tableKey4:4
+      tableKey4:4,
+      numbertotal:0,
+      totalVal:'10',
+      fundsList1:[],
+      fundsList2:[],
     };
   },
   created() {
-    this.getListDetailList()
     this.getCompanyList()
   },
   methods: {
-
+    //分页方法
+    handleSizeCodeChange(val) {
+      this.totalVal = val
+      this.getListDetailList()
+    },
+    handleCurrentCodeChange(val) {
+      this.numbertotal=  val
+      this.getListDetailList()
+    },
     /** 查询凭证维护-明细列表 */
     getListDetailList() {
-      this.loading = false;
-
+      listDetailIfSteel(this.queryParams).then(response => {
+        this.formCalNumberDetail.detailList = response;
+        this.fundsList1 =response;
+        this.formCalNumberDetail.detailList = this.fundsList1.slice(0,this.totalVal)
+        this.total =response.length;
+        let number = Math.ceil(this.total / this.totalVal);
+        if (this.numbertotal <= number && this.numbertotal !==0){
+          if (this.numbertotal===1){
+            this.formCalNumberDetail.detailList =  response.slice(0, this.totalVal)
+          }else if (this.total>this.totalVal*this.numbertotal){
+            this.fundsList1 = response;
+            this.fundsList2 = this.fundsList1.slice(this.totalVal*(this.numbertotal-1), this.totalVal*this.numbertotal)
+            this.formCalNumberDetail.detailList = this.fundsList2
+            this.fundsList2=[]
+          }else if ( number === this.numbertotal){
+            this.fundsList2 = this.fundsList1.slice(this.totalVal*(this.numbertotal-1),this.total)
+            this.formCalNumberDetail.detailList = this.fundsList2
+            this.fundsList2=[]
+          }
+        }
+      })
+      this.loading=false
     },
     getCompanyList() {
       selectCompanyList().then(response => {
@@ -303,42 +345,26 @@ export default {
       this.calNamedIf= false
       this.queryParams=val
       this.loading = true;
+
       if(val.reportType=='1'&& val.isNoNumber=='N'){
         this.detailIf=true
-        listDetailIfSteel(this.queryParams).then(response => {
-          this.formDetail.detailList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        })
-
+        this.getListDetailList()
       }
       this.tableKey+=1;
       if(val.reportType=='1'&& val.isNoNumber=='Y'){
         this.numberDetailIf=true
-        listDetailIfSteel(this.queryParams).then(response => {
-          this.formNumberDetail.detailList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        })
+        this.getListDetailList()
 
       }
       this.tableKey2+=1;
       if(val.reportType!='1'&& val.isNoNumber=='N'){
         this.calDetailIf=true
-        listCalNumberDetailIfSteel(this.queryParams).then(response => {
-          this.formCalDetail.detailList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        })
+        this.getListDetailList()
       }
       this.tableKey3+=1;
       if(val.reportType!='1'&& val.isNoNumber=='Y'){
         this.calNumberDetailIf=true
-        listCalNumberDetailIfSteel(this.queryParams).then(response => {
-          this.formCalNumberDetail.detailList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        })
+     this.getListDetailList()
       }
       this.tableKey4+=1;
       if (val.reportType=='2'){
