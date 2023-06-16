@@ -195,6 +195,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
 </where>
+
+        ORDER  BY
+        cal_namea
+    </select>
+    <select id="selectDetailSteelCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        DISTINCT   IFNULL(cal_namea, '') as cal_namea,
+        IFNULL(cal_codea, '') as cal_codea
+
+        from
+        finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period =  substr(#{startDate}, 1, 7 )</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="acctCode != '' and acctCode != null"> and acct_code  like concat('', #{acctCode}, '%')</if>
+            <if test="amountStart != '' and amountStart != null and amountEnd != ''and amountEnd != null"> and (dr_amt between #{amountStart} and #{amountEnd} or cr_amt between #{amountStart} and #{amountEnd})</if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtStart != null and qtyFrnamtEnd != ''and qtyFrnamtEnd != null"> and (dr_qty between #{qtyFrnamtStart} and #{qtyFrnamtEnd} or cr_qty between #{qtyFrnamtStart} and #{qtyFrnamtEnd})</if>
+        </where>
         ORDER  BY
         cal_namea
     </select>
@@ -220,8 +239,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
             <if test=" endDate != '' and endDate != null"> and acct_period =  #{endDate}</if>
             <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
-             and cal_codea = #{calCodea}
+            and cal_codea = #{calCodea}
         </where>
+    </select>
+    <select id="selectDetailMaxMonth" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        acct_period,
+        acct_name,
+        cal_namea,
+        acct_code,
+        sum( bgn_amt) as bgn_amt,
+        sum( dr_amt ) as dr_amt,
+        sum( cr_amt ) as cr_amt,
+        sum( bgn_qty ) as bgn_qty,
+        sum( dr_qty ) as dr_qty,
+        sum( cr_qty ) as cr_qty,
+        sum( year_dr_amt) as year_dr_amt,
+        sum( year_cr_amt) as year_cr_amt,
+        sum( year_dr_qty) as year_dr_qty,
+        sum(year_cr_Qty) as year_cr_Qty
+        FROM
+        finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test=" endDate != '' and endDate != null"> and acct_period =  #{endDate}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+
+            and cal_namea = #{calNameaStart}
+        </where>
+    </select>
+    <select id="selectBgnAmtAndBgnQty" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        IFNULL( sum( bgn_amt ),0.00) as bgn_amt,
+        IFNULL( sum( bgn_qty ),0.00) as bgn_qty
+        FROM
+        finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code   like concat('', #{acctCode}, '%')</if>
+            <if test="startDate != '' and startDate!= null"> and acct_period  =  substr(#{startDate}, 1, 7 )</if>
+        </where>
+    </select>
+    <select id="selectBnlj" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        IFNULL( sum( year_dr_amt),0.00)  as year_dr_amt,
+        IFNULL( sum( year_cr_amt),0.00)  as year_cr_amt,
+        IFNULL( sum( year_dr_qty),0.00) as year_dr_qty,
+        IFNULL(sum(year_cr_Qty),0.00) as year_cr_Qty
+        FROM
+        finance_aa_ledgerl_cal
+        <where>
+            <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code   like concat('', #{acctCode}, '%')</if>
+            <if test="startDate != '' and startDate!= null"> and acct_period  =  substr(#{startDate}, 1, 7 )</if>
+        </where>
+        and cal_namea = #{calNameaStart}
     </select>
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">

@@ -202,6 +202,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         <if test='unpostedVoucher == "Y"'>
 
+
+
+
        UNION
             select company_id,acct_name,acct_code,sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
                 sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty ,
@@ -337,33 +340,87 @@ SELECT
         ORDER BY
         acct_period
     </select>
-    <select id="selectAcctCode" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+    <select id="selectAcctCode" resultType="String">
         SELECT DISTINCT
-            acct_code,
-            acct_name
+        T1.acct_code,
+
+        T1.company_id
         FROM
-            (
-                SELECT DISTINCT
-                    acct_code,
-                    acct_name
-                FROM
-                    finance_aa_ledgerl_cal
-                WHERE
-        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
-        <if test="startDate != '' and startDate!= null "> and acct_period =  substr(#{startDate}, 1, 7 )</if>
-                UNION ALL
-                SELECT DISTINCT
-                    acct_code,
-                    acct_name
-                FROM
-                    finance_aa_voucher_detail
-                WHERE
-        <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
-        <if test="startDate != '' and endDate != ''"> and voucher_date between   substr(#{startDate}, 1, 10 )and substr(#{endDate}, 1, 10 )</if>
-            )
-                T1
+        (
+        SELECT DISTINCT
+        <if test='accountLevel == "01"'>
+            substr( acct_code, 1, 4 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "02"'>
+            substr( acct_code, 1, 6 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "03"'>
+            substr( acct_code, 1, 8 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "04"'>
+            substr(acct_code, 1, 10) AS acct_code,
+        </if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+            substr( acct_code, 1, 12) AS acct_code,
+        </if>
+
+        company_id
+        FROM
+        finance_aa_ledgerl_cal
+        WHERE
+        <if test="companyId != null  and companyId != ''">company_id = #{companyId}</if>
+        <if test="startDate != '' and startDate!= null ">and acct_period = substr(#{startDate}, 1, 7 )</if>
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null">and
+            acct_code between #{acctCodeStart} and #{acctCodeEnd}
+        </if>
+        <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">and
+            cal_codea between #{calNameaStart} and #{calNameaEnd}
+        </if>
+        UNION ALL
+        SELECT DISTINCT
+        <if test='accountLevel == "01"'>
+            substr( acct_code, 1, 4 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "02"'>
+            substr( acct_code, 1, 6 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "03"'>
+            substr( acct_code, 1, 8 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "04"'>
+            substr( acct_code, 1, 10) AS acct_code,
+        </if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+            substr( acct_code, 1, 12) AS acct_code,
+        </if>
+
+        company_id
+        FROM
+        finance_aa_voucher_detail
+        WHERE
+        <if test="companyId != null  and companyId != ''">company_id = #{companyId}</if>
+        <if test="startDate != '' and endDate != ''">and voucher_date between substr(#{startDate}, 1, 10 )and
+            substr(#{endDate}, 1, 10 )
+        </if>
+        <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null">and
+            acct_code between #{acctCodeStart} and #{acctCodeEnd}
+        </if>
+        <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">and
+            cal_codea between #{calNameaStart} and #{calNameaEnd}
+        </if>
+        <if test="voucherNoStart != '' and voucherNoStart != null and voucherNoEnd != '' and voucherNoEnd != null">
+            and voucher_no between #{voucherNoStart} and #{voucherNoEnd}
+        </if>
+        <if test="amountStart != '' and amountStart != null and amountEnd != '' and amountEnd != null">and ntAmt
+            between #{amountStart} and #{amountEnd}
+        </if>
+        <if test="qtyFrnamtStart != '' and qtyFrnamtStart != null and qtyFrnamtEnd != '' and qtyFrnamtEnd != null">
+            and qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}
+        </if>
+        )
+        T1 left join finance_aa_acctcode T3 on T1.company_id = T3.company_id and T1.acct_code=T3.acct_code
         ORDER BY
-            acct_code
+        T1.acct_code
     </select>
     <select id="selectBgnAmtAndBgnQty" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
@@ -373,7 +430,7 @@ SELECT
             finance_aa_ledgerl_cal
         <where>
             <if test="companyId != null  and companyId != ''">  company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
+            <if test="acctCode != null  and acctCode != ''"> and acct_code like concat('', #{acctCode}, '%')</if>
             <if test="startDate != '' and startDate!= null"> and acct_period  =  substr(#{startDate}, 1, 7 )</if>
             and cal_namea = #{calName}
         </where>
