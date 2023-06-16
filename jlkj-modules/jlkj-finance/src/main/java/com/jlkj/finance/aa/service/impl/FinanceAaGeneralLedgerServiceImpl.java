@@ -216,6 +216,12 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
     @Override
     public List<Map<String, Object>> selectListNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
         List<Map<String, Object>> maps = new ArrayList<>();
+        String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
+
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0, 7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0, 7));
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
@@ -230,7 +236,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerCalName(financeAaLedgerAcctDTO1);
             //是否为凭过账
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getUnpostedVoucher())) {
-                financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
+                //financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
 
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();

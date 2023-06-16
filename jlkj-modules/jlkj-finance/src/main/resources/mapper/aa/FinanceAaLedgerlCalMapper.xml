@@ -185,8 +185,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
-        cal_namea,
-        cal_codea
+         IFNULL(cal_namea,'')  AS cal_namea,
+        IFNULL(cal_codea,'')  AS cal_codea
         from
         finance_aa_ledgerl_cal
         <where>
@@ -195,9 +195,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
             <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
 </where>
-
+        group by
+        IFNULL(cal_namea,'') ,
+        IFNULL(cal_codea,'')
         ORDER  BY
-        cal_namea
+            cal_namea
     </select>
     <select id="selectDetailSteelCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
