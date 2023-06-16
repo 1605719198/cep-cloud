@@ -40,7 +40,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
      */
     @Override
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
-        Date dateStart = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getStartDate());
+
         String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
         Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
         String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
@@ -49,9 +49,8 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
-        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS  = new ArrayList<>();
+        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS  ;
         financeAaLedgerAcctDTO.getUnpostedVoucher();
-        //financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
         financeAaLedgerAcctDTOS = financeAaLedgerlCalMapper.selectAmountNotDisplayedCal(financeAaLedgerAcctDTO);
        //无发生额不显示 Y
         if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
@@ -68,54 +67,6 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
         }
         return financeAaLedgerAcctDTOS1;
     }
-
-    @Override
-    public List<FinanceAaLedgerAcctDTO> selectListNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
-        return null;
-    }
-
-
-    /**
-     * 核算项目总账 查询
-     * @param financeAaLedgerAcctDTO 科目余额报表
-     * @return
-     */
-    @Override
-    public List<FinanceAaLedgerAcctDTO> selectListCalNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
-        Date dateStart = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getStartDate());
-        String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
-        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
-        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
-        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
-        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
-        financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0,7));
-        financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0,7));
-        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS1 = new ArrayList<>();
-        List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS  = new ArrayList<>();
-        financeAaLedgerAcctDTO.getUnpostedVoucher();
-        //financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectAmountNotDisplayed(financeAaLedgerAcctDTO);
-        financeAaLedgerAcctDTOS = financeAaLedgerlCalMapper.selectAmountNotDisplayedCal(financeAaLedgerAcctDTO);
-        //无发生额不显示 Y
-        if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getAmountNotDisplayed())){
-            financeAaLedgerAcctDTOS = selectList(financeAaLedgerAcctDTOS);
-        }
-        // 余额为零且无发生额不显示 Y
-        if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getBalanceZero())){
-            financeAaLedgerAcctDTOS=  selectListAdd(financeAaLedgerAcctDTOS);
-        }
-
-        //合并层级
-        if (financeAaLedgerAcctDTOS.size()>0){
-            financeAaLedgerAcctDTOS1 = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
-        }
-        return financeAaLedgerAcctDTOS1;
-    }
-
-    @Override
-    public List<FinanceAaLedgerAcctDTO> selectlistCalDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
-        return null;
-    }
-
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
 
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
@@ -125,6 +76,7 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
                     || AssertUtil.bigDecimalValue(financeAaLedgerAcctDTO1.getDrQty()) .compareTo(BigDecimal.ZERO) == 0
                     || AssertUtil.bigDecimalValue(financeAaLedgerAcctDTO1.getCrQty()) .compareTo(BigDecimal.ZERO)  ==0
             ){
+                financeAaLedgerAcctDTOS.add(financeAaLedgerAcctDTO1);
         }
 
     }
@@ -162,10 +114,6 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
 
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
-
-
-
-
             if ((null == financeAaLedgerAcctDTO1.getBgnAmt()?BigDecimal.ZERO :financeAaLedgerAcctDTO1.getBgnAmt()).compareTo(BigDecimal.ZERO) >=0){
                 financeAaLedgerAcctDTO1.setBgnAmtStraight(financeAaLedgerAcctDTO1.getBgnAmt());
             }else {
@@ -176,8 +124,6 @@ public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAcc
             }else {
                 financeAaLedgerAcctDTO1.setBgnQtyBurden(financeAaLedgerAcctDTO1.getBgnAmt().negate());
             }
-
-            ;
             BigDecimal yearCrAmt = AssertUtil.bigDecimalValue(financeAaLedgerAcctDTO1.getYearCrAmt() );
             BigDecimal yearCrQty = AssertUtil.bigDecimalValue(financeAaLedgerAcctDTO1.getYearCrQty() );
             BigDecimal yearDrAmt = AssertUtil.bigDecimalValue(financeAaLedgerAcctDTO1.getYearDrAmt() );;
