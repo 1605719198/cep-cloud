@@ -28,7 +28,7 @@
                   :key="index"
                   :data="item.list"
                   :cell-style="{'text-align':'center'}">
-          <el-table-column :label="'会计科目为'+item.acctCode1">
+          <el-table-column :label="'会计科目:'+item.acctCode1">
           <el-table-column label="会计周期" prop="acctPeriod" align="center" />
           <el-table-column label="核算项目" prop="calName" align="center" v-if="calNameIf"/>
           <el-table-column label="期初金额" prop="bgnAmt" align="center" v-if="bgnAmtIf"/>
@@ -63,7 +63,7 @@
                   :key="index"
                   :data="item.list"
         >
-          <el-table-column :label="'核算项目为'+item.acctCode1">
+          <el-table-column :label="'核算项目:'+item.acctCode1">
           <el-table-column label="会计周期" prop="acctPeriod" align="center"/>
           <el-table-column label="会计科目" prop="acctName" align="center" />
           <el-table-column label="核算项目" prop="calName" align="center" v-if="calNameIf02" />
