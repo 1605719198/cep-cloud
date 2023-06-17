@@ -436,13 +436,7 @@ SELECT
                     T3.acct_name,
                     T1.acct_code,
                     T1.cal_namea,
-                    T1.cal_codea,
-                    T1.cal_nameb,
-                    T1.cal_codeb,
-                    T1.cal_namec,
-                    T1.cal_codec,
-                    T1.cal_named,
-                    T1.cal_coded
+                    T1.cal_codea
 
                     ORDER  BY
                     T1.company_id,
@@ -450,13 +444,7 @@ SELECT
                     T3.acct_name,
                     T1.acct_code,
                     T1.cal_namea,
-                    T1.cal_codea,
-                    T1.cal_nameb,
-                    T1.cal_codeb,
-                    T1.cal_namec,
-                    T1.cal_codec,
-                    T1.cal_named,
-                    T1.cal_coded
+                    T1.cal_codea
     </select>
     <select id="selectFinanceAaGeneralLedgerCalName"
             resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
@@ -464,7 +452,7 @@ SELECT
         T1.company_id,
         T1.acct_period,
         T1.acct_code,
-        T1.acct_name,
+        T3.acct_name,
         T1.cal_namea,
         sum(T1.bgn_amt )as bgn_amt,
         sum(T1.dr_amt )as dr_amt,
@@ -482,24 +470,23 @@ SELECT
         SELECT company_id,
         acct_period,
         acct_code,
-        acct_name,
         IFNULL(cal_namea,'') as cal_namea,
-        IFNULL(sum(bgn_amt),0.00) as bgn_amt,
-        IFNULL(sum(dr_amt),0.00) as dr_amt,
-        IFNULL(sum(cr_amt),0.00) as cr_amt,
-        IFNULL(sum(bgn_qty),0.00) as bgn_qty,
-        IFNULL(sum(dr_qty),0.00) as dr_qty,
-        IFNULL(sum(cr_qty),0.00) as cr_qty,
-        IFNULL(sum(year_dr_amt),0.00),
-        IFNULL( sum(year_cr_amt),0.00),
-        IFNULL( sum(year_dr_qty),0.00),
-        IFNULL(sum(year_cr_Qty),0.00)
+        IFNULL(sum(bgn_amt),0) as bgn_amt,
+        IFNULL(sum(dr_amt),0) as dr_amt,
+        IFNULL(sum(cr_amt),0) as cr_amt,
+        IFNULL(sum(bgn_qty),0) as bgn_qty,
+        IFNULL(sum(dr_qty),0) as dr_qty,
+        IFNULL(sum(cr_qty),0) as cr_qty,
+        IFNULL(sum(year_dr_amt),0)  as year_dr_amt,
+        IFNULL( sum(year_cr_amt),0) as year_cr_amt,
+        IFNULL( sum(year_dr_qty),0) as year_dr_qty,
+        IFNULL(sum(year_cr_Qty),0) as year_cr_Qty
         FROM finance_aa_ledgerl_cal
         where company_id = #{companyId}<if test="startDate != '' and startDate!= null and endDate != '' and endDate != null">and
         acct_period between #{startDate} and
         #{endDate}</if>
         <if test="
-        acctNameStart != '' and acctNameStart!= null and acctNameEnd != '' and acctNameEnd != null">and acct_name
+        acctNameStart != '' and acctNameStart!= null and acctNameEnd != '' and acctNameEnd != null">and acct_code
             between #{acctNameStart} and #{acctNameEnd}</if>
 
         and cal_namea =
@@ -509,7 +496,6 @@ SELECT
         company_id,
         acct_period,
         acct_code,
-        acct_name,
         IFNULL(cal_namea,'')
         <if test='unpostedVoucher == "Y"'>
             UNION
@@ -517,9 +503,7 @@ SELECT
             b.company_id AS company_id,
             SUBSTR(b.voucher_date,1,7) as acct_period,
             b.acct_code as acct_code,
-            b.acct_name AS acct_name,
             ifnull( b.cal_namea, '' ) AS cal_namea,
-
             0 AS bgn_amt,
             CASE WHEN DRCR = 'D' THEN ifnull(sum(b.ntAmt),0) ELSE 0 END AS dr_amt,
             CASE WHEN DRCR = 'C' THEN ifnull(sum(b.ntAmt),0) ELSE 0 END AS cr_amt,
@@ -536,41 +520,36 @@ SELECT
             AND b.company_id = a.company_id
             where a.company_id = #{companyId}
             <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null">
-                and b. voucher_date between #{startDetailDate} and #{endDetailDate}</if>
-
-                <if test="acctNameStart != '' and acctNameStart!= null and acctNameEnd != ''
-                and acctNameEnd != null">
-
-                    and acct_name between
-                    #{acctNameStart} and #{acctNameEnd}
-                </if>
+                and b. voucher_date between #{startDetailDate} and #{endDetailDate}
+            </if>
+            <if test="acctNameStart != '' and acctNameStart!= null and acctNameEnd != ''   and acctNameEnd != null">
+                 and acct_code between   #{acctNameStart} and #{acctNameEnd}
+            </if>
 
             and
             cal_namea = #{calName}
             AND a.STATUS != 'P'
             group by
             b.company_id ,
-            b.acct_name ,
             b.acct_code,
             ifnull(cal_namea, '' ) ,
             SUBSTR(b.voucher_date,1,7)
         </if>
             ) T1
+        left join finance_aa_acctcode T3  on T1.company_id = T3.company_id and 	T1.acct_code=T3.acct_code
         GROUP BY
         T1.company_id,
         T1.acct_period,
-        T1.acct_name,
+        T3.acct_name,
         T1.acct_code,
         T1.cal_namea
 
         ORDER  BY
         T1.company_id,
         T1.acct_period,
-        T1.acct_name,
+        T3.acct_name,
         T1.acct_code,
         T1.cal_namea
-
-
     </select>
     <select id="selectAcctCode" resultType="String">
         SELECT DISTINCT
