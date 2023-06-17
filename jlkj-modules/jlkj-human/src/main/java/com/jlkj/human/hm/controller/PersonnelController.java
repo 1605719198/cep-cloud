@@ -174,10 +174,10 @@ public class PersonnelController extends BaseController {
         try {
             startPage();
             String compId = humanresourcePersonnelInfoDTO.getCompId();
-            String postId = humanresourcePersonnelInfoDTO.getPostId();
+            Long postId = humanresourcePersonnelInfoDTO.getPostId();
             LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId)
-                    .eq(StringUtils.isNotBlank(postId), Personnel::getPostId, postId);
+                    .eq(Personnel::getPostId, postId);
             List<Personnel> list = personnelService.list(queryWrapper);
             return AjaxResult.success("查询成功", getDataTable(list));
         } catch (Exception e) {

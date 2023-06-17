@@ -127,6 +127,7 @@ export default {
     this.initData();
     this.getCompanyList();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询公司列表 */
@@ -149,7 +150,9 @@ export default {
       listPaySheetInput(this.queryParams).then(response => {
         this.paySheetInputList = response.rows;
         this.total = response.total;
-        this.addLine();
+        if(this.paySheetInputList.length===0){
+          this.addLine();
+        }
         this.loading = false;
       });
     },

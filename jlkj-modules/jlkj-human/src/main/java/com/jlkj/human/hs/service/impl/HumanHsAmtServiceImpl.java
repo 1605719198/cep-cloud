@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.constant.Constants;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
@@ -173,15 +174,15 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
     @Override
     public List<HumanHsAmtDetail> getDetailAmtList(HumanHsAmt humanHsAmt)
     {
-        String ymonth  =humanHsAmt.getYyMonth();
-        String year =  ymonth.substring(0,4);
-        String month = ymonth.substring(5,7);
-        if(month.startsWith("0")) {
-            month = month.replaceAll("0", "");
-        }
+        String year = null,month = null;
         List<HumanHsAmtDetail>  detailList =  new ArrayList<HumanHsAmtDetail>();
+       if(!StringUtils.isEmpty(humanHsAmt.getYyMonth())){
+           year =  humanHsAmt.getYyMonth().substring(0,4);
+           month = humanHsAmt.getYyMonth().substring(5,7).replaceFirst("^0*", "");
+       }
+
         //查询薪资明细list  人、金额
-        if(humanHsAmt.getOperTime().equals("01")) {
+        if(Constants.STR_ZERO_ONE.equals(humanHsAmt.getOperTime())) {
             detailList = humanHsAmtMapper.selectDetailAmtList01(year,month);
         }else{
             detailList = humanHsAmtMapper.selectDetailAmtList02(year,month);

@@ -150,7 +150,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: null,
+        compId: this.$store.state.user.userInfo.compId,
         version: null,
         effectDate: null,
       },
@@ -167,6 +167,7 @@ export default {
     this.getCompanyList();
     this.getVersionList();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询各公司最低工资标准及生活保障标准设定列表 */
@@ -174,9 +175,11 @@ export default {
       this.loading = true;
       listMiniStandard(this.queryParams).then(response => {
         this.miniStandardList = response.rows;
-        this.addLine();
         this.companyName = this.$refs.selectCompany.selectedLabel
         this.total = response.total;
+        if(this.miniStandardList.length===0){
+          this.addLine();
+        }
         this.loading = false;
       });
     },

@@ -616,7 +616,7 @@ public class HumanresourcePersonnelInfoDTO implements Serializable {
     /**
      * 岗位id
      */
-    private String postId;
+    private Long postId;
 
     /**
      * 岗位名称

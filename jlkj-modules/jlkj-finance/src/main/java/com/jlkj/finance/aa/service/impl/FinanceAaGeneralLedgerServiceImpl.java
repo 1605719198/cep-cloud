@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
@@ -32,6 +33,12 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
     @Override
     public List<Map<String, Object>> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
         List<Map<String, Object>> maps = new ArrayList<>();
+        String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
+
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0, 7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0, 7));
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
@@ -46,7 +53,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerAcctCode1(financeAaLedgerAcctDTO1);
             //是否为凭过账
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getUnpostedVoucher())) {
-                financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
+             // financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();
             //无发生额是否显示
@@ -166,13 +173,19 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             }
             //是否显示本年合计
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getYearAdd())) {
+                BigDecimal yearCrAmt=BigDecimal.ZERO;
+                BigDecimal yearCrQty=BigDecimal.ZERO;
+                BigDecimal yearDrAmt=BigDecimal.ZERO;
+                BigDecimal yearDrQty=BigDecimal.ZERO;
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO3 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO.setAcctCode(acctCode1.getAcctCode());
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = financeAaLedgerlCalMapper.selectFinanceAaLedgerlCalMaxMonth(financeAaLedgerAcctDTO);
-                BigDecimal yearCrAmt = (null == financeAaLedgerAcctDTO2.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getCrAmt()).add(null == financeAaLedgerAcctDTO2.getYearCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrAmt());
-                BigDecimal yearCrQty = (null == financeAaLedgerAcctDTO2.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
-                BigDecimal yearDrAmt = (null == financeAaLedgerAcctDTO2.getYearDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrAmt()).add(null == financeAaLedgerAcctDTO2.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrAmt());
-                BigDecimal yearDrQty = (null == financeAaLedgerAcctDTO2.getYearDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                if (financeAaLedgerAcctDTO2!=null){
+                     yearCrAmt = (null == financeAaLedgerAcctDTO2.getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getCrAmt()).add(null == financeAaLedgerAcctDTO2.getYearCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrAmt());
+                     yearCrQty = (null == financeAaLedgerAcctDTO2.getYearCrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearCrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                     yearDrAmt = (null == financeAaLedgerAcctDTO2.getYearDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrAmt()).add(null == financeAaLedgerAcctDTO2.getDrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrAmt());
+                     yearDrQty = (null == financeAaLedgerAcctDTO2.getYearDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getYearDrQty()).add(null == financeAaLedgerAcctDTO2.getDrQty() ? BigDecimal.ZERO : financeAaLedgerAcctDTO2.getDrQty());
+                }
                 if (!yearCrAmt.equals(BigDecimal.ZERO)) {
                     financeAaLedgerAcctDTO3.setCrAmt(yearCrAmt);
                 }
@@ -187,6 +200,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 }
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
+
             }
 
             Map mapTemp = new HashMap(16);
@@ -202,6 +216,12 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
     @Override
     public List<Map<String, Object>> selectListNumberDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO) {
         List<Map<String, Object>> maps = new ArrayList<>();
+        String startDate =financeAaLedgerAcctDTO.getStartDate().substring(0,7)+"-01";
+        Date dateEnd = DateUtils.dateTime(DateUtils.YYYY_MM,financeAaLedgerAcctDTO.getEndDate());
+        String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
+        financeAaLedgerAcctDTO.setStartDetailDate(startDate);
+        financeAaLedgerAcctDTO.setEndDetailDate(endDate);
+
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0, 7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0, 7));
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
@@ -216,7 +236,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerCalName(financeAaLedgerAcctDTO1);
             //是否为凭过账
             if (ConstantsUtil.DISABLEDCODE.equals(financeAaLedgerAcctDTO.getUnpostedVoucher())) {
-                financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
+                //financeAaLedgerAcctDTOS = selectAccountLevel(financeAaLedgerAcctDTOS, financeAaLedgerAcctDTO);
             }
 
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS2 = new ArrayList<>();

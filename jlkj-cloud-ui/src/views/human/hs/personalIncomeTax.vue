@@ -144,6 +144,7 @@ export default {
   created() {
     this.initData();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询个人所得税比例维护列表 */
@@ -151,9 +152,11 @@ export default {
       this.loading = true;
       listPersonalIncomeTax(this.queryParams).then(response => {
         this.personalIncomeTaxList = response.rows;
-        this.addLine();
         this.total = response.total;
         this.loading = false;
+        if(this.personalIncomeTaxList.length===0){
+          this.addLine();
+        }
       });
     },
     //获取类别列表
@@ -238,7 +241,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.personalIncomeTaxList.length == row.index + 1) {
+      if (!row||this.personalIncomeTaxList.length === row.index + 1) {
         const newLine = {
           id: null,
           creator: this.nickName,

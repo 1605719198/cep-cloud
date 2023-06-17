@@ -185,19 +185,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
-        cal_namea,
-        cal_codea
+         IFNULL(T1.cal_namea,'')  AS cal_namea,
+        IFNULL(T1.cal_codea,'')  AS cal_codea
         from
-        finance_aa_ledgerl_cal
-        <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
-            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
-            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
-</where>
+        finance_aa_ledgerl_cal T1
 
+        <where>
+            <if test="companyId != null  and companyId != ''"> and T1.company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and T1.acct_period between #{startDate} and #{endDate}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and T1.cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and T1.acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+</where>
+        group by
+        IFNULL(T1.cal_namea,'') ,
+        IFNULL(T1.cal_codea,'')
         ORDER  BY
-        cal_namea
+            T1.cal_codea
     </select>
     <select id="selectDetailSteelCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
@@ -310,10 +313,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         sum(T1.bgn_qty )as bgn_qty,
         sum(T1.dr_qty )as dr_qty,
         sum(T1.cr_qty )as cr_qty,
-        sum(T1.year_dr_amt )+ sum( T1.dr_amt)  as  year_dr_amt,
-        sum(T1.year_cr_amt  )+ sum(T1. cr_amt)  as  year_cr_amt,
-        sum(T1.year_dr_qty  )+ sum( T1.dr_qty)  as  year_dr_qty,
-        sum(T1.year_cr_qty )+ sum(T1. cr_qty)  as  year_cr_qty
+        sum(T1.year_dr_amt )  as  year_dr_amt,
+        sum(T1.year_cr_amt  )  as  year_cr_amt,
+        sum(T1.year_dr_qty  )  as  year_dr_qty,
+        sum(T1.year_cr_qty )  as  year_cr_qty
         FROM
         (
 
@@ -339,10 +342,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         0 AS bgn_qty,
         0 AS dr_qty,
         0 AS cr_qty,
-        sum(year_dr_amt) as year_dr_amt,
-        sum( year_cr_amt) as year_cr_amt,
-        sum(year_dr_qty) as year_dr_qty,
-        sum(year_cr_qty) as year_cr_qty
+        sum(ifnull(year_dr_amt,0) + ifnull(dr_amt,0)) as year_dr_amt,
+        sum(ifnull( year_cr_amt,0) + ifnull(cr_amt,0)) as year_cr_amt,
+        sum(ifnull(year_dr_qty,0) + ifnull(dr_qty,0)) as year_dr_qty,
+        sum(ifnull(year_cr_qty,0) + ifnull(cr_qty,0)) as year_cr_qty
         FROM
         finance_aa_ledgerl_cal
         WHERE
@@ -386,10 +389,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='accountLevel == "03"'> substr(acct_code, 1, 8 )  AS acct_code,</if>
         <if test='accountLevel == "04"'> substr(acct_code, 1, 10)  AS acct_code,</if>
         <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>substr( acct_code, 1, 12) AS acct_code,</if>
-        sum(bgn_amt) AS bgn_amt,
+        sum(ifnull(bgn_amt,0)) AS bgn_amt,
         0 AS dr_amt,
         0 AS cr_amt,
-        sum(bgn_qty) AS bgn_qty,
+        sum(ifnull(bgn_qty,0)) AS bgn_qty,
         0 AS dr_qty,
         0 AS cr_qty,
         0 AS  year_dr_amt,
@@ -440,11 +443,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='accountLevel == "04"'> substr( acct_code, 1, 10) AS acct_code,</if>
         <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'> substr( acct_code, 1, 12)  AS acct_code,</if>
         0 AS bgn_amt,
-        sum(dr_amt) AS dr_amt,
-        sum(cr_amt) AS cr_amt,
+        sum(ifnull(dr_amt,0)) AS dr_amt,
+        sum(ifnull(cr_amt,0)) AS cr_amt,
         0 AS bgn_qty,
-        sum(dr_qty) AS dr_qty,
-        sum(cr_qty) AS cr_qty,
+        sum(ifnull(dr_qty,0)) AS dr_qty,
+        sum(ifnull(cr_qty,0)) AS cr_qty,
         0 AS  year_dr_amt,
         0 AS year_cr_amt,
         0 AS  year_dr_qty,
@@ -480,12 +483,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             select company_id,acct_name,
             cal_namea,cal_codea,cal_nameb,cal_codeb,cal_namec,cal_codec,cal_named,cal_coded,
             acct_code,
-            sum(bgn_amt) as bgn_amt,sum(dr_amt) as dr_amt,
-            sum(cr_amt) as cr_amt,sum(bgn_qty) as bgn_qty,sum(dr_qty) as dr_qty ,sum(cr_qty) as cr_qty ,
-            SUM(year_dr_amt) AS  year_dr_amt,
-            SUM(year_cr_amt) AS year_cr_amt,
-            SUM(year_dr_qty) AS  year_dr_qty,
-            SUM(year_cr_qty) AS year_cr_qty
+            sum(ifnull(bgn_amt,0)) as bgn_amt,
+            sum(ifnull(dr_amt,0)) as dr_amt,
+            sum(ifnull(cr_amt,0)) as cr_amt,
+            sum(ifnull(bgn_qty,0)) as bgn_qty,
+            sum(ifnull(dr_qty,0)) as dr_qty ,
+            sum(ifnull(cr_qty,0)) as cr_qty ,
+            SUM(ifnull(year_dr_amt,0)) AS  year_dr_amt,
+            SUM(ifnull(year_cr_amt,0)) AS year_cr_amt,
+            SUM(ifnull(year_dr_qty,0)) AS  year_dr_qty,
+            SUM(ifnull(year_cr_qty,0)) AS year_cr_qty
             from (
             SELECT
             b.company_id AS company_id,
@@ -543,7 +550,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and  b.company_id = #{companyId}
             and a.status <![CDATA[   !=  ]]> 'P'
             ) t2
-            group by acct_name , company_id,acct_code,
+            group by acct_name ,
+                     company_id,
+                     acct_code,
 
             ifnull(cal_namea,''),
             ifnull(cal_codea,''),
