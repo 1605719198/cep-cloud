@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.finance.aa.domain.*;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import com.jlkj.finance.aa.mapper.*;
@@ -336,7 +336,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setId(UUID.fastUUID().toString());
+        financeAaVoucher.setId(IdUtils.simpleUUID());
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
@@ -395,7 +395,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
-        financeAaVoucher.setId(UUID.fastUUID().toString());
+        financeAaVoucher.setId(IdUtils.simpleUUID());
         if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
             financeAaVoucher.setPgrmid("voucherAA");
         }
@@ -440,7 +440,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
 
     public String insertFinanceAaVoucherVoucherNo(FinanceAaVoucher financeAaVoucher) {
         financeAaVoucher.setCreateTime(DateUtils.getNowDate());
-        financeAaVoucher.setId(UUID.fastUUID().toString());
+        financeAaVoucher.setId(IdUtils.simpleUUID());
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMM");
         String voucherNo = "";
         QueryWrapper<FinanceAccountYear> wrapper = new QueryWrapper<>();
@@ -502,7 +502,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             List<FinanceAaVoucherDetail> list = new ArrayList<FinanceAaVoucherDetail>();
             for (int i = 0; i < financeAaVoucherDetailList.size(); i++) {
                 financeAaVoucherDetailList.get(i).setVoucherNo(id);
-                financeAaVoucherDetailList.get(i).setId(UUID.fastUUID().toString());
+                financeAaVoucherDetailList.get(i).setId(IdUtils.simpleUUID());
                 financeAaVoucherDetailList.get(i).setSrlno(Long.valueOf(i));
                 financeAaVoucherDetailList.get(i).setVoucherDate(DateUtils.dateTime(financeAaVoucher.getVoucherDate()));
                 list.add(financeAaVoucherDetailList.get(i));
@@ -632,7 +632,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                             financeAaLedgerAcct.setCrAmt(drAmtC);
                             financeAaLedgerAcct.setCrQty(drQtyC);
                         }
-                        financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                        financeAaLedgerAcct.setId(IdUtils.simpleUUID());
                         financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerAcctService.insertFinanceAaLedgerAcct(financeAaLedgerAcct);
                     }
@@ -668,7 +668,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                             financeAaLedgerAcct.setCrQty(drQtyC);
                         }
 
-                        financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                        financeAaLedgerAcct.setId(IdUtils.simpleUUID());
                         financeAaLedgerAcct.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerAcctService.insertFinanceAaLedgerAcct(financeAaLedgerAcct);
                     }
@@ -708,7 +708,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                             financeAaLedgerlCal.setCrAmt(null == financeAaVoucherDetail2.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getNtamt().negate());
                             financeAaLedgerlCal.setCrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt().negate());
                         }
-                        financeAaLedgerlCal.setId(UUID.fastUUID().toString());
+                        financeAaLedgerlCal.setId(IdUtils.simpleUUID());
                         financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerlCalService.insertFinanceAaLedgerlCal(financeAaLedgerlCal);
                     }
@@ -740,7 +740,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
                             financeAaLedgerlCal.setCrQty(null == financeAaVoucherDetail2.getQtyFrnamt() ? BigDecimal.ZERO : financeAaVoucherDetail2.getQtyFrnamt());
 
                         }
-                        financeAaLedgerlCal.setId(UUID.fastUUID().toString());
+                        financeAaLedgerlCal.setId(IdUtils.simpleUUID());
                         financeAaLedgerlCal.setAcctPeriod(financeAaVoucherDetail.getVoucherDate().substring(0, 7));
                         financeAaLedgerlCalService.insertFinanceAaLedgerlCal(financeAaLedgerlCal);
                     }
@@ -1266,7 +1266,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
         for (int i = 0; i < financeAaVoucher.size(); i++) {
             FinanceAaVoucher financeAaVoucher3 = new FinanceAaVoucher();
             financeAaVoucher.get(i).setCompanyId(companyId);
-            financeAaVoucher.get(i).setId(UUID.fastUUID().toString());
+            financeAaVoucher.get(i).setId(IdUtils.simpleUUID());
             BeanUtils.copyProperties(financeAaVoucher.get(i), financeAaVoucher3);
             FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
             BeanUtils.copyProperties(financeAaVoucher.get(i), financeAaVoucherDetail);

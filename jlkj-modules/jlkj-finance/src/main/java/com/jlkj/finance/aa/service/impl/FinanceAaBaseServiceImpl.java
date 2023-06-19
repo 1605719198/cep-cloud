@@ -1,16 +1,16 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.fastjson2.JSONObject;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.finance.aa.domain.FinanceAaBase;
+import com.jlkj.finance.aa.mapper.FinanceAaBaseMapper;
+import com.jlkj.finance.aa.service.IFinanceAaBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAaBaseMapper;
-import com.jlkj.finance.aa.domain.FinanceAaBase;
-import com.jlkj.finance.aa.service.IFinanceAaBaseService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 系统选单-基本设定Service业务层处理
@@ -159,7 +159,7 @@ public class FinanceAaBaseServiceImpl implements IFinanceAaBaseService
     public int insertFinanceAaBase(FinanceAaBase financeAaBase)
     {
         financeAaBase.setCreateTime(DateUtils.getNowDate());
-        financeAaBase.setId(UUID.fastUUID().toString());
+        financeAaBase.setId(IdUtils.simpleUUID());
         return financeAaBaseMapper.insertFinanceAaBase(financeAaBase);
     }
 

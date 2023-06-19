@@ -3,7 +3,7 @@ package com.jlkj.finance.aa.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.aa.domain.FinanceAaCloseRecord;
 import com.jlkj.finance.aa.domain.FinanceAaLedgerAcct;
@@ -75,7 +75,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
         StringBuilder successMsg = new StringBuilder();
         String acctPeriod = financeAaCloseRecord.getAcctPeriod();
         financeAaCloseRecord.setCreateTime(DateUtils.getNowDate());
-        financeAaCloseRecord.setId(UUID.fastUUID().toString());
+        financeAaCloseRecord.setId(IdUtils.simpleUUID());
         financeAaCloseRecord.setCreateBy(SecurityUtils.getUsername());
         financeAaCloseRecord.setCreateName(SecurityUtils.getNickName());
         financeAaCloseRecord.setAcctPeriod(financeAaCloseRecord.getAcctPeriod().substring(0, 7));
@@ -166,7 +166,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                         BigDecimal.ZERO.equals(yearDrAmt) && BigDecimal.ZERO.equals(yearCrAmt) && BigDecimal.ZERO.equals(yearDrQty) && BigDecimal.ZERO.equals(yearCrQty)) {
                     successMsg.append(financeAaLedgerlCal1.getAcctName() + "金额都为空不能结转！");
                 }
-                financeAaLedgerlCal.setId(UUID.fastUUID().toString());
+                financeAaLedgerlCal.setId(IdUtils.simpleUUID());
                 financeAaLedger.add(financeAaLedgerlCal);
                 financeAaLedgerlCal = new FinanceAaLedgerlCal();
             }
@@ -210,7 +210,7 @@ public class FinanceAaCloseRecordServiceImpl implements IFinanceAaCloseRecordSer
                     successMsg.append(financeAaLedgerAcct1.getAcctName() + "数量都为空不能结转！");
 
                 }
-                financeAaLedgerAcct.setId(UUID.fastUUID().toString());
+                financeAaLedgerAcct.setId(IdUtils.simpleUUID());
                 financeAaAccts.add(financeAaLedgerAcct);
                 financeAaLedgerAcct = new FinanceAaLedgerAcct();
 
