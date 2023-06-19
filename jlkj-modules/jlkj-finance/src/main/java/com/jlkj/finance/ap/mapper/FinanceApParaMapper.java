@@ -29,6 +29,14 @@ public interface FinanceApParaMapper
     public List<FinanceApPara> selectFinanceApParaList(FinanceApPara financeApPara);
 
     /**
+     * 查询应付参数维护列表
+     *
+     * @param financeApPara 应付参数维护
+     * @return 应付参数维护集合
+     */
+    public List<FinanceApPara> selectFinanceApParaByCompIdAndParameterValue(FinanceApPara financeApPara);
+
+    /**
      * 新增应付参数维护
      * 
      * @param financeApPara 应付参数维护
