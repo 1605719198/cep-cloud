@@ -7,7 +7,7 @@ import com.jlkj.human.hd.service.IAttendenceRecordService;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hd_attendence_record(员工出勤有效记录资料表)】的数据库操作Service实现
 * @createDate 2023-03-29 15:03:45
 */

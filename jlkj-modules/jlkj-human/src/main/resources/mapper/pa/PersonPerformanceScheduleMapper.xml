@@ -11,13 +11,14 @@
             <result property="project" column="project" jdbcType="VARCHAR"/>
             <result property="num" column="num" jdbcType="VARCHAR"/>
             <result property="apprEmp" column="appr_emp" jdbcType="VARCHAR"/>
+            <result property="apprName" column="appr_name" jdbcType="VARCHAR"/>
             <result property="apprTime" column="appr_time" jdbcType="TIMESTAMP"/>
             <result property="apprStatus" column="appr_status" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,person_performance_id,comp_id,
-        project,num,appr_emp,
+        project,num,appr_emp,appr_name,
         appr_time,appr_status
     </sql>
 </mapper>

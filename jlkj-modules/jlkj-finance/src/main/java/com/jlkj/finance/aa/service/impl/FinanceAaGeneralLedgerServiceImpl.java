@@ -48,6 +48,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         List<FinanceAaLedgerAcctDTO> acctCode = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedger(financeAaLedgerAcctDTO);
         for (FinanceAaLedgerAcctDTO acctCode1 : acctCode) {
             List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS;
+            financeAaLedgerAcctDTO1.setCalName(acctCode1.getCalNamea());
             financeAaLedgerAcctDTO1.setAcctCode(acctCode1.getAcctCode());
             //获取当前会计科目的金额、数量的值
             financeAaLedgerAcctDTOS = financeAaLedgerAcctMapper.selectFinanceAaGeneralLedgerAcctCode1(financeAaLedgerAcctDTO1);
@@ -166,6 +167,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                     crAmt = null == financeAaLedgerAcctDTOS.get(i).getCrAmt() ? BigDecimal.ZERO : financeAaLedgerAcctDTOS.get(i).getCrAmt();
                     endOfPeriodQty = (bgnQty.add(drQty)).subtract(crQty);
                     endOfPeriodAmt = (bgnAmt.add(drAmt)).subtract(crAmt);
+
                     financeAaLedgerAcctDTOS.get(i).setEndOfPeriodAmt(endOfPeriodAmt);
                     financeAaLedgerAcctDTOS.get(i).setEndOfPeriodQty(endOfPeriodQty);
                 }

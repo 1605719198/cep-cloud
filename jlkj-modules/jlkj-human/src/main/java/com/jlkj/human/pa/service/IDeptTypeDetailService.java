@@ -4,7 +4,7 @@ import com.jlkj.human.pa.domain.DeptTypeDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_pa_dept_type_detail(岗位考评项目设定明细档)】的数据库操作Service
 * @createDate 2023-06-09 17:54:41
 */
