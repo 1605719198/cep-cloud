@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.CompPunishment;
 import com.jlkj.human.hs.dto.CompPunishmentDTO;
@@ -76,7 +76,7 @@ public class CompPunishmentServiceImpl implements ICompPunishmentService
             compPunishment.setCreatorNo(SecurityUtils.getUsername());
             compPunishment.setCreator(SecurityUtils.getNickName());
             compPunishment.setCreateDate(new Date());
-            compPunishment.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            compPunishment.setUuid(IdUtils.simpleUUID());
             compPunishmentMapper.insertCompPunishment(compPunishment);
             number++;
         }

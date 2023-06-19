@@ -3,7 +3,7 @@ package com.jlkj.human.hd.service.impl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.domain.PersonClassDetail;
 import com.jlkj.human.hd.domain.PersonClassMaster;
@@ -78,7 +78,7 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
     @Override
     public int insertPersonClassMaster(PersonClassMaster personClassMaster)
     {
-        personClassMaster.setId(UUID.randomUUID().toString().substring(0, 32));
+        personClassMaster.setId(IdUtils.simpleUUID());
         PersonClassDetail personClassDetail = new PersonClassDetail();
         BeanUtils.copyProperties(personClassMaster,personClassDetail);
         personClassDetail.setShiftModeId(personClassMaster.getShiftmodeId());

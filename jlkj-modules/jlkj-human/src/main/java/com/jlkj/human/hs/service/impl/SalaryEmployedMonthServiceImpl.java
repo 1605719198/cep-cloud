@@ -3,7 +3,7 @@ package com.jlkj.human.hs.service.impl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SalaryEmployedMonth;
 import com.jlkj.human.hs.mapper.SalaryEmployedMonthMapper;
@@ -77,7 +77,7 @@ public class SalaryEmployedMonthServiceImpl implements ISalaryEmployedMonthServi
                 salaryEmployedMonth.setCreateDate(new Date());
                 salaryEmployedMonthMapper.updateSalaryEmployedMonth(salaryEmployedMonth);
             } else {
-                salaryEmployedMonth.setId(UUID.randomUUID().toString().substring(0, 32));
+                salaryEmployedMonth.setId(IdUtils.simpleUUID());
                 salaryEmployedMonthMapper.insertSalaryEmployedMonth(salaryEmployedMonth);
             }
         }
@@ -144,7 +144,7 @@ public class SalaryEmployedMonthServiceImpl implements ISalaryEmployedMonthServi
             try
             {
                     BeanValidators.validateWithException(validator, salaryEmployedMonth);
-                    salaryEmployedMonth.setId(UUID.randomUUID().toString().substring(0, 32));
+                    salaryEmployedMonth.setId(IdUtils.simpleUUID());
                     salaryEmployedMonth.setCreator(operName);
                     salaryEmployedMonthMapper.insertSalaryEmployedMonth(salaryEmployedMonth);
                     successNum++;

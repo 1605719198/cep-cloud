@@ -2,7 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.domain.PersonHoliday;
 import com.jlkj.human.hd.domain.TravelApplication;
@@ -87,7 +87,7 @@ public class TravelApplicationServiceImpl implements ITravelApplicationService
             throw new ServiceException("当前员工出差时间段已存在请假信息，请确认后再申请！");
         }
 
-        travelApplication.setId(UUID.randomUUID().toString().substring(0,32));
+        travelApplication.setId(IdUtils.simpleUUID());
         travelApplication.setTravelNo(String.valueOf(System.currentTimeMillis()));
         LoginUser loginUser = SecurityUtils.getLoginUser();
         SysUser user = loginUser.getSysUser();

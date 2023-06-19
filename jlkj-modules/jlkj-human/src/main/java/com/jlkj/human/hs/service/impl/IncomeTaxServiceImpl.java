@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hs.domain.IncomeTax;
 import com.jlkj.human.hs.mapper.IncomeTaxMapper;
 import com.jlkj.human.hs.service.IIncomeTaxService;
@@ -75,7 +75,7 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
         }
         List<IncomeTax> incomeTaxList = incomeTax.getIncometaxDetailListList();
         for (IncomeTax item : incomeTaxList) {
-            item.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            item.setUuid(IdUtils.simpleUUID());
             item.setCompId(incomeTax.getCompId());
             item.setEffectDate(incomeTax.getEffectDate());
             item.setVersion(incomeTax.getVersion());
@@ -106,7 +106,7 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
             item.setCreatorId(incomeTax.getCreatorId());
             item.setCreatorName(incomeTax.getCreatorName());
             item.setCreateDate(incomeTax.getCreateDate());
-            item.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            item.setUuid(IdUtils.simpleUUID());
             item.setVersion(incomeTax.getVersion());
             item.setCompId(incomeTax.getCompId());
             incomeTaxMapper.insertIncomeTax(item);

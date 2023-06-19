@@ -4,7 +4,7 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
@@ -12,7 +12,10 @@ import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.service.IPersonnelService;
 import com.jlkj.human.hp.service.ISysDeptService;
-import com.jlkj.human.hs.domain.*;
+import com.jlkj.human.hs.domain.ImportError;
+import com.jlkj.human.hs.domain.ImportNote;
+import com.jlkj.human.hs.domain.PersonalSalary;
+import com.jlkj.human.hs.domain.PersonalSalaryDetail;
 import com.jlkj.human.hs.dto.PersonalSalaryBankDTO;
 import com.jlkj.human.hs.dto.PersonalSalaryDTO;
 import com.jlkj.human.hs.dto.PersonalSalaryDetailDTO;
@@ -148,7 +151,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
         personalSalary.setCompName(deptService.queryCompById(personalSalary.getCompId()).getCompanyName());
         personalSalary.setIsCheck("0");
         personalSalary.setIsNew("1");
-        personalSalary.setId(UUID.randomUUID().toString().substring(0, 32));
+        personalSalary.setId(IdUtils.simpleUUID());
         personalSalary.setCreatorId(SecurityUtils.getUserId().toString());
         personalSalary.setCreator(SecurityUtils.getNickName());
         personalSalary.setCreatorNo(SecurityUtils.getUsername());
@@ -184,8 +187,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                         personalSalary.setCreatorNo(SecurityUtils.getUsername());
                         personalSalary.setCreateDate(new Date());
                         personalSalaryMapper.updatePersonalSalary(personalSalary);
-                        detailService.insertPersonalSalaryDetailByMain(personalSalary);
-                        return 1;
+                        return detailService.insertPersonalSalaryDetailByMain(personalSalary);
                     } else {
                         return insertPersonalSalary(personalSalary);
                     }
@@ -206,8 +208,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                             salary.setId(lastData.getId());
                             salary.setVersionNo(lastData.getVersionNo());
                             personalSalaryMapper.updatePersonalSalary(personalSalary);
-                            detailService.insertPersonalSalaryDetailByMain(salary);
-                            return 1;
+                            return detailService.insertPersonalSalaryDetailByMain(salary);
                         } else {
                             return -1;
                         }
@@ -223,8 +224,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                             salary.setId(lastData.getId());
                             salary.setVersionNo(lastData.getVersionNo());
                             personalSalaryMapper.updatePersonalSalary(salary);
-                            detailService.insertPersonalSalaryDetailByMain(salary);
-                            return 1;
+                            return detailService.insertPersonalSalaryDetailByMain(salary);
                         } else {
                             return -1;
                         }
@@ -336,7 +336,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
         }
         ImportNote note = new ImportNote();
         Calendar calendar = Calendar.getInstance();
-        String randomId = UUID.randomUUID().toString().substring(0, 32);
+        String randomId = IdUtils.simpleUUID();
         note.setId(randomId);
         note.setCompId(compId);
         note.setPayType("1");
@@ -537,7 +537,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
         }
         ImportNote note = new ImportNote();
         Calendar calendar = Calendar.getInstance();
-        String randomId = UUID.randomUUID().toString().substring(0, 32);
+        String randomId = IdUtils.simpleUUID();
         note.setId(randomId);
         note.setCompId(compId);
         note.setPayType("3");

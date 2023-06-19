@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.PersonHoliday;
 import com.jlkj.human.hd.mapper.PersonHolidayMapper;
 import com.jlkj.human.hd.service.IPersonHolidayService;
@@ -56,7 +56,7 @@ public class PersonHolidayServiceImpl implements IPersonHolidayService
     @Override
     public int insertPersonHoliday(PersonHoliday personHoliday)
     {
-        personHoliday.setId(UUID.randomUUID().toString().substring(0, 32));
+        personHoliday.setId(IdUtils.simpleUUID());
         return personHolidayMapper.insertPersonHoliday(personHoliday);
     }
 

@@ -3,7 +3,7 @@ package com.jlkj.human.hs.service.impl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.YearAmt;
 import com.jlkj.human.hs.mapper.YearAmtMapper;
@@ -58,19 +58,21 @@ public class YearAmtServiceImpl implements IYearAmtService {
      */
     @Override
     public int insertYearAmt(List<YearAmt> yearAmtList) {
+        int result = 0;
         for (YearAmt yearAmt : yearAmtList) {
             yearAmt.setCreatorId(SecurityUtils.getUserId().toString());
             yearAmt.setCreatorNo(SecurityUtils.getUsername());
             yearAmt.setCreator(SecurityUtils.getNickName());
             yearAmt.setCreateDate(new Date());
+            result++;
             if (yearAmt.getId() != null) {
                 yearAmtMapper.updateYearAmt(yearAmt);
             } else {
-                yearAmt.setId(UUID.randomUUID().toString().substring(0, 32));
+                yearAmt.setId(IdUtils.simpleUUID());
                 yearAmtMapper.insertYearAmt(yearAmt);
             }
         }
-        return 1;
+        return result;
     }
 
     /**
@@ -126,7 +128,7 @@ public class YearAmtServiceImpl implements IYearAmtService {
         for (YearAmt yearAmt : yearAmtList) {
             try {
                 BeanValidators.validateWithException(validator, yearAmt);
-                yearAmt.setId(UUID.randomUUID().toString().substring(0, 32));
+                yearAmt.setId(IdUtils.simpleUUID());
                 yearAmt.setCreateBy(operName);
                 yearAmtMapper.insertYearAmt(yearAmt);
                 successNum++;

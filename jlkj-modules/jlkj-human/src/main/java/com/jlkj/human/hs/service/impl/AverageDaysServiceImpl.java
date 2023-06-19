@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hs.domain.AverageDays;
 import com.jlkj.human.hs.mapper.AverageDaysMapper;
 import com.jlkj.human.hs.service.IAverageDaysService;
@@ -54,7 +54,7 @@ public class AverageDaysServiceImpl implements IAverageDaysService
     @Override
     public int insertAverageDays(AverageDays averageDays)
     {
-        averageDays.setUuid(UUID.randomUUID().toString().substring(0, 32));
+        averageDays.setUuid(IdUtils.simpleUUID());
         try {
             averageDays.setVersionNo(averageDaysMapper.queryAverageDaysVersion(averageDays)+1);
         } catch (Exception e){

@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.HolidayTable;
 import com.jlkj.human.hd.dto.HolidayTableDTO;
 import com.jlkj.human.hd.mapper.HolidayTableMapper;
@@ -67,7 +67,7 @@ public class HolidayTableServiceImpl implements IHolidayTableService
             holidayTable.setId(list.get(0).getId());
             return holidayTableMapper.updateHolidayTable(holidayTable);
         }else{
-            holidayTable.setId(UUID.randomUUID().toString().substring(0, 32));
+            holidayTable.setId(IdUtils.simpleUUID());
             return holidayTableMapper.insertHolidayTable(holidayTable);
         }
 
@@ -93,6 +93,7 @@ public class HolidayTableServiceImpl implements IHolidayTableService
     @Override
     public int setYearData(HolidayTable holidayTable)
     {
+        int result = 0;
         HolidayTable yearHolidayTable = new HolidayTable();
         BeanUtils.copyProperties(holidayTable,yearHolidayTable);
          //大月
@@ -144,9 +145,10 @@ public class HolidayTableServiceImpl implements IHolidayTableService
              }
              yearHolidayTable.setHolDay(date);
                insertHolidayTable(yearHolidayTable);
+               result++;
            }
          }
-        return 1;
+        return result;
     }
     /**
      * 根据日期获得星期数

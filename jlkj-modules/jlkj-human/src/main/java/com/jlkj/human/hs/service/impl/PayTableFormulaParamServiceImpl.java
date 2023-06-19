@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.PayTableFormulaParam;
 import com.jlkj.human.hs.dto.PayTableFormulaParamDTO;
@@ -60,7 +60,7 @@ public class PayTableFormulaParamServiceImpl implements IPayTableFormulaParamSer
         List<PayTableFormulaParam> list = payTableFormulaParamDTO.getPayTableFormulaParamList();
         int number = 0;
         for (PayTableFormulaParam param : list){
-            param.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            param.setUuid(IdUtils.simpleUUID());
             param.setCompId(payTableFormulaParamDTO.getCompId());
             param.setCreatorId(SecurityUtils.getUserId().toString());
             param.setCreator(SecurityUtils.getNickName());
@@ -84,7 +84,7 @@ public class PayTableFormulaParamServiceImpl implements IPayTableFormulaParamSer
         List<PayTableFormulaParam> list = payTableFormulaParamMapper.selectPayTableFormulaParamByCompId(payTableFormulaParamDTO.getCompId());
         int number = 0;
         for (PayTableFormulaParam param : list){
-            param.setUuid(UUID.randomUUID().toString().substring(0, 32));
+            param.setUuid(IdUtils.simpleUUID());
             param.setCompId(payTableFormulaParamDTO.getCompIdTo());
             param.setCreatorId(SecurityUtils.getUserId().toString());
             param.setCreator(SecurityUtils.getNickName());

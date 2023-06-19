@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.ImportError;
 import com.jlkj.human.hs.mapper.ImportErrorMapper;
@@ -52,7 +52,7 @@ public class ImportErrorServiceImpl implements IImportErrorService {
      */
     @Override
     public int insertImportError(ImportError importError) {
-            importError.setId(UUID.randomUUID().toString().substring(0,32));
+            importError.setId(IdUtils.simpleUUID());
             importError.setCreator(SecurityUtils.getNickName());
             importError.setCreatorId(SecurityUtils.getUserId().toString());
             importError.setCreatorNo(SecurityUtils.getUsername());
