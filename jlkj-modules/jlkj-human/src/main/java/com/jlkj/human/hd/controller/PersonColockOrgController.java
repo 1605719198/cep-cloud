@@ -74,7 +74,7 @@ public class PersonColockOrgController extends BaseController
     /**
      * 删除人员卡钟组织机构
      */
-    @RequiresPermissions("human:personColock:remove")
+    @RequiresPermissions("human:personColock:obsolete")
     @Log(title = "人员卡钟组织机构", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

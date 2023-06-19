@@ -76,10 +76,10 @@
 import '@/assets/styles/humanStyles.scss';
 import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { deptpostTree,selectCompany,queryPersonByPost } from "@/api/human/hp/deptMaintenance";
+import { deptPostTree,selectCompany,queryPersonByPost } from "@/api/human/hp/deptMaintenance";
 import { getAvatorByUserName } from "@/api/system/user";
 export default {
-  name: "deptpostView",
+  name: "deptPost",
   dicts: ['sys_normal_disable'],
   components: {DictTagHumanBase},
   data() {
@@ -191,7 +191,7 @@ export default {
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
-      deptpostTree(this.queryParams).then(response => {
+      deptPostTree(this.queryParams).then(response => {
         this.deptOptions = response.data;
         this.expandedKeys.push(response.data[0].deptId);
       });
