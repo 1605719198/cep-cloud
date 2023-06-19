@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="thrIsLov"    column="thr_is_lov"    />
         <result property="thrSta"    column="thr_sta"    />
         <result property="thrIdSta"    column="thr_id_sta"    />
-        <result property="foutTitle"    column="fout_title"    />
+        <result property="fourTitle"    column="four_title"    />
         <result property="fivIsLov"    column="fiv_is_lov"    />
         <result property="fivSta"    column="fiv_sta"    />
         <result property="fivIdSta"    column="fiv_id_sta"    />
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonalSalaryDetailVo">
-        select id, salary_id, pay_check_rea, pay_pro_name, two_title, thr_is_lov, thr_sta, thr_id_sta, fout_title, fiv_is_lov, fiv_sta, fiv_id_sta, six_title, sev_is_lov, sev_sta, sev_id_sta, serial_no, post_flag, post_effect_date, msgld, istax, is_emp_pro, lov_con_id, is_salary_basis, comp_id, emp_id, emp_no, version_no, is_check, creator, creator_id, creator_no, create_date from human_hs_salary_detail
+        select id, salary_id, pay_check_rea, pay_pro_name, two_title, thr_is_lov, thr_sta, thr_id_sta, four_title, fiv_is_lov, fiv_sta, fiv_id_sta, six_title, sev_is_lov, sev_sta, sev_id_sta, serial_no, post_flag, post_effect_date, msgld, istax, is_emp_pro, lov_con_id, is_salary_basis, comp_id, emp_id, emp_no, version_no, is_check,  creator, creator_id, creator_no, create_date from human_hs_salary_detail
     </sql>
 
     <select id="selectPersonalSalaryDetailList" parameterType="PersonalSalaryDetail" resultMap="PersonalSalaryDetailResult">
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="thrIsLov != null  and thrIsLov != ''"> and thr_is_lov = #{thrIsLov}</if>
             <if test="thrSta != null  and thrSta != ''"> and thr_sta = #{thrSta}</if>
             <if test="thrIdSta != null  and thrIdSta != ''"> and thr_id_sta = #{thrIdSta}</if>
-            <if test="foutTitle != null  and foutTitle != ''"> and fout_title = #{foutTitle}</if>
+            <if test="fourTitle != null  and fourTitle != ''"> and four_title = #{fourTitle}</if>
             <if test="fivIsLov != null  and fivIsLov != ''"> and fiv_is_lov = #{fivIsLov}</if>
             <if test="fivSta != null  and fivSta != ''"> and fiv_sta = #{fivSta}</if>
             <if test="fivIdSta != null  and fivIdSta != ''"> and fiv_id_sta = #{fivIdSta}</if>
@@ -80,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorNo != null  and creatorNo != ''"> and creator_no = #{creatorNo}</if>
             <if test="createDate != null "> and create_date = #{createDate}</if>
         </where>
+        order by serial_no
     </select>
     
     <select id="selectPersonalSalaryDetailById" parameterType="String" resultMap="PersonalSalaryDetailResult">
@@ -98,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="thrIsLov != null">thr_is_lov,</if>
             <if test="thrSta != null">thr_sta,</if>
             <if test="thrIdSta != null">thr_id_sta,</if>
-            <if test="foutTitle != null">fout_title,</if>
+            <if test="fourTitle != null">four_title,</if>
             <if test="fivIsLov != null">fiv_is_lov,</if>
             <if test="fivSta != null">fiv_sta,</if>
             <if test="fivIdSta != null">fiv_id_sta,</if>
@@ -133,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="thrIsLov != null">#{thrIsLov},</if>
             <if test="thrSta != null">#{thrSta},</if>
             <if test="thrIdSta != null">#{thrIdSta},</if>
-            <if test="foutTitle != null">#{foutTitle},</if>
+            <if test="fourTitle != null">#{fourTitle},</if>
             <if test="fivIsLov != null">#{fivIsLov},</if>
             <if test="fivSta != null">#{fivSta},</if>
             <if test="fivIdSta != null">#{fivIdSta},</if>
@@ -171,7 +172,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="thrIsLov != null">thr_is_lov = #{thrIsLov},</if>
             <if test="thrSta != null">thr_sta = #{thrSta},</if>
             <if test="thrIdSta != null">thr_id_sta = #{thrIdSta},</if>
-            <if test="foutTitle != null">fout_title = #{foutTitle},</if>
+            <if test="fourTitle != null">four_title = #{fourTitle},</if>
             <if test="fivIsLov != null">fiv_is_lov = #{fivIsLov},</if>
             <if test="fivSta != null">fiv_sta = #{fivSta},</if>
             <if test="fivIdSta != null">fiv_id_sta = #{fivIdSta},</if>
@@ -202,6 +203,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deletePersonalSalaryDetailById" parameterType="String">
         delete from human_hs_salary_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePersonalSalaryDetailByMain" parameterType="String">
+        delete from human_hs_salary_detail where salary_id = #{id}
     </delete>
 
     <delete id="deletePersonalSalaryDetailByIds" parameterType="String">

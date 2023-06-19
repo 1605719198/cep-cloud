@@ -19,7 +19,7 @@ public class YearPerformance extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    @Excel(name = "id")
+    @Excel(name = "序号")
     private String id;
 
     /** 公司别 */

@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.controller;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.log.annotation.Log;
@@ -32,14 +33,16 @@ public class ImportErrorController extends BaseController
     /**
      * 导出薪资导入错误信息列表
      */
-    @RequiresPermissions("human:importError:export")
     @Log(title = "薪资导入错误信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ImportError importError)
     {
         List<ImportError> list = importErrorService.selectImportErrorList(importError);
+        if(list.size()==0){
+            throw new ServiceException("未查询到错误信息");
+        }
         ExcelUtil<ImportError> util = new ExcelUtil<ImportError>(ImportError.class);
-        util.exportExcel(response, list, "薪资导入错误信息数据");
+        util.exportExcel(response, list, "导入错误信息数据");
     }
 
 

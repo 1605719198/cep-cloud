@@ -247,24 +247,6 @@ export default {
     this.getCompanyList();
     this.getName();
   },
-  computed: {
-    //班次结束时间
-    endTime(){
-
-    },
-    //休息结束时间
-    endRestTime(e){
-      switch (e){
-        case 1:
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-      }
-    }
-
-  },
   watch:{
     'queryParams.compId'(val){
       listShiftModeAll(this.queryParams).then(response =>{
@@ -291,7 +273,7 @@ export default {
       this.form.creatorId = this.userEmpId;
       this.form.createDate = getDateTime(1);
       this.form.compId = this.queryParams.compId;
-      if(e==0){
+      if(e===0){
         this.form.isUsed = 'Y';
         this.form.status = '0';
       }

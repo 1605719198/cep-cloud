@@ -47,7 +47,7 @@ public interface FinanceAaLedgerAcctMapper
      * @param financeAaLedgerAcctDTO 账薄-会计科目余额
      * @return 账薄-会计科目余额集合
      */
-    public List<FinanceAaLedgerAcctDTO>   selectAcctCode(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    public String[] selectAcctCode(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 查询账薄-会计科目余额列表
      *
@@ -55,6 +55,7 @@ public interface FinanceAaLedgerAcctMapper
      * @return 账薄-会计科目余额集合
      */
     public FinanceAaLedgerAcctDTO selectBgnAmtAndBgnQty(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+
     /**
      * 查询账薄-会计科目余额列表
      *
@@ -136,4 +137,6 @@ public interface FinanceAaLedgerAcctMapper
      * @return 结果
      */
     public int deleteFinanceAaLedgerAcctByIds(String[] ids);
+
+
 }

@@ -64,7 +64,7 @@ public interface ISocialSecurityBasisService
     /**
      * 导入社保公积金维护数据
      *
-     * @param dtos 年收入资料列表
+     * @param dtos 社保公积金维护列表
      * @param isUpdateSupport 是否新增
      * @param compId 公司别                       
      * @param operName 操作用户

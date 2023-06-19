@@ -78,9 +78,9 @@ export function treeselect(query) {
 }
 
 //获取部门岗位树形选择器
-export function deptpostTree(query) {
+export function deptPostTree(query) {
   return request({
-    url: '/human/deptMaintenance/deptpostTree',
+    url: '/human/deptMaintenance/deptPostTree',
     method: 'get',
     params: query
   })

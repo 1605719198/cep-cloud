@@ -30,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="effectDate != null"> and effect_date = #{effectDate}</if>
             <if test="id != null  and id != ''"> and id != #{id}</if>
         </where>
+        order by effect_date desc
     </select>
 
     <select id="queryLastEffectData" parameterType="PersonColockOrg" resultMap="PersonColockOrgResult">

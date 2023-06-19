@@ -41,7 +41,35 @@ public interface FinanceAaLedgerlCalMapper
      * @param financeAaLedgerAcctDTO 账薄-核算项目余额
      * @return 账薄-核算项目余额集合
      */
+    public FinanceAaLedgerAcctDTO selectBgnAmtAndBgnQty(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public FinanceAaLedgerAcctDTO  selectBnlj(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public List<FinanceAaLedgerAcctDTO> selectDetailSteelCalName(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
     public FinanceAaLedgerAcctDTO selecMaxMonth(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+    /**
+     * 查询账薄-核算项目余额列表
+     *
+     * @param financeAaLedgerAcctDTO 账薄-核算项目余额
+     * @return 账薄-核算项目余额集合
+     */
+    public FinanceAaLedgerAcctDTO selectDetailMaxMonth(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
     /**
      * 查询账薄-核算项目余额列表
      *
@@ -145,4 +173,13 @@ public interface FinanceAaLedgerlCalMapper
      * @return 结果
      */
     public int deleteFinanceAaLedgerlCalByIds(String[] ids);
+
+    /**
+     * 科目余额查询
+     * @param financeAaLedgerAcctDTO
+     * @return
+     */
+    List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedCal(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
+
+
 }

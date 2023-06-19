@@ -115,7 +115,7 @@ public class YearAmtServiceImpl implements IYearAmtService {
      * @return 结果
      */
     @Override
-    public String importUser(List<YearAmt> yearAmtList, Boolean isUpdateSupport, String operName) {
+    public String importYearAmt(List<YearAmt> yearAmtList, Boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(yearAmtList) || yearAmtList.size() == 0) {
             throw new ServiceException("导入年收入数据不能为空！");
         }

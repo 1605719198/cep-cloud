@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
+import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -76,8 +77,14 @@ public interface FinanceAaAcctcodeCorpMapper
      * @return 结果
      */
     public int deleteFinanceAaAcctcodeCorpByGroupAcctIds(String[] groupAcctIds);
-
-
+    /**
+     * 批量查询会计科目-公司级
+     *
+     * @param acctCode 需要删除的数据主键集合
+     * @param  companyId 公司别
+     * @return 结果
+     */
+    public List<FinanceAaLedgerAcctDTO> selectForeach ( @Param("acctCode") String[] acctCode, @Param("companyId")String companyId);
     /**
      * 批量新增集团会计科目到公司级会计科目表中
      * @param acctcodeCorps

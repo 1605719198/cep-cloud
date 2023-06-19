@@ -141,7 +141,12 @@
 </template>
 
 <script>
-import { listSalaryEmployedMonth, getSalaryEmployedMonth, addSalaryEmployedMonth, } from "@/api/human/hs/salaryEmployedMonth";
+import {
+  listSalaryEmployedMonth,
+  getSalaryEmployedMonth,
+  addSalaryEmployedMonth,
+  updateSalaryEmployedMonth,
+} from "@/api/human/hs/salaryEmployedMonth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
@@ -212,7 +217,9 @@ export default {
         url: process.env.VUE_APP_BASE_API + "/human/salaryEmployedMonth/importData"
       },
       // 表单参数
-      form: {},
+      form: {
+        salaryEmployedMonthList:[],
+      },
       // 表单校验
       rules: {
         empNo:[
@@ -225,6 +232,7 @@ export default {
     this.initData();
     this.getCompanyList();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询公司列表 */
@@ -239,9 +247,11 @@ export default {
       this.loading = true;
       listSalaryEmployedMonth(this.queryParams).then(response => {
         this.form.salaryEmployedMonthList = response.rows;
-        this.addLine();
         this.total = response.total;
         this.loading = false;
+        if(this.form.salaryEmployedMonthList.length===0){
+          this.addLine();
+        }
       });
     },
     //初始化数据

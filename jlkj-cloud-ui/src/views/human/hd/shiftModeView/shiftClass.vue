@@ -196,6 +196,11 @@ export default {
   methods: {
     //页面初始化
     init(modeData) {
+      if(this.queryParams.compId!==modeData.compId){
+        this.queryParams.shiftmodeId =null;
+        this.shiftClassList = [];
+        this.total = 0;
+      }
       this.modeList = modeData.modeList;
       this.queryParams.compId = modeData.compId;
     },
@@ -205,7 +210,7 @@ export default {
       this.form.creatorId = this.userEmpId;
       this.form.createDate = getDateTime(1);
       this.form.compId = this.queryParams.compId;
-      if(e==0){
+      if(e===0){
         this.form.status = '0';
         this.form.shiftmodeId = this.queryParams.shiftmodeId;
       }

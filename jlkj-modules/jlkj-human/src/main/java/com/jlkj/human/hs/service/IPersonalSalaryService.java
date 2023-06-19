@@ -2,7 +2,9 @@ package com.jlkj.human.hs.service;
 
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hs.domain.PersonalSalary;
-import com.jlkj.human.hs.domain.ProjectPay;
+import com.jlkj.human.hs.dto.PersonalSalaryBankDTO;
+import com.jlkj.human.hs.dto.PersonalSalaryDTO;
+import com.jlkj.human.hs.dto.PersonalSalaryDetailDTO;
 
 import java.util.List;
 
@@ -42,9 +44,10 @@ public interface IPersonalSalaryService
      * 修改薪资核定
      * 
      * @param personalSalary 薪资核定
+     * @param setEndPayDate 是否修改止薪日期
      * @return 结果
      */
-    public int updatePersonalSalary(PersonalSalary personalSalary);
+    public int updatePersonalSalary(PersonalSalary personalSalary,Boolean setEndPayDate);
 
     /**
      * 批量删除薪资核定
@@ -77,5 +80,37 @@ public interface IPersonalSalaryService
      * @param compId 公司别
      * @return 结果
      */
-    public List<ProjectPay> getPayFormation(String compId);
+    public List<PersonalSalaryDetailDTO> getPayFormation(String compId);
+
+    /**
+     * 导入薪资核定维护数据
+     *
+     * @param dtos 薪资核定资料列表
+     * @param isUpdateSupport 是否新增
+     * @param compId 公司别
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importSalary(List<PersonalSalaryDTO> dtos, Boolean isUpdateSupport, String operName, String compId);
+
+    /**
+     * 导入银行账号数据
+     *
+     * @param dtos 银行账号资料列表
+     * @param isUpdateSupport 是否只修改最新一笔
+     * @param compId 公司别
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importBankNo(List<PersonalSalaryBankDTO> dtos, Boolean isUpdateSupport, String operName, String compId);
+
+    /**
+     * 修改薪资核定银行账号数据
+     *
+     * @param id 要改变的数据的id
+     * @param bankDTO 银行账号数据
+     * @param compId 公司别
+     * @return 结果
+     */
+    public int updatePersonalSalaryBank(String compId,String id,PersonalSalaryBankDTO bankDTO);
 }

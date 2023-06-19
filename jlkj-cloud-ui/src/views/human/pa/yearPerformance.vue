@@ -46,7 +46,7 @@
       </template>
       </el-table-column>
       <el-table-column label="人数" align="center" prop="people" />
-      <el-table-column label="比例" align="center" prop="proportion" />
+      <el-table-column label="比例%" align="center" prop="proportion" />
     </el-table>
 
     <pagination

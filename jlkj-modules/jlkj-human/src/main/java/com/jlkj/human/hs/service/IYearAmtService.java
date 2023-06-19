@@ -68,5 +68,5 @@ public interface IYearAmtService
      * @param operName 操作用户
      * @return 结果
      */
-    public String importUser(List<YearAmt> yearAmtList, Boolean isUpdateSupport, String operName);
+    public String importYearAmt(List<YearAmt> yearAmtList, Boolean isUpdateSupport, String operName);
 }

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.DeptEvaluationQueryMapper">
+    
+    <resultMap type="DeptEvaluationQuery" id="DeptEvaluationQueryResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="meritType"    column="merit_type"    />
+        <result property="meritMonth"    column="merit_month"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="deptType"    column="dept_type"    />
+        <result property="dept"    column="dept"    />
+        <result property="postId"    column="post_id"    />
+        <result property="isTeam"    column="is_team"    />
+        <result property="teamRatio"    column="team_ratio"    />
+        <result property="teamScore"    column="team_score"    />
+        <result property="isPoint"    column="is_point"    />
+        <result property="pointRatio"    column="point_ratio"    />
+        <result property="pointScore"    column="point_score"    />
+        <result property="isFix"    column="is_fix"    />
+        <result property="fixRatio"    column="fix_ratio"    />
+        <result property="fixScore"    column="fix_score"    />
+        <result property="fixId"    column="fix_id"    />
+        <result property="isKpi"    column="is_kpi"    />
+        <result property="kpiRatio"    column="kpi_ratio"    />
+        <result property="kpiScore"    column="kpi_score"    />
+        <result property="selfAppr"    column="self_appr"    />
+        <result property="admAppr"    column="adm_appr"    />
+        <result property="pdAdjust"    column="pd_adjust"    />
+        <result property="pbAdjust"    column="pb_adjust"    />
+        <result property="otherAdjust"    column="other_adjust"    />
+        <result property="score"    column="score"    />
+        <result property="selfScore"    column="self_score"    />
+        <result property="admScore"    column="adm_score"    />
+        <result property="rank"    column="rank"    />
+        <result property="meritStatus"    column="merit_status"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="people"    column="people"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="month1"    column="month1"    />
+        <result property="month2"    column="month2"    />
+    </resultMap>
+
+    <sql id="selectDeptEvaluationQueryVo">
+        select id, comp_id, merit_type, merit_month, emp_id, month1, month2 people, proportion, dept_type, dept, post_id, is_team, team_ratio, team_score, is_point, point_ratio, point_score, is_fix, fix_ratio, fix_score, fix_id, is_kpi, kpi_ratio, kpi_score, self_appr, adm_appr, pd_adjust, pb_adjust, other_adjust, score, self_score, adm_score, rank, merit_status, creator, creator_id, create_date from human_pa_person_performance
+    </sql>
+
+    <select id="selectDeptEvaluationQueryList" parameterType="DeptEvaluationQuery" resultMap="DeptEvaluationQueryResult">
+        select merit_status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_person_performance
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+        )*100,2),'%') as 'proportion' from human_pa_person_performance
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="meritType != null  and meritType != ''"> and merit_type = #{meritType}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="month1 != null and month1 != ''">and merit_month &gt;= #{month1} </if>
+            <if test="month2 != null and month2 != ''">and merit_month &lt;= #{month2} </if>
+        </where>
+        GROUP BY merit_status
+    </select>
+    
+    <select id="selectDeptEvaluationQueryById" parameterType="String" resultMap="DeptEvaluationQueryResult">
+        <include refid="selectDeptEvaluationQueryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDeptEvaluationQuery" parameterType="DeptEvaluationQuery">
+        insert into human_pa_person_performance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="meritType != null">merit_type,</if>
+            <if test="meritMonth != null">merit_month,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="deptType != null">dept_type,</if>
+            <if test="dept != null">dept,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="isTeam != null">is_team,</if>
+            <if test="teamRatio != null">team_ratio,</if>
+            <if test="teamScore != null">team_score,</if>
+            <if test="isPoint != null">is_point,</if>
+            <if test="pointRatio != null">point_ratio,</if>
+            <if test="pointScore != null">point_score,</if>
+            <if test="isFix != null">is_fix,</if>
+            <if test="fixRatio != null">fix_ratio,</if>
+            <if test="fixScore != null">fix_score,</if>
+            <if test="fixId != null">fix_id,</if>
+            <if test="isKpi != null">is_kpi,</if>
+            <if test="kpiRatio != null">kpi_ratio,</if>
+            <if test="kpiScore != null">kpi_score,</if>
+            <if test="selfAppr != null">self_appr,</if>
+            <if test="admAppr != null">adm_appr,</if>
+            <if test="pdAdjust != null">pd_adjust,</if>
+            <if test="pbAdjust != null">pb_adjust,</if>
+            <if test="otherAdjust != null">other_adjust,</if>
+            <if test="score != null">score,</if>
+            <if test="selfScore != null">self_score,</if>
+            <if test="admScore != null">adm_score,</if>
+            <if test="rank != null">rank,</if>
+            <if test="meritStatus != null">merit_status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="meritType != null">#{meritType},</if>
+            <if test="meritMonth != null">#{meritMonth},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="deptType != null">#{deptType},</if>
+            <if test="dept != null">#{dept},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="isTeam != null">#{isTeam},</if>
+            <if test="teamRatio != null">#{teamRatio},</if>
+            <if test="teamScore != null">#{teamScore},</if>
+            <if test="isPoint != null">#{isPoint},</if>
+            <if test="pointRatio != null">#{pointRatio},</if>
+            <if test="pointScore != null">#{pointScore},</if>
+            <if test="isFix != null">#{isFix},</if>
+            <if test="fixRatio != null">#{fixRatio},</if>
+            <if test="fixScore != null">#{fixScore},</if>
+            <if test="fixId != null">#{fixId},</if>
+            <if test="isKpi != null">#{isKpi},</if>
+            <if test="kpiRatio != null">#{kpiRatio},</if>
+            <if test="kpiScore != null">#{kpiScore},</if>
+            <if test="selfAppr != null">#{selfAppr},</if>
+            <if test="admAppr != null">#{admAppr},</if>
+            <if test="pdAdjust != null">#{pdAdjust},</if>
+            <if test="pbAdjust != null">#{pbAdjust},</if>
+            <if test="otherAdjust != null">#{otherAdjust},</if>
+            <if test="score != null">#{score},</if>
+            <if test="selfScore != null">#{selfScore},</if>
+            <if test="admScore != null">#{admScore},</if>
+            <if test="rank != null">#{rank},</if>
+            <if test="meritStatus != null">#{meritStatus},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeptEvaluationQuery" parameterType="DeptEvaluationQuery">
+        update human_pa_person_performance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="meritType != null">merit_type = #{meritType},</if>
+            <if test="meritMonth != null">merit_month = #{meritMonth},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="deptType != null">dept_type = #{deptType},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="isTeam != null">is_team = #{isTeam},</if>
+            <if test="teamRatio != null">team_ratio = #{teamRatio},</if>
+            <if test="teamScore != null">team_score = #{teamScore},</if>
+            <if test="isPoint != null">is_point = #{isPoint},</if>
+            <if test="pointRatio != null">point_ratio = #{pointRatio},</if>
+            <if test="pointScore != null">point_score = #{pointScore},</if>
+            <if test="isFix != null">is_fix = #{isFix},</if>
+            <if test="fixRatio != null">fix_ratio = #{fixRatio},</if>
+            <if test="fixScore != null">fix_score = #{fixScore},</if>
+            <if test="fixId != null">fix_id = #{fixId},</if>
+            <if test="isKpi != null">is_kpi = #{isKpi},</if>
+            <if test="kpiRatio != null">kpi_ratio = #{kpiRatio},</if>
+            <if test="kpiScore != null">kpi_score = #{kpiScore},</if>
+            <if test="selfAppr != null">self_appr = #{selfAppr},</if>
+            <if test="admAppr != null">adm_appr = #{admAppr},</if>
+            <if test="pdAdjust != null">pd_adjust = #{pdAdjust},</if>
+            <if test="pbAdjust != null">pb_adjust = #{pbAdjust},</if>
+            <if test="otherAdjust != null">other_adjust = #{otherAdjust},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="selfScore != null">self_score = #{selfScore},</if>
+            <if test="admScore != null">adm_score = #{admScore},</if>
+            <if test="rank != null">rank = #{rank},</if>
+            <if test="meritStatus != null">merit_status = #{meritStatus},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeptEvaluationQueryById" parameterType="String">
+        delete from human_pa_person_performance where id = #{id}
+    </delete>
+
+    <delete id="deleteDeptEvaluationQueryByIds" parameterType="String">
+        delete from human_pa_person_performance where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

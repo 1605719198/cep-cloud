@@ -222,19 +222,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入日期" prop="createDate">
-              <el-date-picker clearable
-                              style="width: 100%"
-                              v-model="form.createDate"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择输入日期"
-              >
-              </el-date-picker>
+              {{form.createDate}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="输入人" prop="creator">
-              <el-input v-model="form.creator" placeholder="请输入输入人"/>
+              {{form.creatorId}}-{{form.creator}}
             </el-form-item>
           </el-col>
         </el-row>

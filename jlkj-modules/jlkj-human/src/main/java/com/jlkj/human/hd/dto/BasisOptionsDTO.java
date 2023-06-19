@@ -11,8 +11,11 @@ import lombok.Data;
 @Data
 public class BasisOptionsDTO {
 
-    /** 主键 */
+    /** 数字主键 */
     private Long id;
+
+    /** 字符串主键*/
+    private String uuid;
 
     /** 资料编码 */
     private String dicNo;

@@ -152,12 +152,6 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
             socialSecurityBasis.setEntCorDate(dateFormat.format(personnel.getEntryDate()));
             socialSecurityBasis.setNowAddr(personnel.getHomeAddress());
             socialSecurityBasis.setMobPhone(personnel.getMyMobilePhone());
-            socialSecurityBasis.setIsNew("1");
-            socialSecurityBasis.setId(UUID.randomUUID().toString().substring(0, 32));
-            socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
-            socialSecurityBasis.setCreator(SecurityUtils.getNickName());
-            socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
-            socialSecurityBasis.setCreateDate(new Date());
         }
         if (contractList.size() != 0) {
             Contract contract = contractList.get(0);
@@ -169,6 +163,12 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
             Leave leave = leaveList.get(0);
             socialSecurityBasis.setLeaveEffectDate(leave.getLeaveEffectDate());
         }
+        socialSecurityBasis.setIsNew("1");
+        socialSecurityBasis.setId(UUID.randomUUID().toString().substring(0, 32));
+        socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
+        socialSecurityBasis.setCreator(SecurityUtils.getNickName());
+        socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
+        socialSecurityBasis.setCreateDate(new Date());
         return socialSecurityBasis;
     }
 
@@ -402,7 +402,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         throw new Exception(errorMsg);
                     }else{
                         successNum++;
-                        successMsg.append("<br/>").append(successNum).append("、员工名 ").append(basisDTO.getEmpName()).append(" 导入成功");
+                        successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
                 }else{
                     int result = updateSocialSecurityBasis(basis);
@@ -411,7 +411,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         throw new Exception(errorMsg);
                     }else{
                         successNum++;
-                        successMsg.append("<br/>").append(successNum).append("、员工名 ").append(basisDTO.getEmpName()).append(" 导入成功");
+                        successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
                 }
             } catch (Exception e) {

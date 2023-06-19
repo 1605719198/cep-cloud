@@ -433,7 +433,14 @@ export default {
     },
     //页面初始化
     init(modeData) {
-      this.getDisc();
+      if(!this.attendenceOptions){
+        this.getDisc();
+      }
+      if(this.queryParams.compId!==modeData.compId){
+        this.queryParams.shiftmodeId =null;
+        this.shiftCodeList = [];
+        this.total = 0;
+      }
       this.modeList = modeData.modeList;
       this.queryParams.compId = modeData.compId;
     },
@@ -624,21 +631,24 @@ export default {
     },
     //设置休息结束时间
     setRestEndTime(e){
+      let hour;
+      let min;
+      let con;
       switch (e){
         case 1:
-          var hour = parseInt(this.form.restStartHour);
-          var min =  parseInt(this.form.restStartMin);
-          var con = parseInt(this.form.restConMin)
+          hour = parseInt(this.form.restStartHour);
+          min =  parseInt(this.form.restStartMin);
+          con = parseInt(this.form.restConMin)
           break;
         case 2:
-          var hour = parseInt(this.form.restStartHour2);
-          var min =  parseInt(this.form.restStartMin2);
-          var con = parseInt(this.form.restConMin2)
+          hour = parseInt(this.form.restStartHour2);
+          min =  parseInt(this.form.restStartMin2);
+          con = parseInt(this.form.restConMin2)
           break;
         case 3:
-          var hour = parseInt(this.form.restStartHour3);
-          var min =  parseInt(this.form.restStartMin3);
-          var con = parseInt(this.form.restConMin3)
+          hour = parseInt(this.form.restStartHour3);
+          min =  parseInt(this.form.restStartMin3);
+          con = parseInt(this.form.restConMin3)
           break;
       }
       var plusHour = ((min+con)>59)? Math.floor((min+con)/60):0

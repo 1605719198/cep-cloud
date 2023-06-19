@@ -73,7 +73,7 @@ public class PersonColockController extends BaseController
     /**
      * 删除人员卡钟
      */
-    @RequiresPermissions("human:personColock:remove")
+    @RequiresPermissions("human:personColock:obsolete")
     @Log(title = "人员卡钟", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

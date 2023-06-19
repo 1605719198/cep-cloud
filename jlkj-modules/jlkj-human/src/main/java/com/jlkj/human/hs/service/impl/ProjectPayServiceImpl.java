@@ -67,10 +67,12 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int insertProjectPay(List<ProjectPay> projectPayList)
     {
+        int result = 0;
         //状态启动停用
         String status1 = "0",status2 = "1";
         for(ProjectPay projectPay :projectPayList){
             if(status1.equals(projectPay.getStatus())){
+                result++;
                 projectPay.setCreatorId(SecurityUtils.getUserId().toString());
                 projectPay.setCreatorNo(SecurityUtils.getUsername());
                 projectPay.setCreator(SecurityUtils.getNickName());
@@ -89,7 +91,7 @@ public class ProjectPayServiceImpl implements IProjectPayService
                 }
             }
         }
-        return 1;
+        return result;
     }
 
     /**

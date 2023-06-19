@@ -353,7 +353,7 @@ export default {
     //会计类别变化方法
     changeAcct(val){
       this.attendenceOptions.AcctType.forEach(value=>{
-        if(value.dicNo == val){
+        if(value.dicNo === val){
           this.form.acctDesc = value.dicName
         }
       })
