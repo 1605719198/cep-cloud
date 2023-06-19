@@ -56,11 +56,16 @@ public class FinanceApParaServiceImpl implements IFinanceApParaService
     @Override
     public int insertFinanceApPara(FinanceApPara financeApPara)
     {
-        financeApPara.setId(IdUtils.fastSimpleUUID());
-        financeApPara.setCreateTime(DateUtils.getNowDate());
-        financeApPara.setCreateBy(SecurityUtils.getUsername());
-        financeApPara.setCreateName(SecurityUtils.getNickName());
-        return financeApParaMapper.insertFinanceApPara(financeApPara);
+        List<FinanceApPara> financeApParas = financeApParaMapper.selectFinanceApParaByCompIdAndParameterValue(financeApPara);
+        if (financeApParas.isEmpty()){
+            financeApPara.setId(IdUtils.fastSimpleUUID());
+            financeApPara.setCreateTime(DateUtils.getNowDate());
+            financeApPara.setCreateBy(SecurityUtils.getUsername());
+            financeApPara.setCreateName(SecurityUtils.getNickName());
+            return financeApParaMapper.insertFinanceApPara(financeApPara);
+        } else {
+            return 0;
+        }
     }
 
     /**
