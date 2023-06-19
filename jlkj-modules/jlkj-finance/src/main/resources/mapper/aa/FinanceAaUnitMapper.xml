@@ -32,6 +32,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
+    <select id="selectFinanceAaUnitByUnitNo" parameterType="FinanceAaUnit" resultMap="FinanceAaUnitResult">
+        <include refid="selectFinanceAaUnitVo"/>
+        where unit_no = #{unitNo}
+    </select>
+
     <select id="selectFinanceAaUnitById" parameterType="String" resultMap="FinanceAaUnitResult">
         <include refid="selectFinanceAaUnitVo"/>
         where id = #{id}
