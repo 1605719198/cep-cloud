@@ -37,6 +37,14 @@ public interface FinanceApAccruleMapper
     public int insertFinanceApAccrule(FinanceApAccrule financeApAccrule);
 
     /**
+     * 查询付款抛账规则维护列表  查重
+     *
+     * @param financeApAccrule 付款抛账规则维护
+     * @return 付款抛账规则维护集合
+     */
+    public List<FinanceApAccrule> selectFinanceAoParaByCompIdAndPayMethod(FinanceApAccrule financeApAccrule);
+
+    /**
      * 修改付款抛账规则维护
      * 
      * @param financeApAccrule 付款抛账规则维护

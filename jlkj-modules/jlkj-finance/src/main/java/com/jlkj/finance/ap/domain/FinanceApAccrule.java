@@ -41,6 +41,10 @@ public class FinanceApAccrule extends BaseEntity
     @Excel(name = "会计科目")
     private String acctId;
 
+    /** 会计科目名称 */
+    @Excel(name = "会计科目名称")
+    private String acctName;
+
     /** 会计科目编号  */
     private String acctCode;
 
@@ -138,6 +142,15 @@ public class FinanceApAccrule extends BaseEntity
     public String getAcctId()
     {
         return acctId;
+    }
+    public void setAcctName(String acctName)
+    {
+        this.acctName = acctName;
+    }
+
+    public String getAcctName()
+    {
+        return acctName;
     }
     public void setAcctCode(String acctCode)
     {
@@ -249,6 +262,7 @@ public class FinanceApAccrule extends BaseEntity
             .append("voucherType", getVoucherType())
             .append("isGen", getIsGen())
             .append("acctId", getAcctId())
+            .append("acctName", getAcctName())
             .append("acctCode", getAcctCode())
             .append("calTypeIda", getCalTypeIda())
             .append("calTypeCodea", getCalTypeCodea())
