@@ -1,19 +1,16 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.dto.ClockworkPersonDTO;
 import com.jlkj.human.hd.service.IPersonColockDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -32,7 +29,6 @@ public class PersonColockDetailController extends BaseController
     /**
      * 查询人员卡钟明细列表
      */
-    @RequiresPermissions("human:personColockDetail:list")
     @GetMapping("/list")
     public TableDataInfo list(PersonColockDetail personColockDetail)
     {
@@ -51,23 +47,10 @@ public class PersonColockDetailController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出人员卡钟明细列表
-     */
-    @RequiresPermissions("human:personColockDetail:export")
-    @Log(title = "人员卡钟明细", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonColockDetail personColockDetail)
-    {
-        List<PersonColockDetail> list = personColockDetailService.selectPersonColockDetailList(personColockDetail);
-        ExcelUtil<PersonColockDetail> util = new ExcelUtil<PersonColockDetail>(PersonColockDetail.class);
-        util.exportExcel(response, list, "人员卡钟明细数据");
-    }
 
     /**
      * 获取人员卡钟明细详细信息
      */
-    @RequiresPermissions("human:personColockDetail:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -77,7 +60,6 @@ public class PersonColockDetailController extends BaseController
     /**
      * 新增人员卡钟明细
      */
-    @RequiresPermissions("human:personColockDetail:add")
     @Log(title = "人员卡钟明细", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PersonColockDetail personColockDetail)
@@ -88,7 +70,6 @@ public class PersonColockDetailController extends BaseController
     /**
      * 修改人员卡钟明细
      */
-    @RequiresPermissions("human:personColockDetail:edit")
     @Log(title = "人员卡钟明细", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PersonColockDetail personColockDetail)
@@ -99,7 +80,6 @@ public class PersonColockDetailController extends BaseController
     /**
      * 删除人员卡钟明细
      */
-    @RequiresPermissions("human:personColockDetail:remove")
     @Log(title = "人员卡钟明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

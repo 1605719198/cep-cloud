@@ -704,9 +704,9 @@ export default {
       const ids = row.id || this.ids
       this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delPersonColock(ids)
-        this.getList(1)
       }).then(() => {
         this.$modal.msgSuccess('删除成功')
+        this.getList(1)
       }).catch(() => {
       })
     },
@@ -714,9 +714,9 @@ export default {
       const ids = row.id || this.ids
       this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delPersonColockOrg(ids)
-        this.getList(1)
       }).then(() => {
         this.$modal.msgSuccess('删除成功')
+        this.getList(1)
       }).catch(() => {
       })
     },

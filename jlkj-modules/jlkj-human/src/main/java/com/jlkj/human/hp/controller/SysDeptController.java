@@ -137,9 +137,9 @@ public class SysDeptController extends BaseController
     /**
      * 获取部门岗位下拉树列表
      */
-    @RequiresPermissions("human:deptPostView:list")
-    @GetMapping("/deptpostTree")
-    public AjaxResult deptpostTree(DeptUnionPostDTO deptpost)
+    @RequiresPermissions("human:deptPost:list")
+    @GetMapping("/deptPostTree")
+    public AjaxResult deptPostTree(DeptUnionPostDTO deptpost)
     {
         List<DeptUnionPostDTO> deptPostList = sysDeptService.selectDeptPostList(deptpost);
         return AjaxResult.success(sysDeptService.buildDeptPostTree(deptPostList));
