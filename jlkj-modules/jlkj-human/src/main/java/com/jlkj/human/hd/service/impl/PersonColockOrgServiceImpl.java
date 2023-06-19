@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
@@ -104,11 +104,11 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
                 PersonColockOrg noEffectData = personColockOrgMapper.queryNoEffectData(personColockOrg);
                 //查是否有未生效数据
                 if(noEffectData==null){
-                    personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));
+                    personColockOrg.setId(IdUtils.simpleUUID());
                     PersonColockDetail personColockDetail =new PersonColockDetail();
                     ArrayList<String> arrayList  = personColockOrg.getColockList();
                     for (String strTemp : arrayList){
-                        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+                        personColockDetail.setId(IdUtils.simpleUUID());
                         personColockDetail.setPersonColockId(personColockOrg.getId());
                         personColockDetail.setCreator(personColockOrg.getCreator());
                         personColockDetail.setCreatorId(personColockOrg.getCreatorId());

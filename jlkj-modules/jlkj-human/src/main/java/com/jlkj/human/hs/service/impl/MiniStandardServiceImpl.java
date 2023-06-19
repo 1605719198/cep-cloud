@@ -2,7 +2,7 @@ package com.jlkj.human.hs.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.MiniStandard;
 import com.jlkj.human.hs.mapper.MiniStandardMapper;
@@ -77,7 +77,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
                 }
             }
             for (MiniStandard miniStandard : miniStandardList) {
-                miniStandard.setUuid(UUID.randomUUID().toString().substring(0, 32));
+                miniStandard.setUuid(IdUtils.simpleUUID());
                 miniStandard.setCreatorId(SecurityUtils.getUserId().toString());
                 miniStandard.setCreator(SecurityUtils.getNickName());
                 miniStandard.setCreateDate(new Date());
@@ -94,7 +94,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
                     miniStandard.setVersion(version);
                     miniStandardMapper.updateMiniStandard(miniStandard);
                 } else {
-                    miniStandard.setUuid(UUID.randomUUID().toString().substring(0, 32));
+                    miniStandard.setUuid(IdUtils.simpleUUID());
                     miniStandard.setVersion(version);
                     miniStandardMapper.insertMiniStandard(miniStandard);
                 }

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * 部门资料维护Service业务层处理
  *
- * @author jlkj
+ * @author 266861
  * @date 2023-03-08
  */
 @Service
@@ -192,6 +192,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public int copySysDept(CopySysDeptDTO copySysDeptDTO) throws Exception {
+        int result = 0;
         int olddept = sysDeptMapper.querycopybyOldCompId(copySysDeptDTO.getOldCompId());
         int newdept = sysDeptMapper.querycopybyNewCompId(copySysDeptDTO.getNewCompId());
         if (olddept == 0) {
@@ -238,6 +239,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
                     newDeptchild.setCompId(copySysDeptDTO.getNewCompId());
                     newDeptchild.setVersionNo("1");
                     for (String h : idchange.keySet()) {
+                        result++;
                         newDeptchild.setParentId(Long.valueOf(newDeptchild.getParentId().toString().replace(h, idchange.get(h))));
                         newDeptchild.setParentName(newDeptchild.getDeptName().replace(h, idchange.get(h)));
                         newDeptchild.setAncestors(newDeptchild.getAncestors().replace(h, idchange.get(h)));
@@ -250,7 +252,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
             }
         }
 
-        return 1;
+        return result;
     }
 
 

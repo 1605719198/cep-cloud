@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ArrangeClass;
 import com.jlkj.human.hd.domain.ArrangeClassMaster;
 import com.jlkj.human.hd.mapper.ArrangeClassMasterMapper;
@@ -58,7 +58,7 @@ public class ArrangeClassMasterServiceImpl implements IArrangeClassMasterService
      */
     @Override
     public int insertArrangeClassMaster(ArrangeClassMaster arrangeClassMaster)
-    {   arrangeClassMaster.setId(UUID.randomUUID().toString().substring(0, 32));
+    {   arrangeClassMaster.setId(IdUtils.simpleUUID());
         for(ArrangeClass arrangeClass: arrangeClassMaster.getDetailList()){
             BeanUtils.copyProperties(arrangeClassMaster,arrangeClass);
             arrangeClass.setArrangeClassMasterId(arrangeClassMaster.getId());

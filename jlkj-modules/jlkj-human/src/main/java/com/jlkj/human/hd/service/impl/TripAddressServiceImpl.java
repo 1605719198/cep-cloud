@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.TripAddress;
 import com.jlkj.human.hd.dto.TripAddressDTO;
 import com.jlkj.human.hd.mapper.TripAddressMapper;
@@ -67,7 +67,7 @@ public class TripAddressServiceImpl implements ITripAddressService
     @Override
     public int insertTripAddress(TripAddress tripAddress)
     {
-        tripAddress.setId(UUID.randomUUID().toString().substring(0,32));
+        tripAddress.setId(IdUtils.simpleUUID());
         return tripAddressMapper.insertTripAddress(tripAddress);
     }
 

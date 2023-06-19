@@ -3,7 +3,7 @@ package com.jlkj.human.hs.service.impl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.PersonalIncomeTax;
 import com.jlkj.human.hs.mapper.PersonalIncomeTaxMapper;
@@ -89,7 +89,7 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                 }
             }
             for(PersonalIncomeTax personalIncomeTax : personalIncomeTaxList) {
-                personalIncomeTax.setId(UUID.randomUUID().toString().substring(0, 32));
+                personalIncomeTax.setId(IdUtils.simpleUUID());
                 personalIncomeTax.setCreatorId(SecurityUtils.getUserId().toString());
                 personalIncomeTax.setCreator(SecurityUtils.getNickName());
                 personalIncomeTax.setCreateDate(new Date());
@@ -106,7 +106,7 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                     personalIncomeTax.setVersionNo(versionNo);
                     personalIncomeTaxMapper.updatePersonalIncomeTax(personalIncomeTax);
                 } else {
-                    personalIncomeTax.setId(UUID.randomUUID().toString().substring(0, 32));
+                    personalIncomeTax.setId(IdUtils.simpleUUID());
                     personalIncomeTax.setVersionNo(versionNo);
                     personalIncomeTaxMapper.insertPersonalIncomeTax(personalIncomeTax);
                 }

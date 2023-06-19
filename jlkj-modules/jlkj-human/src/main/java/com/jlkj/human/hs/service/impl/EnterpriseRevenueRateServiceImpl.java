@@ -1,7 +1,7 @@
 package com.jlkj.human.hs.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.EnterpriseRevenueRate;
 import com.jlkj.human.hs.mapper.EnterpriseRevenueRateMapper;
@@ -59,7 +59,7 @@ public class EnterpriseRevenueRateServiceImpl implements IEnterpriseRevenueRateS
     {
         List<EnterpriseRevenueRate> enterpriseRevenueRates = enterpriseRevenueRateMapper.selectEnterpriseRevenueRateList(enterpriseRevenueRate);
                 if (enterpriseRevenueRates.isEmpty()) {
-                    enterpriseRevenueRate.setId(UUID.randomUUID().toString().substring(0, 32));
+                    enterpriseRevenueRate.setId(IdUtils.simpleUUID());
                     enterpriseRevenueRate.setCreatorId(SecurityUtils.getUserId().toString());
                     enterpriseRevenueRate.setCreator(SecurityUtils.getNickName());
                     enterpriseRevenueRate.setCreateDate(new Date());
