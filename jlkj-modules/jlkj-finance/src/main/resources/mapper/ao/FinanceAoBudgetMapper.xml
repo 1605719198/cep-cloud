@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoBudgetMapper">
+    
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoBudget" id="FinanceAoBudgetResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="year"    column="year"    />
+        <result property="deptNo"    column="dept_no"    />
+        <result property="budgetType"    column="budget_type"    />
+        <result property="yarMonth"    column="yar_month"    />
+        <result property="janBudget"    column="jan_budget"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoBudgetVo">
+        select id, company_id, year, dept_no, budget_type, yar_month, jan_budget, status, create_by, create_name, create_time, update_by, update_time, update_name from finance_ao_budget
+    </sql>
+
+    <select id="selectFinanceAoBudgetList" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget" resultMap="FinanceAoBudgetResult">
+        <include refid="selectFinanceAoBudgetVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''"> and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''"> and budget_type = #{budgetType}</if>
+            <if test="yarMonth != null  and yarMonth != ''"> and yar_month = #{yarMonth}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoBudgetById" parameterType="String" resultMap="FinanceAoBudgetResult">
+        <include refid="selectFinanceAoBudgetVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoBudget" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget">
+        insert into finance_ao_budget
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="year != null">year,</if>
+            <if test="deptNo != null">dept_no,</if>
+            <if test="budgetType != null">budget_type,</if>
+            <if test="yarMonth != null">yar_month,</if>
+            <if test="janBudget != null">jan_budget,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="deptNo != null">#{deptNo},</if>
+            <if test="budgetType != null">#{budgetType},</if>
+            <if test="yarMonth != null">#{yarMonth},</if>
+            <if test="janBudget != null">#{janBudget},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoBudget" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget">
+        update finance_ao_budget
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="deptNo != null">dept_no = #{deptNo},</if>
+            <if test="budgetType != null">budget_type = #{budgetType},</if>
+            <if test="yarMonth != null">yar_month = #{yarMonth},</if>
+            <if test="janBudget != null">jan_budget = #{janBudget},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoBudgetById" parameterType="String">
+        delete from finance_ao_budget where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoBudgetByIds" parameterType="String">
+        delete from finance_ao_budget where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

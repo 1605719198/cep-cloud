@@ -231,7 +231,9 @@ export default {
     },
     /** 下载注销模板操作 */
     importTemplate() {
-      this.download('human/cancellationPerson/importTemplate', {}, `cancellationPerson_template_${new Date().getTime()}.xlsx`)
+      this.download('human/cancellationPerson/importTemplate',
+        {},
+        `cancellationPerson_template_${new Date().getTime()}.xlsx`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {

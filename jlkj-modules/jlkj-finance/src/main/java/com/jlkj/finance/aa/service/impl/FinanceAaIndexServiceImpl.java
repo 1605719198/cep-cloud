@@ -1,15 +1,15 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.List;
-
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.finance.aa.domain.FinanceAaIndex;
+import com.jlkj.finance.aa.mapper.FinanceAaIndexMapper;
+import com.jlkj.finance.aa.service.IFinanceAaIndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAaIndexMapper;
-import com.jlkj.finance.aa.domain.FinanceAaIndex;
-import com.jlkj.finance.aa.service.IFinanceAaIndexService;
+
+import java.util.List;
 
 /**
  * 系统选单-索引设定Service业务层处理
@@ -57,7 +57,7 @@ public class FinanceAaIndexServiceImpl implements IFinanceAaIndexService
     public int insertFinanceAaIndex(FinanceAaIndex financeAaIndex)
     {
         financeAaIndex.setCreateTime(DateUtils.getNowDate());
-        financeAaIndex.setId(UUID.fastUUID().toString());
+        financeAaIndex.setId(IdUtils.simpleUUID());
         FinanceAaIndex financeAaIndex1 = new FinanceAaIndex();
         financeAaIndex1.setCompanyId(financeAaIndex.getCompanyId());
         financeAaIndex1.setNodeNo(financeAaIndex.getNodeNo());

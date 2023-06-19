@@ -2,7 +2,7 @@ package com.jlkj.finance.aa.service.impl;
 
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.aa.domain.*;
 import com.jlkj.finance.aa.mapper.*;
@@ -99,7 +99,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
         BigDecimal ntamt = BigDecimal.ZERO;
         String voucherNo;
         FinanceAaVoucher financeAaVoucher = new FinanceAaVoucher();
-        financeAaVoucher.setId(UUID.fastUUID().toString());
+        financeAaVoucher.setId(IdUtils.simpleUUID());
         financeAaVoucher.setStatus(financeAaCarryRecord.getStatusA());
         FinanceAaVoucherDetail financeAaVoucherDetail = new FinanceAaVoucherDetail();
         financeAaVoucherDetail.setCompanyId(financeAaCarryRecord.getCompanyId());
@@ -164,7 +164,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     if(financeAaCarryRecords.size()>0){
                         financeAaCarryRecordMapper.updateFinanceAaCarryRecord(financeAaCarryRecord2);
                     }else {
-                        financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                        financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                         financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
                     }
 
@@ -186,7 +186,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     if ("C".equals(financeAaVoucherDetail.getDrcr())) {
                         ntamtC = ntamtC.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt());
                     }
-                    financeAaVoucherDetails2.setId(UUID.fastUUID().toString());
+                    financeAaVoucherDetails2.setId(IdUtils.simpleUUID());
                     financeAaVoucherDetails2.setVoucherNo(voucherNo);
                     financeAaVoucherDetailsList.add(financeAaVoucherDetails2);
                 }
@@ -211,7 +211,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
                 financeAaVoucher.setVoucherDesc(financeAaCarryRecord.getRemark());
                 BeanUtils.copyProperties(financeAaCarryRecord, financeAaCarryRecord2);
-                financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
@@ -232,7 +232,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     if(financeAaCarryRecords.size()>0){
                         financeAaCarryRecordMapper.updateFinanceAaCarryRecord(financeAaCarryRecord2);
                     }else {
-                        financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                        financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                         financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
                     }
 
@@ -298,7 +298,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     if(financeAaCarryRecords.size()>0){
                         financeAaCarryRecordMapper.updateFinanceAaCarryRecord(financeAaCarryRecord2);
                     }else {
-                        financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                        financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                         financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
                     }
                 }else {
@@ -320,7 +320,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                         ntamtC = ntamtC.add(null == financeAaVoucherDetail.getNtamt() ? BigDecimal.ZERO : financeAaVoucherDetail.getNtamt());
                     }
                     financeAaVoucherDetails2.setVoucherDate(DateUtils.getMaxMonthDate(DateUtils.dateTime(date)));
-                    financeAaVoucherDetails2.setId(UUID.fastUUID().toString());
+                    financeAaVoucherDetails2.setId(IdUtils.simpleUUID());
                     financeAaVoucherDetails2.setVoucherNo(voucherNo);
                     financeAaVoucherDetailsList.add(financeAaVoucherDetails2);
                 }
@@ -346,7 +346,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                 financeAaVoucher.setDetailList(financeAaVoucherDetailsList);
                 financeAaVoucher.setVoucherDesc(financeAaCarryRecord.getRemark());
                 BeanUtils.copyProperties(financeAaCarryRecord, financeAaCarryRecord2);
-                financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                 financeAaCarryRecord2.setExecuteVoucherNo(voucherNo);
                 financeAaCarryRecord2.setCreateTime(DateUtils.getNowDate());
                 financeAaCarryRecord2.setCreateBy(SecurityUtils.getUsername());
@@ -366,7 +366,7 @@ public class FinanceAaCarryRecordServiceImpl implements IFinanceAaCarryRecordSer
                     if(financeAaCarryRecords.size()>0){
                         financeAaCarryRecordMapper.updateFinanceAaCarryRecord(financeAaCarryRecord2);
                     }else {
-                        financeAaCarryRecord2.setId(UUID.fastUUID().toString());
+                        financeAaCarryRecord2.setId(IdUtils.simpleUUID());
                         financeAaCarryRecordMapper.insertFinanceAaCarryRecord(financeAaCarryRecord2);
                     }
                 }else {

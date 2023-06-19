@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.utils.uuid.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class FinanceAaParaServiceImpl implements IFinanceAaParaService
     public int insertFinanceAaPara(FinanceAaPara financeAaPara)
     {
         financeAaPara.setCreateTime(DateUtils.getNowDate());
-        financeAaPara.setId(UUID.fastUUID().toString());
+        financeAaPara.setId(IdUtils.simpleUUID());
         FinanceAaPara financeAaPara1 = new FinanceAaPara();
         financeAaPara1.setCompanyId(financeAaPara.getCompanyId());
         financeAaPara1.setParameterKey(financeAaPara.getParameterKey());

@@ -1,13 +1,13 @@
 package com.jlkj.common.core.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.lang.management.ManagementFactory;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * 时间工具类
@@ -248,5 +248,61 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 计算两个月中间所有月份
+     * @param minDate 日期
+     * @param maxDate 月数
+     * @return
+     */
+    public static List<String> getMonthBetween(String minDate, String maxDate) {
+        ArrayList<String> result = new ArrayList<String>();
+        //这里要注意 有的需求可能是用2020-01来表示20年第一周 格式就应该为yyyy-MM
+        //如果是用2020-1来表示20年第一周 格式就应该为yyyy-M
+        // 格式化为年月
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        try {
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+
+            min.setTime(sdf.parse(minDate));
+            min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+            max.setTime(sdf.parse(maxDate));
+            max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+            Calendar curr = min;
+            while (curr.before(max)) {
+                result.add(sdf.format(curr.getTime()));
+                curr.add(Calendar.MONTH, 1);
+            }
+
+            // 实现排序方法
+            Collections.sort(result, new Comparator<Object>() {
+                @Override
+                public int compare(Object o1, Object o2) {
+                    String str1 = (String) o1;
+                    String str2 = (String) o2;
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+                    Date date1 = null;
+                    Date date2 = null;
+                    try {
+                        date1 = format.parse(str1);
+                        date2 = format.parse(str2);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (date2.compareTo(date1) > 0) {
+                        return -1;
+                    }
+                    return 1;
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
