@@ -107,7 +107,7 @@
     />
 
     <!-- 添加或修改付款抛账规则维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" :key="key" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -280,7 +280,8 @@ export default {
         acctId: [
           { required: true, message: "会计科目不能为空", trigger: "blur" }
         ],
-      }
+      },
+      key: 0
     };
   },
   created() {
@@ -309,11 +310,11 @@ export default {
       });
     },
     getAcctCodeCorpPop(val){
-      console.log(val);
       this.form.acctId= val[0].acctId
       this.form.acctName= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;
       this.form.calTypeCodeb = val[0].calTypeCodeb;
+      this.key = Math.random()
     },
     // 取消按钮
     cancel() {

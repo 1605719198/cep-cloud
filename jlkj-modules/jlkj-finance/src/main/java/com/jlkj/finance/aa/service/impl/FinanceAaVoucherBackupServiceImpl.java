@@ -1,18 +1,17 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.List;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.finance.aa.domain.FinanceAaVoucherBackup;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
+import com.jlkj.finance.aa.mapper.FinanceAaVoucherBackupMapper;
 import com.jlkj.finance.aa.service.IFinanceAaVoucherBackupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
-import com.jlkj.common.core.utils.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
-import com.jlkj.finance.aa.domain.FinanceAaVoucherDetailBackup;
-import com.jlkj.finance.aa.mapper.FinanceAaVoucherBackupMapper;
-import com.jlkj.finance.aa.domain.FinanceAaVoucherBackup;
+import java.util.List;
 
 
 /**
@@ -132,7 +131,7 @@ public class FinanceAaVoucherBackupServiceImpl
             for (FinanceAaVoucherDetail financeAaVoucherDetailBackup : financeAaVoucherDetailBackupList)
             {
                 financeAaVoucherDetailBackup.setVoucherNo(id);
-                financeAaVoucherDetailBackup.setId(UUID.fastUUID().toString());
+                financeAaVoucherDetailBackup.setId(IdUtils.simpleUUID());
                 list.add(financeAaVoucherDetailBackup);
             }
             if (list.size() > 0)

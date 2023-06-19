@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ArrangeClass;
 import com.jlkj.human.hd.domain.PersonClassDetail;
 import com.jlkj.human.hd.domain.ShiftCode;
@@ -68,7 +68,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     @Override
     public int insertPersonClassDetail(PersonClassDetail personClassDetail)
     {
-        personClassDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+        personClassDetail.setId(IdUtils.simpleUUID());
         return personClassDetailMapper.insertPersonClassDetail(personClassDetail);
     }
 
@@ -81,7 +81,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     @Override
     public int changeDetail(ArrayList<PersonClassDetail> list)
     {
-
+        int result =0;
         Iterator<PersonClassDetail> iterator = list.iterator();
         while (iterator.hasNext()){
             PersonClassDetail detail = iterator.next();
@@ -102,8 +102,9 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
             }else{
                 insertPersonClassDetail(detail);
             }
+            result++;
         }
-        return 1;
+        return result;
     }
 
     /**
@@ -115,6 +116,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     @Override
     public int setPersonClassDetail(PersonClassDetail personClassDetail)
     {
+        int result = 0;
         Long startTime = personClassDetail.getStartDate().getTime();
         Long endTime = personClassDetail.getEndDate().getTime();
         Long oneDay = 1000 * 60 * 60 * 24L;
@@ -132,9 +134,10 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
             personClassDetail.setFirShiftCode(arrangeClass.getShiftCode());
             insertPersonClassDetail(personClassDetail);
             time += oneDay;
+            result++;
         }
 
-        return 1;
+        return result;
     }
 
 

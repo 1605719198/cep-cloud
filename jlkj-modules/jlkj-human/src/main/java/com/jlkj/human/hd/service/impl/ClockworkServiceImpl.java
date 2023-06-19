@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.Clockwork;
 import com.jlkj.human.hd.dto.ClockworkDTO;
 import com.jlkj.human.hd.mapper.ClockworkMapper;
@@ -71,7 +71,7 @@ public class ClockworkServiceImpl implements IClockworkService
         if(i>0){
             throw new Exception("刷卡钟编码已存在，请重新输入");
         }
-        clockwork.setId(UUID.randomUUID().toString().substring(0, 32));
+        clockwork.setId(IdUtils.simpleUUID());
         return clockworkMapper.insertClockwork(clockwork);
     }
 

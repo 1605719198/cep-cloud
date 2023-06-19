@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import com.jlkj.human.hd.mapper.ShiftCodeMapper;
@@ -83,7 +83,7 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
     @Override
     public int insertShiftCode(ShiftCode shiftCode)
     {
-        shiftCode.setId(UUID.randomUUID().toString().substring(0,32));
+        shiftCode.setId(IdUtils.simpleUUID());
         return shiftCodeMapper.insertShiftCode(shiftCode);
     }
 

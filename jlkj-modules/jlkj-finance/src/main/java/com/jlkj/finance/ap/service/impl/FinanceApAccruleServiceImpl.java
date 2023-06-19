@@ -56,11 +56,16 @@ public class FinanceApAccruleServiceImpl implements IFinanceApAccruleService
     @Override
     public int insertFinanceApAccrule(FinanceApAccrule financeApAccrule)
     {
-        financeApAccrule.setId(IdUtils.fastSimpleUUID());
-        financeApAccrule.setCreateTime(DateUtils.getNowDate());
-        financeApAccrule.setCreateBy(SecurityUtils.getUsername());
-        financeApAccrule.setCreateName(SecurityUtils.getNickName());
-        return financeApAccruleMapper.insertFinanceApAccrule(financeApAccrule);
+        List<FinanceApAccrule> financeApAccrules = financeApAccruleMapper.selectFinanceAoParaByCompIdAndPayMethod(financeApAccrule);
+        if (financeApAccrules.isEmpty()){
+            financeApAccrule.setId(IdUtils.fastSimpleUUID());
+            financeApAccrule.setCreateTime(DateUtils.getNowDate());
+            financeApAccrule.setCreateBy(SecurityUtils.getUsername());
+            financeApAccrule.setCreateName(SecurityUtils.getNickName());
+            return financeApAccruleMapper.insertFinanceApAccrule(financeApAccrule);
+        } else {
+            return 0;
+        }
     }
 
     /**

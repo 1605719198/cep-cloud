@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.PersonalSalary;
 import com.jlkj.human.hs.domain.PersonalSalaryDetail;
@@ -57,7 +57,7 @@ public class PersonalSalaryDetailServiceImpl implements IPersonalSalaryDetailSer
     @Override
     public int insertPersonalSalaryDetail(PersonalSalaryDetail personalSalaryDetail)
     {
-        personalSalaryDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+        personalSalaryDetail.setId(IdUtils.simpleUUID());
         personalSalaryDetail.setCreatorId(SecurityUtils.getUserId().toString());
         personalSalaryDetail.setCreator(SecurityUtils.getNickName());
         personalSalaryDetail.setCreatorNo(SecurityUtils.getUsername());

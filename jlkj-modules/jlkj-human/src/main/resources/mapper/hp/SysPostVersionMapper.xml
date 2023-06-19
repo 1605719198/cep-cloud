@@ -10,6 +10,7 @@
         <result property="postCode"    column="post_code"    />
         <result property="postName"    column="post_name"    />
         <result property="deptId"    column="dept_id"    />
+        <result property="deptType" column="dept_type" />
         <result property="specialityTypeId"    column="speciality_type_id"    />
         <result property="specialityId"    column="speciality_id"    />
         <result property="postSequenceId"    column="post_sequence_id"    />
@@ -69,7 +70,7 @@
     </resultMap>
 
     <sql id="selectSysPostVersionVo">
-        select id, post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post_version
+        select id, post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, dept_type, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post_version
     </sql>
 
     <select id="selectSysPostVersionList" parameterType="SysPostVersion" resultMap="SysPostVersionResult">
@@ -103,6 +104,7 @@
             <if test="specialityTypeId != null and specialityTypeId != ''">speciality_type_id,</if>
             <if test="specialityId != null and specialityId != ''">speciality_id,</if>
             <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id,</if>
+            <if test="deptType != null and deptType != ''">dept_type,</if>
             <if test="postTypeId != null and postTypeId != ''">post_type_id,</if>
             <if test="jobTitleId != null">job_title_id,</if>
             <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
@@ -163,6 +165,7 @@
             <if test="postName != null and postName != ''">#{postName},</if>
             <if test="deptId != null">#{deptId},</if>
             <if test="specialityTypeId != null and specialityTypeId != ''">#{specialityTypeId},</if>
+            <if test="deptType != null and deptType != ''">#{deptType},</if>
             <if test="specialityId != null and specialityId != ''">#{specialityId},</if>
             <if test="postSequenceId != null and postSequenceId != ''">#{postSequenceId},</if>
             <if test="postTypeId != null and postTypeId != ''">#{postTypeId},</if>
@@ -231,6 +234,7 @@
             <if test="specialityId != null and specialityId != ''">speciality_id = #{specialityId},</if>
             <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id = #{postSequenceId},</if>
             <if test="postTypeId != null and postTypeId != ''">post_type_id = #{postTypeId},</if>
+            <if test="deptType != null and deptType != ''">dept_type = #{deptType},</if>
             <if test="jobTitleId != null">job_title_id = #{jobTitleId},</if>
             <if test="serialNumber != null and serialNumber != ''">serial_number = #{serialNumber},</if>
             <if test="shiftWorkId != null">shift_work_id = #{shiftWorkId},</if>

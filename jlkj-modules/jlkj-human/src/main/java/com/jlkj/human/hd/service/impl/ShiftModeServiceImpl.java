@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ShiftMode;
 import com.jlkj.human.hd.mapper.ShiftModeMapper;
 import com.jlkj.human.hd.service.IShiftModeService;
@@ -66,7 +66,7 @@ public class ShiftModeServiceImpl implements IShiftModeService
     @Override
     public int insertShiftMode(ShiftMode shiftMode)
     {
-        shiftMode.setId(UUID.randomUUID().toString().substring(0,32));
+        shiftMode.setId(IdUtils.simpleUUID());
         return shiftModeMapper.insertShiftMode(shiftMode);
     }
 

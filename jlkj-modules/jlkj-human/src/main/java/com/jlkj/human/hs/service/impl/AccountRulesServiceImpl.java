@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.AccountRules;
 import com.jlkj.human.hs.mapper.AccountRulesMapper;
@@ -114,7 +114,7 @@ public class AccountRulesServiceImpl implements IAccountRulesService
                 accountRulesMapper.updateAccountRules(accountRules);
 
             }else{
-                accountRules.setId(UUID.randomUUID().toString().substring(0, 32));
+                accountRules.setId(IdUtils.simpleUUID());
                 accountRulesMapper.insertAccountRules(accountRules);
             }
         }

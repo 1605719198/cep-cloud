@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 部门资料维护对象 sys_dept
  *
- * @author jlkj
+ * @author 266861
  * @date 2023-03-08
  */
 public class SysDept extends BaseEntity

@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="voucherType"    column="voucher_type"    />
         <result property="isGen"    column="is_gen"    />
         <result property="acctId"    column="acct_id"    />
+        <result property="acctName"    column="acct_name"    />
         <result property="acctCode"    column="acct_code"    />
         <result property="calTypeIda"    column="cal_type_ida"    />
         <result property="calTypeCodea"    column="cal_type_codea"    />
@@ -30,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectFinanceApAccruleVo">
-        select id, company_id, pay_method, pay_method_name, voucher_type, is_gen, acct_id, acct_code, cal_type_ida, cal_type_codea, cal_type_idb, cal_type_codeb, cal_type_idc, cal_type_codec, cal_type_idd, cal_type_coded, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_accrule
+        select id, company_id, pay_method, pay_method_name, voucher_type, is_gen, acct_id, acct_name, acct_code, cal_type_ida, cal_type_codea, cal_type_idb, cal_type_codeb, cal_type_idc, cal_type_codec, cal_type_idd, cal_type_coded, create_by, create_name, create_time, update_by, update_name, update_time from finance_ap_accrule
     </sql>
 
     <select id="selectFinanceApAccruleList" parameterType="FinanceApAccrule" resultMap="FinanceApAccruleResult">
@@ -46,6 +47,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceApAccruleVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectFinanceAoParaByCompIdAndPayMethod" parameterType="FinanceApAccrule" resultMap="FinanceApAccruleResult">
+        <include refid="selectFinanceApAccruleVo"/>
+        where company_id = #{companyId} AND pay_method = #{payMethod}
+    </select>
         
     <insert id="insertFinanceApAccrule" parameterType="FinanceApAccrule">
         insert into finance_ap_accrule
@@ -57,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="voucherType != null and voucherType != ''">voucher_type,</if>
             <if test="isGen != null">is_gen,</if>
             <if test="acctId != null and acctId != ''">acct_id,</if>
+            <if test="acctName != null and acctName != ''">acct_name,</if>
             <if test="acctCode != null">acct_code,</if>
             <if test="calTypeIda != null">cal_type_ida,</if>
             <if test="calTypeCodea != null">cal_type_codea,</if>
@@ -81,6 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="voucherType != null and voucherType != ''">#{voucherType},</if>
             <if test="isGen != null">#{isGen},</if>
             <if test="acctId != null and acctId != ''">#{acctId},</if>
+            <if test="acctName != null and acctName != ''">#{acctName},</if>
             <if test="acctCode != null">#{acctCode},</if>
             <if test="calTypeIda != null">#{calTypeIda},</if>
             <if test="calTypeCodea != null">#{calTypeCodea},</if>
@@ -108,6 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="voucherType != null and voucherType != ''">voucher_type = #{voucherType},</if>
             <if test="isGen != null">is_gen = #{isGen},</if>
             <if test="acctId != null and acctId != ''">acct_id = #{acctId},</if>
+            <if test="acctName != null and acctName != ''">acct_name = #{acctName},</if>
             <if test="acctCode != null">acct_code = #{acctCode},</if>
             <if test="calTypeIda != null">cal_type_ida = #{calTypeIda},</if>
             <if test="calTypeCodea != null">cal_type_codea = #{calTypeCodea},</if>

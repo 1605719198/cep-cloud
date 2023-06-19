@@ -118,7 +118,7 @@
         <result property="alternateField16" column="alternate_field16" jdbcType="VARCHAR"/>
         <result property="departmentId" column="department_id" jdbcType="VARCHAR"/>
         <result property="departmentName" column="department_name" jdbcType="VARCHAR"/>
-        <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+        <result property="postId" column="post_id" jdbcType="BIGINT"/>
         <result property="postName" column="post_name" jdbcType="VARCHAR"/>
         <result property="postLevelId" column="post_level_id" jdbcType="VARCHAR"/>
         <result property="postLevelName" column="post_level_name" jdbcType="VARCHAR"/>

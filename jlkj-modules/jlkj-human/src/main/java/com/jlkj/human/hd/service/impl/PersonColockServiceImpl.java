@@ -1,7 +1,7 @@
 package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
@@ -101,7 +101,7 @@ public class PersonColockServiceImpl implements IPersonColockService
             PersonColock noEffectData = personColockMapper.queryNoEffectData(personColock);
             if(lastEffectData == null || personColock.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
                 if(noEffectData==null){
-                    personColock.setId(UUID.randomUUID().toString().substring(0, 32));
+                    personColock.setId(IdUtils.simpleUUID());
                     if(personColock.getOrgColockId()!=null){
                         type = "2";
                     }else{
@@ -111,7 +111,7 @@ public class PersonColockServiceImpl implements IPersonColockService
                     PersonColockDetail personColockDetail =new PersonColockDetail();
                     ArrayList<String> arrayList  = personColock.getColockList();
                     for (String strTemp : arrayList){
-                        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+                        personColockDetail.setId(IdUtils.simpleUUID());
                         personColockDetail.setPersonColockId(personColock.getId());
                         personColockDetail.setCreator(personColock.getCreator());
                         personColockDetail.setCreatorId(personColock.getCreatorId());

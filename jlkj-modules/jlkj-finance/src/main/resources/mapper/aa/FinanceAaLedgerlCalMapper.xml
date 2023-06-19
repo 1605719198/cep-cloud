@@ -185,21 +185,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT
-         IFNULL(cal_namea,'')  AS cal_namea,
-        IFNULL(cal_codea,'')  AS cal_codea
+         IFNULL(T1.cal_namea,'')  AS cal_namea,
+        IFNULL(T1.cal_codea,'')  AS cal_codea
         from
-        finance_aa_ledgerl_cal
+        finance_aa_ledgerl_cal T1
+
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and acct_period between #{startDate} and #{endDate}</if>
-            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
-            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
+            <if test="companyId != null  and companyId != ''"> and T1.company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and T1.acct_period between #{startDate} and #{endDate}</if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null"> and T1.cal_codea between #{calNameaStart} and #{calNameaEnd}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null"> and T1.acct_code between #{acctCodeStart} and #{acctCodeEnd}</if>
 </where>
         group by
-        IFNULL(cal_namea,'') ,
-        IFNULL(cal_codea,'')
+        IFNULL(T1.cal_namea,'') ,
+        IFNULL(T1.cal_codea,'')
         ORDER  BY
-            cal_namea
+            T1.cal_codea
     </select>
     <select id="selectDetailSteelCalName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
         SELECT

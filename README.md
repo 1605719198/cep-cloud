@@ -27,7 +27,8 @@ rabbit</br>
 --系统模块-jlkj-system:9201</br>
 --代码生成-jlkj-gen:9202</br>
 --定时任务-jlkj-job:9203</br>
---报表设计-jlkj-ureport:9204</br>
+--流程设计-jlkj-flowable:9204</br>
+--报表设计-jlkj-ureport:9205</br>
 --文件上传-jlkj-file:9300</br>
 --设备模块-jlkj-equip:9900</br>
 --能源模块-jlkj-energy:9910</br>

@@ -73,7 +73,7 @@ public interface FinanceAoItemCompMapper
      * @param ids
      * @return
      */
-    public List<Map<String,String>>selectDetailsByIds(String[] ids);
+    public List<String> selectDetailsByIds(String[] ids);
 
 
     /**

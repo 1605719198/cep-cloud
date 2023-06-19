@@ -863,7 +863,8 @@ export default {
     // 点击责任分摊跳转
     handleCheckView (row) {
       if (row.totalTime > 0) {
-        this.$router.push({ path: '/equip/achieve/responsibilitySharing/index/' + row.mgms1No });
+        this.$router.push(
+          { path: '/equip/achieve/responsibilitySharing/index/' + row.mgms1No });
       }
     },
     // 取消编辑手动立案
