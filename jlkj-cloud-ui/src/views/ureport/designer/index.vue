@@ -8,8 +8,8 @@ export default {
   name: "Ureport",
   data() {
     return {
-      // src: "http://10.32.157.52/ureport/designer",  //上线正式机，请将用此处
-      src: "http://localhost:9204/ureport/designer",
+      src: this.GLOBAL.designUrl,
+      // src: "http://localhost:9205/ureport/designer",
       height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: true
     };
