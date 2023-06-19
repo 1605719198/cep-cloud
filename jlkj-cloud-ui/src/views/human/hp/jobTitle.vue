@@ -34,7 +34,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['human:humanJobTitle:add']"
+          v-hasPermi="['human:jobTitle:add']"
         >新增</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -71,14 +71,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:humanJobTitle:edit']"
+            v-hasPermi="['human:jobTitle:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:humanJobTitle:remove']"
+            v-hasPermi="['human:jobTitle:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

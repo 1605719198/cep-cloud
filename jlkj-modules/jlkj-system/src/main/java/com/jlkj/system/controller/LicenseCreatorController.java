@@ -1,17 +1,15 @@
 package com.jlkj.system.controller;
 
-import com.jlkj.common.core.license.*;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.system.api.domain.SysDept;
+import com.jlkj.system.license.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -82,18 +80,22 @@ public class LicenseCreatorController extends BaseController {
      * @return AjaxResult
      */
     @Log(title = "证书文件生成", businessType = BusinessType.GRANT)
-    @PutMapping
-    public AjaxResult generateLicense(@RequestBody LicenseCreatorParam param) {
+    @PostMapping("/generateLicense")
+    public Map<String, Object> generateLicense(@RequestBody LicenseCreatorParam param) {
         Map<String, Object> resultMap = new HashMap<>(2);
-
-        param.setLicensePath(licensePath);
+        if(StringUtils.isBlank(param.getLicensePath())) {
+            param.setLicensePath(licensePath);
+        }
         LicenseCreator licenseCreator = new LicenseCreator(param);
         boolean result = licenseCreator.generateLicense();
 
         if (result) {
-            return AjaxResult.success(param);
+            resultMap.put("result","ok");
+            resultMap.put("msg",param);
         } else {
-            return AjaxResult.error("证书文件生成失败！");
+            resultMap.put("result","error");
+            resultMap.put("msg","证书文件生成失败");
         }
+        return resultMap;
     }
 }

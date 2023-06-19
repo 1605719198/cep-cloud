@@ -2,6 +2,7 @@
 
 let baseUrl = '';
 let fileUploadUrl = 'http://192.168.105.249:9300';
+let designerUrl = 'http://10.32.157.52/ureport/designer';
 let pdfUrl = 'http://192.168.105.249:9321';
 let iconfontVersion = ['567566_pwc3oottzol', '1066523_6bvkeuqao36'];
 let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
@@ -12,6 +13,7 @@ const env = process.env
 if (env.NODE_ENV == 'development') {
   baseUrl = ``; // 开发环境地址
   fileUploadUrl = 'http://localhost:9300';
+  designerUrl = 'http://localhost:9205/ureport/designer';//报表设计器
   pdfUrl = 'http://localhost';
   mqConfig = {
     url: 'ws://192.168.105.218:15674/ws',
@@ -21,6 +23,7 @@ if (env.NODE_ENV == 'development') {
 } else if (env.NODE_ENV == 'production') {
   baseUrl = ``; //生产环境地址
   fileUploadUrl = 'http://10.32.157.6:9321/neplatform/fileresource';
+  designerUrl = 'http://10.32.157.52/ureport/designer';
   pdfUrl = 'http://10.32.157.6:9321';
   mqConfig = {
     url: 'ws://10.32.157.5:15674/ws',
@@ -51,6 +54,7 @@ if (env.NODE_ENV == 'development') {
 export {
   baseUrl,
   fileUploadUrl,
+  designerUrl,
   pdfUrl,
   iconfontUrl,
   iconfontVersion,

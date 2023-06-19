@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px" :rules="rules3" >
       <el-form-item label="公司别" prop="compId">
         <el-select v-model="queryParams.compId" placeholder="请选择公司别">
           <el-option
@@ -66,7 +66,7 @@
           icon="el-icon-printer"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['human:yearAmt:export']"
+          v-hasPermi="['human:personalSalary:import']"
         >错误日志
         </el-button>
       </el-col>
@@ -81,7 +81,7 @@
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="主岗位名称" align="center" prop="mainPostName"/>
+      <el-table-column label="主岗位名称" align="center" prop="mainPostName" width="280"/>
       <el-table-column label="职位等级" align="center" prop="posLevel"/>
       <el-table-column label="输入人" align="center" prop="creator"/>
       <el-table-column label="输入日期" align="center" prop="createDate" width="180">
@@ -121,7 +121,7 @@
     />
 
     <!-- 添加或修改社保公积金标准核定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="open" width="1600px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -291,12 +291,12 @@
         >
           <div class="detailChild detailChildWidth1"
           >
-            <div>{{ items.payProName }}</div>
+            <div style="width: 110px;">{{ items.payProName }}</div>
             <div>{{ items.twoTitle }}</div>
             <div>
               <el-radio-group v-model="items.thrIdSta">
                 <el-radio
-                  v-for="dict in salaryOptions.SalaryYN"
+                  v-for="dict in salaryOptions.HsYN"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -307,7 +307,7 @@
           <div class="detailChild detailChildWidth2"
                v-show="items.thrIdSta==='1'"
           >
-            <div>
+            <div style="width: 130px;">
               {{ items.fourTitle }}
             </div>
             <div>
@@ -344,7 +344,7 @@
     </el-dialog>
 
     <!-- 社保公积金标准核定详情对话框 -->
-    <el-dialog :title="title" :visible.sync="openView" width="1400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="openView" width="1600px" append-to-body class="customDialogStyle">
       <el-form ref="formView" :model="form" label-width="100px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -401,6 +401,7 @@
           <el-col :span="6">
             <el-form-item label="最高学历" prop="lastExper">
               <dict-tag-human :options="baseInfoData.qualification" :value="form.lastExper"/>
+              <dict-tag></dict-tag>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -491,12 +492,12 @@
         >
           <div class="detailChild detailChildWidth1"
           >
-            <div>{{ items.payProName }}</div>
+            <div style="width: 110px;">{{ items.payProName }}</div>
             <div>{{ items.twoTitle }}</div>
             <div>
               <el-radio-group v-model="items.thrIdSta" disabled>
                 <el-radio
-                  v-for="dict in salaryOptions.SalaryYN"
+                  v-for="dict in salaryOptions.HsYN"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -507,7 +508,7 @@
           <div class="detailChild detailChildWidth2"
                v-show="items.thrIdSta==='1'"
           >
-            <div>
+            <div style="width: 130px;">
               {{ items.fourTitle }}
             </div>
             <div>
@@ -579,7 +580,7 @@
 </template>
 
 <script>
-import '@/assets/styles/humanStyles.scss';
+import '@/assets/styles/humanStyles.scss'
 import {
   listSocialSecurityBasis,
   getSocialSecurityBasis,
@@ -588,7 +589,6 @@ import {
   updateSocialSecurityBasis
 } from '@/api/human/hs/socialSecurityBasis'
 import { getToken } from '@/utils/auth'
-import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
 import { getSalaryOptions, getSalaryDeepOptions } from '@/api/human/hs/salaryBasis'
@@ -596,14 +596,13 @@ import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import { socialSecurity } from '@/api/human/hs/socialSecurity'
 import { queryImportNote } from '@/api/human/hs/importNote'
-import '@/assets/styles/humanStyles.scss';
 
 export default {
   name: 'SocialSecurityBasis',
   components: { selectUser, DictTagHuman },
   data() {
     return {
-      // 年收入维护资料导入参数
+      // 社保公积金资料导入参数
       upload: {
         // 是否显示弹出层（年收入维护资料导入）
         open: false,
@@ -627,7 +626,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['SocialSecurity', 'InsureRea', 'PayAreaType', 'SalaryYN'],
+        optionsType: ['SocialSecurity', 'InsureRea', 'PayAreaType', 'HsYN'],
         compId: null
       },
       //薪资选单选项列表
@@ -692,6 +691,12 @@ export default {
         houseAccount: [
           { min: 3, max: 50, message: '长度在3到50个字符', trigger: 'blur' }
         ]
+      },
+      //查询表单校验
+      rules3: {
+        empNo: [
+          { required: true, message: '请输入员工工号', trigger: 'change' }
+        ]
       }
     }
   },
@@ -701,13 +706,7 @@ export default {
     this.getDisc()
   },
   watch: {
-    // 'queryParams.compId': {
-    //   deep: true,
-    //   immediate: false,
-    //   handler: function(newV, preV) {
-    //     this.getList()
-    //   }
-    // }
+
   },
   methods: {
     //查询薪资选单
@@ -826,11 +825,15 @@ export default {
     },
     /** 查询社保公积金标准核定列表 */
     getList() {
-      this.loading = true
-      listSocialSecurityBasis(this.queryParams).then(response => {
-        this.socialSecurityBasisList = response.rows
-        this.total = response.total
-        this.loading = false
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.loading = true
+          listSocialSecurityBasis(this.queryParams).then(response => {
+            this.socialSecurityBasisList = response.rows
+            this.total = response.total
+            this.loading = false
+          })
+        }
       })
     },
     // 取消按钮
@@ -888,17 +891,14 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1
-      if(this.queryParams.empNo!=null&&this.queryParams.empNo.length!==0){
-        this.socialSecurityBasisList = [];
-        this.getList()
-      }else{
-        this.$modal.msgWarning('请输入工号')
-      }
+      this.socialSecurityBasisList = []
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
       this.socialSecurityBasisList = [];
+      this.total = 0;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -1071,6 +1071,6 @@ export default {
 }
 
 .inputWidth {
-  width: 150px;
+  width: 130px;
 }
 </style>

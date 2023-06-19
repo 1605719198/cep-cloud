@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * 月出勤统计汇总表
+ * @author HuangBing
  * @TableName human_hd_attendance_gather
  */
 @TableName(value ="human_hd_attendance_gather")
@@ -63,16 +64,6 @@ public class AttendanceGatherDTO implements Serializable {
     private BigDecimal actAttHou;
 
     /**
-     * 迟到次数
-     */
-    private Integer lateNum;
-
-    /**
-     * 早退次数
-     */
-    private Integer leaNum;
-
-    /**
      * 请假天数汇总
      */
     private BigDecimal holDuty;
@@ -101,16 +92,6 @@ public class AttendanceGatherDTO implements Serializable {
      * 月初未上岗小时数
      */
     private BigDecimal befEntHou;
-
-    /**
-     * 大夜班次数
-     */
-    private Integer bigNig;
-
-    /**
-     * 小夜班次数
-     */
-    private Integer smaNig;
 
     /**
      * 月末未上岗天数
@@ -183,14 +164,34 @@ public class AttendanceGatherDTO implements Serializable {
     private String postId;
 
     /**
+     * 姓名
+     */
+    private String empName;
+
+    /**
      * 岗位名称
      */
     private String postName;
 
     /**
-     * 姓名
+     * 迟到次数
      */
-    private String empName;
+    private Integer lateNum;
+
+    /**
+     * 早退次数
+     */
+    private Integer leaNum;
+
+    /**
+     * 大夜班次数
+     */
+    private Integer bigNig;
+
+    /**
+     * 小夜班次数
+     */
+    private Integer smaNig;
 
     /**
      * 调整后应出勤天数

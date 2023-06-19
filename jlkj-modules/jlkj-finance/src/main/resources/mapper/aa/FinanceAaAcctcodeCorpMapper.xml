@@ -191,12 +191,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from finance_aa_acctcode where group_acct_id = #{groupAcctId}
     </delete>
 
-    <delete id="deleteFinanceAaAcctcodeCorpByGroupAcctIds" parameterType="String">
-        delete from finance_aa_acctcode where group_acct_id in 
-        <foreach item="groupAcctId" collection="array" open="(" separator="," close=")">
-            #{groupAcctId}
-        </foreach>
-    </delete>
 
 
     <insert id="insertBatchFinanceAcctcodeCorp">
@@ -231,5 +225,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupAcctId != null  and groupAcctId != ''">  and group_acct_id = #{groupAcctId}</if>
             <if test="companyId != null and companyId != ''"> and company_id =  #{companyId}</if>
         </where>
+    </select>
+
+    <delete id="deleteFinanceAaAcctcodeCorpByGroupAcctIds" parameterType="String">
+        delete from finance_aa_acctcode where group_acct_id in
+        <foreach item="groupAcctId" collection="array" open="(" separator="," close=")">
+            #{groupAcctId}
+        </foreach>
+    </delete>
+    <select id="selectForeach" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT DISTINCT acct_code, acct_name from finance_aa_acctcode where acct_code in
+        <foreach item="acctCode" collection="acctCode" open="(" separator="," close=")">
+            #{acctCode}
+        </foreach>
+        <if test="companyId != null and companyId != ''"> and company_id =  #{companyId}</if>
+        ORDER BY
+        acct_code
     </select>
 </mapper>

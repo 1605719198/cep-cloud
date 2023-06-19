@@ -437,6 +437,9 @@ public class FinanceAaLedgerAcctDTO {
     private String calCoded;
 
 
+    /** 抛帐系统代号 */
+
+    private String apid;
 
     /**
      * 数量单位/币别

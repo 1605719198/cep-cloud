@@ -94,10 +94,10 @@
               type="primary"
               plain
               size="mini"
+              :disabled="isDisabledConfirm"
               @click="handleImport"
               v-hasPermi="['human:attendanceGather:import']"
             >导入
-<!--              :disabled="isDisabledImport"-->
             </el-button>
           </el-col>
           <el-col :span="1.5">
@@ -142,23 +142,23 @@
           <el-table-column label="小夜班次数" align="center" prop="smaNig" />
           <el-table-column label="大小夜班次数" align="center" prop="bigSmaNig" />
           <el-table-column label="请假天数" align="center">
-            <el-table-column label="病假" align="center" prop="dueAttDuty" />
-            <el-table-column label="工作假" align="center" prop="dueAttDuty" />
-            <el-table-column label="事假" align="center" prop="dueAttDuty" />
-            <el-table-column label="婚假" align="center" prop="dueAttDuty" />
-            <el-table-column label="产假" align="center" prop="dueAttDuty" />
-            <el-table-column label="丧假" align="center" prop="dueAttDuty" />
-            <el-table-column label="探亲假" align="center" prop="dueAttDuty" />
-            <el-table-column label="公假" align="center" prop="dueAttDuty" />
-            <el-table-column label="年休假" align="center" prop="dueAttDuty" />
-            <el-table-column label="护理假" align="center" prop="dueAttDuty" />
-            <el-table-column label="合计" align="center" prop="holDuty" />
+            <el-table-column label="病假" align="center" prop="sickLeave" />
+            <el-table-column label="工伤假" align="center" prop="workInjuryLeave" />
+            <el-table-column label="事假" align="center" prop="leaveOfAbsence" />
+            <el-table-column label="婚假" align="center" prop="marriageLeave" />
+            <el-table-column label="产假" align="center" prop="maternityLeave" />
+            <el-table-column label="丧假" align="center" prop="bereavementLeave" />
+            <el-table-column label="探亲假" align="center" prop="homeLeave" />
+            <el-table-column label="公假" align="center" prop="commonLeave" />
+            <el-table-column label="年休假" align="center" prop="annualLeave" />
+            <el-table-column label="护理假" align="center" prop="nursingLeave" />
+            <el-table-column label="合计" align="center" prop="totalLeave" />
           </el-table-column>
           <el-table-column label="加班小时数" align="center">
-            <el-table-column label="延时加班" align="center" prop="overTimeHou" />
-            <el-table-column label="休息日加班" align="center" prop="overTimeHou" />
-            <el-table-column label="法定假加班" align="center" prop="overTimeHou" />
-            <el-table-column label="合计" align="center" prop="overTimeHou" />
+            <el-table-column label="延时加班" align="center" prop="delayedOvertime" />
+            <el-table-column label="休息日加班" align="center" prop="overtimeOnRestDays" />
+            <el-table-column label="法定假加班" align="center" prop="overtimeOnStatutoryHolidays" />
+            <el-table-column label="合计" align="center" prop="totalOvertime" />
           </el-table-column>
           <el-table-column label="月初未上岗天数" align="center" prop="befEntDuty" />
           <el-table-column label="月末未上岗天数" align="center" prop="aftEntDuty" />
@@ -318,9 +318,11 @@ export default {
     /** 查询月出勤统计汇总列表 */
     getList() {
       this.loading = true;
+      this.queryParams.year = this.queryParams.date.substr(0,4)
+      this.queryParams.month = this.queryParams.date.substr(5,2)
       listAttendance(this.queryParams).then(response => {
-        this.attendanceGatherList = response.rows;
-        this.total = response.total;
+        this.attendanceGatherList = response.data.rows;
+        this.total = response.data.total;
         this.loading = false;
       });
     },
@@ -366,7 +368,7 @@ export default {
     },
     /** 下载模板操作 */
     importTemplate() {
-      this.download('human/attendanceGather/importTemplate', {}, `attendanceSummary_template_${new Date().getTime()}.xlsx`)
+      this.download('human/attendanceGather/importTemplate', {}, `attendanceSummary_template_${new Date().getTime()}.xls`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
@@ -388,7 +390,7 @@ export default {
     handleExport() {
       this.download('human/attendanceGather/export', {
         ...this.queryParams
-      }, `attendance_${new Date().getTime()}.xlsx`)
+      }, `attendance_${new Date().getTime()}.xls`)
       this.isDisabledImport = false
     },
     /** 取消排班按钮操作 */

@@ -1,44 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaVoucherDetailMapper">
-    
+
     <resultMap type="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" id="FinanceAaVoucherDetailResult">
-        <result property="id"    column="id"    />
-        <result property="companyId"    column="company_id"    />
-        <result property="voucherId"    column="voucher_id"    />
-        <result property="voucherDate"    column="voucher_date"    />
-        <result property="voucherNo"    column="voucher_no"    />
-        <result property="srlno"    column="srlno"    />
-        <result property="drcr"    column="drcr"    />
-        <result property="groupAcctId"    column="group_acct_id"    />
-        <result property="acctId"    column="acct_id"    />
-        <result property="acctCode"    column="acct_code"    />
-        <result property="acctName"    column="acct_name"    />
-        <result property="calIda"    column="cal_ida"    />
-        <result property="calCodea"    column="cal_codea"    />
-        <result property="calNamea"    column="cal_namea"    />
-        <result property="calIdb"    column="cal_idb"    />
-        <result property="calCodeb"    column="cal_codeb"    />
-        <result property="calNameb"    column="cal_nameb"    />
-        <result property="calIdc"    column="cal_idc"    />
-        <result property="calCodec"    column="cal_codec"    />
-        <result property="calNamec"    column="cal_namec"    />
-        <result property="calIdd"    column="cal_idd"    />
-        <result property="calCoded"    column="cal_coded"    />
-        <result property="calNamed"    column="cal_named"    />
-        <result property="crcyUnit"    column="crcy_unit"    />
-        <result property="qtyFrnamt"    column="qty_frnAmt"    />
-        <result property="ntamt"    column="ntAmt"    />
-        <result property="srlDesc"    column="srl_desc"    />
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="voucherId" column="voucher_id"/>
+        <result property="voucherDate" column="voucher_date"/>
+        <result property="voucherNo" column="voucher_no"/>
+        <result property="srlno" column="srlno"/>
+        <result property="drcr" column="drcr"/>
+        <result property="groupAcctId" column="group_acct_id"/>
+        <result property="acctId" column="acct_id"/>
+        <result property="acctCode" column="acct_code"/>
+        <result property="acctName" column="acct_name"/>
+        <result property="calIda" column="cal_ida"/>
+        <result property="calCodea" column="cal_codea"/>
+        <result property="calNamea" column="cal_namea"/>
+        <result property="calIdb" column="cal_idb"/>
+        <result property="calCodeb" column="cal_codeb"/>
+        <result property="calNameb" column="cal_nameb"/>
+        <result property="calIdc" column="cal_idc"/>
+        <result property="calCodec" column="cal_codec"/>
+        <result property="calNamec" column="cal_namec"/>
+        <result property="calIdd" column="cal_idd"/>
+        <result property="calCoded" column="cal_coded"/>
+        <result property="calNamed" column="cal_named"/>
+        <result property="crcyUnit" column="crcy_unit"/>
+        <result property="qtyFrnamt" column="qty_frnAmt"/>
+        <result property="ntamt" column="ntAmt"/>
+        <result property="srlDesc" column="srl_desc"/>
     </resultMap>
 
     <sql id="selectFinanceAaVoucherDetailVo">
-        select id, company_id, voucher_id, voucher_date, voucher_no, srlno, drcr, group_acct_id, acct_id, acct_code, acct_name, cal_ida, cal_codea, cal_namea, cal_idb, cal_codeb, cal_nameb, cal_idc, cal_codec, cal_namec, cal_idd, cal_coded, cal_named, crcy_unit, qty_frnAmt, ntAmt, srl_desc from finance_aa_voucher_detail
+        select id,
+               company_id,
+               voucher_id,
+               voucher_date,
+               voucher_no,
+               srlno,
+               drcr,
+               group_acct_id,
+               acct_id,
+               acct_code,
+               acct_name,
+               cal_ida,
+               cal_codea,
+               cal_namea,
+               cal_idb,
+               cal_codeb,
+               cal_nameb,
+               cal_idc,
+               cal_codec,
+               cal_namec,
+               cal_idd,
+               cal_coded,
+               cal_named,
+               crcy_unit,
+               qty_frnAmt,
+               ntAmt,
+               srl_desc
+        from finance_aa_voucher_detail
     </sql>
 
-    <select id="selectFinanceAaVoucherDetailList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
+    <select id="selectFinanceAaVoucherDetailList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail"
+            resultMap="FinanceAaVoucherDetailResult">
         SELECT DISTINCT
         a.* ,
         b.cal_type_codeA,
@@ -49,22 +77,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         finance_aa_voucher_detail a
         LEFT JOIN finance_aa_acctcode b ON b.acct_id = a.acct_id and
         b.acct_code=a.acct_code
-        <where>  
-            <if test="companyId != null  and companyId != ''"> and a.company_id = #{companyId}</if>
-            <if test="voucherNo != null  and voucherNo != ''"> and a.voucher_no = #{voucherNo}</if>
+        <where>
+            <if test="companyId != null  and companyId != ''">and a.company_id = #{companyId}</if>
+            <if test="voucherNo != null  and voucherNo != ''">and a.voucher_no = #{voucherNo}</if>
         </where>
         order by a.voucher_no
     </select>
 
-    <select id="selectFinanceAaVoucherBatchExecutionList" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
+    <select id="selectFinanceAaVoucherBatchExecutionList"
+            parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail" resultMap="FinanceAaVoucherDetailResult">
         <include refid="selectFinanceAaVoucherDetailVo"/>
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="voucherNo != null  and voucherNo != ''">and voucher_no = #{voucherNo}</if>
         </where>
         order by voucher_no
     </select>
-    
+
     <select id="selectFinanceAaVoucherDetailById" parameterType="String" resultMap="FinanceAaVoucherDetailResult">
         <include refid="selectFinanceAaVoucherDetailVo"/>
         where id = #{id}
@@ -73,17 +102,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         DISTINCT
         a.voucher_no,a.voucher_date,a.apId,a.voucher_desc,a.dr_amt,a.cr_amt,a.pastuser_name,a.status
-        from  finance_aa_voucher a
-        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND  b.company_id = a.company_id
+        from finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND b.company_id = a.company_id
 
         <where>
-            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
-            <if test="startDate != '' and endDate != ''"> and b.voucher_date between #{startDate} and #{endDate}</if>
-            <if test="voucherNoStart != '' and voucherNoEnd != ''"> and b.voucher_no between #{voucherNoStart} and #{voucherNoEnd}</if>
-            <if test="acctNameStart != '' and acctNameEnd != ''"> and b.acct_name between #{acctNameStart} and #{acctNameEnd}</if>
-            <if test="calNameaStart != '' and calNameaEnd != ''"> and b.cal_namea between #{calNameaStart} and #{calNameaEnd}</if>
-            <if test="calNamebStart != '' and calNamebEnd != ''"> and b.cal_nameb between #{calNamebStart} and #{calNamebEnd}</if>
-            <if test="qtyFrnamtStart != '' and qtyFrnamtEnd != ''"> and b.qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}</if>
+            <if test="companyId != null  and companyId != ''">and b.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''">and b.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="voucherNoStart != '' and voucherNoEnd != ''">and b.voucher_no between #{voucherNoStart} and
+                #{voucherNoEnd}
+            </if>
+            <if test="acctNameStart != '' and acctNameEnd != ''">and b.acct_name between #{acctNameStart} and
+                #{acctNameEnd}
+            </if>
+            <if test="calNameaStart != '' and calNameaEnd != ''">and b.cal_namea between #{calNameaStart} and
+                #{calNameaEnd}
+            </if>
+            <if test="calNamebStart != '' and calNamebEnd != ''">and b.cal_nameb between #{calNamebStart} and
+                #{calNamebEnd}
+            </if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtEnd != ''">and b.qty_frnAmt between #{qtyFrnamtStart} and
+                #{qtyFrnamtEnd}
+            </if>
         </where>
         order by b.voucher_no
     </select>
@@ -114,10 +153,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM
         finance_aa_voucher_detail
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
-            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
-            <if test="voucherDate != '' and voucherDate != ''"> and voucher_date like concat('%',#{voucherDate},'%')</if>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and acct_code like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''">and drcr like concat('%',#{drcr},'%')</if>
+            <if test="voucherDate != '' and voucherDate != ''">and voucher_date like concat('%',#{voucherDate},'%')</if>
         </where>
         GROUP BY
         drcr,
@@ -168,9 +207,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM
         finance_aa_voucher_detail
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
-            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and acct_code like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''">and drcr like concat('%',#{drcr},'%')</if>
         </where>
         GROUP BY
         group_acct_id,
@@ -224,10 +263,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         finance_aa_voucher_detail
 
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
-            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
-            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and acct_code like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''">and drcr like concat('%',#{drcr},'%')</if>
+            <if test="voucherNo != null  and voucherNo != ''">and voucher_no = #{voucherNo}</if>
         </where>
     </select>
     <select id="selectFinancecalCodeAdd" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
@@ -262,44 +301,202 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM
         finance_aa_voucher_detail
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code  like concat('%',#{acctCode},'%')</if>
-            <if test="drcr != null  and drcr != ''"> and drcr  like concat('%',#{drcr},'%')</if>
-            <if test="voucherNo != null  and voucherNo != ''"> and voucher_no = #{voucherNo}</if>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and acct_code like concat('%',#{acctCode},'%')</if>
+            <if test="drcr != null  and drcr != ''">and drcr like concat('%',#{drcr},'%')</if>
+            <if test="voucherNo != null  and voucherNo != ''">and voucher_no = #{voucherNo}</if>
 
-            <if test="calCodea != null  and calCodea != ''"> and cal_codea = #{calCodea}</if>
+            <if test="calCodea != null  and calCodea != ''">and cal_codea = #{calCodea}</if>
 
-            <if test="calCodeb != null  and calCodeb != ''"> and cal_codeb = #{calCodeb}</if>
+            <if test="calCodeb != null  and calCodeb != ''">and cal_codeb = #{calCodeb}</if>
 
-            <if test="calCodec != null  and calCodec != ''"> and cal_codec = #{calCodec}</if>
+            <if test="calCodec != null  and calCodec != ''">and cal_codec = #{calCodec}</if>
 
-            <if test="calCoded != null  and calCoded != ''"> and cal_coded = #{calCoded}</if>
+            <if test="calCoded != null  and calCoded != ''">and cal_coded = #{calCoded}</if>
 
         </where>
     </select>
     <select id="selectFinanceAaLedgerAcctList" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         select
         b.drcr,
-               b.acct_code,
-               b.cal_namea,
-               b.cal_nameb,
-               b.cal_namec,
+        b.acct_code,
+        b.cal_namea,
+        b.cal_nameb,
+        b.cal_namec,
         b.cal_named,
         b.voucher_date,
-               b.acct_name,
+        b.acct_name,
         SUM(b.qty_frnAmt) AS qty_frnAmt,
-        SUM(b.ntAmt) AS	ntAmt
-        from  finance_aa_voucher a
-        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND  b.company_id = a.company_id
+        SUM(b.ntAmt) AS ntAmt
+        from finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND b.company_id = a.company_id
 
         <where>
-            <if test="companyId != null  and companyId != ''"> and b.company_id = #{companyId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and b.acct_code = #{acctCode}</if>
-            <if test="startDate != '' and endDate != ''"> and b.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="companyId != null  and companyId != ''">and b.company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and b.acct_code = #{acctCode}</if>
+            <if test="startDate != '' and endDate != ''">and b.voucher_date between #{startDate} and #{endDate}</if>
             and a.status <![CDATA[   !=  ]]> 'P'
         </where>
+    </select>
+    <select id="seleClName" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        SELECT
+        DISTINCT IFNULL(cal_namea, '') as cal_namea,
+        IFNULL(cal_codea, '') as cal_codea
+
+        from
+        finance_aa_voucher_detail
+        <where>
+            <if test="companyId != null  and companyId != ''">company_id = #{companyId}</if>
+            <if test="startDate != '' and startDate != null and endDate != '' and endDate != null">and voucher_date
+                between substr(#{startDate}, 1, 10 )and substr(#{endDate}, 1, 10 )
+            </if>
+
+            <if test="acctCode != '' and acctCode != null">and acct_code like concat('', #{acctCode}, '%')</if>
+            <if test="calNameaStart != ''and  calNameaStart != null and calNameaEnd != '' and calNameaEnd != null">and
+                cal_codea between #{calNameaStart} and #{calNameaEnd}
+            </if>
+            <if test="voucherNoStart != '' and voucherNoStart != null and voucherNoEnd != '' and voucherNoEnd != null">
+                and voucher_no between #{voucherNoStart} and #{voucherNoEnd}
+            </if>
+            <if test="amountStart != '' and amountStart != null and amountEnd != '' and amountEnd != null">and ntAmt
+                between #{amountStart} and #{amountEnd}
+            </if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtStart != null and qtyFrnamtEnd != '' and qtyFrnamtEnd != null">
+                and qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}
+            </if>
+        </where>
+        ORDER BY
+        cal_namea
+    </select>
+    <select id="seleAcctCode" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+
+        SELECT
+        distinct
+        <if test='accountLevel == "01"'>
+            substr( T1.acct_code, 1, 4 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "02"'>
+            substr( T1.acct_code, 1, 6 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "03"'>
+            substr( T1.acct_code, 1, 8 ) AS acct_code,
+        </if>
+        <if test='accountLevel == "04"'>
+            substr( T1.acct_code, 1, 10) AS acct_code,
+        </if>
+        <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
+            substr( T1.acct_code, 1, 12) AS acct_code,
+        </if>
+        from
+        finance_aa_voucher_detail T1 left join finance_aa_acctcode T3 on T1.company_id = T3.company_id and
+        T1.acct_code=T3.acct_code
+        <where>
+            <if test="companyId != null  and companyId != ''">and T1.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''">and T1.voucher_date between #{startDate} and #{endDate}</if>
+            <if test="acctCodeStart != '' and acctCodeStart != null and acctCodeEnd != ''and acctCodeEnd != null">and
+                T1.acct_code between #{acctCodeStart} and #{acctCodeEnd}
+            </if>
+            <if test="calNameaStart != '' and calNameaStart != null and calNameaEnd != ''and calNameaEnd != null">and
+                T1.cal_codea between #{calNameaStart} and #{calNameaEnd}
+            </if>
+            <if test="voucherNoStart != '' and voucherNoStart != null and voucherNoEnd != '' and voucherNoEnd != null">
+                and voucher_no between #{voucherNoStart} and #{voucherNoEnd}
+            </if>
+            <if test="amountStart != '' and amountStart != null and amountEnd != '' and amountEnd != null">and ntAmt
+                between #{amountStart} and #{amountEnd}
+            </if>
+            <if test="qtyFrnamtStart != '' and qtyFrnamtStart != null and qtyFrnamtEnd != '' and qtyFrnamtEnd != null">
+                and qty_frnAmt between #{qtyFrnamtStart} and #{qtyFrnamtEnd}
+            </if>
+        </where>
+        ORDER BY
+        T1.acct_code
 
     </select>
+    <select id="selectcalNameList" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        select T1.id, T1.company_id, T1.voucher_id, T1.voucher_date, T1.voucher_no, T1.srlno, T1.drcr, T1.group_acct_id, T1.acct_id, T1.acct_code,
+        T1.acct_name, T1.cal_idb, T1.cal_codeb, T1.cal_nameb, T1.cal_idc, T1.cal_codec, T1.cal_namec, T1.cal_idd, T1.cal_coded, T1.cal_named,
+        T1.crcy_unit, T1.qty_frnAmt,T3.apId,
+        CASE
+        WHEN DRCR = 'D' THEN
+        IFNULL(  T1.ntAmt, 0.0)
+          ELSE 0.0
+        END AS ntamtD,
+        CASE
+
+        WHEN DRCR = 'C' THEN
+        IFNULL(  T1.ntAmt, 0.0)
+        ELSE 0.0
+        END AS ntamtC,
+        CASE
+
+        WHEN DRCR = 'D' THEN
+        IFNULL(  T1.qty_frnAmt, 0.0)
+        ELSE 0.0
+
+        END AS qtyFrnamtD,
+        CASE
+        WHEN DRCR = 'C' THEN
+        IFNULL(  T1.qty_frnAmt, 0.0)
+        ELSE 0.0
+        END AS qtyFrnamtC, srl_desc from finance_aa_voucher_detail T1
+        left join finance_aa_voucher T3 on T1.company_id = T3.company_id and T1.voucher_no=T3.voucher_no
+        <where>
+            <if test="companyId != null  and companyId != ''">and   T1.company_id = #{companyId}</if>
+            <if test="startDate != '' and endDate != ''">and   T1.voucher_date between substr(#{startDate}, 1, 10 )and
+                substr(#{endDate}, 1, 10 )
+            </if>
+            <if test="acctCode != '' and acctCode != null ">and   T1.acct_code like concat('',#{acctCode},'%')</if>
+            <if test="calNameaStart != '' and calNameaStart != null" >and
+                T1. cal_namea = #{calNameaStart}
+            </if>
+        </where>
+        GROUP BY
+        T1.cal_namea
+        ORDER BY
+        T1.voucher_date
+    </select>
+    <select id="selectFinanceAaLedgerAcctDTOList" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
+        select
+
+        CASE
+        WHEN DRCR = 'D' THEN
+        SUM(b.ntAmt) ELSE 0
+        END AS drAmt,
+
+        CASE
+        WHEN DRCR = 'D' THEN
+        SUM(b.qty_frnAmt) ELSE 0
+        END AS drQty,
+        CASE
+        WHEN DRCR = 'C' THEN
+        SUM(b.qty_frnAmt)  ELSE 0
+        END AS crAmt,
+        CASE
+        WHEN DRCR = 'C' THEN
+        SUM(b.qty_frnAmt) ELSE 0
+        END AS crQty,
+        b.drcr,
+        b.acct_code,
+        b.cal_namea,
+        b.cal_nameb,
+        b.cal_namec,
+        b.cal_named,
+        b.voucher_date,
+        b.acct_name
+
+        from finance_aa_voucher a
+        left join finance_aa_voucher_detail b on b.voucher_no = a.voucher_no AND b.company_id = a.company_id
+
+        <where>
+            <if test="companyId != null  and companyId != ''">and b.company_id = #{companyId}</if>
+            <if test="acctCode != null  and acctCode != ''">and b.acct_code = #{acctCode}
+                <if test="calNamea != null  and calNamea != ''">and b.cal_namea = #{calNamea}</if></if>
+            <if test="startDate != '' and endDate != ''">and b.voucher_date between #{startDate} and #{endDate}</if>
+            and a.status <![CDATA[   !=  ]]> 'P'
+        </where>
+    </select>
+
     <insert id="insertFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         insert into finance_aa_voucher_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -330,7 +527,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qtyFrnamt != null">qty_frnAmt,</if>
             <if test="ntamt != null">ntAmt,</if>
             <if test="srlDesc != null">srl_desc,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="companyId != null">#{companyId},</if>
@@ -359,7 +556,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qtyFrnamt != null">#{qtyFrnamt},</if>
             <if test="ntamt != null">#{ntamt},</if>
             <if test="srlDesc != null">#{srlDesc},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
@@ -396,11 +593,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteFinanceAaVoucherDetailById" parameterType="String">
-        delete from finance_aa_voucher_detail where id = #{id}
+        delete
+        from finance_aa_voucher_detail
+        where id = #{id}
     </delete>
 
     <delete id="deleteFinanceAaVoucherDetailByIds" parameterType="String">
-        delete from finance_aa_voucher_detail where id in 
+        delete from finance_aa_voucher_detail where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SocialSecurityBasis;
 import com.jlkj.human.hs.domain.SocialSecurityBasisDetail;
@@ -58,7 +58,7 @@ public class SocialSecurityBasisDetailServiceImpl implements ISocialSecurityBasi
     public int insertSocialSecurityBasisDetail(SocialSecurityBasisDetail socialSecurityBasisDetail)
     {
 
-        socialSecurityBasisDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+        socialSecurityBasisDetail.setId(IdUtils.simpleUUID());
         socialSecurityBasisDetail.setCreatorId(SecurityUtils.getUserId().toString());
         socialSecurityBasisDetail.setCreator(SecurityUtils.getNickName());
         socialSecurityBasisDetail.setCreatorNo(SecurityUtils.getUsername());

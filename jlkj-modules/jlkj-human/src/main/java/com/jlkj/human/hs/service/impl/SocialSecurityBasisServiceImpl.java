@@ -4,7 +4,7 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
@@ -152,12 +152,6 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
             socialSecurityBasis.setEntCorDate(dateFormat.format(personnel.getEntryDate()));
             socialSecurityBasis.setNowAddr(personnel.getHomeAddress());
             socialSecurityBasis.setMobPhone(personnel.getMyMobilePhone());
-            socialSecurityBasis.setIsNew("1");
-            socialSecurityBasis.setId(UUID.randomUUID().toString().substring(0, 32));
-            socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
-            socialSecurityBasis.setCreator(SecurityUtils.getNickName());
-            socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
-            socialSecurityBasis.setCreateDate(new Date());
         }
         if (contractList.size() != 0) {
             Contract contract = contractList.get(0);
@@ -169,6 +163,12 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
             Leave leave = leaveList.get(0);
             socialSecurityBasis.setLeaveEffectDate(leave.getLeaveEffectDate());
         }
+        socialSecurityBasis.setIsNew("1");
+        socialSecurityBasis.setId(IdUtils.simpleUUID());
+        socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
+        socialSecurityBasis.setCreator(SecurityUtils.getNickName());
+        socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
+        socialSecurityBasis.setCreateDate(new Date());
         return socialSecurityBasis;
     }
 
@@ -194,11 +194,9 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                     socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
                     socialSecurityBasis.setCreateDate(new Date());
                     socialSecurityBasisMapper.updateSocialSecurityBasis(socialSecurityBasis);
-                    iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(socialSecurityBasis);
-                    return 1;
+                    return iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(socialSecurityBasis);
                 } else {
-                    insertSocialSecurityBasis(socialSecurityBasis);
-                    return 1;
+                    return insertSocialSecurityBasis(socialSecurityBasis);
                 }
             } else {
                 return -1;
@@ -218,7 +216,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         basis.setVersionNo(lastData.getVersionNo());
                         socialSecurityBasisMapper.updateSocialSecurityBasis(basis);
                         iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
-                        return 1;
+                        return iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
                     }else {
                         return -1;
                     }
@@ -234,8 +232,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         basis.setId(lastData.getId());
                         basis.setVersionNo(lastData.getVersionNo());
                         socialSecurityBasisMapper.updateSocialSecurityBasis(basis);
-                        iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
-                        return 1;
+                        return iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
                     }else {
                         return -1;
                     }
@@ -283,7 +280,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
         }
         ImportNote note = new ImportNote();
         Calendar calendar = Calendar.getInstance();
-        String randomId = UUID.randomUUID().toString().substring(0, 32);
+        String randomId = IdUtils.simpleUUID();
         note.setId(randomId);
         note.setCompId(compId);
         note.setPayType("2");
@@ -402,7 +399,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         throw new Exception(errorMsg);
                     }else{
                         successNum++;
-                        successMsg.append("<br/>").append(successNum).append("、员工名 ").append(basisDTO.getEmpName()).append(" 导入成功");
+                        successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
                 }else{
                     int result = updateSocialSecurityBasis(basis);
@@ -411,7 +408,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         throw new Exception(errorMsg);
                     }else{
                         successNum++;
-                        successMsg.append("<br/>").append(successNum).append("、员工名 ").append(basisDTO.getEmpName()).append(" 导入成功");
+                        successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
                 }
             } catch (Exception e) {

@@ -246,6 +246,7 @@ export default {
     this.getSalaryList()
     this.initData();
     this.getDisc();
+    this.addLine();
   },
   methods: {
     /** 查询列表 */
@@ -384,7 +385,9 @@ export default {
       listSocialSecurity(this.queryParams).then(response => {
         this.total = response.total;
         this.socialSecurityList = response.rows;//表格数据
-        this.addLine();
+        if(this.socialSecurityList.length===0){
+          this.addLine();
+        }
         this.table.loading = false;
       }, error => {
         this.table.loading = false;

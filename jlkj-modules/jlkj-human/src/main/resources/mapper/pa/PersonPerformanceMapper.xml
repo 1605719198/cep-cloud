@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.PersonPerformanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.pa.domain.PersonPerformance">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="meritType" column="merit_type" jdbcType="VARCHAR"/>
+            <result property="meritMonth" column="merit_month" jdbcType="VARCHAR"/>
+            <result property="empId" column="emp_id" jdbcType="VARCHAR"/>
+            <result property="deptType" column="dept_type" jdbcType="VARCHAR"/>
+            <result property="dept" column="dept" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="isTeam" column="is_team" jdbcType="VARCHAR"/>
+            <result property="teamRatio" column="team_ratio" jdbcType="INTEGER"/>
+            <result property="teamScore" column="team_score" jdbcType="DECIMAL"/>
+            <result property="isPoint" column="is_point" jdbcType="VARCHAR"/>
+            <result property="pointRatio" column="point_ratio" jdbcType="INTEGER"/>
+            <result property="pointScore" column="point_score" jdbcType="DECIMAL"/>
+            <result property="isFix" column="is_fix" jdbcType="VARCHAR"/>
+            <result property="fixRatio" column="fix_ratio" jdbcType="INTEGER"/>
+            <result property="fixScore" column="fix_score" jdbcType="DECIMAL"/>
+            <result property="fixId" column="fix_id" jdbcType="VARCHAR"/>
+            <result property="isKpi" column="is_kpi" jdbcType="VARCHAR"/>
+            <result property="kpiRatio" column="kpi_ratio" jdbcType="INTEGER"/>
+            <result property="kpiScore" column="kpi_score" jdbcType="DECIMAL"/>
+            <result property="selfAppr" column="self_appr" jdbcType="VARCHAR"/>
+            <result property="admAppr" column="adm_appr" jdbcType="VARCHAR"/>
+            <result property="pdAdjust" column="pd_adjust" jdbcType="DECIMAL"/>
+            <result property="pbAdjust" column="pb_adjust" jdbcType="DECIMAL"/>
+            <result property="otherAdjust" column="other_adjust" jdbcType="DECIMAL"/>
+            <result property="score" column="score" jdbcType="DECIMAL"/>
+            <result property="selfScore" column="self_score" jdbcType="DECIMAL"/>
+            <result property="admScore" column="adm_score" jdbcType="DECIMAL"/>
+            <result property="rank" column="rank" jdbcType="VARCHAR"/>
+            <result property="meritStatus" column="merit_status" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,comp_id,merit_type,
+        merit_month,emp_id,dept_type,
+        dept,post_id,is_team,
+        team_ratio,team_score,is_point,
+        point_ratio,point_score,is_fix,
+        fix_ratio,fix_score,fix_id,
+        is_kpi,kpi_ratio,kpi_score,
+        self_appr,adm_appr,pd_adjust,
+        pb_adjust,other_adjust,score,
+        self_score,adm_score,rank,
+        merit_status,creator,creator_id,
+        create_date
+    </sql>
+</mapper>

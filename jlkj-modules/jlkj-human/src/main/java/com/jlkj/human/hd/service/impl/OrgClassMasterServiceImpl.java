@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.OrgClassMaster;
 import com.jlkj.human.hd.domain.PersonClassDetail;
 import com.jlkj.human.hd.domain.PersonClassMaster;
@@ -69,7 +69,7 @@ public class OrgClassMasterServiceImpl implements IOrgClassMasterService
     @Override
     public int insertOrgClassMaster(OrgClassMaster orgClassMaster)
     {
-        orgClassMaster.setId(UUID.randomUUID().toString().substring(0, 32));
+        orgClassMaster.setId(IdUtils.simpleUUID());
         PersonClassDetail personClassDetail = new PersonClassDetail();
         BeanUtils.copyProperties(orgClassMaster,personClassDetail);
         personClassDetail.setShiftModeId(orgClassMaster.getShiftmodeId());

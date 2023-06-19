@@ -10,7 +10,6 @@ import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SocialSecurityBasis;
 import com.jlkj.human.hs.dto.SocialSecurityBasisDTO;
-import com.jlkj.human.hs.service.IImportErrorService;
 import com.jlkj.human.hs.service.ISocialSecurityBasisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +30,6 @@ import java.util.List;
 public class SocialSecurityBasisController extends BaseController {
     @Autowired
     private ISocialSecurityBasisService socialSecurityBasisService;
-    @Autowired
-    private IImportErrorService importErrorService;
 
     /**
      * 查询社保公积金标准核定列表
@@ -43,18 +40,6 @@ public class SocialSecurityBasisController extends BaseController {
         startPage();
         List<SocialSecurityBasis> list = socialSecurityBasisService.selectSocialSecurityBasisList(socialSecurityBasis);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出社保公积金标准核定列表
-     */
-    @RequiresPermissions("human:socialSecurityBasis:export")
-    @Log(title = "社保公积金标准核定", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, SocialSecurityBasis socialSecurityBasis) {
-        List<SocialSecurityBasis> list = socialSecurityBasisService.selectSocialSecurityBasisList(socialSecurityBasis);
-        ExcelUtil<SocialSecurityBasis> util = new ExcelUtil<SocialSecurityBasis>(SocialSecurityBasis.class);
-        util.exportExcel(response, list, "社保公积金标准核定数据");
     }
 
     /**
@@ -97,16 +82,6 @@ public class SocialSecurityBasisController extends BaseController {
     }
 
     /**
-     * 删除社保公积金标准核定
-     */
-    @RequiresPermissions("human:socialSecurityBasis:remove")
-    @Log(title = "社保公积金标准核定", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids) {
-        return toAjax(socialSecurityBasisService.deleteSocialSecurityBasisByIds(ids));
-    }
-
-    /**
      * 导入社保公积金核定数据
      *
      * @param file
@@ -131,11 +106,11 @@ public class SocialSecurityBasisController extends BaseController {
      * @param response
      * @throws IOException
      */
+    @RequiresPermissions("human:socialSecurityBasis:import")
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response) throws IOException {
         ExcelUtil<SocialSecurityBasisDTO> util = new ExcelUtil<SocialSecurityBasisDTO>(SocialSecurityBasisDTO.class);
         util.importTemplateExcel(response, "社保公积金核定数据");
     }
-
 
 }

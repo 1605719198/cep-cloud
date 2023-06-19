@@ -9,6 +9,15 @@ export function listPersonalSalary(query) {
   })
 }
 
+//修改止薪
+export function setEndPayDate(data) {
+  return request({
+    url: '/human/personalSalary/setEndPayDate',
+    method: 'put',
+    data: data
+  })
+}
+
 // 查询薪资核定详细
 export function getPersonalSalary(id) {
   return request({
@@ -58,6 +67,17 @@ export function getPayFormation(compId) {
     method: 'get',
   })
 }
+
+//查询公司薪酬项目选单
+export function getPayParamStandard(data) {
+  return request({
+    url: '/human/payParamStandard/getListPayParamStandard',
+    method: 'get',
+    params: data
+  })
+}
+
+
 
 
 

@@ -1,11 +1,15 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hs.domain.PersonalSalary;
 import com.jlkj.human.hs.domain.PersonalSalaryDetail;
 import com.jlkj.human.hs.mapper.PersonalSalaryDetailMapper;
 import com.jlkj.human.hs.service.IPersonalSalaryDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,7 +57,37 @@ public class PersonalSalaryDetailServiceImpl implements IPersonalSalaryDetailSer
     @Override
     public int insertPersonalSalaryDetail(PersonalSalaryDetail personalSalaryDetail)
     {
+        personalSalaryDetail.setId(IdUtils.simpleUUID());
+        personalSalaryDetail.setCreatorId(SecurityUtils.getUserId().toString());
+        personalSalaryDetail.setCreator(SecurityUtils.getNickName());
+        personalSalaryDetail.setCreatorNo(SecurityUtils.getUsername());
+        personalSalaryDetail.setCreateDate(new Date());
         return personalSalaryDetailMapper.insertPersonalSalaryDetail(personalSalaryDetail);
+    }
+
+    /**
+     * 通过主档新增个人薪资核定明细
+     *
+     * @param personalSalary 个人薪资核定主档
+     * @return 结果
+     */
+    @Override
+    public int insertPersonalSalaryDetailByMain(PersonalSalary personalSalary){
+        personalSalaryDetailMapper.deletePersonalSalaryDetailByMain(personalSalary.getId());
+        int number = 0;
+        List<PersonalSalaryDetail> detailList = personalSalary.getDetailList();
+        for(PersonalSalaryDetail detail:detailList){
+            detail.setIstax(personalSalary.getIstax());
+            detail.setSalaryId(personalSalary.getId());
+            detail.setIsCheck(personalSalary.getIsCheck());
+            detail.setCompId(personalSalary.getCompId());
+            detail.setEmpId(personalSalary.getEmpId());
+            detail.setEmpNo(personalSalary.getEmpNo());
+            detail.setVersionNo(personalSalary.getVersionNo().toString());
+            insertPersonalSalaryDetail(detail);
+            number++;
+        }
+        return number;
     }
 
     /**

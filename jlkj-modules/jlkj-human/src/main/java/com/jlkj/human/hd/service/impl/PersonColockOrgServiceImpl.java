@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -97,16 +96,19 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
         oldPersonColockOrg.setDeptId(personColockOrg.getDeptId());
         List<PersonColockOrg> oldList = personColockOrgMapper.selectPersonColockOrgList(personColockOrg);
         boolean bool = oldList.size()==0||(oldList.size()==1 && oldList.get(0).getId().equals(personColockOrg.getId()));
+        //该生效日期下已有数据
         if(bool){
             PersonColockOrg lastEffectData = personColockOrgMapper.queryLastEffectData(personColockOrg);
+            //生效日期和最大一笔生效日期比
             if(lastEffectData == null || personColockOrg.getEffectDate().getTime() > lastEffectData.getEffectDate().getTime()){
                 PersonColockOrg noEffectData = personColockOrgMapper.queryNoEffectData(personColockOrg);
+                //查是否有未生效数据
                 if(noEffectData==null){
-                    personColockOrg.setId(UUID.randomUUID().toString().substring(0, 32));
+                    personColockOrg.setId(IdUtils.simpleUUID());
                     PersonColockDetail personColockDetail =new PersonColockDetail();
                     ArrayList<String> arrayList  = personColockOrg.getColockList();
                     for (String strTemp : arrayList){
-                        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+                        personColockDetail.setId(IdUtils.simpleUUID());
                         personColockDetail.setPersonColockId(personColockOrg.getId());
                         personColockDetail.setCreator(personColockOrg.getCreator());
                         personColockDetail.setCreatorId(personColockOrg.getCreatorId());
@@ -153,9 +155,7 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
                 PersonColock personColockparam = new PersonColock();
                 personColockparam.setOrgColockId(personColockOrg.getId());
                 List<PersonColock> personColockList = personColockService.selectPersonColockList(personColockparam);
-                Iterator<PersonColock> iterator = personColockList.iterator();
-                while (iterator.hasNext()){
-                    PersonColock personColock = iterator.next();
+                for (PersonColock personColock : personColockList) {
                     personColock.setCreator(personColockOrg.getCreator());
                     personColock.setCreatorId(personColockOrg.getCreatorId());
                     personColock.setCreateDate(personColockOrg.getCreateDate());
@@ -174,7 +174,6 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
                 SimpleDateFormat ymddate = new SimpleDateFormat("yyyy-MM-dd");
                 throw new Exception("该部门新的生效日期必须大于等于"+ymddate.format(lastEffectData.getEffectDate()));
             }
-
         }else {
             throw new Exception("该部门在所选生效日期下已有数据，请重新选择生效日期");
         }

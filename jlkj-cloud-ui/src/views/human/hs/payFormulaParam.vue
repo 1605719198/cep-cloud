@@ -35,7 +35,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleSave"
-          v-hasPermi="['human:payFormulaParam:add']"
+          v-hasPermi="['human:payFormulaParam:save']"
         >保存</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -45,6 +45,7 @@
           icon="el-icon-edit"
           size="mini"
           @click="handleCopy"
+          v-hasPermi="['human:payFormulaParam:copy']"
         >复制</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>

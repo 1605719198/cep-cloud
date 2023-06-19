@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.PersonColock;
 import com.jlkj.human.hd.domain.PersonColockDetail;
 import com.jlkj.human.hd.domain.PersonColockOrg;
@@ -70,7 +70,7 @@ public class PersonColockDetailServiceImpl implements IPersonColockDetailService
     @Override
     public int insertPersonColockDetail(PersonColockDetail personColockDetail)
     {
-        personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+        personColockDetail.setId(IdUtils.simpleUUID());
         return personColockDetailMapper.insertPersonColockDetail(personColockDetail);
     }
 
@@ -130,19 +130,21 @@ public class PersonColockDetailServiceImpl implements IPersonColockDetailService
      */
     @Override
     public int updatePersonColockDetail(PersonColock personColock){
+        int result = 0;
         PersonColockDetail personColockDetail =new PersonColockDetail();
         personColockDetailMapper.deletePersonColockDetailByPersonColockId(personColock.getId());
         ArrayList<String> arrayList  = personColock.getColockList();
         for (String strTemp : arrayList){
-            personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+            personColockDetail.setId(IdUtils.simpleUUID());
             personColockDetail.setPersonColockId(personColock.getId());
             personColockDetail.setCreator(personColock.getCreator());
             personColockDetail.setCreatorId(personColock.getCreatorId());
             personColockDetail.setCreateDate(personColock.getCreateDate());
             personColockDetail.setMacId(strTemp);
+            result++;
             personColockDetailMapper.insertPersonColockDetail(personColockDetail);
         }
-        return 1;
+        return result;
     }
 
     /**
@@ -153,18 +155,20 @@ public class PersonColockDetailServiceImpl implements IPersonColockDetailService
      */
     @Override
     public int updatePersonColockDetail(PersonColockOrg personColockOrg){
+        int result = 0;
         PersonColockDetail personColockDetail =new PersonColockDetail();
         personColockDetailMapper.deletePersonColockDetailByPersonColockId(personColockOrg.getId());
         ArrayList<String> arrayList  = personColockOrg.getColockList();
         for (String strTemp : arrayList){
-            personColockDetail.setId(UUID.randomUUID().toString().substring(0, 32));
+            personColockDetail.setId(IdUtils.simpleUUID());
             personColockDetail.setPersonColockId(personColockOrg.getId());
             personColockDetail.setCreator(personColockOrg.getCreator());
             personColockDetail.setCreatorId(personColockOrg.getCreatorId());
             personColockDetail.setCreateDate(personColockOrg.getCreateDate());
             personColockDetail.setMacId(strTemp);
             personColockDetailMapper.insertPersonColockDetail(personColockDetail);
+            result++;
         }
-        return 1;
+        return result;
     }
 }

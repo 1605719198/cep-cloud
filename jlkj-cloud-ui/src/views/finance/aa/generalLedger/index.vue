@@ -90,6 +90,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
+
     </el-form>
       <el-pagination
         v-if="detailIf"

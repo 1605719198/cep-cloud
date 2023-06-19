@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.OvertimeWorkSetting;
 import com.jlkj.human.hd.mapper.OvertimeWorkSettingMapper;
 import com.jlkj.human.hd.service.IOvertimeWorkSettingService;
@@ -54,7 +54,7 @@ public class OvertimeWorkSettingServiceImpl implements IOvertimeWorkSettingServi
     @Override
     public int insertOvertimeWorkSetting(OvertimeWorkSetting overtimeWorkSetting)
     {
-        overtimeWorkSetting.setId(UUID.randomUUID().toString().substring(0, 32));
+        overtimeWorkSetting.setId(IdUtils.simpleUUID());
         return overtimeWorkSettingMapper.insertOvertimeWorkSetting(overtimeWorkSetting);
     }
 

@@ -2,7 +2,8 @@ package com.jlkj.human.hs.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.PersonalIncomeTax;
 import com.jlkj.human.hs.mapper.PersonalIncomeTaxMapper;
@@ -64,11 +65,21 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
+        //初始值给1
+        Long versionNo = 1L;
         //查询当前公司别 最大版次号 及 生效日期
         Map<String, Object> versionNoMap = personalIncomeTaxMapper.selectMaxVersionNo(type);
-        Long versionNo = 1L;
-        versionNo = Long.parseLong(versionNoMap.get("versionNo").toString()) + 1;
-        if(versionNoMap.get("versionNo") != null) {
+        //如果没有最大版本时，默认1
+        if(!StringUtils.isEmpty(versionNoMap)) {
+            //生效日期
+            Date inEffectDate1 = DateUtils.dateTime("yyyy_MM_dd",versionNoMap.get("effectDate").toString());
+            versionNo = Long.parseLong(versionNoMap.get("versionNo").toString());
+            //生效日期小于操作日期
+            if(nowdate.compareTo(inEffectDate1)<0 ){
+                versionNo = versionNo + 1;
+            }
+        }
+        if(!StringUtils.isEmpty(versionNoMap)) {
             Date effectDate= (Date) versionNoMap.get("effectDate");
             if(nowdate.compareTo(effectDate)<0){
                 for (PersonalIncomeTax personalIncomeTax : personalIncomeTaxList) {
@@ -78,7 +89,7 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                 }
             }
             for(PersonalIncomeTax personalIncomeTax : personalIncomeTaxList) {
-                personalIncomeTax.setId(UUID.randomUUID().toString().substring(0, 32));
+                personalIncomeTax.setId(IdUtils.simpleUUID());
                 personalIncomeTax.setCreatorId(SecurityUtils.getUserId().toString());
                 personalIncomeTax.setCreator(SecurityUtils.getNickName());
                 personalIncomeTax.setCreateDate(new Date());
@@ -95,12 +106,17 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                     personalIncomeTax.setVersionNo(versionNo);
                     personalIncomeTaxMapper.updatePersonalIncomeTax(personalIncomeTax);
                 } else {
-                    personalIncomeTax.setId(UUID.randomUUID().toString().substring(0, 32));
+                    personalIncomeTax.setId(IdUtils.simpleUUID());
                     personalIncomeTax.setVersionNo(versionNo);
                     personalIncomeTaxMapper.insertPersonalIncomeTax(personalIncomeTax);
                 }
             }
         }
+        //统一更新版本生效日期update（versionNo，type） 计划生效日期inEffectDate 更新
+
+        
+
+
         return 1;
     }
 

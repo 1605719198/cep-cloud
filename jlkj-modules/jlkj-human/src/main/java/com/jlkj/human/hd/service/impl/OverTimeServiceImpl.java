@@ -2,7 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.human.hd.domain.OverTime;
-import com.jlkj.human.hd.service.OverTimeService;
+import com.jlkj.human.hd.service.IOverTimeService;
 import com.jlkj.human.hd.mapper.OverTimeMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class OverTimeServiceImpl extends ServiceImpl<OverTimeMapper, OverTime>
-    implements OverTimeService{
+    implements IOverTimeService {
 
 }
 

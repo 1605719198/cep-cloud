@@ -17,6 +17,18 @@ public class ConstantsUtil
      */
     public static final String CALRULE1="01";
     /**
+     * NAMECAL
+     */
+    public static final String NAMECAL="#核算项目一期初#";
+    /**
+     * BQHJ
+     */
+    public static final String BQHJ="本期合计";
+    /**
+     * BNLJ
+     */
+    public static final String BNLJ="本年累计";
+    /**
      * calRule
      */
     public static final String CALRULE2="02";

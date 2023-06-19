@@ -655,6 +655,11 @@ export default {
         ],
         fax: [
           { pattern: /^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/, message: '传真格式不正确', trigger: 'blur' }
+        ],
+        orderNum:[
+          { required: true, validator: (rule, value, callback)=>{
+            this.numberLength(rule,value,callback,false,10,1)
+            }, trigger: "blur" }
         ]
       }
     }
@@ -678,10 +683,28 @@ export default {
     this.getHumandisc()
     this.getTreeselect()
     this.treeandtable = true
-
-    // this.currentNodeId = this.$store.state.user.deptId
   },
   methods: {
+    // 数字长度校验
+    numberLength(rule,value,callback,required,maxLength,minLength) {
+      const re = /^[0-9]*[1-9][0-9]*$/;
+      const rsCheck = re.test(value);
+      if(required){
+
+      }
+      if (!rsCheck) {
+        // callback(new Error('请输入正整数'));
+        callback()
+      }else{
+        let str = value.toString();
+        let length = str.length;
+        if((maxLength&&length>maxLength)||(minLength&&length<minLength)){
+          callback(new Error('请输入长度为'+minLength+'到'+maxLength+'之间的数'))
+        }else{
+          callback();
+        }
+      }
+    },
     //初始化数据
     initData() {
       this.user.empNo = this.$store.state.user.name

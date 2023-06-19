@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ArrangeClass;
 import com.jlkj.human.hd.mapper.ArrangeClassMapper;
 import com.jlkj.human.hd.service.IArrangeClassService;
@@ -80,7 +80,7 @@ public class ArrangeClassServiceImpl implements IArrangeClassService
     {
         List<ArrangeClass> list = arrangeClassMapper.quertArrangeClass(arrangeClass);
         if(list.size()==0){
-            arrangeClass.setId(UUID.randomUUID().toString().substring(0, 32));
+            arrangeClass.setId(IdUtils.simpleUUID());
             return arrangeClassMapper.insertArrangeClass(arrangeClass);
         }else{
             arrangeClass.setId(list.get(0).getId());

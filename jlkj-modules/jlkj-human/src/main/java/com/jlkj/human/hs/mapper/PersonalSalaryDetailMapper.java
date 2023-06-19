@@ -47,6 +47,14 @@ public interface PersonalSalaryDetailMapper
     /**
      * 删除个人薪资核定明细
      * 
+     * @param id 主档id
+     * @return 结果
+     */
+    public int deletePersonalSalaryDetailByMain(String id);
+
+    /**
+     * 删除个人薪资核定明细
+     *
      * @param id 个人薪资核定明细主键
      * @return 结果
      */

@@ -1,6 +1,5 @@
 package com.jlkj.finance.ao.service.impl;
 
-import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -98,9 +97,9 @@ public class FinanceAoItemCompServiceImpl implements IFinanceAoItemCompService
     @Override
     public int deleteFinanceAoItemCompByIds(String[] ids)
     {
-        List<Map<String, String>> itemNos = financeAoItemCompMapper.selectDetailsByIds(ids);
-        if(itemNos.size()>0){
-            throw new ServiceException("删除失败，存在细项资料, 请先删除细项资料！");
+        List<String> detailIds = financeAoItemCompMapper.selectDetailsByIds(ids);
+        if(detailIds.size()>0){
+            financeAoItemCompDetailMapper.deleteFinanceAoItemCompDetailByIds(detailIds.stream().toArray(String[]::new));
         }
         return financeAoItemCompMapper.deleteFinanceAoItemCompByIds(ids);
     }
@@ -162,5 +161,15 @@ public class FinanceAoItemCompServiceImpl implements IFinanceAoItemCompService
         }
         // 新增主档
         return financeAoItemCompMapper.insertBatch(financeAoItemComps);
+    }
+
+
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectItemNoList(String companyId){
+        return financeAoItemCompMapper.selectItemNoList(companyId);
     }
 }

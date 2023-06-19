@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 部门资料维护Mapper接口
  * 
- * @author jlkj
+ * @author 266861
  * @date 2023-03-08
  */
 public interface SysDeptMapper extends BaseMapper<SysDept>
