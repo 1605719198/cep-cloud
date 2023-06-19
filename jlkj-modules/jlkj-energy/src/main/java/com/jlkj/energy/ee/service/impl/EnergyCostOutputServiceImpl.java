@@ -7,7 +7,7 @@ import com.jlkj.energy.ee.service.EnergyCostOutputService;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【t_energy_cost_output(能源产出资料档)】的数据库操作Service实现
 * @createDate 2023-02-13 19:31:23
 */

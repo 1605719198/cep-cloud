@@ -1,4 +1,4 @@
-package com.jlkj.human.pa.domain;
+package com.jlkj.human.pa.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -13,12 +13,11 @@ import java.util.Date;
 
 /**
  * 个人绩效主档
- * @author HuangBing
  * @TableName human_pa_person_performance
  */
 @TableName(value ="human_pa_person_performance")
 @Data
-public class PersonPerformance implements Serializable {
+public class PersonPerformanceDTO implements Serializable {
     /**
      * 主键
      */
@@ -173,7 +172,7 @@ public class PersonPerformance implements Serializable {
     /**
      * 等第
      */
-    private String grade;
+    private String rank;
 
     /**
      * 考评状态（0-计划中
@@ -201,6 +200,16 @@ public class PersonPerformance implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
+
+    /**
+     * 开始时间
+     */
+    private String startTime;
+
+    /**
+     * 结束时间
+     */
+    private String endTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
