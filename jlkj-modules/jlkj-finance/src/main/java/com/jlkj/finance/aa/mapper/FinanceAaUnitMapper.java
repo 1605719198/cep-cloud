@@ -29,6 +29,14 @@ public interface FinanceAaUnitMapper
     public List<FinanceAaUnit> selectFinanceAaUnitList(FinanceAaUnit financeAaUnit);
 
     /**
+     * 查询计量单位维护列表
+     *
+     * @param financeAaUnit 计量单位维护 查重
+     * @return 计量单位维护集合
+     */
+    public List<FinanceAaUnit> selectFinanceAaUnitByUnitNo(FinanceAaUnit financeAaUnit);
+
+    /**
      * 新增计量单位维护
      * 
      * @param financeAaUnit 计量单位维护

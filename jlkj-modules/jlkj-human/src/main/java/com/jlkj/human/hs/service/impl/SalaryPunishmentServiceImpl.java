@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hs_salary_punishment(专业奖惩金额追补扣)】的数据库操作Service实现
 * @createDate 2023-06-02 22:53:13
 */

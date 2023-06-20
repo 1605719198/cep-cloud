@@ -7,7 +7,7 @@ import com.jlkj.human.hs.mapper.SalaryStatusMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hs_salary_status(薪资计算状态记录表)】的数据库操作Service实现
 * @createDate 2023-05-31 13:49:10
 */

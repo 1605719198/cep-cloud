@@ -1,70 +1,37 @@
 import request from '@/utils/request'
 
-// 查询KPI指标主档列表
-export function listDeptKpi(query) {
+// 查询人员绩效主档列表
+export function listPersonPerformance(query) {
   return request({
-    url: '/human/deptKpi/list',
+    url: '/human/personPerformance/list',
     method: 'get',
     params: query
   })
 }
 
 // 查询KPI指标明细档列表
-export function listDeptKpiDetail(query) {
+export function listPersonPerformanceDetail(query) {
   return request({
-    url: '/human/deptKpi/listDeptKpiDetail',
+    url: '/human/personPerformance/listPersonPerformanceDetail',
     method: 'get',
     params: query
   })
 }
 
-// 新增KPI指标主档
-export function addDeptKpi(data) {
+// 新增人员绩效主档
+export function addPersonPerformance(data) {
   return request({
-    url: '/human/deptKpi',
+    url: '/human/personPerformance',
     method: 'post',
     data: data
   })
 }
 
-// 修改KPI指标主档
-export function updateDeptKpi(data) {
+// 删除人员绩效主档和明细档
+export function delPersonPerformance(data) {
+  debugger
   return request({
-    url: '/human/deptKpi',
-    method: 'put',
-    data: data
-  })
-}
-
-// 删除KPI指标主档和明细档
-export function delDeptKpi(id) {
-  return request({
-    url: '/human/deptKpi/' + id,
-    method: 'delete'
-  })
-}
-
-// 删除KPI指标明细档
-export function delDeptKpiDetail(detailId) {
-  return request({
-    url: '/human/deptKpi/removeDetail/' + detailId,
-    method: 'delete'
-  })
-}
-
-// 新增KPI指标明细档
-export function addDeptKpiDetail(data) {
-  return request({
-    url: '/human/deptKpi/addDeptKpiDetail',
-    method: 'post',
-    data: data
-  })
-}
-
-// 更新KPI指标主档状态
-export function updateDeptKpiStatus(data) {
-  return request({
-    url: '/human/deptKpi/updateDeptKpiStatus',
+    url: '/human/personPerformance/delPersonPerformance',
     method: 'post',
     data: data
   })

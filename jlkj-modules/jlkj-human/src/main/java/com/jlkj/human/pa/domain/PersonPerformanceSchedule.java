@@ -1,12 +1,12 @@
 package com.jlkj.human.pa.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 个人绩效进度表主档
@@ -42,9 +42,14 @@ public class PersonPerformanceSchedule implements Serializable {
     private String num;
 
     /**
-     * 制定者
+     * 制定者工号
      */
     private String apprEmp;
+
+    /**
+     * 制定者名称
+     */
+    private String apprName;
 
     /**
      * 制定时间

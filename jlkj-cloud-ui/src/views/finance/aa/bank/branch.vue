@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="总行" prop="bankNo">
-         {{this.bankchnName}}
+         {{bankchnName}}
       </el-form-item>
       <el-form-item label="分行" prop="branchNo">
         <el-select v-model="queryParams.branchNo" placeholder="请选择">
@@ -174,9 +174,8 @@ export default {
         pageSize: 10,
         bankNo: null,
         branchNo: null,
-        bankchName:null
+        bankchnName:null
       },
-      bankchnName:"",
       // 表单参数
       form: {},
       // 表单校验

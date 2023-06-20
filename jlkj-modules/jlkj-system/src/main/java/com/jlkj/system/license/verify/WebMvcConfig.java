@@ -18,6 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LicenseCheckInterceptor()).addPathPatterns("/notice/list");
+        registry.addInterceptor(new LicenseCheckInterceptor())
+                .addPathPatterns("/notice/list"); //拦截路径
+//                .excludePathPatterns("/**");    //放行路径
     }
 }

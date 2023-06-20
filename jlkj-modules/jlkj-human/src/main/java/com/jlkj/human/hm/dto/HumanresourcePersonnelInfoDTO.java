@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.human.hm.domain.Contract;
+import com.jlkj.human.hm.domain.Leave;
+import com.jlkj.human.hm.domain.Personnel;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 人事管理-人员登录数据
@@ -662,6 +666,21 @@ public class HumanresourcePersonnelInfoDTO implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthTwoDate;
+
+    /**
+     * 合同List
+     */
+    private List<Personnel> personnelList;
+
+    /**
+     * 合同List
+     */
+    private List<Contract> contractList;
+
+    /**
+     * 离职List
+     */
+    private List<Leave> leaveList;
 
     /**
      * 签章图片

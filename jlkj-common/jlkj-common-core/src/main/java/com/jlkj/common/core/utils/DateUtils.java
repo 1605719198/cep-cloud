@@ -151,6 +151,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return null;
     }
     /**
+     * 获得当前月--结束日期
+     * @param date
+     * @return
+     */
+    public static Date getMaxMonthDate1(String date){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM");
+        try {
+            calendar.setTime(dayFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return calendar.getTime();
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
      * 获取服务器启动时间
      */
     public static Date getServerStartDate()
