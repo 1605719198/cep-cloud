@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 部门资料维护Service接口
  * 
- * @author jlkj
+ * @author 266861
  * @date 2023-03-08
  */
 public interface ISysDeptService

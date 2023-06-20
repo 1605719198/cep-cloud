@@ -6,7 +6,7 @@ import com.jlkj.human.hd.domain.NightDuty;
 import java.util.List;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hd_night_duty(夜班查询表)】的数据库操作Service
 * @createDate 2023-03-30 09:39:05
 */

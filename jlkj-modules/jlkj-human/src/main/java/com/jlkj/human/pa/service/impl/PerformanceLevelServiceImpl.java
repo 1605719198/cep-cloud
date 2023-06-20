@@ -1,6 +1,6 @@
 package com.jlkj.human.pa.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.pa.domain.PerformanceLevel;
 import com.jlkj.human.pa.mapper.PerformanceLevelMapper;
@@ -61,7 +61,7 @@ public class PerformanceLevelServiceImpl implements IPerformanceLevelService
                 performanceLevelMapper.updatePerformanceLevel(performanceLevelnew);
 
             }else{
-                performanceLevelnew.setUuid(UUID.randomUUID().toString().substring(0, 32));
+                performanceLevelnew.setUuid(IdUtils.simpleUUID());
                 performanceLevelnew.setCompId(performanceLevel.getCompId());
                 performanceLevelnew.setPerfTypeId(performanceLevel.getPerfTypeId());
                 performanceLevelMapper.insertPerformanceLevel(performanceLevelnew);

@@ -2,7 +2,7 @@ package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.TripAccountRule;
 import com.jlkj.human.hd.mapper.TripAccountRuleMapper;
 import com.jlkj.human.hd.service.ITripAccountRuleService;
@@ -57,7 +57,7 @@ public class TripAccountRuleServiceImpl implements ITripAccountRuleService
     public int insertTripAccountRule(TripAccountRule tripAccountRule)
     {
         if(StringUtils.isNull(tripAccountRuleMapper.querySameData(tripAccountRule))){
-            tripAccountRule.setId(UUID.randomUUID().toString().substring(0,32));
+            tripAccountRule.setId(IdUtils.simpleUUID());
             return tripAccountRuleMapper.insertTripAccountRule(tripAccountRule);
         }else{
             throw new ServiceException("已有相同类型数据");

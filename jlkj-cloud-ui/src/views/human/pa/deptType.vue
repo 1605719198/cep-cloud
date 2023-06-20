@@ -91,9 +91,9 @@
                     <el-select v-model="form.deptType" :disabled="changeDeptType" placeholder="人员类别">
                       <el-option
                         v-for="dict in baseInfoData.HP020"
-                        :key="dict.dicNo"
+                        :key="dict.uuid"
                         :label="dict.dicNo + '-' + dict.dicName"
-                        :value="dict.dicNo + '-' + dict.dicName"
+                        :value="dict.uuid"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -149,12 +149,12 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="上报级数" prop="upLevel">
-                    <el-select v-model="form.upLevel" style="width: 20%">
+                    <el-select v-model="form.upLevel">
                       <el-option
-                        v-for="dict in baseInfoData.HP020"
-                        :key="dict.dicNo"
-                        :label="dict.dicNo + '-' + dict.dicName"
-                        :value="dict.dicNo"
+                        v-for="dict in payTableData.Digit"
+                        :key="dict.dicName"
+                        :label="dict.dicName"
+                        :value="dict.dicName"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -248,6 +248,7 @@ import {
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {isIntegerNotMust} from "@/utils/jlkj";
+import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
 export default {
   name: "DeptType",
@@ -286,8 +287,6 @@ export default {
       },
       // 考评项目表单参数
       evaluationForm: {},
-      // 确认按钮参数
-      confirmForm: {},
       // 表单校验
       rules: {
         teamRatio:[
@@ -313,7 +312,15 @@ export default {
         baseInfoList: ['HP020']
       },
       isFix: true,
-      changeDeptType: false
+      changeDeptType: false,
+      //薪资选单类型查询
+      salaryOptionType: {
+        id: '19',
+        optionsType: [
+          'Digit'],
+        compId:null,
+      },
+      payTableData: [],
     };
   },
   created() {
@@ -324,6 +331,9 @@ export default {
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });
+    getSalaryOptions(this.salaryOptionType).then(response =>{
+      this.payTableData = response.data
+    })
   },
   methods: {
     //初始化数据

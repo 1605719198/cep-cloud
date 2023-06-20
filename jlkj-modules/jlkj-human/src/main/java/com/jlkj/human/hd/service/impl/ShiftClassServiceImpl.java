@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ShiftClass;
 import com.jlkj.human.hd.mapper.ShiftClassMapper;
 import com.jlkj.human.hd.service.IShiftClassService;
@@ -54,7 +54,7 @@ public class ShiftClassServiceImpl implements IShiftClassService
     @Override
     public int insertShiftClass(ShiftClass shiftClass)
     {
-        shiftClass.setId(UUID.randomUUID().toString().substring(0,32));
+        shiftClass.setId(IdUtils.simpleUUID());
         return shiftClassMapper.insertShiftClass(shiftClass);
     }
 

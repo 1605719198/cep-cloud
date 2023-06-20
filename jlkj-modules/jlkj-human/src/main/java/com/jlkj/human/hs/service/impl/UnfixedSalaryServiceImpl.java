@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hs.domain.UnfixedSalary;
 import com.jlkj.human.hs.dto.UnfixedSalaryDTO;
 import com.jlkj.human.hs.mapper.UnfixedSalaryMapper;
@@ -65,13 +65,15 @@ public class UnfixedSalaryServiceImpl implements IUnfixedSalaryService
      */
     @Override
     public int saveUnfixedSalary(UnfixedSalaryDTO unfixedSalaryDTO){
+        int result = 0;
         unfixedSalaryMapper.deletePreDataByParam(unfixedSalaryDTO);
         List<UnfixedSalary> list = unfixedSalaryDTO.getList();
         for(UnfixedSalary item :list){
-            item.setId(UUID.randomUUID().toString().substring(0,32));
+            item.setId(IdUtils.simpleUUID());
             unfixedSalaryMapper.insertUnfixedSalary(item);
+            result++;
         }
-        return 1;
+        return result;
     }
 
     /**

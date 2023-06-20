@@ -56,11 +56,16 @@ public class FinanceAaRateServiceImpl implements IFinanceAaRateService
     @Override
     public int insertFinanceAaRate(FinanceAaRate financeAaRate)
     {
-        financeAaRate.setId(IdUtils.fastSimpleUUID());
-        financeAaRate.setCreateTime(DateUtils.getNowDate());
-        financeAaRate.setCreateBy(SecurityUtils.getUsername());
-        financeAaRate.setCreateName(SecurityUtils.getNickName());
-        return financeAaRateMapper.insertFinanceAaRate(financeAaRate);
+        List<FinanceAaRate> financeAaRates = financeAaRateMapper.selectFinanceAoParaByRateCate(financeAaRate);
+        if (financeAaRates.isEmpty()){
+            financeAaRate.setId(IdUtils.fastSimpleUUID());
+            financeAaRate.setCreateTime(DateUtils.getNowDate());
+            financeAaRate.setCreateBy(SecurityUtils.getUsername());
+            financeAaRate.setCreateName(SecurityUtils.getNickName());
+            return financeAaRateMapper.insertFinanceAaRate(financeAaRate);
+        } else {
+            return 0;
+        }
     }
 
     /**

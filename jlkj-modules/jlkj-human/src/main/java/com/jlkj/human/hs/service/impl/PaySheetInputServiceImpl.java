@@ -1,6 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.PaySheetInput;
 import com.jlkj.human.hs.mapper.PaySheetInputMapper;
@@ -62,7 +62,7 @@ public class PaySheetInputServiceImpl implements IPaySheetInputService
                 paySheetInput.setCreateDate(new Date());
                 paySheetInputMapper.updatePaySheetInput(paySheetInput);
             } else {
-                paySheetInput.setUuid(UUID.randomUUID().toString().substring(0, 32));
+                paySheetInput.setUuid(IdUtils.simpleUUID());
                 paySheetInputMapper.insertPaySheetInput(paySheetInput);
             }
         }

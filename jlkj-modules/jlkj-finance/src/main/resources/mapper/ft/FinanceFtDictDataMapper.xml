@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtDictDataMapper">
+    
+    <resultMap type="FinanceFtDictData" id="FinanceFtDictDataResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="dictId"    column="dict_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="dictType"    column="dict_type"    />
+        <result property="dictName"    column="dict_name"    />
+        <result property="dictCode"    column="dict_code"    />
+        <result property="dictLabel"    column="dict_label"    />
+        <result property="bakOne"    column="bak_one"    />
+        <result property="bakTwo"    column="bak_two"    />
+        <result property="status"    column="status"    />
+        <result property="seq"    column="seq"    />
+        <result property="dictRemark"    column="dict_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtDictDataVo">
+        select uuid, dict_id, company_id, dict_type, dict_name, dict_code, dict_label, bak_one, bak_two, status, seq, dict_remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_ft_dict_data
+    </sql>
+
+    <select id="selectFinanceFtDictDataList" parameterType="FinanceFtDictData" resultMap="FinanceFtDictDataResult">
+        <include refid="selectFinanceFtDictDataVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="dictName != null  and dictName != ''"> and dict_name like concat('%', #{dictName}, '%')</if>
+            <if test="dictLabel != null  and dictLabel != ''"> and dict_label = #{dictLabel}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtDictDataByUuid" parameterType="String" resultMap="FinanceFtDictDataResult">
+        <include refid="selectFinanceFtDictDataVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtDictData" parameterType="FinanceFtDictData">
+        insert into finance_ft_dict_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="dictId != null">dict_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="dictType != null">dict_type,</if>
+            <if test="dictName != null">dict_name,</if>
+            <if test="dictCode != null">dict_code,</if>
+            <if test="dictLabel != null">dict_label,</if>
+            <if test="bakOne != null">bak_one,</if>
+            <if test="bakTwo != null">bak_two,</if>
+            <if test="status != null">status,</if>
+            <if test="seq != null">seq,</if>
+            <if test="dictRemark != null">dict_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="dictId != null">#{dictId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="dictType != null">#{dictType},</if>
+            <if test="dictName != null">#{dictName},</if>
+            <if test="dictCode != null">#{dictCode},</if>
+            <if test="dictLabel != null">#{dictLabel},</if>
+            <if test="bakOne != null">#{bakOne},</if>
+            <if test="bakTwo != null">#{bakTwo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="dictRemark != null">#{dictRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtDictData" parameterType="FinanceFtDictData">
+        update finance_ft_dict_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dictId != null">dict_id = #{dictId},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="dictType != null">dict_type = #{dictType},</if>
+            <if test="dictName != null">dict_name = #{dictName},</if>
+            <if test="dictCode != null">dict_code = #{dictCode},</if>
+            <if test="dictLabel != null">dict_label = #{dictLabel},</if>
+            <if test="bakOne != null">bak_one = #{bakOne},</if>
+            <if test="bakTwo != null">bak_two = #{bakTwo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="dictRemark != null">dict_remark = #{dictRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtDictDataByUuid" parameterType="String">
+        delete from finance_ft_dict_data where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtDictDataByUuids" parameterType="String">
+        delete from finance_ft_dict_data where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

@@ -97,7 +97,8 @@
 
 
     <select id="getTodayConsumption" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT SUM(CASE WHEN type = '焦炭' THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
+        SELECT SUM(CASE WHEN type = '焦炭'
+THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
                SUM(CASE WHEN type = 'W000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS water,
                SUM(CASE WHEN type = 'P000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS electricity
         FROM (

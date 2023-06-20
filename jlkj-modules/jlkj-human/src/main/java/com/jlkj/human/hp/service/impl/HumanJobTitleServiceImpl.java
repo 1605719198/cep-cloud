@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hp.domain.HumanJobTitle;
 import com.jlkj.human.hp.mapper.HumanJobTitleMapper;
 import com.jlkj.human.hp.service.HumanJobTitleService;
@@ -65,7 +65,7 @@ public class HumanJobTitleServiceImpl implements HumanJobTitleService
     @Override
     public int insertHumanJobTitle(HumanJobTitle humanJobTitle) throws Exception
     {
-        humanJobTitle.setId(UUID.randomUUID().toString().substring(0, 32));
+        humanJobTitle.setId(IdUtils.simpleUUID());
         List oldHumanJobTitle = humanJobTitleMapper.selectHumanJobTitleByNoName(humanJobTitle);
         if(!oldHumanJobTitle.isEmpty()){
             throw new Exception("职称代号或职称中文说明已存在，请重新输入");

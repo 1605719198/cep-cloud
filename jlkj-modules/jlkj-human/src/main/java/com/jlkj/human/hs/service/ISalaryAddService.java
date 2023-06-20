@@ -6,7 +6,7 @@ import com.jlkj.human.hs.domain.SalaryAdd;
 import java.util.List;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hs_salary_add(薪资项目金额追补扣)】的数据库操作Service
 * @createDate 2023-05-30 18:19:49
 */

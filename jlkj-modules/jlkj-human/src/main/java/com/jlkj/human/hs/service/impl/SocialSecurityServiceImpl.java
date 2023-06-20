@@ -3,7 +3,7 @@ package com.jlkj.human.hs.service.impl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SocialSecurity;
 import com.jlkj.human.hs.mapper.SocialSecurityMapper;
@@ -110,7 +110,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                         }
                     }
                     for (SocialSecurity socialSecurity : socialSecurityList) {
-                        socialSecurity.setId(com.jlkj.common.core.utils.uuid.UUID.randomUUID().toString().substring(0, 32));
+                        socialSecurity.setId(IdUtils.simpleUUID());
                         socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
                         socialSecurity.setCreator(SecurityUtils.getNickName());
                         socialSecurity.setCreateDate(new Date());
@@ -126,7 +126,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                             socialSecurity.setVersion(version);
                             socialSecurityMapper.updateSocialSecurity(socialSecurity);
                         } else {
-                            socialSecurity.setId(UUID.randomUUID().toString().substring(0, 32));
+                            socialSecurity.setId(IdUtils.simpleUUID());
                             socialSecurity.setVersion(version);
                             socialSecurityMapper.insertSocialSecurity(socialSecurity);
                         }

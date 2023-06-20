@@ -38,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaRateVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectFinanceAoParaByRateCate" parameterType="FinanceAaRate" resultMap="FinanceAaRateResult">
+        <include refid="selectFinanceAaRateVo"/>
+        where rateDate = #{ratedate} AND rateCate = #{ratecate} AND rateSpot = #{ratespot} AND rateCrcy = #{ratecrcy}
+    </select>
         
     <insert id="insertFinanceAaRate" parameterType="FinanceAaRate">
         insert into finance_aa_rate

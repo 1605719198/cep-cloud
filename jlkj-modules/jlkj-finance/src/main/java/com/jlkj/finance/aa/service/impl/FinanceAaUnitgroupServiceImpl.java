@@ -57,11 +57,16 @@ public class FinanceAaUnitgroupServiceImpl implements IFinanceAaUnitgroupService
     @Override
     public int insertFinanceAaUnitgroup(FinanceAaUnitgroup financeAaUnitgroup)
     {
-        financeAaUnitgroup.setId(IdUtils.fastSimpleUUID());
-        financeAaUnitgroup.setCreateTime(DateUtils.getNowDate());
-        financeAaUnitgroup.setCreateBy(SecurityUtils.getUsername());
-        financeAaUnitgroup.setCreateName(SecurityUtils.getNickName());
-        return financeAaUnitgroupMapper.insertFinanceAaUnitgroup(financeAaUnitgroup);
+        List<FinanceAaUnitgroup> financeAaUnitgroups = financeAaUnitgroupMapper.selectFinanceAaUnitgroupByGroupNo(financeAaUnitgroup);
+        if (financeAaUnitgroups.isEmpty()){
+            financeAaUnitgroup.setId(IdUtils.fastSimpleUUID());
+            financeAaUnitgroup.setCreateTime(DateUtils.getNowDate());
+            financeAaUnitgroup.setCreateBy(SecurityUtils.getUsername());
+            financeAaUnitgroup.setCreateName(SecurityUtils.getNickName());
+            return financeAaUnitgroupMapper.insertFinanceAaUnitgroup(financeAaUnitgroup);
+        } else {
+            return 0;
+        }
     }
 
     /**

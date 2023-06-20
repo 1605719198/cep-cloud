@@ -1,6 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
-import com.jlkj.common.core.utils.uuid.UUID;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.Organizationsetting;
 import com.jlkj.human.hd.mapper.OrganizationsettingMapper;
 import com.jlkj.human.hd.service.IOrganizationsettingService;
@@ -54,7 +54,7 @@ public class OrganizationsettingServiceImpl implements IOrganizationsettingServi
     @Override
     public int insertOrganizationsetting(Organizationsetting organizationsetting)
     {
-        organizationsetting.setId(UUID.randomUUID().toString().substring(0, 32));
+        organizationsetting.setId(IdUtils.simpleUUID());
         return organizationsettingMapper.insertOrganizationsetting(organizationsetting);
     }
 
