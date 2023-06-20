@@ -29,6 +29,15 @@ public interface FinanceAaUnitgroupMapper {
     public List<FinanceAaUnitgroup> selectFinanceAaUnitgroupList(FinanceAaUnitgroup financeAaUnitgroup);
 
     /**
+     * 查询计量单位分组列表
+     *
+     * @param financeAaUnitgroup 计量单位分组 查重
+     * @return 计量单位分组集合
+     */
+    public List<FinanceAaUnitgroup> selectFinanceAaUnitgroupByGroupNo(FinanceAaUnitgroup financeAaUnitgroup);
+
+
+    /**
      * 新增计量单位分组
      *
      * @param financeAaUnitgroup 计量单位分组

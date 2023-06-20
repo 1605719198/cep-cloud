@@ -22,7 +22,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hd_attendance_gather(月出勤统计汇总表)】的数据库操作Service实现
 * @createDate 2023-04-06 09:15:10
 */

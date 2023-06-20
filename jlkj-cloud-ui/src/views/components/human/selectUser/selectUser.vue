@@ -153,6 +153,8 @@ export default {
       this.resetQuery();
       this.userIds = []
       this.userName = []
+      this.compId = []
+      this.empId = []
       if(queryParams){
         this.queryParams = queryParams;
       }
@@ -165,6 +167,8 @@ export default {
     handleSelectionChange(selection) {
       this.userIds = selection.map(item => item.empNo);
       this.userName = selection.map(item => item.fullName);
+      this.compId = selection.map(item => item.compId);
+      this.empId = selection.map(item => item.empId);
     },
     // 查询表数据
     getList() {

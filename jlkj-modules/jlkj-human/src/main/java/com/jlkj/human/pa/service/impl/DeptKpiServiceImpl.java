@@ -7,7 +7,7 @@ import com.jlkj.human.pa.mapper.DeptKpiMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_pa_dept_kpi(KPI指标主档)】的数据库操作Service实现
 * @createDate 2023-06-08 08:25:20
 */

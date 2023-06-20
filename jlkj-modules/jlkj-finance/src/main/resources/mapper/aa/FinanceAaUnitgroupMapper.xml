@@ -30,6 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
+    <select id="selectFinanceAaUnitgroupByGroupNo" parameterType="FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
+        <include refid="selectFinanceAaUnitgroupVo"/>
+        where group_no = #{groupNo}
+    </select>
+
     <select id="selectFinanceAaUnitgroupById" parameterType="String" resultMap="FinanceAaUnitgroupResult">
         <include refid="selectFinanceAaUnitgroupVo"/>
         where id = #{id}

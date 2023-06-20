@@ -7,7 +7,7 @@ import com.jlkj.human.hm.service.IPersonnelProfessionalService;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hm_personnel_professional(人员职称信息表)】的数据库操作Service实现
 * @createDate 2023-03-09 10:06:29
 */

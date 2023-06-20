@@ -18,7 +18,6 @@ import bank from "@/views/finance/aa/bank/bank";
 
 export default {
   name: "Bank",
-
   components: {branch,bank},
   data() {
     return {
@@ -27,7 +26,7 @@ export default {
       Verify:null,
       applyIdIf:false,
       bankNo:null,
-      bankchName:null
+      bankchnName:null
     };
   },
 

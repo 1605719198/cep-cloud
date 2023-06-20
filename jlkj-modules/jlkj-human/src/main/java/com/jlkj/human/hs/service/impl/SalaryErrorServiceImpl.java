@@ -7,7 +7,7 @@ import com.jlkj.human.hs.mapper.SalaryErrorMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hs_salary_error(薪资核定导入错误信息表)】的数据库操作Service实现
 * @createDate 2023-06-02 17:41:26
 */

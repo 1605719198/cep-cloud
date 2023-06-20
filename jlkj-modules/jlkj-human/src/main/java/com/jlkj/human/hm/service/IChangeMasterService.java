@@ -5,7 +5,7 @@ import com.jlkj.human.hm.domain.ChangeMaster;
 import com.jlkj.human.hm.dto.ChangeMasterDTO;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hm_change_master(人员异动信息主表)】的数据库操作Service
 * @createDate 2023-03-17 08:39:33
 */

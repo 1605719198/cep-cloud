@@ -29,8 +29,8 @@ public class LicenseCreatorController extends BaseController {
     /**
      * 证书生成路径
      */
-    @Value("${license.licensePath}")
-    private String licensePath;
+    @Value("${license.generatePath}")
+    private String generatePath;
 
     /**
      * 获取服务器硬件信息
@@ -84,7 +84,7 @@ public class LicenseCreatorController extends BaseController {
     public Map<String, Object> generateLicense(@RequestBody LicenseCreatorParam param) {
         Map<String, Object> resultMap = new HashMap<>(2);
         if(StringUtils.isBlank(param.getLicensePath())) {
-            param.setLicensePath(licensePath);
+            param.setLicensePath(generatePath);
         }
         LicenseCreator licenseCreator = new LicenseCreator(param);
         boolean result = licenseCreator.generateLicense();

@@ -110,7 +110,7 @@
           <el-input v-model="form.groupName" placeholder="请输入分组名称" class="input"/>
         </el-form-item>
         <el-form-item label="序号" prop="srlno">
-          <el-input-number v-model="num" @change="handleChange" :min="1" :max="100" label="序号"></el-input-number>
+          <el-input-number v-model="form.srlno" controls-position="right" :min="1" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,9 +167,6 @@ export default {
           { required: true, message: "分组名称不能为空", trigger: "blur" },
           {max: 30 ,trigger: 'blur',message: "最大不超过30个字符"}
         ],
-        // srlno: [
-        //   { required: true, message: "序号不能为空", trigger: "blur" }
-        // ],
       }
     };
   },
@@ -177,9 +174,6 @@ export default {
     this.getList();
   },
   methods: {
-    handleChange(value) {
-      console.log(value);
-    },
     /** 查询计量单位分组列表 */
     getList() {
       this.loading = true;

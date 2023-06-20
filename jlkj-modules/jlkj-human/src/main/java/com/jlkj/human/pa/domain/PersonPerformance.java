@@ -1,16 +1,19 @@
 package com.jlkj.human.pa.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 个人绩效主档
+ * @author HuangBing
  * @TableName human_pa_person_performance
  */
 @TableName(value ="human_pa_person_performance")
@@ -56,6 +59,11 @@ public class PersonPerformance implements Serializable {
      * 岗位
      */
     private String postId;
+
+    /**
+     * 职称
+     */
+    private String jobTitleId;
 
     /**
      * 团队绩效（0-是，1-否）
@@ -165,7 +173,7 @@ public class PersonPerformance implements Serializable {
     /**
      * 等第
      */
-    private String rank;
+    private String grade;
 
     /**
      * 考评状态（0-计划中
@@ -190,6 +198,8 @@ public class PersonPerformance implements Serializable {
     /**
      * 输入日期
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 
     @TableField(exist = false)

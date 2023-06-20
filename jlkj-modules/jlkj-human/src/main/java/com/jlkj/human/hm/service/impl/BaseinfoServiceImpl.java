@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* @author 89373
+* @author HuangBing
 * @description 针对表【human_hm_baseinfo(选单配置表)】的数据库操作Service实现
 * @createDate 2023-03-07 18:33:11
 */
