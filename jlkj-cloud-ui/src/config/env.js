@@ -9,7 +9,7 @@ let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
 let codeUrl = `${baseUrl}/code`
 let mqConfig = {};
 const env = process.env
-// console.log(env)
+console.log(env)
 if (env.NODE_ENV == 'development') {
   baseUrl = ``; // 开发环境地址
   fileUploadUrl = 'http://localhost:9300';
