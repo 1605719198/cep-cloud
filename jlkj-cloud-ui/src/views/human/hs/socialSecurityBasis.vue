@@ -296,7 +296,7 @@
             <div>
               <el-radio-group v-model="items.thrIdSta">
                 <el-radio
-                  v-for="dict in salaryOptions.HsYN"
+                  v-for="dict in salaryOptions.Hsyn"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -497,7 +497,7 @@
             <div>
               <el-radio-group v-model="items.thrIdSta" disabled>
                 <el-radio
-                  v-for="dict in salaryOptions.HsYN"
+                  v-for="dict in salaryOptions.Hsyn"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -584,14 +584,13 @@ import '@/assets/styles/humanStyles.scss'
 import {
   listSocialSecurityBasis,
   getSocialSecurityBasis,
-  delSocialSecurityBasis,
   addSocialSecurityBasis,
   updateSocialSecurityBasis
 } from '@/api/human/hs/socialSecurityBasis'
 import { getToken } from '@/utils/auth'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
-import { getSalaryOptions, getSalaryDeepOptions } from '@/api/human/hs/salaryBasis'
+import { getSalaryOptions } from '@/api/human/hs/salaryBasis'
 import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import { socialSecurity } from '@/api/human/hs/socialSecurity'
@@ -626,7 +625,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['SocialSecurity', 'InsureRea', 'PayAreaType', 'HsYN'],
+        optionsType: ['SocialSecurity', 'InsureRea', 'PayAreaType', 'Hsyn'],
         compId: null
       },
       //薪资选单选项列表

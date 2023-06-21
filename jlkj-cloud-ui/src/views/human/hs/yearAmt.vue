@@ -100,7 +100,7 @@
           <el-form-item :prop="'yearAmtList.' + scope.$index + '.ifFullTax'" :rules="rules.ifFullTax">
             <el-radio-group v-model="scope.row.ifFullTax" >
               <el-radio
-                v-for="dict in salaryOptions.HsYN"
+                v-for="dict in salaryOptions.Hsyn"
                 :key="dict.id"
                 :label="dict.dicNo"
               >{{ dict.dicName }}
@@ -114,7 +114,7 @@
           <el-form-item :prop="'yearAmtList.' + scope.$index + '.ifIncomeGreaterSix'" :rules="rules.ifIncomeGreaterSix">
             <el-radio-group v-model="scope.row.ifIncomeGreaterSix" >
               <el-radio
-                v-for="dict in salaryOptions.HsYN"
+                v-for="dict in salaryOptions.Hsyn"
                 :key="dict.id"
                 :label="dict.dicNo"
               >{{ dict.dicName }}
@@ -217,7 +217,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['HsYN'],
+        optionsType: ['Hsyn'],
         compId:null,
       },
       //薪资选单选项列表

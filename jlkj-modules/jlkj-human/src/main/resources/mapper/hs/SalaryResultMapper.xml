@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.SalaryResultMapper">
+    
+    <resultMap type="SalaryResult" id="SalaryResultResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="payTableId"    column="pay_table_id"    />
+        <result property="payTableCode"    column="pay_table_code"    />
+        <result property="payTableName"    column="pay_table_name"    />
+        <result property="result"    column="result"    />
+        <result property="month"    column="month"    />
+        <result property="year"    column="year"    />
+        <result property="payTypeId"    column="pay_type_id"    />
+        <result property="postFullName"    column="post_full_name"    />
+        <result property="postLevel"    column="post_level"    />
+        <result property="salarySheetLocation"    column="salary_sheet_location"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNo"    column="creator_no"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <resultMap type="SalaryResultDTO" id="SalaryResultDTOResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="year"    column="year"    />
+        <result property="month"    column="month"    />
+        <result property="result01"    column="result01"    />
+        <result property="result02"    column="result02"    />
+        <result property="result"    column="result"    />
+    </resultMap>
+
+    <resultMap type="SalaryResultDetailDTO" id="DetailDTOResult">
+        <result property="id"    column="id"    />
+        <result property="payTableName"    column="pay_table_name"    />
+        <result property="result"    column="result"    />
+        <result property="type"    column="type"    />
+        <result property="comm"    column="comm"    />
+    </resultMap>
+
+    <sql id="selectSalaryResultVo">
+        select id, comp_id, emp_id, emp_no, emp_name, org_name, year, month, result01, result02, result from human_hs_salary_result_main
+    </sql>
+
+    <sql id="selectDetailListVo">
+        select pay_table_name, result, type, comm from human_hs_salary_result_detail
+    </sql>
+
+    <select id="selectSalaryResultList" parameterType="SalaryResultDTO" resultMap="SalaryResultDTOResult">
+        <include refid="selectSalaryResultVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="month != null  and month != ''"> and month = #{month}</if>
+        </where>
+    </select>
+
+    <select id="selectDetailList" parameterType="String" resultMap="DetailDTOResult">
+        <include refid="selectDetailListVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+        </where>
+    </select>
+
+    
+    <select id="selectSalaryResultById" parameterType="String" resultMap="SalaryResultDTOResult">
+        <include refid="selectSalaryResultVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSalaryResult" parameterType="SalaryResult">
+        insert into human_hs_salary_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="payTableId != null">pay_table_id,</if>
+            <if test="payTableCode != null">pay_table_code,</if>
+            <if test="payTableName != null">pay_table_name,</if>
+            <if test="result != null">result,</if>
+            <if test="month != null">month,</if>
+            <if test="year != null">year,</if>
+            <if test="payTypeId != null">pay_type_id,</if>
+            <if test="postFullName != null">post_full_name,</if>
+            <if test="postLevel != null">post_level,</if>
+            <if test="salarySheetLocation != null">salary_sheet_location,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="creatorNo != null">creator_no,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="payTableId != null">#{payTableId},</if>
+            <if test="payTableCode != null">#{payTableCode},</if>
+            <if test="payTableName != null">#{payTableName},</if>
+            <if test="result != null">#{result},</if>
+            <if test="month != null">#{month},</if>
+            <if test="year != null">#{year},</if>
+            <if test="payTypeId != null">#{payTypeId},</if>
+            <if test="postFullName != null">#{postFullName},</if>
+            <if test="postLevel != null">#{postLevel},</if>
+            <if test="salarySheetLocation != null">#{salarySheetLocation},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorNo != null">#{creatorNo},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalaryResult" parameterType="SalaryResult">
+        update human_hs_salary_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="payTableId != null">pay_table_id = #{payTableId},</if>
+            <if test="payTableCode != null">pay_table_code = #{payTableCode},</if>
+            <if test="payTableName != null">pay_table_name = #{payTableName},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="payTypeId != null">pay_type_id = #{payTypeId},</if>
+            <if test="postFullName != null">post_full_name = #{postFullName},</if>
+            <if test="postLevel != null">post_level = #{postLevel},</if>
+            <if test="salarySheetLocation != null">salary_sheet_location = #{salarySheetLocation},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="creatorNo != null">creator_no = #{creatorNo},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSalaryResultById" parameterType="String">
+        delete from human_hs_salary_result where id = #{id}
+    </delete>
+
+    <delete id="deleteSalaryResultByIds" parameterType="String">
+        delete from human_hs_salary_result where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

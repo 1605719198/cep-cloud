@@ -57,13 +57,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="getFirstDeptByDept" parameterType="String" resultMap="FirstDeptResult">
-        select first_dept_id,first_dept_name,comp_id from human_first_dept
+        select first_dept_id,first_dept_name,comp_id from human_hp_first_dept
         where child_dept_id= #{empId}
         group by first_dept_id
     </select>
 
     <select id="getFirstDeptByPerson" parameterType="String" resultMap="FirstDeptResult">
-        select first_dept_id,first_dept_name,comp_id from human_first_dept
+        select first_dept_id,first_dept_name,comp_id from human_hp_first_dept
         where child_person_id= #{empId}
         group by first_dept_id
     </select>
@@ -108,9 +108,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectDeptUnionPost" parameterType="DeptUnionPostDTO" resultMap="DeptUnionPostResult">
-        SELECT 20230101 AS dept_id,dept_id AS parent_id,post_name AS name,comp_id,post_id FROM sys_post WHERE comp_id=#{compId}
+        SELECT 0 AS dept_id,dept_id AS parent_id,post_name AS name,comp_id,post_id FROM sys_post WHERE comp_id= 'J00'
         UNION ALL
-        SELECT dept_id,parent_id,dept_name AS name,comp_id,'' AS post_id FROM sys_dept WHERE comp_id=#{compId}
+        SELECT dept_id,parent_id,dept_name AS name,comp_id,'' AS post_id FROM sys_dept WHERE comp_id= 'J00'
     </select>
 
     
@@ -277,6 +277,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
         <include refid="selectSysDeptVo"/>
         where dept_id = #{deptId}
+    </select>
+
+    <select id="selectDeptName" parameterType="String" resultType="map">
+        select dept_id as id , dept_code as value, dept_name as label from sys_dept
+        where comp_id = #{compId}
     </select>
 
     <delete id="deleteSysDeptByDeptIds" parameterType="String">

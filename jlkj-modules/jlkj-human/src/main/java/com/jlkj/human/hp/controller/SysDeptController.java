@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门资料维护Controller
@@ -40,8 +41,12 @@ public class SysDeptController extends BaseController
     private ISysDeptVersionService sysDeptVersionService;
 
     /**
-     * 查询部门资料维护列表
-     */
+    * @Description 查询部门资料维护列表
+    * @param sysDept 部门查询参数
+    * @return 部门数据列表
+    * @author 266861
+    * @date 2023/6/21 14:59
+    **/
     @RequiresPermissions("human:deptMaintenance:list")
     @GetMapping("/list")
     public TableDataInfo list(SysDept sysDept)
@@ -50,9 +55,14 @@ public class SysDeptController extends BaseController
         List<SysDept> list = sysDeptService.selectSysDeptList(sysDept);
         return getDataTable(list);
     }
+
     /**
-     * 查询部门资料变更版本列表
-     */
+    * @Description 查询部门资料变更版本列表
+    * @param sysDeptVersion 部门历史版本查询参数
+    * @return 部门历史版本数据
+    * @author 266861
+    * @date 2023/6/21 14:59
+    **/
     @RequiresPermissions("human:deptMaintenance:query")
     @GetMapping("/deptVersionlist")
     public TableDataInfo list(SysDeptVersion sysDeptVersion)
@@ -63,9 +73,14 @@ public class SysDeptController extends BaseController
     }
 
 
+
     /**
-     * 获取部门资料维护详细信息
-     */
+    * @Description 获取部门资料维护详细信息
+    * @param deptId 部门id
+    * @return 该部门详细信息
+    * @author 266861
+    * @date 2023/6/21 14:59
+    **/
     @GetMapping(value = "/{deptId}")
     public AjaxResult getInfo(@PathVariable("deptId") Long deptId)
     {
@@ -73,8 +88,12 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 获取部门资料维护历史版本详细信息
-     */
+     * @Description 获取部门历史版本资料信息
+     * @param id 历史版本资料id
+     * @return 该id历史版本资料信息
+     * @author 266861
+     * @date 2023/6/21 14:59
+     **/
     @GetMapping(value = "/getVersion/{id}")
     public AjaxResult getVersion(@PathVariable("id") Long id)
     {
@@ -82,8 +101,12 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 新增部门资料维护
-     */
+    * @Description 新增部门资料维护
+    * @param sysDept 部门数据
+    * @return 新增结果
+    * @author 266861
+    * @date 2023/6/21 15:01
+    **/
     @RequiresPermissions("human:deptMaintenance:add")
     @Log(title = "部门资料维护", businessType = BusinessType.INSERT)
     @PostMapping
@@ -92,9 +115,14 @@ public class SysDeptController extends BaseController
         return toAjax(sysDeptService.insertSysDept(sysDept));
     }
 
+
     /**
-     * 复制组织机构数据
-     */
+    * @Description 复制组织机构数据
+    * @param copySysDeptDTO 组织机构复制参数
+    * @return 复制结果
+    * @author 266861
+    * @date 2023/6/21 15:01
+    **/
     @RequiresPermissions("human:deptMaintenance:copy")
     @Log(title = "组织机构复制", businessType = BusinessType.INSERT)
     @PostMapping("/copySysDept")
@@ -103,9 +131,14 @@ public class SysDeptController extends BaseController
         return toAjax(sysDeptService.copySysDept(copySysDeptDTO));
     }
 
+
     /**
-     * 修改部门资料维护
-     */
+    * @Description 修改部门资料维护
+    * @param sysDept 所修改部门资料
+    * @return 修改结果
+    * @author 266861
+    * @date 2023/6/21 15:02
+    **/
     @RequiresPermissions("human:deptMaintenance:edit")
     @Log(title = "部门资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -115,8 +148,12 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 删除部门资料维护
-     */
+    * @Description 删除部门资料维护
+    * @param deptIds 删除部门id数组
+    * @return 删除结果
+    * @author 266861
+    * @date 2023/6/21 15:02
+    **/
     @RequiresPermissions("human:deptMaintenance:remove")
     @Log(title = "部门资料维护", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{deptIds}")
@@ -124,9 +161,14 @@ public class SysDeptController extends BaseController
     {
         return toAjax(sysDeptService.deleteSysDeptByDeptIds(deptIds));
     }
+
     /**
-     * 获取部门下拉树列表
-     */
+    * @Description 获取部门下拉树
+    * @param dept 下拉树查询条件
+    * @return 下拉树
+    * @author 266861
+    * @date 2023/6/21 15:02
+    **/
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysDept dept)
     {
@@ -134,9 +176,14 @@ public class SysDeptController extends BaseController
         return AjaxResult.success(sysDeptService.buildDeptTreeSelect(depts));
     }
 
+
     /**
-     * 获取部门岗位下拉树列表
-     */
+    * @Description 获取部门岗位下拉树列表
+    * @param deptpost 部门岗位查询参数
+    * @return 部门岗位下拉树
+    * @author 266861
+    * @date 2023/6/21 15:03
+    **/
     @RequiresPermissions("human:deptPost:list")
     @GetMapping("/deptPostTree")
     public AjaxResult deptPostTree(DeptUnionPostDTO deptpost)
@@ -145,18 +192,27 @@ public class SysDeptController extends BaseController
         return AjaxResult.success(sysDeptService.buildDeptPostTree(deptPostList));
     }
 
+
     /**
-     * 获取公司资料列表
-     */
+    * @Description 获取公司资料列表（下拉选单用）
+    * @return 集团下公司数据
+    * @author 266861
+    * @date 2023/6/21 14:57
+    **/
     @GetMapping("/selectCompany")
     public AjaxResult selectCompany()
     {
         List<SysDept> companyList = sysDeptService.selectCompanyList();
         return AjaxResult.success(companyList);
     }
+
     /**
-     * 通过员工工号查询一级机构
-     */
+    * @Description 通过员工工号查询一级机构
+    * @param empId 员工工号
+    * @return 一级机构数据
+    * @author 266861
+    * @date 2023/6/21 14:57
+    **/
     @GetMapping("/queryFirstDeptByPerson/{empId}")
     public AjaxResult queryFirstDeptByPerson(@PathVariable("empId") String empId)
     {
@@ -164,9 +220,15 @@ public class SysDeptController extends BaseController
         return AjaxResult.success(firstDept);
     }
 
+
+
     /**
-     * 通过部门ID查询一级机构
-     */
+    * @Description 通过部门ID查询一级机构
+    * @param deptId 部门ID
+    * @return 一级机构数据
+    * @author 266861
+    * @date 2023/6/21 14:56
+    **/
     @GetMapping("/queryFirstDeptByDept/{deptId}")
     public AjaxResult queryFirstDeptByDept(@PathVariable("deptId") String deptId)
     {
@@ -174,13 +236,15 @@ public class SysDeptController extends BaseController
         return AjaxResult.success(firstDept);
     }
 
+
     /**
-     * 导入部门数据
-     * @param file
-     * @param updateSupport
-     * @return
-     * @throws Exception
-     */
+    * @Description 导入部门数据
+    * @param file 模板文件
+    * @param updateSupport 是否更新
+    * @return 导入结果
+    * @author 266861
+    * @date 2023/6/21 14:54
+    **/
     @Log(title = "部门资料导入", businessType = BusinessType.IMPORT)
     @RequiresPermissions("human:deptMaintenance:import")
     @PostMapping("/importData")
@@ -193,16 +257,31 @@ public class SysDeptController extends BaseController
         return success(message);
     }
 
+
     /**
-     * 导入部门资料数据
-     * @param response
-     * @throws IOException
-     */
+    * @Description 获得部门资料导入模板
+    * @param response 导入参数
+     *@throws IOException 导入异常处理
+    * @author 266861
+    * @date 2023/6/21 14:52
+    **/
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response) throws IOException
     {
         ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
         util.importTemplateExcel(response, "部门资料数据");
     }
-    
+
+    /**
+    * @Description 查询部门名称（id/编码 转名称）远程调用暴露接口
+    * @param compId 公司别
+    * @return 某公司部门id编码名称数据
+    * @author 266861
+    * @date 2023/6/21 14:51
+    **/
+    @GetMapping("/selectDeptName/{compId}")
+    public List<Map<String,Object>> selectDeptName(@PathVariable("compId") String compId)
+    {
+        return sysDeptService.selectDeptName(compId);
+    }
 }
