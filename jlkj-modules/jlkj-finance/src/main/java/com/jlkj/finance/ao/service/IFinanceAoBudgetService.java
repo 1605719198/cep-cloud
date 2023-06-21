@@ -1,7 +1,9 @@
 package com.jlkj.finance.ao.service;
 
+import com.jlkj.finance.ao.dto.FinanceAoBudgetDto;
+import io.lettuce.core.dynamic.annotation.Param;
+
 import java.util.List;
-import com.jlkj.finance.ao.domain.FinanceAoBudget;
 
 /**
  * 预算设置Service接口
@@ -17,39 +19,39 @@ public interface IFinanceAoBudgetService
      * @param id 预算设置主键
      * @return 预算设置
      */
-    public FinanceAoBudget selectFinanceAoBudgetById(String id);
+    public FinanceAoBudgetDto selectFinanceAoBudgetById(String id);
 
     /**
      * 查询预算设置列表
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 预算设置集合
      */
-    public List<FinanceAoBudget> selectFinanceAoBudgetList(FinanceAoBudget financeAoBudget);
+    public List<FinanceAoBudgetDto> selectFinanceAoBudgetList(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 新增预算设置
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 结果
      */
-    public int insertFinanceAoBudget(FinanceAoBudget financeAoBudget);
+    public int insertFinanceAoBudget(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 修改预算设置
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 结果
      */
-    public int updateFinanceAoBudget(FinanceAoBudget financeAoBudget);
+    public int updateFinanceAoBudget(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 批量删除预算设置
      * 
-     * @param ids 需要删除的预算设置主键集合
+     * @param financeAoBudgetDto 需要删除的预算设置集合
      * @return 结果
      */
-    public int deleteFinanceAoBudgetByIds(String[] ids);
+    public int deleteFinanceAoBudgetByIds (@Param("financeAoBudgetDto")List<FinanceAoBudgetDto> financeAoBudgetDto);
 
     /**
      * 删除预算设置信息
@@ -58,4 +60,16 @@ public interface IFinanceAoBudgetService
      * @return 结果
      */
     public int deleteFinanceAoBudgetById(String id);
+
+    /**
+     * 导入预算设置
+     *
+     * @param financeAoBudgetDtos 预算设置列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importFinanceAaVoucher(List<FinanceAoBudgetDto> financeAoBudgetDtos, Boolean isUpdateSupport, String operName);
 }
+
+
