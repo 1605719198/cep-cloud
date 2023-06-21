@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -64,7 +65,7 @@ public class FinanceAaRateServiceImpl implements IFinanceAaRateService
             financeAaRate.setCreateName(SecurityUtils.getNickName());
             return financeAaRateMapper.insertFinanceAaRate(financeAaRate);
         } else {
-            return 0;
+            throw new ServiceException("此日期、汇率类别、交易市场、币别已经存在，不可重复新增！");
         }
     }
 
