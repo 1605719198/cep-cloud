@@ -21,6 +21,15 @@ public interface FinanceAoParaMapper
     public FinanceAoPara selectFinanceAoParaById(String id);
 
     /**
+     * 查询报支参数维护  查重
+     *
+     * @param financeAoPara 报支参数维护
+     * @return 报支参数维护集合
+     */
+    public List<FinanceAoPara> selectFinanceAoParaByCompIdAndParameterValue(FinanceAoPara financeAoPara);
+
+
+    /**
      * 查询报支参数维护列表
      * 
      * @param financeAoPara 报支参数维护
