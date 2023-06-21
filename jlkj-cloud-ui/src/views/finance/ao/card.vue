@@ -3,7 +3,6 @@
   <el-form ref="form" :model="form" :rules="rules" label-width="80px">
     <el-form-item label="银行卡号" prop="cardNo">
       <el-input v-model="form.cardNo" placeholder="请输入银行卡号">
-
         <template slot="append">
           <el-upload
             class="upload-demo"
@@ -262,7 +261,11 @@ export default {
           if (status === 200) {
             this.dialogVisible = false
             console.log(data);
-            this.$message.success('识别结果为：'+JSON.stringify(data.forms_result[0].header));
+            if(data.code == 500){
+              this.$message.error("识别失败，未找到该服务");
+            }else {
+              this.$message.success('识别结果为：'+JSON.stringify(data.forms_result[0].header));
+            }
           } else {
             this.$message.error('识别错误请重试')
           }
