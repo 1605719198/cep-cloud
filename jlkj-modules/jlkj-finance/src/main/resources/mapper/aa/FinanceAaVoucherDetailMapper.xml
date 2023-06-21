@@ -368,7 +368,7 @@
         ORDER BY
         cal_namea
     </select>
-    <select id="seleAcctCode" resultType="String">
+    <select id="seleAcctCode" resultType="com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO">
 
         SELECT
         distinct
@@ -453,7 +453,7 @@
             </if>
         </where>
         GROUP BY
-        T1.cal_namea
+        T1.voucher_no
         ORDER BY
         T1.voucher_date
     </select>
