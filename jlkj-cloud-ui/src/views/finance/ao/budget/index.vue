@@ -615,7 +615,7 @@ export default {
     /** 查询预算设置列表 */
     getList() {
       this.loading = true;
-      if ( this.queryParams.yarMonth==null){
+      if (this.queryParams.yarMonth==null){
         this.queryParams.yarMonth = parseTime(new Date(), '{y}-{m}')
       }
       if (!this.queryParams.deptN0Name){
@@ -671,7 +671,9 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.queryParams.year =  this.queryParams.yarMonth.substring(0,4)
+      if(!!this.queryParams.yarMonth){
+        this.queryParams.year =  this.queryParams.yarMonth.substring(0,4)
+      }
       this.$refs["queryForm"].validate(valid => {
         if (valid) {
           this.getList();
