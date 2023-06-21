@@ -1,46 +1,167 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoBudgetMapper">
-    
+
     <resultMap type="com.jlkj.finance.ao.domain.FinanceAoBudget" id="FinanceAoBudgetResult">
-        <result property="id"    column="id"    />
-        <result property="companyId"    column="company_id"    />
-        <result property="year"    column="year"    />
-        <result property="deptNo"    column="dept_no"    />
-        <result property="budgetType"    column="budget_type"    />
-        <result property="yarMonth"    column="yar_month"    />
-        <result property="janBudget"    column="jan_budget"    />
-        <result property="status"    column="status"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createName"    column="create_name"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="updateName"    column="update_name"    />
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="year" column="year"/>
+        <result property="deptNo" column="dept_no"/>
+        <result property="budgetType" column="budget_type"/>
+        <result property="yarMonth" column="yar_month"/>
+        <result property="janBudget" column="jan_budget"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateName" column="update_name"/>
     </resultMap>
 
     <sql id="selectFinanceAoBudgetVo">
-        select id, company_id, year, dept_no, budget_type, yar_month, jan_budget, status, create_by, create_name, create_time, update_by, update_time, update_name from finance_ao_budget
+        select id,
+               company_id, year, dept_no, budget_type, yar_month, jan_budget, status, create_by, create_name, create_time, update_by, update_time, update_name
+        from finance_ao_budget
     </sql>
+    <select id="selectFinanceAoBudgetList" resultType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
 
-    <select id="selectFinanceAoBudgetList" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget" resultMap="FinanceAoBudgetResult">
-        <include refid="selectFinanceAoBudgetVo"/>
-        <where>  
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="deptNo != null  and deptNo != ''"> and dept_no = #{deptNo}</if>
-            <if test="budgetType != null  and budgetType != ''"> and budget_type = #{budgetType}</if>
-            <if test="yarMonth != null  and yarMonth != ''"> and yar_month = #{yarMonth}</if>
+        SELECT
+        T3.id,
+        T3.company_id,
+        T3.yar_month,
+        T3.YEAR,
+        T3.dept_no,
+        T3.budget_type,
+        T3.jan_budget,
+        T1.janBudgetYear
+        FROM(
+        SELECT
+        id,
+        company_id,
+        YEAR,
+        dept_no,
+        budget_type,
+        yar_month,
+        jan_budget,
+        SUM(jan_budget) as janBudgetYear,
+        STATUS,
+        create_by,
+        create_name,
+        create_time,
+        update_by,
+        update_time,
+        update_name
+        FROM
+        finance_ao_budget
+        <where>
+            <if test="companyId != null  and companyId != ''">and company_id  = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and budget_type  = #{budgetType}</if>
+            <if test="year != null  and year != ''">and year = #{year}</if>
         </where>
+
+        GROUP BY
+        dept_no,
+        budget_type
+        )
+        T1
+        left join finance_ao_budget T3  on T1.company_id = T3.company_id
+        AND T1.dept_no = T3.dept_no  AND T1.budget_type = T3.budget_type
+        <where>
+            <if test="companyId != null  and companyId != ''">and T1.company_id  = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and T1.dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and T1.budget_type  = #{budgetType}</if>
+            <if test="yarMonth != null  and yarMonth != ''">and T3.yar_month = #{yarMonth}</if>
+            <if test="year != null  and year != ''">and T1.year = #{year}</if>
+        </where>
+        ORDER  BY
+        T1.yar_month
     </select>
-    
+
     <select id="selectFinanceAoBudgetById" parameterType="String" resultMap="FinanceAoBudgetResult">
         <include refid="selectFinanceAoBudgetVo"/>
         where id = #{id}
     </select>
-        
-    <insert id="insertFinanceAoBudget" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget">
+    <select id="selectFinanceAoBudgetDtoById" resultType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
+        <include refid="selectFinanceAoBudgetVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectFinanceAoBudgetDtoMonth" resultType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
+        SELECT
+          id,
+            company_id,
+            YEAR,
+            dept_no,
+            budget_type,
+        SUM( JanuaryJanBudget ) AS JanuaryJanBudget,
+        SUM( FebruaryJanBudget ) AS FebruaryJanBudget,
+        SUM( MarchJanBudget ) AS MarchJanBudget,
+        SUM( AprilJanBudget ) AS AprilJanBudget,
+        SUM( MayJanBudget ) AS MayJanBudget,
+        SUM( JuneJanBudget ) AS JuneJanBudget,
+        SUM( JulyJanBudget ) AS JulyJanBudget,
+        SUM( AugustJanBudget ) AS AugustJanBudget,
+        SUM( SeptemberJanBudget ) AS SeptemberJanBudget,
+        SUM( OctoberJanBudget ) AS OctoberJanBudget,
+        SUM( NovemberJanBudget ) AS NovemberJanBudget,
+        SUM( DecemberJanBudget ) AS DecemberJanBudget
+        FROM (
+                 SELECT
+        id,
+                 company_id,
+                     YEAR,
+            dept_no,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '01' THEN ifnull(jan_budget, 0) ELSE 0 END AS JanuaryJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '02' THEN ifnull(jan_budget, 0) ELSE 0 END AS FebruaryJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '03' THEN ifnull(jan_budget, 0) ELSE 0 END AS MarchJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '04' THEN ifnull(jan_budget, 0) ELSE 0 END AS AprilJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '05' THEN ifnull(jan_budget, 0) ELSE 0 END AS MayJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '06' THEN ifnull(jan_budget, 0) ELSE 0 END AS JuneJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '07' THEN ifnull(jan_budget, 0) ELSE 0 END AS JulyJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '08' THEN ifnull(jan_budget, 0) ELSE 0 END AS AugustJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '09' THEN ifnull(jan_budget, 0) ELSE 0 END AS SeptemberJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '10' THEN ifnull(jan_budget, 0) ELSE 0 END AS OctoberJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '11' THEN ifnull(jan_budget, 0) ELSE 0 END AS NovemberJanBudget,
+                     CASE WHEN SUBSTR(yar_month, 6, 7) = '12' THEN ifnull(jan_budget, 0) ELSE 0 END AS DecemberJanBudget,
+                     budget_type,
+                     STATUS
+                 FROM
+                     finance_ao_budget
+        <where>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and budget_type = #{budgetType}</if>
+            <if test="year != null  and year != ''">and year = #{year}</if>
+
+        </where>
+        ORDER  BY
+        company_id
+             ) T1
+    </select>
+    <select id="selectDuplicateQuery" resultType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
+        <include refid="selectFinanceAoBudgetVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and budget_type = #{budgetType}</if>
+            <if test="year != null  and year != ''">and year = #{year}</if>
+        </where>
+    </select>
+    <select id="selectMonth" resultType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
+        <include refid="selectFinanceAoBudgetVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and budget_type = #{budgetType}</if>
+            <if test="year != null  and year != ''">and year = #{year}</if>
+            <if test="yarMonth != null  and yarMonth != ''">and yar_month = #{yarMonth}</if>
+        </where>
+    </select>
+
+    <insert id="insertFinanceAoBudget" parameterType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
         insert into finance_ao_budget
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -57,7 +178,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="updateName != null">update_name,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="companyId != null">#{companyId},</if>
@@ -73,10 +194,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="updateName != null">#{updateName},</if>
-         </trim>
+        </trim>
     </insert>
 
-    <update id="updateFinanceAoBudget" parameterType="com.jlkj.finance.ao.domain.FinanceAoBudget">
+    <update id="updateFinanceAoBudget" parameterType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
         update finance_ao_budget
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
@@ -93,17 +214,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="updateName != null">update_name = #{updateName},</if>
         </trim>
-        where id = #{id}
+        <where>
+            <if test="companyId != null  and companyId != ''">and company_id = #{companyId}</if>
+            <if test="deptNo != null  and deptNo != ''">and dept_no = #{deptNo}</if>
+            <if test="budgetType != null  and budgetType != ''">and budget_type = #{budgetType}</if>
+            <if test="year != null  and year != ''">and year = #{year}</if>
+            <if test="yarMonth != null  and yarMonth != ''">and yar_month = #{yarMonth}</if>
+        </where>
     </update>
 
     <delete id="deleteFinanceAoBudgetById" parameterType="String">
-        delete from finance_ao_budget where id = #{id}
+        delete
+        from finance_ao_budget
+        where id = #{id}
     </delete>
 
     <delete id="deleteFinanceAoBudgetByIds" parameterType="String">
-        delete from finance_ao_budget where id in 
+        delete from finance_ao_budget where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteFinanceAoBudgetList" parameterType="com.jlkj.finance.ao.dto.FinanceAoBudgetDto">
+        delete from finance_ao_budget where id in
+        <foreach item="param" collection="list" open="(" separator="," close=")">
+            #{param.id}
         </foreach>
     </delete>
 </mapper>

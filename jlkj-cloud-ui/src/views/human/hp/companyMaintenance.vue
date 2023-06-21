@@ -514,7 +514,7 @@ import {
   updateDeptmaintenance,
   treeselect,
   listDeptversion,
-  getVersion
+  getVersion,
 } from '@/api/human/hp/deptMaintenance'
 import Treeselect from '@riophae/vue-treeselect'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'

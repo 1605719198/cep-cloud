@@ -4,6 +4,7 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.system.license.CustomKeyStoreParam;
 import de.schlichtherle.license.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -27,7 +28,7 @@ public class LicenseVerify {
         try{
             LicenseManager licenseManager = LicenseManagerHolder.getInstance(initLicenseParam(param));
             licenseManager.uninstall();
-            result = licenseManager.install(new File(param.getLicensePath()));
+            result = licenseManager.install(ResourceUtils.getFile(param.getLicensePath()));
             log.info("证书安装成功，证书有效期："+format.format(result.getNotBefore())+"-"+format.format(result.getNotAfter()));
         }catch (Exception e){
             log.error("证书安装失败，证书已经失效！",e);

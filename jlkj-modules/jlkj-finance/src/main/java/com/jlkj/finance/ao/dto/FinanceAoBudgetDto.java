@@ -28,6 +28,9 @@ public class FinanceAoBudgetDto extends BaseEntity
     @Excel(name = "年度")
     private String year;
 
+    /** 年月 */
+    @Excel(name = "年月")
+    private String yarMonth;
     /** 部门编码 */
     @Excel(name = "部门编码")
     private String deptNo;
@@ -36,8 +39,6 @@ public class FinanceAoBudgetDto extends BaseEntity
     @Excel(name = "预算类别")
     private String budgetType;
 
-    /** 年月 */
-    private String yarMonth;
 
     /** 预算值 */
     @Excel(name = "预算值")
@@ -51,6 +52,40 @@ public class FinanceAoBudgetDto extends BaseEntity
 
     /** 异动人姓名 */
     private String updateName;
+    /** 预算总值 */
 
+    private BigDecimal  janBudgetYear;
+    /** 上月预算值 */
 
+    private BigDecimal  janBudgetLastMonth;
+    /** 下月预算值 */
+    private BigDecimal  janBudgetNextMonth;
+    /** 1月预算值 */
+    private BigDecimal JanuaryJanBudget;
+    /** 2月预算值 */
+    private BigDecimal FebruaryJanBudget;
+    /** 3月预算值 */
+    private BigDecimal MarchJanBudget;
+    /** 4月预算值 */
+    private BigDecimal AprilJanBudget;
+    /** 5月预算值 */
+    private BigDecimal MayJanBudget;
+    /** 6月预算值 */
+    private BigDecimal JuneJanBudget;
+    /** 7月预算值 */
+    private BigDecimal  JulyJanBudget;
+    /** 8月预算值 */
+    private BigDecimal AugustJanBudget;
+    /** 9月预算值 */
+    private BigDecimal SeptemberJanBudget;
+    /** 10月预算值 */
+    private BigDecimal  OctoberJanBudget;
+    /** 11月预算值 */
+    private BigDecimal  NovemberJanBudget;
+    /** 12月预算值 */
+    private BigDecimal DecemberJanBudget;
+    /** 截止时间 */
+    private String  endDate;
+    /** 起始时间 */
+    private String  startDate;
 }

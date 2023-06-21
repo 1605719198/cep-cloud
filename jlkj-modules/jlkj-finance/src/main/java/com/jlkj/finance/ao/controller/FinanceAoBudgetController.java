@@ -7,13 +7,16 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.finance.ao.domain.FinanceAoBudget;
+import com.jlkj.finance.ao.dto.FinanceAoBudgetDto;
 import com.jlkj.finance.ao.service.IFinanceAoBudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
 
 /**
  * 预算设置Controller
@@ -31,12 +34,13 @@ public class FinanceAoBudgetController extends BaseController
     /**
      * 查询预算设置列表
      */
+
     @RequiresPermissions("ao:budget:list")
     @GetMapping("/list")
-    public TableDataInfo list(FinanceAoBudget financeAoBudget)
+    public TableDataInfo list(FinanceAoBudgetDto financeAoBudgetDto)
     {
         startPage();
-        List<FinanceAoBudget> list = financeAoBudgetService.selectFinanceAoBudgetList(financeAoBudget);
+        List<FinanceAoBudgetDto> list = financeAoBudgetService.selectFinanceAoBudgetList(financeAoBudgetDto);
         return getDataTable(list);
     }
 
@@ -46,10 +50,10 @@ public class FinanceAoBudgetController extends BaseController
     @RequiresPermissions("ao:budget:export")
     @Log(title = "预算设置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, FinanceAoBudget financeAoBudget)
+    public void export(HttpServletResponse response, FinanceAoBudgetDto financeAoBudgetDto)
     {
-        List<FinanceAoBudget> list = financeAoBudgetService.selectFinanceAoBudgetList(financeAoBudget);
-        ExcelUtil<FinanceAoBudget> util = new ExcelUtil<FinanceAoBudget>(FinanceAoBudget.class);
+        List<FinanceAoBudgetDto> list = financeAoBudgetService.selectFinanceAoBudgetList(financeAoBudgetDto);
+        ExcelUtil<FinanceAoBudgetDto> util = new ExcelUtil<FinanceAoBudgetDto>(FinanceAoBudgetDto.class);
         util.exportExcel(response, list, "预算设置数据");
     }
 
@@ -69,9 +73,9 @@ public class FinanceAoBudgetController extends BaseController
     @RequiresPermissions("ao:budget:add")
     @Log(title = "预算设置", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody FinanceAoBudget financeAoBudget)
+    public AjaxResult add(@RequestBody FinanceAoBudgetDto financeAoBudgetDto)
     {
-        return toAjax(financeAoBudgetService.insertFinanceAoBudget(financeAoBudget));
+        return toAjax(financeAoBudgetService.insertFinanceAoBudget(financeAoBudgetDto));
     }
 
     /**
@@ -80,9 +84,9 @@ public class FinanceAoBudgetController extends BaseController
     @RequiresPermissions("ao:budget:edit")
     @Log(title = "预算设置", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody FinanceAoBudget financeAoBudget)
+    public AjaxResult edit(@RequestBody FinanceAoBudgetDto financeAoBudgetDto)
     {
-        return toAjax(financeAoBudgetService.updateFinanceAoBudget(financeAoBudget));
+        return toAjax(financeAoBudgetService.updateFinanceAoBudget(financeAoBudgetDto));
     }
 
     /**
@@ -90,9 +94,34 @@ public class FinanceAoBudgetController extends BaseController
      */
     @RequiresPermissions("ao:budget:remove")
     @Log(title = "预算设置", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
+	@DeleteMapping(value = "/deleteList")
+    public AjaxResult remove(@RequestBody List<FinanceAoBudgetDto> financeAoBudgetDtos)
     {
-        return toAjax(financeAoBudgetService.deleteFinanceAoBudgetByIds(ids));
+        return toAjax(financeAoBudgetService.deleteFinanceAoBudgetByIds(financeAoBudgetDtos));
+    }
+
+    /**
+     * 导入预算设置
+     */
+    @Log(title = "导入预算设置", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("aa:budget:import")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<FinanceAoBudgetDto> util = new ExcelUtil<FinanceAoBudgetDto>(FinanceAoBudgetDto.class);
+        List<FinanceAoBudgetDto> financeAoBudgetDtos = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message  = financeAoBudgetService.importFinanceAaVoucher(financeAoBudgetDtos, updateSupport, operName);
+        return success(message);
+}
+
+    /**
+     * 导入模板
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<FinanceAoBudgetDto> util = new ExcelUtil<FinanceAoBudgetDto>(FinanceAoBudgetDto.class);
+        util.importTemplateExcel(response, "预算设置表");
     }
 }

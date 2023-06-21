@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司名称"  size="small">
+          <el-select :popper-append-to-body="false" v-model="compId" placeholder="请选择公司名称" size="small">
             <el-option
               v-for="dict in companyList"
               :key="dict.compId"
@@ -12,8 +12,8 @@
             />
           </el-select>
         </div>
-        <div class="head-container treeDept"  v-show="treeandtable">
-          <el-scrollbar class="treeScrollbar" >
+        <div class="head-container treeDept" v-show="treeandtable">
+          <el-scrollbar class="treeScrollbar">
             <el-tree
               :data="deptOptions"
               :props="defaultProps"
@@ -29,13 +29,15 @@
         </div>
       </el-col>
       <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="职位ID" prop="postId">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
+                 label-width="68px"
+        >
+          <el-form-item label="岗位编码" prop="postId">
             <el-input maxlength="10"
                       clearable
                       v-model="queryParams.postId"
                       type="number"
-                      placeholder="请输入职位ID"
+                      placeholder="请输入岗位编码"
             />
           </el-form-item>
           <el-form-item>
@@ -44,21 +46,21 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="postPersons"  height="67vh" v-show="treeandtable">
+        <el-table v-loading="loading" :data="postPersons" height="67vh" v-show="treeandtable">
           <el-table-column label="职工编号" align="center" prop="empNo" width="100"/>
           <el-table-column label="姓名" align="center" prop="fullName" width="100"/>
-          <el-table-column label="公司" align="center" prop="compId" width="100" >
+          <el-table-column label="公司" align="center" prop="compId" width="100">
             <template v-slot="scope">
               <dict-tag-human-base :options="dicCompanyList" :value="scope.row.compId"/>
             </template>
           </el-table-column>
           <el-table-column label="部门" align="center" prop="departmentName" width="100"/>
-          <el-table-column label="职位ID" align="center" prop="postId" width="75"/>
-          <el-table-column label="职位中文名称" align="center" prop="postName" width="350"/>
-          <el-table-column label="手机" align="center" prop="myMobilePhone" />
-          <el-table-column label="办公电话" align="center" prop="officeTelephone" />
-          <el-table-column label="办公Email" align="center" prop="officeEmail" />
-          <el-table-column label="办公地点" align="center" prop="officeAddress" />
+          <el-table-column label="岗位编码" align="center" prop="postId" width="75"/>
+          <el-table-column label="职位中文名称" align="center" prop="postName" width="350" show-overflow-tooltip/>
+          <el-table-column label="手机" align="center" prop="myMobilePhone"/>
+          <el-table-column label="办公电话" align="center" prop="officeTelephone"/>
+          <el-table-column label="办公Email" align="center" prop="officeEmail"/>
+          <el-table-column label="办公地点" align="center" prop="officeAddress"/>
         </el-table>
 
         <pagination
@@ -73,22 +75,22 @@
 </template>
 
 <script>
-import '@/assets/styles/humanStyles.scss';
+import '@/assets/styles/humanStyles.scss'
 import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
-import { getBaseInfo } from "@/api/human/hm/baseInfo"
-import { deptPostTree,selectCompany,queryPersonByPost } from "@/api/human/hp/deptMaintenance";
-import { getAvatorByUserName } from "@/api/system/user";
+import { getBaseInfo } from '@/api/human/hm/baseInfo'
+import { deptPostTree, selectCompany, queryPersonByPost } from '@/api/human/hp/deptMaintenance'
+
 export default {
-  name: "deptPost",
+  name: 'deptPost',
   dicts: ['sys_normal_disable'],
-  components: {DictTagHumanBase},
+  components: { DictTagHumanBase },
   data() {
     return {
       //岗位人员数据
-      postPersons:[],
+      postPersons: [],
       //公司列表
-      companyList:[],
-      dicCompanyList:[],
+      companyList: [],
+      dicCompanyList: [],
       //选单列表
       baseInfo: {
         uuid: '',
@@ -101,7 +103,7 @@ export default {
       //登录人姓名
       nickName: undefined,
       //登录人公司
-      logincompId:undefined,
+      logincompId: undefined,
       // 公司名称
       compId: undefined,
       //默认展开指定节点
@@ -109,9 +111,9 @@ export default {
       // 部门树选项
       deptOptions: [],
       //是否展示树和表
-      treeandtable:true,
+      treeandtable: true,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -123,129 +125,114 @@ export default {
       // 总条数
       total: 0,
       // 弹出层标题
-      title: "",
+      title: '',
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         compId: null,
-        postId:null,
+        postId: null
       },
       // 表单参数
       form: {},
       //el tree默认值
       defaultProps: {
-        children: "children",
-        label: "name",
-      },
-    };
+        children: 'children',
+        label: 'name'
+      }
+    }
   },
   watch: {
     // 根据名称筛选部门树
     compId(val) {
       // this.$refs.tree.filter(val);
-      this.queryParams.compId = val;
-      if(val){
-        this.treeandtable=true;
-        this.getTreeselect();
-      }else{
-        this.treeandtable=false
+      this.queryParams.compId = val
+      if (val) {
+        this.treeandtable = true
+        this.getTreeselect()
+      } else {
+        this.treeandtable = false
       }
-      this.getList();
     }
   },
   created() {
-    this.getCompanyList();
-    this.getHumandisc();
+    this.getCompanyList()
+    this.getHumandisc()
     this.getName()
   },
   methods: {
     //获取公司列表
-    getCompanyList(){
-      selectCompany().then(response=>{
-        this.companyList = response.data;
-        this.companyList.forEach((value,index,array)=>{
-          var compDic={
-            dicNo:null,
-            dicName:null
+    getCompanyList() {
+      selectCompany().then(response => {
+        this.companyList = response.data
+        this.companyList.forEach((value, index, array) => {
+          var compDic = {
+            dicNo: null,
+            dicName: null
           }
-          compDic.dicNo = value.compId;
-          compDic.dicName = value.companyName;
-          this.dicCompanyList.push(compDic);
+          compDic.dicNo = value.compId
+          compDic.dicName = value.companyName
+          this.dicCompanyList.push(compDic)
         })
       })
     },
     //获取人事选单字典
-    getHumandisc(){
+    getHumandisc() {
       getBaseInfo(this.baseInfo).then(response => {
-        this.baseInfoData = response.data;
-      });
+        this.baseInfoData = response.data
+      })
     },
     // 获取当前登录用户名称/信息
-    getName(){
-      getAvatorByUserName(this.$store.state.user.name).then( response => {
-        this.nickName=response.data.nickName
-        this.logincompId=response.data.compId
-        this.compId=response.data.compId
-      })
+    getName() {
+      this.nickName = this.$store.state.user.userInfo.nickName
+      this.logincompId = this.$store.state.user.userInfo.compId
+      this.compId = this.logincompId
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
       deptPostTree(this.queryParams).then(response => {
-        this.deptOptions = response.data;
-        this.expandedKeys.push(response.data[0].deptId);
-      });
-    },
-    // 筛选节点
-    filterNode(value, data) {
-      return true;
-    },
-    //折叠节点
-    collapseAll(data) {
-      let self = this;
-      data.forEach((el) => {
-        self.$refs.tree.store.nodesMap[el.id].expanded = false;
-        el.children && el.children.length > 0
-          ? self.collapseAll(el.children)
-          : ""; // 子级递归
-      });
+        this.deptOptions = response.data
+        this.expandedKeys.push(response.data[0].deptId)
+      })
     },
     // 节点单击事件
     handleNodeClick(data) {
-      if(data.postId!=0){
-        this.queryParams.postId = data.postId;
-        this.getList();
+      if (data.postId) {
+        this.queryParams.postId = data.postId
+        this.getList()
       }
-
     },
     /** 查询部门资料维护列表 */
     getList() {
-      this.loading = true;
+      this.loading = true
       queryPersonByPost(this.queryParams).then(response => {
-        this.postPersons = response.data.rows;
-        this.loading = false;
+        this.postPersons = response.data.rows
+        alert(JSON.stringify(response))
+        this.loading = false
         this.total = response.data.total
-      });
+      })
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      this.queryParams.pageNum = 1
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
-      this.compId=this.logincompId
-      this.handleQuery();
-    },
+      this.resetForm('queryForm')
+      this.compId = this.logincompId
+      this.handleQuery()
+    }
   }
-};
+}
 </script>
 
 <style scoped>
 .treeDept {
-  height: 81vh;width: 100%;
+  height: 81vh;
+  width: 100%;
 }
+
 .treeScrollbar {
   height: 100%;
 }

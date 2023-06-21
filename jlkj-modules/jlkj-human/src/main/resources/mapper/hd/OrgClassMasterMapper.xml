@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="selectOrgClassMasterVo">
         select o.id, o.comp_id, o.dept_id,d.dept_name, f.first_dept_name, o.shiftmode_id, s.turn_type_name as shiftmode_name ,o.class_id, c.class_name, o.start_date, o.end_date, o.remark, o.status, o.creator, o.creator_id, o.create_date
         from human_hd_org_class_master o
-                left join  human_first_dept as f on o.dept_id = f.child_dept_id
+                left join  human_hp_first_dept as f on o.dept_id = f.child_dept_id
                 left join sys_dept as d on o.dept_id = d.dept_id
                 left join human_hd_shift_mode s on o.shiftmode_id = s.id
                 left join human_hd_class c on o.class_id = c.id
