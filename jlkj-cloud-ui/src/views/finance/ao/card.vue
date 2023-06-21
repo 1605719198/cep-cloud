@@ -261,7 +261,7 @@ export default {
           const {status, data} = res
           if (status === 200) {
             this.dialogVisible = false
-            // console.log(data);
+            console.log(data);
             this.$message.success('识别结果为：'+JSON.stringify(data.forms_result[0].header));
           } else {
             this.$message.error('识别错误请重试')
