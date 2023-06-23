@@ -59,4 +59,19 @@ public interface IFinanceAoParaService
      * @return 结果
      */
     public int deleteFinanceAoParaById(String id);
+
+//    /**
+//     * 加载参数缓存数据
+//     */
+//    public void loadingAoParaCache();
+//
+//    /**
+//     * 清空参数缓存数据
+//     */
+//    public void clearAoParaCache();
+//
+//    /**
+//     * 重置参数缓存数据
+//     */
+//    public void resetAoParaCache();
 }

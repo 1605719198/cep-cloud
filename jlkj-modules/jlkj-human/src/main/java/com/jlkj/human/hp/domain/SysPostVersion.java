@@ -46,7 +46,7 @@ public class SysPostVersion extends BaseEntity
     /** 岗位类别id */
     private String postTypeId;
 
-    /** 职位类别 * /
+    /** 职位类别 */
     private String deptType;
 
     /** 职位名称id */

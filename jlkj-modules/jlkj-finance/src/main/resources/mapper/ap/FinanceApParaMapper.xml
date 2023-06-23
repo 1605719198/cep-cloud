@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectFinanceApParaByCompIdAndParameterValue" parameterType="FinanceApPara" resultMap="FinanceApParaResult">
         <include refid="selectFinanceApParaVo"/>
-        where company_id = #{companyId} AND parameter_value = #{parameterValue}
+        where company_id = #{companyId} AND parameter_key = #{parameterKey}
     </select>
         
     <insert id="insertFinanceApPara" parameterType="FinanceApPara">

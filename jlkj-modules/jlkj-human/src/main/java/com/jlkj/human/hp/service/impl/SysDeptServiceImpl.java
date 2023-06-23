@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -515,5 +512,14 @@ public class SysDeptServiceImpl implements ISysDeptService {
         return successMsg.toString();
     }
 
+    /**
+     * 查询部门名称（id/编码 转名称）
+     * @param compId 公司别
+     * @return 结果
+     */
+    @Override
+    public List<Map<String,Object>> selectDeptName(String compId){
+        return sysDeptMapper.selectDeptName(compId);
+    }
 
 }
