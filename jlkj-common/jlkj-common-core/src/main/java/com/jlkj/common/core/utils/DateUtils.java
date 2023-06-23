@@ -14,8 +14,7 @@ import java.util.*;
  *
  * @author jlkj
  */
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils
-{
+public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String YYYY = "yyyy";
 
     public static String YYYY_MM = "yyyy-MM";
@@ -36,8 +35,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
      *
      * @return Date() 当前日期
      */
-    public static Date getNowDate()
-    {
+    public static Date getNowDate() {
         return new Date();
     }
 
@@ -46,44 +44,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
      *
      * @return String
      */
-    public static String getDate()
-    {
+    public static String getDate() {
         return dateTimeNow(YYYY_MM_DD);
     }
 
-    public static final String getTime()
-    {
+    public static final String getTime() {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
     }
 
-    public static final String dateTimeNow()
-    {
+    public static final String dateTimeNow() {
         return dateTimeNow(YYYYMMDDHHMMSS);
     }
 
-    public static final String dateTimeNow(final String format)
-    {
+    public static final String dateTimeNow(final String format) {
         return parseDateToStr(format, new Date());
     }
 
-    public static final String dateTime(final Date date)
-    {
+    public static final String dateTime(final Date date) {
         return parseDateToStr(YYYY_MM_DD, date);
     }
 
-    public static final String parseDateToStr(final String format, final Date date)
-    {
+    public static final String parseDateToStr(final String format, final Date date) {
         return new SimpleDateFormat(format).format(date);
     }
 
-    public static final Date dateTime(final String format, final String ts)
-    {
-        try
-        {
+    public static final Date dateTime(final String format, final String ts) {
+        try {
             return new SimpleDateFormat(format).parse(ts);
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
@@ -91,8 +79,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 日期路径 即年/月/日 如2018/08/08
      */
-    public static final String datePath()
-    {
+    public static final String datePath() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyy/MM/dd");
     }
@@ -100,8 +87,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 日期路径 即年/月/日 如20180808
      */
-    public static final String dateTime()
-    {
+    public static final String dateTime() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyyMMdd");
     }
@@ -109,8 +95,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 日期路径 即年-月-日 如2018-08-08
      */
-    public static final String dateTime1()
-    {
+    public static final String dateTime1() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyy-MM-dd");
     }
@@ -118,69 +103,76 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 日期型字符串转化为日期 格式
      */
-    public static Date parseDate(Object str)
-    {
-        if (str == null)
-        {
+    public static Date parseDate(Object str) {
+        if (str == null) {
             return null;
         }
-        try
-        {
+        try {
             return parseDate(str.toString(), parsePatterns);
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             return null;
         }
     }
+
     /**
      * 获得当前月--结束日期
+     *
      * @param date
      * @return
      */
-    public static String getMaxMonthDate(String date){
+    public static String getMaxMonthDate(String date) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             calendar.setTime(dayFormat.parse(date));
             calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
             return dayFormat.format(calendar.getTime());
-        }  catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      * 获得当前月--结束日期
-     * @param date
-     * @return
+     *
+     * @param date 欲计算结束日期的时间
+     * @return 当前月结束日期
      */
-    public static Date getMaxMonthDate1(String date){
+    public static Date getMaxMonthDate1(String date) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM");
         try {
             calendar.setTime(dayFormat.parse(date));
             calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
             return calendar.getTime();
-        }  catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      * 获取服务器启动时间
+     * @author 111191
+     * @Date 上午 09:00:12 2023年6月23日, 0023
+     * @return Date 服务器启动时间
      */
-    public static Date getServerStartDate()
-    {
+
+    public static Date getServerStartDate() {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         return new Date(time);
     }
 
     /**
      * 计算两个时间差
+     * @author 111191
+     * @Date 上午 09:00:45 2023年6月23日, 0023
+     * @param endDate 结束时间
+     * @param nowDate 当前日期
+     * @return 返回字符串两个时间差（X天X小时X分钟）
      */
-    public static String getDatePoor(Date endDate, Date nowDate)
-    {
+    public static String getDatePoor(Date endDate, Date nowDate) {
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
@@ -201,8 +193,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 增加 LocalDateTime ==> Date
      */
-    public static Date toDate(LocalDateTime temporalAccessor)
-    {
+    public static Date toDate(LocalDateTime temporalAccessor) {
         ZonedDateTime zdt = temporalAccessor.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
     }
@@ -210,17 +201,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 增加 LocalDate ==> Date
      */
-    public static Date toDate(LocalDate temporalAccessor)
-    {
+    public static Date toDate(LocalDate temporalAccessor) {
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
     }
 
     /**
-     *
      * @param nowTime   当前时间
-     * @param startTime	开始时间
+     * @param startTime 开始时间
      * @param endTime   结束时间
      * @return
      * @author sunran   判断当前时间在时间区间内
@@ -246,22 +235,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
             return false;
         }
     }
+
     /**
      * 月份计算
+     *
      * @param oDate 日期
-     * @param num 月数
+     * @param num   月数
      * @return
      */
-    public static String addMonth(String oDate, Integer num)  {
+    public static String addMonth(String oDate, Integer num) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try{
+        try {
             Date newDate = df.parse(oDate);
             Calendar cal = Calendar.getInstance();
             cal.setTime(newDate);
             cal.add(Calendar.MONTH, num);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             return formatter.format(cal.getTime());
-        }  catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
@@ -269,6 +260,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     /**
      * 计算两个月中间所有月份
+     *
      * @param minDate 日期
      * @param maxDate 月数
      * @return
@@ -321,5 +313,31 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 比较两个字符串（日期格式）的大小
+     *
+     * @param beginDate 开始日期
+     * @param endDate   结束日期
+     * @return boolean 开始日期大于结束日期 True; 否则为False
+     * @author 111191
+     * @Date 上午 08:50:29 2023年6月23日, 0023
+     */
+    public boolean compareDate(String beginDate, String endDate) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return df.parse(beginDate).before(df.parse(endDate));
+    }
+
+    /**
+     * 比较两个字符串（日期格式）的大小, compareTo比较
+     * @param beginDate 开始日期
+     * @param endDate 结束日期
+     * @return boolean 开始日期大于结束日期 True; 否则为False
+     * @author 111191
+     * @Date 上午 08:55:55 2023年6月23日, 0023
+     */
+    public boolean compareDate2(String beginDate, String endDate) throws ParseException {
+        return beginDate.compareTo(endDate) > 0 ? true : false;
     }
 }
