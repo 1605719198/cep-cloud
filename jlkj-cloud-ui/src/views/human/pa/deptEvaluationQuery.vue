@@ -170,6 +170,12 @@ export default {
     },
     /** 日期查询范围变更*/
     dateFormat(val){
+      if(val==null){
+        this.queryParams.month1=null
+        this.queryParams.month2=null
+        this.queryParams.meritMonth=null
+        return
+      }
       this.queryParams.month1 =val[0];
       this.queryParams.month2 =val[1];
     },

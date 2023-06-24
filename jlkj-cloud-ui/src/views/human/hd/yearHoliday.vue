@@ -37,12 +37,11 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="holidayList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="年度" align="center" prop="year" />
+    <el-table v-loading="loading" :data="holidayList" >
       <el-table-column label="工号" align="center" prop="empNo" />
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="岗位名称" align="center" prop="postName" />
+      <el-table-column label="年度" align="center" prop="year" />
       <el-table-column label="本年度可休年休假天数" align="center" prop="totalDays" />
       <el-table-column label="上年度剩余可休年休假天数" align="center" prop="curYearDays" />
       <el-table-column label="累计可休年休假天数" align="center" prop="preYearDays" />
@@ -69,7 +68,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    <select-user ref="select" @ok="getJobNumber"/>
+
 
     <!-- 添加或修改年休假天数设定对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
@@ -164,6 +163,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <select-user ref="select" @ok="getJobNumber"/>
 
     <!-- 年休假资料导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
@@ -207,6 +207,7 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import selectUser from "@/views/components/human/selectUser/selectUser";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getToken} from "@/utils/auth";
+import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
 
 export default {
   name: "Holiday",
@@ -360,18 +361,6 @@ export default {
       this.holidayList = [];
       this.total = 0;
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加年休假天数设定";
-    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
@@ -409,26 +398,10 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除年休假天数设定编号为"' + ids + '"的数据项？').then(function() {
-        return delHoliday(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },
     /** 导入按钮操作 */
     handleImport() {
       this.upload.title = "年休假资料导入";
       this.upload.open = true;
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/holiday/export', {
-        ...this.queryParams
-      }, `holiday_${new Date().getTime()}.xlsx`)
     },
     /** 工号点击事件 */
     inputClick() {
@@ -437,6 +410,12 @@ export default {
     /** 获取工号 */
     getJobNumber(empId,userName,compId) {
       this.queryParams.empNo = empId;
+      this.form.empNo = empId
+      this.form.empName = userName
+      this.getList();
+      queryNewPostNameAndChangeDetail(this.form).then(res => {
+          this.form.postName = res.data.list1[0].newPostName
+      })
     },
     /** 下载模板操作 */
     importTemplate() {
