@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 
     <sql id="select${ClassName}Vo">
-        select#foreach($column in $columns) $column.columnName#if($foreach.count != $columns.size()),#end#end from ${tableName}
+        SELECT#foreach($column in $columns) $column.columnName#if($foreach.count != $columns.size()),#end#end FROM ${tableName}
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
@@ -37,21 +37,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #if($column.query)
 #if($column.queryType == "EQ")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName = #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName = #{$javaField}</if>
 #elseif($queryType == "NE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName != #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName != #{$javaField}</if>
 #elseif($queryType == "GT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName &gt; #{$javaField}</if>
 #elseif($queryType == "GTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName &gt;= #{$javaField}</if>
 #elseif($queryType == "LT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName &lt; #{$javaField}</if>
 #elseif($queryType == "LTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName &lt;= #{$javaField}</if>
 #elseif($queryType == "LIKE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName like concat('%', #{$javaField}, '%')</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> AND $columnName LIKE concat('%', #{$javaField}, '%')</if>
 #elseif($queryType == "BETWEEN")
-            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> AND $columnName BETWEEN #{params.begin$AttrName} AND #{params.end$AttrName}</if>
 #end
 #end
 #end
@@ -61,19 +61,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="select${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud || $table.tree)
         <include refid="select${ClassName}Vo"/>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        WHERE ${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.sub)
-        select#foreach($column in $columns) a.$column.columnName#if($foreach.count != $columns.size()),#end#end,
+        SELECT#foreach($column in $columns) a.$column.columnName#if($foreach.count != $columns.size()),#end#end,
            #foreach($column in $subTable.columns) b.$column.columnName as sub_$column.columnName#if($foreach.count != $subTable.columns.size()),#end#end
 
-        from ${tableName} a
-        left join ${subTableName} b on b.${subTableFkName} = a.${pkColumn.columnName}
-        where a.${pkColumn.columnName} = #{${pkColumn.javaField}}
+        FROM ${tableName} a
+        LEFT JOIN ${subTableName} b ON b.${subTableFkName} = a.${pkColumn.columnName}
+        WHERE a.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #end
     </select>
         
     <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
-        insert into ${tableName}
+        INSERT INTO ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
 #foreach($column in $columns)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="update${ClassName}" parameterType="${ClassName}">
-        update ${tableName}
+        UPDATE ${tableName}
         <trim prefix="SET" suffixOverrides=",">
 #foreach($column in $columns)
 #if($column.columnName != $pkColumn.columnName)
@@ -99,15 +99,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 #end
         </trim>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        WHERE ${pkColumn.columnName} = #{${pkColumn.javaField}}
     </update>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}">
-        delete from ${tableName} where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        DELETE FROM ${tableName} WHERE ${pkColumn.columnName} = #{${pkColumn.javaField}}
     </delete>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}s" parameterType="String">
-        delete from ${tableName} where ${pkColumn.columnName} in 
+        DELETE FROM ${tableName} WHERE ${pkColumn.columnName} IN
         <foreach item="${pkColumn.javaField}" collection="array" open="(" separator="," close=")">
             #{${pkColumn.javaField}}
         </foreach>
@@ -115,18 +115,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #if($table.sub)
     
     <delete id="delete${subClassName}By${subTableFkClassName}s" parameterType="String">
-        delete from ${subTableName} where ${subTableFkName} in 
+        DELETE FROM ${subTableName} WHERE ${subTableFkName} IN
         <foreach item="${subTableFkclassName}" collection="array" open="(" separator="," close=")">
             #{${subTableFkclassName}}
         </foreach>
     </delete>
 
     <delete id="delete${subClassName}By${subTableFkClassName}" parameterType="${pkColumn.javaType}">
-        delete from ${subTableName} where ${subTableFkName} = #{${subTableFkclassName}}
+        DELETE FROM ${subTableName} WHERE ${subTableFkName} = #{${subTableFkclassName}}
     </delete>
 
     <insert id="batch${subClassName}">
-        insert into ${subTableName}(#foreach($column in $subTable.columns) $column.columnName#if($foreach.count != $subTable.columns.size()),#end#end) values
+        INSERT INTO ${subTableName}(#foreach($column in $subTable.columns) $column.columnName#if($foreach.count != $subTable.columns.size()),#end#end) VALUES
 		<foreach item="item" index="index" collection="list" separator=",">
             (#foreach($column in $subTable.columns) #{item.$column.javaField}#if($foreach.count != $subTable.columns.size()),#end#end)
         </foreach>
