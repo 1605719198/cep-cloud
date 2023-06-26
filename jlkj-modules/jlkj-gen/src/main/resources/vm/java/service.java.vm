@@ -21,7 +21,9 @@ public interface I${ClassName}Service
 
     /**
      * 查询${functionName}列表
-     * 
+     *
+     * @author ${author}
+     * @date ${datetime}
      * @param ${className} ${functionName}
      * @return ${functionName}集合
      */
@@ -29,7 +31,9 @@ public interface I${ClassName}Service
 
     /**
      * 新增${functionName}
-     * 
+     *
+     * @author ${author}
+     * @date ${datetime}
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -37,7 +41,9 @@ public interface I${ClassName}Service
 
     /**
      * 修改${functionName}
-     * 
+     *
+     * @author ${author}
+     * @date ${datetime}
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -45,7 +51,9 @@ public interface I${ClassName}Service
 
     /**
      * 批量删除${functionName}
-     * 
+     *
+     * @author ${author}
+     * @date ${datetime}
      * @param ${pkColumn.javaField}s 需要删除的${functionName}主键集合
      * @return 结果
      */
@@ -53,7 +61,9 @@ public interface I${ClassName}Service
 
     /**
      * 删除${functionName}信息
-     * 
+     *
+     * @author ${author}
+     * @date ${datetime}
      * @param ${pkColumn.javaField} ${functionName}主键
      * @return 结果
      */

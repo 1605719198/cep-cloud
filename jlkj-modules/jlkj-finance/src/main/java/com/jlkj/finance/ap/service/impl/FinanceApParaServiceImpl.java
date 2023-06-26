@@ -1,5 +1,6 @@
 package com.jlkj.finance.ap.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -64,7 +65,7 @@ public class FinanceApParaServiceImpl implements IFinanceApParaService
             financeApPara.setCreateName(SecurityUtils.getNickName());
             return financeApParaMapper.insertFinanceApPara(financeApPara);
         } else {
-            return 0;
+            throw new ServiceException("参数代码："+financeApPara.getParameterKey()+"已经存在，不可重复新增！");
         }
     }
 

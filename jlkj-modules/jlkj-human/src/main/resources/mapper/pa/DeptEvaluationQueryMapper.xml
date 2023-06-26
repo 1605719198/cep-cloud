@@ -53,6 +53,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select merit_status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_person_performance
         <where>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="meritType != null  and meritType != ''"> and merit_type = #{meritType}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="month1 != null and month1 != ''">and merit_month &gt;= #{month1} </if>
+            <if test="month2 != null and month2 != ''">and merit_month &lt;= #{month2} </if>
         </where>
         )*100,2),'%') as 'proportion' from human_pa_person_performance
         <where>  

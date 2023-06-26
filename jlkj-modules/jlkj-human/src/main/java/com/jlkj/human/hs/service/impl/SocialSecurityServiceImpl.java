@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
@@ -73,33 +74,42 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
-//        for (SocialSecurity socialSecurities : socialSecurityList) {
-//            if (socialSecurities.getId() != null) {
-//                SocialSecurity dbSocialSecuritie =socialSecurityMapper.selectSocialSecurityById(socialSecurities.getId());
-//                if(!dbSocialSecuritie.getSalaryProjectId().equals(socialSecurities.getSalaryProjectId())){
-//                    List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
-//                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
-//                        throw new ServiceException("社保公积金项目不允许重复");
-//                    }
-//                }
-//            }else{
-//                List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
-//                for (SocialSecurity item : socialSecurityCompanies) {
-//                    if(!ObjectUtil.isEmpty(socialSecurityCompanies)){
-//                        throw new ServiceException("社保公积金项目不允许重复");
-//                    }
-//                }
-//            }
             Long version = 1L;
             //查询当前公司别 最大版次号 及 生效日期
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
             if (!StringUtils.isEmpty(versionMap)) {
                     Date inEffectDate1 = DateUtils.dateTime("yyyy-MM-dd", versionMap.get("effectDate").toString());
                     version = Long.parseLong(versionMap.get("version").toString());
-                    if (nowdate.compareTo(inEffectDate1) < 0) {
+                    if (nowdate.compareTo(inEffectDate1) > 0) {
                         version = version + 1;
                     }
                 }
+            for (SocialSecurity socialSecurities : socialSecurityList) {
+            if (socialSecurities.getId() != null) {
+                SocialSecurity dbSocialSecuritie = socialSecurityMapper.selectSocialSecurityById(socialSecurities.getId());
+                if (!dbSocialSecuritie.getSalaryProjectId().equals(socialSecurities.getSalaryProjectId())) {
+                    List<SocialSecurity> socialSecurityVersion = socialSecurityMapper.selectSocialSecurityListByVersion(socialSecurities);
+                    if (!ObjectUtil.isEmpty(socialSecurityVersion)) {
+                        List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                        if (!ObjectUtil.isEmpty(socialSecurityCompanies)) {
+                            throw new ServiceException("同一版本下社保公积金项目不允许重复");
+                        }
+                    }
+                }
+            }else {
+                List<SocialSecurity> socialSecurityVersion = socialSecurityMapper.selectSocialSecurityListByVersion(socialSecurities);
+                for (SocialSecurity item : socialSecurityVersion) {
+                    if (!ObjectUtil.isEmpty(socialSecurityVersion)) {
+                        List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
+                        for (SocialSecurity items : socialSecurityCompanies) {
+                            if (!ObjectUtil.isEmpty(socialSecurityCompanies)) {
+                                throw new ServiceException("同一版本下社保公积金项目不允许重复");
+                            }
+                        }
+                    }
+                }
+            }
+        }
                 if (!StringUtils.isEmpty(versionMap)) {
                     Date effectDate = (Date) versionMap.get("effectDate");
                     if (nowdate.compareTo(effectDate) < 0) {
@@ -117,7 +127,8 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                         socialSecurity.setVersion(version);
                         socialSecurityMapper.insertSocialSecurity(socialSecurity);
                     }
-                } else {
+                }
+                else {
                     for (SocialSecurity socialSecurity : socialSecurityList) {
                         if (socialSecurity.getId() != null) {
                             socialSecurity.setCreatorId(SecurityUtils.getUserId().toString());
@@ -132,7 +143,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                         }
                     }
                 }
-//            }
+
 
 
 

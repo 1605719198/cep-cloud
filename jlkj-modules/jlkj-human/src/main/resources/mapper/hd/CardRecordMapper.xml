@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
             <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
-            <if test="date1 != null ">and c.card_time &gt; #{date1} </if>
-            <if test="date2 != null ">and c.card_time &lt; #{date2} </if>
+            <if test="date1 != null ">and c.card_time &gt;= #{date1} </if>
+            <if test="date2 != null ">and c.card_time &lt;= #{date2} </if>
         </where>
     </select>
 

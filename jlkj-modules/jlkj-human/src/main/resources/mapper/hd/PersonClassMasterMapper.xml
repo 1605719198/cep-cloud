@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="selectPersonClassMasterVo">
         select p.id, p.comp_id, p.emp_id, u.nick_name, f.first_dept_name, p.org_id, p.shiftmode_id, s.turn_type_name as shiftmode_name, p.class_id, c.class_name, p.start_date, p.end_date, p.remark, p.status, p.creator, p.creator_id, p.create_date
         from human_hd_person_class_master as p
-                 left join human_first_dept as f on p.emp_id = f.child_person_id
+                 left join human_hp_first_dept as f on p.emp_id = f.child_person_id
                  left join sys_user as u on p.emp_id = u.user_name
                  left join human_hd_shift_mode s on p.shiftmode_id = s.id
                  left join human_hd_class c on p.class_id = c.id

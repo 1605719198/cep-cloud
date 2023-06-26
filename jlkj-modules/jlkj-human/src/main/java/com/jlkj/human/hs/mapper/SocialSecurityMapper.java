@@ -78,4 +78,6 @@ public interface SocialSecurityMapper
 
 
     public List<SocialSecurity> selectSocialSecurityListBySalaryProjectId(SocialSecurity socialSecurity);
+
+    public List<SocialSecurity> selectSocialSecurityListByVersion(SocialSecurity socialSecurity);
 }

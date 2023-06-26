@@ -387,6 +387,7 @@
         <if test='accountLevel == "05" or accountLevel == "" or accountLevel == null'>
             substr( T1.acct_code, 1, 12) AS acct_code,
         </if>
+        T1.company_id
         from
         finance_aa_voucher_detail T1 left join finance_aa_acctcode T3 on T1.company_id = T3.company_id and
         T1.acct_code=T3.acct_code
@@ -452,7 +453,7 @@
             </if>
         </where>
         GROUP BY
-        T1.cal_namea
+        T1.voucher_no
         ORDER BY
         T1.voucher_date
     </select>

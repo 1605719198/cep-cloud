@@ -36,6 +36,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAoParaVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectFinanceAoParaByCompIdAndParameterValue" parameterType="FinanceAoPara" resultMap="FinanceAoParaResult">
+        <include refid="selectFinanceAoParaVo"/>
+        where company_id = #{companyId} AND parameter_key = #{parameterKey}
+    </select>
         
     <insert id="insertFinanceAoPara" parameterType="FinanceAoPara">
         insert into finance_ao_para

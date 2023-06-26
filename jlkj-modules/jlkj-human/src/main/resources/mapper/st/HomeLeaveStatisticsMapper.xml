@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.HomeLeaveStatisticsMapper">
+    
+    <resultMap type="HomeLeaveStatistics" id="HomeLeaveStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="year"    column="year"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="postName"    column="post_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="dueHomeDays"    column="due_home_days"    />
+        <result property="offHomeDays"    column="off_home_days"    />
+        <result property="restHomeDays"    column="rest_home_days"    />
+        <result property="restFhomeNums"    column="rest_fhome_nums"    />
+        <result property="restFhomeDays"    column="rest_fhome_days"    />
+        <result property="preHomeDays"    column="pre_home_days"    />
+        <result property="restHomeNums"    column="rest_home_nums"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectHomeLeaveStatisticsVo">
+        select id, company_id, year, emp_no, emp_id, emp_name, post_name, post_id, due_home_days, off_home_days, rest_home_days, rest_fhome_nums, rest_fhome_days, pre_home_days, rest_home_nums, creator, creator_id, create_date from human_hd_home_leave_holiday
+    </sql>
+
+    <select id="selectHomeLeaveStatisticsList" parameterType="HomeLeaveStatistics" resultMap="HomeLeaveStatisticsResult">
+        <include refid="selectHomeLeaveStatisticsVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+        </where>
+    </select>
+    
+    <select id="selectHomeLeaveStatisticsById" parameterType="String" resultMap="HomeLeaveStatisticsResult">
+        <include refid="selectHomeLeaveStatisticsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHomeLeaveStatistics" parameterType="HomeLeaveStatistics">
+        insert into human_hd_home_leave_holiday
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="year != null">year,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="dueHomeDays != null">due_home_days,</if>
+            <if test="offHomeDays != null">off_home_days,</if>
+            <if test="restHomeDays != null">rest_home_days,</if>
+            <if test="restFhomeNums != null">rest_fhome_nums,</if>
+            <if test="restFhomeDays != null">rest_fhome_days,</if>
+            <if test="preHomeDays != null">pre_home_days,</if>
+            <if test="restHomeNums != null">rest_home_nums,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="empNo != null">#{emp_no},</if>
+            <if test="empId != null">#{emp_id},</if>
+            <if test="empName != null">#{emp_name},</if>
+            <if test="postName != null">#{post_name},</if>
+            <if test="postId != null">#{post_id},</if>
+            <if test="dueHomeDays != null">#{dueHomeDays},</if>
+            <if test="offHomeDays != null">#{offHomeDays},</if>
+            <if test="restHomeDays != null">#{restHomeDays},</if>
+            <if test="restFhomeNums != null">#{restFhomeNums},</if>
+            <if test="restFhomeDays != null">#{restFhomeDays},</if>
+            <if test="preHomeDays != null">#{preHomeDays},</if>
+            <if test="restHomeNums != null">#{restHomeNums},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHomeLeaveStatistics" parameterType="HomeLeaveStatistics">
+        update human_hd_home_leave_holiday
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="dueHomeDays != null">due_home_days = #{dueHomeDays},</if>
+            <if test="offHomeDays != null">off_home_days = #{offHomeDays},</if>
+            <if test="restHomeDays != null">rest_home_days = #{restHomeDays},</if>
+            <if test="restFhomeNums != null">rest_fhome_nums = #{restFhomeNums},</if>
+            <if test="restFhomeDays != null">rest_fhome_days = #{restFhomeDays},</if>
+            <if test="preHomeDays != null">pre_home_days = #{preHomeDays},</if>
+            <if test="restHomeNums != null">rest_home_nums = #{restHomeNums},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHomeLeaveStatisticsById" parameterType="String">
+        delete from human_hd_home_leave_holiday where id = #{id}
+    </delete>
+
+    <delete id="deleteHomeLeaveStatisticsByIds" parameterType="String">
+        delete from human_hd_home_leave_holiday where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

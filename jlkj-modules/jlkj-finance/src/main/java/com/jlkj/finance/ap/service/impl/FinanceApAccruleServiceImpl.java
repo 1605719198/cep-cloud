@@ -1,5 +1,6 @@
 package com.jlkj.finance.ap.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -64,7 +65,7 @@ public class FinanceApAccruleServiceImpl implements IFinanceApAccruleService
             financeApAccrule.setCreateName(SecurityUtils.getNickName());
             return financeApAccruleMapper.insertFinanceApAccrule(financeApAccrule);
         } else {
-            return 0;
+            throw new ServiceException("付款方式："+financeApAccrule.getPayMethod()+"已经存在，不可重复新增！");
         }
     }
 
