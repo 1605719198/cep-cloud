@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产大类维护Service业务层处理
@@ -100,5 +101,14 @@ public class FinanceAaAssetcategoryServiceImpl implements IFinanceAaAssetcategor
     public int deleteFinanceAaAssetcategoryById(String id)
     {
         return financeAaAssetcategoryMapper.deleteFinanceAaAssetcategoryById(id);
+    }
+
+    /**
+     * 查询资产大类（下拉选单用）
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectAssetGroupList(){
+        return financeAaAssetcategoryMapper.selectAssetGroupList();
     }
 }
