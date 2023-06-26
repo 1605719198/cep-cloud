@@ -30,7 +30,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="处理情况" prop="disposeId">
-            <el-select v-model="form.disposeId" placeholder="请选择处理情况" clearable>
+            <el-select v-model="queryParams.disposeId" placeholder="请选择处理情况" clearable>
               <el-option
                 v-for="dict in attendenceOptions.DisposeStatus"
                 :key="dict.dicNo"
@@ -233,6 +233,7 @@ export default {
     resetQuery() {
       this.queryParams.empNo = undefined
       this.queryParams.slotCardOnduty = undefined
+      this.queryParams.disposeId = null
       this.handleQuery();
     },
     /** 修改按钮操作 */
