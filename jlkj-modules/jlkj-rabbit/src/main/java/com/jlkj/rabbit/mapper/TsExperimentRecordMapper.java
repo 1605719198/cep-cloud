@@ -12,9 +12,13 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public interface TsExperimentRecordMapper extends BaseMapper<TsExperimentRecord> {
-//    @Select("select case shift when '2201' then '白班' else '夜班' end as shift \n" +
-//                    "from v_humanresource_scheduling_work where shift != '01'\n" +
-//                    "and #{time} >= due_attendance_time_work and #{time} <= due_attendance_time_offduty")
+    /**
+     * 取得班别
+     * @author 265675
+     * @Date 下午 02:30:06 2023年6月26日, 0026
+     * @param condition
+     * @return String
+     */
     String getShift(String condition);
 }
 
