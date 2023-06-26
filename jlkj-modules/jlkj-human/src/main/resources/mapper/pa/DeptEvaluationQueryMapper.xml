@@ -46,13 +46,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDeptEvaluationQueryVo">
-        select id, comp_id, merit_type, merit_month, emp_id, month1, month2 people, proportion, dept_type, dept, post_id, is_team, team_ratio, team_score, is_point, point_ratio, point_score, is_fix, fix_ratio, fix_score, fix_id, is_kpi, kpi_ratio, kpi_score, self_appr, adm_appr, pd_adjust, pb_adjust, other_adjust, score, self_score, adm_score, rank, merit_status, creator, creator_id, create_date from human_pa_person_performance
+        SELECT id, comp_id, merit_type, merit_month, emp_id, month1, month2 people, proportion, dept_type, dept, post_id, is_team, team_ratio, team_score, is_point, point_ratio, point_score, is_fix, fix_ratio, fix_score, fix_id, is_kpi, kpi_ratio, kpi_score, self_appr, adm_appr, pd_adjust, pb_adjust, other_adjust, score, self_score, adm_score, rank, merit_status, creator, creator_id, create_date FROM human_pa_person_performance
     </sql>
 
     <select id="selectDeptEvaluationQueryList" parameterType="DeptEvaluationQuery" resultMap="DeptEvaluationQueryResult">
-        select merit_status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_person_performance
+        SELECT merit_status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_person_performance
         <where>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="meritType != null  and meritType != ''"> and merit_type = #{meritType}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="month1 != null and month1 != ''">and merit_month &gt;= #{month1} </if>
+            <if test="month2 != null and month2 != ''">and merit_month &lt;= #{month2} </if>
         </where>
         )*100,2),'%') as 'proportion' from human_pa_person_performance
         <where>  
@@ -71,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertDeptEvaluationQuery" parameterType="DeptEvaluationQuery">
-        insert into human_pa_person_performance
+        INSERT INTO human_pa_person_performance
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -147,7 +151,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateDeptEvaluationQuery" parameterType="DeptEvaluationQuery">
-        update human_pa_person_performance
+        UPDATE human_pa_person_performance
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="meritType != null">merit_type = #{meritType},</if>
@@ -187,11 +191,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteDeptEvaluationQueryById" parameterType="String">
-        delete from human_pa_person_performance where id = #{id}
+        DELETE FROM human_pa_person_performance where id = #{id}
     </delete>
 
     <delete id="deleteDeptEvaluationQueryByIds" parameterType="String">
-        delete from human_pa_person_performance where id in 
+        DELETE FROM human_pa_person_performance where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

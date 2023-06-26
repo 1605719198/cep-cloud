@@ -43,26 +43,35 @@
       </el-row>
     </el-form>
 
-    <el-table v-loading="loading" :data="personalIncomeTaxList" :row-class-name="addIndex" @selection-change="handleSelectionChange" @row-click="addLine">
+    <el-form ref="form" :model="form" :rules="rules">
+    <el-table v-loading="loading" :data="form.personalIncomeTaxList" :row-class-name="addIndex" @selection-change="handleSelectionChange" @row-click="addLine">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="所得税级距" align="center" prop="taxSpace" >
-        <template v-slot="scope">
-          <el-input v-model="scope.row.taxSpace" placeholder="请输入内容"></el-input>
+        <template v-slot="scope" >
+          <el-form-item :prop="'personalIncomeTaxList.' + scope.$index + '.taxSpace'" :rules="rules.mon">
+          <el-input v-model="scope.row.taxSpace" placeholder="请输入内容" ></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="税率" align="center" prop="taxRate" >
-        <template v-slot="scope">
-          <el-input v-model="scope.row.taxRate" placeholder="请输入内容"></el-input>
+        <template v-slot="scope" >
+          <el-form-item :prop="'personalIncomeTaxList.' + scope.$index + '.taxRate'" :rules="rules.mon">
+          <el-input v-model="scope.row.taxRate" placeholder="请输入内容" ></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="速算扣除数" align="center" prop="deductNum" >
         <template v-slot="scope">
-          <el-input v-model="scope.row.deductNum" placeholder="请输入内容"></el-input>
+          <el-form-item :prop="'personalIncomeTaxList.' + scope.$index + '.deductNum'" :rules="rules.mon">
+          <el-input v-model="scope.row.deductNum" placeholder="请输入内容" ></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="生效日期" align="center" prop="effectDate" >
         <template slot-scope="scope">
+          <el-form-item>
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="输入人" align="center" prop="creator" />
@@ -72,6 +81,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </el-form>
 
     <pagination
       v-show="total>0"
@@ -135,9 +145,14 @@ export default {
         effectDate: null,
       },
       // 表单参数
-      form: {},
+      form: {
+        personalIncomeTaxList: [],
+      },
       // 表单校验
       rules: {
+        mon: [
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
+        ]
       }
     };
   },
@@ -151,10 +166,10 @@ export default {
     getList() {
       this.loading = true;
       listPersonalIncomeTax(this.queryParams).then(response => {
-        this.personalIncomeTaxList = response.rows;
+        this.form.personalIncomeTaxList = response.rows;
         this.total = response.total;
         this.loading = false;
-        if(this.personalIncomeTaxList.length===0){
+        if(this.form.personalIncomeTaxList.length===0){
           this.addLine();
         }
       });
@@ -241,7 +256,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.personalIncomeTaxList.length === row.index + 1) {
+      if (!row||this.form.personalIncomeTaxList.length === row.index + 1) {
         const newLine = {
           id: null,
           creator: this.nickName,
@@ -251,7 +266,7 @@ export default {
           type: this.queryParams.type,
           effectDate: this.queryParams.effectDate,
         }
-        this.personalIncomeTaxList.push(newLine)
+        this.form.personalIncomeTaxList.push(newLine)
       }
     },
   }

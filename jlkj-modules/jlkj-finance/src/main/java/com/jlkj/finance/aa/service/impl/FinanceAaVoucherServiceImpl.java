@@ -1,5 +1,7 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
@@ -10,10 +12,15 @@ import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import com.jlkj.finance.aa.mapper.*;
 import com.jlkj.finance.aa.service.FinanceAccountYearService;
 import com.jlkj.finance.aa.service.IFinanceAaVoucherService;
+import com.jlkj.finance.api.bean.FinanceVoucherBean;
+import com.jlkj.finance.api.bean.FinanceVoucherDetailBean;
 import com.jlkj.finance.utils.ConstantsUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -32,6 +39,8 @@ import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
  * @date 2023-04-24
  */
 @Service
+@RequestMapping("/voucherService")
+@Slf4j
 public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
     @Autowired
     private FinanceAaVoucherMapper financeAaVoucherMapper;
@@ -265,6 +274,86 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
 
     }
 
+
+    /**
+     * 新增凭证 外部
+     * @param financeVoucherBean
+     * @return
+     */
+    @Override
+    public Map<String,Object> doVoucher(FinanceVoucherBean financeVoucherBean){
+        log.info("接收到参数->{}",financeVoucherBean);
+        log.info("参数解析->{},{}",financeVoucherBean.getPastuserName(),financeVoucherBean.getPastuserId());
+        FinanceAaVoucher financeAaVoucher = new FinanceAaVoucher();
+        BeanUtils.copyProperties(financeVoucherBean, financeAaVoucher);
+        financeAaVoucher.setId(IdUtils.simpleUUID());
+        financeAaVoucher.setStatus(financeVoucherBean.getStatus());
+        financeAaVoucher.setCompanyId(financeVoucherBean.getCompanyId());
+        financeAaVoucher.setVoucherType(financeVoucherBean.getVoucherType());
+
+
+        if (StringUtils.isEmpty(financeAaVoucher.getApid())) {
+           throw new ServiceException("抛帐系统代号不能为空!");
+        }
+        if (StringUtils.isEmpty(financeVoucherBean.getVoucherType())) {
+            throw new ServiceException("凭证类别不能为空!");
+        }
+
+        if (StringUtils.isEmpty(financeAaVoucher.getPgrmid())) {
+            throw new ServiceException("抛帐程序名称不能为空!");
+        }
+
+        BigDecimal ntamtD = BigDecimal.ZERO;
+        BigDecimal ntamtC = BigDecimal.ZERO;
+        List<FinanceVoucherDetailBean> detailList = financeVoucherBean.getDetailList();
+        List list= new ArrayList();
+        if (detailList.size() > 0) {
+            financeAaVoucher.setVoucherDesc(detailList.get(0).getSrlDesc());
+            for (FinanceVoucherDetailBean financeAaVoucherDetailBean : detailList) {
+                financeAaVoucherDetailBean.setVoucherId(financeAaVoucher.getId());
+
+                if ("D".equals(financeAaVoucherDetailBean.getDrcr())) {
+                    ntamtD = ntamtD.add(financeAaVoucherDetailBean.getNtamt());
+                }
+                if ("C".equals(financeAaVoucherDetailBean.getDrcr())) {
+                    ntamtC = ntamtC.add(financeAaVoucherDetailBean.getNtamt());
+                }
+                FinanceAaVoucherDetail financeVoucherDetail =new FinanceAaVoucherDetail();
+                BeanUtils.copyProperties(financeAaVoucherDetailBean, financeVoucherDetail);
+                list.add(financeVoucherDetail);
+
+            }
+        }
+        financeAaVoucher.setDrAmt(ntamtD);
+        financeAaVoucher.setCrAmt(ntamtC);
+        financeAaVoucher.setIsInspect("Y");
+        financeAaVoucher.setDetailList(list);
+        if (financeAaVoucher.getPastuserName() == null) {
+            financeAaVoucher.setPastuserName(getUsername());
+        }
+        Map returnMap = new HashMap();
+        String inspectionCollection = inspectionCollection(financeAaVoucher);
+        if (StringUtils.isEmpty(inspectionCollection)) {
+            //获取凭证号
+            String voucherNo = insertFinanceAaVoucherVoucherNo(financeAaVoucher);
+            financeAaVoucher.setVoucherNo(voucherNo);
+            insertFinanceAaVoucherDetail(financeAaVoucher);
+            financeAaVoucherMapper.insertFinanceAaVoucher(financeAaVoucher);
+            returnMap.put("isSuccess","Y")  ;
+            returnMap.put("voucherNo",voucherNo)  ;
+            returnMap.put("voucherId",financeAaVoucher.getId())  ;
+            returnMap.put("message","凭证新增成功")  ;
+        }else{
+
+            returnMap.put("isSuccess","N")  ;
+            returnMap.put("voucherNo","")  ;
+            returnMap.put("voucherId","")  ;
+            returnMap.put("message",inspectionCollection)  ;
+        }
+        log.info("返回参数->{}",returnMap);
+        return returnMap;
+
+    }
     /**
      * 新增凭证维护-主
      *
@@ -502,6 +591,7 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             List<FinanceAaVoucherDetail> list = new ArrayList<FinanceAaVoucherDetail>();
             for (int i = 0; i < financeAaVoucherDetailList.size(); i++) {
                 financeAaVoucherDetailList.get(i).setVoucherNo(id);
+                financeAaVoucherDetailList.get(i).setVoucherId(financeAaVoucher.getId());
                 financeAaVoucherDetailList.get(i).setId(IdUtils.simpleUUID());
                 financeAaVoucherDetailList.get(i).setSrlno(Long.valueOf(i));
                 financeAaVoucherDetailList.get(i).setVoucherDate(DateUtils.dateTime(financeAaVoucher.getVoucherDate()));
@@ -887,6 +977,9 @@ public class FinanceAaVoucherServiceImpl implements IFinanceAaVoucherService {
             if (financeAaAcctcodeCorp != null) {
                 if (!financeAaAcctcodeCorp.getDisabledCode().equals(ConstantsUtil.DISABLEDCODE) && !financeAaAcctcodeCorp.getIsVoucher().equals(ConstantsUtil.DISABLEDCODE)) {
                     successMsg.append("该会计科目" + financeAaVoucher.getAcctCode() + "状态为作废或传票性科目为否！");
+                }else{
+                    financeAaVoucherDetail.setGroupAcctId(financeAaAcctcodeCorp.getGroupAcctId());
+                    financeAaVoucherDetail.setAcctName(financeAaAcctcodeCorp.getAcctName());
                 }
             } else {
                 successMsg.append("该会计科目" + financeAaVoucher.getAcctCode() + "在会计科目——公司级不存在！");

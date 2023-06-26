@@ -71,7 +71,9 @@ public interface ISocialSecurityService
 
     /**
      * 版本号列表
-     * @return
+     *
+     * @param payAreaId 社保公积金缴费比例设定
+     * @return 结果
      */
     List<Map<String,Long>> getVersionList(String payAreaId);
 }

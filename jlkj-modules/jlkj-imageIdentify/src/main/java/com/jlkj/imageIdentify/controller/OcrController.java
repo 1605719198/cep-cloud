@@ -1,6 +1,7 @@
 package com.jlkj.imageIdentify.controller;
 
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.imageIdentify.ImageIdentifyApplication;
 import com.jlkj.imageIdentify.utils.Base64Util;
 import com.jlkj.imageIdentify.utils.HttpUtil;
@@ -18,7 +19,7 @@ import java.net.URLEncoder;
 public class OcrController {
 
     @RequestMapping("/ocr/idCard")
-    public String OcrIdCard(@RequestParam("file") MultipartFile file){
+    public Object OcrIdCard(@RequestParam("file") MultipartFile file){
         long startTime = System.currentTimeMillis();
         //获取文件名
         String fileName = file.getOriginalFilename();
@@ -47,11 +48,11 @@ public class OcrController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "500";
+        return AjaxResult.error();
     }
 
     @RequestMapping("/ocr/businessLicense")
-    public String OcrBusinessLicense(@RequestParam("file") MultipartFile file){
+    public Object OcrBusinessLicense(@RequestParam("file") MultipartFile file){
         long startTime = System.currentTimeMillis();
         //获取文件名
         String fileName = file.getOriginalFilename();
@@ -80,7 +81,7 @@ public class OcrController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "500";
+        return AjaxResult.error();
     }
 
 }

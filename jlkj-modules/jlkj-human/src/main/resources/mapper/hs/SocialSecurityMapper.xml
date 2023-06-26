@@ -26,11 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSocialSecurityVo">
-        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+        SELECT id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date FROM human_hs_social_security
     </sql>
 
     <select id="selectSocialSecurityList" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
-        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+        <include refid="selectSocialSecurityVo"/>
         <where>
             <if test="date != null ">and effect_date = #{date} </if>
             <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
@@ -45,14 +45,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectSocialSecurityByempNo" parameterType="String" resultMap="SocialSecurityResult">
-        select s.id, s.salary_project_id,p.pay_pro_code,pay_pro_name, s.com_pro, s.com_mon, s.per_pro, s.per_mon, s.base_ucl, s.base_ll, s.deci_bit, s.carry_mode, s.pay_area_id, s.effect_date, s.version, s.creator, s.creator_id, s.create_date from human_hs_social_security s
+        SELECT s.id, s.salary_project_id,p.pay_pro_code,pay_pro_name, s.com_pro, s.com_mon, s.per_pro, s.per_mon, s.base_ucl, s.base_ll, s.deci_bit, s.carry_mode, s.pay_area_id, s.effect_date, s.version, s.creator, s.creator_id, s.create_date FROM human_hs_social_security s
         left join human_hs_salary_project_basis p
         on s.salary_project_id = p.id
         where s.pay_area_id = (select  pay_area_id from human_hs_social_security_company where comp_id = #{compId})
     </select>
         
     <insert id="insertSocialSecurity" parameterType="SocialSecurity">
-        insert into human_hs_social_security
+        INSERT INTO human_hs_social_security
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="salaryProjectId != null">salary_project_id,</if>
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateSocialSecurity" parameterType="SocialSecurity">
-        update human_hs_social_security
+        UPDATE human_hs_social_security
         <trim prefix="SET" suffixOverrides=",">
             <if test="salaryProjectId != null">salary_project_id = #{salaryProjectId},</if>
             <if test="comPro != null">com_pro = #{comPro},</if>
@@ -114,7 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSocialSecurityById" parameterType="String">
-        delete from human_hs_social_security where id = #{id}
+        DELETE FROM human_hs_social_security where id = #{id}
     </delete>
 
     <select id="getVersionList" parameterType="String" resultMap="SocialSecurityResult">
@@ -122,25 +122,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectMaxVersion" parameterType="String" resultType="map">
-        select  effect_date effectDate, version  from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
+        SELECT  effect_date effectDate, version  from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
     </select>
 
     <delete id="deleteSocialSecurityByIds" parameterType="String">
-        delete from human_hs_social_security where id in 
+        DELETE FROM human_hs_social_security where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <delete id="deleteSocialSecurityByVersion" parameterType="map">
-        delete from human_hs_social_security where pay_area_id = #{payAreaId} and  version= #{version}
+        DELETE FROM human_hs_social_security where pay_area_id = #{payAreaId} and  version= #{version}
     </delete>
 
     <select id="selectSocialSecurityListBySalaryProjectId" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
-        select id, salary_project_id, com_pro, com_mon, per_pro, per_mon, base_ucl, base_ll, deci_bit, carry_mode, pay_area_id, effect_date, version, creator, creator_id, create_date from human_hs_social_security
+        <include refid="selectSocialSecurityVo"/>
         <where>
             <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
             <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
+        </where>
+    </select>
+
+    <select id="selectSocialSecurityListByVersion" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
+        <include refid="selectSocialSecurityVo"/>
+        <where>
+            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
+            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
+            <if test="version != null and version != ''">and version = #{version} </if>
         </where>
     </select>
 </mapper>

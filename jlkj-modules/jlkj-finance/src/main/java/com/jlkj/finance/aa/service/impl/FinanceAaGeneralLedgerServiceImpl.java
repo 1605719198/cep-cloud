@@ -38,7 +38,6 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
         financeAaLedgerAcctDTO.setStartDetailDate(startDate);
         financeAaLedgerAcctDTO.setEndDetailDate(endDate);
-
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0, 7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0, 7));
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();

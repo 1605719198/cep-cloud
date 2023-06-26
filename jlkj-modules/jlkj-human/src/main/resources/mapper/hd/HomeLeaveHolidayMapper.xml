@@ -27,10 +27,10 @@
     </resultMap>
 
     <sql id="selectHomeLeaveHolidayVo">
-        select id, company_id, year, emp_no, emp_id, emp_name, post_name, post_id, due_home_days,
+        SELECT id, company_id, year, emp_no, emp_id, emp_name, post_name, post_id, due_home_days,
             off_home_days, rest_home_days, rest_fhome_nums, rest_fhome_days, pre_home_days,
             rest_home_nums, creator, creator_id, create_date
-        from human_hd_home_leave_holiday
+        FROM human_hd_home_leave_holiday
     </sql>
 
     <select id="selectHomeLeaveHolidayList" parameterType="HomeLeaveHoliday" resultMap="HomeLeaveHolidayResult">
@@ -58,7 +58,7 @@
     </select>
 
     <insert id="insertHomeLeaveHoliday" parameterType="HomeLeaveHoliday">
-        insert into human_hd_home_leave_holiday
+        INSERT INTO human_hd_home_leave_holiday
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="companyId != null">company_id,</if>
@@ -102,7 +102,7 @@
     </insert>
 
     <update id="updateHomeLeaveHoliday" parameterType="HomeLeaveHoliday">
-        update human_hd_home_leave_holiday
+        UPDATE human_hd_home_leave_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
             <if test="year != null">year = #{year},</if>
@@ -126,7 +126,7 @@
     </update>
 
     <update id="updateHomeLeaveHolidayByEmpNo" parameterType="HomeLeaveHoliday">
-        update human_hd_home_leave_holiday
+        UPDATE human_hd_home_leave_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
             <if test="year != null">year = #{year},</if>
@@ -150,11 +150,11 @@
     </update>
 
     <delete id="deleteHomeLeaveHolidayById" parameterType="String">
-        delete from human_hd_home_leave_holiday where id = #{id}
+        DELETE FROM human_hd_home_leave_holiday where id = #{id}
     </delete>
 
     <delete id="deleteHomeLeaveHolidayByIds" parameterType="String">
-        delete from human_hd_home_leave_holiday where id in
+        DELETE FROM human_hd_home_leave_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

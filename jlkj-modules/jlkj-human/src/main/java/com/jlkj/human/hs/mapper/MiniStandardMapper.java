@@ -62,8 +62,31 @@ public interface MiniStandardMapper
      */
     public int deleteMiniStandardByUuids(String[] uuids);
 
+    /**
+     * 获取版本号
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
     List<MiniStandard> getVersionList(String compId);
 
+    /**
+     * 获取最大版本号
+     *
+     * @param compId 公司别
+     * @return 结果
+     */
     Map<String,Object> selectMaxVersion(String compId);
+
+
+    /**
+     * 删除工资标准数据
+     * @Description 删除工资标准数据
+     * @param compId 公司别
+     * @param version 版本号
+     * @return 最低工资标准删除结果
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
     public int deleteMiniStandardByVersion(@Param("compId") String compId, @Param("version") Long version);
 }

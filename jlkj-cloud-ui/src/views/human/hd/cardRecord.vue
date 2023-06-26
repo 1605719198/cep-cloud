@@ -137,6 +137,12 @@ export default {
     },
     /** 日期查询范围变更*/
     dateFormat(val){
+      if(val==null){
+        this.queryParams.date1=null
+        this.queryParams.date2=null
+        this.queryParams.cardTime=null
+        return
+      }
       this.queryParams.date1 =val[0];
       this.queryParams.date2 =val[1];
     },

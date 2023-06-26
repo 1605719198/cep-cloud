@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
@@ -153,7 +154,7 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
         SalaryProjectBasis dbSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getId());
         if(!salaryProjectBasis.getStatus().equals(dbSalaryProjectBasis.getStatus())){
             // 子节点有正常数据不能关闭BasisOptionsDTO(id=78, dicNo=null, dicName=null, status=0, compId=null)
-            if("1".equals(salaryProjectBasis.getStatus())){
+            if(Constants.ONE.equals(salaryProjectBasis.getStatus())){
                 List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(salaryProjectBasis.getId());
 
                 for (BasisOptionsDTO oldDatum : oldData) {
@@ -163,9 +164,9 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
                 }
             }
             // 当子节点启动时，父节点直接改成正常
-            if("0".equals(salaryProjectBasis.getStatus())){
+            if(Constants.ZERO.equals(salaryProjectBasis.getStatus())){
                 SalaryProjectBasis parSalaryProjectBasis = salaryProjectBasisMapper.selectSalaryProjectBasisById(salaryProjectBasis.getParentid());
-                parSalaryProjectBasis.setStatus("0");
+                parSalaryProjectBasis.setStatus(Constants.ZERO);
                 salaryProjectBasisMapper.updateSalaryProjectBasis(parSalaryProjectBasis);
             }
         }
@@ -202,11 +203,11 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
      * @return 结果
      */
     @Override
-    public int deleteSalaryProjectBasisById(Long id)throws Exception
+    public int deleteSalaryProjectBasisById(Long id)
     {
         List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(id);
         if(!oldData.isEmpty()){
-            throw new Exception("该资料下存在数据，不可删除");
+            throw new ServiceException("该资料下存在数据，不可删除");
         }
         return salaryProjectBasisMapper.deleteSalaryProjectBasisById(id);
     }
