@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectYearHolidayStatisticsVo">
-        select id, comp_id, year, emp_no, emp_id, emp_name, post_name, post_id, total_days, cur_year_days, pre_year_days, rest_days, giveup_days, goto_days, overtime_pay, creator, creator_id, create_date from human_hd_year_holiday
+        SELECT id, comp_id, year, emp_no, emp_id, emp_name, post_name, post_id, total_days, cur_year_days, pre_year_days, rest_days, giveup_days, goto_days, overtime_pay, creator, creator_id, create_date FROM human_hd_year_holiday
     </sql>
 
     <select id="selectYearHolidayStatisticsList" parameterType="YearHolidayStatistics" resultMap="YearHolidayStatisticsResult">
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertYearHolidayStatistics" parameterType="YearHolidayStatistics">
-        insert into human_hd_year_holiday
+        INSERT INTO human_hd_year_holiday
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -87,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateYearHolidayStatistics" parameterType="YearHolidayStatistics">
-        update human_hd_year_holiday
+        UPDATE human_hd_year_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="year != null">year = #{year},</if>
@@ -111,11 +111,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteYearHolidayStatisticsById" parameterType="String">
-        delete from human_hd_year_holiday where id = #{id}
+        DELETE FROM human_hd_year_holiday where id = #{id}
     </delete>
 
     <delete id="deleteYearHolidayStatisticsByIds" parameterType="String">
-        delete from human_hd_year_holiday where id in 
+        DELETE FROM human_hd_year_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

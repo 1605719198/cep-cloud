@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <delete id="deletePersonalIncomeTaxByVersion" parameterType="map">
+    <delete id="deletePersonalIncomeTaxByVersionNo" parameterType="map">
         delete from human_hs_personal_income_tax where type = #{type} and  version_no= #{versionNo}
     </delete>
 
