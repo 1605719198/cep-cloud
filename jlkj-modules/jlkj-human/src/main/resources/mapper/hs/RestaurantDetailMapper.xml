@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.RestaurantDetailMapper">
+    
+    <resultMap type="RestaurantDetail" id="RestaurantDetailResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postFullName"    column="post_full_name"    />
+        <result property="slotCardTime"    column="slot_card_time"    />
+        <result property="money"    column="money"    />
+        <result property="clockId"    column="clock_id"    />
+        <result property="clockCode"    column="clock_code"    />
+        <result property="clockName"    column="clock_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createNo"    column="create_no"    />
+        <result property="createId"    column="create_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectRestaurantDetailVo">
+        select uuid, comp_id, emp_id, emp_name, emp_no, post_id, post_full_name, slot_card_time, money, clock_id, clock_code, clock_name, remark, create_by, create_no, create_id, create_time from human_hs_restaurant_detail
+    </sql>
+
+    <select id="selectRestaurantDetailList" parameterType="RestaurantDetail" resultMap="RestaurantDetailResult">
+        <include refid="selectRestaurantDetailVo"/>
+        <where>  
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="startDate != null "> and slot_card_time &gt;= #{startDate}</if>
+            <if test="endDate != null "> and slot_card_time &lt;= #{endDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectRestaurantDetailByUuid" parameterType="String" resultMap="RestaurantDetailResult">
+        <include refid="selectRestaurantDetailVo"/>
+        where uuid = #{uuid}
+    </select>
+        
+    <insert id="insertRestaurantDetail" parameterType="RestaurantDetail">
+        insert into human_hs_restaurant_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postFullName != null">post_full_name,</if>
+            <if test="slotCardTime != null">slot_card_time,</if>
+            <if test="money != null">money,</if>
+            <if test="clockId != null">clock_id,</if>
+            <if test="clockCode != null">clock_code,</if>
+            <if test="clockName != null">clock_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createNo != null">create_no,</if>
+            <if test="createId != null">create_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postFullName != null">#{postFullName},</if>
+            <if test="slotCardTime != null">#{slotCardTime},</if>
+            <if test="money != null">#{money},</if>
+            <if test="clockId != null">#{clockId},</if>
+            <if test="clockCode != null">#{clockCode},</if>
+            <if test="clockName != null">#{clockName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createNo != null">#{createNo},</if>
+            <if test="createId != null">#{createId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRestaurantDetail" parameterType="RestaurantDetail">
+        update human_hs_restaurant_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postFullName != null">post_full_name = #{postFullName},</if>
+            <if test="slotCardTime != null">slot_card_time = #{slotCardTime},</if>
+            <if test="money != null">money = #{money},</if>
+            <if test="clockId != null">clock_id = #{clockId},</if>
+            <if test="clockCode != null">clock_code = #{clockCode},</if>
+            <if test="clockName != null">clock_name = #{clockName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createNo != null">create_no = #{createNo},</if>
+            <if test="createId != null">create_id = #{createId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteRestaurantDetailByUuid" parameterType="String">
+        delete from human_hs_restaurant_detail where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteRestaurantDetailByUuids" parameterType="String">
+        delete from human_hs_restaurant_detail where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

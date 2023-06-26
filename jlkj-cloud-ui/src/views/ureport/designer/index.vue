@@ -8,8 +8,8 @@ export default {
   name: "Ureport",
   data() {
     return {
-      src: this.GLOBAL.designUrl,
-      // src: "http://localhost:9205/ureport/designer",
+      // src: this.GLOBAL.designUrl,
+      src: "http://10.32.157.51:9205/ureport/designer",
       height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: true
     };

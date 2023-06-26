@@ -1,9 +1,9 @@
 <template>
   <div v-if="visible">
     <!-- 添加或修改岗位信息数据维护对话框 -->
-    <el-dialog :title="title"  :visible.sync="visible" width="1000px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="visible" width="1000px" append-to-body class="customDialogStyle">
       <el-tabs tab-position="top" type="border-card">
-        <el-tab-pane label="岗位基本设定" >
+        <el-tab-pane label="岗位基本设定">
           <el-form ref="forms" :model="form" :rules="rules" label-width="180px">
             <el-row :gutter="20">
               <el-col :span="12">
@@ -21,7 +21,9 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="所属公司/机构" prop="orgId">
-                  <treeselect v-model="form.orgId" :options="allDeptOptions" :show-count="true" placeholder="请选择所属公司/机构" :normalizer="normalizer" @select="deptChange"/>
+                  <treeselect v-model="form.orgId" :options="allDeptOptions" :show-count="true" placeholder="请选择所属公司/机构"
+                              :normalizer="normalizer" @select="deptChange"
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -31,7 +33,8 @@
                       v-for="dict in dict.type.sys_normal_disable"
                       :key="dict.value"
                       :label="dict.value"
-                    >{{dict.label}}</el-radio>
+                    >{{ dict.label }}
+                    </el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -40,19 +43,23 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="专长类别" prop="specialityTypeId">
-                  <el-select :popper-append-to-body="false" v-model="form.specialityTypeId" placeholder="请选择专长类别" @change="handleChangeA"  class="maxWidth" >
+                  <el-select :popper-append-to-body="false" v-model="form.specialityTypeId" placeholder="请选择专长类别"
+                             @change="handleChangeA" class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP013"
-                      :key="dict.dicNo"
+                      :key="dict.uuid"
                       :label="dict.dicName"
-                      :value="dict.dicNo"
+                      :value="dict.uuid"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="专长" prop="specialityId">
-                  <el-select :popper-append-to-body="false" v-model="form.specialityId" placeholder="请选择专长" class="maxWidth" >
+                  <el-select :popper-append-to-body="false" v-model="form.specialityId" placeholder="请选择专长"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in deepOptions1"
                       :key="dict.dicNo"
@@ -67,19 +74,23 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="岗位序列" prop="postSequenceId">
-                  <el-select :popper-append-to-body="false" v-model="form.postSequenceId" placeholder="请选择岗位序列" @change="handleChangeB" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.postSequenceId" placeholder="请选择岗位序列"
+                             @change="handleChangeB" class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP003"
-                      :key="dict.dicNo"
+                      :key="dict.uuid"
                       :label="dict.dicName"
-                      :value="dict.dicNo"
+                      :value="dict.uuid"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="岗位类别" prop="postTypeId">
-                  <el-select :popper-append-to-body="false" v-model="form.postTypeId" placeholder="请选择岗位类别" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.postTypeId" placeholder="请选择岗位类别"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in deepOptions2"
                       :key="dict.dicNo"
@@ -94,7 +105,9 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="职位名称" prop="jobTitleId">
-                  <el-select :popper-append-to-body="false" v-model="form.jobTitleId" placeholder="请选择职位名称" @change="handleChangeC" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.jobTitleId" placeholder="请选择职位名称"
+                             @change="handleChangeC" class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in humanJobTitle"
                       :key="dict.jobTitleNo"
@@ -106,7 +119,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="流水号" prop="serialNumber">
-                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="20" disabled />
+                  <el-input v-model="form.serialNumber" placeholder="请输入流水号" maxlength="20" disabled/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -114,7 +127,9 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="工作地点" prop="workAddressId">
-                  <el-select :popper-append-to-body="false" v-model="form.workAddressId" placeholder="请选择工作地点" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.workAddressId" placeholder="请选择工作地点"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP004"
                       :key="dict.dicNo"
@@ -126,7 +141,9 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="公司(具体工作地点)" prop="workAddress">
-                  <el-select :popper-append-to-body="false" v-model="form.workAddress" placeholder="请选择公司" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.workAddress" placeholder="请选择公司"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in companyList"
                       :key="dict.compId"
@@ -141,12 +158,14 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="驻外地点(具体工作地点)" prop="overseasLocations">
-                  <el-input v-model="form.overseasLocations" placeholder="请输入驻外地点" maxlength="100"  />
+                  <el-input v-model="form.overseasLocations" placeholder="请输入驻外地点" maxlength="100"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="职位类别" prop="deptType">
-                  <el-select :popper-append-to-body="false" v-model="form.deptType" placeholder="请选择职位类别" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.deptType" placeholder="请选择职位类别"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP020"
                       :key="dict.dicNo"
@@ -158,7 +177,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" >
+            <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="定员" prop="planCapacity">
                   <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
@@ -171,9 +190,9 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" >
+            <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="该岗位直接下级定员数" prop="childCapacity" >
+                <el-form-item label="该岗位直接下级定员数" prop="childCapacity">
                   <el-input v-model="form.childCapacity" disabled/>
                 </el-form-item>
               </el-col>
@@ -187,7 +206,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="上级岗位名称" prop="parentPostName">
-                  <el-input maxlength="200"  v-model="form.parentPostName" placeholder="请选择上级岗位" disabled>
+                  <el-input maxlength="200" v-model="form.parentPostName" placeholder="请选择上级岗位" disabled>
                     <el-button slot="append" icon="el-icon-search" @click="inputPostClick()"></el-button>
                   </el-input>
                 </el-form-item>
@@ -203,7 +222,9 @@
             <el-row :gutter="20">
               <el-col :span="24">
                 <el-form-item label="变更原因" prop="changeReason">
-                  <el-input v-model="form.changeReason" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="1000" />
+                  <el-input v-model="form.changeReason" type="textarea" show-word-limit placeholder="请输入内容"
+                            maxlength="1000"
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -211,7 +232,9 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="用工性质" prop="employmentNatureId">
-                  <el-select :popper-append-to-body="false" v-model="form.employmentNatureId" placeholder="请选择用工性质" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.employmentNatureId" placeholder="请选择用工性质"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP006"
                       :key="dict.dicNo"
@@ -223,7 +246,9 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="职位费用类别" prop="positionExpenseCategory">
-                  <el-select :popper-append-to-body="false" v-model="form.positionExpenseCategory" placeholder="职位费用类别" class="maxWidth">
+                  <el-select :popper-append-to-body="false" v-model="form.positionExpenseCategory" placeholder="职位费用类别"
+                             class="maxWidth"
+                  >
                     <el-option
                       v-for="dict in baseInfoData.HP007"
                       :key="dict.dicNo"
@@ -238,7 +263,9 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="定员依据" prop="capacityBasis">
-                  <el-input v-model="form.capacityBasis" type="textarea" show-word-limit   placeholder="请输入内容" maxlength="500"/>
+                  <el-input v-model="form.capacityBasis" type="textarea" show-word-limit placeholder="请输入内容"
+                            maxlength="500"
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -248,21 +275,22 @@
                                   v-model="form.effectDate"
                                   type="date"
                                   value-format="yyyy-MM-dd"
-                                  placeholder="请选择生效日期">
+                                  placeholder="请选择生效日期"
+                  >
                   </el-date-picker>
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" >
+            <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="输入人" prop="updateBy">
-                  {{form.updateBy}}
+                  {{ form.updateBy }}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="输入日期" prop="updateTime">
-                  {{form.updateTime}}
+                  {{ form.updateTime }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -272,55 +300,55 @@
           <duty ref="duty"></duty>
         </el-tab-pane>
         <el-tab-pane label="岗位任职资格设置">
-          <qualification ref="qualification"> </qualification>
+          <qualification ref="qualification"></qualification>
         </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-      <div  v-show="ifupdate" slot="footer" >
-        <el-divider content-position="center" >变更记录</el-divider>
+      <div v-show="ifupdate" slot="footer">
+        <el-divider content-position="center">变更记录</el-divider>
       </div>
-      <el-table :data="formHistory"  v-show="ifupdate" slot="footer" >
+      <el-table :data="formHistory" v-show="ifupdate" slot="footer">
         <el-table-column label="版本号" prop="versionNo" width="75" align="center" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.versionNo}}</span>
+            <span>{{ scope.row.versionNo }}</span>
           </template>
         </el-table-column>
         <el-table-column label="岗位编码" prop="postCode" width="75" align="center" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.postCode}}</span>
+            <span>{{ scope.row.postCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="岗位名称" prop="postName" align="center" width="150" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.postName}}</span>
+            <span>{{ scope.row.postName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="所属公司/机构" prop="orgName" align="center" width="200" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.orgName}}</span>
+            <span>{{ scope.row.orgName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="定员" prop="planCapacity" width="55" align="center" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.planCapacity}}</span>
+            <span>{{ scope.row.planCapacity }}</span>
           </template>
         </el-table-column>
         <el-table-column label="生效日期" prop="effectDate" align="center" width="100" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.effectDate}}</span>
+            <span>{{ scope.row.effectDate }}</span>
           </template>
         </el-table-column>
         <el-table-column label="输入人" prop="updateBy" align="center" width="80" show-overflow-tooltip>
           <template v-slot="scope">
-            <span>{{scope.row.updateBy}}</span>
+            <span>{{ scope.row.updateBy }}</span>
           </template>
         </el-table-column>
         <el-table-column label="输入日期" prop="updateTime" align="center" show-overflow-tooltip>
           <template v-slot="scope">
-            <span v-text="scope.row.updateTime"   ></span>
+            <span v-text="scope.row.updateTime"></span>
           </template>
         </el-table-column>
       </el-table>
@@ -331,16 +359,17 @@
 </template>
 
 <script>
-import '@/assets/styles/humanStyles.scss';
-import Treeselect from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import {  treeselect,selectCompany } from "@/api/human/hp/deptMaintenance";
-import {  listJobTitleidname } from "@/api/human/hp/jobTitle";
+import '@/assets/styles/humanStyles.scss'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { treeselect, selectCompany } from '@/api/human/hp/deptMaintenance'
+import { listJobTitleidname } from '@/api/human/hp/jobTitle'
 import duty from './duty'
 import qualification from './qualification'
-import { listPostVersion, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
-import { getBaseInfo, getDegreeMajorSpecialization } from "@/api/human/hm/baseInfo"
-import selectPost from "@/views/components/human/selectView/hp/selectPost";
+import { listPostVersion, addPostMaintenance, updatePostMaintenance } from '@/api/human/hp/postMaintenance'
+import { getBaseInfo, getDegreeMajorSpecialization } from '@/api/human/hm/baseInfo'
+import selectPost from '@/views/components/human/selectView/hp/selectPost'
+
 export default {
   name: 'AddOrUpdate',
   components: {
@@ -350,12 +379,12 @@ export default {
     selectPost
   },
   dicts: ['sys_normal_disable'],
-  data(){
-    return{
+  data() {
+    return {
       //公司数据
-      companyList:[],
+      companyList: [],
       //是否为修改
-      ifupdate:false,
+      ifupdate: false,
       //选单列表
       baseInfo: {
         uuid: '',
@@ -369,120 +398,120 @@ export default {
         ]
       },
       //部门选单数据
-      allDeptOptions:[],
+      allDeptOptions: [],
       //选单数据
       baseInfoData: [],
       //专长类别-专长选单
-      deepOptions1:[],
+      deepOptions1: [],
       //岗位序列-岗位类别选单
-      deepOptions2:[],
+      deepOptions2: [],
       //dialog标题名
-      title:'岗位设定管理',
+      title: '岗位设定管理',
       //dialog是否显示
-      visible:false,
+      visible: false,
       //表单参数
       form: {},
       //职位名称id列表
-      humanJobTitle:[],
+      humanJobTitle: [],
       //历史表单
-      formHistory:[],
+      formHistory: [],
       // 表单校验
       rules: {
         orgId: [
-          { required: true, message: "所属公司/机构不能为空", trigger: "blur" }
+          { required: true, message: '所属公司/机构不能为空', trigger: 'blur' }
         ],
         jobTitleId: [
-          { required: true, message: "职位名称不能为空", trigger: "blur" }
+          { required: true, message: '职位名称不能为空', trigger: 'blur' }
         ],
         postName: [
-          { required: true, message: "岗位名称不能为空", trigger: "blur" }
+          { required: true, message: '岗位名称不能为空', trigger: 'blur' }
         ],
         specialityTypeId: [
-          { required: true, message: "专长类别不能为空", trigger: "change" }
+          { required: true, message: '专长类别不能为空', trigger: 'change' }
         ],
         specialityId: [
-          { required: true, message: "专长不能为空", trigger: "blur" }
+          { required: true, message: '专长不能为空', trigger: 'blur' }
         ],
         postSequenceId: [
-          { required: true, message: "岗位序列不能为空", trigger: "change" }
+          { required: true, message: '岗位序列不能为空', trigger: 'change' }
         ],
         postTypeId: [
-          { required: true, message: "岗位类别不能为空", trigger: "change" }
+          { required: true, message: '岗位类别不能为空', trigger: 'change' }
         ],
         workAddress: [
-          { required: true, message: "公司不能为空", trigger: "change" }
+          { required: true, message: '公司不能为空', trigger: 'change' }
         ],
         overseasLocations: [
-          { required: true, message: "驻外地点不能为空", trigger: "blur" }
+          { required: true, message: '驻外地点不能为空', trigger: 'blur' }
         ],
         planCapacity: [
-          { required: true, message: "定员不能为空", trigger: "blur" }
+          { required: true, message: '定员不能为空', trigger: 'blur' }
         ],
         postSort: [
-          { required: true, message: "显示顺序不能为空", trigger: "blur" }
+          { required: true, message: '显示顺序不能为空', trigger: 'blur' }
         ],
         costCenterId: [
-          { required: true, message: "成本中心不能为空", trigger: "blur" }
+          { required: true, message: '成本中心不能为空', trigger: 'blur' }
         ],
         status: [
-          { required: true, message: "状态不能为空", trigger: "change" }
+          { required: true, message: '状态不能为空', trigger: 'change' }
         ],
         parentPostName: [
-          { required: true, message: "该岗位上级岗位名称不能为空", trigger: "change" }
-        ],
+          { required: true, message: '该岗位上级岗位名称不能为空', trigger: 'change' }
+        ]
       },
       flagForm: {}
     }
   },
-  methods:{
+  methods: {
     //岗位弹窗打开事件
     inputPostClick() {
-      var compId= this.form.compId;
-      this.$refs.selectPost.show(compId);
+      var compId = this.form.compId
+      this.$refs.selectPost.show(compId)
     },
     //岗位弹窗确定事件
     getPost(postData) {
-      this.form.parentPostId = postData.postId;
+      this.form.parentPostId = postData.postId
       this.form.parentPostName = postData.postName
     },
     //获取公司列表
-    getCompanyList(){
-      selectCompany().then(response=>{
+    getCompanyList() {
+      selectCompany().then(response => {
         this.companyList = response.data
       })
     },
     init(form) {
-      this.getCompanyList();
-      listJobTitleidname(form.compId).then(response =>{
-        this.humanJobTitle = response.rows;
+      this.getCompanyList()
+      listJobTitleidname(form.compId).then(response => {
+        this.humanJobTitle = response.rows
       })
       treeselect().then(response => {
-        this.allDeptOptions = response.data;
-      });
-      if(this.baseInfoData.length===0){
-        this.getHumandisc();
+        this.allDeptOptions = response.data
+      })
+      if (this.baseInfoData.length === 0) {
+        this.getHumandisc()
       }
-      this.form=form;
-      if (this.form.postId != null){
-        this.ifupdate = true;
-        var queryParams={
-          postId:this.form.postId
+      this.form = form
+      if (this.form.postId != null) {
+        this.ifupdate = true
+        var queryParams = {
+          postId: this.form.postId
         }
         listPostVersion(queryParams).then(response => {
-          this.formHistory = response.rows;
-        });
-      }else{
-        this.ifupdate = false;
+          this.formHistory = response.rows
+        })
+      } else {
+        this.ifupdate = false
       }
-      this.deepOptions1 =[];
-      this.deepOptions2 =[];
-      if(this.form.specialityTypeId){
+      this.deepOptions1 = []
+      this.deepOptions2 = []
+      if (this.form.specialityTypeId) {
         this.handleChangeA(this.form.specialityTypeId)
       }
-      if(this.form.postSequenceId){
+      if (this.form.postSequenceId) {
         this.handleChangeB(this.form.postSequenceId)
       }
-      this.visible = true;
+      this.visible = true
       this.$nextTick(() => {
         this.$refs.duty.init(this.form)
       })
@@ -500,7 +529,7 @@ export default {
         label: node.label,
         label2: node.label2,
         children: node.children
-      };
+      }
     },
     /** 所属公司/机构切换事件 */
     deptChange(val) {
@@ -511,72 +540,61 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["forms"].validate(valid => {
+      this.$refs['forms'].validate(valid => {
         if (valid) {
           if (this.form.postId != null) {
             updatePostMaintenance(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.visible = false;
-              this.$emit("get-list");
-            });
+              this.$modal.msgSuccess('修改成功')
+              this.visible = false
+              this.$emit('get-list')
+            })
           } else {
             addPostMaintenance(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.visible = false;
-              this.$emit("get-list");
-            });
+              this.$modal.msgSuccess('新增成功')
+              this.visible = false
+              this.$emit('get-list')
+            })
           }
         }
-      });
+      })
     },
     //获取人事选单字典
-    getHumandisc(){
+    getHumandisc() {
       getBaseInfo(this.baseInfo).then(response => {
-        this.baseInfoData = response.data;
-      });
+        this.baseInfoData = response.data
+      })
     },
     //专长类别-专长选项获取
     handleChangeA(dicNo) {
-      if(this.baseInfoData.HP013){
-        this.baseInfoData.HP013.forEach((value)=>{
-          if(value.dicNo===dicNo){
-            this.baseInfo.uuid = value.uuid
-          }
-        })
-      }
+      this.baseInfo.uuid = dicNo
+
       this.deepOptions1 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions1 = response.data
-      });
+      })
     },
     //岗位序列-岗位类别选项获取
     handleChangeB(dicNo) {
-      if(this.baseInfoData.HP003){
-        this.baseInfoData.HP003.forEach((value)=>{
-          if(value.dicNo===dicNo){
-            this.baseInfo.uuid = value.uuid
-          }
-        })
-      }
+      this.baseInfo.uuid = dicNo
       this.deepOptions2 = []
       getDegreeMajorSpecialization(this.baseInfo).then(response => {
         this.deepOptions2 = response.data
-      });
+      })
     },
     //职位名称选择
-    handleChangeC(value,label){
+    handleChangeC(value, label) {
     },
     //取消操作
     cancel() {
-      this.visible = false;
-      this.form={};
-    },
+      this.visible = false
+      this.form = {}
+    }
 
   }
 }
 </script>
 <style scoped>
-.maxWidth{
+.maxWidth {
   width: 100%;
 }
 

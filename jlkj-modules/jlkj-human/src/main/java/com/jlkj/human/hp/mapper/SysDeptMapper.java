@@ -5,9 +5,11 @@ import com.jlkj.human.hp.domain.SysDept;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
+import org.apache.ibatis.annotations.MapKey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门资料维护Mapper接口
@@ -173,4 +175,12 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
      * @return 结果
      */
     public int deleteSysDeptByDeptIds(Long[] deptIds);
+
+    /**
+     * 查询部门名称（id/编码 转名称）
+     * @param compId 公司别
+     * @return 结果
+     */
+    @MapKey("id")
+    public List<Map<String,Object>> selectDeptName(String compId);
 }

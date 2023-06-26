@@ -78,23 +78,52 @@ public class ConstantsUtil
     public static final String DRCRD="D";
 
     /**
-     * TYPE1
+     * MONTH01
      */
-    public static final String TYPE1="1";
+    public static final String MONTH01="01";
     /**
-     * TYPE2
+     * MONTH02
      */
-    public static final String TYPE2="2";
+    public static final String MONTH02="02";
     /**
-     * TYPE3
+     * MONTH03
      */
-    public static final String TYPE3="3";
+    public static final String MONTH03="03";
     /**
-     * TYPE4
+     * MONTH04
      */
-    public static final String TYPE4="4";
+    public static final String MONTH04="04";
     /**
-     * TYPE5
+     * MONTH05
      */
-    public static final String TYPE5="5";
+    public static final String MONTH05="05";
+    /**
+     * MONTH06
+     */
+    public static final String MONTH06="06";
+    /**
+     * MONTH07
+     */
+    public static final String MONTH07="07";
+    /**
+     * MONTH08
+     */
+    public static final String MONTH08="08";
+    /**
+     * MONTH09
+     */
+    public static final String MONTH09="09";
+    /**
+     * MONTH10
+     */
+    public static final String MONTH10="10";
+    /**
+     * MONTH11
+     */
+    public static final String MONTH11="11";
+    /**
+     * MONTH05
+     */
+    public static final String MONTH12="12";
+
 }

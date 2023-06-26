@@ -119,3 +119,11 @@ export function queryPersonByPost(query){
   })
 }
 
+//通过员工工号查询一级机构
+export function selectDeptName(compId){
+  return request({
+    url: 'human/deptMaintenance/selectDeptName/' + compId,
+    method: 'get'
+  })
+}
+

@@ -39,6 +39,8 @@
         <module>jlkj-flowable</module>
         <!--    ureport2    -->
         <module>jlkj-ureport</module>
+        <!--    图像识别    -->
+        <module>jlkj-imageIdentify</module>
     </modules>
 
     <artifactId>jlkj-modules</artifactId>

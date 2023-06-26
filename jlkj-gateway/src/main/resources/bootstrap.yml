@@ -14,7 +14,7 @@ spring:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: 110.32.157.51:8848
+        server-addr: 10.32.157.51:8848
       config:
         # 配置中心地址
         server-addr: 10.32.157.51:8848
@@ -28,7 +28,7 @@ spring:
       eager: true
       transport:
         # 控制台地址
-        dashboard: 10.32.157.51:8848
+        dashboard: 10.32.157.51:8718
       # nacos配置持久化
       datasource:
         ds1:
