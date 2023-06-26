@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectEnterpriseRevenueRateVo">
-        select id, comp_id, month, enterprise_revenue_rate, creator, creator_id, creator_no, create_date from human_hs_enterprise_revenue_rate
+        SELECT id, comp_id, month, enterprise_revenue_rate, creator, creator_id, creator_no, create_date FROM human_hs_enterprise_revenue_rate
     </sql>
 
     <select id="selectEnterpriseRevenueRateList" parameterType="EnterpriseRevenueRate" resultMap="EnterpriseRevenueRateResult">
@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
-        insert into human_hs_enterprise_revenue_rate
+        INSERT INTO human_hs_enterprise_revenue_rate
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
-        update human_hs_enterprise_revenue_rate
+        UPDATE human_hs_enterprise_revenue_rate
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="month != null">month = #{month},</if>
@@ -72,11 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteEnterpriseRevenueRateById" parameterType="String">
-        delete from human_hs_enterprise_revenue_rate where id = #{id}
+        DELETE FROM human_hs_enterprise_revenue_rate where id = #{id}
     </delete>
 
     <delete id="deleteEnterpriseRevenueRateByIds" parameterType="String">
-        delete from human_hs_enterprise_revenue_rate where id in 
+        DELETE FROM human_hs_enterprise_revenue_rate where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonalIncomeTaxVo">
-        select id, tax_space, tax_rate, deduct_num, version_no, effect_date, type, creator, create_date , creator_id from human_hs_personal_income_tax
+        SELECT id, tax_space, tax_rate, deduct_num, version_no, effect_date, type, creator, create_date , creator_id FROM human_hs_personal_income_tax
     </sql>
 
     <select id="selectPersonalIncomeTaxList" parameterType="PersonalIncomeTax" resultMap="PersonalIncomeTaxResult">
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertPersonalIncomeTax" parameterType="PersonalIncomeTax">
-        insert into human_hs_personal_income_tax
+        INSERT INTO human_hs_personal_income_tax
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="taxSpace != null">tax_space,</if>
@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updatePersonalIncomeTax" parameterType="PersonalIncomeTax">
-        update human_hs_personal_income_tax
+        UPDATE human_hs_personal_income_tax
         <trim prefix="SET" suffixOverrides=",">
             <if test="taxSpace != null">tax_space = #{taxSpace},</if>
             <if test="taxRate != null">tax_rate = #{taxRate},</if>
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deletePersonalIncomeTaxById" parameterType="String">
-        delete from human_hs_personal_income_tax where id = #{id}
+        DELETE FROM human_hs_personal_income_tax where id = #{id}
     </delete>
 
     <select id="getVersionList" parameterType="String" resultMap="PersonalIncomeTaxResult">
@@ -88,21 +88,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectMaxVersionNo" parameterType="String" resultType="map">
-        select  effect_date effectDate, version_no versionNo from human_hs_personal_income_tax where type = #{type} order by effect_date desc limit 1
+        SELECT  effect_date effectDate, version_no versionNo from human_hs_personal_income_tax where type = #{type} order by effect_date desc limit 1
     </select>
 
     <delete id="deletePersonalIncomeTaxByIds" parameterType="String">
-        delete from human_hs_personal_income_tax where id in 
+        DELETE FROM human_hs_personal_income_tax where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <delete id="deletePersonalIncomeTaxByVersionNo" parameterType="map">
-        delete from human_hs_personal_income_tax where type = #{type} and  version_no= #{versionNo}
+        DELETE FROM human_hs_personal_income_tax where type = #{type} and  version_no= #{versionNo}
     </delete>
 
     <update id="updatePersonalIncomeTaxById" parameterType="String">
-        update from human_hs_personal_income_tax set effectDate where type = #{type} and  version_no= #{versionNo}
+        UPDATE from human_hs_personal_income_tax set effectDate where type = #{type} and  version_no= #{versionNo}
     </update>
 </mapper>
