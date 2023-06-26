@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPaySheetInputVo">
-        select uuid, comp_id, pay_tier, min_mon, max_mon, mid_mon, status, resv_attr1, resv_attr2, creator, creator_id, create_date from human_hs_pay_sheet_input
+        SELECT uuid, comp_id, pay_tier, min_mon, max_mon, mid_mon, status, resv_attr1, resv_attr2, creator, creator_id, create_date FROM human_hs_pay_sheet_input
     </sql>
 
     <select id="selectPaySheetInputList" parameterType="PaySheetInput" resultMap="PaySheetInputResult">
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertPaySheetInput" parameterType="PaySheetInput">
-        insert into human_hs_pay_sheet_input
+        INSERT INTO human_hs_pay_sheet_input
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uuid != null">uuid,</if>
             <if test="compId != null">comp_id,</if>
@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updatePaySheetInput" parameterType="PaySheetInput">
-        update human_hs_pay_sheet_input
+        UPDATE human_hs_pay_sheet_input
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="payTier != null">pay_tier = #{payTier},</if>
@@ -86,11 +86,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deletePaySheetInputByUuid" parameterType="String">
-        delete from human_hs_pay_sheet_input where uuid = #{uuid}
+        DELETE FROM human_hs_pay_sheet_input where uuid = #{uuid}
     </delete>
 
     <delete id="deletePaySheetInputByUuids" parameterType="String">
-        delete from human_hs_pay_sheet_input where uuid in 
+        DELETE FROM human_hs_pay_sheet_input where uuid in
         <foreach item="uuid" collection="array" open="(" separator="," close=")">
             #{uuid}
         </foreach>

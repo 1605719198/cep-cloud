@@ -71,13 +71,46 @@ public interface SocialSecurityMapper
      */
     public int deleteSocialSecurityByIds(String[] ids);
 
+    /**
+     * 版本号列表
+     *
+     * @param payAreaId 缴费地区
+     * @return 结果
+     */
     List<SocialSecurity> getVersionList(String payAreaId);
 
+    /**
+     * 获取最大版本号
+     *
+     * @param payAreaId 缴费地区
+     * @return 结果
+     */
     Map<String,Object> selectMaxVersion(String payAreaId);
+
+    /**
+     * 删除社保公积金缴费比例数据
+     * @Description 删除社保公积金缴费比例数据
+     * @param payAreaId 缴费地区
+     * @param version 版本号
+     * @return 社保公积金缴费比例删除结果
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
     public int deleteSocialSecurityByVersion(@Param("payAreaId") String payAreaId, @Param("version") Long version);
 
-
+    /**
+     * 获取最大版本号
+     *
+     * @param socialSecurity 社保公积金项目
+     * @return 结果
+     */
     public List<SocialSecurity> selectSocialSecurityListBySalaryProjectId(SocialSecurity socialSecurity);
 
+    /**
+     * 获取版本号
+     *
+     * @param socialSecurity 社保公积金项目
+     * @return 结果
+     */
     public List<SocialSecurity> selectSocialSecurityListByVersion(SocialSecurity socialSecurity);
 }

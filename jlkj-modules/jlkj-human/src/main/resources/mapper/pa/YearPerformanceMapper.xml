@@ -26,11 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectYearPerformanceVo">
-        select id, comp_id, dept, post_id, year, people, proportion, emp_id, year_score, adm_score, adm_emp_id, score, status, creator, creator_id, creator_no, create_date from human_pa_year_performance
+        SELECT id, comp_id, dept, post_id, year, people, proportion, emp_id, year_score, adm_score, adm_emp_id, score, status, creator, creator_id, creator_no, create_date FROM human_pa_year_performance
     </sql>
 
     <select id="selectYearPerformanceList" parameterType="YearPerformance" resultMap="YearPerformanceResult">
-        select status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_year_performance
+        SELECT status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_year_performance
         <where>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertYearPerformance" parameterType="YearPerformance">
-        insert into human_pa_year_performance
+        INSERT INTO human_pa_year_performance
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateYearPerformance" parameterType="YearPerformance">
-        update human_pa_year_performance
+        UPDATE human_pa_year_performance
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="dept != null">dept = #{dept},</if>
@@ -113,11 +113,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteYearPerformanceById" parameterType="String">
-        delete from human_pa_year_performance where id = #{id}
+        DELETE FROM human_pa_year_performance where id = #{id}
     </delete>
 
     <delete id="deleteYearPerformanceByIds" parameterType="String">
-        delete from human_pa_year_performance where id in 
+        DELETE FROM human_pa_year_performance where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

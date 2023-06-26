@@ -203,11 +203,11 @@ public class SalaryProjectBasisServiceImpl extends ServiceImpl<SalaryProjectBasi
      * @return 结果
      */
     @Override
-    public int deleteSalaryProjectBasisById(Long id)throws Exception
+    public int deleteSalaryProjectBasisById(Long id)
     {
         List<BasisOptionsDTO> oldData = salaryProjectBasisMapper.selectSalaryProjectBasisByParentid(id);
         if(!oldData.isEmpty()){
-            throw new Exception("该资料下存在数据，不可删除");
+            throw new ServiceException("该资料下存在数据，不可删除");
         }
         return salaryProjectBasisMapper.deleteSalaryProjectBasisById(id);
     }

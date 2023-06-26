@@ -38,10 +38,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAttendanceAbnormalStatisticsVo">
-        select id, comp_id, emp_id, emp_name, emp_no, post_id, post_name, turn_type_id, turn_type_name,
+        SELECT id, comp_id, emp_id, emp_name, emp_no, post_id, post_name, turn_type_id, turn_type_name,
                class_id, class_name, exc_rea_id, prove_rea_id, prove_reason, status, nor_onduty_begin, nor_onduty_end,
                slot_card_onduty, slot_card_offduty, description, chiefempno_id, chiefempno_no, chiefempno_name, chiefempno_post_id,
-               chiefempno_postname, dispose_id, audit_type, creator, creator_id, create_date from human_hd_attendance_abnormal
+               chiefempno_postname, dispose_id, audit_type, creator, creator_id, create_date FROM human_hd_attendance_abnormal
     </sql>
 
     <select id="selectAttendanceAbnormalStatisticsList" parameterType="AttendanceAbnormalStatistics" resultMap="AttendanceAbnormalStatisticsResult">
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertAttendanceAbnormalStatistics" parameterType="AttendanceAbnormalStatistics">
-        insert into human_hd_attendance_abnormal
+        INSERT INTO human_hd_attendance_abnormal
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -128,7 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateAttendanceAbnormalStatistics" parameterType="AttendanceAbnormalStatistics">
-        update human_hd_attendance_abnormal
+        UPDATE human_hd_attendance_abnormal
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="empId != null">emp_id = #{empId},</if>
@@ -164,11 +164,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteAttendanceAbnormalStatisticsById" parameterType="String">
-        delete from human_hd_attendance_abnormal where id = #{id}
+        DELETE FROM human_hd_attendance_abnormal where id = #{id}
     </delete>
 
     <delete id="deleteAttendanceAbnormalStatisticsByIds" parameterType="String">
-        delete from human_hd_attendance_abnormal where id in 
+        DELETE FROM human_hd_attendance_abnormal where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

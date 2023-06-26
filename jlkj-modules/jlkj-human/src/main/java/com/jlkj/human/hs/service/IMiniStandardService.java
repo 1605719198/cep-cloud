@@ -63,7 +63,9 @@ public interface IMiniStandardService
 
     /**
      * 版本号列表
-     * @return
+     *
+     * @param compId 公司别
+     * @return 结果
      */
     List<Map<String,Long>> getVersionList(String compId);
 }

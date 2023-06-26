@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHomeLeaveStatisticsVo">
-        select id, company_id, year, emp_no, emp_id, emp_name, post_name, post_id, due_home_days, off_home_days, rest_home_days, rest_fhome_nums, rest_fhome_days, pre_home_days, rest_home_nums, creator, creator_id, create_date from human_hd_home_leave_holiday
+        SELECT id, company_id, year, emp_no, emp_id, emp_name, post_name, post_id, due_home_days, off_home_days, rest_home_days, rest_fhome_nums, rest_fhome_days, pre_home_days, rest_home_nums, creator, creator_id, create_date FROM human_hd_home_leave_holiday
     </sql>
 
     <select id="selectHomeLeaveStatisticsList" parameterType="HomeLeaveStatistics" resultMap="HomeLeaveStatisticsResult">
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertHomeLeaveStatistics" parameterType="HomeLeaveStatistics">
-        insert into human_hd_home_leave_holiday
+        INSERT INTO human_hd_home_leave_holiday
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="companyId != null">company_id,</if>
@@ -87,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateHomeLeaveStatistics" parameterType="HomeLeaveStatistics">
-        update human_hd_home_leave_holiday
+        UPDATE human_hd_home_leave_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
             <if test="year != null">year = #{year},</if>
@@ -111,11 +111,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteHomeLeaveStatisticsById" parameterType="String">
-        delete from human_hd_home_leave_holiday where id = #{id}
+        DELETE FROM human_hd_home_leave_holiday where id = #{id}
     </delete>
 
     <delete id="deleteHomeLeaveStatisticsByIds" parameterType="String">
-        delete from human_hd_home_leave_holiday where id in 
+        DELETE FROM human_hd_home_leave_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
