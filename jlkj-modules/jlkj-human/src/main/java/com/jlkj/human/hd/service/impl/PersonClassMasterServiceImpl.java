@@ -84,8 +84,12 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
         personClassDetail.setShiftModeId(personClassMaster.getShiftmodeId());
         personClassDetail.setClassType("0");
         personClassDetail.setPersonClassMasterId(personClassMaster.getId());
-        personClassDetailService.setPersonClassDetail(personClassDetail);
-        return personClassMasterMapper.insertPersonClassMaster(personClassMaster);
+        int detailResult = personClassDetailService.setPersonClassDetail(personClassDetail);
+        if(detailResult>0){
+            return personClassMasterMapper.insertPersonClassMaster(personClassMaster);
+        }else{
+            return detailResult;
+        }
     }
 
     /**

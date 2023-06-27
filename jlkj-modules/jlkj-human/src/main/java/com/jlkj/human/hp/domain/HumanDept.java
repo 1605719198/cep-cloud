@@ -17,7 +17,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-08
  */
-public class SysDept extends BaseEntity
+public class HumanDept extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -122,7 +122,7 @@ public class SysDept extends BaseEntity
     private String cliqueCode = "JL";
 
     /** 子部门 */
-    private List<SysDept> children = new ArrayList<SysDept>();
+    private List<HumanDept> children = new ArrayList<HumanDept>();
 
     public void setDeptId(Long deptId)
     {
@@ -368,12 +368,12 @@ public class SysDept extends BaseEntity
         return cliqueCode;
     }
 
-    public List<SysDept> getChildren()
+    public List<HumanDept> getChildren()
     {
         return children;
     }
 
-    public void setChildren(List<SysDept> children)
+    public void setChildren(List<HumanDept> children)
     {
         this.children = children;
     }

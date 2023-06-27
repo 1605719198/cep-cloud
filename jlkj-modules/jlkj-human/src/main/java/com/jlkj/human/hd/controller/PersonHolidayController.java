@@ -95,4 +95,18 @@ public class PersonHolidayController extends BaseController
     {
         return toAjax(personHolidayService.deletePersonHolidayByIds(ids));
     }
+
+    /**
+    * @Description 获取员工当年当月最新请假信息
+    * @param
+    * @return
+    * @author 266861
+    * @date 2023/6/27 10:04
+    **/
+    @GetMapping("/getEmpData")
+    public AjaxResult getEmpData(PersonHoliday personHoliday)
+    {
+        List<PersonHoliday> list = personHolidayService.selectPersonHolidayList(personHoliday);
+        return success(list);
+    }
 }

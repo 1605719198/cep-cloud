@@ -3,7 +3,7 @@ package com.jlkj.human.hp.service.impl;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hp.domain.HumanJobTitle;
 import com.jlkj.human.hp.mapper.HumanJobTitleMapper;
-import com.jlkj.human.hp.service.HumanJobTitleService;
+import com.jlkj.human.hp.service.IHumanJobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2023-03-13
  */
 @Service
-public class HumanJobTitleServiceImpl implements HumanJobTitleService
+public class IHumanJobTitleServiceImpl implements IHumanJobTitleService
 {
     @Autowired
     private HumanJobTitleMapper humanJobTitleMapper;

@@ -6,10 +6,10 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.human.hp.domain.SysPost;
-import com.jlkj.human.hp.domain.SysPostVersion;
-import com.jlkj.human.hp.service.ISysPostService;
-import com.jlkj.human.hp.service.ISysPostVersionService;
+import com.jlkj.human.hp.domain.HumanPost;
+import com.jlkj.human.hp.domain.HumanPostVersion;
+import com.jlkj.human.hp.service.IHumanPostService;
+import com.jlkj.human.hp.service.IHumanPostVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +23,22 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/postMaintenance")
-public class SysPostController extends BaseController
+public class HumanPostController extends BaseController
 {
     @Autowired
-    private ISysPostService sysPostService;
+    private IHumanPostService sysPostService;
     @Autowired
-    private ISysPostVersionService sysPostVersionService;
+    private IHumanPostVersionService sysPostVersionService;
 
     /**
      * 查询岗位信息数据维护列表
      */
     @RequiresPermissions("human:postMaintenance:list")
     @GetMapping("/list")
-    public TableDataInfo list(SysPost sysPost)
+    public TableDataInfo list(HumanPost humanPost)
     {
         startPage();
-        List<SysPost> list = sysPostService.selectSysPostList(sysPost);
+        List<HumanPost> list = sysPostService.selectSysPostList(humanPost);
         return getDataTable(list);
     }
 
@@ -46,9 +46,9 @@ public class SysPostController extends BaseController
      * 查询部门资料变更版本列表
      */
     @GetMapping("/getHistory")
-    public TableDataInfo list(SysPostVersion sysPostVersion)
+    public TableDataInfo list(HumanPostVersion humanPostVersion)
     {
-        List<SysPostVersion> list = sysPostVersionService.selectSysPostVersionList(sysPostVersion);
+        List<HumanPostVersion> list = sysPostVersionService.selectSysPostVersionList(humanPostVersion);
         return getDataTable(list);
     }
 
@@ -69,9 +69,9 @@ public class SysPostController extends BaseController
     @RequiresPermissions("human:postMaintenance:add")
     @Log(title = "岗位信息数据维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysPost sysPost)throws Exception
+    public AjaxResult add(@RequestBody HumanPost humanPost)throws Exception
     {
-        return toAjax(sysPostService.insertSysPost(sysPost));
+        return toAjax(sysPostService.insertSysPost(humanPost));
     }
 
     /**
@@ -80,9 +80,9 @@ public class SysPostController extends BaseController
     @RequiresPermissions("human:postMaintenance:edit")
     @Log(title = "岗位信息数据维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysPost sysPost)
+    public AjaxResult edit(@RequestBody HumanPost humanPost)
     {
-        return toAjax(sysPostService.updateSysPost(sysPost));
+        return toAjax(sysPostService.updateSysPost(humanPost));
     }
 
     /**

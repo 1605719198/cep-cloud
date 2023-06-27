@@ -64,9 +64,9 @@ public class ArrangeClassServiceImpl implements IArrangeClassService
      * @return 排班明细
      */
     @Override
-    public List<ArrangeClass> quertArrangeClass(ArrangeClass arrangeClass)
+    public List<ArrangeClass> queryArrangeClass(ArrangeClass arrangeClass)
     {
-        return arrangeClassMapper.selectArrangeClassList(arrangeClass);
+        return arrangeClassMapper.queryArrangeClass(arrangeClass);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ArrangeClassServiceImpl implements IArrangeClassService
     @Override
     public int insertArrangeClass(ArrangeClass arrangeClass)
     {
-        List<ArrangeClass> list = arrangeClassMapper.quertArrangeClass(arrangeClass);
+        List<ArrangeClass> list = arrangeClassMapper.queryArrangeClass(arrangeClass);
         if(list.size()==0){
             arrangeClass.setId(IdUtils.simpleUUID());
             return arrangeClassMapper.insertArrangeClass(arrangeClass);

@@ -9,7 +9,7 @@ import com.jlkj.human.hd.service.IOrgClassMasterService;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
 import com.jlkj.human.hd.service.IPersonClassMasterService;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class OrgClassMasterServiceImpl implements IOrgClassMasterService
     @Autowired
     private IPersonClassMasterService personClassMasterService;
     @Autowired
-    private ISysDeptService sysDeptService;
+    private IHumanDeptService sysDeptService;
 
     /**
      * 查询出勤身份

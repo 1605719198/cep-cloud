@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.mapper;
 
-import com.jlkj.human.hp.domain.SysPost;
+import com.jlkj.human.hp.domain.HumanPost;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-15
  */
-public interface SysPostMapper 
+public interface HumanPostMapper
 {
     /**
      * 查询岗位信息数据维护
@@ -18,47 +18,47 @@ public interface SysPostMapper
      * @param postId 岗位信息数据维护主键
      * @return 岗位信息数据维护
      */
-    public SysPost selectSysPostByPostId(Long postId);
+    public HumanPost selectSysPostByPostId(Long postId);
 
     /**
      * 查询岗位信息数据维护列表
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 岗位信息数据维护集合
      */
-    public List<SysPost> selectSysPostList(SysPost sysPost);
+    public List<HumanPost> selectSysPostList(HumanPost humanPost);
 
     /**
      * 新增岗位信息数据维护
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 结果
      */
-    public int insertSysPost(SysPost sysPost);
+    public int insertSysPost(HumanPost humanPost);
 
     /**
      * 查询流水号
      *
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 结果
      */
-    public SysPost querySerialNumber(SysPost sysPost);
+    public HumanPost querySerialNumber(HumanPost humanPost);
 
     /**
      * 根据部门编码查询信息
      *
-     * @param sysPost 部门
+     * @param humanPost 部门
      * @return 部门信息
      */
-    public SysPost selectSysPostByPostCode(SysPost sysPost);
+    public HumanPost selectSysPostByPostCode(HumanPost humanPost);
 
     /**
      * 修改岗位信息数据维护
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 结果
      */
-    public int updateSysPost(SysPost sysPost);
+    public int updateSysPost(HumanPost humanPost);
 
     /**
      * 查询岗位下级定员

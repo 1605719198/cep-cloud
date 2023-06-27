@@ -281,7 +281,7 @@ export default {
         optionsType:['RestCount','BigSmaNight']
       },
       //出勤选单选项列表
-      attendenceOptions:{},
+      attendenceOptions:null,
       //登录人工号
       userEmpId: this.$store.state.user.name,
       //登录人姓名

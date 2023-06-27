@@ -14,7 +14,7 @@ import java.util.Date;
  * @author 266861
  * @date 2023-03-09
  */
-public class SysDeptVersion extends BaseEntity
+public class HumanDeptVersion extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

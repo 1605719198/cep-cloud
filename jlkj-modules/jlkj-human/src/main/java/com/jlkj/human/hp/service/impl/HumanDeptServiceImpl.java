@@ -4,15 +4,15 @@ import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
-import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.domain.HumanDept;
+import com.jlkj.human.hp.domain.HumanDeptVersion;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.mapper.SysDeptMapper;
-import com.jlkj.human.hp.mapper.SysDeptVersionMapper;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.mapper.HumanDeptMapper;
+import com.jlkj.human.hp.mapper.HumanDeptVersionMapper;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
  * @date 2023-03-08
  */
 @Service
-public class SysDeptServiceImpl implements ISysDeptService {
+public class HumanDeptServiceImpl implements IHumanDeptService {
     @Autowired
-    private SysDeptMapper sysDeptMapper;
+    private HumanDeptMapper humanDeptMapper;
     @Autowired
-    private SysDeptVersionMapper sysDeptVersionMapper;
+    private HumanDeptVersionMapper humanDeptVersionMapper;
     @Autowired
     protected Validator validator;
 
@@ -43,8 +43,8 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门资料维护
      */
     @Override
-    public SysDept selectSysDeptByDeptId(Long deptId) {
-        return sysDeptMapper.selectSysDeptByDeptId(deptId);
+    public HumanDept selectSysDeptByDeptId(Long deptId) {
+        return humanDeptMapper.selectSysDeptByDeptId(deptId);
     }
 
     /**
@@ -54,10 +54,10 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 树结构列表
      */
     @Override
-    public List<SysDept> buildDeptTree(List<SysDept> depts) {
-        List<SysDept> returnList = new ArrayList<SysDept>();
-        List<Long> tempList = depts.stream().map(SysDept::getDeptId).collect(Collectors.toList());
-        for (SysDept dept : depts) {
+    public List<HumanDept> buildDeptTree(List<HumanDept> depts) {
+        List<HumanDept> returnList = new ArrayList<HumanDept>();
+        List<Long> tempList = depts.stream().map(HumanDept::getDeptId).collect(Collectors.toList());
+        for (HumanDept dept : depts) {
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(dept.getParentId())) {
                 recursionFn(depts, dept);
@@ -78,19 +78,19 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
 
-    public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts) {
-        List<SysDept> deptTrees = buildDeptTree(depts);
+    public List<TreeSelect> buildDeptTreeSelect(List<HumanDept> depts) {
+        List<HumanDept> deptTrees = buildDeptTree(depts);
         return deptTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
     /**
      * 递归列表
      */
-    private void recursionFn(List<SysDept> list, SysDept t) {
+    private void recursionFn(List<HumanDept> list, HumanDept t) {
         // 得到子节点列表
-        List<SysDept> childList = getChildList(list, t);
+        List<HumanDept> childList = getChildList(list, t);
         t.setChildren(childList);
-        for (SysDept tChild : childList) {
+        for (HumanDept tChild : childList) {
             if (hasChild(list, tChild)) {
                 recursionFn(list, tChild);
             }
@@ -100,11 +100,11 @@ public class SysDeptServiceImpl implements ISysDeptService {
     /**
      * 得到子节点列表
      */
-    private List<SysDept> getChildList(List<SysDept> list, SysDept t) {
-        List<SysDept> tlist = new ArrayList<SysDept>();
-        Iterator<SysDept> it = list.iterator();
+    private List<HumanDept> getChildList(List<HumanDept> list, HumanDept t) {
+        List<HumanDept> tlist = new ArrayList<HumanDept>();
+        Iterator<HumanDept> it = list.iterator();
         while (it.hasNext()) {
-            SysDept n = (SysDept) it.next();
+            HumanDept n = (HumanDept) it.next();
             if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getDeptId().longValue()) {
                 tlist.add(n);
             }
@@ -115,19 +115,19 @@ public class SysDeptServiceImpl implements ISysDeptService {
     /**
      * 判断是否有子节点
      */
-    private boolean hasChild(List<SysDept> list, SysDept t) {
+    private boolean hasChild(List<HumanDept> list, HumanDept t) {
         return getChildList(list, t).size() > 0 ? true : false;
     }
 
     /**
      * 查询部门资料维护列表
      *
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 部门资料维护
      */
     @Override
-    public List<SysDept> selectSysDeptList(SysDept sysDept) {
-        return sysDeptMapper.selectSysDeptList(sysDept);
+    public List<HumanDept> selectSysDeptList(HumanDept humanDept) {
+        return humanDeptMapper.selectSysDeptList(humanDept);
     }
 
 
@@ -137,8 +137,8 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 公司资料列表
      */
     @Override
-    public List<SysDept> selectCompanyList() {
-        return sysDeptMapper.selectCompanyList();
+    public List<HumanDept> selectCompanyList() {
+        return humanDeptMapper.selectCompanyList();
     }
 
     /**
@@ -148,35 +148,35 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门信息
      */
     @Override
-    public SysDept selectDeptById(Long deptId) {
-        return sysDeptMapper.selectDeptById(deptId);
+    public HumanDept selectDeptById(Long deptId) {
+        return humanDeptMapper.selectDeptById(deptId);
     }
 
 
     /**
      * 新增部门资料维护
      *
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      */
     @Override
-    public int insertSysDept(SysDept sysDept) throws Exception {
+    public int insertSysDept(HumanDept humanDept) throws Exception {
         //重复编码个数
-        Integer ifInsert = sysDeptMapper.queryRepetitivedata(sysDept);
+        Integer ifInsert = humanDeptMapper.queryRepetitivedata(humanDept);
         if (ifInsert != 0) {
             throw new Exception("机构编码已存在，请重复输入");
         }
-        SysDeptVersion sysDeptVersion = new SysDeptVersion();
-        sysDept.setCreateTime(DateUtils.getNowDate());
-        sysDept.setUpdateTime(DateUtils.getNowDate());
-        SysDept info = sysDeptMapper.selectDeptById(sysDept.getParentId());
-        sysDept.setAncestors(info.getAncestors() + "," + sysDept.getParentId());
-        int insertOk = sysDeptMapper.insertSysDept(sysDept);
+        HumanDeptVersion humanDeptVersion = new HumanDeptVersion();
+        humanDept.setCreateTime(DateUtils.getNowDate());
+        humanDept.setUpdateTime(DateUtils.getNowDate());
+        HumanDept info = humanDeptMapper.selectDeptById(humanDept.getParentId());
+        humanDept.setAncestors(info.getAncestors() + "," + humanDept.getParentId());
+        int insertOk = humanDeptMapper.insertSysDept(humanDept);
         if (insertOk >= 1) {
-            BeanUtils.copyProperties(sysDept, sysDeptVersion);
-            sysDeptVersion.setCreateTime(sysDept.getUpdateTime());
-            sysDeptVersion.setCreateBy(sysDept.getUpdateBy());
-            sysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
+            BeanUtils.copyProperties(humanDept, humanDeptVersion);
+            humanDeptVersion.setCreateTime(humanDept.getUpdateTime());
+            humanDeptVersion.setCreateBy(humanDept.getUpdateBy());
+            humanDeptVersionMapper.insertSysDeptVersion(humanDeptVersion);
         }
         return insertOk;
     }
@@ -190,39 +190,39 @@ public class SysDeptServiceImpl implements ISysDeptService {
     @Override
     public int copySysDept(CopySysDeptDTO copySysDeptDTO) throws Exception {
         int result = 0;
-        int olddept = sysDeptMapper.querycopybyOldCompId(copySysDeptDTO.getOldCompId());
-        int newdept = sysDeptMapper.querycopybyNewCompId(copySysDeptDTO.getNewCompId());
+        int olddept = humanDeptMapper.querycopybyOldCompId(copySysDeptDTO.getOldCompId());
+        int newdept = humanDeptMapper.querycopybyNewCompId(copySysDeptDTO.getNewCompId());
         if (olddept == 0) {
             throw new Exception("来源公司下无组织机构数据");
         } else if (newdept > 0) {
             throw new Exception("目标公司下已有组织机构数据");
         }
         String onlydept = "0";
-        SysDept oldsysDept = new SysDept();
+        HumanDept oldsysDept = new HumanDept();
         oldsysDept.setIfCompany(onlydept);
         oldsysDept.setCompId(copySysDeptDTO.getOldCompId());
         //一级部门逗号数
         int firstLevel = 2;
         //部门组级逗号数
         int ancestorsLevel = firstLevel;
-        SysDept newCompany = new SysDept();
-        SysDept oldCompany = new SysDept();
+        HumanDept newCompany = new HumanDept();
+        HumanDept oldCompany = new HumanDept();
         newCompany.setCompId(copySysDeptDTO.getNewCompId());
-        newCompany = sysDeptMapper.selectSysDeptList(newCompany).get(0);
+        newCompany = humanDeptMapper.selectSysDeptList(newCompany).get(0);
         oldCompany.setCompId(copySysDeptDTO.getOldCompId());
         oldCompany.setIfCompany("1");
-        oldCompany = sysDeptMapper.selectSysDeptList(oldCompany).get(0);
+        oldCompany = humanDeptMapper.selectSysDeptList(oldCompany).get(0);
         HashMap<String, String> idchange = new HashMap<String, String>(16);
         idchange.put(oldCompany.getDeptId().toString(), newCompany.getDeptId().toString());
         while (true) {
             oldsysDept.setAncestorsLevel(ancestorsLevel);
-            List<SysDept> newsysDept = sysDeptMapper.selectSysDeptList(oldsysDept);
+            List<HumanDept> newsysDept = humanDeptMapper.selectSysDeptList(oldsysDept);
             if (null == newsysDept || newsysDept.size() == 0) {
                 break;
             } else {
                 for (int i = 0; i < newsysDept.size(); i++) {
                     String oldid = newsysDept.get(i).getDeptId().toString();
-                    SysDept newDeptchild = newsysDept.get(i);
+                    HumanDept newDeptchild = newsysDept.get(i);
                     newDeptchild.setDeptId(null);
                     newDeptchild.setLeader(null);
                     newDeptchild.setPhone(null);
@@ -241,7 +241,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
                         newDeptchild.setParentName(newDeptchild.getDeptName().replace(h, idchange.get(h)));
                         newDeptchild.setAncestors(newDeptchild.getAncestors().replace(h, idchange.get(h)));
                     }
-                    sysDeptMapper.insertSysDept(newDeptchild);
+                    humanDeptMapper.insertSysDept(newDeptchild);
                     System.out.println(oldid + ':' + newDeptchild.getDeptId().toString());
                     idchange.put(oldid, newDeptchild.getDeptId().toString());
                 }
@@ -256,27 +256,27 @@ public class SysDeptServiceImpl implements ISysDeptService {
     /**
      * 修改部门资料维护
      *
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      */
     @Override
-    public int updateSysDept(SysDept sysDept) throws Exception {
-        Integer ifInsert = sysDeptMapper.queryRepetitivedata(sysDept);
+    public int updateSysDept(HumanDept humanDept) throws Exception {
+        Integer ifInsert = humanDeptMapper.queryRepetitivedata(humanDept);
         if (ifInsert != 0) {
             throw new Exception("机构编码已存在，请重复输入");
         }
-        SysDeptVersion sysDeptVersion = new SysDeptVersion();
-        SysDept oldDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getDeptId());
-        SysDept newParentDept = sysDeptMapper.selectSysDeptByDeptId(sysDept.getParentId());
+        HumanDeptVersion humanDeptVersion = new HumanDeptVersion();
+        HumanDept oldDept = humanDeptMapper.selectSysDeptByDeptId(humanDept.getDeptId());
+        HumanDept newParentDept = humanDeptMapper.selectSysDeptByDeptId(humanDept.getParentId());
         String newAncestors = newParentDept.getAncestors() + "," + newParentDept.getDeptId();
-        sysDept.setAncestors(newAncestors);
-        int updateOk = sysDeptMapper.updateSysDept(sysDept);
+        humanDept.setAncestors(newAncestors);
+        int updateOk = humanDeptMapper.updateSysDept(humanDept);
         if (updateOk == 1) {
-            BeanUtils.copyProperties(sysDept, sysDeptVersion);
-            sysDeptVersion.setCreateTime(sysDept.getUpdateTime());
-            sysDeptVersion.setCreateBy(sysDept.getUpdateBy());
-            sysDeptVersionMapper.updateisNew(sysDeptVersion.getDeptId());
-            sysDeptVersionMapper.insertSysDeptVersion(sysDeptVersion);
+            BeanUtils.copyProperties(humanDept, humanDeptVersion);
+            humanDeptVersion.setCreateTime(humanDept.getUpdateTime());
+            humanDeptVersion.setCreateBy(humanDept.getUpdateBy());
+            humanDeptVersionMapper.updateisNew(humanDeptVersion.getDeptId());
+            humanDeptVersionMapper.insertSysDeptVersion(humanDeptVersion);
         }
         return updateOk;
     }
@@ -289,8 +289,8 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public int deleteSysDeptByDeptIds(Long[] deptIds) throws Exception {
-        if (sysDeptMapper.queryChildNumber(deptIds[0]) == 0) {
-            return sysDeptMapper.deleteSysDeptByDeptId(deptIds[0]);
+        if (humanDeptMapper.queryChildNumber(deptIds[0]) == 0) {
+            return humanDeptMapper.deleteSysDeptByDeptId(deptIds[0]);
         } else {
             throw new Exception("该机构下已分配其他部门，不能删除");
         }
@@ -304,7 +304,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public Integer queryChildNumber(Long deptId) {
-        return sysDeptMapper.queryChildNumber(deptId);
+        return humanDeptMapper.queryChildNumber(deptId);
     }
 
     /**
@@ -315,7 +315,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public int deleteSysDeptByDeptId(Long deptId) {
-        return sysDeptMapper.deleteSysDeptByDeptId(deptId);
+        return humanDeptMapper.deleteSysDeptByDeptId(deptId);
     }
 
 
@@ -327,7 +327,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public List<DeptUnionPostDTO> selectDeptPostList(DeptUnionPostDTO deptpost) {
-        return sysDeptMapper.selectDeptUnionPost(deptpost);
+        return humanDeptMapper.selectDeptUnionPost(deptpost);
     }
 
     /**
@@ -408,7 +408,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     @Override
     public FirstDeptDTO getFirstDeptByDept(String empId) {
 
-        return sysDeptMapper.getFirstDeptByDept(empId);
+        return humanDeptMapper.getFirstDeptByDept(empId);
     }
 
     /**
@@ -416,7 +416,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public FirstDeptDTO getFirstDeptByPerson(String empId) {
-        return sysDeptMapper.getFirstDeptByPerson(empId);
+        return humanDeptMapper.getFirstDeptByPerson(empId);
     }
 
     /**
@@ -424,7 +424,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public ArrayList<FirstDeptDTO> getPersonByDept(String deptId) {
-        return sysDeptMapper.getPersonByDept(deptId);
+        return humanDeptMapper.getPersonByDept(deptId);
     }
 
     /**
@@ -434,16 +434,16 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门信息
      */
     @Override
-    public SysDept selectSysDeptByDeptCode(String deptCode) {
-        return sysDeptMapper.selectSysDeptByDeptCode(deptCode);
+    public HumanDept selectSysDeptByDeptCode(String deptCode) {
+        return humanDeptMapper.selectSysDeptByDeptCode(deptCode);
     }
 
     /**
      * 查询父id为此部门编码的数据
      */
     @Override
-    public List<SysDept> selectParentIdByDeptCode(Long deptId) {
-        return sysDeptMapper.selectParentIdByDeptCode(deptId);
+    public List<HumanDept> selectParentIdByDeptCode(Long deptId) {
+        return humanDeptMapper.selectParentIdByDeptCode(deptId);
     }
 
     /**
@@ -453,53 +453,53 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 公司信息
      */
     @Override
-    public SysDept queryCompById(String compId){
-        return sysDeptMapper.selectSysDeptByCompId(compId);
+    public HumanDept queryCompById(String compId){
+        return humanDeptMapper.selectSysDeptByCompId(compId);
     }
 
     /**
      * 导入部门资料数据
      *
-     * @param sysDeptList     部门数据列表
+     * @param humanDeptList     部门数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @param operName        操作用户
      * @return 结果
      */
     @Override
-    public String importUser(List<SysDept> sysDeptList, Boolean isUpdateSupport, String operName) {
-        if (StringUtils.isNull(sysDeptList) || sysDeptList.size() == 0) {
+    public String importUser(List<HumanDept> humanDeptList, Boolean isUpdateSupport, String operName) {
+        if (StringUtils.isNull(humanDeptList) || humanDeptList.size() == 0) {
             throw new ServiceException("导入部门数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (SysDept sysDept : sysDeptList) {
+        for (HumanDept humanDept : humanDeptList) {
             try {
-                Integer ifInsert = sysDeptMapper.queryRepetitivedata(sysDept);
+                Integer ifInsert = humanDeptMapper.queryRepetitivedata(humanDept);
                 if (ifInsert == 0) {
-                    BeanValidators.validateWithException(validator, sysDept);
-                    sysDept.setCreateBy(operName);
-                    sysDeptMapper.insertSysDept(sysDept);
+                    BeanValidators.validateWithException(validator, humanDept);
+                    humanDept.setCreateBy(operName);
+                    humanDeptMapper.insertSysDept(humanDept);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、部门编码 " + sysDept.getDeptCode() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、部门编码 " + humanDept.getDeptCode() + " 导入成功");
                     if (isUpdateSupport) {
-                        BeanValidators.validateWithException(validator, sysDept);
-                        sysDept.setCreateBy(operName);
-                        sysDept.setUpdateBy(operName);
+                        BeanValidators.validateWithException(validator, humanDept);
+                        humanDept.setCreateBy(operName);
+                        humanDept.setUpdateBy(operName);
                         //
-                        sysDeptMapper.updateSysDept(sysDept);
+                        humanDeptMapper.updateSysDept(humanDept);
                         successNum++;
-                        successMsg.append("<br/>" + successNum + "、部门编码 " + sysDept.getDeptCode() + " 更新成功");
+                        successMsg.append("<br/>" + successNum + "、部门编码 " + humanDept.getDeptCode() + " 更新成功");
                     }
                 }else{
                     failureNum++;
-                    String msg = "<br/>" + failureNum + "、部门编码 " + sysDept.getDeptCode() + " 导入失败：";
+                    String msg = "<br/>" + failureNum + "、部门编码 " + humanDept.getDeptCode() + " 导入失败：";
                     failureMsg.append(msg + "部门编码重复");
                 }
             } catch (Exception e) {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、部门编码 " + sysDept.getDeptCode() + " 导入失败：";
+                String msg = "<br/>" + failureNum + "、部门编码 " + humanDept.getDeptCode() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }
@@ -519,7 +519,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public List<Map<String,Object>> selectDeptName(String compId){
-        return sysDeptMapper.selectDeptName(compId);
+        return humanDeptMapper.selectDeptName(compId);
     }
 
 }

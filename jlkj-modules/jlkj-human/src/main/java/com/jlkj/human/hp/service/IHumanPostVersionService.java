@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service;
 
-import com.jlkj.human.hp.domain.SysPostVersion;
+import com.jlkj.human.hp.domain.HumanPostVersion;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-15
  */
-public interface ISysPostVersionService
+public interface IHumanPostVersionService
 {
     /**
      * 查询岗位信息版本数据维护
@@ -18,31 +18,31 @@ public interface ISysPostVersionService
      * @param id 岗位信息版本数据维护主键
      * @return 岗位信息版本数据维护
      */
-    public SysPostVersion selectSysPostVersionById(Long id);
+    public HumanPostVersion selectSysPostVersionById(Long id);
 
     /**
      * 查询岗位信息版本数据维护列表
      *
-     * @param sysPostVersion 岗位信息版本数据维护
+     * @param humanPostVersion 岗位信息版本数据维护
      * @return 岗位信息版本数据维护集合
      */
-    public List<SysPostVersion> selectSysPostVersionList(SysPostVersion sysPostVersion);
+    public List<HumanPostVersion> selectSysPostVersionList(HumanPostVersion humanPostVersion);
 
     /**
      * 新增岗位信息版本数据维护
      *
-     * @param sysPostVersion 岗位信息版本数据维护
+     * @param humanPostVersion 岗位信息版本数据维护
      * @return 结果
      */
-    public int insertSysPostVersion(SysPostVersion sysPostVersion);
+    public int insertSysPostVersion(HumanPostVersion humanPostVersion);
 
     /**
      * 修改岗位信息版本数据维护
      *
-     * @param sysPostVersion 岗位信息版本数据维护
+     * @param humanPostVersion 岗位信息版本数据维护
      * @return 结果
      */
-    public int updateSysPostVersion(SysPostVersion sysPostVersion);
+    public int updateSysPostVersion(HumanPostVersion humanPostVersion);
 
 
     /**

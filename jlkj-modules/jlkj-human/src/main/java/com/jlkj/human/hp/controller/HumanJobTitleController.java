@@ -7,7 +7,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hp.domain.HumanJobTitle;
-import com.jlkj.human.hp.service.HumanJobTitleService;
+import com.jlkj.human.hp.service.IHumanJobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public class HumanJobTitleController extends BaseController
 {
     @Autowired
-    private HumanJobTitleService humanHpHumanJobTitleService;
+    private IHumanJobTitleService humanHpIHumanJobTitleService;
 
     /**
      * 查询职位名称数据维护列表
@@ -34,7 +34,7 @@ public class HumanJobTitleController extends BaseController
     public TableDataInfo list(HumanJobTitle humanJobTitle)
     {
         startPage();
-        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleList(humanJobTitle);
+        List<HumanJobTitle> list = humanHpIHumanJobTitleService.selectHumanJobTitleList(humanJobTitle);
         return getDataTable(list);
     }
 
@@ -44,7 +44,7 @@ public class HumanJobTitleController extends BaseController
     @GetMapping("/getIdname")
     public TableDataInfo list(String compId)
     {
-        List<HumanJobTitle> list = humanHpHumanJobTitleService.selectHumanJobTitleidname(compId);
+        List<HumanJobTitle> list = humanHpIHumanJobTitleService.selectHumanJobTitleidname(compId);
         return getDataTable(list);
     }
 
@@ -55,7 +55,7 @@ public class HumanJobTitleController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
-        return success(humanHpHumanJobTitleService.selectHumanJobTitleById(id));
+        return success(humanHpIHumanJobTitleService.selectHumanJobTitleById(id));
     }
 
     /**
@@ -66,7 +66,7 @@ public class HumanJobTitleController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody HumanJobTitle humanJobTitle)throws Exception
     {
-        return toAjax(humanHpHumanJobTitleService.insertHumanJobTitle(humanJobTitle));
+        return toAjax(humanHpIHumanJobTitleService.insertHumanJobTitle(humanJobTitle));
     }
 
     /**
@@ -77,7 +77,7 @@ public class HumanJobTitleController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody HumanJobTitle humanJobTitle) throws Exception
     {
-        return toAjax(humanHpHumanJobTitleService.updateHumanJobTitle(humanJobTitle));
+        return toAjax(humanHpIHumanJobTitleService.updateHumanJobTitle(humanJobTitle));
     }
 
     /**
@@ -88,6 +88,6 @@ public class HumanJobTitleController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
     {
-        return toAjax(humanHpHumanJobTitleService.deleteHumanJobTitleByIds(ids));
+        return toAjax(humanHpIHumanJobTitleService.deleteHumanJobTitleByIds(ids));
     }
 }

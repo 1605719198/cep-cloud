@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service;
 
-import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.domain.HumanDeptVersion;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-09
  */
-public interface ISysDeptVersionService 
+public interface IHumanDeptVersionService
 {
     /**
      * 查询部门资料变更版本
@@ -18,31 +18,31 @@ public interface ISysDeptVersionService
      * @param id 部门资料变更版本主键
      * @return 部门资料变更版本
      */
-    public SysDeptVersion selectSysDeptVersionById(Long id);
+    public HumanDeptVersion selectSysDeptVersionById(Long id);
 
     /**
      * 查询部门资料变更版本列表
      * 
-     * @param sysDeptVersion 部门资料变更版本
+     * @param humanDeptVersion 部门资料变更版本
      * @return 部门资料变更版本集合
      */
-    public List<SysDeptVersion> selectSysDeptVersionList(SysDeptVersion sysDeptVersion);
+    public List<HumanDeptVersion> selectSysDeptVersionList(HumanDeptVersion humanDeptVersion);
 
     /**
      * 新增部门资料变更版本
      * 
-     * @param sysDeptVersion 部门资料变更版本
+     * @param humanDeptVersion 部门资料变更版本
      * @return 结果
      */
-    public int insertSysDeptVersion(SysDeptVersion sysDeptVersion);
+    public int insertSysDeptVersion(HumanDeptVersion humanDeptVersion);
 
     /**
      * 修改部门资料变更版本
      * 
-     * @param sysDeptVersion 部门资料变更版本
+     * @param humanDeptVersion 部门资料变更版本
      * @return 结果
      */
-    public int updateSysDeptVersion(SysDeptVersion sysDeptVersion);
+    public int updateSysDeptVersion(HumanDeptVersion humanDeptVersion);
 
     /**
      * 批量删除部门资料变更版本

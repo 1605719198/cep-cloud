@@ -5,13 +5,13 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.uuid.IdUtils;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import com.jlkj.human.hs.domain.ImportError;
 import com.jlkj.human.hs.domain.ImportNote;
 import com.jlkj.human.hs.domain.PersonalSalary;
@@ -53,7 +53,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
     @Autowired
     private IImportNoteService iImportNoteService;
     @Autowired
-    private ISysDeptService deptService;
+    private IHumanDeptService deptService;
 
     /**
      * 查询薪资核定
@@ -132,14 +132,9 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
      * @param personalSalary 薪资核定
      * @return 结果
      */
-    @SuppressWarnings("unchecked")
     public PersonalSalary setData(PersonalSalary personalSalary) {
-        Object obj = iPersonnelService.selectPersonnelInfo(personalSalary.getEmpNo());
-        AjaxResult result = (AjaxResult) obj;
-        Object result2 = result.get("data");
-        Map<String, Object> resultMap = (Map<String, Object>) result2;
-        System.out.println(resultMap);
-        List<Personnel> personnelList = (List<Personnel>) resultMap.get("personnelList");
+        HumanresourcePersonnelInfoDTO personnelInfoDTO = iPersonnelService.selectPersonnelInfo(personalSalary.getEmpNo());
+        List<Personnel> personnelList = personnelInfoDTO.getPersonnelList();
         //定义转化为字符串的日期格式
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ");
         if (personnelList.size() != 0) {
