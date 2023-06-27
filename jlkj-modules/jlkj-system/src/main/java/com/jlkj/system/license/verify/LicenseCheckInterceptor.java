@@ -1,9 +1,11 @@
 package com.jlkj.system.license.verify;
 
 import com.alibaba.fastjson2.JSON;
+import com.jlkj.common.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
