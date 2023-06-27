@@ -1,2 +1,3 @@
 com.jlkj.finance.api.factory.RemoteAaCompanyGroupFallbackFactory
 com.jlkj.finance.api.factory.RemoteAaVoucherFallFactory
+com.jlkj.finance.api.factory.RemoteAaApiService
