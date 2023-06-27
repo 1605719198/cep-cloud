@@ -395,53 +395,6 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
 
                 List<PersonalSalaryDetail> detailList = new ArrayList<>();
                 boolean stop = false;
-//                int excelNumber= 8;
-//                for (int i = 1; i < excelNumber; i++) {
-//                    if (!stop) {
-//                        SocialSecurityBasisDetail detail = new SocialSecurityBasisDetail();
-//                        String payProCode = getValue(basisDTO, "PayProCode" + i);
-//                        String thrIdSta = getValue(basisDTO, "ThrIdSta" + i);
-//                        String fivSta = getValue(basisDTO, "FivSta" + i);
-//                        String sevIdSta = getValue(basisDTO, "SevIdSta" + i);
-//                        errorMsg="缴费地编码不存在";
-//                        if (!StringUtils.isNull(sevIdSta) && !sevIdSta.isEmpty()) {
-//                            sevIdSta = map3.get(getValue(basisDTO, "SevIdSta" + i))[0];
-//                        }
-//                        if (!StringUtils.isNull(payProCode) && !payProCode.isEmpty()) {
-//                            detail.setPayProCode(payProCode);
-//                            ProjectPay projectPay = new ProjectPay();
-//                            projectPay.setPayProCode(payProCode);
-//                            projectPay.setPayType("2");
-//                            errorMsg="社保项目编码不存在";
-//                            projectPay = projectPayService.selectProjectPayByCode(projectPay);
-//                            detail.setPayProId(projectPay.getId().toString());
-//                            detail.setPayProName(projectPay.getPayProName());
-//                            List<SocialSecurity> socialList = iSocialSecurityService.selectSocialSecurityByempNo(basis.getCompId());
-//                            for (SocialSecurity item : socialList) {
-//                                if (item.getPayProCode().equals(payProCode)) {
-//                                    detail.setNinSta(item.getBaseLl());
-//                                    detail.setEleSta(item.getBaseUcl());
-//                                }
-//                            }
-//                            detail.setThrIdSta(thrIdSta);
-//                            detail.setFivSta(fivSta);
-//                            detail.setSevIdSta(sevIdSta);
-//                            detail.setTwoTitle("是否缴纳");
-//                            detail.setThrIsLov("0");
-//                            detail.setFourTitle(detail.getPayProName() + "基数");
-//                            detail.setFivIsLov("0");
-//                            detail.setSixTitle("缴费地");
-//                            detail.setSevIsLov("1");
-//                            detail.setEigTitle("该险种最低基数");
-//                            detail.setNinIsLov("0");
-//                            detail.setTenTitle("该险种最高基数");
-//                            detail.setEleIsLov("0");
-//                            detailList.add(detail);
-//                        } else {
-//                            stop = true;
-//                        }
-//                    }
-//                }
                 salary.setDetailList(detailList);
                 if (isUpdateSupport) {
                     int result = insertPersonalSalary(salary);
