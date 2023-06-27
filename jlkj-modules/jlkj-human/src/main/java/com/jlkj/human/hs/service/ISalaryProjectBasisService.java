@@ -85,5 +85,5 @@ public interface ISalaryProjectBasisService extends IService<SalaryProjectBasis>
      * @param id 集团级薪资项目输入维护主键
      * @return 结果
      */
-    public int deleteSalaryProjectBasisById(Long id)throws Exception;
+    public int deleteSalaryProjectBasisById(Long id);
 }

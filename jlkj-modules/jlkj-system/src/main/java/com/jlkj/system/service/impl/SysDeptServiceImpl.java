@@ -2,7 +2,6 @@ package com.jlkj.system.service.impl;
 
 import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.UserConstants;
-import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.text.Convert;
 import com.jlkj.common.core.utils.SpringUtils;
@@ -10,7 +9,7 @@ import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.datascope.annotation.DataScope;
 import com.jlkj.common.redis.service.RedisService;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.api.RemoteAaCompanyGroupService;
+import com.jlkj.finance.api.RemoteAaApiService;
 import com.jlkj.system.api.domain.SysDept;
 import com.jlkj.system.api.domain.SysRole;
 import com.jlkj.system.api.domain.SysUser;
@@ -18,7 +17,6 @@ import com.jlkj.system.domain.vo.TreeSelect;
 import com.jlkj.system.mapper.SysDeptMapper;
 import com.jlkj.system.mapper.SysRoleMapper;
 import com.jlkj.system.service.ISysDeptService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     private SysRoleMapper roleMapper;
 
     @Autowired
-    private RemoteAaCompanyGroupService companyGroupService;
+    private RemoteAaApiService remoteAaApiService;
 
     @Autowired
     private RedisService redisService;
@@ -354,7 +352,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public List<Map<String,String>> getCompList() {
         List<Map<String,String>> sysDeptVoList = deptMapper.getSysDeptSelectResult();
-        List<Map<String, String>> financeCompList = companyGroupService.selectCompanyList(SecurityConstants.INNER);
+        List<Map<String, String>> financeCompList = remoteAaApiService.selectCompanyList(SecurityConstants.INNER);
         List<Map<String, String>> collect = financeCompList.stream().map(item -> {
             Map<String, String> map = new HashMap<>(2);
             map.put("label", item.get("label") + "(财务)");

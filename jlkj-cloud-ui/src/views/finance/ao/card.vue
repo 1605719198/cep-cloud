@@ -260,7 +260,7 @@ export default {
           const {status, data} = res
           if (status === 200) {
             this.dialogVisible = false
-            console.log(data);
+            console.log(res);
             if(data.code == 500){
               this.$message.error("识别失败，未找到该服务");
             }else {

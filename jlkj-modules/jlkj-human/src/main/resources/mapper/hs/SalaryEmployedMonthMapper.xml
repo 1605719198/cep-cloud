@@ -22,13 +22,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSalaryEmployedMonthVo">
-        select id, comp_id, emp_id, emp_no, emp_name, post, ent_date, salary_date, descript, status, creator, creator_id, creator_no, create_date from human_hs_salary_employed_month
+        SELECT id, comp_id, emp_id, emp_no, emp_name, post, ent_date, salary_date, descript, status, creator, creator_id, creator_no, create_date FROM human_hs_salary_employed_month
     </sql>
 
     <select id="selectSalaryEmployedMonthList" parameterType="SalaryEmployedMonth" resultMap="SalaryEmployedMonthResult">
-        select c.id, c.comp_id, c.emp_id, c.emp_no,p.full_name as emp_name ,
+        SELECT c.id, c.comp_id, c.emp_id, c.emp_no,p.full_name as emp_name ,
                c.post, c.ent_date, c.salary_date, c.descript,
-               c.status, c.creator, c.creator_id, c.creator_no, c.create_date from human_hs_salary_employed_month as c
+               c.status, c.creator, c.creator_id, c.creator_no, c.create_date FROM human_hs_salary_employed_month as c
                left join human_hm_personnel_info as p
                on c.emp_no = p.emp_no
         <where>  
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertSalaryEmployedMonth" parameterType="SalaryEmployedMonth">
-        insert into human_hs_salary_employed_month
+        INSERT INTO human_hs_salary_employed_month
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateSalaryEmployedMonth" parameterType="SalaryEmployedMonth">
-        update human_hs_salary_employed_month
+        UPDATE human_hs_salary_employed_month
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="empId != null">emp_id = #{empId},</if>
@@ -100,11 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSalaryEmployedMonthById" parameterType="String">
-        delete from human_hs_salary_employed_month where id = #{id}
+        DELETE FROM human_hs_salary_employed_month where id = #{id}
     </delete>
 
     <delete id="deleteSalaryEmployedMonthByIds" parameterType="String">
-        delete from human_hs_salary_employed_month where id in 
+        DELETE FROM human_hs_salary_employed_month where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

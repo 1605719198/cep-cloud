@@ -84,4 +84,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectDeprMethodList" parameterType="String" resultType="map">
+        SELECT id, depr_no value, depr_name label FROM finance_aa_deprMethod
+    </select>
 </mapper>

@@ -27,9 +27,9 @@
     </resultMap>
 
     <sql id="selectYearHolidayVo">
-        select id, comp_id, year, emp_no, emp_id, emp_name, post_name, post_id, total_days,
+        SELECT id, comp_id, year, emp_no, emp_id, emp_name, post_name, post_id, total_days,
             cur_year_days, pre_year_days, rest_days, giveup_days, goto_days, overtime_pay,
-            creator, creator_id, create_date from human_hd_year_holiday
+            creator, creator_id, create_date FROM human_hd_year_holiday
     </sql>
 
     <select id="selectYearHolidayList" parameterType="YearHoliday" resultMap="YearHolidayResult">
@@ -50,7 +50,6 @@
                 where emp_no = #{empNo}
                 and comp_id = #{compId}
                 and year = #{year}
-
     </select>
 
     <select id="selectYearHolidayByEmpNo" parameterType="YearHoliday" resultMap="YearHolidayResult">
@@ -59,7 +58,7 @@
     </select>
 
     <insert id="insertYearHoliday" parameterType="YearHoliday">
-        insert into human_hd_year_holiday
+        INSERT INTO human_hd_year_holiday
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
@@ -103,7 +102,7 @@
     </insert>
 
     <update id="updateYearHoliday" parameterType="YearHoliday">
-        update human_hd_year_holiday
+        UPDATE human_hd_year_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="year != null">year = #{year},</if>
@@ -126,7 +125,7 @@
         where id = #{id}
     </update>
     <update id="updateYearHolidayByEmpNo" parameterType="YearHoliday">
-        update human_hd_year_holiday
+        UPDATE human_hd_year_holiday
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
             <if test="year != null">year = #{year},</if>
@@ -150,11 +149,11 @@
     </update>
 
     <delete id="deleteYearHolidayById" parameterType="String">
-        delete from human_hd_year_holiday where id = #{id}
+        DELETE FROM human_hd_year_holiday where id = #{id}
     </delete>
 
     <delete id="deleteYearHolidayByIds" parameterType="String">
-        delete from human_hd_year_holiday where id in
+        DELETE FROM human_hd_year_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

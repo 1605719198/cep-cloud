@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class FinanceAaVoucher extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
     /** 凭证维护明细对象 */
-    private List<FinanceAaVoucherDetail> detailList;
+    private List<FinanceAaVoucherDetail> detailList = new ArrayList<>();
     private String voucherNoStart;
     private String voucherType;
     private String voucherNoEnd;

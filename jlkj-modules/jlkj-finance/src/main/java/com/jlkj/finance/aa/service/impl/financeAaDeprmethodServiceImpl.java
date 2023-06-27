@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 折旧方法维护Service业务层处理
@@ -99,5 +100,14 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
     public int deletefinanceAaDeprmethodById(String id)
     {
         return financeAaDeprmethodMapper.deletefinanceAaDeprmethodById(id);
+    }
+
+    /**
+     * 查询折旧方法（下拉选单用）
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectDeprMethodList(){
+        return financeAaDeprmethodMapper.selectDeprMethodList();
     }
 }

@@ -167,7 +167,6 @@ export default {
       this.queryParams.date1 =val[0];
       this.queryParams.date2 =val[1];
     },
-
     /** 查询出勤异常统计列表 */
     getList() {
       this.loading = true;

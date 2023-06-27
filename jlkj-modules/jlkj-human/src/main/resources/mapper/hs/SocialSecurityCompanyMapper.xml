@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSocialSecurityCompanyVo">
-        select id, pay_area_id, comp_id, creator, creator_no, creator_id, create_date from human_hs_social_security_company
+        SELECT id, pay_area_id, comp_id, creator, creator_no, creator_id, create_date FROM human_hs_social_security_company
     </sql>
 
     <select id="selectSocialSecurityCompanyList" parameterType="SocialSecurityCompany" resultMap="SocialSecurityCompanyResult">
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertSocialSecurityCompany" parameterType="SocialSecurityCompany">
-        insert into human_hs_social_security_company
+        INSERT INTO human_hs_social_security_company
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="payAreaId != null">pay_area_id,</if>
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateSocialSecurityCompany" parameterType="SocialSecurityCompany">
-        update human_hs_social_security_company
+        UPDATE human_hs_social_security_company
         <trim prefix="SET" suffixOverrides=",">
             <if test="payAreaId != null">pay_area_id = #{payAreaId},</if>
             <if test="compId != null">comp_id = #{compId},</if>
@@ -67,11 +67,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSocialSecurityCompanyById" parameterType="String">
-        delete from human_hs_social_security_company where id = #{id}
+        DELETE FROM human_hs_social_security_company where id = #{id}
     </delete>
 
     <delete id="deleteSocialSecurityCompanyByIds" parameterType="String">
-        delete from human_hs_social_security_company where id in 
+        DELETE FROM human_hs_social_security_company where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
