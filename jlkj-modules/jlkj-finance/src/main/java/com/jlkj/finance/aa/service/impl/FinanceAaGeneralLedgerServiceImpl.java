@@ -89,6 +89,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
                                 financeAaLedgerAcctDTO2.setCalName("本期合计");
+                                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -136,6 +137,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setCalName("本期合计");
+                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -200,6 +202,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                     financeAaLedgerAcctDTO3.setDrQty(yearDrQty);
                 }
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
+                financeAaLedgerAcctDTO3.setCalNamea("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
 
             }
@@ -266,6 +269,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
                                 financeAaLedgerAcctDTO2.setAcctName("本期合计");
+                                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -313,6 +317,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setAcctName("本期合计");
+                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -381,6 +386,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
                 }
                 financeAaLedgerAcctDTO3.setAcctName("本年累计");
+                financeAaLedgerAcctDTO3.setCalNamea("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
             }
             Map mapTemp = new HashMap(16);
