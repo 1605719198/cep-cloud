@@ -34,9 +34,9 @@ public interface RemoteAaApiService
 
     /**
      * 新增凭证接口
-     * @param source
-     * @param financeVoucherBean
-     * @return
+     * @param source 来源
+     * @param financeVoucherBean  凭证数据
+     * @return 执行信息
      */
     @PostMapping("/voucher/doVoucher")
     public Map<String,Object> doVoucher(@RequestBody FinanceVoucherBean financeVoucherBean,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
