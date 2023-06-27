@@ -1,14 +1,18 @@
 package com.jlkj.system.license.verify;
 
+import com.jlkj.common.core.constant.CacheConstants;
 import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.common.redis.service.RedisService;
 import com.jlkj.system.license.CustomKeyStoreParam;
+import com.jlkj.system.license.LicenseCheckModel;
+import com.jlkj.system.license.config.BeanUtils;
 import de.schlichtherle.license.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.prefs.Preferences;
 
 /**
@@ -17,6 +21,7 @@ import java.util.prefs.Preferences;
  */
 @Slf4j
 public class LicenseVerify {
+    RedisService redisService = BeanUtils.getBean(RedisService.class);
     /**
      * 安装License证书
      */
@@ -47,12 +52,16 @@ public class LicenseVerify {
         //2. 校验证书
         try {
             LicenseContent licenseContent = licenseManager.verify();
-
+            LicenseCheckModel checkModel = (LicenseCheckModel) licenseContent.getExtra();
+            Collection<String> keys = redisService.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
+            if (keys.size() > checkModel.getUserNum()) {
+                throw new ServiceException("当前登录用户数量大于授权用户数量！");
+            }
             log.info("证书校验通过，证书有效期：{} - {}",format.format(licenseContent.getNotBefore()),format.format(licenseContent.getNotAfter()));
             return true;
         }catch (Exception e){
             log.error("证书校验失败！",e);
-            throw new ServiceException("证书校验失败，请联系管理员！");
+            throw new ServiceException("证书校验失败，请联系管理员！"+e.getMessage());
         }
     }
 

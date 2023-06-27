@@ -66,8 +66,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="1.5">
-          <el-form-item label="使用者数量：" prop="consumerAmount">
-            <el-input-number v-model="form.consumerAmount" placeholder="请输入使用者数量" maxlength="5" :precision="0"
+          <el-form-item label="使用者数量：" prop="userNum">
+            <el-input-number v-model="form.licenseCheckModel.userNum" placeholder="请输入使用者数量" maxlength="5" :precision="0"
                              :step="1" :min="1" :max="99999">
             </el-input-number>
           </el-form-item>
@@ -225,10 +225,22 @@ export default {
           cpuSerial: "",
           mainBoardSerial: "",
           osName: "",
-          machineCode: ""
+          machineCode: "",
+          userNum: 1
         }
       },
     };
+  },
+  watch: {
+    'form.isNoTimeLimit': {
+      handler(newVal,oldVal) {
+        if (newVal === 'Y') {
+          this.form.expiryTime = dateFormat(new Date(new Date().setFullYear(new Date().getFullYear()+100)))
+        } else {
+          this.form.expiryTime = dateFormat(new Date())
+        }
+      }
+    }
   },
   created() {
     this.getInfos();

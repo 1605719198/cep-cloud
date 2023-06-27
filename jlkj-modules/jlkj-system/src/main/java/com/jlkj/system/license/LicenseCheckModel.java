@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 111191
@@ -64,4 +65,8 @@ public class LicenseCheckModel implements Serializable {
      * @param null
      */
     private String machineCode;
+
+    private Integer userNum;
+
+    private Map<String, Object> params;
 }

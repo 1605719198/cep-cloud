@@ -123,9 +123,9 @@
       </el-table-column>
       <el-table-column label="部门" align="center" prop="deptNo">
 
-<!--        <template slot-scope="scope">
+        <template slot-scope="scope">
           <budget-tag :options="deptNoList" :value="scope.row.deptNo"/>
-        </template>-->
+        </template>
       </el-table-column>
       <el-table-column label="预算类别" align="center" prop="budgetType">
         <template slot-scope="scope">
@@ -387,12 +387,14 @@ import {getToken} from "@/utils/auth";
 import budgetTag from "./budgetTag";
 import {parseTime} from "@/utils/jlkj";
 
+import { selectDeptName } from "@/api/human/hp/deptMaintenance";
 export default {
   name: "Budget",
   components: {selectOrgPerson, budgetTag},
   dicts: ['ao_budget_type'],
   data() {
     return {
+
       // 遮罩层
       loading: true,
       // 选中数组
@@ -463,7 +465,8 @@ export default {
           {required: true, message: '请输入年度', trigger: 'blur'}
         ],
         deptN0Name: [
-          {required: true, message: '请输入编码', trigger: 'blur'}
+          {required: true, message: '请输入编码', trigger: 'blur'},
+          {max: 64, message: '最大长度64个字符', trigger: 'blur'}
         ],
         budgetType: [
           {required: true, message: '请输入预算类别', trigger: 'blur'}
@@ -593,6 +596,13 @@ export default {
       selectCompanyList().then(response => {
         this.companyList = response;
         this.queryParams.companyId = this.companyList[0].value
+        this.getDeptName()
+      });
+    },
+    /** 部门下拉选单 */
+    getDeptName() {
+      selectDeptName(this.queryParams.companyId).then(response => {
+        this.deptNoList = response;
       });
     },
     /** 部门编码点击 */

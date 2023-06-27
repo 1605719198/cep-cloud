@@ -1,5 +1,6 @@
 package com.jlkj.system.license;
 
+import com.jlkj.common.core.exception.ServiceException;
 import de.schlichtherle.license.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +40,7 @@ public class LicenseCreator {
             return true;
         }catch (Exception e){
             log.error(MessageFormat.format("证书生成失败：{0}",param),e.getMessage());
-            return false;
+            throw new ServiceException("证书生成失败!");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.jlkj.system.license.verify;
+package com.jlkj.system.license.config;
 
 import com.jlkj.system.license.verify.LicenseCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
