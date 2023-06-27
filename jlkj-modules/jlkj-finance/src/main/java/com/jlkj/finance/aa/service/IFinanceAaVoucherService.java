@@ -3,7 +3,6 @@ package com.jlkj.finance.aa.service;
 import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import com.jlkj.finance.api.bean.FinanceVoucherBean;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -99,7 +98,14 @@ public interface IFinanceAaVoucherService
     public String insertFinanceAaVoucher(FinanceAaVoucher financeAaVoucher);
 
 
-
+/** 新增凭证 外部
+  * @Description
+  * @Param No such property: code for class: Script1
+ * @param financeVoucherBean 凭证接口-主对象
+  * @Author 265799
+  * @Date 2023/6/27 15:00
+ * @return 结果
+**/
     Map<String,Object> doVoucher(FinanceVoucherBean financeVoucherBean);
 
     /**

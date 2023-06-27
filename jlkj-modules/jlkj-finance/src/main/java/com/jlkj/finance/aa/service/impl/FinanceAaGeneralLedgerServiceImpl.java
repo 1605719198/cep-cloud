@@ -398,7 +398,14 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
         return maps;
     }
-    //筛选无发生额
+
+    /** 筛选无发生额
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
@@ -410,7 +417,14 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         }
         return financeAaLedgerAcctDTOS;
     }
-    //筛选余额为零且无发生额
+
+    /** 筛选余额为零且无发生额
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
@@ -424,7 +438,13 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
     }
 
-    //凭过账组数逻辑
+    /** 凭过账组数逻辑
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectAccountLevel(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO, FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctList = new ArrayList<>();
         String substring = "";
