@@ -4,7 +4,6 @@ import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.ServiceNameConstants;
 import com.jlkj.finance.api.bean.FinanceVoucherBean;
 import com.jlkj.finance.api.factory.RemoteAaApiFactory;
-import com.jlkj.finance.api.factory.RemoteAaVoucherFallFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
