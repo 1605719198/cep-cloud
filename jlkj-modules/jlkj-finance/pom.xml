@@ -81,7 +81,10 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-finance</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.yulichang</groupId>
             <artifactId>mybatis-plus-join-boot-starter</artifactId>
