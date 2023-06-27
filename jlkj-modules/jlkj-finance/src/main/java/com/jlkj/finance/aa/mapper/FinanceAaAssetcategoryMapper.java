@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.mapper;
 import com.jlkj.finance.aa.domain.FinanceAaAssetcategory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产大类维护Mapper接口
@@ -59,4 +60,10 @@ public interface FinanceAaAssetcategoryMapper
      * @return 结果
      */
     public int deleteFinanceAaAssetcategoryByIds(String[] ids);
+
+    /**
+     * 查询资产大类（下拉选单用）
+     * @return
+     */
+    public List<Map<String,String>> selectAssetGroupList();
 }

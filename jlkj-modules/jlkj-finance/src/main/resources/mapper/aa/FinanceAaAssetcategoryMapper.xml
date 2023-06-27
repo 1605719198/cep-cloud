@@ -88,4 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectAssetGroupList" parameterType="String" resultType="map">
+        SELECT id, asset_group value, asset_group_name label FROM finance_aa_assetCategory
+    </select>
 </mapper>

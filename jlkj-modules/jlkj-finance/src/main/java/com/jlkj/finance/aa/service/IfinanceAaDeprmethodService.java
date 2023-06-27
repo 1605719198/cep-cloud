@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.service;
 import com.jlkj.finance.aa.domain.financeAaDeprmethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 折旧方法维护Service接口
@@ -59,4 +60,10 @@ public interface IfinanceAaDeprmethodService
      * @return 结果
      */
     public int deletefinanceAaDeprmethodById(String id);
+
+    /**
+     * 查询折旧方法(下拉选单用)
+     * @return
+     */
+    public List<Map<String,String>> selectDeprMethodList();
 }

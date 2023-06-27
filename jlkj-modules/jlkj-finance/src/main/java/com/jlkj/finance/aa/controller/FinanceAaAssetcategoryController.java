@@ -6,6 +6,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.FinanceAaAssetcategory;
 import com.jlkj.finance.aa.service.IFinanceAaAssetcategoryService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产大类维护Controller
@@ -94,5 +96,23 @@ public class FinanceAaAssetcategoryController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(financeAaAssetcategoryService.deleteFinanceAaAssetcategoryByIds(ids));
+    }
+
+    /**
+     * 查询资产大类(下拉选单用)- 远程调用暴露接口
+     */
+    @InnerAuth
+    @GetMapping("/getAssetGroupFeign")
+    public List<Map<String,String>> getAssetGroupFeign()
+    {
+        return financeAaAssetcategoryService.selectAssetGroupList();
+    }
+    /**
+     * 查询资产大类(下拉选单用)
+     */
+    @GetMapping("/assetGroupList")
+    public List<Map<String,String>> selectAssetGroupList()
+    {
+        return financeAaAssetcategoryService.selectAssetGroupList();
     }
 }
