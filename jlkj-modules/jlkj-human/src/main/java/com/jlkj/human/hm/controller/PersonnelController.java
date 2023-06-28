@@ -15,8 +15,8 @@ import com.jlkj.human.hm.domain.SysUser;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
 import com.jlkj.human.hm.service.ISysUserService;
-import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.domain.HumanDept;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +39,7 @@ import java.util.List;
 public class PersonnelController extends BaseController {
     private final IPersonnelService personnelService;
     private final ISysUserService userService;
-    private final ISysDeptService deptService;
+    private final IHumanDeptService deptService;
 
     /**
      * Mq新增人员资料
@@ -107,7 +107,7 @@ public class PersonnelController extends BaseController {
             if (list.get(0).getEmpNo().equals(personnel.getEmpNo())) {
                 return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已经存在");
             } else {
-                SysDept dept = deptService.queryCompById(list.get(0).getCompId());
+                HumanDept dept = deptService.queryCompById(list.get(0).getCompId());
                 return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + dept.getDeptName() + "公司工号" + list.get(0).getEmpNo() + "使用");
             }
         }

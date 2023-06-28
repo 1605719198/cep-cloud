@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hp.mapper.SysDeptMapper">
+<mapper namespace="com.jlkj.human.hp.mapper.HumanDeptMapper">
     
-    <resultMap type="SysDept" id="SysDeptResult">
+    <resultMap type="HumanDept" id="HumanDeptResult">
         <result property="deptId"    column="dept_id"    />
         <result property="deptCode"    column="dept_code"    />
         <result property="deptName"    column="dept_name"    />
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="compId"    column="comp_id"    />
     </resultMap>
 
-    <sql id="selectSysDeptVo">
+    <sql id="selectHumanDeptVo">
         select dept_id, dept_code, dept_name, board_id, parent_id, parent_name, parent_full_name, ancestors, org_tier_id, order_num, leader, email, del_flag, cost_center_id, fax, phone, change_reason, effect_date, version_no, if_company, comp_id, if_display, create_by, status, create_time, update_by, update_time, is_new, company_name from sys_dept
     </sql>
 
@@ -75,8 +75,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <select id="selectSysDeptList" parameterType="SysDept" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectSysDeptList" parameterType="HumanDept" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         <where>
             <if test="deptId != null  and deptId != ''"> and  parent_id = #{deptId}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
@@ -98,8 +98,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="selectCompanyList" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectCompanyList" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         <where>
             and LENGTH(ancestors)-LENGTH(REPLACE(ancestors,',','')) != 0
             and if_company='1'
@@ -114,30 +114,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     
-    <select id="selectSysDeptByDeptId" parameterType="Long" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectSysDeptByDeptId" parameterType="Long" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         where dept_id = #{deptId}
     </select>
 
-    <select id="selectSysDeptByDeptCode" parameterType="String" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectSysDeptByDeptCode" parameterType="String" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         where dept_code = #{deptCode}
     </select>
 
 
-    <select id="selectParentIdByDeptCode" parameterType="Long" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectParentIdByDeptCode" parameterType="Long" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         where parent_id = #{deptId}
     </select>
 
-    <select id="selectSysDeptByCompId" parameterType="String" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectSysDeptByCompId" parameterType="String" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         where comp_id = #{compId}
         and if_company = 1
     </select>
 
 
-    <insert id="insertSysDept" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
+    <insert id="insertSysDept" parameterType="HumanDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptCode != null">dept_code,</if>
@@ -226,7 +226,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="queryRepetitivedata" resultType="Int" parameterType="SysDept">
+    <select id="queryRepetitivedata" resultType="Int" parameterType="HumanDept">
         select count(*) from sys_dept
         <where>
             <if test="deptCode!=null and deptCode!=''"> and dept_code =#{deptCode}</if>
@@ -235,7 +235,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <update id="updateSysDept" parameterType="SysDept">
+    <update id="updateSysDept" parameterType="HumanDept">
         update sys_dept
         <trim prefix="SET" suffixOverrides=",">
             <if test="deptCode != null">dept_code = #{deptCode},</if>
@@ -274,8 +274,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from sys_dept where dept_id = #{deptId}
     </delete>
 
-    <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
-        <include refid="selectSysDeptVo"/>
+    <select id="selectDeptById" parameterType="Long" resultMap="HumanDeptResult">
+        <include refid="selectHumanDeptVo"/>
         where dept_id = #{deptId}
     </select>
 

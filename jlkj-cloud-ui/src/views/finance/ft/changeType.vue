@@ -2,12 +2,14 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="公司别" prop="companyId">
-        <el-input
-          v-model="queryParams.companyId"
-          placeholder="请输入公司别"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.companyId" filterable placeholder="请选择公司">
+          <el-option
+            v-for="item in companyList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="变动方式名称" prop="changeName">
         <el-input

@@ -17,6 +17,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
     </resultMap>
 
     <sql id="selectArrangeClassVo">
@@ -33,13 +35,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="quertArrangeClass" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
+    <select id="queryArrangeClass" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
         <include refid="selectArrangeClassVo"/>
         <where>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
             <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>
             <if test="arrShiDate != null "> and  arr_shi_date  = #{arrShiDate} </if>
+            <if test="startDate != null "> and  arr_shi_date &gt;= #{startDate} </if>
+            <if test="endDate != null "> and  arr_shi_date  &lt;= #{endDate} </if>
         </where>
     </select>
     

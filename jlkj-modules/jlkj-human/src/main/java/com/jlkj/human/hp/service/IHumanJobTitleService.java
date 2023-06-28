@@ -10,7 +10,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-13
  */
-public interface HumanJobTitleService
+public interface IHumanJobTitleService
 {
     /**
      * 查询职位名称数据维护

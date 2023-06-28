@@ -773,7 +773,13 @@ export default {
     this.getDisc()
   },
   watch: {
-
+    'queryParams.compId':{
+      handler(val) {
+        this.getCompData(val)
+      },
+      deep: true,
+      immediate: false,
+    },
   },
   methods: {
     // 查询公司银行选单，薪酬项目

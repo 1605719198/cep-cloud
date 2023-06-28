@@ -1,7 +1,7 @@
 package com.jlkj.human.hp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.domain.HumanDept;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author 266861
  * @date 2023-03-08
  */
-public interface SysDeptMapper extends BaseMapper<SysDept>
+public interface HumanDeptMapper extends BaseMapper<HumanDept>
 {
     /**
      * 查询部门资料维护
@@ -25,21 +25,21 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
      * @param deptId 部门资料维护主键
      * @return 部门资料维护
      */
-    public SysDept selectSysDeptByDeptId(Long deptId);
+    public HumanDept selectSysDeptByDeptId(Long deptId);
     /**
      * 根据部门ID查询信息
      *
      * @param deptId 部门ID
      * @return 部门信息
      */
-    public SysDept selectDeptById(Long deptId);
+    public HumanDept selectDeptById(Long deptId);
     /**
      * 根据部门编码查询信息
      *
      * @param deptCode 部门编码
      * @return 部门信息
      */
-    public SysDept selectSysDeptByDeptCode(String deptCode);
+    public HumanDept selectSysDeptByDeptCode(String deptCode);
 
     /**
      * 根据公司别查询信息
@@ -47,7 +47,7 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
      * @param compId 公司别
      * @return 公司信息
      */
-    public SysDept selectSysDeptByCompId(String compId);
+    public HumanDept selectSysDeptByCompId(String compId);
 
     /**
      * 查询子部门个数
@@ -60,10 +60,10 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
     /**
      * 查询是否有重复编码数据
      *
-     * @param sysDept 部门信息
+     * @param humanDept 部门信息
      * @return 重复编码个数
      */
-    public Integer queryRepetitivedata(SysDept sysDept);
+    public Integer queryRepetitivedata(HumanDept humanDept);
 
     /**
      * 查询父id为此部门编码的数据
@@ -71,15 +71,15 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
      * @param deptId 部门id
      * @return 部门信息
      */
-    public List<SysDept> selectParentIdByDeptCode(Long deptId);
+    public List<HumanDept> selectParentIdByDeptCode(Long deptId);
 
     /**
      * 查询部门资料维护列表
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 部门资料维护集合
      */
-    public List<SysDept> selectSysDeptList(SysDept sysDept);
+    public List<HumanDept> selectSysDeptList(HumanDept humanDept);
 
     /**
      * 通过部门Id查一级部门
@@ -110,7 +110,7 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
      *
      * @return 部门公司资料集合
      */
-    public List<SysDept> selectCompanyList();
+    public List<HumanDept> selectCompanyList();
 
     /**
      * 查询部门岗位资料维护列表
@@ -123,10 +123,10 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
     /**
      * 新增部门资料维护
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      */
-    public int insertSysDept(SysDept sysDept);
+    public int insertSysDept(HumanDept humanDept);
 
     /**
      * 复制组织机构
@@ -139,10 +139,10 @@ public interface SysDeptMapper extends BaseMapper<SysDept>
     /**
      * 修改部门资料维护
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      */
-    public int updateSysDept(SysDept sysDept);
+    public int updateSysDept(HumanDept humanDept);
 
     /**
      * 删除部门资料维护

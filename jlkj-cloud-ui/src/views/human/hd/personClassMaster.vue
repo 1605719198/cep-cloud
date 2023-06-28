@@ -148,7 +148,7 @@
         <el-row :gutter="20" v-if="this.form.id==null">
           <el-col :span="12">
             <el-form-item  prop="type" label="出勤身份类型" >
-              <el-select v-model="formpersonClassType" placeholder="请选择出勤身份类型" style="width: 100%"  clearable>
+              <el-select v-model="formpersonClassType" placeholder="请选择出勤身份类型" style="width: 100%">
                 <el-option
                   v-for="dict in attendenceOptions.PersonClassType"
                   :key="dict.dicNo"

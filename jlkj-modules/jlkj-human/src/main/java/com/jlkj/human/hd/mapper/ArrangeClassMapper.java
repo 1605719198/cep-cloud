@@ -42,7 +42,7 @@ public interface ArrangeClassMapper
      * @param arrangeClass 排班明细
      * @return 排班明细集合
      */
-    public List<ArrangeClass> quertArrangeClass(ArrangeClass arrangeClass);
+    public List<ArrangeClass> queryArrangeClass(ArrangeClass arrangeClass);
 
     /**
      * 新增排班明细

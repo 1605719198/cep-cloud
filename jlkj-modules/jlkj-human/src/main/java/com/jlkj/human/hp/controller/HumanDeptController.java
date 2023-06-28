@@ -8,13 +8,13 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.domain.SysDeptVersion;
+import com.jlkj.human.hp.domain.HumanDept;
+import com.jlkj.human.hp.domain.HumanDeptVersion;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.service.ISysDeptService;
-import com.jlkj.human.hp.service.ISysDeptVersionService;
+import com.jlkj.human.hp.service.IHumanDeptService;
+import com.jlkj.human.hp.service.IHumanDeptVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,43 +32,43 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/deptMaintenance")
-public class SysDeptController extends BaseController
+public class HumanDeptController extends BaseController
 {
     @Autowired
-    private ISysDeptService sysDeptService;
+    private IHumanDeptService sysDeptService;
 
     @Autowired
-    private ISysDeptVersionService sysDeptVersionService;
+    private IHumanDeptVersionService sysDeptVersionService;
 
     /**
     * @Description 查询部门资料维护列表
-    * @param sysDept 部门查询参数
+    * @param humanDept 部门查询参数
     * @return 部门数据列表
     * @author 266861
     * @date 2023/6/21 14:59
     **/
     @RequiresPermissions("human:deptMaintenance:list")
     @GetMapping("/list")
-    public TableDataInfo list(SysDept sysDept)
+    public TableDataInfo list(HumanDept humanDept)
     {
         startPage();
-        List<SysDept> list = sysDeptService.selectSysDeptList(sysDept);
+        List<HumanDept> list = sysDeptService.selectSysDeptList(humanDept);
         return getDataTable(list);
     }
 
     /**
     * @Description 查询部门资料变更版本列表
-    * @param sysDeptVersion 部门历史版本查询参数
+    * @param humanDeptVersion 部门历史版本查询参数
     * @return 部门历史版本数据
     * @author 266861
     * @date 2023/6/21 14:59
     **/
     @RequiresPermissions("human:deptMaintenance:query")
     @GetMapping("/deptVersionlist")
-    public TableDataInfo list(SysDeptVersion sysDeptVersion)
+    public TableDataInfo list(HumanDeptVersion humanDeptVersion)
     {
         startPage();
-        List<SysDeptVersion> list = sysDeptVersionService.selectSysDeptVersionList(sysDeptVersion);
+        List<HumanDeptVersion> list = sysDeptVersionService.selectSysDeptVersionList(humanDeptVersion);
         return getDataTable(list);
     }
 
@@ -102,7 +102,7 @@ public class SysDeptController extends BaseController
 
     /**
     * @Description 新增部门资料维护
-    * @param sysDept 部门数据
+    * @param humanDept 部门数据
     * @return 新增结果
     * @author 266861
     * @date 2023/6/21 15:01
@@ -110,9 +110,9 @@ public class SysDeptController extends BaseController
     @RequiresPermissions("human:deptMaintenance:add")
     @Log(title = "部门资料维护", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysDept sysDept)throws Exception
+    public AjaxResult add(@RequestBody HumanDept humanDept)throws Exception
     {
-        return toAjax(sysDeptService.insertSysDept(sysDept));
+        return toAjax(sysDeptService.insertSysDept(humanDept));
     }
 
 
@@ -134,7 +134,7 @@ public class SysDeptController extends BaseController
 
     /**
     * @Description 修改部门资料维护
-    * @param sysDept 所修改部门资料
+    * @param humanDept 所修改部门资料
     * @return 修改结果
     * @author 266861
     * @date 2023/6/21 15:02
@@ -142,9 +142,9 @@ public class SysDeptController extends BaseController
     @RequiresPermissions("human:deptMaintenance:edit")
     @Log(title = "部门资料维护", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody SysDept sysDept) throws Exception
+    public AjaxResult edit(@RequestBody HumanDept humanDept) throws Exception
     {
-        return toAjax(sysDeptService.updateSysDept(sysDept));
+        return toAjax(sysDeptService.updateSysDept(humanDept));
     }
 
     /**
@@ -170,9 +170,9 @@ public class SysDeptController extends BaseController
     * @date 2023/6/21 15:02
     **/
     @GetMapping("/treeselect")
-    public AjaxResult treeselect(SysDept dept)
+    public AjaxResult treeselect(HumanDept dept)
     {
-        List<SysDept> depts = sysDeptService.selectSysDeptList(dept);
+        List<HumanDept> depts = sysDeptService.selectSysDeptList(dept);
         return AjaxResult.success(sysDeptService.buildDeptTreeSelect(depts));
     }
 
@@ -202,7 +202,7 @@ public class SysDeptController extends BaseController
     @GetMapping("/selectCompany")
     public AjaxResult selectCompany()
     {
-        List<SysDept> companyList = sysDeptService.selectCompanyList();
+        List<HumanDept> companyList = sysDeptService.selectCompanyList();
         return AjaxResult.success(companyList);
     }
 
@@ -250,10 +250,10 @@ public class SysDeptController extends BaseController
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
-        List<SysDept> sysDeptList = util.importExcel(file.getInputStream());
+        ExcelUtil<HumanDept> util = new ExcelUtil<HumanDept>(HumanDept.class);
+        List<HumanDept> humanDeptList = util.importExcel(file.getInputStream());
         String operName = SecurityUtils.getUsername();
-        String message = sysDeptService.importUser(sysDeptList, updateSupport, operName);
+        String message = sysDeptService.importUser(humanDeptList, updateSupport, operName);
         return success(message);
     }
 
@@ -268,7 +268,7 @@ public class SysDeptController extends BaseController
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response) throws IOException
     {
-        ExcelUtil<SysDept> util = new ExcelUtil<SysDept>(SysDept.class);
+        ExcelUtil<HumanDept> util = new ExcelUtil<HumanDept>(HumanDept.class);
         util.importTemplateExcel(response, "部门资料数据");
     }
 
