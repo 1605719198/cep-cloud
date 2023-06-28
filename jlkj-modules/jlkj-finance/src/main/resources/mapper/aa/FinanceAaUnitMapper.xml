@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaUnitMapper">
     
-    <resultMap type="FinanceAaUnit" id="FinanceAaUnitResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaUnit" id="FinanceAaUnitResult">
         <result property="id"    column="id"    />
         <result property="unitNo"    column="unit_no"    />
         <result property="unitName"    column="unit_name"    />
@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, unit_no, unit_name, group_id, base_unit_id, remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_unit
     </sql>
 
-    <select id="selectFinanceAaUnitList" parameterType="FinanceAaUnit" resultMap="FinanceAaUnitResult">
+    <select id="selectFinanceAaUnitList" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnit" resultMap="FinanceAaUnitResult">
         <include refid="selectFinanceAaUnitVo"/>
         <where>  
             <if test="unitNo != null  and unitNo != ''"> and unit_no = #{unitNo}</if>
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectFinanceAaUnitByUnitNo" parameterType="FinanceAaUnit" resultMap="FinanceAaUnitResult">
+    <select id="selectFinanceAaUnitByUnitNo" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnit" resultMap="FinanceAaUnitResult">
         <include refid="selectFinanceAaUnitVo"/>
         where unit_no = #{unitNo}
     </select>
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaUnit" parameterType="FinanceAaUnit">
+    <insert id="insertFinanceAaUnit" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnit">
         insert into finance_aa_unit
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaUnit" parameterType="FinanceAaUnit">
+    <update id="updateFinanceAaUnit" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnit">
         update finance_aa_unit
         <trim prefix="SET" suffixOverrides=",">
             <if test="unitNo != null">unit_no = #{unitNo},</if>

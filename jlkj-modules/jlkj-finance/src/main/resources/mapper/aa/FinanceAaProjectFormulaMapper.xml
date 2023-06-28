@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaProjectFormulaMapper">
     
-    <resultMap type="FinanceAaProjectFormula" id="FinanceAaProjectFormulaResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaProjectFormula" id="FinanceAaProjectFormulaResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="reportId"    column="report_id"    />
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, company_id, report_id, report_no, item_code, item_name, item_row, item_type, sum_control, skip_space, sign, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_project_formula
     </sql>
 
-    <select id="selectFinanceAaProjectFormulaList" parameterType="FinanceAaProjectFormula" resultMap="FinanceAaProjectFormulaResult">
+    <select id="selectFinanceAaProjectFormulaList" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectFormula" resultMap="FinanceAaProjectFormulaResult">
         <include refid="selectFinanceAaProjectFormulaVo"/>
         <where>  
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaProjectFormula" parameterType="FinanceAaProjectFormula">
+    <insert id="insertFinanceAaProjectFormula" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectFormula">
         insert into finance_aa_project_formula
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -88,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaProjectFormula" parameterType="FinanceAaProjectFormula">
+    <update id="updateFinanceAaProjectFormula" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectFormula">
         update finance_aa_project_formula
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
@@ -123,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <update id="updateCheckProjectFormula" parameterType="FinanceAaProjectFormula">
+    <update id="updateCheckProjectFormula" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectFormula">
         update finance_aa_project_formula
         <trim prefix="SET" suffixOverrides=",">
             <if test="reportNo != null">report_no = #{reportNo},</if>

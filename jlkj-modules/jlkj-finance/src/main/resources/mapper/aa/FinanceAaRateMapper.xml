@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaRateMapper">
     
-    <resultMap type="FinanceAaRate" id="FinanceAaRateResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaRate" id="FinanceAaRateResult">
         <result property="id"    column="id"    />
         <result property="ratedate"    column="rateDate"    />
         <result property="ratecate"    column="rateCate"    />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, rateDate, rateCate, rateSpot, rateCrcy, rateValue, rateSrc, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_rate
     </sql>
 
-    <select id="selectFinanceAaRateList" parameterType="FinanceAaRate" resultMap="FinanceAaRateResult">
+    <select id="selectFinanceAaRateList" parameterType="com.jlkj.finance.aa.domain.FinanceAaRate" resultMap="FinanceAaRateResult">
         <include refid="selectFinanceAaRateVo"/>
         <where>  
             <if test="ratedate != null "> and rateDate = #{ratedate}</if>
@@ -39,12 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
-    <select id="selectFinanceAoParaByRateCate" parameterType="FinanceAaRate" resultMap="FinanceAaRateResult">
+    <select id="selectFinanceAoParaByRateCate" parameterType="com.jlkj.finance.aa.domain.FinanceAaRate" resultMap="FinanceAaRateResult">
         <include refid="selectFinanceAaRateVo"/>
         where rateDate = #{ratedate} AND rateCate = #{ratecate} AND rateSpot = #{ratespot} AND rateCrcy = #{ratecrcy}
     </select>
         
-    <insert id="insertFinanceAaRate" parameterType="FinanceAaRate">
+    <insert id="insertFinanceAaRate" parameterType="com.jlkj.finance.aa.domain.FinanceAaRate">
         insert into finance_aa_rate
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaRate" parameterType="FinanceAaRate">
+    <update id="updateFinanceAaRate" parameterType="com.jlkj.finance.aa.domain.FinanceAaRate">
         update finance_aa_rate
         <trim prefix="SET" suffixOverrides=",">
             <if test="ratedate != null">rateDate = #{ratedate},</if>

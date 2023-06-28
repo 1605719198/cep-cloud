@@ -1,4 +1,5 @@
 package com.jlkj.finance.aa.controller;
+import com.alibaba.fastjson2.JSON;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +44,7 @@ public class FinanceAaAccountBalanceTonSteelController extends BaseController{
      */
     @RequiresPermissions("aa:accountSteel:listDetailIfSteel")
     @GetMapping("/reportDetailIfSteel")
-    public List<FinanceAaLedgerAcctDTO>  reportDetailIfSteel(Map<String, Object> parameters)
+    public  List<Map<String, String>>  reportDetailIfSteel(Map<String, Object> parameters)
     {
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO = new FinanceAaLedgerAcctDTO();
         financeAaLedgerAcctDTO.setAcctCode(AssertUtil.stringValue(parameters.get("acctCode")));
@@ -61,7 +63,12 @@ public class FinanceAaAccountBalanceTonSteelController extends BaseController{
         financeAaLedgerAcctDTO.setIsNoNumber(AssertUtil.stringValue(parameters.get("isNoNumber")));
 
         List<FinanceAaLedgerAcctDTO> list = financeAaAccountBalanceTonSteelService.selectListDetailIfSteel(financeAaLedgerAcctDTO);
-        return list;
+        List<Map<String, String>> returnList = new ArrayList();
+        for(FinanceAaLedgerAcctDTO vo :list){
+           Map map=  JSON.parseObject(JSON.toJSONString(vo),Map.class);
+            returnList.add(map);
+        }
+        return returnList;
     }
 
 }
