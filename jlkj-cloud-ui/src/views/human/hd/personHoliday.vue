@@ -97,7 +97,7 @@
                      v-hasPermi="['human:personHoliday:remove']"
           >作废
           </el-button>
-          <el-button v-if="scope.row.status != '01'"
+          <el-button v-if="scope.row.status !== '01'"
                      size="mini"
                      type="text"
                      icon="el-icon-details"
@@ -144,6 +144,7 @@
           <el-col :span="12">
             <el-form-item label="请假开始时间" prop="startDate">
               <el-date-picker clearable
+                              style="width: 100%"
                               v-model="form.startDate"
                               type="datetime"
                               placeholder="请选择请假开始时间"
@@ -154,6 +155,7 @@
           <el-col :span="12">
             <el-form-item label="请假结束时间" prop="endDate">
               <el-date-picker clearable
+                              style="width: 100%"
                               v-model="form.endDate"
                               type="datetime"
                               placeholder="请选择请假结束时间"
@@ -166,7 +168,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="请假类别" prop="leaTypeId">
-              <el-select v-model="form.leaTypeId" placeholder="请选择请假类别" clearable>
+              <el-select v-model="form.leaTypeId" placeholder="请选择请假类别">
                 <el-option
                   v-for="dict in attendenceOptions.HD001"
                   :key="dict.dicNo"
@@ -198,7 +200,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="剩余可请假天数" prop="remainingDays">
-              <el-input v-model="form.remainingDays" type="number"/>
+              <el-input v-model="form.remainingDays" type="number" disabled/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -248,8 +250,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
-        <el-button @click="submit">呈 送</el-button>
-        <el-button @click="personHolidayProcess">请假</el-button>
       </div>
     </el-dialog>
 
@@ -476,8 +476,13 @@ export default {
   methods: {
     //请假流程
     personHolidayProcess() {
-      this.form.compId = 'J00'
-      this.getLeaHoliday()
+      //请假结束日期需大于请假开始日期
+      if(this.form.endDate.getTime()>this.form.startDate){
+        this.form.compId = this.queryParams.compId;
+        this.getLeaHoliday()
+      }else{
+        this.$modal.msgError("请假结束日期需大于请假开始日期")
+      }
     },
     //获取请假假期设定数据
     getLeaHoliday() {
@@ -486,10 +491,13 @@ export default {
         compId: this.form.compId
       }
       getCompHolidaySetting(params).then(response => {
-        this.holidaySetting = response.data
-        console.log('请假假期数据：' + JSON.stringify(response.data))
-        this.form.isContainHoliday = this.holidaySetting.isIncHol
-        this.getShiftMode()
+        if(response.data){
+          this.holidaySetting = response.data
+          this.form.isContainHoliday = this.holidaySetting.isIncHol
+          this.getShiftMode()
+        }else{
+          this.$modal.msgError("该公司下未找到该请假类别数据")
+        }
       })
     },
     //获取轮班方式和班次数据
@@ -499,56 +507,55 @@ export default {
         empId: this.form.empNo
       }
       getClassMasterByPerson(params).then(response => {
-        this.shiftMode = response.data
-        console.log('员工工号为' + this.form.empNo + '的轮班方式编码为:' + this.shiftMode.shiftmodeName)
-        //如果轮班方式是常白班：01
-        var cbMode = '01'
-        if (this.shiftMode.shiftmodeName == cbMode) {
-          //班次：常白班
-          var cbCode = '01'
-          var shiftCode = {
-            shiftmodeId: this.shiftMode.shiftmodeId,
-            shiftCode: cbCode
-          }
-          queryShiftCode(shiftCode).then(response => {
-            this.shiftCodeData = response.data
-            console.log('常白班的班次数据为：' + JSON.stringify(this.shiftCodeData))
-            this.getHolidayTable()
-          })
-        } else {
-          // 如果轮班方式为非常白班
-          //请假开始结束时间
-          let startDate = this.form.startDate
-          let endDate = this.form.endDate
-          let preDate = new Date((startDate.getTime() - 1 * 24 * 3600 * 1000))
-          // let nextDate = endDate
-          // nextDate = new Date(nextDate.setDate(nextDate.getDate()+1))
-          let params = {
-            empId: this.form.empNo,
-            startDate: getDateTime(1, preDate),
-            endDate: getDateTime(1, endDate),
-            compId: this.form.compId
-          }
-          console.log(JSON.stringify(params))
-          getShiftCodeByPerson(params).then(response => {
-            this.shiftCodeData = response.rows
-            console.log('员工排班数据' + JSON.stringify(response.rows))
-            let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (1 * 24 * 60 * 60 * 1000)
-            //请假跨天数
-            let conDays = Math.floor(days) + 1
-            console.log('请假跨天数：' + conDays)
-            this.conDays = conDays
-            if (response.total != (conDays + 1)) {
-              this.$modal.msgError('请假时间段内有未排班天数')
-            } else {
-              this.computeWorkTime(2)
+        if(response.data){
+          this.shiftMode = response.data
+          //如果轮班方式是常白班：01
+          var cbMode = '01'
+          if (this.shiftMode.shiftmodeName === cbMode) {
+            //班次：常白班
+            var cbCode = '01'
+            var shiftCode = {
+              shiftmodeId: this.shiftMode.shiftmodeId,
+              shiftCode: cbCode
             }
-            // if(this.computeWorkTime(2)===false){
-            //   this.$modal.msgError('请假时间不符规范')
-            // }else{
-            //   this.$modal.msgSuccess('请假成功')
-            // }
-          })
+            queryShiftCode(shiftCode).then(response => {
+              this.shiftCodeData = response.data
+              this.getHolidayTable()
+            })
+          } else {
+            // 如果轮班方式为非常白班
+            //请假开始结束时间
+            let startDate = this.form.startDate
+            let endDate = this.form.endDate
+            let preDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
+            // let nextDate = endDate
+            // nextDate = new Date(nextDate.setDate(nextDate.getDate()+1))
+            let params = {
+              empId: this.form.empNo,
+              startDate: getDateTime(1, preDate),
+              endDate: getDateTime(1, endDate),
+              compId: this.form.compId
+            }
+            getShiftCodeByPerson(params).then(response => {
+              this.shiftCodeData = response.rows
+              console.log('员工排班数据')
+              this.shiftCodeData.forEach((value)=>{
+                console.log('时间：'+value.createDate+'编码：'+value.shiftCode)
+              })
+              let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (24 * 60 * 60 * 1000)
+              //请假跨天数
+              let conDays = Math.floor(days) + 1
+              console.log('请假跨天数：' + conDays)
+              this.conDays = conDays
+              if (response.total !== (conDays + 1)) {
+                this.$modal.msgError('请假时间段内有未排班天数')
+              } else {
+                this.computeWorkTime(2)
+              }
+            })
+          }
+        }else{
+          this.$modal.msgError("该员工在请假期间未排班")
         }
       })
     },
@@ -568,19 +575,17 @@ export default {
       getHoliday(param).then(response => {
         this.holidayTable = response.rows
         console.log('节假日设定数据' + JSON.stringify(this.holidayTable))
-        if (this.computeWorkTime(1) === false) {
-          this.$modal.msgError('请假时间不符规范')
-        } else {
-          this.$modal.msgSuccess('请假成功')
-        }
+        this.computeWorkTime(1)
       })
     },
     //计算请假工时
     computeWorkTime(e) {
-      //请假是否有问题
+      //请假过程是否有问题
       this.errorData.ifError = false
       //员工请假分钟数
       let personMinute = 0
+      //请假班次(天数)
+      let conDay = 0;
       //一班次时间工作分钟数
       let oneTurnMinute
       //请假开始结束时间
@@ -605,142 +610,107 @@ export default {
         let leastMinute = parseInt(this.holidaySetting.minUnitDay) * 60
         //请假未跨天
         if (getDateTime(1, startDate) === getDateTime(1, endDate)) {
-          if (this.compareTime(startHour, startMin, personHour1, personMin1) > 0) {
-            personHour1 = startHour
-            personMin1 = startMin
-          }
-          if (this.compareTime(personHour2, personMin2, endHour, endMin) > 0) {
-            personHour2 = endHour
-            personMin2 = endMin
-          }
-          //请假当天总时间分钟数
-          let personConMinute = this.compareTime(personHour2, personMin2, personHour1, personMin1)
-          let obj = {
-            startHour: personHour1,
-            startMin: personMin1,
-            endHour: personHour2,
-            endMin: personMin2,
-            shiftCodeData: this.shiftCodeData
-          }
-          let json = JSON.stringify(obj)
-          personConMinute = this.computeDayMinute(json)
-          console.log('请假当天实际分钟数：' + personConMinute)
-          if (personConMinute % leastMinute !== 0) {
-            this.errorData.ifError = true
-          } else {
+          console.log("常白班请假未跨天")
+          if(this.holidayTable[0].dateType!=="1"&&this.form.isContainHoliday==='N'){
+            console.log("请假失败，请假当天非工作日")
+            this.errorData.ifError = false
+            this.errorData.errorMsg = "请假失败，请假当天非工作日";
+          }else{
+            if (this.compareTime(startHour, startMin, personHour1, personMin1) > 0) {
+              personHour1 = startHour
+              personMin1 = startMin
+            }
+            if (this.compareTime(personHour2, personMin2, endHour, endMin) > 0) {
+              personHour2 = endHour
+              personMin2 = endMin
+            }
+            //请假当天分钟数
+            let personConMinute;
+            if(this.compareTime(personHour2,personMin2,personHour1,personMin1)>0){
+              let obj = {
+                startHour: personHour1,
+                startMin: personMin1,
+                endHour: personHour2,
+                endMin: personMin2,
+                shiftCodeData: this.shiftCodeData
+              }
+              personConMinute = this.computeDayMinute(JSON.stringify(obj))
+            }else{
+              personConMinute = 0;
+            }
+            console.log('请假当天实际分钟数：' + personConMinute)
             personMinute = personConMinute
-            this.form.leaveShifts = parseInt((personMinute / oneTurnMinute) * 100) / 100
           }
         } else {
+          console.log("常白班请假已跨天")
           this.holidayTable.forEach((value) => {
             if (this.errorData.ifError !== true) {
-              if (value.holDay === getDateTime(1, startDate)) {
-                //请假开始时间早于当天工作结束时间
-                if (this.compareTime(personHour1, personMin1, endHour, endMin) < 0) {
-                  //请假开始时间晚于当天工作开始时间
-                  if (this.compareTime(personHour1, personMin1, startHour, startMin) > 0) {
-                    //请假第一天总时间分钟数
-                    let personConMinute = this.compareTime(endHour, endMin, personHour1, personMin1)
-                    console.log('请假第一天总时间为：' + personConMinute)
-                    let beforeRest = false
-                    for (let i = 1; i <= this.shiftCodeData.restCount; i++) {
-                      let restEndHour, restEndMin, restConMin
-                      if (i === 1) {
-                        restEndHour = parseInt(this.shiftCodeData.restEndHour)
-                        restEndMin = parseInt(this.shiftCodeData.restEndMin)
-                        restConMin = parseInt(this.shiftCodeData.restConMin)
-                      } else {
-                        restEndHour = parseInt(this.shiftCodeData['restEndHour' + i])
-                        restEndMin = parseInt(this.shiftCodeData['restEndMin' + i])
-                        restConMin = parseInt(this.shiftCodeData['restConMin' + i])
-                      }
-                      if (!beforeRest) {
-                        let condition = this.compareTime(restEndHour, restEndMin, personHour1, personMin1)
-                        if (condition >= restConMin) {
-                          personConMinute -= restConMin
-                          beforeRest = true
-                        } else if (condition >= 0 && condition < restConMin) {
-                          personConMinute -= condition
-                          beforeRest = true
-                        }
-                      } else {
-                        personConMinute -= restConMin
-                      }
-                    }
-                    //请假第一天实际工作分钟数
-                    console.log('请假第一天实际工作分钟数：' + personConMinute)
-                    if (personConMinute % leastMinute !== 0) {
-                      this.errorData.ifError = true
-                    }
-                    personMinute += personConMinute
-                  } else {
-                    personMinute += workMinuteDay
+              //每日请假分钟数
+              let personConMinute;
+              if (value.holDay === getDateTime(1, startDate)){
+                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
+                  if (this.compareTime(startHour, startMin, personHour1, personMin1) > 0) {
+                    personHour1 = startHour
+                    personMin1 = startMin
                   }
-                } else {
-                  personMinute += 0
+                  if(this.compareTime(this.shiftCodeData.endHour,this.shiftCodeData.endMin,personHour1,personMin1)>0){
+                    let obj = {
+                      startHour: personHour1,
+                      startMin: personMin1,
+                      endHour: this.shiftCodeData.endHour,
+                      endMin: this.shiftCodeData.endMin,
+                      shiftCodeData: this.shiftCodeData
+                    }
+                    personConMinute = this.computeDayMinute(JSON.stringify(obj));
+                  }else{
+                    personConMinute = 0;
+                  }
+                }else{
+                  personConMinute = 0;
                 }
               } else if (value.holDay === getDateTime(1, endDate)) {
-                //请假结束时间晚于当天工作开始时间
-                if (this.compareTime(personHour2, personMin2, startHour, startMin) > 0) {
-                  //请假结束时间早于当天工作结束时间
-                  if (this.compareTime(personHour2, personMin2, endHour, endMin) < 0) {
-                    //请假最后一天总分钟数
-                    let personConMinute = this.compareTime(personHour2, personMin2, startHour, startMin)
-                    console.log('请假最后一天总时间为：' + personConMinute)
-                    let afterRest = false
-                    for (let i = this.shiftCodeData.restCount; i >= 1; i--) {
-                      let restStartHour, restStartMin, restConMin
-                      if (i === 1) {
-                        restStartHour = parseInt(this.shiftCodeData.restStartHour)
-                        restStartMin = parseInt(this.shiftCodeData.restStartMin)
-                        restConMin = parseInt(this.shiftCodeData.restConMin)
-                      } else {
-                        restStartHour = parseInt(this.shiftCodeData['restStartHour' + i])
-                        restStartMin = parseInt(this.shiftCodeData['restStartMin' + i])
-                        restConMin = parseInt(this.shiftCodeData['restConMin' + i])
-                      }
-                      if (!afterRest) {
-                        let condition = this.compareTime(personHour2, personMin2, restStartHour, restStartMin)
-                        if (condition >= restConMin) {
-                          personConMinute -= restConMin
-                          console.log('最后一天某阶段分钟长' + personConMinute)
-                          afterRest = true
-                        } else if (condition >= 0 && condition < restConMin) {
-                          personConMinute -= condition
-                          console.log('最后一天某阶段分钟长' + personConMinute)
-                          afterRest = true
-                        }
-                      } else {
-                        personConMinute -= restConMin
-                        console.log('最后一天某阶段分钟长' + personConMinute)
-                      }
-                    }
-                    //请假最后一天实际工作分钟数
-                    console.log('请假最后一天实际工作分钟数：' + personConMinute)
-                    if (personConMinute % leastMinute !== 0) {
-                      this.errorData.ifError = true
-                    }
-                    personMinute += personConMinute
-                  } else {
-                    personMinute += workMinuteDay
+                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
+                  if (this.compareTime(personHour2, personMin2, endHour, endMin) > 0) {
+                    personHour2 = endHour
+                    personMin2 = endMin
                   }
-                } else {
-                  personMinute += 0
+                  if(this.compareTime(personHour2,personMin2,this.shiftCodeData.startHour,this.shiftCodeData.startMin)>0){
+                    let obj = {
+                      startHour: this.shiftCodeData.startHour,
+                      startMin: this.shiftCodeData.startMin,
+                      endHour: personHour2,
+                      endMin: personMin2,
+                      shiftCodeData: this.shiftCodeData
+                    }
+                    personConMinute = this.computeDayMinute(JSON.stringify(obj));
+                  }else{
+                    personConMinute = 0;
+                  }
+                }else{
+                  personConMinute = 0;
                 }
               } else {
-                personMinute += workMinuteDay
+                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
+                  personConMinute = workMinuteDay;
+                }else{
+                  personConMinute =0;
+                }
               }
+              personMinute += personConMinute;
             }
           })
         }
-        if (personMinute % leastMinute !== 0) {
+        if (personMinute % leastMinute !== 0 || personMinute===0) {
           this.errorData.ifError = true
+          this.errorData.errorMsg = "请假失败，请假时长不满足要求";
+        }else{
+          conDay =  parseInt(personMinute) / parseInt(oneTurnMinute) * 100 / 100
         }
       } else {
         //倒班计算
         //请假前一天与倒数第二天时间
-        let firstDate = new Date((startDate.getTime() - 1 * 24 * 3600 * 1000))
-        let lastDate = new Date((endDate.getTime() - 1 * 24 * 3600 * 1000))
+        let firstDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
+        let lastDate = new Date((endDate.getTime() - 24 * 3600 * 1000))
         //请假前一天，倒数第二天差值数据,第一天，最后一天班次数据
         let firstData = null, lastData = null, startData = null, endData = null
         let firstMinute = 0, lastMinute = 0, startMinute = 0, endMinute = 0
@@ -755,21 +725,25 @@ export default {
           let endHour = parseInt(value.endHour)
           let endMin = parseInt(value.endMin)
           let conMinute = conHour * 60 + conMin
-          if (value.createDate === getDateTime(1, startDate)) {
-            startData = value
-          } else if (value.createDate === getDateTime(1, endDate)) {
-            endData = value
-          } else if (value.createDate === getDateTime(1, firstDate)) {
-            if (endHour <= startHour) {
-              firstData = value
+          if(conMinute!==0){
+            if (value.createDate === getDateTime(1, startDate)) {
+              startData = value
+            } else if (value.createDate === getDateTime(1, endDate)) {
+              endData = value
+            } else if (value.createDate === getDateTime(1, firstDate)) {
+              if (this.ifOverDay(JSON.stringify(value))) {
+                firstData = value
+              }
+            } else if (value.createDate === getDateTime(1, lastDate)) {
+              personMinute += conMinute;
+              conDay +=1;
+              if (this.ifOverDay(JSON.stringify(value))) {
+                lastData = value
+              }
+            } else {
+              personMinute += conMinute
+              conDay +=1;
             }
-          } else if (value.createDate === getDateTime(1, lastDate)) {
-            personMinute += conMinute
-            if (endHour <= startHour) {
-              lastData = value
-            }
-          } else {
-            personMinute += conMinute
           }
         })
         //前一天请假时间计算
@@ -789,16 +763,19 @@ export default {
             endMin:firstData.endMin,
             shiftCodeData: firstData
           }
-          let json = JSON.stringify(obj)
-          firstMinute = this.computeDayMinute(json)
+          firstMinute = this.computeDayMinute(JSON.stringify(obj))
           console.log('请假前一天请假时间分钟数：'+firstMinute)
           personMinute +=firstMinute;
           leastMinute = (parseInt(firstData.conHour)*60+parseInt(firstData.conMin))*this.holidaySetting.minUnitTurns
-          if(firstMinute%leastMinute!=0){
+          if(firstMinute%leastMinute!==0){
             this.errorData.ifError = true;
+            this.errorData.errorMsg=("前一天请假时间不合规范");
             console.log('前一天请假时间不合规范')
           }else{
+            let firstDay = firstMinute/(parseInt(firstData.conHour)*60+parseInt(firstData.conMin));
+            conDay += firstDay
             console.log('前一天请假时间符合规范')
+            console.log('前一天请假班次：'+firstDay)
           }
         }
           //第一天请假时间计算
@@ -822,7 +799,7 @@ export default {
             //如果不止一天
             if(this.conDays!==1){
               //不跨天
-              if (endHour > startHour) {
+              if (!this.ifOverDay(JSON.stringify(startData))) {
                 if(this.compareTime(startStartHour,startStartMin,startData.endHour,startData.endMin)>=0){
                   startMinute = 0;
                 }else{
@@ -833,8 +810,7 @@ export default {
                     endMin: startData.endMin,
                     shiftCodeData: startData
                   }
-                  let json = JSON.stringify(obj)
-                  startMinute = this.computeDayMinute(json)
+                  startMinute = this.computeDayMinute(JSON.stringify(obj))
                 }
               } else {
                 let obj = {
@@ -844,16 +820,16 @@ export default {
                   endMin: parseInt(startData.endMin),
                   shiftCodeData: startData
                 }
-                let json = JSON.stringify(obj)
-                startMinute = this.computeDayMinute(json)
+                startMinute = this.computeDayMinute(JSON.stringify(obj))
               }
               console.log('第一天请假时间分钟数：' + startMinute)
               personMinute += startMinute
             }else{
               //不跨天
-              if (endHour > startHour) {
+              if (!this.ifOverDay(JSON.stringify(startData))) {
                 if(this.compareTime(personHour2,personMin2,startData.startHour,startData.startMin)<0||this.compareTime(personHour1,personMin1,startData.endHour,startData.endMin)>0){
                   startMinute = 0;
+                  this.errorData.errorMsg=("请假时长为0");
                   this.errorData.ifError = true;
                 }else{
                   if(this.compareTime(personHour2,personMin2,startData.endHour,startData.endMin)>0){
@@ -871,8 +847,7 @@ export default {
                     endMin: personMin2,
                     shiftCodeData: startData
                   }
-                  let json = JSON.stringify(obj)
-                  startMinute = this.computeDayMinute(json)
+                  startMinute = this.computeDayMinute(JSON.stringify(obj))
                   console.log('第一天请假时间分钟数：'+startMinute);
                   personMinute += startMinute
                 }
@@ -893,8 +868,7 @@ export default {
                     endMin: personMin2,
                     shiftCodeData: startData
                   }
-                  let json = JSON.stringify(obj)
-                  startMinute = this.computeDayMinute(json)
+                  startMinute = this.computeDayMinute(JSON.stringify(obj))
                   console.log('第一天请假时间分钟数：'+startMinute);
                   personMinute += startMinute
                 }
@@ -902,16 +876,20 @@ export default {
               }
             }
             leastMinute = (parseInt(startData.conHour) * 60 + parseInt(startData.conMin)) * this.holidaySetting.minUnitTurns
-            if (startMinute % leastMinute != 0) {
+            if (startMinute % leastMinute !== 0) {
               this.errorData.ifError = true
+              this.errorData.errorMsg = '第一天请假时间不合规范';
               console.log('第一天请假时间不合规范')
             } else {
+              let startDay =startMinute/(parseInt(startData.conHour) * 60 + parseInt(startData.conMin))
+              conDay += startDay
               console.log('第一天请假时间符合规范')
+              console.log('第一天请假班次：'+startDay)
             }
           }
           //最后一天请假时间计算
           if (endData != null) {
-            if (this.conDays === 2&&this.compareTime(startData.startHour,startData.startMin,startData.endHour,startData.endMin)>=0) {
+            if (this.conDays === 2&&this.ifOverDay(JSON.stringify(startData))) {
               lastData = startData;
             }
             //工作开始，持续，结束时分
@@ -926,8 +904,13 @@ export default {
             if (this.compareTime(personHour2, personMin2, endData.startHour, endData.startMin) > 0) {
               endStartHour = endData.startHour
               endStartMin = endData.startMin
-              endEndHour = personHour2
-              endEndMin = personMin2
+              if(this.compareTime(personHour2,personMin2,endData.endHour,endData.endMin)>0&&!this.ifOverDay(JSON.stringify(endData))){
+                endEndHour = endData.endHour;
+                endEndMin = endData.endMin;
+              }else{
+                endEndHour = personHour2
+                endEndMin = personMin2
+              }
               let obj = {
                 startHour: endStartHour,
                 startMin: endStartMin,
@@ -935,16 +918,19 @@ export default {
                 endMin: endEndMin,
                 shiftCodeData: endData
               }
-              let json = JSON.stringify(obj)
-              endMinute = this.computeDayMinute(json)
+              endMinute = this.computeDayMinute(JSON.stringify(obj))
               console.log('最后一天请假分钟为：' + endMinute)
               personMinute += endMinute
               leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
               if (endMinute % leastMinute !== 0) {
                 this.errorData.ifError = true
+                this.errorData.errorMsg = '最后一天请假时间不合规范';
                 console.log('最后一天请假时间不合规范')
               } else {
+                let endDay =endMinute/(parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
+                conDay += endDay
                 console.log('最后一天请假时间符合规范')
+                console.log('最后一天请假班次：'+endDay)
               }
             } else if (lastData != null && this.compareTime(personHour2, personMin2, lastData.endHour, lastData.endMin) <= 0) {
 
@@ -959,41 +945,97 @@ export default {
                 endMin: endEndMin,
                 shiftCodeData: lastData
               }
-              let json = JSON.stringify(obj)
-              //倒数第二天实际请假时间
-              lastMinute = this.computeDayMinute(json)
-              console.log('倒数第二天差值请假分钟为：' + lastMinute)
+              //倒数第二天实际请假差值时间
+              lastMinute = this.computeDayMinute(JSON.stringify(obj))
+              let realLastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin))-lastMinute
+              console.log('倒数第二天请假分钟为：' + realLastMinute)
               personMinute -= lastMinute
               leastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) * this.holidaySetting.minUnitTurns
-              if (((parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) - lastMinute) % lastMinute !== 0) {
+              if (realLastMinute % leastMinute !== 0) {
                 this.errorData.ifError = true
+                this.errorData.errorMsg = '倒数第二天请假时间不合规范';
                 console.log('倒数第二天请假时间不合规范')
               } else {
+                let lastDay = lastMinute/(parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin))
+                conDay -= lastDay
                 console.log('倒数第二天请假时间符合规范')
+                console.log('倒数第二天请假班次：'+(1-lastDay))
               }
             } else {
               endMinute = 0
               console.log('最后一天请假分钟为：' + endMinute)
               leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
-              if (endMinute % leastMinute != 0) {
+              if (endMinute % leastMinute !== 0) {
                 this.errorData.ifError = true
+                this.errorData.errorMsg = '最后一天请假时间不合规范';
                 console.log('最后一天请假时间不合规范')
               } else {
+                let endDay =endMinute/(parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
+                conDay += endDay
                 console.log('最后一天请假时间符合规范')
+                console.log('最后一天请假班次：'+endDay)
               }
             }
           }
 
       }
       console.log('员工请假总分钟数：' + personMinute)
-      if (this.errorData.ifError === false) {
+      console.log('员工请假总天/班次数：' + conDay)
+      if (this.errorData.ifError === false&&personMinute!==0) {
         console.log('请假时间符合要求')
-        this.form.leaveShifts = parseInt((personMinute / oneTurnMinute) * 100) / 100
+        this.form.leaveShifts = conDay
+        let param = {
+          year: this.form.startDate.getFullYear(),
+          empNo: this.form.empNo,
+          compId: this.form.compId,
+          companyid: this.form.compId,
+        }
+        if(this.form.leaTypeId==='07'){
+          homeLeaveHoliday(param).then(response => {
+            this.homeLeaveHoliday = response
+            alert(JSON.stringify(response))
+          })
+        }else if(this.form.leaTypeId==='09'){
+          yearHoliday(param).then(response => {
+            this.yearHoliday = response.data
+            //总可休天数
+            let preYearDays = this.yearHoliday.preYearDays
+            this.form.remainingDays = preYearDays;
+            //已休天数
+            let restDays = this.yearHoliday.restDays;
+            this.form.yearDays = this.yearHoliday.restDays;
+            if((restDays+this.form.leaveShifts)>preYearDays){
+              this.$modal.msgError("年休假剩余可休时长不足！")
+            }
+          })
+        }else {
+          this.$modal.msgSuccess('请假成功')
+        }
         return true
       } else {
         console.log('请假时间不符合要求')
+        this.$modal.msgError(this.errorData.errorMsg);
+        this.form.leaveShifts = null;
         return false
       }
+    },
+    //计算某班次是否跨天
+    ifOverDay(json){
+      let obj = {}
+      //参数对象转化
+      if (json != null) {
+        obj = JSON.parse(json)
+      }
+      let restMin = 0;
+      for(let i=1; i<=obj.restCount; i++ ){
+        if(i===1){
+          restMin += parseInt(obj.restConMin)
+        }else{
+          restMin += parseInt(obj['restConMin'+i])
+        }
+      }
+      let hour = (parseInt(obj.conHour)*60+parseInt(obj.conMin)+restMin)/60
+      return (parseInt(obj.endHour)<parseInt(obj.startHour))||(hour - 24 >= 0)
     },
     //计算某天请假时间
     computeDayMinute(json) {
@@ -1002,81 +1044,85 @@ export default {
       if (json != null) {
         obj = JSON.parse(json)
       }
-      //跨天数据转化
-      if (parseInt(obj.shiftCodeData.endHour) <= parseInt(obj.shiftCodeData.startHour)) {
-        obj.shiftCodeData.endHour = parseInt(obj.shiftCodeData.endHour) + 24
-        if (parseInt(obj.restStartHour) <= parseInt(obj.shiftCodeData.startHour)) {
-          obj.shiftCodeData.restStartHour = parseInt(obj.shiftCodeData.restStartHour) + 24
-        }
-        if (parseInt(obj.shiftCodeData.restEndHour) <= parseInt(obj.shiftCodeData.startHour)) {
-          obj.shiftCodeData.restEndHour = parseInt(obj.shiftCodeData.restEndHour) + 24
-        }
-        if (parseInt(obj.shiftCodeData.restStartHour2) <= parseInt(obj.shiftCodeData.startHour)) {
-          obj.shiftCodeData.restStartHour2 = parseInt(obj.shiftCodeData.restStartHour2) + 24
-        }
-        if (parseInt(obj.shiftCodeData.restEndHour2) <= parseInt(obj.shiftCodeData.startHour)) {
-          obj.shiftCodeData.restEndHour2 = parseInt(obj.shiftCodeData.restEndHour2) + 24
-        }
-        if (obj.shiftCodeData.restStartHour3 <= obj.shiftCodeData.startHour) {
-          obj.shiftCodeData.restStartHour3 = parseInt(obj.shiftCodeData.restStartHour3) + 24
-        }
-        if (obj.shiftCodeData.restEndHour3 <= obj.shiftCodeData.startHour) {
-          obj.shiftCodeData.restEndHour3 = parseInt(obj.shiftCodeData.restEndHour3) + 24
-        }
-      }
-      //请假开始结束时间
-      let startHour = obj.startHour
-      let startMin = obj.startMin
-      let endHour = obj.endHour
-      let endMin = obj.endMin
-      let shiftCodeData = obj.shiftCodeData
-      //请假当天总时间分钟数
-      let personConMinute = this.compareTime(endHour, endMin, startHour, startMin)
-      let stop = false
-      for (let i = 1; i <= obj.shiftCodeData.restCount; i++) {
-        if (this.errorData.ifError !== true && stop !== true) {
-          let restStartHour, restStartMin, restEndHour, restEndMin, restConMin
-          if (i === 1) {
-            restStartHour = parseInt(shiftCodeData.restStartHour)
-            restStartMin = parseInt(shiftCodeData.restStartMin)
-            restEndHour = parseInt(shiftCodeData.restEndHour)
-            restEndMin = parseInt(shiftCodeData.restEndMin)
-            restConMin = parseInt(shiftCodeData.restConMin)
-          } else {
-            restStartHour = parseInt(shiftCodeData['restStartHour' + i])
-            restStartMin = parseInt(shiftCodeData['restStartMin' + i])
-            restEndHour = parseInt(shiftCodeData['restEndHour' + i])
-            restEndMin = parseInt(shiftCodeData['restEndMin' + i])
-            restConMin = parseInt(shiftCodeData['restConMin' + i])
+      if(this.compareTime(obj.shiftCodeData.conHour,obj.shiftCodeData.conMin,0,0)!==0){
+        //跨天数据转化
+        if (this.ifOverDay(JSON.stringify(obj.shiftCodeData))) {
+          obj.shiftCodeData.endHour = parseInt(obj.shiftCodeData.endHour) + 24
+          if (parseInt(obj.shiftCodeData.restStartHour) <= parseInt(obj.shiftCodeData.startHour)) {
+            obj.shiftCodeData.restStartHour = parseInt(obj.shiftCodeData.restStartHour) + 24
           }
-          //1：start，1：end，2：start，2：end
-          let condition1 = this.compareTime(startHour, startMin, restStartHour, restStartMin)
-          let condition2 = this.compareTime(startHour, startMin, restEndHour, restEndMin)
-          let condition3 = this.compareTime(endHour, endMin, restStartHour, restStartMin)
-          let condition4 = this.compareTime(endHour, endMin, restEndHour, restEndMin)
-          if (condition1 >= 0 && condition4 <= 0) {
-            //请假时间段在休息时间内
-            personConMinute = 0
-            stop = true
-          } else if (condition1 <= 0 && condition3 >= 0 && condition4 <= 0) {
-            //请假时间段左外右内
-            personConMinute -= condition3
-            stop = true
-          } else if (condition3 <= 0) {
-            //请假时间段在休息时间左侧
-            stop = true
-          } else if (condition1 <= 0 && condition4 >= 0) {
-            //请假时间跨住休息时间
-            personConMinute -= restConMin
-          } else if (condition2 <= 0 && condition4 >= 0 && condition1 >= 0) {
-            //请假时间左内右外
-            personConMinute += condition2
-          } else if (condition2 >= 0) {
-            //请假时间段在休息时间左侧
+          if (parseInt(obj.shiftCodeData.restEndHour) <= parseInt(obj.shiftCodeData.startHour)) {
+            obj.shiftCodeData.restEndHour = parseInt(obj.shiftCodeData.restEndHour) + 24
+          }
+          if (parseInt(obj.shiftCodeData.restStartHour2) <= parseInt(obj.shiftCodeData.startHour)) {
+            obj.shiftCodeData.restStartHour2 = parseInt(obj.shiftCodeData.restStartHour2) + 24
+          }
+          if (parseInt(obj.shiftCodeData.restEndHour2) <= parseInt(obj.shiftCodeData.startHour)) {
+            obj.shiftCodeData.restEndHour2 = parseInt(obj.shiftCodeData.restEndHour2) + 24
+          }
+          if (obj.shiftCodeData.restStartHour3 <= obj.shiftCodeData.startHour) {
+            obj.shiftCodeData.restStartHour3 = parseInt(obj.shiftCodeData.restStartHour3) + 24
+          }
+          if (obj.shiftCodeData.restEndHour3 <= obj.shiftCodeData.startHour) {
+            obj.shiftCodeData.restEndHour3 = parseInt(obj.shiftCodeData.restEndHour3) + 24
           }
         }
+        //请假开始结束时间
+        let startHour = obj.startHour
+        let startMin = obj.startMin
+        let endHour = obj.endHour
+        let endMin = obj.endMin
+        let shiftCodeData = obj.shiftCodeData
+        //请假当天总时间分钟数
+        let personConMinute = this.compareTime(endHour, endMin, startHour, startMin)
+        let stop = false
+        for (let i = 1; i <= obj.shiftCodeData.restCount; i++) {
+          if (!stop) {
+            let restStartHour, restStartMin, restEndHour, restEndMin, restConMin
+            if (i === 1) {
+              restStartHour = parseInt(shiftCodeData.restStartHour)
+              restStartMin = parseInt(shiftCodeData.restStartMin)
+              restEndHour = parseInt(shiftCodeData.restEndHour)
+              restEndMin = parseInt(shiftCodeData.restEndMin)
+              restConMin = parseInt(shiftCodeData.restConMin)
+            } else {
+              restStartHour = parseInt(shiftCodeData['restStartHour' + i])
+              restStartMin = parseInt(shiftCodeData['restStartMin' + i])
+              restEndHour = parseInt(shiftCodeData['restEndHour' + i])
+              restEndMin = parseInt(shiftCodeData['restEndMin' + i])
+              restConMin = parseInt(shiftCodeData['restConMin' + i])
+            }
+            //1：start，1：end，2：start，2：end
+            let condition1 = this.compareTime(startHour, startMin, restStartHour, restStartMin)
+            let condition2 = this.compareTime(startHour, startMin, restEndHour, restEndMin)
+            let condition3 = this.compareTime(endHour, endMin, restStartHour, restStartMin)
+            let condition4 = this.compareTime(endHour, endMin, restEndHour, restEndMin)
+            if (condition1 >= 0 && condition4 <= 0) {
+              //请假时间段在休息时间内
+              personConMinute = 0
+              stop = true
+            } else if (condition1 <= 0 && condition3 >= 0 && condition4 <= 0) {
+              //请假时间段左外右内
+              personConMinute -= condition3
+              stop = true
+            } else if (condition3 <= 0) {
+              //请假时间段在休息时间左侧
+              stop = true
+            } else if (condition1 <= 0 && condition4 >= 0) {
+              //请假时间跨住休息时间
+              personConMinute -= restConMin
+            } else if (condition2 <= 0 && condition4 >= 0 && condition1 >= 0) {
+              //请假时间左内右外
+              personConMinute += condition2
+            } else if (condition2 >= 0) {
+              //请假时间段在休息时间左侧
+            }
+          }
+        }
+        return personConMinute
+      }else{
+        return 0;
       }
-      return personConMinute
     },
     /** 时间大小比较 */
     compareTime(hour1, min1, hour2, min2) {
@@ -1097,7 +1143,7 @@ export default {
       this.form.creator = this.user.empName
       this.form.creatorId = this.user.empNo
       this.form.createDate = getDateTime(1)
-      if (e == 0) {
+      if (e === 0) {
         this.form.status = '01'
       }
     },
@@ -1123,28 +1169,6 @@ export default {
         this.loading = false
       })
     },
-    /** 查询员工年休假记录 */
-    getYearHolidayList() {
-      var year = {
-        year: new Date().getFullYear(),
-        empNo: null,
-        compId: null
-      }
-      yearHoliday(year).then(response => {
-        this.yearHoliday = response.rows
-      })
-    },
-    /** 查询员工探亲假记录 */
-    getHomeLeaveHolidayList() {
-      var home = {
-        year: new Date().getFullYear(),
-        empNo: null,
-        compId: null
-      }
-      homeLeaveHoliday(home).then(response => {
-        this.homeLeaveHoliday = response.rows
-      })
-    },
     /** 查询条件判定 */
     judgeQuery() {
       if (this.queryParams.empNo === null || this.queryParams.empNo === '') {
@@ -1161,12 +1185,6 @@ export default {
       this.reset()
     },
 
-    // 呈送按钮
-    submit() {
-      this.form.status = '03'
-      this.open = false
-      this.submitForm()
-    },
 
     // 表单重置
     reset() {
@@ -1239,7 +1257,7 @@ export default {
     submitForm() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          this.computeManhour()
+          this.personHolidayProcess();
         }
       })
     },
@@ -1280,7 +1298,7 @@ export default {
     },
     /** 获取工号 */
     getJobNumber(empNo, userName, compId) {
-      if (this.open == true) {
+      if (this.open === true) {
         this.form.empNo = empNo
         this.form.empName = userName
         this.form.compId = compId
@@ -1299,7 +1317,7 @@ export default {
 
 <style scoped>
 .inputInner {
-  width: 30%;
+  width: 32%;
 }
 
 </style>

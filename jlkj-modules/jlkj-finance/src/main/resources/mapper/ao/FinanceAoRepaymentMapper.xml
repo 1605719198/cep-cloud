@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoRepaymentMapper">
+    
+    <resultMap type="FinanceAoRepayment" id="FinanceAoRepaymentResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="loanId"    column="loan_id"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="loanBy"    column="loan_by"    />
+        <result property="loanName"    column="loan_name"    />
+        <result property="amt"    column="amt"    />
+        <result property="payDate"    column="pay_date"    />
+        <result property="voucherNo"    column="voucher_no"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoRepaymentVo">
+        select id, company_id, bill_no, loan_id, pay_type, loan_by, loan_name, amt, pay_date, voucher_no, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_ao_repayment
+    </sql>
+
+    <select id="selectFinanceAoRepaymentList" parameterType="FinanceAoRepayment" resultMap="FinanceAoRepaymentResult">
+        <include refid="selectFinanceAoRepaymentVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="billNo != null  and billNo != ''"> and bill_no = #{billNo}</if>
+            <if test="loanBy != null  and loanBy != ''"> and loan_by = #{loanBy}</if>
+            <if test="payDate != null "> and pay_date = #{payDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoRepaymentById" parameterType="String" resultMap="FinanceAoRepaymentResult">
+        <include refid="selectFinanceAoRepaymentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoRepayment" parameterType="FinanceAoRepayment">
+        insert into finance_ao_repayment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="loanId != null">loan_id,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="loanBy != null">loan_by,</if>
+            <if test="loanName != null">loan_name,</if>
+            <if test="amt != null">amt,</if>
+            <if test="payDate != null">pay_date,</if>
+            <if test="voucherNo != null">voucher_no,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="loanId != null">#{loanId},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="loanBy != null">#{loanBy},</if>
+            <if test="loanName != null">#{loanName},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="payDate != null">#{payDate},</if>
+            <if test="voucherNo != null">#{voucherNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoRepayment" parameterType="FinanceAoRepayment">
+        update finance_ao_repayment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="loanId != null">loan_id = #{loanId},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="loanBy != null">loan_by = #{loanBy},</if>
+            <if test="loanName != null">loan_name = #{loanName},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="payDate != null">pay_date = #{payDate},</if>
+            <if test="voucherNo != null">voucher_no = #{voucherNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoRepaymentById" parameterType="String">
+        delete from finance_ao_repayment where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoRepaymentByIds" parameterType="String">
+        delete from finance_ao_repayment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectLoanApply"  parameterType="String" resultType="map">
+        SELECT t1.bill_no, t1.apply_by,t1.apply_name,t1.item_no,sum(t2.total_amt) total_amt,sum(t2.total_amt) - (ifnull(sum(t3.amt),0) + ifnull(sum(t4.amt),0)) unreimb_amt FROM finance_ao_loan t1
+        INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id
+        LEFT JOIN finance_ao_reimbursement_loan t3 ON t1.id = t3.loan_id
+        LEFT JOIN finance_ao_repayment t4 ON t1.id = t4.loan_id
+        <where>
+            <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
+        </where>
+        GROUP BY t1.bill_no  HAVING unreimb_amt > 0
+        order by t1.bill_no
+    </select>
+
+</mapper>

@@ -14,7 +14,7 @@ import com.jlkj.human.hm.dto.ChangeMasterDTO;
 import com.jlkj.human.hm.mapper.ChangeMasterMapper;
 import com.jlkj.human.hm.service.IChangeMasterService;
 import com.jlkj.human.hm.service.ISysUserService;
-import com.jlkj.human.hp.service.impl.SysPostServiceImpl;
+import com.jlkj.human.hp.service.impl.HumanPostServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +35,7 @@ public class ChangeMasterServiceImpl extends ServiceImpl<ChangeMasterMapper, Cha
     @Resource
     private PersonnelServiceImpl personnelService;
     @Resource
-    private SysPostServiceImpl sysPostService;
+    private HumanPostServiceImpl sysPostService;
     @Resource
     private ISysUserService userService;
 

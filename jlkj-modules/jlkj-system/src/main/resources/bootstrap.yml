@@ -23,18 +23,3 @@ spring:
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-# License相关配置
-#主题名
-license:
-  subject: system
-  #公钥别名
-  publicAlias: publicCert
-  #密钥库密码
-  storePass: public_password1234
-  #license证书存放位置
-#  licensePath: classpath:license/license.lic
-  licensePath: /jdhr/license/system/license.lic
-  #公钥文件存放位置
-  publicKeysStorePath: /jdhr/license/keystore/publicCerts.keystore
-  #证书生成临时位置
-  generatePath: /jdhr/license/system/license.lic

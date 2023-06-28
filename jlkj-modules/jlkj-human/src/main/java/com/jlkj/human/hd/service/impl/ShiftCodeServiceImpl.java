@@ -33,6 +33,7 @@ public class ShiftCodeServiceImpl implements IShiftCodeService
         if(personShiftCodedto.getDate()!=null){
             return shiftCodeMapper.selectShiftCodeByPerson(personShiftCodedto);
         }else{
+            //请销假用
             return shiftCodeMapper.selectShiftCodeByDates(personShiftCodedto);
         }
     }

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hp.mapper.SysDeptVersionMapper">
+<mapper namespace="com.jlkj.human.hp.mapper.HumanDeptVersionMapper">
     
-    <resultMap type="SysDeptVersion" id="SysDeptVersionResult">
+    <resultMap type="HumanDeptVersion" id="HumanDeptVersionResult">
         <result property="id"    column="id"    />
         <result property="deptId"    column="dept_id"    />
         <result property="deptCode"    column="dept_code"    />
@@ -37,24 +37,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="companyName"    column="company_name"    />
     </resultMap>
 
-    <sql id="selectSysDeptVersionVo">
+    <sql id="selectHumanDeptVersionVo">
         select id, dept_id, dept_code, dept_name, board_id, parent_id, parent_name, parent_full_name, ancestors, org_tier_id, order_num, leader, email, del_flag, cost_center_id, fax, phone, change_reason, effect_date, version_no, if_company, comp_id, if_display, create_by, status, create_time, update_by, update_time, is_new, company_name from sys_dept_version
     </sql>
 
-    <select id="selectSysDeptVersionList" parameterType="SysDeptVersion" resultMap="SysDeptVersionResult">
-        <include refid="selectSysDeptVersionVo"/>
+    <select id="selectSysDeptVersionList" parameterType="HumanDeptVersion" resultMap="HumanDeptVersionResult">
+        <include refid="selectHumanDeptVersionVo"/>
         <where>  
             <if test="deptId != null "> and dept_id = #{deptId}</if>
         </where>
         order by update_time desc
     </select>
     
-    <select id="selectSysDeptVersionById" parameterType="Long" resultMap="SysDeptVersionResult">
-        <include refid="selectSysDeptVersionVo"/>
+    <select id="selectSysDeptVersionById" parameterType="Long" resultMap="HumanDeptVersionResult">
+        <include refid="selectHumanDeptVersionVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertSysDeptVersion" parameterType="SysDeptVersion" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSysDeptVersion" parameterType="HumanDeptVersion" useGeneratedKeys="true" keyProperty="id">
         insert into sys_dept_version
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptId != null">dept_id,</if>
@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateSysDeptVersion" parameterType="SysDeptVersion">
+    <update id="updateSysDeptVersion" parameterType="HumanDeptVersion">
         update sys_dept_version
         <trim prefix="SET" suffixOverrides=",">
             <if test="deptId != null">dept_id = #{deptId},</if>

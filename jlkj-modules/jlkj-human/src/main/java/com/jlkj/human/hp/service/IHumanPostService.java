@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service;
 
-import com.jlkj.human.hp.domain.SysPost;
+import com.jlkj.human.hp.domain.HumanPost;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-03-15
  */
-public interface ISysPostService 
+public interface IHumanPostService
 {
     /**
      * 查询岗位信息数据维护
@@ -18,32 +18,32 @@ public interface ISysPostService
      * @param postId 岗位信息数据维护主键
      * @return 岗位信息数据维护
      */
-    public SysPost selectSysPostByPostId(Long postId);
+    public HumanPost selectSysPostByPostId(Long postId);
 
     /**
      * 查询岗位信息数据维护列表
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 岗位信息数据维护集合
      */
-    public List<SysPost> selectSysPostList(SysPost sysPost);
+    public List<HumanPost> selectSysPostList(HumanPost humanPost);
 
     /**
      * 新增岗位信息数据维护
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 结果
      * @throws Exception 抛出异常停止执行
      */
-    public int insertSysPost(SysPost sysPost) throws Exception;
+    public int insertSysPost(HumanPost humanPost) throws Exception;
 
     /**
      * 修改岗位信息数据维护
      * 
-     * @param sysPost 岗位信息数据维护
+     * @param humanPost 岗位信息数据维护
      * @return 结果
      */
-    public int updateSysPost(SysPost sysPost);
+    public int updateSysPost(HumanPost humanPost);
 
     /**
      * 批量删除岗位信息数据维护

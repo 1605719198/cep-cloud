@@ -5,13 +5,13 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.uuid.IdUtils;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hd.dto.BasisOptionsDTO;
 import com.jlkj.human.hd.dto.OptionTypeDTO;
 import com.jlkj.human.hm.domain.Contract;
 import com.jlkj.human.hm.domain.Leave;
 import com.jlkj.human.hm.domain.Personnel;
+import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
 import com.jlkj.human.hs.domain.*;
 import com.jlkj.human.hs.dto.SocialSecurityBasisDTO;
@@ -125,16 +125,11 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
      * @param socialSecurityBasis 社保公积金标准核定
      * @return 结果
      */
-    @SuppressWarnings("unchecked")
     public SocialSecurityBasis setData(SocialSecurityBasis socialSecurityBasis) {
-        Object obj = iPersonnelService.selectPersonnelInfo(socialSecurityBasis.getEmpNo());
-        AjaxResult result = (AjaxResult) obj;
-        Object result2 = result.get("data");
-        Map<String, Object> resultMap = (Map<String, Object>) result2;
-        System.out.println(resultMap);
-        List<Personnel> personnelList = (List<Personnel>) resultMap.get("personnelList");
-        List<Contract> contractList = (List<Contract>) resultMap.get("contractList");
-        List<Leave> leaveList = (List<Leave>) resultMap.get("leaveList");
+        HumanresourcePersonnelInfoDTO personnelInfoDTO = iPersonnelService.selectPersonnelInfo(socialSecurityBasis.getEmpNo());
+        List<Personnel> personnelList = personnelInfoDTO.getPersonnelList();
+        List<Contract> contractList = personnelInfoDTO.getContractList();
+        List<Leave> leaveList = personnelInfoDTO.getLeaveList();
         //定义转化为字符串的日期格式
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ");
         if (personnelList.size() != 0) {

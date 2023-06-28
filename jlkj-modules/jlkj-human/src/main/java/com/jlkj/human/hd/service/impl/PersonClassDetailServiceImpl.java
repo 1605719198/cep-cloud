@@ -1,5 +1,6 @@
 package com.jlkj.human.hd.service.impl;
 
+import com.jlkj.common.core.utils.BeanCopyUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.ArrangeClass;
 import com.jlkj.human.hd.domain.PersonClassDetail;
@@ -8,7 +9,7 @@ import com.jlkj.human.hd.mapper.PersonClassDetailMapper;
 import com.jlkj.human.hd.service.IArrangeClassService;
 import com.jlkj.human.hd.service.IPersonClassDetailService;
 import com.jlkj.human.hd.service.IShiftCodeService;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     @Autowired
     private IArrangeClassService arrangeClassService;
     @Autowired
-    private ISysDeptService sysDeptService;
+    private IHumanDeptService sysDeptService;
     @Autowired
     private IShiftCodeService shiftCodeService;
 
@@ -117,26 +118,38 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     public int setPersonClassDetail(PersonClassDetail personClassDetail)
     {
         int result = 0;
-        Long startTime = personClassDetail.getStartDate().getTime();
-        Long endTime = personClassDetail.getEndDate().getTime();
-        Long oneDay = 1000 * 60 * 60 * 24L;
-        Long time = startTime;
+        long startTime = personClassDetail.getStartDate().getTime();
+        long endTime = personClassDetail.getEndDate().getTime();
+        long oneDay = 1000 * 60 * 60 * 24L;
+        long time = startTime;
+        int day = 0;
         while (time <= endTime) {
-            Date d = new Date(time);
+            time += oneDay;
+            day++;
+        }
+        ArrangeClass param = new ArrangeClass();
+        BeanCopyUtils.copy(personClassDetail,param);
+        param.setShiftmodeId(personClassDetail.getShiftModeId());
+        List<ArrangeClass> arrangeClassList = arrangeClassService.queryArrangeClass(param);
+        if(arrangeClassList.size()!=day){
+            return -1;
+        }
+        time = startTime;
+        while (time <= endTime) {
+            Date date = new Date(time);
             ArrangeClass type = new ArrangeClass();
             type.setCompId(personClassDetail.getCompId());
             type.setShiftmodeId(personClassDetail.getShiftModeId());
             type.setClassId(personClassDetail.getClassId());
-            type.setArrShiDate(d);
+            type.setArrShiDate(date);
             ArrangeClass arrangeClass =arrangeClassService.selectArrangeClassByClass(type);
-            personClassDetail.setArrShiDate(d);
+            personClassDetail.setArrShiDate(date);
             personClassDetail.setFirShiftId(arrangeClass.getShiftId());
             personClassDetail.setFirShiftCode(arrangeClass.getShiftCode());
             insertPersonClassDetail(personClassDetail);
             time += oneDay;
             result++;
         }
-
         return result;
     }
 

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.human.hp.mapper.SysPostVersionMapper">
+<mapper namespace="com.jlkj.human.hp.mapper.HumanPostVersionMapper">
 
-    <resultMap type="SysPostVersion" id="SysPostVersionResult">
+    <resultMap type="HumanPostVersion" id="HumanPostVersionResult">
         <result property="id"    column="id"    />
         <result property="postId"    column="post_id"    />
         <result property="postCode"    column="post_code"    />
@@ -69,20 +69,20 @@
         <result property="proAct"    column="pro_act"    />
     </resultMap>
 
-    <sql id="selectSysPostVersionVo">
+    <sql id="selectHumanPostVersionVo">
         select id, post_id, post_code, post_name, dept_id, speciality_type_id, speciality_id, post_sequence_id, dept_type, post_type_id, job_title_id, serial_number, shift_work_id, employment_nature_id, work_address_id, work_address, overseas_locations, if_specially_assigned_person, plan_capacity, now_capacity, post_sort, capacity_basis, cost_center_id, status, parent_post_id, parent_post_name, positions_class_id, org_id, org_name, org_full_name, position_expense_category, cost_center_name, change_reason, effect_date, version_no, if_new, comp_id, create_by, create_time, update_by, update_time, work_desc, work_con, appr_kpi, review_kpi, work_sta, work_aut, work_env, ope_equ_hp, tool_used, office_equ, labour_sta, min_age, max_age, gender, record_id, spe_claim, pro_qua, work_exp, other_claim, know_tec, pro_act from sys_post_version
     </sql>
 
-    <select id="selectSysPostVersionList" parameterType="SysPostVersion" resultMap="SysPostVersionResult">
-        <include refid="selectSysPostVersionVo"/>
+    <select id="selectSysPostVersionList" parameterType="HumanPostVersion" resultMap="HumanPostVersionResult">
+        <include refid="selectHumanPostVersionVo"/>
         <where>
             <if test="postId != null "> and post_id = #{postId}</if>
         </where>
         order by update_time desc
     </select>
 
-    <select id="selectSysPostVersionById" parameterType="Long" resultMap="SysPostVersionResult">
-        <include refid="selectSysPostVersionVo"/>
+    <select id="selectSysPostVersionById" parameterType="Long" resultMap="HumanPostVersionResult">
+        <include refid="selectHumanPostVersionVo"/>
         where id = #{Id}
     </select>
 
@@ -94,7 +94,7 @@
         where post_id = #{postId}
     </update>
 
-    <insert id="insertSysPostVersion" parameterType="SysPostVersion" useGeneratedKeys="true" keyProperty="postId">
+    <insert id="insertSysPostVersion" parameterType="HumanPostVersion" useGeneratedKeys="true" keyProperty="postId">
         insert into sys_post_version
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="postId != null and postId != ''">post_id,</if>
@@ -224,7 +224,7 @@
         </trim>
     </insert>
 
-    <update id="updateSysPostVersion" parameterType="SysPostVersion">
+    <update id="updateSysPostVersion" parameterType="HumanPostVersion">
         update sys_post_version
         <trim prefix="SET" suffixOverrides=",">
             <if test="postCode != null and postCode != ''">post_code = #{postCode},</if>

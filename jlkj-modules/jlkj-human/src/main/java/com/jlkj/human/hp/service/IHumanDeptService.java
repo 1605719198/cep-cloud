@@ -1,6 +1,6 @@
 package com.jlkj.human.hp.service;
 
-import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.domain.HumanDept;
 import com.jlkj.human.hp.domain.vo.TreeSelect;
 import com.jlkj.human.hp.dto.CopySysDeptDTO;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author 266861
  * @date 2023-03-08
  */
-public interface ISysDeptService
+public interface IHumanDeptService
 {
     /**
      * 查询部门资料维护
@@ -24,15 +24,15 @@ public interface ISysDeptService
      * @param deptId 部门资料维护主键
      * @return 部门资料维护
      */
-    public SysDept selectSysDeptByDeptId(Long deptId);
+    public HumanDept selectSysDeptByDeptId(Long deptId);
 
     /**
      * 查询部门资料维护列表
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 部门资料维护集合
      */
-    public List<SysDept> selectSysDeptList(SysDept sysDept);
+    public List<HumanDept> selectSysDeptList(HumanDept humanDept);
 
     /**
      * 查询部门岗位资料维护列表
@@ -55,14 +55,14 @@ public interface ISysDeptService
      *
      * @return 公司列表资料集合
      */
-    public List<SysDept> selectCompanyList();
+    public List<HumanDept> selectCompanyList();
     /**
      * 构建前端所需要树结构
      *
      * @param depts 部门列表
      * @return 树结构列表
      */
-    public List<SysDept> buildDeptTree(List<SysDept> depts);
+    public List<HumanDept> buildDeptTree(List<HumanDept> depts);
 
     /**
      * 构建前端所需要下拉树结构
@@ -70,7 +70,7 @@ public interface ISysDeptService
      * @param depts 部门列表
      * @return 下拉树结构列表
      */
-    public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts);
+    public List<TreeSelect> buildDeptTreeSelect(List<HumanDept> depts);
 
     /**
      * 构建前端所需要树结构
@@ -94,18 +94,18 @@ public interface ISysDeptService
      * @param deptId 部门ID
      * @return 部门信息
      */
-    public SysDept selectDeptById(Long deptId);
+    public HumanDept selectDeptById(Long deptId);
 
 
     /**
      * 新增部门资料维护
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      * @throws Exception 抛出异常停止执行
      */
 
-    public int insertSysDept(SysDept sysDept)throws Exception;
+    public int insertSysDept(HumanDept humanDept)throws Exception;
 
     /**
      * 复制组织机构设定
@@ -119,11 +119,11 @@ public interface ISysDeptService
     /**
      * 修改部门资料维护
      * 
-     * @param sysDept 部门资料维护
+     * @param humanDept 部门资料维护
      * @return 结果
      * @throws Exception 抛出异常停止执行
      */
-    public int updateSysDept(SysDept sysDept) throws Exception;
+    public int updateSysDept(HumanDept humanDept) throws Exception;
 
     /**
      * 批量删除部门资料维护
@@ -155,7 +155,7 @@ public interface ISysDeptService
      * @param deptCode 部门编码
      * @return 部门信息
      */
-    public SysDept selectSysDeptByDeptCode(String deptCode);
+    public HumanDept selectSysDeptByDeptCode(String deptCode);
 
     /**
      * 查询父id为此部门编码的数据
@@ -163,7 +163,7 @@ public interface ISysDeptService
      * @param deptId 部门id
      * @return 部门信息
      */
-    public List<SysDept> selectParentIdByDeptCode(Long deptId);
+    public List<HumanDept> selectParentIdByDeptCode(Long deptId);
 
     /**
      * 通过员工工号查一级部门
@@ -178,7 +178,7 @@ public interface ISysDeptService
      * @param compId 公司别
      * @return 公司信息
      */
-    public SysDept queryCompById(String compId);
+    public HumanDept queryCompById(String compId);
 
 
     /**
@@ -191,12 +191,12 @@ public interface ISysDeptService
     /**
      * 导入部门资料数据
      *
-     * @param sysDeptList 部门数据列表
+     * @param humanDeptList 部门数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @param operName 操作用户
      * @return 结果
      */
-    public String importUser(List<SysDept> sysDeptList, Boolean isUpdateSupport, String operName);
+    public String importUser(List<HumanDept> humanDeptList, Boolean isUpdateSupport, String operName);
 
     /**
      * 查询部门名称（id/编码 转名称）

@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2023-03-15
  */
 @Data
-public class SysPostVersion extends BaseEntity
+public class HumanPostVersion extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

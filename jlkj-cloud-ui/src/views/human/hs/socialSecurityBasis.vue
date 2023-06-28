@@ -776,50 +776,54 @@ export default {
       })
     },
     setSocialSecurityDetail(e) {
-      this.socialSecurityList.forEach((value) => {
-        let detail = {
-          id: null,
-          socialSecurityId: null,
-          payProId: value.salaryProjectId,
-          payProName: value.payProName,
-          payProCode: value.payProCode,
-          twoTitle: '是否缴纳',
-          thrIsLov: '0',
-          thrSta: null,
-          thrIdSta: '1',
-          fourTitle: value.payProName + '基数',
-          fivIsLov: '0',
-          fivSta: '',
-          fivIdSta: null,
-          sixTitle: '缴费地',
-          sevIsLov: '1',
-          sevSta: null,
-          sevIdSta: '',
-          eigTitle: '该险种最低基数',
-          ninIsLov: '0',
-          ninSta: value.baseLl,
-          ninIdSta: null,
-          tenTitle: '该险种最高基数',
-          eleIsLov: '0',
-          eleSta: value.baseUcl,
-          eleIdSta: null,
-          seriNo: '',
-          creator: null,
-          creatorId: null,
-          creatorNo: null,
-          createDate: null
-        }
-        this.socialSecurityDetail.push(detail)
-      })
-      if (e === 1) {
-        this.socialSecurityDetail.forEach((values, indexs) => {
-          this.form.detailList.forEach((value, index) => {
-            if (value.payProId === values.payProId) {
-              this.socialSecurityDetail[indexs] = value
-              this.form.detailList.splice(index, 1)
-            }
-          })
+      if(!e){
+        this.socialSecurityList.forEach((value) => {
+          let detail = {
+            id: null,
+            socialSecurityId: null,
+            payProId: value.salaryProjectId,
+            payProName: value.payProName,
+            payProCode: value.payProCode,
+            twoTitle: '是否缴纳',
+            thrIsLov: '0',
+            thrSta: null,
+            thrIdSta: '1',
+            fourTitle: value.payProName + '基数',
+            fivIsLov: '0',
+            fivSta: '',
+            fivIdSta: null,
+            sixTitle: '缴费地',
+            sevIsLov: '1',
+            sevSta: null,
+            sevIdSta: '',
+            eigTitle: '该险种最低基数',
+            ninIsLov: '0',
+            ninSta: value.baseLl,
+            ninIdSta: null,
+            tenTitle: '该险种最高基数',
+            eleIsLov: '0',
+            eleSta: value.baseUcl,
+            eleIdSta: null,
+            seriNo: '',
+            creator: null,
+            creatorId: null,
+            creatorNo: null,
+            createDate: null
+          }
+          this.socialSecurityDetail.push(detail)
         })
+      }
+      if (e === 1) {
+        this.socialSecurityDetail= this.form.detailList;
+        // this.socialSecurityDetail.forEach((values, indexs) => {
+        //   this.form.detailList.forEach((value, index) => {
+        //     if (value.payProId == values.payProId) {
+        //       this.socialSecurityDetail[indexs] = value
+        //       this.form.detailList.splice(index, 1)
+        //     }
+        //   })
+        // })
+        // alert(JSON.stringify(this.socialSecurityDetail))
       }
     },
     /** 查询社保公积金标准核定列表 */
@@ -924,15 +928,6 @@ export default {
       getSocialSecurityBasis(id).then(response => {
         this.form = response.data
         this.getSocialSecurityList(1)
-        this.socialSecurityDetail.forEach((values, indexs) => {
-          this.form.detailList.forEach((value, index) => {
-            if (value.payProId === values.payProId) {
-              values = value
-              this.socialSecurityDetail[indexs] = value
-              this.form.detailList.splice(index, 1)
-            }
-          })
-        })
         this.openView = true
         this.title = '社保公积金标准核定详情'
       })
