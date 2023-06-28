@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.TravelStatisticsMapper">
+    
+    <resultMap type="TravelStatistics" id="TravelStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="travelNo"    column="travel_no"    />
+        <result property="travelAbroad"    column="travel_abroad"    />
+        <result property="travelTpye"    column="travel_tpye"    />
+        <result property="travelReason"    column="travel_reason"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="status"    column="status"    />
+        <result property="agentId"    column="agent_id"    />
+        <result property="agentNo"    column="agent_no"    />
+        <result property="agentName"    column="agent_name"    />
+        <result property="costCenter"    column="cost_center"    />
+        <result property="contract"    column="contract"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="realStartDate"    column="real_start_date"    />
+        <result property="realStartTime"    column="real_start_time"    />
+        <result property="realEndDate"    column="real_end_date"    />
+        <result property="realEndTime"    column="real_end_time"    />
+        <result property="reasonDesc"    column="reason_desc"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="isEngineer"    column="is_engineer"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="resvAttr3"    column="resv_attr3"    />
+        <result property="resvAttr4"    column="resv_attr4"    />
+    </resultMap>
+
+    <sql id="selectTravelStatisticsVo">
+        SELECT id, travel_no, travel_tpye, travel_reason, travel_abroad, comp_id, emp_id, emp_no, emp_name, dept_name, status, agent_id, agent_no, agent_name, cost_center, contract, start_date, start_time, end_date, end_time, real_start_date, real_start_time, real_end_date, real_end_time, reason_desc, bill_no, is_engineer, creator, creator_id, create_date, resv_attr1, resv_attr2, resv_attr3, resv_attr4 FROM human_hd_travel_application
+    </sql>
+
+    <select id="selectTravelStatisticsList" parameterType="TravelStatistics" resultMap="TravelStatisticsResult">
+        <include refid="selectTravelStatisticsVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="date1 != null ">and start_date &gt;= #{date1} </if>
+            <if test="date2 != null ">and start_date &lt;= #{date2} </if>
+        </where>
+    </select>
+    
+    <select id="selectTravelStatisticsById" parameterType="String" resultMap="TravelStatisticsResult">
+        <include refid="selectTravelStatisticsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTravelStatistics" parameterType="TravelStatistics">
+        INSERT INTO human_hd_travel_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="travelNo != null">travel_no,</if>
+            <if test="travelAbroad != null">travel_abroad,</if>
+            <if test="travelTpye != null">travel_tpye,</if>
+            <if test="travelReason != null">travel_reason,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="status != null">status,</if>
+            <if test="agentId != null">agent_id,</if>
+            <if test="agentNo != null">agent_no,</if>
+            <if test="agentName != null">agent_name,</if>
+            <if test="costCenter != null">cost_center,</if>
+            <if test="contract != null">contract,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="realStartDate != null">real_start_date,</if>
+            <if test="realStartTime != null">real_start_time,</if>
+            <if test="realEndDate != null">real_end_date,</if>
+            <if test="realEndTime != null">real_end_time,</if>
+            <if test="reasonDesc != null">reason_desc,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="isEngineer != null">is_engineer,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="resvAttr3 != null">resv_attr3,</if>
+            <if test="resvAttr4 != null">resv_attr4,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="travelNo != null">#{travelNo},</if>
+            <if test="travelAbroad != null">#{travelAbroad},</if>
+            <if test="travelTpye != null">#{travelTpye},</if>
+            <if test="travelReason != null">#{travelReason},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="agentId != null">#{agentId},</if>
+            <if test="agentNo != null">#{agentNo},</if>
+            <if test="agentName != null">#{agentName},</if>
+            <if test="costCenter != null">#{costCenter},</if>
+            <if test="contract != null">#{contract},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="realStartDate != null">#{realStartDate},</if>
+            <if test="realStartTime != null">#{realStartTime},</if>
+            <if test="realEndDate != null">#{realEndDate},</if>
+            <if test="realEndTime != null">#{realEndTime},</if>
+            <if test="reasonDesc != null">#{reasonDesc},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="isEngineer != null">#{isEngineer},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="resvAttr3 != null">#{resvAttr3},</if>
+            <if test="resvAttr4 != null">#{resvAttr4},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTravelStatistics" parameterType="TravelStatistics">
+        UPDATE human_hd_travel_application
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="travelNo != null">travel_no = #{travelNo},</if>
+            <if test="travelAbroad != null">travel_abroad = #{travelAbroad},</if>
+            <if test="travelTpye != null">travel_tpye = #{travelTpye},</if>
+            <if test="travelReason != null">travel_reason = #{travelReason},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="agentId != null">agent_id = #{agentId},</if>
+            <if test="agentNo != null">agent_no = #{agentNo},</if>
+            <if test="agentName != null">agent_name = #{agentName},</if>
+            <if test="costCenter != null">cost_center = #{costCenter},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="realStartDate != null">real_start_date = #{realStartDate},</if>
+            <if test="realStartTime != null">real_start_time = #{realStartTime},</if>
+            <if test="realEndDate != null">real_end_date = #{realEndDate},</if>
+            <if test="realEndTime != null">real_end_time = #{realEndTime},</if>
+            <if test="reasonDesc != null">reason_desc = #{reasonDesc},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="isEngineer != null">is_engineer = #{isEngineer},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="resvAttr3 != null">resv_attr3 = #{resvAttr3},</if>
+            <if test="resvAttr4 != null">resv_attr4 = #{resvAttr4},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTravelStatisticsById" parameterType="String">
+        DELETE FROM human_hd_travel_application where id = #{id}
+    </delete>
+
+    <delete id="deleteTravelStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_travel_application where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

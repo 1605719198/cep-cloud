@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtChangeTypeMapper">
+    
+    <resultMap type="FinanceFtChangeType" id="FinanceFtChangeTypeResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="changeWay"    column="change_way"    />
+        <result property="changeName"    column="change_name"    />
+        <result property="billNature"    column="bill_nature"    />
+        <result property="acctLogic"    column="acct_logic"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtChangeTypeVo">
+        select uuid, company_id, change_way, change_name, bill_nature, acct_logic, create_by, create_name, create_time, update_by, update_name, update_time from finance_ft_change_type
+    </sql>
+
+    <select id="selectFinanceFtChangeTypeList" parameterType="FinanceFtChangeType" resultMap="FinanceFtChangeTypeResult">
+        <include refid="selectFinanceFtChangeTypeVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="changeWay != null  and changeWay != ''"> and change_way = #{changeWay}</if>
+            <if test="changeName != null  and changeName != ''"> and change_name like concat('%', #{changeName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtChangeTypeByUuid" parameterType="String" resultMap="FinanceFtChangeTypeResult">
+        <include refid="selectFinanceFtChangeTypeVo"/>
+        where uuid = #{uuid}
+    </select>
+
+    <select id="selectFinanceFtChangeTypeByCompIdAndChangeWay" parameterType="FinanceFtChangeType" resultMap="FinanceFtChangeTypeResult">
+        <include refid="selectFinanceFtChangeTypeVo"/>
+        where company_id = #{companyId} AND change_way = #{changeWay} AND change_name = #{changeName}
+    </select>
+        
+    <insert id="insertFinanceFtChangeType" parameterType="FinanceFtChangeType">
+        insert into finance_ft_change_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="changeWay != null">change_way,</if>
+            <if test="changeName != null">change_name,</if>
+            <if test="billNature != null">bill_nature,</if>
+            <if test="acctLogic != null">acct_logic,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="changeWay != null">#{changeWay},</if>
+            <if test="changeName != null">#{changeName},</if>
+            <if test="billNature != null">#{billNature},</if>
+            <if test="acctLogic != null">#{acctLogic},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtChangeType" parameterType="FinanceFtChangeType">
+        update finance_ft_change_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="changeWay != null">change_way = #{changeWay},</if>
+            <if test="changeName != null">change_name = #{changeName},</if>
+            <if test="billNature != null">bill_nature = #{billNature},</if>
+            <if test="acctLogic != null">acct_logic = #{acctLogic},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtChangeTypeByUuid" parameterType="String">
+        delete from finance_ft_change_type where uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtChangeTypeByUuids" parameterType="String">
+        delete from finance_ft_change_type where uuid in 
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

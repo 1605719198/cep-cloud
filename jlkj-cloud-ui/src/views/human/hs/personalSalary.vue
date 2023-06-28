@@ -244,7 +244,7 @@
             <el-form-item label="是否扣税" prop="istax">
               <el-radio-group v-model="form.istax">
                 <el-radio
-                  v-for="dict in salaryOptions.HsYN"
+                  v-for="dict in salaryOptions.Hsyn"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -296,7 +296,7 @@
             <template v-slot="scope">
               <el-radio-group v-model="scope.row.thrIdSta" v-show="scope.row.thrIsLov==='1'">
                 <el-radio
-                  v-for="dict in salaryOptions.HsYN"
+                  v-for="dict in salaryOptions.Hsyn"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -450,7 +450,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="是否扣税" prop="istax">
-              <dict-tag-human :options="salaryOptions.HsYN" :value="form.istax"/>
+              <dict-tag-human :options="salaryOptions.Hsyn" :value="form.istax"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -490,7 +490,7 @@
             <template v-slot="scope">
               <el-radio-group v-model="scope.row.thrIdSta" v-show="scope.row.thrIsLov==='1'" disabled>
                 <el-radio
-                  v-for="dict in salaryOptions.HsYN"
+                  v-for="dict in salaryOptions.Hsyn"
                   :key="dict.id"
                   :label="dict.dicNo"
                 >{{ dict.dicName }}
@@ -701,7 +701,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['PayCheckRea', 'AchievementType', 'HsYN'],
+        optionsType: ['PayCheckRea', 'AchievementType', 'Hsyn'],
         compId: null
       },
       //薪资选单选项列表
@@ -773,7 +773,13 @@ export default {
     this.getDisc()
   },
   watch: {
-
+    'queryParams.compId':{
+      handler(val) {
+        this.getCompData(val)
+      },
+      deep: true,
+      immediate: false,
+    },
   },
   methods: {
     // 查询公司银行选单，薪酬项目

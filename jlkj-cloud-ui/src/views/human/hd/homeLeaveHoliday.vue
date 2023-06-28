@@ -38,11 +38,10 @@
     </el-row>
 
     <el-table v-loading="loading" :data="holidayList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="年度" align="center" prop="year" />
       <el-table-column label="工号" align="center" prop="empNo" />
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="岗位名称" align="center" prop="postName" />
+      <el-table-column label="年度" align="center" prop="year" />
       <el-table-column label="本年度可休探亲假天数" align="center" prop="dueHomeDays" />
       <el-table-column label="本年度年休假冲抵探亲假天数" align="center" prop="offHomeDays" />
       <el-table-column label="已休探亲假天数" align="center" prop="restHomeDays" />

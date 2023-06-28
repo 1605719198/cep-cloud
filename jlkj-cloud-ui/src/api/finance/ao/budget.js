@@ -36,9 +36,10 @@ export function updateBudget(data) {
 }
 
 // 删除预算设置
-export function delBudget(id) {
+export function delBudget(data) {
   return request({
-    url: '/finance/budget/' + id,
-    method: 'delete'
+    url: `/finance/budget/deleteList`,
+    method: 'delete',
+    data: data
   })
 }

@@ -1,6 +1,7 @@
 package com.jlkj.human.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.jlkj.common.security.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("createDate", new Date(), metaObject);
         this.setFieldValByName("updateDate", new Date(), metaObject);
+        this.setFieldValByName("createBy", SecurityUtils.getNickName(), metaObject);
+        this.setFieldValByName("createNo", SecurityUtils.getUsername(), metaObject);
+        this.setFieldValByName("createId", SecurityUtils.getUsername(), metaObject);
     }
 
     /**

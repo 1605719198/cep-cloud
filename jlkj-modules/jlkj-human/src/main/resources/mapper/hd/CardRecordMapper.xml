@@ -18,8 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <select id="selectCardRecordList" parameterType="CardRecord" resultMap="CardRecordResult">
-        select c.id, c.comp_id, c.emp_no, c.card_time, c.mac_code, c.create_date , c.check_time ,d.company_name as company_name,p.full_name as emp_name,e.name as mac_name
-        from human_hd_card_record as c
+        SELECT c.id, c.comp_id, c.emp_no, c.card_time, c.mac_code, c.create_date , c.check_time ,d.company_name as company_name,p.full_name as emp_name,e.name as mac_name
+        FROM human_hd_card_record as c
         left join sys_dept as d
         on c.comp_id = d.comp_id and d.if_company = 1
         left join human_hm_personnel_info as p
@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
             <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
-            <if test="date1 != null ">and c.card_time &gt; #{date1} </if>
-            <if test="date2 != null ">and c.card_time &lt; #{date2} </if>
+            <if test="date1 != null ">and c.card_time &gt;= #{date1} </if>
+            <if test="date2 != null ">and c.card_time &lt;= #{date2} </if>
         </where>
     </select>
 

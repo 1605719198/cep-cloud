@@ -9,7 +9,7 @@ import com.jlkj.human.hd.service.IPersonColockDetailService;
 import com.jlkj.human.hd.service.IPersonColockOrgService;
 import com.jlkj.human.hd.service.IPersonColockService;
 import com.jlkj.human.hp.dto.FirstDeptDTO;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class PersonColockOrgServiceImpl implements IPersonColockOrgService
     @Autowired
     private PersonColockOrgMapper personColockOrgMapper;
     @Autowired
-    private ISysDeptService sysDeptService;
+    private IHumanDeptService sysDeptService;
     @Autowired
     private IPersonColockDetailService personColockDetailService;
     @Autowired

@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -64,7 +65,7 @@ public class FinanceAaUnitServiceImpl implements IFinanceAaUnitService
             financeAaUnit.setCreateName(SecurityUtils.getNickName());
             return financeAaUnitMapper.insertFinanceAaUnit(financeAaUnit);
         } else {
-            return 0;
+            throw new ServiceException("计量单位："+financeAaUnit.getUnitNo()+"已经存在，不可重复新增！");
         }
     }
 

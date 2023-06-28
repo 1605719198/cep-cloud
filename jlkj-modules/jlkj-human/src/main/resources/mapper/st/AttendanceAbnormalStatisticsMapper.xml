@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.AttendanceAbnormalStatisticsMapper">
+    
+    <resultMap type="AttendanceAbnormalStatistics" id="AttendanceAbnormalStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="turnTypeId"    column="turn_type_id"    />
+        <result property="turnTypeName"    column="turn_type_name"    />
+        <result property="classId"    column="class_id"    />
+        <result property="className"    column="class_name"    />
+        <result property="excReaId"    column="exc_rea_id"    />
+        <result property="proveReaId"    column="prove_rea_id"    />
+        <result property="proveReason"    column="prove_reason"    />
+        <result property="status"    column="status"    />
+        <result property="norOndutyBegin"    column="nor_onduty_begin"    />
+        <result property="norOndutyEnd"    column="nor_onduty_end"    />
+        <result property="slotCardOnduty"    column="slot_card_onduty"    />
+        <result property="slotCardOffduty"    column="slot_card_offduty"    />
+        <result property="description"    column="description"    />
+        <result property="chiefempnoId"    column="chiefempno_id"    />
+        <result property="chiefempnoNo"    column="chiefempno_no"    />
+        <result property="chiefempnoName"    column="chiefempno_name"    />
+        <result property="chiefempnoPostId"    column="chiefempno_post_id"    />
+        <result property="chiefempnoPostname"    column="chiefempno_postname"    />
+        <result property="disposeId"    column="dispose_id"    />
+        <result property="auditType"    column="audit_type"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectAttendanceAbnormalStatisticsVo">
+        SELECT id, comp_id, emp_id, emp_name, emp_no, post_id, post_name, turn_type_id, turn_type_name,
+               class_id, class_name, exc_rea_id, prove_rea_id, prove_reason, status, nor_onduty_begin, nor_onduty_end,
+               slot_card_onduty, slot_card_offduty, description, chiefempno_id, chiefempno_no, chiefempno_name, chiefempno_post_id,
+               chiefempno_postname, dispose_id, audit_type, creator, creator_id, create_date FROM human_hd_attendance_abnormal
+    </sql>
+
+    <select id="selectAttendanceAbnormalStatisticsList" parameterType="AttendanceAbnormalStatistics" resultMap="AttendanceAbnormalStatisticsResult">
+        <include refid="selectAttendanceAbnormalStatisticsVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="disposeId != null  and disposeId != ''"> and dispose_id = #{disposeId}</if>
+            <if test="date1 != null ">and nor_onduty_begin &gt;= #{date1} </if>
+            <if test="date2 != null ">and nor_onduty_begin &lt;= #{date2} </if>
+        </where>
+    </select>
+    
+    <select id="selectAttendanceAbnormalStatisticsById" parameterType="String" resultMap="AttendanceAbnormalStatisticsResult">
+        <include refid="selectAttendanceAbnormalStatisticsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAttendanceAbnormalStatistics" parameterType="AttendanceAbnormalStatistics">
+        INSERT INTO human_hd_attendance_abnormal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="turnTypeId != null">turn_type_id,</if>
+            <if test="turnTypeName != null">turn_type_name,</if>
+            <if test="classId != null">class_id,</if>
+            <if test="className != null">class_name,</if>
+            <if test="excReaId != null">exc_rea_id,</if>
+            <if test="proveReaId != null">prove_rea_id,</if>
+            <if test="proveReason != null">prove_reason,</if>
+            <if test="status != null">status,</if>
+            <if test="norOndutyBegin != null">nor_onduty_begin,</if>
+            <if test="norOndutyEnd != null">nor_onduty_end,</if>
+            <if test="slotCardOnduty != null">slot_card_onduty,</if>
+            <if test="slotCardOffduty != null">slot_card_offduty,</if>
+            <if test="description != null">description,</if>
+            <if test="chiefempnoId != null">chiefempno_id,</if>
+            <if test="chiefempnoNo != null">chiefempno_no,</if>
+            <if test="chiefempnoName != null">chiefempno_name,</if>
+            <if test="chiefempnoPostId != null">chiefempno_post_id,</if>
+            <if test="chiefempnoPostname != null">chiefempno_postname,</if>
+            <if test="disposeId != null">dispose_id,</if>
+            <if test="auditType != null">audit_type,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postName != null">#{postName},</if>
+            <if test="turnTypeId != null">#{turnTypeId},</if>
+            <if test="turnTypeName != null">#{turnTypeName},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="className != null">#{className},</if>
+            <if test="excReaId != null">#{excReaId},</if>
+            <if test="proveReaId != null">#{proveReaId},</if>
+            <if test="proveReason != null">#{proveReason},</if>
+            <if test="status != null">#{status},</if>
+            <if test="norOndutyBegin != null">#{norOndutyBegin},</if>
+            <if test="norOndutyEnd != null">#{norOndutyEnd},</if>
+            <if test="slotCardOnduty != null">#{slotCardOnduty},</if>
+            <if test="slotCardOffduty != null">#{slotCardOffduty},</if>
+            <if test="description != null">#{description},</if>
+            <if test="chiefempnoId != null">#{chiefempnoId},</if>
+            <if test="chiefempnoNo != null">#{chiefempnoNo},</if>
+            <if test="chiefempnoName != null">#{chiefempnoName},</if>
+            <if test="chiefempnoPostId != null">#{chiefempnoPostId},</if>
+            <if test="chiefempnoPostname != null">#{chiefempnoPostname},</if>
+            <if test="disposeId != null">#{disposeId},</if>
+            <if test="auditType != null">#{auditType},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttendanceAbnormalStatistics" parameterType="AttendanceAbnormalStatistics">
+        UPDATE human_hd_attendance_abnormal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="turnTypeId != null">turn_type_id = #{turnTypeId},</if>
+            <if test="turnTypeName != null">turn_type_name = #{turnTypeName},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="excReaId != null">exc_rea_id = #{excReaId},</if>
+            <if test="proveReaId != null">prove_rea_id = #{proveReaId},</if>
+            <if test="proveReason != null">prove_reason = #{proveReason},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="norOndutyBegin != null">nor_onduty_begin = #{norOndutyBegin},</if>
+            <if test="norOndutyEnd != null">nor_onduty_end = #{norOndutyEnd},</if>
+            <if test="slotCardOnduty != null">slot_card_onduty = #{slotCardOnduty},</if>
+            <if test="slotCardOffduty != null">slot_card_offduty = #{slotCardOffduty},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="chiefempnoId != null">chiefempno_id = #{chiefempnoId},</if>
+            <if test="chiefempnoNo != null">chiefempno_no = #{chiefempnoNo},</if>
+            <if test="chiefempnoName != null">chiefempno_name = #{chiefempnoName},</if>
+            <if test="chiefempnoPostId != null">chiefempno_post_id = #{chiefempnoPostId},</if>
+            <if test="chiefempnoPostname != null">chiefempno_postname = #{chiefempnoPostname},</if>
+            <if test="disposeId != null">dispose_id = #{disposeId},</if>
+            <if test="auditType != null">audit_type = #{auditType},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAttendanceAbnormalStatisticsById" parameterType="String">
+        DELETE FROM human_hd_attendance_abnormal where id = #{id}
+    </delete>
+
+    <delete id="deleteAttendanceAbnormalStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_attendance_abnormal where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

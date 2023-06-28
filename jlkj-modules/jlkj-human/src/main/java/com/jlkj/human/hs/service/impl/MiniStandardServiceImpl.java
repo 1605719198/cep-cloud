@@ -2,7 +2,8 @@ package com.jlkj.human.hs.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.MiniStandard;
 import com.jlkj.human.hs.mapper.MiniStandardMapper;
@@ -63,11 +64,19 @@ public class MiniStandardServiceImpl implements IMiniStandardService
         if(nowdate.compareTo(inEffectDate)>0){
             throw new ServiceException("生效日期不允许小于当前日期");
         }
+        Long version = 1L;
         //查询当前公司别 最大版次号 及 生效日期
         Map<String, Object> versionMap = miniStandardMapper.selectMaxVersion(compId);
-        Long version = 1L;
-        version = Long.parseLong(versionMap.get("version").toString())+1;
-        if(versionMap.get("version") != null){
+        if(!StringUtils.isEmpty(versionMap)) {
+            //生效日期
+            Date inEffectDate1 = DateUtils.dateTime("yyyy_MM_dd",versionMap.get("effectDate").toString());
+            version = Long.parseLong(versionMap.get("version").toString());
+            //生效日期小于操作日期
+            if(nowdate.compareTo(inEffectDate1)<0 ){
+                version = version + 1;
+            }
+        }
+        if(!StringUtils.isEmpty(versionMap)) {
             Date effectDate= (Date) versionMap.get("effectDate");
             if(nowdate.compareTo(effectDate)<0){
                 for (MiniStandard miniStandard : miniStandardList) {
@@ -77,7 +86,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
                 }
             }
             for (MiniStandard miniStandard : miniStandardList) {
-                miniStandard.setUuid(IdUtils.simpleUUID());
+                miniStandard.setUuid(UUID.randomUUID().toString().substring(0, 32));
                 miniStandard.setCreatorId(SecurityUtils.getUserId().toString());
                 miniStandard.setCreator(SecurityUtils.getNickName());
                 miniStandard.setCreateDate(new Date());
@@ -94,7 +103,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
                     miniStandard.setVersion(version);
                     miniStandardMapper.updateMiniStandard(miniStandard);
                 } else {
-                    miniStandard.setUuid(IdUtils.simpleUUID());
+                    miniStandard.setUuid(UUID.randomUUID().toString().substring(0, 32));
                     miniStandard.setVersion(version);
                     miniStandardMapper.insertMiniStandard(miniStandard);
                 }

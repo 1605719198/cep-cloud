@@ -1,7 +1,9 @@
 package com.jlkj.finance.ao.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.redis.service.RedisService;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.ao.domain.FinanceAoPara;
 import com.jlkj.finance.ao.mapper.FinanceAoParaMapper;
@@ -22,6 +24,8 @@ public class FinanceAoParaServiceImpl implements IFinanceAoParaService
 {
     @Autowired
     private FinanceAoParaMapper financeAoParaMapper;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 查询报支参数维护
@@ -56,11 +60,16 @@ public class FinanceAoParaServiceImpl implements IFinanceAoParaService
     @Override
     public int insertFinanceAoPara(FinanceAoPara financeAoPara)
     {
-        financeAoPara.setId(IdUtils.fastSimpleUUID());
-        financeAoPara.setCreateTime(DateUtils.getNowDate());
-        financeAoPara.setCreateBy(SecurityUtils.getUsername());
-        financeAoPara.setCreateName(SecurityUtils.getNickName());
-        return financeAoParaMapper.insertFinanceAoPara(financeAoPara);
+        List<FinanceAoPara> financeAoParas = financeAoParaMapper.selectFinanceAoParaByCompIdAndParameterValue(financeAoPara);
+        if (financeAoParas.isEmpty()){
+            financeAoPara.setId(IdUtils.fastSimpleUUID());
+            financeAoPara.setCreateTime(DateUtils.getNowDate());
+            financeAoPara.setCreateBy(SecurityUtils.getUsername());
+            financeAoPara.setCreateName(SecurityUtils.getNickName());
+            return financeAoParaMapper.insertFinanceAoPara(financeAoPara);
+        } else {
+            throw new ServiceException("参数键名："+financeAoPara.getParameterKey()+"已经存在，不可重复新增！");
+        }
     }
 
     /**
@@ -101,4 +110,47 @@ public class FinanceAoParaServiceImpl implements IFinanceAoParaService
     {
         return financeAoParaMapper.deleteFinanceAoParaById(id);
     }
+
+//    /**
+//     * 加载参数缓存数据
+//     */
+//    @Override
+//    public void loadingAoParaCache()
+//    {
+//        List<FinanceAoPara> aoParaList = financeAoParaMapper.selectFinanceAoParaList()List(new FinanceAoPara());
+//        for (FinanceAoPara config : aoParaList)
+//        {
+//            redisService.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
+//        }
+//    }
+//
+//    /**
+//     * 清空参数缓存数据
+//     */
+//    @Override
+//    public void clearAoParaCache()
+//    {
+//        Collection<String> keys = redisService.keys(CacheConstants.SYS_CONFIG_KEY + "*");
+//        redisService.deleteObject(keys);
+//    }
+//
+//    /**
+//     * 重置参数缓存数据
+//     */
+//    @Override
+//    public void resetAoParaCache()
+//    {
+//        clearAoParaCache();
+//        loadingAoParaCache();
+//    }
+//    /**
+//     * 设置cache key
+//     *
+//     * @param configKey 参数键
+//     * @return 缓存键key
+//     */
+//    private String getCacheKey(String configKey)
+//    {
+//        return CacheConstants.SYS_CONFIG_KEY + configKey;
+//    }
 }

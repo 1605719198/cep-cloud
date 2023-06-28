@@ -100,11 +100,11 @@ public class FinanceAoParaController extends BaseController
 //     * 刷新参数缓存
 //     */
 //    @RequiresPermissions("finance:ao:para:remove")
-//    @Log(title = "报支参数维护", businessType = BusinessType.CLEAN)
+//    @Log(title = "参数管理", businessType = BusinessType.CLEAN)
 //    @DeleteMapping("/refreshCache")
 //    public AjaxResult refreshCache()
 //    {
+//        financeAoParaService.resetAoParaCache();
 //        return success();
 //    }
-
 }

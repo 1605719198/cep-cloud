@@ -71,7 +71,12 @@ public class PersonClassMasterController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody PersonClassMaster personClassMaster)
     {
-        return toAjax(personClassMasterService.insertPersonClassMaster(personClassMaster));
+        int result = personClassMasterService.insertPersonClassMaster(personClassMaster);
+        if(result>0){
+            return success("排班成功");
+        }else{
+            return error("排班失败，所选的班次在排班在排班时间段年度排班资料不完整");
+        }
     }
 
     /**

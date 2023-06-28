@@ -1,7 +1,9 @@
 package com.jlkj.finance.ao.mapper;
 
+import com.jlkj.finance.ao.dto.FinanceAoBudgetDto;
+
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
-import com.jlkj.finance.ao.domain.FinanceAoBudget;
 
 /**
  * 预算设置Mapper接口
@@ -17,32 +19,68 @@ public interface FinanceAoBudgetMapper
      * @param id 预算设置主键
      * @return 预算设置
      */
-    public FinanceAoBudget selectFinanceAoBudgetById(String id);
+    public FinanceAoBudgetDto selectFinanceAoBudgetById(String id);
+    /**
+     * 查询预算设置
+     *
+     * @param id 预算设置主键
+     * @return 预算设置
+     */
+    public FinanceAoBudgetDto selectFinanceAoBudgetDtoById(String id);
+    /**
+     * 查询预算设置
+     *
+     * @param financeAoBudgetDto 预算设置主键
+     * @return 预算设置
+     */
+    public  FinanceAoBudgetDto selectFinanceAoBudgetDtoMonth(FinanceAoBudgetDto financeAoBudgetDto);
+    /**
+     * 查询预算设置
+     *
+     * @param financeAoBudgetDto 预算设置主键
+     * @return 预算设置
+     */
+    public  FinanceAoBudgetDto selectMonth(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 查询预算设置列表
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 预算设置集合
      */
-    public List<FinanceAoBudget> selectFinanceAoBudgetList(FinanceAoBudget financeAoBudget);
+    public List<FinanceAoBudgetDto> selectFinanceAoBudgetList(FinanceAoBudgetDto financeAoBudgetDto);
+    /**
+     * 查询预算设置列表
+     *
+     * @param financeAoBudgetDto 预算设置
+     * @return 预算设置集合
+     */
+    public List<FinanceAoBudgetDto>selectDuplicateQuery(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 新增预算设置
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 结果
      */
-    public int insertFinanceAoBudget(FinanceAoBudget financeAoBudget);
+    public int insertFinanceAoBudget(FinanceAoBudgetDto financeAoBudgetDto);
 
     /**
      * 修改预算设置
      * 
-     * @param financeAoBudget 预算设置
+     * @param financeAoBudgetDto 预算设置
      * @return 结果
      */
-    public int updateFinanceAoBudget(FinanceAoBudget financeAoBudget);
+    public int updateFinanceAoBudget(FinanceAoBudgetDto financeAoBudgetDto);
 
+
+    /**
+     * 删除预算设置
+     *
+     * @param list 预算设置
+     * @return 结果
+     */
+    public int deleteFinanceAoBudgetList(@Param("list") List<FinanceAoBudgetDto> list);
     /**
      * 删除预算设置
      * 

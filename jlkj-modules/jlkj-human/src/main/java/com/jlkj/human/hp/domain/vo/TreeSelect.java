@@ -2,7 +2,7 @@ package com.jlkj.human.hp.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jlkj.human.hd.domain.Attendencebasis;
-import com.jlkj.human.hp.domain.SysDept;
+import com.jlkj.human.hp.domain.HumanDept;
 import com.jlkj.human.hp.dto.DeptUnionPostDTO;
 import com.jlkj.human.hs.domain.SalaryProjectBasis;
 import com.jlkj.human.pa.domain.PerformanceBasis;
@@ -46,7 +46,7 @@ public class TreeSelect implements Serializable
 
     }
 
-    public TreeSelect(SysDept dept)
+    public TreeSelect(HumanDept dept)
     {
         // 节点ID
         this.id = dept.getDeptId();

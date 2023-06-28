@@ -53,6 +53,8 @@ public class LicenseCheckListener implements ApplicationListener<ContextRefreshe
         if(context == null){
             if(StringUtils.isNotBlank(licensePath)){
                 log.info("++++++++ 开始安装证书 ++++++++");
+                log.info("subject:{},publicAlias:{},storePass:{},licensePath:{},publicKeysStorePath:{}",
+                        subject,publicAlias,storePass,licensePath,publicKeysStorePath);
 
                 LicenseVerifyParam param = new LicenseVerifyParam();
                 param.setSubject(subject);

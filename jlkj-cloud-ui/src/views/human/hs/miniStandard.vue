@@ -266,7 +266,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除各公司最低工资标准及生活保障标准设定编号为"' + uuids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除此数据项？').then(function() {
         return delMiniStandard(uuids);
       }).then(() => {
         this.getList();

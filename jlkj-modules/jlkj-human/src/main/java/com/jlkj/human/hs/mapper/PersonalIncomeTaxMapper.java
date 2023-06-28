@@ -62,11 +62,30 @@ public interface PersonalIncomeTaxMapper
      */
     public int deletePersonalIncomeTaxByIds(String[] ids);
 
+    /**
+     * 版本号列表
+     *
+     * @param type 类别
+     * @return 结果
+     */
     List<PersonalIncomeTax> getVersionList(String type);
 
+    /**
+     * 获取最大版本号
+     *
+     * @param type 类别
+     * @return 结果
+     */
     Map<String,Object> selectMaxVersionNo(String type);
 
-
-
+    /**
+     * 删除个人所得税数据
+     * @Description 删除个人所得税数据
+     * @param type 类别
+     * @param versionNo 版本号
+     * @return 个人所得税删除结果
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
     public int deletePersonalIncomeTaxByVersionNo(@Param("type") String type, @Param("versionNo") Long versionNo);
 }

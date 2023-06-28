@@ -37,11 +37,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSalaryProjectBasisVo">
-        select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
+        SELECT id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date FROM human_hs_salary_project_basis
     </sql>
 
     <select id="selectSalaryProjectBasisList" parameterType="SalaryProjectBasis" resultMap="SalaryProjectBasisResult">
-        select id, pay_pro_code, pay_pro_name, is_sta, sta_con, is_post_pro, is_emp_pro, is_lov, lov_con_id, salary_describe, parentid, parents, pay_type, is_showno, num, default_value, status, if_used, creator, creator_id, create_date from human_hs_salary_project_basis
+        <include refid="selectSalaryProjectBasisVo"/>
         where pay_type != 1
     </select>
 
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertSalaryProjectBasis" parameterType="SalaryProjectBasis">
-        insert into human_hs_salary_project_basis
+        INSERT INTO human_hs_salary_project_basis
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="payProCode != null">pay_pro_code,</if>
@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateSalaryProjectBasis" parameterType="SalaryProjectBasis">
-        update human_hs_salary_project_basis
+        UPDATE human_hs_salary_project_basis
         <trim prefix="SET" suffixOverrides=",">
             <if test="payProCode != null">pay_pro_code = #{payProCode},</if>
             <if test="payProName != null">pay_pro_name = #{payProName},</if>
@@ -133,11 +133,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSalaryProjectBasisById" parameterType="Long">
-        delete from human_hs_salary_project_basis where id = #{id}
+        DELETE FROM human_hs_salary_project_basis where id = #{id}
     </delete>
 
     <delete id="deleteSalaryProjectBasisByIds" parameterType="String">
-        delete from human_hs_salary_project_basis where id in 
+        DELETE FROM human_hs_salary_project_basis where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

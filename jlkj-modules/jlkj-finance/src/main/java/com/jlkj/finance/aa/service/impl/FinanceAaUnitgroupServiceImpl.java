@@ -1,5 +1,6 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -65,7 +66,7 @@ public class FinanceAaUnitgroupServiceImpl implements IFinanceAaUnitgroupService
             financeAaUnitgroup.setCreateName(SecurityUtils.getNickName());
             return financeAaUnitgroupMapper.insertFinanceAaUnitgroup(financeAaUnitgroup);
         } else {
-            return 0;
+            throw new ServiceException("分组代号："+financeAaUnitgroup.getGroupNo()+"已经存在，不可重复新增！");
         }
     }
 
