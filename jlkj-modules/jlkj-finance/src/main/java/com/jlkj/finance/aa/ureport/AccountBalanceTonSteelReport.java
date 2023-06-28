@@ -62,17 +62,41 @@ public class AccountBalanceTonSteelReport {
 
        if(ConstantsUtil.DISABLEDCODE.equals(amountNotDisplayed)){
            Map<String, Object> dataMap = new HashMap<>(4);
-           dataMap.put("title1","借方金额");
-           dataMap.put("title2","贷方金额");
-           dataMap.put("title3","借方数量");
-           dataMap.put("title4","贷方数量");
+           dataMap.put("title11","借方金额");
+           dataMap.put("title12","贷方金额");
+           dataMap.put("title13","借方数量");
+           dataMap.put("title14","贷方数量");
+           List<Map<String, Object>> list1 = new ArrayList<>();
+           list1.add(dataMap);
 
-           list.add(dataMap);
+
+           Map<String, Object> dataMap1 = new HashMap<>(4);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+
+
+
+           list.add(dataMap1);
        }else{
            Map<String, Object> dataMap = new HashMap<>(2);
-           dataMap.put("title1","借方");
-           dataMap.put("title2","贷方");
-           list.add(dataMap);
+           dataMap.put("title11","借方");
+           dataMap.put("title12","贷方");
+
+           List<Map<String, Object>> list1 = new ArrayList<>();
+           list1.add(dataMap);
+
+
+           Map<String, Object> dataMap1 = new HashMap<>(4);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+           dataMap1.put("title1",list1);
+
+
+
+           list.add(dataMap1);
        }
 
 
