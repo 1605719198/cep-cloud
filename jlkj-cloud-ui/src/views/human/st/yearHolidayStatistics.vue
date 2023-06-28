@@ -90,7 +90,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        year: null,
+        year: '',
       },
       // 表单参数
       form: {},
@@ -150,9 +150,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('human/yearHolidayStatistics/export', {
-        ...this.queryParams
-      }, `yearHolidayStatistics_${new Date().getTime()}.xlsx`)
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:年休假统计.ureport.xml&compId='+this.queryParams.compId+'&year='+this.queryParams.year, '_blank');
     }
   }
 };

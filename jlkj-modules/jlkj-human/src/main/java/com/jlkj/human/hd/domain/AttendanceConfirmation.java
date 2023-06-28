@@ -13,6 +13,7 @@ import java.util.Date;
 /**
  * 出勤确认表
  * @TableName human_hd_attendance_confirmation
+ * @author 111191
  */
 @TableName(value ="human_hd_attendance_confirmation")
 @Data

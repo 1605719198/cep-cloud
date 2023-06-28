@@ -2,6 +2,7 @@ package com.jlkj.human.hm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.jlkj.common.core.utils.PinYinApi;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
@@ -9,7 +10,6 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.human.config.PinYinApi;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.domain.SysUser;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;

@@ -77,7 +77,9 @@
                 </el-row>
               </div>
     <div>
-      <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="socialSecurityList" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
+
+      <el-form ref="form" :model="form" :rules="rules">
+      <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="form.socialSecurityList" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="社保公积金项目" align="center" prop="salaryProjectId" width="120">
         <template v-slot="scope">
@@ -93,37 +95,51 @@
       </el-table-column>
       <el-table-column label="单位缴纳比例%" align="center" prop="comPro" width="120">
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comPro'" :rules="rules.mon">
           <el-input v-model="scope.row.comPro" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="单位附加金额" align="center" prop="comMon" >
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comMon'" :rules="rules.mon">
           <el-input v-model="scope.row.comMon" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="个人缴纳比例%" align="center" prop="perPro" width="120">
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perPro'" :rules="rules.mon">
           <el-input v-model="scope.row.perPro" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="个人附加金额" align="center" prop="perMon" >
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perMon'" :rules="rules.mon">
           <el-input v-model="scope.row.perMon" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="基数上限" align="center" prop="baseUcl" >
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
           <el-input v-model="scope.row.baseUcl" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="基数下限" align="center" prop="baseLl" >
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
           <el-input v-model="scope.row.baseLl" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="小数位数" align="center" prop="deciBit" >
         <template v-slot="scope">
+          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.deciBit'" :rules="rules.mon">
           <el-input v-model="scope.row.deciBit" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="进位方式" align="center" prop="carryMode">
@@ -150,6 +166,8 @@
         </template>
       </el-table-column>
     </el-table>
+      </el-form>
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -236,9 +254,14 @@ export default {
         effectDate: null,
       },
       // 表单参数
-      form: {},
+      form: {
+        socialSecurityList: [],
+      },
       // 表单校验
       rules: {
+        mon: [
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
+        ]
       }
     };
   },
@@ -363,7 +386,7 @@ export default {
           }).catch(() => {
           })
         }else {
-          this.$modal.msgError("生效日期必须大于当前日期");
+          this.$modal.msgError("已生效日期不能作废");
           break;
         }
       }
@@ -376,7 +399,7 @@ export default {
       this.queryParams.payAreaId = data.dicNo;
       this.queryParams.date = null;
       this.getVersionList()
-      this.socialSecurityList = []
+      this.form.socialSecurityList = []
       this.onLoad()
     },
     //载入数据
@@ -384,8 +407,8 @@ export default {
       this.table.loading = true;//加载状态
       listSocialSecurity(this.queryParams).then(response => {
         this.total = response.total;
-        this.socialSecurityList = response.rows;//表格数据
-        if(this.socialSecurityList.length===0){
+        this.form.socialSecurityList = response.rows;//表格数据
+        if(this.form.socialSecurityList.length===0){
           this.addLine();
         }
         this.table.loading = false;
@@ -399,12 +422,12 @@ export default {
           parentid: this.queryParams.id,
           effectDate: this.queryParams.effectDate,
         }
-        this.socialSecurityList.push(newLine)
+        this.form.socialSecurityList.push(newLine)
       });
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-        if (!row||this.socialSecurityList.length == row.index + 1) {
+        if (!row||this.form.socialSecurityList.length == row.index + 1) {
           const newLine = {
             id: null,
             creator: this.nickName,
@@ -415,7 +438,7 @@ export default {
             effectDate: this.queryParams.effectDate,
           }
           this.index++
-          this.socialSecurityList.push(newLine)
+          this.form.socialSecurityList.push(newLine)
         }
     },
   }

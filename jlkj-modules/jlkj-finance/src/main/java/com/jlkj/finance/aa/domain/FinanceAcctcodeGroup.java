@@ -1,12 +1,13 @@
 package com.jlkj.finance.aa.domain;
 
-import com.jlkj.system.api.domain.SysDept;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
-import java.util.Date;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,36 +21,44 @@ public class FinanceAcctcodeGroup extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 会计科目主键 */
+    @NotBlank(message = "会计科目不能为空")
     private String groupAcctId;
 
     /** 会计科目编号 */
     @Excel(name = "会计科目编号")
+    @NotBlank(message = "会计科目编号不能为空")
     private String groupAcctCode;
 
     /** 会计科目中文名称 */
     @Excel(name = "会计科目中文名称")
+    @NotBlank(message = "会计科目中文名称不能为空")
     private String groupAcctName;
 
     /** 上层会计科目ID */
+    @NotBlank(message = "上层会计科目ID不能为空")
     private String parentId;
 
     /** 上层会计科目NO */
+    @NotBlank(message = "上层会计科目NO不能为空")
     private String parentAcctCode;
 
     /** 传票性科目 */
     @Excel(name = "传票性科目")
+    @NotBlank(message = "传票性科目不能为空")
     private String isVoucher;
 
     /** 余额方向 */
     @Excel(name = "余额方向")
+    @NotBlank(message = "余额方向不能为空")
     private String drOrCr;
 
     /** 现金科目 */
     @Excel(name = "现金科目")
+    @NotBlank(message = "现金科目不能为空")
     private String isCash;
 
     /** 级别 */
-    private String level;
+    private int level;
 
     /** 禁用标识 */
     @Excel(name = "禁用标识")
@@ -143,12 +152,12 @@ public class FinanceAcctcodeGroup extends BaseEntity
     {
         return isCash;
     }
-    public void setLevel(String level)
+    public void setLevel(int level)
     {
         this.level = level;
     }
 
-    public String getLevel()
+    public int getLevel()
     {
         return level;
     }

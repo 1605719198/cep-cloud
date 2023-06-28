@@ -1,4 +1,4 @@
-package com.jlkj.human.config;
+package com.jlkj.common.core.utils;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 
