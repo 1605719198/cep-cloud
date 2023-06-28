@@ -5,14 +5,17 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.human.pa.domain.PersonPerformanceDetail;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 个人绩效主档
+ * @author HuangBing
  * @TableName human_pa_person_performance
  */
 @TableName(value ="human_pa_person_performance")
@@ -210,6 +213,16 @@ public class PersonPerformanceDTO implements Serializable {
      * 结束时间
      */
     private String endTime;
+
+    /**
+     * 重点工作项List
+     */
+    private List<PersonPerformanceDetail> keyWorkItemsList;
+
+    /**
+     * KPIList
+     */
+    private List<PersonPerformanceDetail> kpiList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
