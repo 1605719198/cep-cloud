@@ -1,12 +1,18 @@
 package com.jlkj.human.hm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.constant.Constants;
+import com.jlkj.common.core.utils.PinYinApi;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.dto.human.hm.PersonnelDTO;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hm.domain.*;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.mapper.PersonnelMapper;
 import com.jlkj.human.hm.service.*;
+import com.jlkj.human.hp.domain.HumanDept;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +43,12 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     private IContractService contractService;
     @Resource
     private ILeaveService leaveService;
+    @Resource
+    private IHumanUserService userService;
+    @Resource
+    private IHumanDeptService deptService;
+    @Resource
+    private IHumanConfigService configService;
 
     /**
      * 新增人员资料
@@ -136,5 +148,48 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
         dto.setContractList(contractList);
         dto.setLeaveList(leaveList);
         return dto;
+    }
+
+    /**
+     * 新增人员基本信息
+     *
+     * @param personnel 人员信息
+     * @return 结果
+     */
+    @Override
+    public Object addPersonnelBasicInfo(Personnel personnel) {
+        List<Personnel> list = lambdaQuery().eq(Personnel::getCertificateNumber, personnel.getCertificateNumber()).list();
+        if (list.isEmpty()) {
+            List<Personnel> list1 = lambdaQuery().eq(Personnel::getEmpNo, personnel.getEmpNo()).list();
+            if (list1.isEmpty()) {
+                // 根据姓名 取得大写首字母
+                personnel.setFullNamePinyin(PinYinApi.getPinYinHeadChar(personnel.getFullName()));
+                personnel.setStatus(Constants.STR_ONE);
+                boolean result = save(personnel);
+                if (result) {
+                    HumanUser humanUser = new HumanUser();
+                    humanUser.setUserName(personnel.getEmpNo());
+                    humanUser.setNickName(personnel.getFullName());
+                    humanUser.setCreateBy(SecurityUtils.getUsername());
+                    humanUser.setPassword(SecurityUtils.encryptPassword(configService.selectConfigByKey("sys.user.initPassword")));
+                    userService.save(humanUser);
+                    return AjaxResult.success("保存成功");
+                } else {
+                    return AjaxResult.error();
+                }
+            } else {
+                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已被使用");
+            }
+        } else if (list.size() == Constants.INT_ONE){
+            lambdaUpdate().eq(Personnel::getId, personnel.getId()).update(personnel);
+            return AjaxResult.success("修改成功");
+        } else {
+            if (list.get(0).getEmpNo().equals(personnel.getEmpNo())) {
+                return AjaxResult.error("新增失败，工号" + personnel.getEmpNo() + "已经存在");
+            } else {
+                HumanDept dept = deptService.queryCompById(list.get(0).getCompId());
+                return AjaxResult.error("新增失败，身份证号：" + personnel.getCertificateNumber() + "已存在，被" + dept.getDeptName() + "公司工号" + list.get(0).getEmpNo() + "使用");
+            }
+        }
     }
 }

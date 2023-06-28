@@ -48,4 +48,12 @@ public interface IPersonnelService extends IService<Personnel> {
      * @return 人员信息集合
      */
     HumanresourcePersonnelInfoDTO selectPersonnelInfo(String empNo);
+
+    /**
+     * 新增人员基本信息
+     *
+     * @param personnel 人员信息
+     * @return 结果
+     */
+    Object addPersonnelBasicInfo(Personnel personnel);
 }

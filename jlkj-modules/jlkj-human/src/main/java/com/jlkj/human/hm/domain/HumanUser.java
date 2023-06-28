@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @TableName(value ="sys_user")
 @Data
-public class SysUser implements Serializable {
+public class HumanUser implements Serializable {
     /**
      * 用户ID
      */

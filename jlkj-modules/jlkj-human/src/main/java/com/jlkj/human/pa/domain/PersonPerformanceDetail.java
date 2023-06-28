@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -47,11 +48,13 @@ public class PersonPerformanceDetail implements Serializable {
     /**
      * 重点工作内容
      */
+    @NotNull(message = "重点工作内容为必填项")
     private String item;
 
     /**
      * 完成标准/目标
      */
+    @NotNull(message = "完成标准/目标为必填项")
     private String itemGoal;
 
     /**

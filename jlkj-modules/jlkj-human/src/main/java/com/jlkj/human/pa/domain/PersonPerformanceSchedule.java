@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * 个人绩效进度表主档
+ * @author HuangBing
  * @TableName human_pa_person_performance_schedule
  */
 @TableName(value ="human_pa_person_performance_schedule")
