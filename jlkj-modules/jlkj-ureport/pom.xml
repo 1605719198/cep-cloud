@@ -84,6 +84,11 @@
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-finance</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
