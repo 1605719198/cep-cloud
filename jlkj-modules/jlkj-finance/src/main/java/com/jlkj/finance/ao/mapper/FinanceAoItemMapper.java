@@ -1,6 +1,7 @@
 package com.jlkj.finance.ao.mapper;
 
 import com.jlkj.finance.ao.domain.FinanceAoItem;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author 116514
  * @date 2023-05-20
  */
+@Repository
 public interface FinanceAoItemMapper 
 {
     /**

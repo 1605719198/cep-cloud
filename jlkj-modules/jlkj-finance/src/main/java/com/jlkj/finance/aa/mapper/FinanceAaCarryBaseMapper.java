@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCarryBase;
+import org.springframework.stereotype.Repository;
 
 /**
  * 自动结转规则-基本资料-集团Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaCarryBase;
  * @author 116514
  * @date 2023-04-24
  */
+@Repository
 public interface FinanceAaCarryBaseMapper 
 {
     /**

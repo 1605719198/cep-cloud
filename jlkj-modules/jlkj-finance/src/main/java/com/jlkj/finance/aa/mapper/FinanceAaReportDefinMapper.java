@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaReportDefin;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author 116514
  * @date 2023-05-04
  */
+@Repository
 public interface FinanceAaReportDefinMapper 
 {
     /**

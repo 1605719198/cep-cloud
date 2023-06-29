@@ -3,6 +3,8 @@ package com.jlkj.finance.ao.mapper;
 import com.jlkj.finance.ao.dto.FinanceAoBudgetDto;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-06-16
  */
+@Repository
 public interface FinanceAoBudgetMapper 
 {
     /**

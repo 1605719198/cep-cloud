@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaProjectResult;
+import org.springframework.stereotype.Repository;
 
 /**
  * 印项目计算结果Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaProjectResult;
  * @author jlkj
  * @date 2023-06-28
  */
+@Repository
 public interface FinanceAaProjectResultMapper 
 {
     /**

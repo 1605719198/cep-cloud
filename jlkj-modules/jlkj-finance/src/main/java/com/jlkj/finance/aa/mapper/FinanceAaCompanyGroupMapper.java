@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jlkj.finance.aa.domain.FinanceAaCompanyGroup;
+import org.springframework.stereotype.Repository;
 
 /**
  * 集团管理-会计公司维护Mapper接口
@@ -11,6 +12,7 @@ import com.jlkj.finance.aa.domain.FinanceAaCompanyGroup;
  * @author 116514
  * @date 2023-04-23
  */
+@Repository
 public interface FinanceAaCompanyGroupMapper 
 {
     /**
