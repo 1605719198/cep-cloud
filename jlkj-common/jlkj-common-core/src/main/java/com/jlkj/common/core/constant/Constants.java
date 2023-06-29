@@ -169,6 +169,23 @@ public class Constants {
      */
     public static final String STR_ZERO_ONE = "01";
     /**
+     * 常量字符串 Y
+     *
+     * @author 111191
+     * @Date 上午 09:27:51 2023年6月29日, 0029
+     * @param null
+     */
+    public static final String STR_Y = "Y";
+    /**
+     * 常量字符串 N
+     *
+     * @author 111191
+     * @Date 上午 09:27:55 2023年6月29日, 0029
+     * @param null
+     */
+    public static final String STR_N = "N";
+// ************************************************   以下为 Integer 类型常量      ***********************************************
+    /**
      * 数字 1
      *
      * @author 265675
@@ -187,10 +204,21 @@ public class Constants {
     public static final Integer INT_ZERO = 0;
     /**
      * 数字 100
+     * @author 111191
+     * @Date 上午 09:28:45 2023年6月29日, 0029
+     * @param null
+     */
+    public static final Integer INT_HUNDRED = 100;
+
+// ************************************************   以下为 BigDecimal 类型常量      ***********************************************
+    /**
+     * 数字 100
      *
      * @author 265675
      * @Date 上午 10:19:43 2023年6月28日
      * @param null
      */
     public static final BigDecimal BIG_DECIMAL_HUNDRED = new BigDecimal("100");
+
+// ************************************************   以下为 定义其它 类型常量      ***********************************************
 }
