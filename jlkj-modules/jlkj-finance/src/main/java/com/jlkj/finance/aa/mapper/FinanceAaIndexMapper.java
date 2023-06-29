@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaIndex;
+import org.springframework.stereotype.Repository;
 
 /**
  * 系统选单-索引设定Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaIndex;
  * @author jlkj
  * @date 2023-04-19
  */
+@Repository
 public interface FinanceAaIndexMapper 
 {
     /**

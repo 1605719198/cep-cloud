@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jlkj.finance.aa.domain.FinanceCalSysRule;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * 核算项目-系统设定Mapper接口
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @author 116514
  * @date 2023-04-12
  */
+@Repository
 public interface FinanceCalSysRuleMapper 
 {
     /**
