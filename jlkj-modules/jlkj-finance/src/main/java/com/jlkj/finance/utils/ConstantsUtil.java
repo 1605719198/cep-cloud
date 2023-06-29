@@ -1,12 +1,14 @@
 package com.jlkj.finance.utils;
 
 
+import com.jlkj.common.core.constant.Constants;
+
 /**
  * 通用常量信息
  *
  * @author ruoyi
  */
-public class ConstantsUtil
+public class ConstantsUtil extends Constants
 {
     /**
      * calRule
