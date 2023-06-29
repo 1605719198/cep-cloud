@@ -24,8 +24,10 @@ import java.util.List;
  */
 @Service
 public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAccountBalanceTonSteelService {
+
     @Autowired
     private FinanceAaLedgerlCalMapper financeAaLedgerlCalMapper;
+
 
     /**
      * 会计科目总账 查询

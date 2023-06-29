@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaDictType;
+import org.springframework.stereotype.Repository;
 
 /**
  * 系统管理-字典类型Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaDictType;
  * @author 265799
  * @date 2023-04-03
  */
+@Repository
 public interface FinanceAaDictTypeMapper 
 {
     /**

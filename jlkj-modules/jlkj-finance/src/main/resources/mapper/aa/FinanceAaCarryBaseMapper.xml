@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaCarryBaseMapper">
     
-    <resultMap type="FinanceAaCarryBase" id="FinanceAaCarryBaseResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaCarryBase" id="FinanceAaCarryBaseResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="carry"    column="carry"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, company_id, carry, rules_no, rules_name, voucher_type, voucher_status, remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_carry_base
     </sql>
 
-    <select id="selectFinanceAaCarryBaseList" parameterType="FinanceAaCarryBase" resultMap="FinanceAaCarryBaseResult">
+    <select id="selectFinanceAaCarryBaseList" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryBase" resultMap="FinanceAaCarryBaseResult">
         <include refid="selectFinanceAaCarryBaseVo"/>
         <where>  
             <if test="rulesNo != null  and rulesNo != ''"> and rules_no = #{rulesNo}</if>
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaCarryBase" parameterType="FinanceAaCarryBase">
+    <insert id="insertFinanceAaCarryBase" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryBase">
         insert into finance_aa_carry_base
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaCarryBase" parameterType="FinanceAaCarryBase">
+    <update id="updateFinanceAaCarryBase" parameterType="com.jlkj.finance.aa.domain.FinanceAaCarryBase">
         update finance_aa_carry_base
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>

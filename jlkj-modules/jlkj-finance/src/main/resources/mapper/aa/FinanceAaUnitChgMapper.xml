@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaUnitChgMapper">
     
-    <resultMap type="FinanceAaUnitChg" id="FinanceAaUnitChgResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaUnitChg" id="FinanceAaUnitChgResult">
         <result property="id"    column="id"    />
         <result property="unitId"    column="unit_id"    />
         <result property="unitNo"    column="unit_no"    />
@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, unit_id, unit_no, chgUnitId, chgUnit_no, changeRate, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_unit_chg
     </sql>
 
-    <select id="selectFinanceAaUnitChgList" parameterType="FinanceAaUnitChg" resultMap="FinanceAaUnitChgResult">
+    <select id="selectFinanceAaUnitChgList" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitChg" resultMap="FinanceAaUnitChgResult">
         <include refid="selectFinanceAaUnitChgVo"/>
         <where>  
             <if test="unitId != null  and unitId != ''"> and unit_id = #{unitId}</if>
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaUnitChg" parameterType="FinanceAaUnitChg">
+    <insert id="insertFinanceAaUnitChg" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitChg">
         insert into finance_aa_unit_chg
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaUnitChg" parameterType="FinanceAaUnitChg">
+    <update id="updateFinanceAaUnitChg" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitChg">
         update finance_aa_unit_chg
         <trim prefix="SET" suffixOverrides=",">
             <if test="unitId != null">unit_id = #{unitId},</if>

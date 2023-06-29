@@ -1,5 +1,7 @@
 package com.jlkj.common.core.constant;
 
+import java.math.BigDecimal;
+
 /**
  * 通用常量信息
  *
@@ -135,6 +137,30 @@ public class Constants {
      */
     public static final String STR_ZERO = "0";
     /**
+     * 常量字符串 1
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     * @param null
+     */
+    public static final String STR_ONE = "1";
+    /**
+     * 常量字符串 2
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     * @param null
+     */
+    public static final String STR_TWO = "2";
+    /**
+     * 常量字符串 3
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     * @param null
+     */
+    public static final String STR_THREE = "3";
+    /**
      * 常量字符串 01
      *
      * @author 111191
@@ -142,4 +168,29 @@ public class Constants {
      * @param null
      */
     public static final String STR_ZERO_ONE = "01";
+    /**
+     * 数字 1
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     * @param null
+     */
+    public static final Integer INT_ONE = 1;
+
+    /**
+     * 数字 0
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     * @param null
+     */
+    public static final Integer INT_ZERO = 0;
+    /**
+     * 数字 100
+     *
+     * @author 265675
+     * @Date 上午 10:19:43 2023年6月28日
+     * @param null
+     */
+    public static final BigDecimal BIG_DECIMAL_HUNDRED = new BigDecimal("100");
 }

@@ -2,6 +2,7 @@ package com.jlkj.finance.gp.mapper;
 
 import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpPurchaseLink;
+import org.springframework.stereotype.Repository;
 
 /**
  * 厂商采购关系联系人Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.gp.domain.FinanceGpPurchaseLink;
  * @author 265799
  * @date 2023-04-07
  */
+@Repository
 public interface FinanceGpPurchaseLinkMapper 
 {
     /**

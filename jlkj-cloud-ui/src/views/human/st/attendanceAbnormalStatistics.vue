@@ -126,10 +126,10 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        disposeId: null,
+        disposeId: '',
         norOndutyBegin: null,
-        date1:null,
-        date2:null,
+        date1:'',
+        date2:'',
       },
       // 表单参数
       form: {},
@@ -219,9 +219,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('human/attendanceAbnormalStatistics/export', {
-        ...this.queryParams
-      }, `attendanceAbnormalStatistics_${new Date().getTime()}.xlsx`)
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出勤异常统计.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&disposeId='+this.queryParams.disposeId, '_blank');
     }
   }
 };

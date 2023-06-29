@@ -2,10 +2,10 @@ package com.jlkj.human.config;
 
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class OrgPersonUtils {
 
-    @Autowired
+    @Resource
     IPersonnelService personnelService;
     public static OrgPersonUtils orgPersonUtils;
     @PostConstruct

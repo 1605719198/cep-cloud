@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       // src: this.GLOBAL.designUrl,
-      src: "http://10.32.157.51:9205/ureport/designer",
+      src: "http://10.32.157.51:8080/ureport/designer",
       height: document.documentElement.clientHeight - 94.5 + "px;",
       loading: true
     };

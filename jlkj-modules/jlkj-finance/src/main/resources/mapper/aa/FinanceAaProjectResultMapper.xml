@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaProjectResultMapper">
+    
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaProjectResult" id="FinanceAaProjectResultResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="reportNo"    column="report_no"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="acctPeriod"    column="acct_period"    />
+        <result property="amt"    column="amt"    />
+        <result property="qty"    column="qty"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAaProjectResultVo">
+        select id, company_id, report_id, report_no, item_code, acct_period, amt, qty, create_by, create_name, create_time from finance_aa_project_result
+    </sql>
+
+    <select id="selectFinanceAaProjectResultList" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectResult" resultMap="FinanceAaProjectResultResult">
+        <include refid="selectFinanceAaProjectResultVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="reportId != null  and reportId != ''"> and report_id = #{reportId}</if>
+            <if test="reportNo != null  and reportNo != ''"> and report_no = #{reportNo}</if>
+            <if test="itemCode != null  and itemCode != ''"> and item_code = #{itemCode}</if>
+            <if test="acctPeriod != null "> and acct_period = #{acctPeriod}</if>
+            <if test="amt != null "> and amt = #{amt}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAaProjectResultById" parameterType="Long" resultMap="FinanceAaProjectResultResult">
+        <include refid="selectFinanceAaProjectResultVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAaProjectResult" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectResult">
+        insert into finance_aa_project_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="reportId != null">report_id,</if>
+            <if test="reportNo != null">report_no,</if>
+            <if test="itemCode != null">item_code,</if>
+            <if test="acctPeriod != null">acct_period,</if>
+            <if test="amt != null">amt,</if>
+            <if test="qty != null">qty,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="reportId != null">#{reportId},</if>
+            <if test="reportNo != null">#{reportNo},</if>
+            <if test="itemCode != null">#{itemCode},</if>
+            <if test="acctPeriod != null">#{acctPeriod},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAaProjectResult" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectResult">
+        update finance_aa_project_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="reportId != null">report_id = #{reportId},</if>
+            <if test="reportNo != null">report_no = #{reportNo},</if>
+            <if test="itemCode != null">item_code = #{itemCode},</if>
+            <if test="acctPeriod != null">acct_period = #{acctPeriod},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAaProjectResultById" parameterType="Long">
+        delete from finance_aa_project_result where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAaProjectResultByIds" parameterType="String">
+        delete from finance_aa_project_result where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

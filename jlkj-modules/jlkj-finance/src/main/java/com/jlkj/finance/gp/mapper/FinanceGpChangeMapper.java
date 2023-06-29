@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jlkj.finance.gp.domain.FinanceGpAdd;
 import com.jlkj.finance.gp.domain.FinanceGpChange;
+import org.springframework.stereotype.Repository;
 
 /**
  * 厂商异动申请Mapper接口
@@ -11,6 +12,7 @@ import com.jlkj.finance.gp.domain.FinanceGpChange;
  * @author 265799
  * @date 2023-04-12
  */
+@Repository
 public interface FinanceGpChangeMapper 
 {
     /**

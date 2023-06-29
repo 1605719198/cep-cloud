@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaUnitgroupMapper">
     
-    <resultMap type="FinanceAaUnitgroup" id="FinanceAaUnitgroupResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaUnitgroup" id="FinanceAaUnitgroupResult">
         <result property="id"    column="id"    />
         <result property="groupNo"    column="group_no"    />
         <result property="groupName"    column="group_name"    />
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, group_no, group_name, srlno, remark, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_unitGroup
     </sql>
 
-    <select id="selectFinanceAaUnitgroupList" parameterType="FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
+    <select id="selectFinanceAaUnitgroupList" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
         <include refid="selectFinanceAaUnitgroupVo"/>
         <where>  
             <if test="groupNo != null  and groupNo != ''"> and group_no = #{groupNo}</if>
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectFinanceAaUnitgroupByGroupNo" parameterType="FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
+    <select id="selectFinanceAaUnitgroupByGroupNo" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitgroup" resultMap="FinanceAaUnitgroupResult">
         <include refid="selectFinanceAaUnitgroupVo"/>
         where group_no = #{groupNo}
     </select>
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaUnitgroup" parameterType="FinanceAaUnitgroup">
+    <insert id="insertFinanceAaUnitgroup" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitgroup">
         insert into finance_aa_unitGroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaUnitgroup" parameterType="FinanceAaUnitgroup">
+    <update id="updateFinanceAaUnitgroup" parameterType="com.jlkj.finance.aa.domain.FinanceAaUnitgroup">
         update finance_aa_unitGroup
         <trim prefix="SET" suffixOverrides=",">
             <if test="groupNo != null and groupNo != ''">group_no = #{groupNo},</if>
