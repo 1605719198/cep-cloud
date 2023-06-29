@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.mapper;
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaDictData;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 
 /**
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author 265799
  * @date 2023-04-03
  */
+@Repository
 public interface FinanceAaDictDataMapper 
 {
     /**

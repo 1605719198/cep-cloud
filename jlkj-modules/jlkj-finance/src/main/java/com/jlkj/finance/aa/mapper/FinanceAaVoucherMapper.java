@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.mapper;
 import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author 265799
  * @date 2023-04-24
  */
+@Repository
 public interface FinanceAaVoucherMapper 
 {
     /**

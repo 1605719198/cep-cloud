@@ -2,6 +2,7 @@ package com.jlkj.finance.gp.mapper;
 
 import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
+import org.springframework.stereotype.Repository;
 
 
 /**
@@ -10,6 +11,7 @@ import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
  * @author 265799
  * @date 2023-04-08
  */
+@Repository
 public interface FinanceGpManufacturerBaseMapper 
 {
     /**

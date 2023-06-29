@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaLedgerAcct;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author jlkj
  * @date 2023-04-29
  */
+@Repository
 public interface FinanceAaLedgerAcctMapper 
 {
     /**

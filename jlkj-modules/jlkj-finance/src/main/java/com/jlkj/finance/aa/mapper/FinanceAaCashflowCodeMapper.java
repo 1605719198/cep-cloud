@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
+import org.springframework.stereotype.Repository;
 
 /**
  * 现金流量代码Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
  * @author 265799
  * @date 2023-04-17
  */
+@Repository
 public interface FinanceAaCashflowCodeMapper 
 {
     /**

@@ -3,14 +3,12 @@ package com.jlkj.finance.aa.service.impl;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
-import com.jlkj.finance.aa.mapper.FinanceAaLedgerAcctMapper;
 import com.jlkj.finance.aa.mapper.FinanceAaLedgerlCalMapper;
-import com.jlkj.finance.aa.mapper.FinanceAaVoucherDetailMapper;
 import com.jlkj.finance.aa.service.IFinanceAaAccountBalanceTonSteelService;
+import com.jlkj.finance.utils.AssertUtil;
 import com.jlkj.finance.utils.ConstantsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.utils.AssertUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,12 +24,10 @@ import java.util.List;
  */
 @Service
 public class FinanceAaAccountBalanceTonSteelServiceImpl implements IFinanceAaAccountBalanceTonSteelService {
-    @Autowired
-    private FinanceAaLedgerAcctMapper financeAaLedgerAcctMapper;
+
     @Autowired
     private FinanceAaLedgerlCalMapper financeAaLedgerlCalMapper;
-    @Autowired
-    private FinanceAaVoucherDetailMapper financeAaVoucherDetailMapper;
+
 
     /**
      * 会计科目总账 查询

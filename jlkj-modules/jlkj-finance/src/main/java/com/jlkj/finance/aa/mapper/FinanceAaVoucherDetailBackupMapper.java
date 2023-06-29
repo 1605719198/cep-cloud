@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaVoucherDetailBackup;
+import org.springframework.stereotype.Repository;
 
 /**
  * 凭证维护-明细备份Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.aa.domain.FinanceAaVoucherDetailBackup;
  * @author jlkj
  * @date 2023-04-28
  */
+@Repository
 public interface FinanceAaVoucherDetailBackupMapper 
 {
     /**
