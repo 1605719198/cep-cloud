@@ -1,13 +1,14 @@
 package com.jlkj.common.security.utils;
 
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.jlkj.common.core.constant.SecurityConstants;
 import com.jlkj.common.core.constant.TokenConstants;
 import com.jlkj.common.core.context.SecurityContextHolder;
 import com.jlkj.common.core.utils.ServletUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.system.api.model.LoginUser;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 权限获取工具类
@@ -121,5 +122,16 @@ public class SecurityUtils
     public static String getNickName()
     {
             return getLoginUser().getSysUser().getNickName();
+    }
+    /**
+     * @description 取得当前登录人员的公司别信息
+     * @author: 111191
+     * @date: 2023年6月30日, 0030 下午 03:42:13
+     * @param: 无
+     * @return: java.lang.String
+     * @throws: 无
+    */
+    public static String getCompId(){
+        return getLoginUser().getSysUser().getCompId();
     }
 }
