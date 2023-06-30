@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtGroupMapper">
+    
+    <resultMap type="FinanceFtGroup" id="FinanceFtGroupResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="assetGroupNo"    column="asset_group_no"    />
+        <result property="assetGroupName"    column="asset_group_name"    />
+        <result property="deprMethodNo"    column="depr_method_no"    />
+        <result property="deprMethodName"    column="depr_method_name"    />
+        <result property="unit"    column="unit"    />
+        <result property="usableMonth"    column="usable_month"    />
+        <result property="scrapRate"    column="scrap_rate"    />
+        <result property="remark"    column="remark"    />
+        <result property="deprType"    column="depr_type"    />
+        <result property="assetAccount"    column="asset_account"    />
+        <result property="deprAccount"    column="depr_account"    />
+        <result property="clearAccount"    column="clear_account"    />
+        <result property="expenseAccount"    column="expense_account"    />
+        <result property="reserveAccount"    column="reserve_account"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtGroupVo">
+        select id, company_id, asset_group_no, asset_group_name, depr_method_no, depr_method_name, unit, usable_month, scrap_rate, remark, depr_type, asset_account, depr_account, clear_account, expense_account, reserve_account, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_ft_group
+    </sql>
+
+    <select id="selectFinanceFtGroupList" parameterType="FinanceFtGroup" resultMap="FinanceFtGroupResult">
+        <include refid="selectFinanceFtGroupVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="assetGroupNo != null  and assetGroupNo != ''"> and asset_group_no = #{assetGroupNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtGroupById" parameterType="String" resultMap="FinanceFtGroupResult">
+        <include refid="selectFinanceFtGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectFinanceFtGroupByCompIdAndAssetGroupNo" parameterType="FinanceFtGroup" resultMap="FinanceFtGroupResult">
+        <include refid="selectFinanceFtGroupVo"/>
+        where company_id = #{companyId} AND asset_group_no = #{assetGroupNo}
+    </select>
+        
+    <insert id="insertFinanceFtGroup" parameterType="FinanceFtGroup">
+        insert into finance_ft_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="assetGroupNo != null">asset_group_no,</if>
+            <if test="assetGroupName != null">asset_group_name,</if>
+            <if test="deprMethodNo != null">depr_method_no,</if>
+            <if test="deprMethodName != null">depr_method_name,</if>
+            <if test="unit != null">unit,</if>
+            <if test="usableMonth != null">usable_month,</if>
+            <if test="scrapRate != null">scrap_rate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deprType != null">depr_type,</if>
+            <if test="assetAccount != null">asset_account,</if>
+            <if test="deprAccount != null">depr_account,</if>
+            <if test="clearAccount != null">clear_account,</if>
+            <if test="expenseAccount != null">expense_account,</if>
+            <if test="reserveAccount != null">reserve_account,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="assetGroupNo != null">#{assetGroupNo},</if>
+            <if test="assetGroupName != null">#{assetGroupName},</if>
+            <if test="deprMethodNo != null">#{deprMethodNo},</if>
+            <if test="deprMethodName != null">#{deprMethodName},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="usableMonth != null">#{usableMonth},</if>
+            <if test="scrapRate != null">#{scrapRate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deprType != null">#{deprType},</if>
+            <if test="assetAccount != null">#{assetAccount},</if>
+            <if test="deprAccount != null">#{deprAccount},</if>
+            <if test="clearAccount != null">#{clearAccount},</if>
+            <if test="expenseAccount != null">#{expenseAccount},</if>
+            <if test="reserveAccount != null">#{reserveAccount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtGroup" parameterType="FinanceFtGroup">
+        update finance_ft_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="assetGroupNo != null">asset_group_no = #{assetGroupNo},</if>
+            <if test="assetGroupName != null">asset_group_name = #{assetGroupName},</if>
+            <if test="deprMethodNo != null">depr_method_no = #{deprMethodNo},</if>
+            <if test="deprMethodName != null">depr_method_name = #{deprMethodName},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="usableMonth != null">usable_month = #{usableMonth},</if>
+            <if test="scrapRate != null">scrap_rate = #{scrapRate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deprType != null">depr_type = #{deprType},</if>
+            <if test="assetAccount != null">asset_account = #{assetAccount},</if>
+            <if test="deprAccount != null">depr_account = #{deprAccount},</if>
+            <if test="clearAccount != null">clear_account = #{clearAccount},</if>
+            <if test="expenseAccount != null">expense_account = #{expenseAccount},</if>
+            <if test="reserveAccount != null">reserve_account = #{reserveAccount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceFtGroupById" parameterType="String">
+        delete from finance_ft_group where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceFtGroupByIds" parameterType="String">
+        delete from finance_ft_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

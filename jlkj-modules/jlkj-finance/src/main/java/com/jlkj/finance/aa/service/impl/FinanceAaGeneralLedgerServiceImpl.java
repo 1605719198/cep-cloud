@@ -38,7 +38,6 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         String endDate = DateUtils.getMaxMonthDate(DateUtils.dateTime(dateEnd));
         financeAaLedgerAcctDTO.setStartDetailDate(startDate);
         financeAaLedgerAcctDTO.setEndDetailDate(endDate);
-
         financeAaLedgerAcctDTO.setStartDate(financeAaLedgerAcctDTO.getStartDate().substring(0, 7));
         financeAaLedgerAcctDTO.setEndDate(financeAaLedgerAcctDTO.getEndDate().substring(0, 7));
         FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 = new FinanceAaLedgerAcctDTO();
@@ -90,6 +89,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
                                 financeAaLedgerAcctDTO2.setCalName("本期合计");
+                                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -137,6 +137,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setCalName("本期合计");
+                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -201,6 +202,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                     financeAaLedgerAcctDTO3.setDrQty(yearDrQty);
                 }
                 financeAaLedgerAcctDTO3.setCalName("本年累计");
+                financeAaLedgerAcctDTO3.setCalNamea("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
 
             }
@@ -267,6 +269,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                         if (!dateMap.containsKey(financeAaLedgerAcctDTOS.get(i).getAcctPeriod())) {
                             if (dateMap.size() > 0) {
                                 financeAaLedgerAcctDTO2.setAcctName("本期合计");
+                                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -314,6 +317,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
                 dateMap.clear();
                 FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2 = new FinanceAaLedgerAcctDTO();
                 financeAaLedgerAcctDTO2.setAcctName("本期合计");
+                financeAaLedgerAcctDTO2.setCalNamea("本期合计");
                 financeAaLedgerAcctDTO2.setBgnAmt(bgnAmtAdd);
                 financeAaLedgerAcctDTO2.setBgnQty(bgnQtyAdd);
                 financeAaLedgerAcctDTO2.setDrQty(drQtyAdd);
@@ -382,6 +386,7 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
                 }
                 financeAaLedgerAcctDTO3.setAcctName("本年累计");
+                financeAaLedgerAcctDTO3.setCalNamea("本年累计");
                 financeAaLedgerAcctDTOS2.add(financeAaLedgerAcctDTO3);
             }
             Map mapTemp = new HashMap(16);
@@ -393,7 +398,14 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
         return maps;
     }
-    //筛选无发生额
+
+    /** 筛选无发生额
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectList(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
@@ -405,7 +417,14 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
         }
         return financeAaLedgerAcctDTOS;
     }
-    //筛选余额为零且无发生额
+
+    /** 筛选余额为零且无发生额
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectListAdd(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTOS = new ArrayList<>();
         for (FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO1 :financeAaLedgerAcctDTO){
@@ -419,7 +438,13 @@ public class FinanceAaGeneralLedgerServiceImpl implements IFinanceAaGeneralLedge
 
     }
 
-    //凭过账组数逻辑
+    /** 凭过账组数逻辑
+      * @Description
+      * @Param No such property: code for class: Script1
+      * @return
+      * @Author 265799
+      * @Date 2023/6/27 15:01
+    **/
     public List<FinanceAaLedgerAcctDTO> selectAccountLevel(List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctDTO, FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO2) {
         List<FinanceAaLedgerAcctDTO> financeAaLedgerAcctList = new ArrayList<>();
         String substring = "";

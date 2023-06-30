@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author 116514
  * @date 2023-04-17
  */
+@Repository
 public interface FinanceAcctcodeGroupMapper
 {
     /**

@@ -220,7 +220,7 @@ export default {
       this.addForm = []
       for (let i = 0; i < selection.length; i++) {
         const form = {
-          id: selection[i].id,
+          payProId: selection[i].id,
           payProCode: selection[i].payProCode,
           payProName: selection[i].payProName
         }

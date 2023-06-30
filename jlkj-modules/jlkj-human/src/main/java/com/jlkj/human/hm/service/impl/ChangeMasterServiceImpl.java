@@ -9,12 +9,12 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.human.hm.domain.ChangeDetail;
 import com.jlkj.human.hm.domain.ChangeMaster;
 import com.jlkj.human.hm.domain.Personnel;
-import com.jlkj.human.hm.domain.SysUser;
+import com.jlkj.human.hm.domain.HumanUser;
 import com.jlkj.human.hm.dto.ChangeMasterDTO;
 import com.jlkj.human.hm.mapper.ChangeMasterMapper;
 import com.jlkj.human.hm.service.IChangeMasterService;
-import com.jlkj.human.hm.service.ISysUserService;
-import com.jlkj.human.hp.service.impl.SysPostServiceImpl;
+import com.jlkj.human.hm.service.IHumanUserService;
+import com.jlkj.human.hp.service.impl.HumanPostServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,9 +35,9 @@ public class ChangeMasterServiceImpl extends ServiceImpl<ChangeMasterMapper, Cha
     @Resource
     private PersonnelServiceImpl personnelService;
     @Resource
-    private SysPostServiceImpl sysPostService;
+    private HumanPostServiceImpl sysPostService;
     @Resource
-    private ISysUserService userService;
+    private IHumanUserService userService;
 
     /**
      * 添加员工入职作业
@@ -126,8 +126,8 @@ public class ChangeMasterServiceImpl extends ServiceImpl<ChangeMasterMapper, Cha
                         .set(Personnel::getDepartmentId, changeMasterDTO.getDepartmentId())
                         .eq(Personnel::getEmpNo, changeMasterDTO.getEmpNo()).update();
                 userService.lambdaUpdate()
-                        .set(SysUser::getDeptId, changeMasterDTO.getDepartmentId())
-                        .eq(SysUser::getUserName, changeMasterDTO.getEmpNo()).update();
+                        .set(HumanUser::getDeptId, changeMasterDTO.getDepartmentId())
+                        .eq(HumanUser::getUserName, changeMasterDTO.getEmpNo()).update();
             }
             return AjaxResult.success("修改成功");
         } else if (DateUtils.parseDate(DateUtils.getDate()).compareTo(changeMasterDTO.getEffectDate()) < 0){

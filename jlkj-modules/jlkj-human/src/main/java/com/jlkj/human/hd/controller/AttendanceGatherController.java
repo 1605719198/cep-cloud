@@ -12,8 +12,8 @@ import com.jlkj.human.hd.domain.AttendanceConfirmation;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
 import com.jlkj.human.hd.service.IAttendanceConfirmationService;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
-import com.jlkj.human.hp.domain.SysDept;
-import com.jlkj.human.hp.service.ISysDeptService;
+import com.jlkj.human.hp.domain.HumanDept;
+import com.jlkj.human.hp.service.IHumanDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class AttendanceGatherController extends BaseController {
 
     private final IAttendanceGatherService iAttendanceGatherService;
     private final IAttendanceConfirmationService iAttendanceConfirmationService;
-    private final ISysDeptService iSysDeptService;
+    private final IHumanDeptService iHumanDeptService;
 
     /**
      * 查询员工出勤汇总列表
@@ -61,10 +61,10 @@ public class AttendanceGatherController extends BaseController {
         startPage();
         String real = "true";
         if (real.equals(attendanceGatherDTO.getIncludingSubsidiaries())) {
-            SysDept sysDept = iSysDeptService.selectSysDeptByDeptCode(attendanceGatherDTO.getCompId());
-            List<SysDept> list = iSysDeptService.selectParentIdByDeptCode(sysDept.getDeptId());
+            HumanDept humanDept = iHumanDeptService.selectSysDeptByDeptCode(attendanceGatherDTO.getCompId());
+            List<HumanDept> list = iHumanDeptService.selectParentIdByDeptCode(humanDept.getDeptId());
             List<AttendanceGatherDTO> gatherList = iAttendanceGatherService.selectJoinList(attendanceGatherDTO);
-            for (SysDept item : list) {
+            for (HumanDept item : list) {
                 attendanceGatherDTO.setCompId(item.getDeptCode());
                 List<AttendanceGatherDTO> gatherListA = iAttendanceGatherService.selectCompJoinList(attendanceGatherDTO);
                 gatherList.addAll(gatherListA);

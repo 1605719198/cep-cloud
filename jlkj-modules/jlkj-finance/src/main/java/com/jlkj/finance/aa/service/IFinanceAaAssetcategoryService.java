@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.service;
 import com.jlkj.finance.aa.domain.FinanceAaAssetcategory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产大类维护Service接口
@@ -59,4 +60,10 @@ public interface IFinanceAaAssetcategoryService
      * @return 结果
      */
     public int deleteFinanceAaAssetcategoryById(String id);
+
+    /**
+     * 查询资产大类(下拉选单用)
+     * @return
+     */
+    public List<Map<String,String>> selectAssetGroupList();
 }

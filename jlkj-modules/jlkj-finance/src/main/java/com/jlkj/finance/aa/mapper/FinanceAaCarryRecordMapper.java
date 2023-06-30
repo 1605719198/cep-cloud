@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaCarryRecord;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author 265799
  * @date 2023-05-19
  */
+@Repository
 public interface FinanceAaCarryRecordMapper 
 {
     /**

@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaInit;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author 265799
  * @date 2023-05-26
  */
+@Repository
 public interface FinanceAaInitMapper 
 {
     /**

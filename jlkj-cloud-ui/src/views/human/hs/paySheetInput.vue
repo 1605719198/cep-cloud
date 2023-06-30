@@ -17,26 +17,35 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="paySheetInputList" :row-class-name="addIndex" @selection-change="handleSelectionChange" @row-click="addLine">
+    <el-form ref="form" :model="form" :rules="rules">
+    <el-table v-loading="loading" :data="form.paySheetInputList" :row-class-name="addIndex" @selection-change="handleSelectionChange" @row-click="addLine">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="薪等" align="center" prop="payTier" >
       <template v-slot="scope">
+        <el-form-item :prop="'paySheetInputList.' + scope.$index + '.payTier'" :rules="rules.mon">
         <el-input v-model="scope.row.payTier" placeholder="请输入内容"></el-input>
+        </el-form-item>
       </template>
       </el-table-column>
       <el-table-column label="最低值" align="center" prop="minMon" >
         <template v-slot="scope">
+          <el-form-item :prop="'paySheetInputList.' + scope.$index + '.minMon'" :rules="rules.mon">
           <el-input v-model="scope.row.minMon" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="中值" align="center" prop="midMon" >
         <template v-slot="scope">
+          <el-form-item :prop="'paySheetInputList.' + scope.$index + '.midMon'" :rules="rules.mon">
           <el-input v-model="scope.row.midMon" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="最高值" align="center" prop="maxMon" >
         <template v-slot="scope">
+          <el-form-item :prop="'paySheetInputList.' + scope.$index + '.maxMon'" :rules="rules.mon">
           <el-input v-model="scope.row.maxMon" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status" >
@@ -57,6 +66,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </el-form>
 
     <pagination
       v-show="total>0"
@@ -117,9 +127,14 @@ export default {
         compId: this.$store.state.user.userInfo.compId,
       },
       // 表单参数
-      form: {},
+      form: {
+        paySheetInputList: [],
+      },
       // 表单校验
       rules: {
+        mon: [
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
+        ]
       }
     };
   },
@@ -148,9 +163,9 @@ export default {
     getList() {
       this.loading = true;
       listPaySheetInput(this.queryParams).then(response => {
-        this.paySheetInputList = response.rows;
+        this.form.paySheetInputList = response.rows;
         this.total = response.total;
-        if(this.paySheetInputList.length===0){
+        if(this.form.paySheetInputList.length===0){
           this.addLine();
         }
         this.loading = false;
@@ -201,7 +216,7 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-      if (!row||this.paySheetInputList.length == row.index + 1) {
+      if (!row||this.form.paySheetInputList.length == row.index + 1) {
         const newLine = {
           uuid: null,
           creator: this.nickName,
@@ -211,7 +226,7 @@ export default {
           compId: this.queryParams.compId,
         }
         this.index++
-        this.paySheetInputList.push(newLine)
+        this.form.paySheetInputList.push(newLine)
       }
     },
     addIndex({row, rowIndex}) {

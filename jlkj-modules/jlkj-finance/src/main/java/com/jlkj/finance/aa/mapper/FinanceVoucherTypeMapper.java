@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jlkj.finance.aa.domain.FinanceVoucherType;
+import org.springframework.stereotype.Repository;
 
 /**
  * 凭证类别维护Mapper接口
@@ -11,6 +12,7 @@ import com.jlkj.finance.aa.domain.FinanceVoucherType;
  * @author 116514
  * @date 2023-04-13
  */
+@Repository
 public interface FinanceVoucherTypeMapper 
 {
     /**

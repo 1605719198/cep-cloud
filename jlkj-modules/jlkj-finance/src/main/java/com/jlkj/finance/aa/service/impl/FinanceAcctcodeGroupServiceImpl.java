@@ -67,7 +67,7 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
         String parentId = "0" ;
         String parentAcctCode = "0";
         String ancestors = "0";
-        String level = "0";
+        int level = 0;
         if (StringUtils.isNotNull(info)){
             if("Y".equals(info.getIsVoucher())){
                 throw new ServiceException("父节点为传票性会计科目，不允许新增");
@@ -75,7 +75,7 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
             parentId = info.getGroupAcctId();
             parentAcctCode =  financeAcctcodeGroup.getParentAcctCode();
             ancestors = info.getAncestors()  + "," + financeAcctcodeGroup.getParentAcctCode();
-            level = String.valueOf(Integer.parseInt(info.getLevel())+1);
+            level =info.getLevel()+1;
         }
         financeAcctcodeGroup.setGroupAcctId(IdUtils.simpleUUID());
         financeAcctcodeGroup.setCreateBy(SecurityUtils.getUsername());

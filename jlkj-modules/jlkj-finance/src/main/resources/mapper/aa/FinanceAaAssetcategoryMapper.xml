@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaAssetcategoryMapper">
     
-    <resultMap type="FinanceAaAssetcategory" id="FinanceAaAssetcategoryResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaAssetcategory" id="FinanceAaAssetcategoryResult">
         <result property="id"    column="id"    />
         <result property="assetGroup"    column="asset_group"    />
         <result property="assetGroupName"    column="asset_group_name"    />
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, asset_group, asset_group_name, asset_category, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_assetCategory
     </sql>
 
-    <select id="selectFinanceAaAssetcategoryList" parameterType="FinanceAaAssetcategory" resultMap="FinanceAaAssetcategoryResult">
+    <select id="selectFinanceAaAssetcategoryList" parameterType="com.jlkj.finance.aa.domain.FinanceAaAssetcategory" resultMap="FinanceAaAssetcategoryResult">
         <include refid="selectFinanceAaAssetcategoryVo"/>
         <where>  
             <if test="assetGroup != null  and assetGroup != ''"> and asset_group = #{assetGroup}</if>
@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAaAssetcategory" parameterType="FinanceAaAssetcategory">
+    <insert id="insertFinanceAaAssetcategory" parameterType="com.jlkj.finance.aa.domain.FinanceAaAssetcategory">
         insert into finance_aa_assetCategory
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAaAssetcategory" parameterType="FinanceAaAssetcategory">
+    <update id="updateFinanceAaAssetcategory" parameterType="com.jlkj.finance.aa.domain.FinanceAaAssetcategory">
         update finance_aa_assetCategory
         <trim prefix="SET" suffixOverrides=",">
             <if test="assetGroup != null">asset_group = #{assetGroup},</if>
@@ -88,4 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectAssetGroupList" parameterType="String" resultType="map">
+        SELECT id, asset_group value, asset_group_name label FROM finance_aa_assetCategory
+    </select>
 </mapper>

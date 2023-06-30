@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaReportDefinMapper">
 
-    <resultMap type="FinanceAaReportDefin" id="FinanceAaReportDefinResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaReportDefin" id="FinanceAaReportDefinResult">
         <result property="reportId"    column="report_id"    />
         <result property="companyId"    column="company_id"    />
         <result property="reportNo"    column="report_no"    />
@@ -24,7 +24,7 @@
         select report_id, company_id, report_no, report_name, report_tail, ureport_name, report_type, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_report_defin
     </sql>
 
-    <select id="selectFinanceAaReportDefinList" parameterType="FinanceAaReportDefin" resultMap="FinanceAaReportDefinResult">
+    <select id="selectFinanceAaReportDefinList" parameterType="com.jlkj.finance.aa.domain.FinanceAaReportDefin" resultMap="FinanceAaReportDefinResult">
         <include refid="selectFinanceAaReportDefinVo"/>
         <where>
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
@@ -38,7 +38,7 @@
         where report_id = #{reportId}
     </select>
 
-    <insert id="insertFinanceAaReportDefin" parameterType="FinanceAaReportDefin">
+    <insert id="insertFinanceAaReportDefin" parameterType="com.jlkj.finance.aa.domain.FinanceAaReportDefin">
         insert into finance_aa_report_defin
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="reportId != null">report_id,</if>
@@ -72,7 +72,7 @@
         </trim>
     </insert>
 
-    <update id="updateFinanceAaReportDefin" parameterType="FinanceAaReportDefin">
+    <update id="updateFinanceAaReportDefin" parameterType="com.jlkj.finance.aa.domain.FinanceAaReportDefin">
         update finance_aa_report_defin
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
@@ -106,7 +106,7 @@
         SELECT report_id id, report_no value, report_name label FROM finance_aa_report_defin where company_id = #{compId}
     </select>
 
-    <update id="updateCheckReportDefin" parameterType="FinanceAaReportDefin">
+    <update id="updateCheckReportDefin" parameterType="com.jlkj.finance.aa.domain.FinanceAaReportDefin">
         update finance_aa_report_defin
         <trim prefix="SET" suffixOverrides=",">
             <if test="reportNo != null">report_no = #{reportNo},</if>

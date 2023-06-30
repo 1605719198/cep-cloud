@@ -2,6 +2,7 @@ package com.jlkj.finance.gp.mapper;
 
 import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpAdd;
+import org.springframework.stereotype.Repository;
 
 /**
  * 厂商增户申请Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.gp.domain.FinanceGpAdd;
  * @author 265799
  * @date 2023-04-10
  */
+@Repository
 public interface FinanceGpAddMapper 
 {
     /**

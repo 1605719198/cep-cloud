@@ -2,6 +2,7 @@ package com.jlkj.finance.gp.mapper;
 
 import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpCorrelation;
+import org.springframework.stereotype.Repository;
 
 /**
  * 是否关联方更新记录Mapper接口
@@ -9,6 +10,7 @@ import com.jlkj.finance.gp.domain.FinanceGpCorrelation;
  * @author 265799
  * @date 2023-04-06
  */
+@Repository
 public interface FinanceGpCorrelationMapper 
 {
     /**

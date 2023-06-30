@@ -6,16 +6,19 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.FinanceAaVoucher;
 import com.jlkj.finance.aa.dto.FinanceAaVoucherDTO;
 import com.jlkj.finance.aa.service.IFinanceAaVoucherService;
+import com.jlkj.finance.api.bean.FinanceVoucherBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
 
@@ -241,4 +244,13 @@ public class FinanceAaVoucherController extends BaseController
         ExcelUtil<FinanceAaVoucherDTO> util = new ExcelUtil<FinanceAaVoucherDTO>(FinanceAaVoucherDTO.class);
         util.importTemplateExcel(response, "凭证信息表");
     }
+
+
+    @InnerAuth
+    @PostMapping("/doVoucher")
+    public Map<String, Object> doVoucher(@RequestBody FinanceVoucherBean financeVoucherBean)
+    {
+        return financeAaVoucherService.doVoucher(financeVoucherBean);
+    }
+
 }

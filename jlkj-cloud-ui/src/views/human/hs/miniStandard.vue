@@ -42,6 +42,8 @@
           type="primary"
           size="mini"
           plain
+          icon="el-icon-edit"
+          :disabled="multiple"
           @click="handleSave"
         >保存</el-button>
       </el-col>
@@ -49,6 +51,7 @@
         <el-button
           type="danger"
           plain
+          icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
@@ -58,9 +61,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-
-
-    <el-table v-loading="loading" :data="miniStandardList" @selection-change="handleSelectionChange" :row-class-name="addIndex" @row-click="addLine">
+    <el-form ref="form" :model="form" :rules="rules">
+    <el-table v-loading="loading" :data="form.miniStandardList" @selection-change="handleSelectionChange" :row-class-name="addIndex" @row-click="addLine">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="工资标准类型" align="center" prop="salaryStandard" >
       <template v-slot="scope">
@@ -76,7 +78,9 @@
       </el-table-column>
       <el-table-column label="金额" align="center" prop="money" width="220">
         <template v-slot="scope">
+          <el-form-item :prop="'miniStandardList.' + scope.$index + '.money'" :rules="rules.mon">
           <el-input v-model="scope.row.money" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
@@ -91,6 +95,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </el-form>
 
     <pagination
       v-show="total>0"
@@ -156,9 +161,13 @@ export default {
       },
       // 表单参数
       form: {
+        miniStandardList: [],
       },
       // 表单校验
       rules: {
+        mon: [
+          { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
+        ]
       }
     };
   },
@@ -174,10 +183,10 @@ export default {
     getList() {
       this.loading = true;
       listMiniStandard(this.queryParams).then(response => {
-        this.miniStandardList = response.rows;
+        this.form.miniStandardList = response.rows;
         this.companyName = this.$refs.selectCompany.selectedLabel
         this.total = response.total;
-        if(this.miniStandardList.length===0){
+        if(this.form.miniStandardList.length===0){
           this.addLine();
         }
         this.loading = false;
@@ -276,7 +285,7 @@ export default {
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
       if (this.queryParams.compId != null) {
-          if (!row||this.miniStandardList.length == row.index + 1) {
+          if (!row||this.form.miniStandardList.length == row.index + 1) {
             const newLine = {
               uuid: null,
               creator: this.nickName,
@@ -286,7 +295,7 @@ export default {
               compId: this.queryParams.compId,
             }
             this.index++
-            this.miniStandardList.push(newLine)
+            this.form.miniStandardList.push(newLine)
           }
       }else {
         this.$modal.msgError("公司别不能为空");

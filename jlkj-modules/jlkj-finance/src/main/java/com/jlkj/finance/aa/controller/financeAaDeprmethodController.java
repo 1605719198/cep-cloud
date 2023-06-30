@@ -6,6 +6,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.financeAaDeprmethod;
 import com.jlkj.finance.aa.service.IfinanceAaDeprmethodService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 折旧方法维护Controller
@@ -94,5 +96,23 @@ public class financeAaDeprmethodController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(financeAaDeprmethodService.deletefinanceAaDeprmethodByIds(ids));
+    }
+
+    /**
+     * 查询折旧方法(下拉选单用)- 远程调用暴露接口
+     */
+    @InnerAuth
+    @GetMapping("/getdeprMethodFeign")
+    public List<Map<String,String>> getdeprMethodFeign()
+    {
+        return financeAaDeprmethodService.selectDeprMethodList();
+    }
+    /**
+     * 查询折旧方法(下拉选单用)
+     */
+    @GetMapping("/deprMethodList")
+    public List<Map<String,String>> selectDeprMethodList()
+    {
+        return financeAaDeprmethodService.selectDeprMethodList();
     }
 }

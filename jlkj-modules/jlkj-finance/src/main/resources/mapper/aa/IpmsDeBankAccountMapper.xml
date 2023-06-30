@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.aa.mapper.IpmsDeBankAccountMapper">
     
-    <resultMap type="IpmsDeBankAccount" id="IpmsDeBankAccountResult">
+    <resultMap type="com.jlkj.finance.aa.domain.IpmsDeBankAccount" id="IpmsDeBankAccountResult">
         <result property="id"    column="id"    />
         <result property="compId"    column="comp_id"    />
         <result property="bankId"    column="bank_id"    />
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, comp_id, bank_id, bank_name, branch_no, acct_type, acct_type_name, remit_acctno, acct_id, acct_code, cal_type_ida, cal_type_codea, cal_type_idb, cal_type_codeb, cal_type_idc, cal_type_codec, cal_type_idd, cal_type_coded, phone_no, address, status, remark, create_by, create_name, create_time, update_by, update_name, update_time from ipms_de_bank_account
     </sql>
 
-    <select id="selectIpmsDeBankAccountList" parameterType="IpmsDeBankAccount" resultMap="IpmsDeBankAccountResult">
+    <select id="selectIpmsDeBankAccountList" parameterType="com.jlkj.finance.aa.domain.IpmsDeBankAccount" resultMap="IpmsDeBankAccountResult">
         <include refid="selectIpmsDeBankAccountVo"/>
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertIpmsDeBankAccount" parameterType="IpmsDeBankAccount">
+    <insert id="insertIpmsDeBankAccount" parameterType="com.jlkj.finance.aa.domain.IpmsDeBankAccount">
         insert into ipms_de_bank_account
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -117,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateIpmsDeBankAccount" parameterType="IpmsDeBankAccount">
+    <update id="updateIpmsDeBankAccount" parameterType="com.jlkj.finance.aa.domain.IpmsDeBankAccount">
         update ipms_de_bank_account
         <trim prefix="SET" suffixOverrides=",">
             <if test="compId != null">comp_id = #{compId},</if>
@@ -162,7 +162,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <update id="updateStatus" parameterType="IpmsDeBankAccount">
+    <update id="updateStatus" parameterType="com.jlkj.finance.aa.domain.IpmsDeBankAccount">
         update ipms_de_bank_account
         <set>
             <if test="status != null">status = #{status},</if>

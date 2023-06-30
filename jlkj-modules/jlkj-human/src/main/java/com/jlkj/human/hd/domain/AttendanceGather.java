@@ -12,6 +12,7 @@ import java.util.Date;
 /**
  * 月出勤统计汇总表
  * @TableName human_hd_attendance_gather
+ * @author 111191
  */
 @TableName(value ="human_hd_attendance_gather")
 @Data
