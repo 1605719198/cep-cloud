@@ -6,7 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,9 +29,11 @@ public class RemoteAaReportFactory implements FallbackFactory<RemoteAaReportServ
 
 
             @Override
-            public Map<String, Object> accountBalanceTonSteelData(Map<String, Object> parameter, String source) {
-                log.info("RemoteAaApiService doVoucher 失败 接收到参数：{}",parameter);
-                return null;
+            public List<Map<String, String>> accountBalanceTonSteelData(Map<String, Object> parameter, String source) {
+                log.info("RemoteAaReportService accountBalanceTonSteelData 失败 接收到参数：{}",parameter);
+                List<Map<String, String>> aaa = new ArrayList<>();
+                log.info(throwable.getMessage());
+                return  aaa;
             }
 
         };

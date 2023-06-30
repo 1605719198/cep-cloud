@@ -81,10 +81,7 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.jlkj</groupId>
-            <artifactId>jlkj-api-finance</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.github.yulichang</groupId>
             <artifactId>mybatis-plus-join-boot-starter</artifactId>
@@ -95,21 +92,10 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-common-dto</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-api-finance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jlkj</groupId>
-            <artifactId>jlkj-api-finance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
         </dependency>
 
     </dependencies>

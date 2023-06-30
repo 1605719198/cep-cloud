@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +20,6 @@ import java.util.Map;
 public interface RemoteAaReportService
 {
 
-
-
     /**
      * 新增凭证接口
      * @param source 来源
@@ -28,7 +27,7 @@ public interface RemoteAaReportService
      * @return 执行信息
      */
     @PostMapping("/accountSteel/reportDetailIfSteel")
-    public Map<String,Object> accountBalanceTonSteelData(@RequestBody  Map<String, Object> parameters,@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+    public  List<Map<String, String>> accountBalanceTonSteelData(@RequestBody  Map<String, Object> parameters, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 
 
    
