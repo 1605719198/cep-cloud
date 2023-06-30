@@ -21,6 +21,19 @@
     </properties>
 
     <dependencies>
+        <!--import OpenCV package-->
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>opencv-320</artifactId>
+            <version>3.2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/opencvlib/opencv-320.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>4.4.0</version>
+        </dependency>
 
         <!-- SpringCloud Alibaba Nacos -->
         <dependency>
