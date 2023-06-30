@@ -150,7 +150,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:探亲假统计.ureport.xml&compId='+this.queryParams.compId+'&year='+this.queryParams.year, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:探亲假统计表.ureport.xml&companyId='+this.queryParams.companyId+'&year='+this.queryParams.year, '_blank');
     }
   }
 };

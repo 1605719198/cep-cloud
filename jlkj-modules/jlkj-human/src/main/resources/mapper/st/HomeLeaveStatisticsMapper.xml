@@ -31,15 +31,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHomeLeaveStatisticsList" parameterType="HomeLeaveStatistics" resultMap="HomeLeaveStatisticsResult">
         <include refid="selectHomeLeaveStatisticsVo"/>
-        <where>  
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="year != null  and year != ''"> and year = #{year}</if>
+        <where>
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="year != null  and year != ''"> AND year = #{year}</if>
         </where>
+        ORDER BY year
     </select>
     
     <select id="selectHomeLeaveStatisticsById" parameterType="String" resultMap="HomeLeaveStatisticsResult">
         <include refid="selectHomeLeaveStatisticsVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertHomeLeaveStatistics" parameterType="HomeLeaveStatistics">
@@ -107,15 +108,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteHomeLeaveStatisticsById" parameterType="String">
-        DELETE FROM human_hd_home_leave_holiday where id = #{id}
+        DELETE FROM human_hd_home_leave_holiday WHERE id = #{id}
     </delete>
 
     <delete id="deleteHomeLeaveStatisticsByIds" parameterType="String">
-        DELETE FROM human_hd_home_leave_holiday where id in
+        DELETE FROM human_hd_home_leave_holiday WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

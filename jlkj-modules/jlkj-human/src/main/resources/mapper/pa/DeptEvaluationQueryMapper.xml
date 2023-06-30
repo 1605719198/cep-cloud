@@ -50,28 +50,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectDeptEvaluationQueryList" parameterType="DeptEvaluationQuery" resultMap="DeptEvaluationQueryResult">
-        SELECT merit_status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_person_performance
+        SELECT merit_status,id,dept,count(1) AS 'people',concat (round(count(1)/(SELECT count(1) COUNT FROM human_pa_person_performance
         <where>
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="meritType != null  and meritType != ''"> and merit_type = #{meritType}</if>
-            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
-            <if test="month1 != null and month1 != ''">and merit_month &gt;= #{month1} </if>
-            <if test="month2 != null and month2 != ''">and merit_month &lt;= #{month2} </if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="meritType != null  and meritType != ''"> AND merit_type = #{meritType}</if>
+            <if test="dept != null  and dept != ''"> AND dept = #{dept}</if>
+            <if test="month1 != null and month1 != ''">AND merit_month &gt;= #{month1} </if>
+            <if test="month2 != null and month2 != ''">AND merit_month &lt;= #{month2} </if>
         </where>
-        )*100,2),'%') as 'proportion' from human_pa_person_performance
+        )*100,2),'%') AS 'proportion' FROM human_pa_person_performance
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="meritType != null  and meritType != ''"> and merit_type = #{meritType}</if>
-            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
-            <if test="month1 != null and month1 != ''">and merit_month &gt;= #{month1} </if>
-            <if test="month2 != null and month2 != ''">and merit_month &lt;= #{month2} </if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="meritType != null  and meritType != ''"> AND merit_type = #{meritType}</if>
+            <if test="dept != null  and dept != ''"> AND dept = #{dept}</if>
+            <if test="month1 != null and month1 != ''">AND merit_month &gt;= #{month1} </if>
+            <if test="month2 != null and month2 != ''">AND merit_month &lt;= #{month2} </if>
         </where>
         GROUP BY merit_status
     </select>
     
     <select id="selectDeptEvaluationQueryById" parameterType="String" resultMap="DeptEvaluationQueryResult">
         <include refid="selectDeptEvaluationQueryVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertDeptEvaluationQuery" parameterType="DeptEvaluationQuery">
@@ -187,15 +187,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteDeptEvaluationQueryById" parameterType="String">
-        DELETE FROM human_pa_person_performance where id = #{id}
+        DELETE FROM human_pa_person_performance WHERE id = #{id}
     </delete>
 
     <delete id="deleteDeptEvaluationQueryByIds" parameterType="String">
-        DELETE FROM human_pa_person_performance where id in
+        DELETE FROM human_pa_person_performance WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -25,15 +25,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectMiniStandardList" parameterType="MiniStandard" resultMap="MiniStandardResult">
         <include refid="selectMiniStandardVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="version != null "> and version = #{version}</if>
-            <if test="effectDate != null "> and effect_date = #{effectDate}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="version != null "> AND version = #{version}</if>
+            <if test="effectDate != null "> AND effect_date = #{effectDate}</if>
         </where>
     </select>
     
     <select id="selectMiniStandardByUuid" parameterType="String" resultMap="MiniStandardResult">
         <include refid="selectMiniStandardVo"/>
-        where uuid = #{uuid}
+        WHERE uuid = #{uuid}
     </select>
         
     <insert id="insertMiniStandard" parameterType="MiniStandard">
@@ -80,29 +80,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where uuid = #{uuid}
+        WHERE uuid = #{uuid}
     </update>
 
     <delete id="deleteMiniStandardByUuid" parameterType="String">
-        DELETE FROM human_hs_mini_standard where uuid = #{uuid}
+        DELETE FROM human_hs_mini_standard WHERE uuid = #{uuid}
     </delete>
 
     <select id="getVersionList" parameterType="String" resultMap="MiniStandardResult">
-        SELECT distinct version FROM human_hs_mini_standard WHERE comp_id = #{compId}  order by  version
+        SELECT DISTINCT version FROM human_hs_mini_standard WHERE comp_id = #{compId} ORDER BY version
     </select>
 
     <select id="selectMaxVersion" parameterType="String" resultType="map">
-        SELECT  effect_date effectDate, version from human_hs_mini_standard where comp_id = #{compId} order by effect_date desc limit 1
+        SELECT  effect_date effectDate, version FROM human_hs_mini_standard WHERE comp_id = #{compId} ORDER BY effect_date DESC limit 1
     </select>
 
     <delete id="deleteMiniStandardByUuids" parameterType="String">
-        DELETE FROM human_hs_mini_standard where uuid in
+        DELETE FROM human_hs_mini_standard WHERE uuid IN
         <foreach item="uuid" collection="array" open="(" separator="," close=")">
             #{uuid}
         </foreach>
     </delete>
 
     <delete id="deleteMiniStandardByVersion" parameterType="map">
-        DELETE FROM human_hs_mini_standard where comp_id = #{compId} and  version= #{version}
+        DELETE FROM human_hs_mini_standard WHERE comp_id = #{compId} AND  version= #{version}
     </delete>
 </mapper>

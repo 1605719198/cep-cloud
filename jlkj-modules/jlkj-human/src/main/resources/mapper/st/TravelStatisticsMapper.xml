@@ -48,16 +48,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectTravelStatisticsList" parameterType="TravelStatistics" resultMap="TravelStatisticsResult">
         <include refid="selectTravelStatisticsVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="date1 != null ">and start_date &gt;= #{date1} </if>
-            <if test="date2 != null ">and start_date &lt;= #{date2} </if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+            <if test="date1 != null ">AND start_date &gt;= #{date1} </if>
+            <if test="date2 != null ">AND start_date &lt;= #{date2} </if>
         </where>
+        ORDER BY start_date
     </select>
     
     <select id="selectTravelStatisticsById" parameterType="String" resultMap="TravelStatisticsResult">
         <include refid="selectTravelStatisticsVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertTravelStatistics" parameterType="TravelStatistics">
@@ -173,15 +174,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="resvAttr3 != null">resv_attr3 = #{resvAttr3},</if>
             <if test="resvAttr4 != null">resv_attr4 = #{resvAttr4},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteTravelStatisticsById" parameterType="String">
-        DELETE FROM human_hd_travel_application where id = #{id}
+        DELETE FROM human_hd_travel_application WHERE id = #{id}
     </delete>
 
     <delete id="deleteTravelStatisticsByIds" parameterType="String">
-        DELETE FROM human_hd_travel_application where id in
+        DELETE FROM human_hd_travel_application WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

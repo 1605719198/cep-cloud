@@ -22,15 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectYearRateList" parameterType="YearRate" resultMap="YearRateResult">
         <include refid="selectYearRateVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="year != null  and year != ''"> AND year = #{year}</if>
         </where>
         ORDER BY year DESC
     </select>
     
     <select id="selectYearRateById" parameterType="String" resultMap="YearRateResult">
         <include refid="selectYearRateVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertYearRate" parameterType="YearRate">
@@ -68,15 +68,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteYearRateById" parameterType="String">
-        DELETE FROM human_hs_year_rate where id = #{id}
+        DELETE FROM human_hs_year_rate WHERE id = #{id}
     </delete>
 
     <delete id="deleteYearRateByIds" parameterType="String">
-        DELETE FROM human_hs_year_rate where id in
+        DELETE FROM human_hs_year_rate WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
