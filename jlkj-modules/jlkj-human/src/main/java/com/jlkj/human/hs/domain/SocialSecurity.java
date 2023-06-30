@@ -6,6 +6,7 @@ import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -47,6 +48,7 @@ public class SocialSecurity extends BaseEntity {
     /**
      * 单位缴纳比例（%）
      */
+    @Size(min = 1, max = 10, message = "长度必须在1-10之间")
     @Excel(name = "单位缴纳比例", readConverterExp = "%=")
     private String comPro;
 

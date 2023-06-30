@@ -47,16 +47,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectAttendanceAbnormalStatisticsList" parameterType="AttendanceAbnormalStatistics" resultMap="AttendanceAbnormalStatisticsResult">
         <include refid="selectAttendanceAbnormalStatisticsVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="disposeId != null  and disposeId != ''"> and dispose_id = #{disposeId}</if>
-            <if test="date1 != null ">and nor_onduty_begin &gt;= #{date1} </if>
-            <if test="date2 != null ">and nor_onduty_begin &lt;= #{date2} </if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="disposeId != null  and disposeId != ''"> AND dispose_id = #{disposeId}</if>
+            <if test="date1 != null ">AND nor_onduty_begin &gt;= #{date1} </if>
+            <if test="date2 != null ">AND nor_onduty_begin &lt;= #{date2} </if>
         </where>
+        ORDER BY nor_onduty_begin
     </select>
     
     <select id="selectAttendanceAbnormalStatisticsById" parameterType="String" resultMap="AttendanceAbnormalStatisticsResult">
         <include refid="selectAttendanceAbnormalStatisticsVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertAttendanceAbnormalStatistics" parameterType="AttendanceAbnormalStatistics">
@@ -160,15 +161,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteAttendanceAbnormalStatisticsById" parameterType="String">
-        DELETE FROM human_hd_attendance_abnormal where id = #{id}
+        DELETE FROM human_hd_attendance_abnormal WHERE id = #{id}
     </delete>
 
     <delete id="deleteAttendanceAbnormalStatisticsByIds" parameterType="String">
-        DELETE FROM human_hd_attendance_abnormal where id in
+        DELETE FROM human_hd_attendance_abnormal WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

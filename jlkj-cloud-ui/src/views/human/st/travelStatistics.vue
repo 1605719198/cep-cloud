@@ -235,7 +235,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出差统计.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&status='+this.queryParams.status, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出差统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&status='+this.queryParams.status, '_blank');
     }
   }
 };

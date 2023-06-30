@@ -21,14 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSocialSecurityCompanyList" parameterType="SocialSecurityCompany" resultMap="SocialSecurityCompanyResult">
         <include refid="selectSocialSecurityCompanyVo"/>
         <where>  
-            <if test="payAreaId != null  and payAreaId != ''"> and pay_area_id = #{payAreaId}</if>
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="payAreaId != null  and payAreaId != ''"> AND pay_area_id = #{payAreaId}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
         </where>
     </select>
     
     <select id="selectSocialSecurityCompanyById" parameterType="String" resultMap="SocialSecurityCompanyResult">
         <include refid="selectSocialSecurityCompanyVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertSocialSecurityCompany" parameterType="SocialSecurityCompany">
@@ -63,15 +63,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteSocialSecurityCompanyById" parameterType="String">
-        DELETE FROM human_hs_social_security_company where id = #{id}
+        DELETE FROM human_hs_social_security_company WHERE id = #{id}
     </delete>
 
     <delete id="deleteSocialSecurityCompanyByIds" parameterType="String">
-        DELETE FROM human_hs_social_security_company where id in
+        DELETE FROM human_hs_social_security_company WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -30,24 +30,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectYearPerformanceList" parameterType="YearPerformance" resultMap="YearPerformanceResult">
-        SELECT status,id,dept,count(1) as 'people',concat (round(count(1)/(select count(1) count from human_pa_year_performance
+        SELECT status,id,dept,count(1) AS 'people',concat (round(count(1)/(select count(1) COUNT FROM human_pa_year_performance
         <where>
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
-            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="dept != null  and dept != ''"> AND dept = #{dept}</if>
+            <if test="year != null  and year != ''"> AND year = #{year}</if>
         </where>
-         )*100,2),'%') as 'proportion' from human_pa_year_performance
+         )*100,2),'%') AS 'proportion' FROM human_pa_year_performance
         <where>
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
-            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="dept != null  and dept != ''"> AND dept = #{dept}</if>
+            <if test="year != null  and year != ''"> AND year = #{year}</if>
         </where>
        GROUP BY status
     </select>
     
     <select id="selectYearPerformanceById" parameterType="String" resultMap="YearPerformanceResult">
         <include refid="selectYearPerformanceVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertYearPerformance" parameterType="YearPerformance">
@@ -109,15 +109,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteYearPerformanceById" parameterType="String">
-        DELETE FROM human_pa_year_performance where id = #{id}
+        DELETE FROM human_pa_year_performance WHERE id = #{id}
     </delete>
 
     <delete id="deleteYearPerformanceByIds" parameterType="String">
-        DELETE FROM human_pa_year_performance where id in
+        DELETE FROM human_pa_year_performance WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -32,23 +32,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSocialSecurityList" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
         <include refid="selectSocialSecurityVo"/>
         <where>
-            <if test="date != null ">and effect_date = #{date} </if>
-            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
-            <if test="version != null and version != ''">and version = #{version} </if>
-            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
+            <if test="date != null ">AND effect_date = #{date} </if>
+            <if test="payAreaId != null and payAreaId != ''">AND pay_area_id = #{payAreaId} </if>
+            <if test="version != null and version != ''">AND version = #{version} </if>
+            <if test="salaryProjectId != null and salaryProjectId != ''">AND salary_project_id = #{salaryProjectId} </if>
         </where>
     </select>
     
     <select id="selectSocialSecurityById" parameterType="String" resultMap="SocialSecurityResult">
         <include refid="selectSocialSecurityVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
 
     <select id="selectSocialSecurityByempNo" parameterType="String" resultMap="SocialSecurityResult">
         SELECT s.id, s.salary_project_id,p.pay_pro_code,pay_pro_name, s.com_pro, s.com_mon, s.per_pro, s.per_mon, s.base_ucl, s.base_ll, s.deci_bit, s.carry_mode, s.pay_area_id, s.effect_date, s.version, s.creator, s.creator_id, s.create_date FROM human_hs_social_security s
-        left join human_hs_salary_project_basis p
-        on s.salary_project_id = p.id
-        where s.pay_area_id = (select  pay_area_id from human_hs_social_security_company where comp_id = #{compId})
+        LEFT JOIN human_hs_salary_project_basis p
+        ON s.salary_project_id = p.id
+        WHERE s.pay_area_id = (SELECT pay_area_id FROM human_hs_social_security_company WHERE comp_id = #{compId})
     </select>
         
     <insert id="insertSocialSecurity" parameterType="SocialSecurity">
@@ -110,46 +110,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteSocialSecurityById" parameterType="String">
-        DELETE FROM human_hs_social_security where id = #{id}
+        DELETE FROM human_hs_social_security WHERE id = #{id}
     </delete>
 
     <select id="getVersionList" parameterType="String" resultMap="SocialSecurityResult">
-        SELECT distinct version FROM human_hs_social_security WHERE pay_area_id = #{payAreaId}  order by  version
+        SELECT distinct version FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY version
     </select>
 
     <select id="selectMaxVersion" parameterType="String" resultType="map">
-        SELECT  effect_date effectDate, version  from human_hs_social_security where pay_area_id = #{payAreaId} order by effect_date desc limit 1
+        SELECT  effect_date effectDate, version  FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY effect_date DESC limit 1
     </select>
 
     <delete id="deleteSocialSecurityByIds" parameterType="String">
-        DELETE FROM human_hs_social_security where id in
+        DELETE FROM human_hs_social_security WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <delete id="deleteSocialSecurityByVersion" parameterType="map">
-        DELETE FROM human_hs_social_security where pay_area_id = #{payAreaId} and  version= #{version}
+        DELETE FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} AND version= #{version}
     </delete>
 
     <select id="selectSocialSecurityListBySalaryProjectId" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
         <include refid="selectSocialSecurityVo"/>
         <where>
-            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
-            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
+            <if test="salaryProjectId != null and salaryProjectId != ''">AND salary_project_id = #{salaryProjectId} </if>
+            <if test="payAreaId != null and payAreaId != ''">AND pay_area_id = #{payAreaId} </if>
         </where>
     </select>
 
     <select id="selectSocialSecurityListByVersion" parameterType="SocialSecurity" resultMap="SocialSecurityResult">
         <include refid="selectSocialSecurityVo"/>
         <where>
-            <if test="salaryProjectId != null and salaryProjectId != ''">and salary_project_id = #{salaryProjectId} </if>
-            <if test="payAreaId != null and payAreaId != ''">and pay_area_id = #{payAreaId} </if>
-            <if test="version != null and version != ''">and version = #{version} </if>
+            <if test="salaryProjectId != null and salaryProjectId != ''">AND salary_project_id = #{salaryProjectId} </if>
+            <if test="payAreaId != null and payAreaId != ''">AND pay_area_id = #{payAreaId} </if>
+            <if test="version != null and version != ''">AND version = #{version} </if>
         </where>
     </select>
 </mapper>

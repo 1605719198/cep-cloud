@@ -22,15 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectEnterpriseRevenueRateList" parameterType="EnterpriseRevenueRate" resultMap="EnterpriseRevenueRateResult">
         <include refid="selectEnterpriseRevenueRateVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
-            <if test="month != null  and month != ''"> and month = #{month}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="month != null  and month != ''"> AND month = #{month}</if>
         </where>
         ORDER BY month DESC
     </select>
     
     <select id="selectEnterpriseRevenueRateById" parameterType="String" resultMap="EnterpriseRevenueRateResult">
         <include refid="selectEnterpriseRevenueRateVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertEnterpriseRevenueRate" parameterType="EnterpriseRevenueRate">
@@ -68,15 +68,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteEnterpriseRevenueRateById" parameterType="String">
-        DELETE FROM human_hs_enterprise_revenue_rate where id = #{id}
+        DELETE FROM human_hs_enterprise_revenue_rate WHERE id = #{id}
     </delete>
 
     <delete id="deleteEnterpriseRevenueRateByIds" parameterType="String">
-        DELETE FROM human_hs_enterprise_revenue_rate where id in
+        DELETE FROM human_hs_enterprise_revenue_rate WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
