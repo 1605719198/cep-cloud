@@ -26,13 +26,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectPaySheetInputList" parameterType="PaySheetInput" resultMap="PaySheetInputResult">
         <include refid="selectPaySheetInputVo"/>
         <where>  
-            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
         </where>
     </select>
     
     <select id="selectPaySheetInputByUuid" parameterType="String" resultMap="PaySheetInputResult">
         <include refid="selectPaySheetInputVo"/>
-        where uuid = #{uuid}
+        WHERE uuid = #{uuid}
     </select>
         
     <insert id="insertPaySheetInput" parameterType="PaySheetInput">
@@ -82,15 +82,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where uuid = #{uuid}
+        WHERE uuid = #{uuid}
     </update>
 
     <delete id="deletePaySheetInputByUuid" parameterType="String">
-        DELETE FROM human_hs_pay_sheet_input where uuid = #{uuid}
+        DELETE FROM human_hs_pay_sheet_input WHERE uuid = #{uuid}
     </delete>
 
     <delete id="deletePaySheetInputByUuids" parameterType="String">
-        DELETE FROM human_hs_pay_sheet_input where uuid in
+        DELETE FROM human_hs_pay_sheet_input WHERE uuid IN
         <foreach item="uuid" collection="array" open="(" separator="," close=")">
             #{uuid}
         </foreach>

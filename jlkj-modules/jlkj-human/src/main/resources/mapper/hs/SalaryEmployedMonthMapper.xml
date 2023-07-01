@@ -26,21 +26,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectSalaryEmployedMonthList" parameterType="SalaryEmployedMonth" resultMap="SalaryEmployedMonthResult">
-        SELECT c.id, c.comp_id, c.emp_id, c.emp_no,p.full_name as emp_name ,
+        SELECT c.id, c.comp_id, c.emp_id, c.emp_no,p.full_name AS emp_name ,
                c.post, c.ent_date, c.salary_date, c.descript,
-               c.status, c.creator, c.creator_id, c.creator_no, c.create_date FROM human_hs_salary_employed_month as c
-               left join human_hm_personnel_info as p
-               on c.emp_no = p.emp_no
+               c.status, c.creator, c.creator_id, c.creator_no, c.create_date FROM human_hs_salary_employed_month AS c
+               LEFT JOIN human_hm_personnel_info AS p
+               ON c.emp_no = p.emp_no
         <where>  
-            <if test="compId != null  and compId != ''"> and c.comp_id = #{compId}</if>
-            <if test="empNo != null  and empNo != ''"> and c.emp_no = #{empNo}</if>
+            <if test="compId != null  and compId != ''"> AND c.comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> AND c.emp_no = #{empNo}</if>
         </where>
         ORDER BY ent_date DESC
     </select>
     
     <select id="selectSalaryEmployedMonthById" parameterType="String" resultMap="SalaryEmployedMonthResult">
         <include refid="selectSalaryEmployedMonthVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertSalaryEmployedMonth" parameterType="SalaryEmployedMonth">
@@ -100,11 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSalaryEmployedMonthById" parameterType="String">
-        DELETE FROM human_hs_salary_employed_month where id = #{id}
+        DELETE FROM human_hs_salary_employed_month WHERE id = #{id}
     </delete>
 
     <delete id="deleteSalaryEmployedMonthByIds" parameterType="String">
-        DELETE FROM human_hs_salary_employed_month where id in
+        DELETE FROM human_hs_salary_employed_month WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

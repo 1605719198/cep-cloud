@@ -219,7 +219,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出勤异常统计.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&disposeId='+this.queryParams.disposeId, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出勤异常表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&disposeId='+this.queryParams.disposeId, '_blank');
     }
   }
 };

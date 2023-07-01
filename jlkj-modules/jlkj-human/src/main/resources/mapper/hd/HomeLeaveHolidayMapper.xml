@@ -36,25 +36,25 @@
     <select id="selectHomeLeaveHolidayList" parameterType="HomeLeaveHoliday" resultMap="HomeLeaveHolidayResult">
         <include refid="selectHomeLeaveHolidayVo"/>
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="empNo != null  and empNo != ''"> AND emp_no = #{empNo}</if>
         </where>
     </select>
 
     <select id="selectHomeLeaveHolidayById" parameterType="String" resultMap="HomeLeaveHolidayResult">
         <include refid="selectHomeLeaveHolidayVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
 
     <select id="selectHomeLeaveHolidayByempNo" parameterType="HomeLeaveHoliday" resultMap="HomeLeaveHolidayResult">
         <include refid="selectHomeLeaveHolidayVo"/>
-        where emp_no = #{empNo}
-        and company_id = #{companyId}
+        WHERE emp_no = #{empNo}
+        AND company_id = #{companyId}
     </select>
 
     <select id="selectHomeLeaveHolidayByEmpNo" parameterType="HomeLeaveHoliday" resultMap="HomeLeaveHolidayResult">
         <include refid="selectHomeLeaveHolidayVo"/>
-        where emp_no = #{empNo}
+        WHERE emp_no = #{empNo}
     </select>
 
     <insert id="insertHomeLeaveHoliday" parameterType="HomeLeaveHoliday">
@@ -122,7 +122,7 @@
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <update id="updateHomeLeaveHolidayByEmpNo" parameterType="HomeLeaveHoliday">
@@ -146,15 +146,15 @@
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where emp_no = #{empNo}
+        WHERE emp_no = #{empNo}
     </update>
 
     <delete id="deleteHomeLeaveHolidayById" parameterType="String">
-        DELETE FROM human_hd_home_leave_holiday where id = #{id}
+        DELETE FROM human_hd_home_leave_holiday WHERE id = #{id}
     </delete>
 
     <delete id="deleteHomeLeaveHolidayByIds" parameterType="String">
-        DELETE FROM human_hd_home_leave_holiday where id in
+        DELETE FROM human_hd_home_leave_holiday WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

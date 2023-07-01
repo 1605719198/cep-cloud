@@ -1,6 +1,7 @@
 package com.jlkj.energy.ee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.constant.Constants;
 import com.jlkj.energy.ee.dto.dashboardenergy.GetDashBoardEnergyDTO;
 import com.jlkj.energy.ee.domain.EnergyBoardView1;
 import com.jlkj.energy.ee.mapper.EnergyBoardView1Mapper;
@@ -15,75 +16,101 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author Liukuiyan
-* @description 针对表【v_energy_board_view1】的数据库操作Service实现
-* @createDate 2023-02-16 14:50:28
-*/
+ * @author Liukuiyan
+ * @description 针对表【v_energy_board_view1】的数据库操作Service实现
+ * @createDate 2023-02-16 14:50:28
+ */
 @Service
 public class EnergyBoardView1ServiceImpl extends ServiceImpl<EnergyBoardView1Mapper, EnergyBoardView1>
-    implements EnergyBoardView1Service{
+        implements EnergyBoardView1Service {
+
+    /**
+     * 能源看板数据查询
+     *
+     * @param dto
+     * @return Map<Object>
+     * @author Liukuiyan
+     * @Date 上午 11:05:28 2023年6月29日, 0029
+     */
+    @Override
+    public Map<String, Object> getEngyTopAnalys(GetDashBoardEnergyDTO dto) {
+        Map<String, Object> engyTop = this.getEngyTopAnalys();
+        List<Map<String, Object>> engyBottom = this.getEngyBottomAnalys(dto);
+        List<Object> engyBottomRight = this.getEngyBottomRightAnalys(dto);
+        Map<String, Object> res = new HashMap<>(16);
+        res.put("engyTop", engyTop);
+        res.put("engyBottom", engyBottom);
+        res.put("engyBottomRight", engyBottomRight);
+        return res;
+    }
+
+    /**
+     * @return Map<Object>
+     * @author Liukuiyan
+     * @Date 上午 11:13:46 2023年6月29日, 0029
+     */
     public Map<String, Object> getEngyTopAnalys() {
         Map<String, Object> returnList = new HashMap<>(1);
         List<Map<String, Object>> energyBoardView1 = baseMapper.getEngyTopAnalys();
 
-        final BigDecimal[] sum1 = {new BigDecimal("0")};
-        final BigDecimal[] sum2 = {new BigDecimal("0")};
-        final BigDecimal[] sum3 = {new BigDecimal("0")};
-        final BigDecimal[] sum4 = {new BigDecimal("0")};
-        final BigDecimal[] sum5 = {new BigDecimal("0")};
-        String engyD = "电";
-        String engyS = "水";
-        String engyL = "动力气体";
-        String engyR = "燃气";
-        String engyZ = "蒸汽";
-        String typeName = "energy_type_name";
+        final BigDecimal[] sum1 = {BigDecimal.ZERO}, sum2 = {BigDecimal.ZERO},sum3 = {BigDecimal.ZERO}, sum4 = {BigDecimal.ZERO}, sum5 = {BigDecimal.ZERO};
 
         energyBoardView1.forEach(item -> {
             Object qty = item.get("qty");
             BigDecimal qtyBig = new BigDecimal(qty.toString());
             BigDecimal qtyScale = qtyBig.setScale(0, RoundingMode.HALF_UP);
 
-            if(item.get(typeName).equals(engyD)){
+            if (item.get(Constants.STR_TYPENAME).equals(Constants.STR_ENGYD)) {
                 sum1[0] = sum1[0].add(qtyScale);
             }
-            if(item.get(typeName).equals(engyS)){
+            if (item.get(Constants.STR_TYPENAME).equals(Constants.STR_ENGYS)) {
                 sum2[0] = sum2[0].add(qtyScale);
             }
-            if(item.get(typeName).equals(engyL)){
+            if (item.get(Constants.STR_TYPENAME).equals(Constants.STR_ENGYL)) {
                 sum3[0] = sum3[0].add(qtyScale);
             }
-            if(item.get(typeName).equals(engyR)){
+            if (item.get(Constants.STR_TYPENAME).equals(Constants.STR_ENGYR)) {
                 sum4[0] = sum4[0].add(qtyScale);
             }
-            if(item.get(typeName).equals(engyZ)){
+            if (item.get(Constants.STR_TYPENAME).equals(Constants.STR_ENGYZ)) {
                 sum5[0] = sum5[0].add(qtyScale);
             }
-            returnList.put(item.get("energy_code_name").toString(),qtyScale);
+            returnList.put(item.get("energy_code_name").toString(), qtyScale);
         });
-        returnList.put("sum1",sum1[0]);
-        returnList.put("sum2",sum2[0]);
-        returnList.put("sum3",sum3[0]);
-        returnList.put("sum4",sum4[0]);
-        returnList.put("sum5",sum5[0]);
+        returnList.put("sum1", sum1[0]);
+        returnList.put("sum2", sum2[0]);
+        returnList.put("sum3", sum3[0]);
+        returnList.put("sum4", sum4[0]);
+        returnList.put("sum5", sum5[0]);
         return returnList;
     }
 
+    /**
+     * @param dto
+     * @return List<Map < Object>>
+     * @author Liukuiyan
+     * @Date 上午 11:14:06 2023年6月29日, 0029
+     */
     public List<Map<String, Object>> getEngyBottomAnalys(GetDashBoardEnergyDTO dto) {
         List<Map<String, Object>> energyBoardView2 = baseMapper.getEngyBottomAnalys(dto);
         return energyBoardView2;
     }
-
+   /**
+    * @description TODO
+    * @author: Liukuiyan
+    * @date: 2023年6月29日, 0029 下午 12:16:46
+    * @param: dto
+    * @return: java.util.List<java.lang.Object>
+    * @throws:
+   */
     public List<Object> getEngyBottomRightAnalys(GetDashBoardEnergyDTO dto) {
         List<Map<String, Object>> energyBoardView2 = baseMapper.getEngyBottomAnalys(dto);
-        List<Object> returnList  = new ArrayList();
-        String typeName = "energy_code_name";
-        String countDate = "e_count_date";
-        String qty = "qty";
+        List<Object> returnList = new ArrayList();
         energyBoardView2.forEach(item -> {
             List data = new ArrayList();
-            data.add(item.get(countDate));
-            data.add(item.get(typeName));
-            data.add(item.get(qty).toString());
+            data.add(item.get(Constants.STR_COUNT_DATE));
+            data.add(item.get(Constants.STR_TYPENAME));
+            data.add(item.get(Constants.STR_QTY).toString());
             returnList.add(data);
         });
         return returnList;

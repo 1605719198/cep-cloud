@@ -9,7 +9,6 @@
             action=""
             :auto-upload="false"
             :on-change='handleChangeUpload'
-            :limit="3"
             :on-exceed="handleExceed"
             :show-file-list="false"
             list-type="picture">
@@ -17,7 +16,6 @@
           </el-upload>
         </template>
       </el-input>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
     </el-form-item>
     <el-form-item label="开户银行" prop="janBudget">
       <el-input v-model="form.janBudget" placeholder="请输入开户银行" />
@@ -264,7 +262,7 @@ export default {
             if(data.code == 500){
               this.$message.error("识别失败，未找到该服务");
             }else {
-              this.$message.success('识别结果为：'+JSON.stringify(data.forms_result[0].header));
+              this.$message.success('识别结果为：'+JSON.stringify(data.msg));
             }
           } else {
             this.$message.error('识别错误请重试')

@@ -25,18 +25,18 @@
         qty,e_count_date
     </sql>
     <select id="getEngyTopAnalys" resultType="java.util.Map">
-        select *
-        from v_energy_board_view1
-        where e_count_date = DATE_FORMAT(date_add(CURDATE(), interval -1 day),'%Y%m%d')
-        order by energy_type_name asc
+        SELECT *
+        FROM v_energy_board_view1
+        WHERE e_count_date = DATE_FORMAT(date_add(CURDATE(), interval -1 day),'%Y%m%d')
+        ORDER BY energy_type_name ASC
     </select>
     <select id="getEngyBottomAnalys" resultType="java.util.Map" parameterType="com.jlkj.energy.ee.dto.dashboardenergy.GetDashBoardEnergyDTO">
-        select *
-        from v_energy_board_view1
-        where DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ >= ]]> #{startTime}
-          and DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ <= ]]> #{endTime}
-          and energy_type_name = #{energyTypeName}
-        order by e_count_date asc
+        SELECT *
+        FROM v_energy_board_view1
+        WHERE DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ >= ]]> #{startTime}
+          AND DATE_FORMAT(e_count_date,'%Y-%m-%d') <![CDATA[ <= ]]> #{endTime}
+          AND energy_type_name = #{energyTypeName}
+        ORDER BY e_count_date ASC
     </select>
 
 </mapper>

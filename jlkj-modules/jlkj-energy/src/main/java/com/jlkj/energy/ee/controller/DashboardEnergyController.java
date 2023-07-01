@@ -1,11 +1,10 @@
 package com.jlkj.energy.ee.controller;
 
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.dashboardenergy.GetDashBoardEnergyDTO;
-import com.jlkj.energy.ee.service.impl.EnergyBoardView1ServiceImpl;
+import com.jlkj.energy.ee.service.EnergyBoardView1Service;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,19 +27,20 @@ import java.util.Map;
 public class DashboardEnergyController {
 
     @Autowired
-    EnergyBoardView1ServiceImpl energyBoardService;
+    EnergyBoardView1Service energyBoardService;
 
+    /**
+     * Description 能源看板数据查询
+     * @param dto
+     * @return Object
+     * @author 111191
+     * @Date 上午 11:01:45 2023年6月29日, 0029
+     */
     @Log(title = "能源看板", businessType = BusinessType.OTHER)
     @Transactional(readOnly = true)
     @RequestMapping(value = "/getEngyTopAnalys", method = RequestMethod.GET)
     public Object getEngyTopAnalys(GetDashBoardEnergyDTO dto) {
-        Map<String, Object> engyTop = energyBoardService.getEngyTopAnalys();
-        List<Map<String, Object>> engyBottom = energyBoardService.getEngyBottomAnalys(dto);
-        List<Object> engyBottomRight = energyBoardService.getEngyBottomRightAnalys(dto);
-        Map<String, Object> res = new HashMap<>(1);
-        res.put("engyTop", engyTop);
-        res.put("engyBottom", engyBottom);
-        res.put("engyBottomRight", engyBottomRight);
+        Map<String, Object> res = energyBoardService.getEngyTopAnalys(dto);
         return AjaxResult.success(res);
     }
 }
