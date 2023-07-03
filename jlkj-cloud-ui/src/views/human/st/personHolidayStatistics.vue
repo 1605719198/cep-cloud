@@ -11,9 +11,9 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="norOndutyBegin">
+      <el-form-item label="日期区间" prop="startDate">
         <el-date-picker
-          v-model="queryParams.norOndutyBegin"
+          v-model="queryParams.startDate"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="~"
@@ -23,10 +23,20 @@
         >
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="处理情况" prop="disposeId">
-        <el-select v-model="queryParams.disposeId">
+      <el-form-item label="请假类别" prop="leaTypeId">
+        <el-select v-model="queryParams.leaTypeId">
           <el-option
-            v-for="dict in attendenceOptions.DisposeStatus"
+            v-for="dict in attendenceOptions.HD001"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="审批状态" prop="status">
+        <el-select v-model="queryParams.status">
+          <el-option
+            v-for="dict in attendenceOptions.FlowStatus"
             :key="dict.dicNo"
             :label="dict.dicName"
             :value="dict.dicNo"
@@ -41,33 +51,42 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['human:attendanceAbnormalStatistics:export']"
+          v-hasPermi="['human:personHolidayStatistics:export']"
         >导出</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="attendanceAbnormalStatisticsList" >
+    <el-table v-loading="loading" :data="personHolidayStatisticsList" >
       <el-table-column label="序号" align="center" prop="num" width="60"/>
-      <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="工号" align="center" prop="empNo" />
-      <el-table-column label="岗位名称" align="center" prop="postName" />
-      <el-table-column label="生产异常原因" align="center" prop="excReaId" >
+      <el-table-column label="姓名" align="center" prop="empName" />
+      <el-table-column label="岗位" align="center" prop="postname" />
+      <el-table-column label="请假类别" align="center" prop="leaTypeId" >
         <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.AbnormalReason" :value="scope.row.excReaId"/>
+          <dict-tag-human :options="attendenceOptions.HD001" :value="scope.row.leaTypeId"/>
         </template>
       </el-table-column>
-      <el-table-column label="出勤证明原因细分" align="center" prop="proveReason" >
+      <el-table-column label="原因" align="center" prop="description" />
+      <el-table-column label="请假批示状态" align="center" prop="status" >
         <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
+          <dict-tag-human :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="正常出勤时段开始" align="center" prop="norOndutyBegin" />
-      <el-table-column label="正常出勤时段结束" align="center" prop="norOndutyEnd" />
-      <el-table-column label="实际出勤时段开始" align="center" prop="slotCardOnduty" />
-      <el-table-column label="实际出勤时段结束" align="center" prop="slotCardOffduty" />
-      <el-table-column label="处理情况" align="center" prop="disposeId" >
-        <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.DisposeStatus" :value="scope.row.disposeId"/>
+      <el-table-column label="请假天数" align="center" prop="leaveShifts" />
+      <el-table-column label="请假开始时间" align="center" prop="startDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="请假结束时间" align="center" prop="endDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="输入人" align="center" prop="creator" />
+      <el-table-column label="输入日期" align="center" prop="createDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -83,14 +102,13 @@
 </template>
 
 <script>
-import { listAttendanceAbnormalStatistics, } from "@/api/human/st/attendanceAbnormalStatistics";
+import { listPersonHolidayStatistics, } from "@/api/human/st/personHolidayStatistics";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
-import {isEmpty} from "element-ui";
 
 export default {
-  name: "AttendanceAbnormalStatistics",
+  name: "PersonHolidayStatistics",
   components: { DictTagHuman },
   data() {
     return {
@@ -101,7 +119,7 @@ export default {
       //绩效选单类型查询
       attendenceOptionType:{
         id:'',
-        optionsType:['DisposeStatus','AbnormalReason','ProveReason']
+        optionsType:['HD001','FlowStatus']
       },
       // 遮罩层
       loading: false,
@@ -115,8 +133,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 出勤异常统计表格数据
-      attendanceAbnormalStatisticsList: [],
+      // 员工请假统计表格数据
+      personHolidayStatisticsList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -126,8 +144,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        disposeId: '',
-        norOndutyBegin: null,
+        leaTypeId: '',
+        status: '',
+        startDate: null,
         date1:'',
         date2:'',
       },
@@ -150,28 +169,11 @@ export default {
         }
       )
     },
-    //查询绩效选单
-    getDisc(){
-      getAttendenceOptions(this.attendenceOptionType).then(response=> {
-        this.attendenceOptions=response.data;
-      })
-    },
-    /** 日期查询范围变更*/
-    dateFormat(val){
-      if(val==null){
-        this.queryParams.date1=null
-        this.queryParams.date2=null
-        this.queryParams.norOndutyBegin=null
-        return
-      }
-      this.queryParams.date1 =val[0];
-      this.queryParams.date2 =val[1];
-    },
-    /** 查询出勤异常统计列表 */
+    /** 查询员工请假统计列表 */
     getList() {
       this.loading = true;
-      listAttendanceAbnormalStatistics(this.queryParams).then(response => {
-        this.attendanceAbnormalStatisticsList = response.rows;
+      listPersonHolidayStatistics(this.queryParams).then(response => {
+        this.personHolidayStatisticsList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -181,36 +183,49 @@ export default {
       this.form = {
         id: null,
         compId: null,
+        empNo: null,
         empId: null,
         empName: null,
-        empNo: null,
-        postId: null,
-        postName: null,
-        turnTypeId: null,
-        turnTypeName: null,
-        classId: null,
-        className: null,
-        excReaId: null,
-        proveReaId: null,
-        proveReason: null,
-        status: null,
-        norOndutyBegin: null,
-        norOndutyEnd: null,
-        slotCardOnduty: null,
-        slotCardOffduty: null,
+        postname: null,
+        postid: null,
+        orgParentId: null,
+        orgId: null,
+        leaTypeId: null,
+        isContainHoliday: null,
         description: null,
-        chiefempnoId: null,
-        chiefempnoNo: null,
-        chiefempnoName: null,
-        chiefempnoPostId: null,
-        chiefempnoPostname: null,
-        disposeId: null,
-        auditType: null,
+        remainingDays: null,
+        monthDays: null,
+        monthHours: null,
+        yearDays: null,
+        yearHours: null,
+        status: null,
+        statusCancel: null,
+        leaveHours: null,
+        leaveShifts: null,
+        startDate: null,
+        endDate: null,
         creator: null,
         creatorId: null,
         createDate: null
       };
       this.resetForm("form");
+    },
+    /** 日期查询范围变更*/
+    dateFormat(val){
+      if(val==null){
+        this.queryParams.date1=null
+        this.queryParams.date2=null
+        this.queryParams.startDate=null
+        return
+      }
+      this.queryParams.date1 =val[0];
+      this.queryParams.date2 =val[1];
+    },
+    //查询绩效选单
+    getDisc(){
+      getAttendenceOptions(this.attendenceOptionType).then(response=> {
+        this.attendenceOptions=response.data;
+      })
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -219,7 +234,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出勤异常表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&disposeId='+this.queryParams.disposeId, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:员工请假统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&status='+this.queryParams.status+'&leaTypeId='+this.queryParams.leaTypeId, '_blank');
     }
   }
 };

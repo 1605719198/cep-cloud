@@ -117,6 +117,10 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     @Excel(name = "处理情况")
     private String disposeId;
 
+    /** 序号 */
+    @Excel(name = "序号")
+    private String num;
+
     /** 审核类型 */
     private String auditType;
 
@@ -417,11 +421,21 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     {
         return createDate;
     }
+    public void setNum(String num)
+    {
+        this.num = num;
+    }
+
+    public String getNum()
+    {
+        return num;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+                .append("num", getNum())
             .append("compId", getCompId())
             .append("empId", getEmpId())
             .append("empName", getEmpName())

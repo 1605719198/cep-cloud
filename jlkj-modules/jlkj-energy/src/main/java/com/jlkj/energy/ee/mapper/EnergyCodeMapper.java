@@ -2,6 +2,8 @@ package com.jlkj.energy.ee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.energy.ee.domain.EnergyCode;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author 265675
@@ -9,6 +11,8 @@ import com.jlkj.energy.ee.domain.EnergyCode;
 * @createDate 2022-04-25 13:13:14
 * @domain com.jlkj.energy.ee.domain.EnergyCode
 */
+@Repository
+@Mapper
 public interface EnergyCodeMapper extends BaseMapper<EnergyCode> {
 
 }

@@ -45,7 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectAttendanceAbnormalStatisticsList" parameterType="AttendanceAbnormalStatistics" resultMap="AttendanceAbnormalStatisticsResult">
-        <include refid="selectAttendanceAbnormalStatisticsVo"/>
+        SELECT row_number() over(ORDER BY nor_onduty_begin) AS num,emp_no,emp_name,post_name,nor_onduty_begin,nor_onduty_end,slot_card_onduty,
+               slot_card_offduty,exc_rea_id,prove_reason,dispose_id FROM human_hd_attendance_abnormal
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="disposeId != null  and disposeId != ''"> AND dispose_id = #{disposeId}</if>

@@ -21,7 +21,7 @@ export function updateInfo(data) {
 // 删除
 export function delInfo(ids) {
   return request({
-    url: `/energy/energy/code/delete?id=${ids}`,
+    url: `/energy/energy/code/delete/` + ids,
     method: 'delete'
   })
 }
@@ -37,7 +37,7 @@ export const queryInfo = (data) => request({
 // 修改时查询数据
 export function getInfo(id) {
   return request({
-    url: `/energy/energy/code/queryById?id=${id}`,
+    url: `/energy/energy/code/queryById/` + id,
     method: 'get'
   })
 }
@@ -45,7 +45,7 @@ export function getInfo(id) {
 // 查询能源代码选单
 export function queryEngyIds(data) {
   return request({
-    url: '/energy/energy/code/queryDropDownMenu',
+    url: '/energy/energy/code/queryDropDownMenuZh',
     method: 'get',
     data: data
   })
