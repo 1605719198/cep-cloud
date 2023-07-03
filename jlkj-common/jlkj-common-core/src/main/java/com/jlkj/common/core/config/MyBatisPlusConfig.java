@@ -87,6 +87,10 @@ public class MyBatisPlusConfig {
                 this.strictInsertFill(metaObject, Constants.CREATE_TIME, Date.class, new Date(System.currentTimeMillis()));
                 this.strictInsertFill(metaObject, Constants.CREATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
             }
+            this.setFieldValByName("createDate", new Date(), metaObject);
+            this.setFieldValByName("updateDate", new Date(), metaObject);
+            this.setFieldValByName("createNo", SecurityContextHolder.getUserName(), metaObject);
+            this.setFieldValByName("createId", SecurityContextHolder.getUserName(), metaObject);
         }
 
         @Override
@@ -95,6 +99,9 @@ public class MyBatisPlusConfig {
                 this.setFieldValByName( Constants.UPDATE_TIME,  new Date(System.currentTimeMillis()),metaObject);
                 this.setFieldValByName( Constants.UPDATE_BY,  StrUtil.nullToDefault(getUserName(), ""),metaObject);
             }
+            this.setFieldValByName("updateTime", new Date(), metaObject);
+            this.setFieldValByName("updateDate", new Date(), metaObject);
+            this.setFieldValByName("createDate", new Date(), metaObject);
         }
 
         /**
