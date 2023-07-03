@@ -9,5 +9,22 @@ import com.jlkj.energy.ee.domain.EnergyCode;
 * @createDate 2022-04-25 13:13:14
 */
 public interface EnergyCodeService extends IService<EnergyCode> {
-
+    /**
+     * @description 新增能源项目基本资料档
+     * @author: 111191
+     * @date: 2023年6月30日, 0030 上午 11:25:59
+     * @param: energyCode
+     * @return: int 操作数据笔数 大于0：成功；小于等于0：失败
+     * @throws:
+    */
+    int addEnergyCode(EnergyCode energyCode);
+    /**
+     * @description 修改能源项目基本资料档
+     * @author: 111191
+     * @date: 2023年6月30日, 0030 下午 02:23:50
+     * @param: energyCodeDTO
+     * @return: int
+     * @throws:
+    */
+    int updateEnergyCode(EnergyCode energyCode);
 }
