@@ -143,15 +143,15 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="能源代码" prop="engyId">
-              <el-input v-model="form.engyId" :disabled="engyInput"/>
+              <el-input v-model="form.engyId" :disabled="engyInput" maxlength="10"/>
             </el-form-item>
             <el-form-item label="能源名称" prop="engyName">
-              <el-input v-model="form.engyName" :disabled="engyInput"/>
+              <el-input v-model="form.engyName" :disabled="engyInput" maxlength="15"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="能源缩写" prop="engyAc">
-              <el-input v-model="form.engyAc"/>
+            <el-form-item label="能源缩写" prop="engyAc" >
+              <el-input v-model="form.engyAc" maxlength="10"/>
             </el-form-item>
             <el-form-item label="计量单位" prop="engyUnit">
               <el-select v-model="form.engyUnit" :popper-append-to-body="false" placeholder="请选择"
@@ -164,7 +164,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="热值单位" prop="calUnit">
-              <el-input v-model="form.calUnit"/>
+              <el-input v-model="form.calUnit" maxlength="10"/>
             </el-form-item>
             <el-form-item label="能源种类" prop="engyType">
               <el-select v-model="form.engyType" :popper-append-to-body="false" placeholder="请选择"
@@ -177,7 +177,7 @@
           </el-col>
           <el-col :span="12">
               <el-form-item label="热值系数" prop="calValue">
-                <el-input-number v-model="form.calValue"  :precision="2"/>
+                <el-input-number v-model="form.calValue"  :precision="2" maxlength="10"/>
               </el-form-item>
             <el-form-item label="来源方式" prop="srcType">
               <el-radio-group v-model="form.srcType">
@@ -363,7 +363,7 @@ export default {
       const id = row.id || this.ids
       this.engyInput = true;
       getInfo(id).then(response => {
-        this.form = response.data[0];
+        this.form = response.data;
         this.open = true;
         this.title = "修改能源代码";
       });
@@ -371,7 +371,6 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      console.log("ids:" + ids);
       this.$confirm('此操作将永久删除数据记录，是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
