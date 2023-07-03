@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.PersonHolidayStatisticsMapper">
+    
+    <resultMap type="PersonHolidayStatistics" id="PersonHolidayStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="postname"    column="postname"    />
+        <result property="postid"    column="postid"    />
+        <result property="orgParentId"    column="org_parent_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="leaTypeId"    column="lea_type_id"    />
+        <result property="isContainHoliday"    column="is_contain_holiday"    />
+        <result property="description"    column="description"    />
+        <result property="remainingDays"    column="remaining_days"    />
+        <result property="monthDays"    column="month_days"    />
+        <result property="monthHours"    column="month_hours"    />
+        <result property="yearDays"    column="year_days"    />
+        <result property="yearHours"    column="year_hours"    />
+        <result property="status"    column="status"    />
+        <result property="statusCancel"    column="status_cancel"    />
+        <result property="leaveHours"    column="leave_hours"    />
+        <result property="leaveShifts"    column="leave_shifts"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectPersonHolidayStatisticsVo">
+        SELECT id, comp_id, emp_no, emp_id, emp_name, postname, postid, org_parent_id, org_id, lea_type_id, is_contain_holiday, description, remaining_days, month_days, month_hours, year_days, year_hours, status, status_cancel, leave_hours, leave_shifts, start_date, end_date, creator, creator_id, create_date FROM human_hd_person_holiday
+    </sql>
+
+    <select id="selectPersonHolidayStatisticsList" parameterType="PersonHolidayStatistics" resultMap="PersonHolidayStatisticsResult">
+        <include refid="selectPersonHolidayStatisticsVo"/>
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="leaTypeId != null  and leaTypeId != ''"> AND lea_type_id = #{leaTypeId}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+            <if test="date1 != null ">AND start_date &gt;= #{date1} </if>
+            <if test="date2 != null ">AND start_date &lt;= #{date2} </if>
+        </where>
+        ORDER BY start_date
+    </select>
+    
+    <select id="selectPersonHolidayStatisticsById" parameterType="String" resultMap="PersonHolidayStatisticsResult">
+        <include refid="selectPersonHolidayStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertPersonHolidayStatistics" parameterType="PersonHolidayStatistics">
+        INSERT INTO human_hd_person_holiday
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="postname != null">postname,</if>
+            <if test="postid != null">postid,</if>
+            <if test="orgParentId != null">org_parent_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="leaTypeId != null">lea_type_id,</if>
+            <if test="isContainHoliday != null">is_contain_holiday,</if>
+            <if test="description != null">description,</if>
+            <if test="remainingDays != null">remaining_days,</if>
+            <if test="monthDays != null">month_days,</if>
+            <if test="monthHours != null">month_hours,</if>
+            <if test="yearDays != null">year_days,</if>
+            <if test="yearHours != null">year_hours,</if>
+            <if test="status != null">status,</if>
+            <if test="statusCancel != null">status_cancel,</if>
+            <if test="leaveHours != null">leave_hours,</if>
+            <if test="leaveShifts != null">leave_shifts,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="postname != null">#{postname},</if>
+            <if test="postid != null">#{postid},</if>
+            <if test="orgParentId != null">#{orgParentId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="leaTypeId != null">#{leaTypeId},</if>
+            <if test="isContainHoliday != null">#{isContainHoliday},</if>
+            <if test="description != null">#{description},</if>
+            <if test="remainingDays != null">#{remainingDays},</if>
+            <if test="monthDays != null">#{monthDays},</if>
+            <if test="monthHours != null">#{monthHours},</if>
+            <if test="yearDays != null">#{yearDays},</if>
+            <if test="yearHours != null">#{yearHours},</if>
+            <if test="status != null">#{status},</if>
+            <if test="statusCancel != null">#{statusCancel},</if>
+            <if test="leaveHours != null">#{leaveHours},</if>
+            <if test="leaveShifts != null">#{leaveShifts},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonHolidayStatistics" parameterType="PersonHolidayStatistics">
+        UPDATE human_hd_person_holiday
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="postname != null">postname = #{postname},</if>
+            <if test="postid != null">postid = #{postid},</if>
+            <if test="orgParentId != null">org_parent_id = #{orgParentId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="leaTypeId != null">lea_type_id = #{leaTypeId},</if>
+            <if test="isContainHoliday != null">is_contain_holiday = #{isContainHoliday},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="remainingDays != null">remaining_days = #{remainingDays},</if>
+            <if test="monthDays != null">month_days = #{monthDays},</if>
+            <if test="monthHours != null">month_hours = #{monthHours},</if>
+            <if test="yearDays != null">year_days = #{yearDays},</if>
+            <if test="yearHours != null">year_hours = #{yearHours},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="statusCancel != null">status_cancel = #{statusCancel},</if>
+            <if test="leaveHours != null">leave_hours = #{leaveHours},</if>
+            <if test="leaveShifts != null">leave_shifts = #{leaveShifts},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deletePersonHolidayStatisticsById" parameterType="String">
+        DELETE FROM human_hd_person_holiday WHERE id = #{id}
+    </delete>
+
+    <delete id="deletePersonHolidayStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_person_holiday WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

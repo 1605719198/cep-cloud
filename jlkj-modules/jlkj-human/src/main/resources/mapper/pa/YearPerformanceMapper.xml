@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectYearPerformanceList" parameterType="YearPerformance" resultMap="YearPerformanceResult">
-        SELECT status,id,dept,count(1) AS 'people',concat (round(count(1)/(select count(1) COUNT FROM human_pa_year_performance
+        SELECT status,id,dept,count(1) AS 'people',concat (round(count(1)/(SELECT count(1) COUNT FROM human_pa_year_performance
         <where>
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="dept != null  and dept != ''"> AND dept = #{dept}</if>
