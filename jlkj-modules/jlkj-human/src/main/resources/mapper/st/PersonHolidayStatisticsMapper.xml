@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectPersonHolidayStatisticsList" parameterType="PersonHolidayStatistics" resultMap="PersonHolidayStatisticsResult">
-        <include refid="selectPersonHolidayStatisticsVo"/>
+        SELECT row_number() over(ORDER BY start_date) AS num,emp_no,emp_name,postname,start_date,end_date,lea_type_id,description,status,leave_shifts,creator,create_date FROM human_hd_person_holiday
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="leaTypeId != null  and leaTypeId != ''"> AND lea_type_id = #{leaTypeId}</if>

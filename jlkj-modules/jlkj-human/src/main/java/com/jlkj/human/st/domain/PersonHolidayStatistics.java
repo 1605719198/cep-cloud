@@ -110,6 +110,10 @@ public class PersonHolidayStatistics extends BaseEntity
     @Excel(name = "输入人")
     private String creator;
 
+    /** 序号 */
+    @Excel(name = "序号")
+    private String num;
+
     /** 输入人ID */
     private String creatorId;
 
@@ -369,11 +373,21 @@ public class PersonHolidayStatistics extends BaseEntity
     {
         return createDate;
     }
+    public void setNum(String num)
+    {
+        this.num = num;
+    }
+
+    public String getNum()
+    {
+        return num;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+                .append("num", getNum())
             .append("compId", getCompId())
             .append("empNo", getEmpNo())
             .append("empId", getEmpId())

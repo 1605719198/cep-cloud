@@ -140,6 +140,10 @@ public class TravelStatistics extends BaseEntity
     /** 预留属性4 */
     private String resvAttr4;
 
+    /** 序号 */
+    @Excel(name = "序号")
+    private String num;
+
     public void setDate1(Date date1)
     {
         this.date1 = date1;
@@ -156,6 +160,16 @@ public class TravelStatistics extends BaseEntity
     public Date getDate2()
     {
         return date2;
+    }
+
+    public void setNum(String num)
+    {
+        this.num = num;
+    }
+
+    public String getNum()
+    {
+        return num;
     }
     public void setId(String id)
     {
@@ -472,6 +486,7 @@ public class TravelStatistics extends BaseEntity
                 .append("date2", getDate2())
             .append("travelNo", getTravelNo())
                 .append("travelAbroad", getTravelAbroad())
+                .append("num", getNum())
             .append("travelTpye", getTravelTpye())
             .append("travelReason", getTravelReason())
             .append("compId", getCompId())

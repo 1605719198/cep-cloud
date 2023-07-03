@@ -36,7 +36,7 @@
       <el-form-item label="审批状态" prop="status">
         <el-select v-model="queryParams.status">
           <el-option
-            v-for="dict in attendenceOptions.HolidayStatus"
+            v-for="dict in attendenceOptions.FlowStatus"
             :key="dict.dicNo"
             :label="dict.dicName"
             :value="dict.dicNo"
@@ -57,7 +57,7 @@
     </el-form>
 
     <el-table v-loading="loading" :data="personHolidayStatisticsList" >
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="序号" align="center" prop="num" width="60"/>
       <el-table-column label="工号" align="center" prop="empNo" />
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="岗位" align="center" prop="postname" />
@@ -69,7 +69,7 @@
       <el-table-column label="原因" align="center" prop="description" />
       <el-table-column label="请假批示状态" align="center" prop="status" >
         <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.HolidayStatus" :value="scope.row.status"/>
+          <dict-tag-human :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="请假天数" align="center" prop="leaveShifts" />
@@ -119,7 +119,7 @@ export default {
       //绩效选单类型查询
       attendenceOptionType:{
         id:'',
-        optionsType:['HD001','HolidayStatus']
+        optionsType:['HD001','FlowStatus']
       },
       // 遮罩层
       loading: false,

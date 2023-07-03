@@ -47,7 +47,7 @@
     </el-form>
 
     <el-table v-loading="loading" :data="travelStatisticsList" >
-      <el-table-column label="序号" align="center" prop="id" width="60"/>
+      <el-table-column label="序号" align="center" prop="num" width="60"/>
       <el-table-column label="工号" align="center" prop="empNo" />
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="部门名称" align="center" prop="deptName" />

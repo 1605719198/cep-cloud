@@ -11,9 +11,9 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="norOndutyBegin">
+      <el-form-item label="日期区间" prop="startDate">
         <el-date-picker
-          v-model="queryParams.norOndutyBegin"
+          v-model="queryParams.startDate"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="~"
@@ -23,10 +23,20 @@
         >
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="处理情况" prop="disposeId">
-        <el-select v-model="queryParams.disposeId">
+      <el-form-item label="加班类别" prop="overtimeTypeId">
+        <el-select v-model="queryParams.overtimeTypeId">
           <el-option
-            v-for="dict in attendenceOptions.DisposeStatus"
+            v-for="dict in attendenceOptions.OvertimeType"
+            :key="dict.dicNo"
+            :label="dict.dicName"
+            :value="dict.dicNo"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="审核状态" prop="status">
+        <el-select v-model="queryParams.status">
+          <el-option
+            v-for="dict in attendenceOptions.FlowStatus"
             :key="dict.dicNo"
             :label="dict.dicName"
             :value="dict.dicNo"
@@ -41,35 +51,45 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['human:attendanceAbnormalStatistics:export']"
+          v-hasPermi="['human:overtimeRecordStatistics:export']"
         >导出</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="attendanceAbnormalStatisticsList" >
+    <el-table v-loading="loading" :data="overtimeRecordStatisticsList" >
       <el-table-column label="序号" align="center" prop="num" width="60"/>
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="工号" align="center" prop="empNo" />
-      <el-table-column label="岗位名称" align="center" prop="postName" />
-      <el-table-column label="生产异常原因" align="center" prop="excReaId" >
-        <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.AbnormalReason" :value="scope.row.excReaId"/>
+      <el-table-column label="岗位" align="center" prop="postName" />
+      <el-table-column label="加班开始日期" align="center" prop="startDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="出勤证明原因细分" align="center" prop="proveReason" >
-        <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.ProveReason" :value="scope.row.proveReason"/>
+      <el-table-column label="加班结束日期" align="center" prop="endDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="正常出勤时段开始" align="center" prop="norOndutyBegin" />
-      <el-table-column label="正常出勤时段结束" align="center" prop="norOndutyEnd" />
-      <el-table-column label="实际出勤时段开始" align="center" prop="slotCardOnduty" />
-      <el-table-column label="实际出勤时段结束" align="center" prop="slotCardOffduty" />
-      <el-table-column label="处理情况" align="center" prop="disposeId" >
+      <el-table-column label="加班类别" align="center" prop="overtimeTypeId" >
         <template v-slot="scope">
-          <dict-tag-human :options="attendenceOptions.DisposeStatus" :value="scope.row.disposeId"/>
+          <dict-tag-human :options="attendenceOptions.OvertimeType" :value="scope.row.overtimeTypeId"/>
         </template>
       </el-table-column>
+      <el-table-column label="加班时数" align="center" prop="overtimeHours" />
+      <el-table-column label="审核状态" align="center" prop="status" >
+        <template v-slot="scope">
+          <dict-tag-human :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否有加班费" align="center" prop="resultlt" />
+      <el-table-column label="刷卡时间" align="center" prop="cardTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.cardTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="输入人" align="center" prop="creator" />
+      <el-table-column label="输入日期" align="center" prop="createDate" />
     </el-table>
 
     <pagination
@@ -83,14 +103,13 @@
 </template>
 
 <script>
-import { listAttendanceAbnormalStatistics, } from "@/api/human/st/attendanceAbnormalStatistics";
+import { listOvertimeRecordStatistics, } from "@/api/human/st/overtimeRecordStatistics";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
-import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
-import {isEmpty} from "element-ui";
+import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 
 export default {
-  name: "AttendanceAbnormalStatistics",
+  name: "OvertimeRecordStatistics",
   components: { DictTagHuman },
   data() {
     return {
@@ -101,7 +120,7 @@ export default {
       //绩效选单类型查询
       attendenceOptionType:{
         id:'',
-        optionsType:['DisposeStatus','AbnormalReason','ProveReason']
+        optionsType:['OvertimeType','FlowStatus']
       },
       // 遮罩层
       loading: false,
@@ -115,8 +134,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 出勤异常统计表格数据
-      attendanceAbnormalStatisticsList: [],
+      // 加班统计表格数据
+      overtimeRecordStatisticsList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -126,8 +145,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        disposeId: '',
-        norOndutyBegin: null,
+        startDate: null,
+        overtimeTypeId: '',
+        status: '',
         date1:'',
         date2:'',
       },
@@ -156,25 +176,25 @@ export default {
         this.attendenceOptions=response.data;
       })
     },
+    /** 查询加班统计列表 */
+    getList() {
+      this.loading = true;
+      listOvertimeRecordStatistics(this.queryParams).then(response => {
+        this.overtimeRecordStatisticsList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
     /** 日期查询范围变更*/
     dateFormat(val){
       if(val==null){
         this.queryParams.date1=null
         this.queryParams.date2=null
-        this.queryParams.norOndutyBegin=null
+        this.queryParams.startDate=null
         return
       }
       this.queryParams.date1 =val[0];
       this.queryParams.date2 =val[1];
-    },
-    /** 查询出勤异常统计列表 */
-    getList() {
-      this.loading = true;
-      listAttendanceAbnormalStatistics(this.queryParams).then(response => {
-        this.attendanceAbnormalStatisticsList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
     },
     // 表单重置
     reset() {
@@ -186,29 +206,25 @@ export default {
         empNo: null,
         postId: null,
         postName: null,
-        turnTypeId: null,
-        turnTypeName: null,
-        classId: null,
-        className: null,
-        excReaId: null,
-        proveReaId: null,
-        proveReason: null,
-        status: null,
-        norOndutyBegin: null,
-        norOndutyEnd: null,
-        slotCardOnduty: null,
-        slotCardOffduty: null,
+        startDate: null,
+        endDate: null,
+        overtimeTypeId: null,
+        overtimeReaId: null,
+        overtimeDays: null,
+        overtimeHours: null,
         description: null,
-        chiefempnoId: null,
-        chiefempnoNo: null,
-        chiefempnoName: null,
-        chiefempnoPostId: null,
-        chiefempnoPostname: null,
-        disposeId: null,
-        auditType: null,
+        status: null,
+        resultlt: null,
+        cardTime: null,
         creator: null,
         creatorId: null,
-        createDate: null
+        createDate: null,
+        disposeId: null,
+        resvAttr1: null,
+        resvAttr2: null,
+        resvAttr3: null,
+        resvAttr4: null,
+        resvAttr5: null
       };
       this.resetForm("form");
     },
@@ -219,7 +235,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:出勤异常表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&disposeId='+this.queryParams.disposeId, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:加班统计.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&status='+this.queryParams.status+'&overtimeTypeId='+this.queryParams.overtimeTypeId, '_blank');
     }
   }
 };

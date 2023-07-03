@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.OvertimeRecordStatisticsMapper">
+    
+    <resultMap type="OvertimeRecordStatistics" id="OvertimeRecordStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="overtimeTypeId"    column="overtime_type_id"    />
+        <result property="overtimeReaId"    column="overtime_rea_id"    />
+        <result property="overtimeDays"    column="overtime_days"    />
+        <result property="overtimeHours"    column="overtime_hours"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="resultlt"    column="resultlt"    />
+        <result property="cardTime"    column="card_time"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="disposeId"    column="dispose_id"    />
+        <result property="resvAttr1"    column="resv_attr1"    />
+        <result property="resvAttr2"    column="resv_attr2"    />
+        <result property="resvAttr3"    column="resv_attr3"    />
+        <result property="resvAttr4"    column="resv_attr4"    />
+        <result property="resvAttr5"    column="resv_attr5"    />
+    </resultMap>
+
+    <sql id="selectOvertimeRecordStatisticsVo">
+        SELECT id, comp_id, emp_id, emp_name, emp_no, post_id, post_name, start_date, end_date, overtime_type_id, overtime_rea_id, overtime_days, overtime_hours, description, status, resultlt, card_time, creator, creator_id, create_date, dispose_id, resv_attr1, resv_attr2, resv_attr3, resv_attr4, resv_attr5 FROM human_hd_overtime_record
+    </sql>
+
+    <select id="selectOvertimeRecordStatisticsList" parameterType="OvertimeRecordStatistics" resultMap="OvertimeRecordStatisticsResult">
+        SELECT row_number() over(ORDER BY start_date) AS num,emp_no,emp_name,post_name,start_date,end_date,overtime_hours,overtime_type_id,status,resultlt,card_time,creator,create_date FROM human_hd_overtime_record
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="overtimeTypeId != null  and overtimeTypeId != ''"> AND overtime_type_id = #{overtimeTypeId}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+            <if test="date1 != null ">AND start_date &gt;= #{date1} </if>
+            <if test="date2 != null ">AND start_date &lt;= #{date2} </if>
+        </where>
+        ORDER BY start_date
+    </select>
+    
+    <select id="selectOvertimeRecordStatisticsById" parameterType="String" resultMap="OvertimeRecordStatisticsResult">
+        <include refid="selectOvertimeRecordStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertOvertimeRecordStatistics" parameterType="OvertimeRecordStatistics">
+        INSERT INTO human_hd_overtime_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="overtimeTypeId != null">overtime_type_id,</if>
+            <if test="overtimeReaId != null">overtime_rea_id,</if>
+            <if test="overtimeDays != null">overtime_days,</if>
+            <if test="overtimeHours != null">overtime_hours,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="resultlt != null">resultlt,</if>
+            <if test="cardTime != null">card_time,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="disposeId != null">dispose_id,</if>
+            <if test="resvAttr1 != null">resv_attr1,</if>
+            <if test="resvAttr2 != null">resv_attr2,</if>
+            <if test="resvAttr3 != null">resv_attr3,</if>
+            <if test="resvAttr4 != null">resv_attr4,</if>
+            <if test="resvAttr5 != null">resv_attr5,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postName != null">#{postName},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="overtimeTypeId != null">#{overtimeTypeId},</if>
+            <if test="overtimeReaId != null">#{overtimeReaId},</if>
+            <if test="overtimeDays != null">#{overtimeDays},</if>
+            <if test="overtimeHours != null">#{overtimeHours},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="resultlt != null">#{resultlt},</if>
+            <if test="cardTime != null">#{cardTime},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="disposeId != null">#{disposeId},</if>
+            <if test="resvAttr1 != null">#{resvAttr1},</if>
+            <if test="resvAttr2 != null">#{resvAttr2},</if>
+            <if test="resvAttr3 != null">#{resvAttr3},</if>
+            <if test="resvAttr4 != null">#{resvAttr4},</if>
+            <if test="resvAttr5 != null">#{resvAttr5},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOvertimeRecordStatistics" parameterType="OvertimeRecordStatistics">
+        UPDATE human_hd_overtime_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="overtimeTypeId != null">overtime_type_id = #{overtimeTypeId},</if>
+            <if test="overtimeReaId != null">overtime_rea_id = #{overtimeReaId},</if>
+            <if test="overtimeDays != null">overtime_days = #{overtimeDays},</if>
+            <if test="overtimeHours != null">overtime_hours = #{overtimeHours},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="resultlt != null">resultlt = #{resultlt},</if>
+            <if test="cardTime != null">card_time = #{cardTime},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="disposeId != null">dispose_id = #{disposeId},</if>
+            <if test="resvAttr1 != null">resv_attr1 = #{resvAttr1},</if>
+            <if test="resvAttr2 != null">resv_attr2 = #{resvAttr2},</if>
+            <if test="resvAttr3 != null">resv_attr3 = #{resvAttr3},</if>
+            <if test="resvAttr4 != null">resv_attr4 = #{resvAttr4},</if>
+            <if test="resvAttr5 != null">resv_attr5 = #{resvAttr5},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOvertimeRecordStatisticsById" parameterType="String">
+        DELETE FROM human_hd_overtime_record WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteOvertimeRecordStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_overtime_record WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

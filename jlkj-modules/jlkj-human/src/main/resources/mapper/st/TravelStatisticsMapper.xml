@@ -46,7 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectTravelStatisticsList" parameterType="TravelStatistics" resultMap="TravelStatisticsResult">
-        <include refid="selectTravelStatisticsVo"/>
+        SELECT row_number() over(ORDER BY start_date) AS num,emp_no,emp_name,dept_name,start_date,end_date,travel_tpye,
+               travel_reason, travel_abroad,cost_center,bill_no,travel_no,status FROM human_hd_travel_application
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="status != null  and status != ''"> AND status = #{status}</if>

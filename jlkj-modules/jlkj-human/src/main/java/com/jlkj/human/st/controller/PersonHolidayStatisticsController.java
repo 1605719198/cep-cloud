@@ -66,7 +66,7 @@ public class PersonHolidayStatisticsController extends BaseController
      * 获取员工请假统计详细信息
      * @author jiangbingchen
      * @date 2023-07-03
-     * @param personHolidayStatistics
+     * @param id
      * @return
      */
     @RequiresPermissions("human:personHolidayStatistics:query")
@@ -110,7 +110,7 @@ public class PersonHolidayStatisticsController extends BaseController
      * 删除员工请假统计
      * @author jiangbingchen
      * @date 2023-07-03
-     * @param personHolidayStatistics
+     * @param ids
      * @return
      */
     @RequiresPermissions("human:personHolidayStatistics:remove")
