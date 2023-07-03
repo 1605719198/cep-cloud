@@ -8,9 +8,9 @@
                    placeholder="请选择能源代码"
                    style="width: 215px;">
           <el-option v-for="item in optionsEngyIdStart"
-                     :key="item"
-                     :label="item"
-                     :value="item">
+                     :key="item.key"
+                     :label="item.label"
+                     :value="item.value">
           </el-option>
         </el-select>
         ~
@@ -20,17 +20,14 @@
                    placeholder="请选择能源代码"
                    style="width: 215px;">
           <el-option v-for="item in optionsEngyIdEnd"
-                     :key="item"
-                     :label="item"
-                     :value="item">
+                     :key="item.key"
+                     :label="item.label"
+                     :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button v-hasPermi="['ee:energy:query']" type="primary" icon="el-icon-search" size="mini"
-                   @click="handleQuery">
-          搜索
-        </el-button>
+        <el-button v-hasPermi="['ee:energy:query']" type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索 </el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="handleEmpty">重置</el-button>
       </el-form-item>
     </el-form>
@@ -60,8 +57,8 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
-    <el-table v-loading="loading"
+    <el-table ref="tables"
+              v-loading="loading"
               height="67vh"
               stripe
               :data="tableData"
@@ -131,15 +128,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination background
-                :total="total"
-                :current-page="queryParams.pageNum"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="queryParams.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange">
-    </pagination>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
 
     <!-- 添加或修改能源代码对话框 -->
     <el-dialog :title="title" v-if="open" :visible.sync="open" width="700px" append-to-body>
@@ -259,12 +255,14 @@ export default {
       optionsEngyType: [],
       optionsSrcType: [],
       optionsAcctSys: [],
+      // 默认排序
+      defaultSort: {prop: 'engyId', order: 'engyAc'},
       // 弹出层标题
       title: "",
       // 查询参数
       queryParams: {
-        pageNum: 1.00,
-        pageSize: 20,
+        pageNum: 1,
+        pageSize: 10,
         engyIdStart: undefined,
         engyIdEnd: undefined,
       },
@@ -293,9 +291,9 @@ export default {
     //获取数据刷新页面
     getList() {
       queryInfo(this.queryParams).then(response => {
-        this.tableData = response.data.list
-        this.total = response.data.total
-        this.loading = false
+        this.tableData = response.rows;
+        this.total = response.total;
+        this.loading = false;
       })
     },
     // 多选框选中数据
@@ -344,16 +342,16 @@ export default {
     handleQuery() {
       this.loading = true
       queryInfo(this.queryParams).then(response => {
-        this.tableData = response.data.list
-        this.total = response.data.total
-        this.loading = false
+        this.tableData = response.rows;
+        this.total = response.total;
+        this.loading = false;
       })
     },
     // 清空
     handleEmpty() {
       this.queryParams = {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         engyIdStart: undefined,
         engyIdEnd: undefined,
       }
@@ -373,6 +371,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
+      console.log("ids:" + ids);
       this.$confirm('此操作将永久删除数据记录，是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

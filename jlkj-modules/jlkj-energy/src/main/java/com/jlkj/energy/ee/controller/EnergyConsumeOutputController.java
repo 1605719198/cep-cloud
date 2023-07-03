@@ -130,8 +130,7 @@ public class EnergyConsumeOutputController {
                         if (energyConsumeOutputDTO.getMessageInfo().length() > 2000) {
                             energyConsumeOutputDTO.getMessageInfo().substring(0,2000);
                         }
-                        String msg2 = "本月已关账";
-                        sendMessage(energyConsumeOutputDTO, msg2);
+                        sendMessage(energyConsumeOutputDTO, "本月已关账");
                     } else {
                         if (energyConsumeOutput.getProConQty().compareTo(new BigDecimal("0")) != 0){
                             transToIP(energyConsumeOutput);

@@ -1,10 +1,13 @@
 package com.jlkj.energy.ee.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.dto.energy.ee.EnergyCodeDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -46,7 +49,7 @@ public class EnergyCodeController extends BaseController {
     @Operation(summary = "新增能源代码资料")
     @PostMapping("/add")
     @RequiresPermissions("ee:energy:add")
-    public Object addEnergyCode(@Validated @RequestBody EnergyCode energyCode) {
+    public AjaxResult addEnergyCode(@Validated @RequestBody EnergyCode energyCode) {
         List<EnergyCode> list = energyCodeService.query().eq("engy_id", energyCode.getEngyId()).list();
         if (!list.isEmpty()) {
             return AjaxResult.error("您输入的能源代码系统中已存在，请重新输入！");
@@ -61,7 +64,7 @@ public class EnergyCodeController extends BaseController {
     @Operation(summary = "修改能源代码资料")
     @PostMapping("/update")
     @RequiresPermissions("ee:energy:update")
-    public Object updateEnergyCode(@Validated @RequestBody EnergyCode energyCode) {
+    public AjaxResult updateEnergyCode(@Validated @RequestBody EnergyCode energyCode) {
         return toAjax(energyCodeService.updateEnergyCode(energyCode));
     }
 
@@ -70,19 +73,10 @@ public class EnergyCodeController extends BaseController {
      */
     @Log(title = "删除能源代码资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除能源代码资料")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{ids}")
     @RequiresPermissions("ee:energy:delete")
-    public Object deleteEnergyCode(@RequestParam List<String> id) {
-        try {
-            boolean result = energyCodeService.removeBatchByIds(id);
-            if (result) {
-                return AjaxResult.success("删除成功");
-            } else {
-                return AjaxResult.error("删除失败，请重新提交");
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+    public AjaxResult deleteEnergyCode(@PathVariable String[] ids) {
+        return toAjax(energyCodeService.deleteEnergyCode(ids));
     }
 
     /**
@@ -91,39 +85,10 @@ public class EnergyCodeController extends BaseController {
     @Log(title = "能源代码资料查询与列表", businessType = BusinessType.OTHER)
     @Operation(summary = "能源代码资料查询与列表")
     @GetMapping("/query")
-    public Object queryEnergyCode(EnergyCodeDTO energyCodeDTO) {
-        try {
-            String engyIdStart = energyCodeDTO.getEngyIdStart();
-            String engyIdEnd = energyCodeDTO.getEngyIdEnd();
-            Long pageNum = energyCodeDTO.getPageNum();
-            Long pageSize = energyCodeDTO.getPageSize();
-            String[] solidLiquid = {"G000", "Y000"};
-            LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.notIn(EnergyCode::getEngyType, solidLiquid)
-                    .orderByAsc(EnergyCode::getEngyId);
-            if (StringUtils.isNotBlank(engyIdStart) && StringUtils.isNotBlank(engyIdEnd)) {
-                queryWrapper.between(EnergyCode::getEngyId, engyIdStart, engyIdEnd);
-            } else if (StringUtils.isNotBlank(engyIdStart)) {
-                queryWrapper.eq(EnergyCode::getEngyId, engyIdStart);
-            } else if (StringUtils.isNotBlank(engyIdEnd)) {
-                queryWrapper.eq(EnergyCode::getEngyId, engyIdEnd);
-            }
-            Page<EnergyCode> page = energyCodeService.page(new Page<>(pageNum, pageSize), queryWrapper);
-            //总记录数
-            long total = page.getTotal();
-            //数据list集合
-            List<EnergyCode> records = page.getRecords();
-            Map<String, Object> dataMap = new HashMap<>(16);
-            dataMap.put("total", total);
-            dataMap.put("list", records);
-            if (records.isEmpty()) {
-                return AjaxResult.success("查无资料", dataMap);
-            } else {
-                return AjaxResult.success("查询成功！", dataMap);
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+    public TableDataInfo queryEnergyCode(EnergyCodeDTO energyCodeDTO) {
+        startPage();
+        List<EnergyCode> list = energyCodeService.queryEnergyCode(energyCodeDTO);
+        return getDataTable(list);
     }
 
     /**
@@ -194,14 +159,17 @@ public class EnergyCodeController extends BaseController {
         queryWrapper.notIn(EnergyCode::getEngyType, solidLiquid)
                 .orderByAsc(EnergyCode::getEngyId);
         List<EnergyCode> list = energyCodeService.list(queryWrapper);
+        JSONArray array = new JSONArray();
+
         List<Map<String, String>> list1 = new ArrayList<>();
         for (EnergyCode energyCode : list) {
-            Map<String, String> param = new HashMap<>(1);
-            param.put("EngyId", energyCode.getEngyId());
-            param.put("EngyName", energyCode.getEngyName());
-            list1.add(param);
+            JSONObject json = new JSONObject();
+            json.put("key", energyCode.getEngyId());
+            json.put("value", energyCode.getEngyId());
+            json.put("label", energyCode.getEngyName());
+            array.add(json);
         }
-        return AjaxResult.success(list1);
+        return AjaxResult.success(array);
     }
 
     /**
