@@ -1,5 +1,6 @@
 package com.jlkj.energy.ee.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.common.dto.energy.ee.EnergyCodeDTO;
 import com.jlkj.energy.ee.domain.EnergyCode;
@@ -46,9 +47,43 @@ public interface EnergyCodeService extends IService<EnergyCode> {
      * @description 分页查询
      * @author: 111191
      * @date: 2023年7月3日, 0003 上午 09:48:18
-     * @param: energyCode
+     * @param: energyCode 能源代码
      * @return: java.util.List<com.jlkj.energy.ee.domain.EnergyCode>
-     * @throws:
      */
     List<EnergyCode> queryEnergyCode(EnergyCodeDTO energyCodeDTO);
+
+    /**
+     * @description 删除能源代码资料(mq)
+     * @author: 111191
+     * @date: 2023年7月3日, 0003 下午 12:25:50
+     * @param: engyId 能源代码ID
+     * @return: int 删除笔数（物理删除）
+     */
+    int removeEnergyCode(String engyId);
+
+    /**
+     * @description 根据能源ID单笔删除
+     * @author: 111191
+     * @date: 2023年7月3日, 0003 下午 12:32:31
+     * @param: id 能源代码ID
+     * @return: int 删除笔数
+     */
+    EnergyCode queryEnergyCodeById(String id);
+    /**
+     * @description 查询能源代码下拉选单（el-Select)
+     * @author: 111191
+     * @date: 2023年7月3日, 0003 下午 12:37:03
+     * @param: 无
+     * @return: JSONArray 选单所需的绑定数据
+    */
+    JSONArray queryDropDownMenu();
+    /**
+     * @description 查询能源代码下拉选单(中文label)
+     * @author: 111191
+     * @date: 2023年7月3日, 0003 下午 12:45:51
+     * @param:
+     * @return: com.alibaba.fastjson.JSONArray
+     * @throws:
+    */
+    JSONArray queryDropDownMenuZh();
 }
