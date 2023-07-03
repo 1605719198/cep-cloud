@@ -92,8 +92,8 @@ public class MyBatisPlusConfig {
         @Override
         public void updateFill(MetaObject metaObject) {
             if (metaObject.getOriginalObject() instanceof BaseEntity) {
-                this.strictUpdateFill(metaObject, Constants.UPDATE_TIME, Date.class, new Date(System.currentTimeMillis()));
-                this.strictUpdateFill(metaObject, Constants.UPDATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
+                this.setFieldValByName( Constants.UPDATE_TIME,  new Date(System.currentTimeMillis()),metaObject);
+                this.setFieldValByName( Constants.UPDATE_BY,  StrUtil.nullToDefault(getUserName(), ""),metaObject);
             }
         }
 
