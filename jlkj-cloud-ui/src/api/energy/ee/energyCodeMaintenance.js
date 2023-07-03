@@ -37,7 +37,7 @@ export const queryInfo = (data) => request({
 // 修改时查询数据
 export function getInfo(id) {
   return request({
-    url: `/energy/energy/code/queryById?id=${id}`,
+    url: `/energy/energy/code/queryById/` + id,
     method: 'get'
   })
 }
