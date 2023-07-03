@@ -81,7 +81,6 @@ public class MyBatisPlusConfig {
 
     @Slf4j
     public static class MyMetaObjectHandler implements MetaObjectHandler {
-
         @Override
         public void insertFill(MetaObject metaObject) {
             if (metaObject.getOriginalObject() instanceof BaseEntity) {
