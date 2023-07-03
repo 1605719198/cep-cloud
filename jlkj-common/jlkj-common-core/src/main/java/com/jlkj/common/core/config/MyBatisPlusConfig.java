@@ -91,7 +91,6 @@ public class MyBatisPlusConfig {
 
         @Override
         public void updateFill(MetaObject metaObject) {
-            System.out.println("自动注入,执行insertFill");
             if (metaObject.getOriginalObject() instanceof BaseEntity) {
                 this.strictUpdateFill(metaObject, Constants.UPDATE_TIME, Date.class, new Date(System.currentTimeMillis()));
                 this.strictUpdateFill(metaObject, Constants.UPDATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
