@@ -42,17 +42,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSalaryProjectBasisList" parameterType="SalaryProjectBasis" resultMap="SalaryProjectBasisResult">
         <include refid="selectSalaryProjectBasisVo"/>
-        where pay_type != 1
+        WHERE pay_type != 1
     </select>
 
     <select id="selectSalaryProjectBasisByParentid" parameterType="Long" resultMap="BasisOptions">
         <include refid="selectSalaryProjectBasisVo"/>
-        where parentid = #{parentid}
+        WHERE parentid = #{parentid}
     </select>
 
     <select id="selectSalaryProjectBasisById" parameterType="Long" resultMap="SalaryProjectBasisResult">
         <include refid="selectSalaryProjectBasisVo"/>
-        where id = #{id}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertSalaryProjectBasis" parameterType="SalaryProjectBasis">
@@ -129,15 +129,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
         </trim>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteSalaryProjectBasisById" parameterType="Long">
-        DELETE FROM human_hs_salary_project_basis where id = #{id}
+        DELETE FROM human_hs_salary_project_basis WHERE id = #{id}
     </delete>
 
     <delete id="deleteSalaryProjectBasisByIds" parameterType="String">
-        DELETE FROM human_hs_salary_project_basis where id in
+        DELETE FROM human_hs_salary_project_basis WHERE id IN
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -145,6 +145,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSalaryByParentid" parameterType="Long" resultMap="BasisOptions">
         <include refid="selectSalaryProjectBasisVo"/>
-        where parentid = #{parentid}
+        WHERE parentid = #{parentid}
     </select>
 </mapper>
