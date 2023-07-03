@@ -1,7 +1,6 @@
 package com.jlkj.energy.ee.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -97,19 +96,8 @@ public class EnergyCodeController extends BaseController {
     @Log(title = "删除能源代码资料(mq)", businessType = BusinessType.DELETE)
     @Operation(summary = "删除能源代码资料(mq)")
     @DeleteMapping("/deleteErp")
-    public Object deleteEnergyCode(@RequestParam String engyId) {
-        try {
-            LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(EnergyCode::getEngyId, engyId);
-            boolean result = energyCodeService.remove(queryWrapper);
-            if (result) {
-                return AjaxResult.success("删除成功");
-            } else {
-                return AjaxResult.error("删除失败，请重新提交");
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+    public AjaxResult deleteEnergyCode(@RequestParam String engyId) {
+        return toAjax(energyCodeService.removeEnergyCode(engyId));
     }
 
 
@@ -118,14 +106,9 @@ public class EnergyCodeController extends BaseController {
      */
     @Log(title = "根据Id查询能源代码", businessType = BusinessType.OTHER)
     @Operation(summary = "根据Id查询能源代码")
-    @GetMapping("/queryById")
-    public Object queryEnergyCodeById(@RequestParam String id) {
-        try {
-            List<EnergyCode> list = energyCodeService.query().eq("id", id).list();
-            return AjaxResult.success("查询成功", list);
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+    @GetMapping("/queryById/{id}")
+    public AjaxResult queryEnergyCodeById(@PathVariable String id) {
+        return AjaxResult.success(energyCodeService.queryEnergyCodeById(id));
     }
 
     /**
@@ -135,16 +118,8 @@ public class EnergyCodeController extends BaseController {
     @Operation(summary = "查询能源代码下拉选单")
     @GetMapping("/queryDropDownMenu")
     public Object queryDropDownMenu() {
-        String[] solidLiquid = {"G000", "Y000"};
-        LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.notIn(EnergyCode::getEngyType, solidLiquid)
-                .orderByAsc(EnergyCode::getEngyId);
-        List<EnergyCode> list = energyCodeService.list(queryWrapper);
-        List<String> list1 = new ArrayList<>();
-        for (EnergyCode energyCode : list) {
-            list1.add(energyCode.getEngyId());
-        }
-        return AjaxResult.success(list1);
+        JSONArray arrays = energyCodeService.queryDropDownMenu();
+        return AjaxResult.success(arrays);
     }
 
     /**
@@ -154,22 +129,8 @@ public class EnergyCodeController extends BaseController {
     @Operation(summary = "查询能源代码下拉选单")
     @GetMapping("/queryDropDownMenuZh")
     public Object queryDropDownMenuZh() {
-        String[] solidLiquid = {"G000", "Y000"};
-        LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.notIn(EnergyCode::getEngyType, solidLiquid)
-                .orderByAsc(EnergyCode::getEngyId);
-        List<EnergyCode> list = energyCodeService.list(queryWrapper);
-        JSONArray array = new JSONArray();
-
-        List<Map<String, String>> list1 = new ArrayList<>();
-        for (EnergyCode energyCode : list) {
-            JSONObject json = new JSONObject();
-            json.put("key", energyCode.getEngyId());
-            json.put("value", energyCode.getEngyId());
-            json.put("label", energyCode.getEngyName());
-            array.add(json);
-        }
-        return AjaxResult.success(array);
+        JSONArray arrays = energyCodeService.queryDropDownMenuZh();
+        return AjaxResult.success(arrays);
     }
 
     /**
