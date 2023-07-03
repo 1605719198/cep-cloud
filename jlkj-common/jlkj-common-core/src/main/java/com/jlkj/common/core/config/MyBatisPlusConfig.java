@@ -1,21 +1,29 @@
 package com.jlkj.common.core.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
+import com.jlkj.common.core.constant.Constants;
+import com.jlkj.common.core.context.SecurityContextHolder;
+import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Mybatis Plus 配置
+ *
  * @author XIN
  * @date 2022/4/27 - 9:39
  */
-@EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
 public class MyBatisPlusConfig {
 
@@ -33,6 +41,7 @@ public class MyBatisPlusConfig {
 
     /**
      * 分页插件
+     *
      * @return
      */
     public PaginationInnerInterceptor paginationInnerInterceptor() {
@@ -46,6 +55,7 @@ public class MyBatisPlusConfig {
 
     /**
      * 乐观锁插件
+     *
      * @return
      */
     public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
@@ -54,9 +64,59 @@ public class MyBatisPlusConfig {
 
     /**
      * 如果是对全表的删除或更新操作，就会终止该操作
+     *
      * @return
      */
     public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
-        return  new BlockAttackInnerInterceptor();
+        return new BlockAttackInnerInterceptor();
+    }
+
+    /**
+     * 自动填充功能
+     */
+    @Bean
+    public MyMetaObjectHandler metaObjectHandler() {
+        return new MyMetaObjectHandler();
+    }
+
+    @Slf4j
+    public static class MyMetaObjectHandler implements MetaObjectHandler {
+
+        @Override
+        public void insertFill(MetaObject metaObject) {
+            if (metaObject.getOriginalObject() instanceof BaseEntity) {
+                this.strictInsertFill(metaObject, Constants.CREATE_TIME, Date.class, new Date(System.currentTimeMillis()));
+                this.strictInsertFill(metaObject, Constants.CREATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
+            }
+        }
+
+        @Override
+        public void updateFill(MetaObject metaObject) {
+            System.out.println("自动注入,执行insertFill");
+            if (metaObject.getOriginalObject() instanceof BaseEntity) {
+                this.strictUpdateFill(metaObject, Constants.UPDATE_TIME, Date.class, new Date(System.currentTimeMillis()));
+                this.strictUpdateFill(metaObject, Constants.UPDATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
+            }
+        }
+
+        /**
+         * @description 获取当前登录人姓名
+         * @author: 111191
+         * @date: 2023年7月3日, 0003 上午 08:30:46
+         * @param:
+         * @return: java.lang.String
+         * @throws:
+         */
+        private String getUserName() {
+            try {
+                String user = SecurityContextHolder.getUserName();
+                if (!Objects.isNull(user)) {
+                    return user;
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+            return null;
+        }
     }
 }
