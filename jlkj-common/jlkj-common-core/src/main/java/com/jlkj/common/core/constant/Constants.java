@@ -154,156 +154,182 @@ public class Constants {
     public static final String STR_TWO = "2";
     /**
      * 常量字符串 3
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_THREE = "3";
     /**
      * 常量字符串 4
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FOUR = "4";
     /**
      * 常量字符串 5
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FIVE = "5";
     /**
      * 常量字符串 6
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SIX = "6";
     /**
      * 常量字符串 7
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SEVEN = "7";
     /**
      * 常量字符串 8
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_EIGHT = "8";
     /**
      * 常量字符串 9
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_NINE = "9";
     /**
      * 常量字符串 10
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_TEN = "10";
     /**
      * 常量字符串 11
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_ELEVEN = "11";
     /**
      * 常量字符串 12
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_TWELVE = "12";
     /**
      * 常量字符串 13
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_THIRTEEN = "13";
     /**
      * 常量字符串 14
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FOURTEEN = "14";
     /**
      * 常量字符串 15
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FIFTEEN = "15";
     /**
      * 常量字符串 16
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SIXTEEN = "16";
     /**
      * 常量字符串 17
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SEVENTEEN = "17";
     /**
      * 常量字符串 18
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_EIGHTEEN = "18";
     /**
      * 常量字符串 19
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_NINETEEN = "19";
     /**
      * 常量字符串 20
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_TWENTY = "20";
     /**
      * 常量字符串 30
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_THIRTY = "30";
     /**
      * 常量字符串 40
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FORTY = "40";
     /**
      * 常量字符串 50
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_FIFTY = "50";
     /**
      * 常量字符串 60
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SIXTY = "60";
     /**
      * 常量字符串 70
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_SEVENTY = "70";
     /**
      * 常量字符串 80
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_EIGHTY = "80";
     /**
      * 常量字符串 90
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_NINETY = "90";
     /**
      * 常量字符串 100
+     *
      * @author 265675
      * @Date 下午 15:28:43 2023年6月27日
      */
@@ -332,6 +358,72 @@ public class Constants {
      * @param null
      */
     public static final String STR_N = "N";
+    /**
+     * 能源模块 电
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_ENGYD = "电";
+    /**
+     * 能源模块 水
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_ENGYS = "水";
+    /**
+     * 能源模块 动力气体
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_ENGYL = "动力气体";
+    /**
+     * 能源模块 燃气
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_ENGYR = "燃气";
+    /**
+     * 能源模块 蒸汽
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_ENGYZ = "蒸汽";
+    /**
+     * 能源模块 类别名称
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_TYPENAME = "energy_type_name";
+    /**
+     * 能源模块 汇总日期
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_COUNT_DATE = "e_count_date";
+    /**
+     * 能源模块 qty
+     * @author 111191
+     * @Date 上午 11:08:40 2023年6月29日, 0029
+     */
+    public static final String STR_QTY = "qty";
+    /**
+     * 创建时间
+     */
+    public static final String CREATE_TIME = "createTime";
+    /**
+     * 创建人姓名
+     */
+    public static final String CREATE_BY = "createBy";
+    /**
+     * 更新时间
+     */
+    public static final String UPDATE_TIME = "updateTime";
+    /**
+     * 更新人姓名
+     */
+    public static final String UPDATE_BY = "updateBy";
+
+
 // ************************************************   以下为 Integer 类型常量      ***********************************************
     /**
      * 数字 1
@@ -352,6 +444,7 @@ public class Constants {
     public static final Integer INT_ZERO = 0;
     /**
      * 数字 100
+     *
      * @author 111191
      * @Date 上午 09:28:45 2023年6月29日, 0029
      * @param null
