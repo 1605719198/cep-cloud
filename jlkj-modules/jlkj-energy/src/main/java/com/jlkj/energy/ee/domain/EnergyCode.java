@@ -93,7 +93,6 @@ public class EnergyCode  extends BaseEntity {
     /**
      * 逻辑删除标识
      */
-
     private Integer delFlag;
 
 }
