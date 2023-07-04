@@ -82,6 +82,7 @@
       <el-button type="primary" plain @click="changeScaleHandle(-1)">缩小</el-button>
       <el-button type="primary" plain @click="downloadHandle('blob')">下载</el-button>
     </div>
+    <div style="position: absolute; bottom: 180px; left: 30px"><span style="color: white">请对齐左右边距即可</span></div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="finish" :loading="loading">确认</el-button>
@@ -138,7 +139,7 @@ export default {
         canMoveBox: true, // 截图框能否拖动
         autoCropWidth: 400, // 默认生成截图框宽度
         autoCropHeight: 300, // 默认生成截图框高度
-        fixedBox: false, // 固定截图框大小 不允许改变
+        fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [1, 1], // 截图框的宽高比例
         full: false, // 是否输出原图比例的截图
@@ -260,9 +261,9 @@ export default {
             this.dialogVisible = false
             console.log(res);
             if(data.code == 500){
-              this.$message.error("识别失败，未找到该服务");
+              this.$message.error("识别失败，请重试");
             }else {
-              this.$message.success('识别结果为：'+JSON.stringify(data.msg));
+              this.$message.success(data.msg);
             }
           } else {
             this.$message.error('识别错误请重试')

@@ -29,6 +29,7 @@ rabbit</br>
 --定时任务-jlkj-job:9203</br>
 --流程设计-jlkj-flowable:9204</br>
 --报表设计-jlkj-ureport:9205</br>
+--图像识别-jlkj-imageIdentify:9206</br>
 --文件上传-jlkj-file:9300</br>
 --设备模块-jlkj-equip:9900</br>
 --能源模块-jlkj-energy:9910</br>
@@ -41,5 +42,4 @@ rabbit</br>
 --销售模块-jlkj-sales:9980</br>
 --财务模块-jlkj-finance:9800</br>
 --消息中心-jlkj-rabbit:9990</br>
-jlkj-imageIdentify:9205</br>
 
