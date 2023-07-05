@@ -3,6 +3,7 @@ package com.jlkj.energy.ee.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,31 +31,37 @@ public class EnergySolidLiquidData implements Serializable {
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyId;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "能源代码不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engySource;
 
     /**
      * 计量单位
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyUnit;
 
     /**
      * 能源类别
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyType;
 
     /**

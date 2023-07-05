@@ -218,8 +218,6 @@ public interface ISysUserService
      */
     List<SysUser> selectAllUserList(SysUser user);
 
-
-
     /**
      * 根据角色id获取用户id
      * @param roleId
@@ -233,4 +231,12 @@ public interface ISysUserService
      * @return
      */
     List<Long> selectList(List<String> groups);
+    /**
+     * @description 查询全部用户的工号、姓名，用于员工数据字典
+     * @author: 111191
+     * @param: 无
+     * @date: 2023年7月5日, 0005 上午 09:24:45
+     * @return: java.util.List<com.jlkj.system.api.domain.SysUser>
+     */
+    List<SysUser> queryAllUserDicts();
 }

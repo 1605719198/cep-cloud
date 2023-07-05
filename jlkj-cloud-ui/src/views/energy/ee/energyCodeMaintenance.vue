@@ -27,7 +27,9 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button v-hasPermi="['ee:energy:query']" type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索 </el-button>
+        <el-button v-hasPermi="['ee:energy:query']" type="primary" icon="el-icon-search" size="mini"
+                   @click="handleQuery">搜索
+        </el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="handleEmpty">重置</el-button>
       </el-form-item>
     </el-form>
@@ -65,65 +67,41 @@
               tooltip-effect="dark"
               @selection-change="handleSelectionChange"
               style="margin: 0 0px 0 00px;width: auto;">
-      <el-table-column type="selection"
-                       width="55"
-                       align="center"/>
-      <el-table-column label="能源缩写"
-                       align="center"
-                       prop="engyAc"/>
-      <el-table-column label="能源代码"
-                       align="center"
-                       prop="engyId"/>
-      <el-table-column label="能源名称"
-                       align="center"
-                       prop="engyName"/>
-      <el-table-column label="计量单位"
-                       align="center"
-                       prop="engyUnit"/>
-      <el-table-column label="热值系数"
-                       align="center"
-                       prop="calValue"/>
-      <el-table-column label="热值系数单位"
-                       align="center"
-                       prop="calUnit"/>
-      <el-table-column label="来源方式" align="center" prop="srcType">
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="能源缩写" align="center" prop="engyAc"/>
+      <el-table-column label="能源代码" align="center" prop="engyId" sortable/>
+      <el-table-column label="能源名称" align="center" prop="engyName" sortable/>
+      <el-table-column label="计量单位" align="center" prop="engyUnit" sortable>
+        <template v-slot="scope">
+          <dict-tag :options="dict.type.aa_unit_baseunitid" :value="scope.row.engyUnit"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="热值系数" align="center" prop="calValue"/>
+      <el-table-column label="热值系数单位" align="center" prop="calUnit"/>
+      <el-table-column label="来源方式" align="center" prop="srcType" sortable>
         <template v-slot="scope">
           <dict-tag :options="dict.type.engy_src_type" :value="scope.row.srcType"/>
         </template>
       </el-table-column>
-      <el-table-column label="能源种类" align="center" prop="engyType">
+      <el-table-column label="能源种类" align="center" prop="engyType" sortable>
         <template v-slot="scope">
           <dict-tag :options="dict.type.engy_engy_type" :value="scope.row.engyType"/>
         </template>
       </el-table-column>
-      <el-table-column label="抛帐系统" align="center" prop="acctSys">
+      <el-table-column label="抛帐系统" align="center" prop="acctSys" sortable>
         <template v-slot="scope">
           <dict-tag :options="dict.type.engy_acct_sys" :value="scope.row.acctSys"/>
         </template>
       </el-table-column>
-      <el-table-column label="建立人员"
-                       align="center"
-                       prop="createBy"/>
-      <el-table-column label="建立日期"
-                       align="center"
-                       width="160"
-                       prop="createTime"/>
-      <el-table-column label="操作"
-                       align="center"
-                       class-name="small-padding fixed-width"
-                       width="200">
+      <el-table-column label="建立人员" align="center" prop="createBy" :formatter="userFormat" sortable/>
+      <el-table-column label="建立日期" align="center" width="160" prop="createTime" sortable/>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template v-slot="scope">
-          <el-button v-hasPermi="['ee:energy:update']"
-                     size="mini"
-                     type="text"
-                     icon="el-icon-edit"
-                     @click="handleUpdate(scope.row)">修改
+          <el-button v-hasPermi="['ee:energy:update']" size="mini"
+                     type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改
           </el-button>
           <el-button v-hasPermi="['ee:energy:delete']"
-                     size="mini"
-                     type="text"
-                     icon="el-icon-delete"
-                     @click="handleDelete(scope.row)">删除
+                     size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -143,15 +121,15 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="能源代码" prop="engyId">
-              <el-input v-model="form.engyId" :disabled="engyInput" maxlength="10"/>
+              <el-input v-model="form.engyId" maxlength="10" placeholder="请输入能源代码"/>
             </el-form-item>
             <el-form-item label="能源名称" prop="engyName">
-              <el-input v-model="form.engyName" :disabled="engyInput" maxlength="15"/>
+              <el-input v-model="form.engyName" :disabled="engyInput" maxlength="15" placeholder="请输入能源名称"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="能源缩写" prop="engyAc" >
-              <el-input v-model="form.engyAc" maxlength="10"/>
+            <el-form-item label="能源缩写" prop="engyAc">
+              <el-input v-model="form.engyAc" maxlength="10" placeholder="请输入能源缩写"/>
             </el-form-item>
             <el-form-item label="计量单位" prop="engyUnit">
               <el-select v-model="form.engyUnit" :popper-append-to-body="false" placeholder="请选择"
@@ -164,7 +142,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="热值单位" prop="calUnit">
-              <el-input v-model="form.calUnit" maxlength="10"/>
+              <el-input v-model="form.calUnit" maxlength="10" placeholder="请输入热值单位"/>
             </el-form-item>
             <el-form-item label="能源种类" prop="engyType">
               <el-select v-model="form.engyType" :popper-append-to-body="false" placeholder="请选择"
@@ -176,9 +154,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-              <el-form-item label="热值系数" prop="calValue">
-                <el-input-number v-model="form.calValue"  :precision="2" maxlength="10"/>
-              </el-form-item>
+            <el-form-item label="热值系数" prop="calValue">
+              <el-input-number v-model="form.calValue" :precision="2" maxlength="10" placeholder="请输入热值系数"/>
+            </el-form-item>
             <el-form-item label="来源方式" prop="srcType">
               <el-radio-group v-model="form.srcType">
                 <el-radio v-for="dict in dict.type.engy_src_type" :key="dict.value" :label="dict.value">{{ dict.label }}
@@ -207,12 +185,15 @@
 
 <script>
 import {addInfo, delInfo, updateInfo, queryInfo, getInfo, queryEngyIds} from "@/api/energy/ee/energyCodeMaintenance";
+import {queryAllUser} from "@/api/system/user";
 
 export default {
   name: "energyCodeMaintenance",
   dicts: ['engy_engy_type', 'engy_acct_sys', 'engy_src_type', 'aa_unit_baseunitid'],
   data() {
     return {
+      //用户字典
+      resUserDiction: [],
       // 显示搜索条件
       showSearch: true,
       // 遮罩层
@@ -276,9 +257,21 @@ export default {
       this.optionsEngyIdStart = response.data;
       this.optionsEngyIdEnd = response.data;
       this.loading = false
-    })
+    }),
+    /** 装载人员信息 */
+      queryAllUser().then(response => {
+        console.log(response.rows)
+      this.resUserDiction = response.rows;
+    });
   },
   methods: {
+    // 人员字典翻译
+    userFormat(row, column) {
+      /** UserDictOnlyName 只显示姓名 */
+      // return this.UserDictOnlyName(this.resUserDiction, row.createBy);
+      /** UserDictFullName 显示工号_姓名 */
+      return this.UserDictFullName(this.resUserDiction, row.createBy);
+    },
     // 分页数据
     handleSizeChange(val) {
       this.queryParams.pageSize = val

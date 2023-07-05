@@ -69,14 +69,16 @@ public interface EnergyCodeService extends IService<EnergyCode> {
      * @return: int 删除笔数
      */
     EnergyCode queryEnergyCodeById(String id);
+
     /**
      * @description 查询能源代码下拉选单（el-Select)
      * @author: 111191
      * @date: 2023年7月3日, 0003 下午 12:37:03
      * @param: 无
      * @return: JSONArray 选单所需的绑定数据
-    */
+     */
     JSONArray queryDropDownMenu();
+
     /**
      * @description 查询能源代码下拉选单(中文label)
      * @author: 111191
@@ -84,6 +86,53 @@ public interface EnergyCodeService extends IService<EnergyCode> {
      * @param:
      * @return: com.alibaba.fastjson.JSONArray
      * @throws:
-    */
+     */
     JSONArray queryDropDownMenuZh();
+
+    /**
+     * @description 固液体能源代码资料查询与列表
+     * @author: 111191
+     * @date: 2023年7月4日, 0004 下午 01:57:09
+     * @param: energyCodeDTO 固液体能源代码资料
+     * @return: java.util.List<com.jlkj.energy.ee.domain.EnergySolidLiquidData>
+     * @throws:
+     */
+    List<EnergyCode> querySolidLiquidEnergyCode(EnergyCodeDTO energyCodeDTO);
+
+    /**
+     * @description 新增固液体能源代码资料
+     * @author: 111191
+     * @date: 2023年7月4日, 0004 下午 03:25:23
+     * @param: energyCode 固液体能源代码资料
+     * @return: int 新增成功笔数
+     * @throws:
+     */
+    int addSolidLiquidEnergyCode(EnergyCode energyCode);
+    /**
+     * @description 修改固液体能源代码资料
+     * @author: 111191
+     * @date: 2023年7月4日, 0004 下午 03:41:24
+     * @param: energyCode 固液体能源代码资料
+     * @return: int 修改成功笔数
+     * @throws:
+     */
+    int updateSolidLiquidEnergyCode(EnergyCode energyCode);
+    /**
+     * @description 删除固液体能源代码资料
+     * @author: 111191
+     * @date: 2023年7月4日, 0004 下午 03:42:15
+     * @param: ids 固液体能源代码ID
+     * @return: int 删除成功笔数
+     * @throws:
+     */
+    int deleteSolidLiquidEnergyCode(String[] ids);
+    /**
+     * @description 查询能源代码下拉选单（el-Select)
+     * @author: 111191
+     * @date: 2023年7月4日, 0004 下午 04:34:27
+     * @param:
+     * @return: com.alibaba.fastjson.JSONArray
+     * @throws:
+     */
+    JSONArray querySolidLiquidDropDownMenu();
 }
