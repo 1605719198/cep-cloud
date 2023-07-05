@@ -120,15 +120,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectLoanApply"  parameterType="String" resultType="map">
-        SELECT t1.bill_no, t1.apply_by,t1.apply_name,t1.item_no,sum(t2.total_amt) total_amt,sum(t2.total_amt) - (ifnull(sum(t3.amt),0) + ifnull(sum(t4.amt),0)) unreimb_amt FROM finance_ao_loan t1
-        INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id
-        LEFT JOIN finance_ao_reimbursement_loan t3 ON t1.id = t3.loan_id
-        LEFT JOIN finance_ao_repayment t4 ON t1.id = t4.loan_id
-        <where>
-            <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
-        </where>
-        GROUP BY t1.bill_no  HAVING unreimb_amt > 0
-        order by t1.bill_no
+        select 	a.loanId, a.companyId,a.billNo, a.loanBy,a.loanName,a.itemNo,a.totalAmt, ifnull( sum( t3.amt ), 0 ) + ifnull( sum( t4.amt ), 0 ) reimbAmt, a.totalAmt-(ifnull( sum( t3.amt ), 0 ) + ifnull( sum( t4.amt ), 0 )) unreimbAmt
+        FROM (SELECT t1.id loanId, t1.company_id companyId,t1.bill_no billNo, t1.apply_by loanBy,t1.apply_name loanName,t1.item_no itemNo,sum(t2.total_amt) totalAmt FROM finance_ao_loan t1 INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id  WHERE t1.company_id = #{companyId} GROUP BY t1.bill_no) a
+        LEFT JOIN finance_ao_reimbursement_loan t3 ON a.loanId = t3.loan_id
+        LEFT JOIN finance_ao_repayment t4 ON a.loanId = t4.loan_id
+        GROUP BY a.billNo  HAVING unreimbAmt > 0
+        order by a.billNo
     </select>
+
+    <select id="selectMaxBillNo" parameterType="String" resultType="string">
+        select max(bill_no) from finance_ao_repayment
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="billNo != null  and billNo != ''"> and bill_no like concat(#{billNo},'%' )</if>
+        </where>
+    </select>
+
+
+    <insert id="insertBatch">
+        insert into finance_ao_repayment (id,company_id,bill_no,loan_id,pay_type,loan_by,loan_name,amt,pay_date,voucher_no,status,create_by,create_name,create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id},#{item.companyId},#{item.billNo},#{item.loanId},#{item.payType},#{item.loanBy},#{item.loanName},#{item.amt},#{item.payDate},#{item.voucherNo},#{item.status},#{item.createBy},#{item.createName},#{item.createTime})
+        </foreach>
+    </insert>
+
+
 
 </mapper>

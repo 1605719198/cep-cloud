@@ -1,18 +1,17 @@
-package com.jlkj.finance.ao.mapper;
+package com.jlkj.finance.ao.service;
 
 import com.jlkj.finance.ao.domain.FinanceAoRepayment;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 还款单资料档Mapper接口
+ * 还款单资料档Service接口
  * 
  * @author 116514
  * @date 2023-06-15
  */
-public interface FinanceAoRepaymentMapper 
+public interface IFinanceAoRepaymentService 
 {
     /**
      * 查询还款单资料档
@@ -38,6 +37,7 @@ public interface FinanceAoRepaymentMapper
      */
     public int insertFinanceAoRepayment(FinanceAoRepayment financeAoRepayment);
 
+
     /**
      * 修改还款单资料档
      * 
@@ -47,20 +47,20 @@ public interface FinanceAoRepaymentMapper
     public int updateFinanceAoRepayment(FinanceAoRepayment financeAoRepayment);
 
     /**
-     * 删除还款单资料档
+     * 批量删除还款单资料档
+     * 
+     * @param ids 需要删除的还款单资料档主键集合
+     * @return 结果
+     */
+    public int deleteFinanceAoRepaymentByIds(String[] ids);
+
+    /**
+     * 删除还款单资料档信息
      * 
      * @param id 还款单资料档主键
      * @return 结果
      */
     public int deleteFinanceAoRepaymentById(String id);
-
-    /**
-     * 批量删除还款单资料档
-     * 
-     * @param ids 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteFinanceAoRepaymentByIds(String[] ids);
 
 
     /**
@@ -72,18 +72,9 @@ public interface FinanceAoRepaymentMapper
 
 
     /**
-     * 查询最大流水号
-     * @param companyId
-     * @param billNo
-     * @return
-     */
-    public String selectMaxBillNo(@Param("companyId") String companyId, @Param("billNo")String billNo);
-
-
-    /**
      * 批量新增还款单资料档
      * @param financeAoRepayments
      * @return
      */
-    public int insertBatch(List<FinanceAoRepayment> financeAoRepayments);
+    public int insertBatchFinanceAoRepayment(List<FinanceAoRepayment> financeAoRepayments);
 }
