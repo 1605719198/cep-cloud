@@ -1,12 +1,11 @@
 package com.jlkj.energy.ee.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 固体液体能源量资料
@@ -15,7 +14,7 @@ import java.util.Date;
  */
 @TableName(value ="energy_ee_solid_liquid_data")
 @Data
-public class EnergySolidLiquidData implements Serializable {
+public class EnergySolidLiquidData extends BaseEntity {
     /**
      * ID
      */
@@ -223,16 +222,6 @@ public class EnergySolidLiquidData implements Serializable {
      * 料号量10
      */
     private BigDecimal engyCmp10Value;
-
-    /**
-     * 异动人员
-     */
-    private String updateEmpNo;
-
-    /**
-     * 异动时间
-     */
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

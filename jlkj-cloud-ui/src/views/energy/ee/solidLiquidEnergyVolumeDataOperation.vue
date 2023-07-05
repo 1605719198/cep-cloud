@@ -27,11 +27,11 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button v-hasPermi="['solid_liquid_query']"
+        <el-button v-hasPermi="['solid:liquid:query']"
                    type="primary"
                    size="mini"
                    icon="el-icon-search" @click="handleQuery('queryForm')">搜索</el-button>
-        <el-button v-hasPermi="['solid_liquid_query']"
+        <el-button v-hasPermi="['solid:liquid:query']"
                    size="mini"
                    type="default"
                    icon="el-icon-upload" @click="handleQueryPlus">进阶查询</el-button>
@@ -39,7 +39,7 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button v-hasPermi="['solid_liquid_query']"
+        <el-button v-hasPermi="['solid:liquid:query']"
                    type="primary"
                    plain
                    size="mini"
@@ -47,7 +47,7 @@
                    @click="handleUpdate">更新资料</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['solid_liquid_query']"
+        <el-button v-hasPermi="['solid:liquid:query']"
                    type="info"
                    size="mini"
                    icon="el-icon-s-promotion"
@@ -439,39 +439,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.energy_main {
-  height: 86vh;
-  background-color: #fff;
-}
-
-::v-deep .el-table th,
-.el-table tr {
-  background-color: #fafafa;
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 12px;
-}
-::v-deep .el-form-item__label {
-  white-space: nowrap;
-  text-align: left;
-}
-
-::v-deep .el-form-item__content {
-  white-space: nowrap;
-  padding-right: 10px;
-}
-::v-deep .el-text {
-  color: red;
-}
-.mb8.el-row {
-  margin-right: 100px;
-}
-/*下拉框最后一个显示不完全*/
-::v-deep .el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
-}
-::v-deep
-  .el-date-editor.el-input.el-input--prefix.el-input--suffix.el-date-editor--date {
-  width: 200px;
-}
-</style>
