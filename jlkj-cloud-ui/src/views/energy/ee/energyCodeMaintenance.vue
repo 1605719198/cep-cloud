@@ -67,7 +67,7 @@
               tooltip-effect="dark"
               @selection-change="handleSelectionChange"
               style="margin: 0 0px 0 00px;width: auto;">
-      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column type="selection" width="20" align="center"/>
       <el-table-column label="能源缩写" align="center" prop="engyAc"/>
       <el-table-column label="能源代码" align="center" prop="engyId" sortable/>
       <el-table-column label="能源名称" align="center" prop="engyName" sortable/>
@@ -185,7 +185,7 @@
 
 <script>
 import {addInfo, delInfo, updateInfo, queryInfo, getInfo, queryEngyIds} from "@/api/energy/ee/energyCodeMaintenance";
-import {queryAllUser} from "@/api/system/user";
+import { queryAllUser} from "@/api/system/user";
 
 export default {
   name: "energyCodeMaintenance",
@@ -257,12 +257,14 @@ export default {
       this.optionsEngyIdStart = response.data;
       this.optionsEngyIdEnd = response.data;
       this.loading = false
-    }),
+    })
+  },
+  beforeMount(){
     /** 装载人员信息 */
-      queryAllUser().then(response => {
-        console.log(response.rows)
+    queryAllUser().then(response => {
+      console.log(response)
       this.resUserDiction = response.rows;
-    });
+    })
   },
   methods: {
     // 人员字典翻译
