@@ -87,7 +87,6 @@ import { listAttendanceAbnormalStatistics, } from "@/api/human/st/attendanceAbno
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
-import {isEmpty} from "element-ui";
 
 export default {
   name: "AttendanceAbnormalStatistics",
