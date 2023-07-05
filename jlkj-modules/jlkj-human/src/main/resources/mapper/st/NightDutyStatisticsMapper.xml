@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.NightDutyStatisticsMapper">
+    
+    <resultMap type="NightDutyStatistics" id="NightDutyStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="postFullname"    column="post_fullname"    />
+        <result property="postId"    column="post_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="shiftDate"    column="shift_date"    />
+        <result property="bigNight"    column="big_night"    />
+        <result property="smallNight"    column="small_night"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectNightDutyStatisticsVo">
+        SELECT id, comp_id, emp_id, emp_no, emp_name, post_fullname, post_id, shift_id, shift_date, big_night, small_night, creator, creator_id, create_date FROM human_hd_night_duty
+    </sql>
+
+    <select id="selectNightDutyStatisticsList" parameterType="NightDutyStatistics" resultMap="NightDutyStatisticsResult">
+        SELECT row_number() over(ORDER BY shift_date) AS num,emp_no,emp_name,post_fullname,shift_date,big_night, small_night FROM human_hd_night_duty
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="date1 != null ">AND shift_date &gt;= #{date1} </if>
+            <if test="date2 != null ">AND shift_date &lt;= #{date2} </if>
+        </where>
+        ORDER BY shift_date
+    </select>
+    
+    <select id="selectNightDutyStatisticsById" parameterType="String" resultMap="NightDutyStatisticsResult">
+        <include refid="selectNightDutyStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertNightDutyStatistics" parameterType="NightDutyStatistics">
+        INSERT INTO human_hd_night_duty
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="postFullname != null">post_fullname,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="shiftId != null">shift_id,</if>
+            <if test="shiftDate != null">shift_date,</if>
+            <if test="bigNight != null">big_night,</if>
+            <if test="smallNight != null">small_night,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="postFullname != null">#{postFullname},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="shiftId != null">#{shiftId},</if>
+            <if test="shiftDate != null">#{shiftDate},</if>
+            <if test="bigNight != null">#{bigNight},</if>
+            <if test="smallNight != null">#{smallNight},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNightDutyStatistics" parameterType="NightDutyStatistics">
+        UPDATE human_hd_night_duty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="postFullname != null">post_fullname = #{postFullname},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
+            <if test="shiftDate != null">shift_date = #{shiftDate},</if>
+            <if test="bigNight != null">big_night = #{bigNight},</if>
+            <if test="smallNight != null">small_night = #{smallNight},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteNightDutyStatisticsById" parameterType="String">
+        DELETE FROM human_hd_night_duty WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteNightDutyStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_night_duty WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
