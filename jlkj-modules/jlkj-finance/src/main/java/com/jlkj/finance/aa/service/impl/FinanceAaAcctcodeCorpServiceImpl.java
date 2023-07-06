@@ -1,20 +1,22 @@
 package com.jlkj.finance.aa.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
+import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
+import com.jlkj.finance.aa.mapper.FinanceAaAcctcodeCorpMapper;
+import com.jlkj.finance.aa.service.IFinanceAaAcctcodeCorpService;
+import com.jlkj.finance.utils.ConstantsUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
-import com.jlkj.common.core.utils.uuid.IdUtils;
-import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAaAcctcodeCorpMapper;
-import com.jlkj.finance.aa.domain.FinanceAaAcctcodeCorp;
-import com.jlkj.finance.aa.service.IFinanceAaAcctcodeCorpService;
 
 /**
  * 会计科目-公司级Service业务层处理
@@ -218,8 +220,8 @@ public class FinanceAaAcctcodeCorpServiceImpl implements IFinanceAaAcctcodeCorpS
             acctcodeCorp.setIsVoucher((String) acctcodeGroup.get("isVoucher"));
             acctcodeCorp.setDrOrCr((String) acctcodeGroup.get("drOrCr"));
             acctcodeCorp.setIsCash((String) acctcodeGroup.get("isCash"));
-            acctcodeCorp.setLevel((String) acctcodeGroup.get("level"));
-            acctcodeCorp.setDisabledCode("Y");
+            acctcodeCorp.setLevel((Integer)acctcodeGroup.get("level"));
+            acctcodeCorp.setDisabledCode(ConstantsUtil.CODE_Y);
             acctcodeCorp.setCreateBy(SecurityUtils.getUsername());
             acctcodeCorp.setCreateName(SecurityUtils.getNickName());
             acctcodeCorp.setCreateTime(DateUtils.getNowDate());
