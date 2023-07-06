@@ -344,7 +344,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
         //薪资核定原因
         String payCheckRea = "PayCheckRea";
         OptionTypeDTO optionType = new OptionTypeDTO();
-        optionType.setOptionsType(Arrays.asList(payCheckRea));
+        optionType.setOptionsType(Collections.singletonList(payCheckRea));
         HashMap<String, List<BasisOptionsDTO>> map = salaryBasisService.getBasisOptions(optionType);
         HashMap<String, String[]> map1 = new HashMap<>(32);
         //选单编码ID值转换

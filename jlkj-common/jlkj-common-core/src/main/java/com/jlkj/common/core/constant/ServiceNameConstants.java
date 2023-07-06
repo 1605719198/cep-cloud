@@ -31,4 +31,9 @@ public class ServiceNameConstants
      * 财务模块的serviceid
      */
     public static final String FINANCE_SERVICE = "jlkj-finance";
+
+    /**
+     * 人事模块的serviceid
+     */
+    public static final String HUMAN_SERVICE = "jlkj-human";
 }

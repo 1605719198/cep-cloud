@@ -78,6 +78,20 @@ public class HomeLeaveHolidayController extends BaseController
     }
 
     /**
+    * @Description 修改某员工某年探亲假数据
+    * @param homeLeaveHoliday 探亲假天数设定
+    * @return 结果
+    * @author 266861
+    * @date 2023/6/29 13:37
+    **/
+    @Log(title = "探亲假天数设定", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public AjaxResult update(@RequestBody HomeLeaveHoliday homeLeaveHoliday)
+    {
+        return toAjax(homeLeaveHolidayService.updateHomeLeaveHolidayByEmp(homeLeaveHoliday));
+    }
+
+    /**
      * 查询员工探亲假信息
      */
     @GetMapping("/home")

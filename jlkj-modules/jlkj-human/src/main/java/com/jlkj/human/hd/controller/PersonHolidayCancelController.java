@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hd.service.IPersonHolidayCancelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -40,18 +38,6 @@ public class PersonHolidayCancelController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出员工销假列表
-     */
-    @RequiresPermissions("human:cancelHoliday:export")
-    @Log(title = "员工销假", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonHolidayCancel personHolidayCancel)
-    {
-        List<PersonHolidayCancel> list = personHolidayCancelService.selectPersonHolidayCancelList(personHolidayCancel);
-        ExcelUtil<PersonHolidayCancel> util = new ExcelUtil<PersonHolidayCancel>(PersonHolidayCancel.class);
-        util.exportExcel(response, list, "员工销假数据");
-    }
 
     /**
      * 获取员工销假详细信息
@@ -96,15 +82,4 @@ public class PersonHolidayCancelController extends BaseController
         return toAjax(personHolidayCancelService.deletePersonHolidayCancelByIds(ids));
     }
 
-    /**
-     * 撤回员工销假
-     */
-    @RequiresPermissions("human:cancelHoliday:withdraw")
-    @Log(title = "员工销假", businessType = BusinessType.OTHER)
-    @PostMapping("/withdraw")
-    public AjaxResult withdraw(@RequestBody String ids)
-    {
-        System.out.println(ids);
-        return toAjax(personHolidayCancelService.otherPersonHolidayCancelByIds(ids));
-    }
 }

@@ -262,6 +262,12 @@
                 <artifactId>jlkj-api-finance</artifactId>
                 <version>${jlkj.version}</version>
             </dependency>
+            <!-- 人事模块接口 -->
+            <dependency>
+                <groupId>com.jlkj</groupId>
+                <artifactId>jlkj-api-human</artifactId>
+                <version>${jlkj.version}</version>
+            </dependency>
 
             <!-- 公共实体类DTO -->
             <dependency>

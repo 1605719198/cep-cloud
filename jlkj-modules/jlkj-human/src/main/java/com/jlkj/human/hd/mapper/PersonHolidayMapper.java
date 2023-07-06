@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.PersonHoliday;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author jiangbingchen
  * @date 2023-04-14
  */
+@Repository
 public interface PersonHolidayMapper 
 {
     /**

@@ -129,7 +129,7 @@
     />
 
     <!-- 添加或修改出差会计科目对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -209,11 +209,11 @@
               <el-row :gutter="20">
                 <el-col :span="6">
                   <el-input v-model="form.acctCoded" placeholder="请选择" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+                    <el-button slot="append" icon="el-icon-search" @click="accountCodeClick('drCodeClick')" clearable></el-button>
                   </el-input>
                 </el-col>
                 <el-col :span="8">
-                  <el-input v-model="form.idNamed" disabled></el-input>
+                  <el-input v-model="form.acctNamed" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
                   <el-input v-model="form.idCoded" disabled></el-input>
@@ -231,12 +231,12 @@
             <el-form-item label="贷方">
               <el-row :gutter="20">
                 <el-col :span="6">
-                  <el-input v-model="form.acctCoded" placeholder="请选择" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+                  <el-input v-model="form.acctCodec" placeholder="请选择" :disabled="true">
+                    <el-button slot="append" icon="el-icon-search" @click="accountCodeClick('crCodeClick')" clearable></el-button>
                   </el-input>
                 </el-col>
                 <el-col :span="8">
-                  <el-input v-model="form.idNamed" disabled></el-input>
+                  <el-input v-model="form.acctNamec" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
                   <el-input v-model="form.idCodec" disabled></el-input>
@@ -255,6 +255,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <acctcode-corp-pop ref="acctcodeCorpPop" @ok="getAccountCodeData" :companyId="this.queryParams.compId"></acctcode-corp-pop>
   </div>
 </template>
 
@@ -267,6 +268,7 @@ import {
   addTripAccountRule,
   updateTripAccountRule
 } from '@/api/human/hd/tripAccountRule'
+import acctcodeCorpPop from "@/views/finance/aa//acctcodeCorpPop";
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
@@ -275,9 +277,11 @@ import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 
 export default {
   name: 'TripAccountRule',
-  components: { DictTagHuman },
+  components: { DictTagHuman, acctcodeCorpPop },
   data() {
     return {
+      // 借方贷方
+      tagSrc: null,
       // 遮罩层
       loading: false,
       // 选中数组
@@ -350,6 +354,27 @@ export default {
     this.getDisc()
   },
   methods: {
+    /** 会计科目点击事件 */
+    accountCodeClick(val) {
+      this.tagSrc = val
+      this.isSingleProject = true
+      this.$refs.acctcodeCorpPop.show(this.isSingleProject);
+    },
+    /** 获取会计科目 */
+    getAccountCodeData(val) {
+      console.log("val====>",val)
+      if (this.tagSrc === 'drCodeClick') {
+        this.form.acctCoded = val[0].acctCode
+        this.form.acctNamed = val[0].acctName
+        this.form.idCoded = val[0].calTypeName1
+        this.form.refNod = val[0].calTypeName2
+      }else if(this.tagSrc === 'crCodeClick') {
+        this.form.acctCodec = val[0].acctCode
+        this.form.acctNamec = val[0].acctName
+        this.form.idCodec = val[0].calTypeName1
+        this.form.refNoc = val[0].calTypeName2
+      }
+    },
     //会计类别变化方法
     changeAcct(val){
       this.attendenceOptions.AcctType.forEach(value=>{
@@ -419,7 +444,7 @@ export default {
             apprGroup: value.apprGroup,
             acctClassify: value.acctClassify,
             acctCode: value.acctCoded,
-            acctName: null,
+            acctName: value.acctNamed,
             idCode: value.idCoded,
             refNo: value.refNod,
             create: value.creator
@@ -432,7 +457,7 @@ export default {
             apprGroup: value.apprGroup,
             acctClassify: value.acctClassify,
             acctCode: value.acctCodec,
-            acctName: null,
+            acctName: value.acctNamec,
             idCode: value.idCodec,
             refNo: value.refNoc,
             create: value.createDate
@@ -461,10 +486,12 @@ export default {
         acctDesc: null,
         acctClassify: null,
         acctCoded: null,
+        acctNamed: null,
         idCoded: null,
         refNod: null,
         dueDated: null,
         acctCodec: null,
+        acctNamec: null,
         idCodec: null,
         refNoc: null,
         dueDatec: null,

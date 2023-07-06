@@ -44,6 +44,15 @@ export function updateHoliday(data) {
   })
 }
 
+// 修改某员工某年探亲假天数设定
+export function updateHolidayByEmp(data) {
+  return request({
+    url: '/human/homeLeaveHoliday/update',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除探亲假天数设定
 export function delHoliday(id) {
   return request({

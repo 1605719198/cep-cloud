@@ -1,21 +1,21 @@
 <template>
   <div>
     <template v-for="(item, index) in options">
-      <template v-if="values.includes(item.dicNo)&&(isId==='false')&&(idString==='false')">
+      <template v-if="values.includes(item.dicNo)&&(isId==='false')&&(uuid==='false')">
         <span
           :key="item.dicNo"
           :index="index"
         >{{ item.dicName }}</span
         >
       </template>
-      <template v-if="(isId==='true')&&(idString==='false')&&values.includes(item.id.toString())">
+      <template v-if="(isId==='true')&&(uuid==='false')&&values.includes(item.id.toString())">
         <span
           :key="item.id"
           :index="index"
         >{{ item.dicName }}</span
         >
       </template>
-      <template v-if="values.includes(item.uuid)&&(idString==='true')&&(isId==='false')">
+      <template v-if="values.includes(item.uuid)&&(uuid==='true')&&(isId==='false')">
         <span
           :key="item.uuid"
           :index="index"
@@ -39,7 +39,7 @@ export default {
       type: String,
       default: 'false'
     },
-    idString:{
+    uuid:{
       type: String,
       default: 'false'
     }
