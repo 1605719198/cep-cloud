@@ -59,4 +59,12 @@ public interface IArrangeClassMasterService
      * @return 结果
      */
     public int deleteArrangeClassMasterById(String id);
+
+    /**
+     * 年底定时排班
+     * @return 定时排班结果
+     * @author 266861
+     * @date 2023/7/6 8:46
+     **/
+    public int scheduledShifts();
 }

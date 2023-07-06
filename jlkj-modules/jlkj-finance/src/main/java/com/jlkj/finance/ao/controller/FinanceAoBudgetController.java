@@ -104,7 +104,7 @@ public class FinanceAoBudgetController extends BaseController
      * 导入预算设置
      */
     @Log(title = "导入预算设置", businessType = BusinessType.IMPORT)
-    @RequiresPermissions("aa:budget:import")
+    @RequiresPermissions("ao:budget:import")
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {

@@ -78,6 +78,7 @@ public class ArrangeClassServiceImpl implements IArrangeClassService
     @Override
     public int insertArrangeClass(ArrangeClass arrangeClass)
     {
+        arrangeClass.setArrangeClassMasterId(null);
         List<ArrangeClass> list = arrangeClassMapper.queryArrangeClass(arrangeClass);
         if(list.size()==0){
             arrangeClass.setId(IdUtils.simpleUUID());

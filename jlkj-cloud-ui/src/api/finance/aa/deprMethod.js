@@ -42,3 +42,15 @@ export function delDeprMethod(id) {
     method: 'delete'
   })
 }
+
+// 查询折旧方法(下拉选单用)
+export function selectDeprMethodList() {
+  return request({
+    url: '/finance/deprMethod/deprMethodList',
+    method: 'get',
+  })
+}
+
+
+
+

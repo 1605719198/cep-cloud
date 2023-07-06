@@ -21,7 +21,7 @@ export function updateInfo(data) {
 // 删除
 export function delInfo(ids) {
   return request({
-    url: `/energy/energy/code/deleteSolid?id=${ids}`,
+    url: `/energy/energy/code/deleteSolid/` + ids,
     method: 'delete'
   })
 }

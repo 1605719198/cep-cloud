@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hd.service.IArrangeClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -39,18 +37,6 @@ public class ArrangeClassController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出排班明细列表
-     */
-    @RequiresPermissions("human:shiftMode:export")
-    @Log(title = "排班明细", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, ArrangeClass arrangeClass)
-    {
-        List<ArrangeClass> list = arrangeClassService.selectArrangeClassList(arrangeClass);
-        ExcelUtil<ArrangeClass> util = new ExcelUtil<ArrangeClass>(ArrangeClass.class);
-        util.exportExcel(response, list, "排班明细数据");
-    }
 
     /**
      * 获取排班明细详细信息

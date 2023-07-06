@@ -690,7 +690,6 @@ export default {
       const re = /^[0-9]*[1-9][0-9]*$/;
       const rsCheck = re.test(value);
       if(required){
-
       }
       if (!rsCheck) {
         // callback(new Error('请输入正整数'));

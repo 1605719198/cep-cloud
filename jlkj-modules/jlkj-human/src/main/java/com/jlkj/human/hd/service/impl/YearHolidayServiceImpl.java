@@ -47,7 +47,7 @@ public class YearHolidayServiceImpl implements IYearHolidayService
      * @return 年休假天数设定
      */
     @Override
-    public YearHoliday selectYearHolidayByempNo(YearHoliday yearHoliday)
+    public List<YearHoliday> selectYearHolidayByempNo(YearHoliday yearHoliday)
     {
         return yearHolidayMapper.selectYearHolidayByempNo(yearHoliday);
     }
@@ -86,6 +86,18 @@ public class YearHolidayServiceImpl implements IYearHolidayService
     public int updateYearHoliday(YearHoliday yearHoliday)
     {
         return yearHolidayMapper.updateYearHoliday(yearHoliday);
+    }
+
+    /**
+     * @Description 修改某员工某年年休假数据
+     * @param yearHoliday 年休假天数设定
+     * @return 结果
+     * @author 266861
+     * @date 2023/6/29 13:37
+     **/
+    @Override
+    public int updateYearHolidayByEmp(YearHoliday yearHoliday){
+        return yearHolidayMapper.updateYearHolidayByEmp(yearHoliday);
     }
 
     /**

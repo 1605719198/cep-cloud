@@ -533,7 +533,7 @@
         <el-row :gutter="20" style="margin-top: 30px;">
           <el-col :span="8">
             <el-form-item label="工资支付银行" prop="salBankId">
-              <dict-tag-human :options="salaryBankList" :value="form.salBankId" idString="true"/>
+              <dict-tag-human :options="salaryBankList" :value="form.salBankId" uuid="true"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -551,7 +551,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="奖金支付银行" prop="bonBankId">
-              <dict-tag-human :options="salaryBankList" :value="form.bonBankId" idString="true"/>
+              <dict-tag-human :options="salaryBankList" :value="form.bonBankId" uuid="true"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
