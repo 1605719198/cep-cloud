@@ -19,8 +19,8 @@ import java.util.List;
 
 /**
  * @author 265675
- * @Description 能源代码维护controller
- * @create 2022-04-24
+ * @Description: 能源代码维护controller
+ * @Date:  2022-04-24
  */
 @RestController
 @RequestMapping("/energy/code")
@@ -30,12 +30,11 @@ public class EnergyCodeController extends BaseController {
     EnergyCodeService energyCodeService;
 
     /**
-     * @description 新增能源代码资料
-     * @author: 111191
-     * @date: 2023年6月30日, 0030 上午 11:41:16
-     * @param: energyCode
-     * @return: java.lang.Object
-     * @throws:
+     * @Description: 新增能源代码资料
+     * @Author: 111191
+     * @Date: 2023年6月30日, 0030 上午 11:41:16
+     * @Param: energyCode 能源代码资料
+     * @Return: AjaxResult
      */
     @Log(title = "新增能源代码资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增能源代码资料")
