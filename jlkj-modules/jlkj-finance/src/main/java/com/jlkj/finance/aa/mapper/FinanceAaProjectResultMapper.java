@@ -62,5 +62,15 @@ public interface FinanceAaProjectResultMapper
      */
     public int deleteFinanceAaProjectResultByIds(Long[] ids);
 
+    /**
+     * 按会计周期和报表代号删除计算公式值
+    * @Description
+    * @Param companyId 公司别
+    * @Param acctPeriod 会计周期
+    * @Param reportNo 报表代号
+    * @return int 笔数
+    * @Author 114288
+    * @Date 2023/7/6 16:17
+    **/
     int deleteFinanceAaProjectResultByPeriod(@Param("companyId")String companyId, @Param("acctPeriod")String acctPeriod, @Param("reportNo")String reportNo);
 }
