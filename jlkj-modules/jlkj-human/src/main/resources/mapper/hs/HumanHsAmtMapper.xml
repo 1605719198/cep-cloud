@@ -188,6 +188,6 @@
     </select>
 
     <select id="selectSumAmt" parameterType="String" resultType="map">
-        select  sum(amt) amt  from human_hs_salary_result   where  amtId = #{parentId}
+        select  sum(amt_payable) amt  from human_hs_amt_detail   where  amt_id = #{parentId}
     </select>
 </mapper>

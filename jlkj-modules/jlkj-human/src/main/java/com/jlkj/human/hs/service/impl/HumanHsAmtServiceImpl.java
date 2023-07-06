@@ -14,8 +14,8 @@ import com.jlkj.human.hs.domain.HumanHsAmt;
 import com.jlkj.human.hs.domain.HumanHsAmtDetail;
 import com.jlkj.human.hs.domain.PayamtRules;
 import com.jlkj.human.hs.mapper.HumanHsAmtMapper;
+import com.jlkj.human.hs.mapper.PayamtRulesMapper;
 import com.jlkj.human.hs.service.IHumanHsAmtService;
-import com.jlkj.human.hs.service.IPayamtRulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,11 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
     private HumanHsAmtMapper humanHsAmtMapper;
     @Autowired
     private RemoteAaApiService  remoteAaApiService;
-    private IPayamtRulesService  payamtRulesService;
+    @Autowired
+    private PayamtRulesMapper payamtRulesMapper;
+
+
+
     /**
      * 查询薪资应付作业
      *
@@ -214,11 +218,11 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             financeVoucherBean.setApid("HS");
             financeVoucherBean.setPgrmid("hs001");
             if(humanHsAmt.getOperTime().equals("01")){
-                financeVoucherBean.setVoucherDesc("工资抛账");
+                financeVoucherBean.setVoucherDesc("应付职工薪酬——工资抛账");
             }else{
-            financeVoucherBean.setVoucherDesc("奖金抛账");
+            financeVoucherBean.setVoucherDesc("应付职工薪酬——奖金抛账");
             }
-            financeVoucherBean.setBillNo(humanHsAmt.getId());
+            financeVoucherBean.setBillNo("20230501");
             financeVoucherBean.setBillUrl("");
             financeVoucherBean.setVoucherType("T");
             financeVoucherBean.setStatus("N");
@@ -234,7 +238,7 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             financeVoucherBean.setCreateBy(humanHsAmt.getCreateBy());
             financeVoucherBean.setCreateName(humanHsAmt.getCreateBy());
             //
-            financeVoucherBean.setCreateDate(DateUtils.getDate());
+            financeVoucherBean.setCreateDate(DateUtils.dateTime());
             financeVoucherBean.setUpdateBy("");
             financeVoucherBean.setCreateTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS,DateUtils.getTime()));
             //薪资付款明细档
@@ -251,8 +255,7 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             FinanceVoucherDetailBean financeVoucherDetailBean = new  FinanceVoucherDetailBean();
             //借方抛帐资料  取得借方会计科目  核算科目一 、核算科目二
             PayamtRules payamtRules = new PayamtRules();
-            payamtRules.setCode(humanHsAmt.getOperTime());
-            List<PayamtRules> payamtRulesList = payamtRulesService.selectPayamtRules(payamtRules);
+            List<PayamtRules> payamtRulesList = payamtRulesMapper.selectPayamtRulesByCode(humanHsAmt.getOperTime());
             if(payamtRulesList.size()>0){
                 payamtRules=  payamtRulesList.get(0);
             }else{
@@ -263,14 +266,14 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             financeVoucherDetailBean.setVoucherNo("");
             financeVoucherDetailBean.setSrlno(1L);
             financeVoucherDetailBean.setDrcr("D");
-            financeVoucherDetailBean.setAcctId("725954b1be764d3390e2ae78e5bfdc61");
+            financeVoucherDetailBean.setAcctId("");
             financeVoucherDetailBean.setAcctCode(payamtRules.getAcctcoded());
            // financeVoucherDetailBean.setAcctName("库存现金-人民币");
             financeVoucherDetailBean.setCalIda("");
-            financeVoucherDetailBean.setCalCodea(payamtRules.getIdcoded());
+            financeVoucherDetailBean.setCalCodea(payamtRules.getIdcoded());//类别  核算项目一
             financeVoucherDetailBean.setCalNamea("");
             financeVoucherDetailBean.setCalIdb("");
-            financeVoucherDetailBean.setCalCodeb(payamtRules.getEfnod());
+            financeVoucherDetailBean.setCalCodeb(payamtRules.getEfnod());//类别 核算项目二
             financeVoucherDetailBean.setCalNameb("");
             financeVoucherDetailBean.setCalIdc("");
             financeVoucherDetailBean.setCalCodec("");
@@ -309,7 +312,7 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             financeVoucherDetailBean.setCrcyUnit("元");
             financeVoucherDetailBean.setQtyFrnamt(amt);
             financeVoucherDetailBean.setNtamt(amt);
-            financeVoucherDetailBean.setSrlDesc("薪资付款借方资料");
+            financeVoucherDetailBean.setSrlDesc("薪资付款贷方资料");
 
             list.add(financeVoucherDetailBean);
             financeVoucherBean.setDetailList(list);
@@ -320,9 +323,11 @@ public class HumanHsAmtServiceImpl implements IHumanHsAmtService
             //根据返回Map 更新薪资付款主档资料
             if(returnMap!=null){
                 if(returnMap.get("isSuccess").toString().equals("Y")){
-
+                    humanHsAmt.setVchrno(returnMap.get("voucherNo").toString());
+                  count =  humanHsAmtMapper.updateHumanHsAmt(humanHsAmt);
                 }else{
-                    throw new ServiceException("薪资付款调用抛帐接口失败!!!!");
+                    String  message  = returnMap.get("message").toString();
+                    throw new ServiceException("薪资付款调用抛帐接口失败!!!!"+message);
                 }
             }else{
                 throw new ServiceException("薪资付款调用抛帐接口失败!!!!");

@@ -231,7 +231,7 @@
 </template>
 
 <script>
-import { listPayAmt, getPayAmt, delPayAmt, addPayAmt, updatePayAmt,getListPayAmtDetail ,sendAAPayAmt} from "@/api/human/hs/payAmt";
+import { listPayAmt, getPayAmt, delPayAmt, addPayAmt, updatePayAmt,getListPayAmtDetail,sendAAPayAmt} from "@/api/human/hs/payAmt";
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
@@ -477,7 +477,8 @@ export default {
     handleSendAA(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm('确认要抛帐吗？').then(function() {
-        return SendAAPayAmt(ids);
+        debugger
+        return sendAAPayAmt(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("抛帐成功");

@@ -105,7 +105,7 @@ public class HumanHsAmtController extends BaseController
 
     @RequiresPermissions("human:payAmt:edit")
     @Log(title = "薪资应付作业", businessType = BusinessType.OTHER)
-    @PostMapping("/{ids}")
+    @PostMapping("/sendAA/{ids}")
     public AjaxResult sendAA(@PathVariable String[] ids)
     {
         return toAjax(humanHsAmtService.sendAA(ids));
