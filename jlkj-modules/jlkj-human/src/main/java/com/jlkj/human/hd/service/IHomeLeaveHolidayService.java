@@ -26,7 +26,7 @@ public interface IHomeLeaveHolidayService
      * @param homeLeaveHoliday 探亲假天数设定
      * @return 探亲假天数设定
      */
-    public HomeLeaveHoliday selectHomeLeaveHolidayByempNo(HomeLeaveHoliday homeLeaveHoliday);
+    public List<HomeLeaveHoliday> selectHomeLeaveHolidayByempNo(HomeLeaveHoliday homeLeaveHoliday);
 
     /**
      * 查询探亲假天数设定列表
@@ -51,6 +51,17 @@ public interface IHomeLeaveHolidayService
      * @return 结果
      */
     public int updateHomeLeaveHoliday(HomeLeaveHoliday homeLeaveHoliday);
+
+    /**
+     * @Description 修改某员工某年探亲假数据
+     * @param homeLeaveHoliday 探亲假天数设定
+     * @return 结果
+     * @author 266861
+     * @date 2023/6/29 13:37
+     **/
+    public int updateHomeLeaveHolidayByEmp(HomeLeaveHoliday homeLeaveHoliday);
+
+
 
     /**
      * 批量删除探亲假天数设定

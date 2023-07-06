@@ -1,11 +1,11 @@
 package com.jlkj.energy.ee.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 固体液体能源量资料
@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @TableName(value ="energy_ee_solid_liquid_data")
 @Data
-public class EnergySolidLiquidData implements Serializable {
+public class EnergySolidLiquidData extends BaseEntity {
     /**
      * ID
      */
@@ -30,31 +30,37 @@ public class EnergySolidLiquidData implements Serializable {
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyId;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "能源代码不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engySource;
 
     /**
      * 计量单位
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyUnit;
 
     /**
      * 能源类别
      */
+    @NotBlank(message = "能源代码不能为空")
     private String engyType;
 
     /**
@@ -216,16 +222,6 @@ public class EnergySolidLiquidData implements Serializable {
      * 料号量10
      */
     private BigDecimal engyCmp10Value;
-
-    /**
-     * 异动人员
-     */
-    private String updateEmpNo;
-
-    /**
-     * 异动时间
-     */
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

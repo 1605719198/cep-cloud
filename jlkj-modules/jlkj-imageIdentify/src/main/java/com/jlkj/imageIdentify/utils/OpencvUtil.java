@@ -1,5 +1,6 @@
 package com.jlkj.imageIdentify.utils;
 
+import net.sourceforge.tess4j.util.ImageHelper;
 import org.opencv.core.*;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,9 +127,10 @@ public  class OpencvUtil {
      * @param mat
      * @return
      */
-    public static Mat face(Mat mat){
-        CascadeClassifier faceDetector = new CascadeClassifier(
-                System.getProperty("user.dir")+"\\opencv\\haarcascades\\haarcascade_frontalface_alt.xml");
+    public static Mat face(Mat mat) throws IOException {
+        //用来记录人脸坐标
+        int[] rectPosition = new int[4];
+        CascadeClassifier faceDetector = new CascadeClassifier(ClassPathUtils.getPath()+"haarcascades/haarcascade_frontalface_alt2.xml");
         // 在图片中检测人脸
         MatOfRect faceDetections = new MatOfRect();
         //指定人脸识别的最大和最小像素范围
@@ -138,8 +141,19 @@ public  class OpencvUtil {
         Rect[] rects = faceDetections.toArray();
         if(rects != null && rects.length == 1){
             // 在每一个识别出来的人脸周围画出一个方框
+            for (Rect rect : rects) {
+                rectPosition[0]=rect.x;
+                rectPosition[1]=rect.y-10;
+                rectPosition[2]=rect.width;
+                rectPosition[3]=rect.height+15;
+            }
             Rect rect = rects[0];
-            return mat;
+
+            //将Mat对象转换回BufferedImage对象
+            BufferedImage bufferedImage = ImgChangeUtil.Mat2BufImg(mat, ".jpg");
+            //截取图片
+            Mat mat1 = ImgChangeUtil.BufImg2Mat(ImageHelper.getSubImage(bufferedImage, rectPosition[0], rectPosition[1], rectPosition[2], rectPosition[3]));
+            return mat1;
         }else{
             return null;
         }
@@ -148,7 +162,7 @@ public  class OpencvUtil {
     /**
      * 循环进行人脸识别
      * */
-    public static Mat faceLoop(Mat src){
+    public static Mat faceLoop(Mat src) throws IOException {
         Mat face=new Mat();
         //默认人脸识别失败时图像旋转90度
         int k=90;
@@ -157,7 +171,8 @@ public  class OpencvUtil {
                 //人脸识别
                 face= OpencvUtil.face(src);
                 if(face==null){
-                    src = rotate3(src,k);
+                    break;
+//                    src = rotate3(src,k);
                 }else{
                     break;
                 }
@@ -168,7 +183,7 @@ public  class OpencvUtil {
                 k=k-30;
             }
         }
-        return src;
+        return face;
     }
 
     /**
@@ -213,8 +228,8 @@ public  class OpencvUtil {
         //计算最长线的角度
         double angle = getAngle(maxLine[0],maxLine[1],maxLine[2],maxLine[3]);
         //旋转角度
-        mat = rotate3( mat,angle);
-        begin = rotate3( begin,angle);
+//        mat = rotate3( mat,angle);
+//        begin = rotate3( begin,angle);
 
         Imgproc.HoughLinesP(mat, storage, 1, Math.PI / 180, 10, 10, 10);
         List<double[]> lines=new ArrayList<>();
@@ -521,37 +536,6 @@ public  class OpencvUtil {
     }
 
     /**
-     * BufferedImage转换成Mat
-     *
-     * @param original
-     *            要转换的BufferedImage
-     * @param imgType
-     *            bufferedImage的类型 如 BufferedImage.TYPE_3BYTE_BGR
-     * @param matType
-     *            转换成mat的type 如 CvType.CV_8UC3
-     */
-    public static Mat BufImg2Mat (BufferedImage original, int imgType, int matType) {
-        if (original == null) {
-            throw new IllegalArgumentException("original == null");
-        }
-        if (original.getType() != imgType) {
-            BufferedImage image = new BufferedImage(original.getWidth(), original.getHeight(), imgType);
-            Graphics2D g = image.createGraphics();
-            try {
-                g.setComposite(AlphaComposite.Src);
-                g.drawImage(original, 0, 0, null);
-            } finally {
-                g.dispose();
-            }
-        }
-        DataBufferByte dbi =(DataBufferByte)original.getRaster().getDataBuffer();
-        byte[] pixels = dbi.getData();
-        Mat mat = Mat.eye(original.getHeight(), original.getWidth(), matType);
-        mat.put(0, 0, pixels);
-        return mat;
-    }
-
-    /**
      * 人眼识别
      * @param mat
      * @return
@@ -673,11 +657,13 @@ public  class OpencvUtil {
             this.reverseOrder = reverseOrder;
         }
 
+        @Override
         public int compare(Point arg0, Point arg1) {
-            if(reverseOrder)
+            if(reverseOrder) {
                 return (int)arg1.x - (int)arg0.x;
-            else
+            } else {
                 return (int)arg0.x - (int)arg1.x;
+            }
         }
     }
 

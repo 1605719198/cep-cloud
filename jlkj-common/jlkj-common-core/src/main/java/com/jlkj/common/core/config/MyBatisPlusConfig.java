@@ -84,8 +84,11 @@ public class MyBatisPlusConfig {
         @Override
         public void insertFill(MetaObject metaObject) {
             if (metaObject.getOriginalObject() instanceof BaseEntity) {
+                this.strictInsertFill(metaObject,Constants.COMP_ID,String.class,"J00"); // 后边根据实际情况，再修改吧
                 this.strictInsertFill(metaObject, Constants.CREATE_TIME, Date.class, new Date(System.currentTimeMillis()));
                 this.strictInsertFill(metaObject, Constants.CREATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
+                this.strictInsertFill(metaObject, Constants.UPDATE_TIME, Date.class, new Date(System.currentTimeMillis()));
+                this.strictInsertFill(metaObject, Constants.UPDATE_BY, String.class, StrUtil.nullToDefault(getUserName(), ""));
             }
             this.setFieldValByName("createDate", new Date(), metaObject);
             this.setFieldValByName("updateDate", new Date(), metaObject);

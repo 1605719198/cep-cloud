@@ -125,6 +125,16 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateHomeLeaveHolidayByEmp" parameterType="HomeLeaveHoliday">
+        UPDATE human_hd_home_leave_holiday
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="restHomeDays != null">rest_home_days = (rest_home_days + #{restHomeDays}),</if>
+            <if test="preHomeDays != null">pre_home_days = (pre_home_days - #{preHomeDays}),</if>
+            <if test="restHomeNums != null">rest_home_nums = (rest_home_nums + #{restHomeNums}),</if>
+        </trim>
+        WHERE emp_no = #{empNo} AND year = #{year}
+    </update>
+
     <update id="updateHomeLeaveHolidayByEmpNo" parameterType="HomeLeaveHoliday">
         UPDATE human_hd_home_leave_holiday
         <trim prefix="SET" suffixOverrides=",">

@@ -44,6 +44,15 @@ export function updateHoliday(data) {
   })
 }
 
+// 修改模拟员工某年年休假天数设定
+export function updateYearHolidayByEmp(data) {
+  return request({
+    url: '/human/holiday/year/update',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除年休假天数设定
 export function delHoliday(id) {
   return request({

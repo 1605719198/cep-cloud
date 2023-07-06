@@ -52,6 +52,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            :disabled="new Date(scope.row.effectDate)<new Date()"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -59,6 +60,7 @@
             v-hasPermi="['human:averageDays:edit']"
           >修改</el-button>
           <el-button
+            :disabled="new Date(scope.row.effectDate)<new Date()"
             size="mini"
             type="text"
             icon="el-icon-delete"

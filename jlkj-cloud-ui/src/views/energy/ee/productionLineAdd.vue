@@ -1,19 +1,11 @@
 <template>
   <div class="avue-crud">
     <el-form ref="addForm" :model="addForm" status-icon :rules="rules" label-width="110px">
-      <el-form-item label="工厂产线代码" prop="millIdCode">
-        <el-select v-model="addForm.millIdCode" :popper-append-to-body="false" placeholder="请选择" style="width: 90%!important;">
-          <el-option
-            v-for="item in dict.type.energy_mill_code"
-            :key="item.value"
-            :label="item.label"
-            :value="item.label">
-          </el-option>
-        </el-select>
-
+      <el-form-item label="产线代码" prop="millIdCode">
+        <el-input v-model="addForm.millIdCode" maxlength="8"/>
       </el-form-item>
       <el-form-item label="产线名称" prop="millIdName">
-        <el-input v-model="addForm.millIdName" />
+        <el-input v-model="addForm.millIdName" maxlength="25"/>
       </el-form-item>
       <el-form-item label="成本中心" prop="costCenter">
         <el-autocomplete
@@ -24,7 +16,6 @@
           @select="handleSelectCostCenter"
           style="width: 90%!important;"
         ></el-autocomplete>
-
       </el-form-item>
     </el-form>
     <div slot="footer" class="el-dialog__footer">
@@ -43,11 +34,11 @@
     data() {
       var checkA = (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('工厂产线代码栏位为空，请重新输入！'));
+          return callback(new Error('产线代码栏位为空，请重新输入！'));
         }
         setTimeout(() => {
           if (value.length > 8) {
-            callback(new Error('工厂产线代码参数长度为 8 ，请重新输入！'));
+            callback(new Error('产线代码参数长度为 8 ，请重新输入！'));
           } else {
             callback();
           }
@@ -61,7 +52,7 @@
             callback();
           }
         } else {
-          callback();
+          return callback(new Error('产线名称栏位为空，请重新输入！'));
         }
       };
       return {

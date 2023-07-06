@@ -147,3 +147,11 @@ export function selectUser(query) {
     params: query
   })
 }
+// 查询所有用户列表，用于用户数据字典
+export function queryAllUser(query) {
+  return request({
+    url: '/system/user/queryAllUser',
+    method: 'get',
+    params: query
+  })
+}

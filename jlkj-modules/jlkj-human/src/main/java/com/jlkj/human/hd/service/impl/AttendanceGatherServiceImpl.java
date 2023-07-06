@@ -7,7 +7,6 @@ import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.human.hd.domain.AttendanceGather;
-import com.jlkj.human.hd.domain.OverTime;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
 import com.jlkj.human.hd.mapper.AttendanceGatherMapper;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
@@ -36,8 +35,8 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
     @Resource
     protected Validator validator;
 
-    @Resource
-    OverTimeServiceImpl overTimeService;
+//    @Resource
+//    OverTimeServiceImpl overTimeService;
 
     /**
      * 连表查询加班/请假出勤汇总记录
@@ -340,11 +339,11 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 {
                     BeanUtils.copyProperties(attendanceGatherDTO, attendanceGather);
                     BeanValidators.validateWithException(validator, attendanceGatherDTO);
-                    overTimeService.lambdaUpdate()
-                            .eq(OverTime::getCompId, attendanceGatherDTO.getCompId())
-                            .eq(OverTime::getYear, attendanceGatherDTO.getYear())
-                            .eq(OverTime::getMonth, attendanceGatherDTO.getMonth())
-                            .eq(OverTime::getEmpNo, attendanceGatherDTO.getEmpNo()).remove();
+//                    overTimeService.lambdaUpdate()
+//                            .eq(OverTime::getCompId, attendanceGatherDTO.getCompId())
+//                            .eq(OverTime::getYear, attendanceGatherDTO.getYear())
+//                            .eq(OverTime::getMonth, attendanceGatherDTO.getMonth())
+//                            .eq(OverTime::getEmpNo, attendanceGatherDTO.getEmpNo()).remove();
                     lambdaUpdate()
                             .eq(AttendanceGather::getCompId, attendanceGatherDTO.getCompId())
                             .eq(AttendanceGather::getYear, attendanceGatherDTO.getYear())

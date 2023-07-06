@@ -72,16 +72,6 @@ public class EnergyCodeDTO {
     private String acctSys;
 
     /**
-     * 建立人员
-     */
-    private String createEmpNo;
-
-    /**
-     * 修改人员
-     */
-    private String updateEmpNo;
-
-    /**
      * 逻辑删除标识
      */
     private Integer delFlag;
