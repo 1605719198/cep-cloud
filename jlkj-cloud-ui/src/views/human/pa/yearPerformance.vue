@@ -38,8 +38,9 @@
     </el-form>
 
     <el-table v-loading="loading" :data="yearPerformanceList">
-      <el-table-column label="序号" align="center" prop="id" width="60"/>
+      <el-table-column label="序号" align="center" prop="num" width="60"/>
       <el-table-column label="一级单位" align="center" prop="dept" />
+      <el-table-column label="年度" align="center" prop="year" />
       <el-table-column label="状态" align="center" prop="status" >
       <template v-slot="scope">
         <dict-tag-human :options="performanceOptions.Status" :value="scope.row.status"/>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.SaveTimeStatisticsMapper">
+    
+    <resultMap type="SaveTimeStatistics" id="SaveTimeStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="year"    column="year"    />
+        <result property="month"    column="month"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="overtimeDays"    column="overtime_days"    />
+        <result property="overtimeHours"    column="overtime_hours"    />
+        <result property="saveDays"    column="save_days"    />
+        <result property="saveHours"    column="save_hours"    />
+        <result property="compDays"    column="comp_days"    />
+        <result property="compHours"    column="comp_hours"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectSaveTimeStatisticsVo">
+        SELECT id, comp_id, year, month, emp_id, emp_name, emp_no, post_id, post_name, overtime_days, overtime_hours, save_days, save_hours, comp_days, comp_hours, creator, creator_id, create_date FROM human_hd_save_time
+    </sql>
+
+    <select id="selectSaveTimeStatisticsList" parameterType="SaveTimeStatistics" resultMap="SaveTimeStatisticsResult">
+        SELECT row_number() over(ORDER BY emp_no) AS num,emp_no,emp_name,post_name,overtime_hours,save_hours,comp_hours FROM human_hd_save_time
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> AND emp_no = #{empNo}</if>
+            <if test="postName != null  and postName != ''"> AND post_name LIKE concat('%', #{postName}, '%')</if>
+        </where>
+        ORDER BY emp_no
+    </select>
+    
+    <select id="selectSaveTimeStatisticsById" parameterType="String" resultMap="SaveTimeStatisticsResult">
+        <include refid="selectSaveTimeStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertSaveTimeStatistics" parameterType="SaveTimeStatistics">
+        INSERT INTO human_hd_save_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="year != null">year,</if>
+            <if test="month != null">month,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="overtimeDays != null">overtime_days,</if>
+            <if test="overtimeHours != null">overtime_hours,</if>
+            <if test="saveDays != null">save_days,</if>
+            <if test="saveHours != null">save_hours,</if>
+            <if test="compDays != null">comp_days,</if>
+            <if test="compHours != null">comp_hours,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="month != null">#{month},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postName != null">#{postName},</if>
+            <if test="overtimeDays != null">#{overtimeDays},</if>
+            <if test="overtimeHours != null">#{overtimeHours},</if>
+            <if test="saveDays != null">#{saveDays},</if>
+            <if test="saveHours != null">#{saveHours},</if>
+            <if test="compDays != null">#{compDays},</if>
+            <if test="compHours != null">#{compHours},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSaveTimeStatistics" parameterType="SaveTimeStatistics">
+        UPDATE human_hd_save_time
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="overtimeDays != null">overtime_days = #{overtimeDays},</if>
+            <if test="overtimeHours != null">overtime_hours = #{overtimeHours},</if>
+            <if test="saveDays != null">save_days = #{saveDays},</if>
+            <if test="saveHours != null">save_hours = #{saveHours},</if>
+            <if test="compDays != null">comp_days = #{compDays},</if>
+            <if test="compHours != null">comp_hours = #{compHours},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteSaveTimeStatisticsById" parameterType="String">
+        DELETE FROM human_hd_save_time WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteSaveTimeStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_save_time WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

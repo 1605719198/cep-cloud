@@ -19,8 +19,11 @@ public class YearPerformance extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    @Excel(name = "序号")
     private String id;
+
+    /** 序号 */
+    @Excel(name = "序号")
+    private String num;
 
     /** 公司别 */
     @Excel(name = "公司")
@@ -87,6 +90,15 @@ public class YearPerformance extends BaseEntity
     public String getId()
     {
         return id;
+    }
+    public void setNum(String num)
+    {
+        this.num = num;
+    }
+
+    public String getNum()
+    {
+        return num;
     }
     public void setPeople(String people)
     {
@@ -248,6 +260,7 @@ public class YearPerformance extends BaseEntity
             .append("id", getId())
                 .append("people", getPeople())
                 .append("proportion", getProportion())
+                .append("num", getNum())
             .append("compId", getCompId())
             .append("dept", getDept())
             .append("postId", getPostId())

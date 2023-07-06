@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -12,7 +11,6 @@ import com.jlkj.human.hd.service.IPersonHolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,19 +36,6 @@ public class PersonHolidayController extends BaseController
         startPage();
         List<PersonHoliday> list = personHolidayService.selectPersonHolidayList(personHoliday);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出员工请假记录列表
-     */
-    @RequiresPermissions("human:personHoliday:export")
-    @Log(title = "员工请假记录", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, PersonHoliday personHoliday)
-    {
-        List<PersonHoliday> list = personHolidayService.selectPersonHolidayList(personHoliday);
-        ExcelUtil<PersonHoliday> util = new ExcelUtil<PersonHoliday>(PersonHoliday.class);
-        util.exportExcel(response, list, "员工请假记录数据");
     }
 
     /**

@@ -27,7 +27,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button v-hasPermi="['code_material_query']" type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button v-hasPermi="['code:material:query']" type="primary" icon="el-icon-search" size="mini"
+                   @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="handleEmpty">重置</el-button>
       </el-form-item>
     </el-form>
@@ -39,7 +40,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['code_material_add']"
+          v-hasPermi="['code:material:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -50,7 +51,7 @@
           size="mini"
           :disabled="openIsDisabled"
           @click="handleDelete"
-          v-hasPermi="['code_material_delete']"
+          v-hasPermi="['code:material:delete']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -117,12 +118,12 @@
                        class-name="small-padding fixed-width"
                        width="180px">
         <template slot-scope="scope">
-          <el-button v-hasPermi="['code_material_update']"
+          <el-button v-hasPermi="['code:material:update']"
                      size="mini"
                      type="text"
                      icon="el-icon-edit"
                      @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button v-hasPermi="['code_material_delete']"
+          <el-button v-hasPermi="['code:material:delete']"
                      size="mini"
                      type="text"
                      icon="el-icon-delete"

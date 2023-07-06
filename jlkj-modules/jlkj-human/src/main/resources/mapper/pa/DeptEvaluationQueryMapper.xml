@@ -43,14 +43,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="proportion"    column="proportion"    />
         <result property="month1"    column="month1"    />
         <result property="month2"    column="month2"    />
+        <result property="num"    column="num"    />
     </resultMap>
 
     <sql id="selectDeptEvaluationQueryVo">
-        SELECT id, comp_id, merit_type, merit_month, emp_id, month1, month2 people, proportion, dept_type, dept, post_id, is_team, team_ratio, team_score, is_point, point_ratio, point_score, is_fix, fix_ratio, fix_score, fix_id, is_kpi, kpi_ratio, kpi_score, self_appr, adm_appr, pd_adjust, pb_adjust, other_adjust, score, self_score, adm_score, rank, merit_status, creator, creator_id, create_date FROM human_pa_person_performance
+        SELECT id, comp_id, merit_type, merit_month, emp_id, month1, month2, people, num, proportion, dept_type, dept, post_id, is_team, team_ratio, team_score, is_point, point_ratio, point_score, is_fix, fix_ratio, fix_score, fix_id, is_kpi, kpi_ratio, kpi_score, self_appr, adm_appr, pd_adjust, pb_adjust, other_adjust, score, self_score, adm_score, rank, merit_status, creator, creator_id, create_date FROM human_pa_person_performance
     </sql>
 
     <select id="selectDeptEvaluationQueryList" parameterType="DeptEvaluationQuery" resultMap="DeptEvaluationQueryResult">
-        SELECT merit_status,id,dept,count(1) AS 'people',concat (round(count(1)/(SELECT count(1) COUNT FROM human_pa_person_performance
+        SELECT row_number() over(ORDER BY merit_status) AS num,merit_status,id,dept,comp_id,merit_month,merit_type,count(1) AS 'people',concat (round(count(1)/(SELECT count(1) COUNT FROM human_pa_person_performance
         <where>
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="meritType != null  and meritType != ''"> AND merit_type = #{meritType}</if>

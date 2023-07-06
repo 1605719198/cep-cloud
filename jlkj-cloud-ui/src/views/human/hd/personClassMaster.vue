@@ -411,6 +411,7 @@ export default {
       deep:true,
       immediate:false,
       handler:function(newV){
+        // this.form.classId = null;
         if(newV!=null){
           this.getShiftClass();
         }else{

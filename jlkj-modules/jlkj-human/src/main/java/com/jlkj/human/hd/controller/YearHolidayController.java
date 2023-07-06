@@ -97,6 +97,21 @@ public class YearHolidayController extends BaseController
         return toAjax(yearHolidayService.updateYearHoliday(yearHoliday));
     }
 
+
+    /**
+     * @Description 修改某员工某年年休假数据
+     * @param yearHoliday 探亲假天数设定
+     * @return 结果
+     * @author 266861
+     * @date 2023/6/29 13:37
+     **/
+    @Log(title = "年休假天数设定", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public AjaxResult update(@RequestBody YearHoliday yearHoliday)
+    {
+        return toAjax(yearHolidayService.updateYearHolidayByEmp(yearHoliday));
+    }
+
     /**
      * 删除年休假天数设定
      */

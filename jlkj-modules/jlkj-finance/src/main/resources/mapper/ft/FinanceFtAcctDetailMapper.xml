@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.mapper.ft.FinanceFtAcctDetailMapper">
+    
+    <resultMap type="FinanceFtAcctDetail" id="FinanceFtAcctDetailResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="acctLogic"    column="acct_logic"    />
+        <result property="seq"    column="seq"    />
+        <result property="drCr"    column="dr_cr"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="calTypeCodea"    column="cal_type_codea"    />
+        <result property="calTypeCodeb"    column="cal_type_codeb"    />
+        <result property="calTypeCodec"    column="cal_type_codec"    />
+        <result property="calTypeCoded"    column="cal_type_coded"    />
+        <result property="amtType"    column="amt_type"    />
+        <result property="dueDate"    column="due_date"    />
+        <result property="detailRemark"    column="detail_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtAcctDetailVo">
+        SELECT uuid, company_id, acct_logic, seq, dr_cr, acct_code, cal_type_codea, cal_type_codeb, cal_type_codec, cal_type_coded, amt_type, due_date, detail_remark, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_acct_detail
+    </sql>
+
+    <select id="selectFinanceFtAcctDetailList" parameterType="FinanceFtAcctDetail" resultMap="FinanceFtAcctDetailResult">
+        <include refid="selectFinanceFtAcctDetailVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtAcctDetailByUuid" parameterType="String" resultMap="FinanceFtAcctDetailResult">
+        <include refid="selectFinanceFtAcctDetailVo"/>
+        WHERE uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtAcctDetail" parameterType="FinanceFtAcctDetail">
+        INSERT INTO finance_ft_acct_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="acctLogic != null">acct_logic,</if>
+            <if test="seq != null">seq,</if>
+            <if test="drCr != null">dr_cr,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="calTypeCodea != null">cal_type_codea,</if>
+            <if test="calTypeCodeb != null">cal_type_codeb,</if>
+            <if test="calTypeCodec != null">cal_type_codec,</if>
+            <if test="calTypeCoded != null">cal_type_coded,</if>
+            <if test="amtType != null">amt_type,</if>
+            <if test="dueDate != null">due_date,</if>
+            <if test="detailRemark != null">detail_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="acctLogic != null">#{acctLogic},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="drCr != null">#{drCr},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="calTypeCodea != null">#{calTypeCodea},</if>
+            <if test="calTypeCodeb != null">#{calTypeCodeb},</if>
+            <if test="calTypeCodec != null">#{calTypeCodec},</if>
+            <if test="calTypeCoded != null">#{calTypeCoded},</if>
+            <if test="amtType != null">#{amtType},</if>
+            <if test="dueDate != null">#{dueDate},</if>
+            <if test="detailRemark != null">#{detailRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtAcctDetail" parameterType="FinanceFtAcctDetail">
+        UPDATE finance_ft_acct_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="acctLogic != null">acct_logic = #{acctLogic},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="drCr != null">dr_cr = #{drCr},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="calTypeCodea != null">cal_type_codea = #{calTypeCodea},</if>
+            <if test="calTypeCodeb != null">cal_type_codeb = #{calTypeCodeb},</if>
+            <if test="calTypeCodec != null">cal_type_codec = #{calTypeCodec},</if>
+            <if test="calTypeCoded != null">cal_type_coded = #{calTypeCoded},</if>
+            <if test="amtType != null">amt_type = #{amtType},</if>
+            <if test="dueDate != null">due_date = #{dueDate},</if>
+            <if test="detailRemark != null">detail_remark = #{detailRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtAcctDetailByUuid" parameterType="String">
+        DELETE FROM finance_ft_acct_detail WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtAcctDetailByUuids" parameterType="String">
+        DELETE FROM finance_ft_acct_detail WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

@@ -139,4 +139,12 @@ public interface SysUserMapper
      * @return
      */
     List<Long> selectList(List<String> groups);
+    /**
+     * @description 查询全部用户的工号、姓名，用于员工数据字典
+     * @author: 111191
+     * @date: 2023年7月5日, 0005 上午 09:19:14
+     * @param:
+     * @return: java.util.List<com.jlkj.system.api.domain.SysUser>
+     */
+    public List<SysUser> queryAllUserDicts();
 }

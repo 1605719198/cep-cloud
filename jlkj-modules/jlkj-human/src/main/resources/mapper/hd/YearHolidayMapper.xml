@@ -35,8 +35,8 @@
     <select id="selectYearHolidayList" parameterType="YearHoliday" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
         <where>
-            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
-            <if test="empNo != null  and empNo != ''"> AND emp_no = #{empNo}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
         </where>
     </select>
 
@@ -47,9 +47,8 @@
 
     <select id="selectYearHolidayByempNo" parameterType="YearHoliday" resultMap="YearHolidayResult">
         <include refid="selectYearHolidayVo"/>
-        WHERE emp_no = #{empNo}
-        AND comp_id = #{compId}
-        AND year = #{year}
+                WHERE emp_no = #{empNo}
+                AND comp_id = #{compId}
     </select>
 
     <select id="selectYearHolidayByEmpNo" parameterType="YearHoliday" resultMap="YearHolidayResult">
@@ -124,6 +123,15 @@
         </trim>
         WHERE id = #{id}
     </update>
+
+    <update id="updateYearHolidayByEmp" parameterType="YearHoliday">
+        UPDATE human_hd_year_holiday
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="restDays != null">rest_days = (rest_days + #{restDays}),</if>
+        </trim>
+        WHERE emp_no = #{empNo} AND year = #{year}
+    </update>
+
     <update id="updateYearHolidayByEmpNo" parameterType="YearHoliday">
         UPDATE human_hd_year_holiday
         <trim prefix="SET" suffixOverrides=",">
@@ -149,11 +157,11 @@
     </update>
 
     <delete id="deleteYearHolidayById" parameterType="String">
-        DELETE FROM human_hd_year_holiday WHERE id = #{id}
+        DELETE FROM human_hd_year_holiday where id = #{id}
     </delete>
 
     <delete id="deleteYearHolidayByIds" parameterType="String">
-        DELETE FROM human_hd_year_holiday WHERE id IN
+        DELETE FROM human_hd_year_holiday where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
