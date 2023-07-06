@@ -422,6 +422,10 @@ public class Constants {
      * 更新人姓名
      */
     public static final String UPDATE_BY = "updateBy";
+    /**
+     * 公司别
+     */
+    public static final String COMP_ID = "compId";
 
 
 // ************************************************   以下为 Integer 类型常量      ***********************************************

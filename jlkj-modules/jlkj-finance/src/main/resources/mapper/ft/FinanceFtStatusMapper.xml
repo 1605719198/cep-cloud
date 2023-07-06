@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtStatusMapper">
+    
+    <resultMap type="FinanceFtStatus" id="FinanceFtStatusResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="statusCode"    column="status_code"    />
+        <result property="statusName"    column="status_name"    />
+        <result property="statusRemark"    column="status_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtStatusVo">
+        SELECT uuid, company_id, status_code, status_name, status_remark, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_status
+    </sql>
+
+    <select id="selectFinanceFtStatusList" parameterType="FinanceFtStatus" resultMap="FinanceFtStatusResult">
+        <include refid="selectFinanceFtStatusVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="statusCode != null  and statusCode != ''"> AND status_code = #{statusCode}</if>
+            <if test="statusName != null  and statusName != ''"> AND status_name LIKE concat('%', #{statusName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtStatusByUuid" parameterType="String" resultMap="FinanceFtStatusResult">
+        <include refid="selectFinanceFtStatusVo"/>
+        WHERE uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtStatus" parameterType="FinanceFtStatus">
+        INSERT INTO finance_ft_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="statusCode != null">status_code,</if>
+            <if test="statusName != null">status_name,</if>
+            <if test="statusRemark != null">status_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="statusCode != null">#{statusCode},</if>
+            <if test="statusName != null">#{statusName},</if>
+            <if test="statusRemark != null">#{statusRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtStatus" parameterType="FinanceFtStatus">
+        UPDATE finance_ft_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="statusCode != null">status_code = #{statusCode},</if>
+            <if test="statusName != null">status_name = #{statusName},</if>
+            <if test="statusRemark != null">status_remark = #{statusRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtStatusByUuid" parameterType="String">
+        DELETE FROM finance_ft_status WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtStatusByUuids" parameterType="String">
+        DELETE FROM finance_ft_status WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

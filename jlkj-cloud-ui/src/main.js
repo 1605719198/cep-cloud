@@ -1,7 +1,6 @@
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
-
 import Element from 'element-ui'
 //全局修改默认配置，点击空白处不能关闭弹窗
 Element.Dialog.props.closeOnClickModal.default = false
@@ -26,9 +25,6 @@ import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, 
 import Pagination from "@/components/Pagination";
 // 自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
-//代码高亮插件
-// import hljs from 'highlight.js'
-// import 'highlight.js/styles/github-gist.css'
 // 富文本组件
 import Editor from "@/components/Editor"
 // 文件上传组件
@@ -44,14 +40,25 @@ import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
 import Tinymce from '@/components/tinymce/index.vue'
+import {UserDictOnlyName,UserDictFullName} from '@/utils/dict/UserDict';
 // 数据可视化看板
 import * as echarts from "echarts";
 //全局变量
 import globalVariable from '@/utils/global_variable'
 //注册全局组件(单选下拉树)
 import selectTree from './components/select-Tree/selectTree.vue'
-Vue.component('select-tree', selectTree)
+
 import moment from 'moment'
+//注册全局组件(设备选择器)
+import equipmentSelection from './components/equipment-selection/index.vue'
+//注册全局组件
+import tableTabs from './components/table-tabs/tableTabs.vue'
+//wangEditor富文本编辑器
+import wangEditor from './components/Editor/WangEditor.vue'
+//注册全局组件(人员选择器)
+import personnelSelection from './components/personnel-selection/index.vue'
+
+
 Vue.prototype.$moment = moment
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -60,7 +67,8 @@ Vue.prototype.parseTime = parseTime
 Vue.prototype.resetForm = resetForm
 Vue.prototype.addDateRange = addDateRange
 Vue.prototype.selectDictLabel = selectDictLabel
-Vue.prototype.selectDictLabels = selectDictLabels
+Vue.prototype.UserDictOnlyName = UserDictOnlyName
+Vue.prototype.UserDictFullName = UserDictFullName
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 Vue.prototype.$axios = axios
@@ -69,11 +77,9 @@ Vue.prototype.$echarts = echarts;
 Vue.prototype.GLOBAL = globalVariable
 //全局注册eventBus(页面关闭的时候需要取消关闭)
 Vue.prototype.$EventBus = new Vue();
-//注册全局组件
-import tableTabs from './components/table-tabs/tableTabs.vue'
+
 Vue.component('table-tabs', tableTabs)
-//wangEditor富文本编辑器
-import wangEditor from './components/Editor/WangEditor.vue'
+Vue.component('select-tree', selectTree)
 Vue.component('editor-bar', wangEditor)
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -92,11 +98,7 @@ Vue.use(plugins)
 Vue.use(VueMeta)
 Vue.use(VueClipboard)
 
-//注册全局组件(人员选择器)
-import personnelSelection from './components/personnel-selection/index.vue'
 Vue.component('personnel-selection', personnelSelection)
-//注册全局组件(设备选择器)
-import equipmentSelection from './components/equipment-selection/index.vue'
 Vue.component('equipment-selection', equipmentSelection)
 
 DictData.install()

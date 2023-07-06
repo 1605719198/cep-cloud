@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtAcctMainMapper">
+    
+    <resultMap type="FinanceFtAcctMain" id="FinanceFtAcctMainResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="acctType"    column="acct_type"    />
+        <result property="acctLogic"    column="acct_logic"    />
+        <result property="acctDetail"    column="acct_detail"    />
+        <result property="logicName"    column="logic_name"    />
+        <result property="isAa"    column="is_aa"    />
+        <result property="logicRemark"    column="logic_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtAcctMainVo">
+        SELECT uuid, company_id, acct_type, acct_logic, acct_detail, logic_name, is_aa, logic_remark, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_acct_main
+    </sql>
+
+    <select id="selectFinanceFtAcctMainList" parameterType="FinanceFtAcctMain" resultMap="FinanceFtAcctMainResult">
+        <include refid="selectFinanceFtAcctMainVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="acctType != null  and acctType != ''"> AND acct_type = #{acctType}</if>
+            <if test="acctLogic != null  and acctLogic != ''"> AND acct_logic = #{acctLogic}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtAcctMainByUuid" parameterType="String" resultMap="FinanceFtAcctMainResult">
+        <include refid="selectFinanceFtAcctMainVo"/>
+        WHERE uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtAcctMain" parameterType="FinanceFtAcctMain">
+        INSERT INTO finance_ft_acct_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="acctType != null">acct_type,</if>
+            <if test="acctLogic != null">acct_logic,</if>
+            <if test="acctDetail != null">acct_detail,</if>
+            <if test="logicName != null">logic_name,</if>
+            <if test="isAa != null">is_aa,</if>
+            <if test="logicRemark != null">logic_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="acctType != null">#{acctType},</if>
+            <if test="acctLogic != null">#{acctLogic},</if>
+            <if test="acctDetail != null">#{acctDetail},</if>
+            <if test="logicName != null">#{logicName},</if>
+            <if test="isAa != null">#{isAa},</if>
+            <if test="logicRemark != null">#{logicRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtAcctMain" parameterType="FinanceFtAcctMain">
+        UPDATE finance_ft_acct_main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="acctType != null">acct_type = #{acctType},</if>
+            <if test="acctLogic != null">acct_logic = #{acctLogic},</if>
+            <if test="acctDetail != null">acct_detail = #{acctDetail},</if>
+            <if test="logicName != null">logic_name = #{logicName},</if>
+            <if test="isAa != null">is_aa = #{isAa},</if>
+            <if test="logicRemark != null">logic_remark = #{logicRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtAcctMainByUuid" parameterType="String">
+        DELETE FROM finance_ft_acct_main WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtAcctMainByUuids" parameterType="String">
+        DELETE FROM finance_ft_acct_main WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

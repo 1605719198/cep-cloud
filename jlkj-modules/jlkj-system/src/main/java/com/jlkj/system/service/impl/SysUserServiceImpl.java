@@ -577,4 +577,16 @@ public class SysUserServiceImpl implements ISysUserService
         return userMapper.selectList(groups);
     }
 
+    /**
+     * @description 查询全部用户的工号、姓名，用于员工数据字典
+     * @author: 111191
+     * @date: 2023年7月5日, 0005 上午 09:24:22
+     * @return: java.util.List<com.jlkj.system.api.domain.SysUser>
+     */
+    @Override
+    public List<SysUser> queryAllUserDicts()
+    {
+        return userMapper.queryAllUserDicts();
+    }
+
 }

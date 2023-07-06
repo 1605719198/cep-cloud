@@ -23,14 +23,4 @@ public class EnergyMillOfCostDTO {
      * 产线名称
      */
     private String millIdName;
-
-    /**
-     * 当前页
-     */
-    private Long pageNum;
-
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
 }

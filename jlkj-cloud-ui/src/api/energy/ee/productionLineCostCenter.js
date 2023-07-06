@@ -23,7 +23,11 @@ export const queryInfo = (data) => request({
   method: 'get',
   params: data
 });
-
+// 查询选单 绑定数据
+export const querySelectInfo = () => request({
+  url: '/energy/energy/mill/cost/selectsZh',
+  method: 'get'
+});
 // 根据条件查询信息
 export function listApplyLike (data) {
   return request({

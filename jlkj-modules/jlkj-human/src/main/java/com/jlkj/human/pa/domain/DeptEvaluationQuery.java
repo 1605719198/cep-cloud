@@ -19,16 +19,21 @@ public class DeptEvaluationQuery extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    @Excel(name = "序号")
     private String id;
+
+    /** 序号 */
+    @Excel(name = "序号")
+    private String num;
 
     /** 公司别 */
     private String compId;
 
     /** 考评类别（1-月度，2-季度，3-年度） */
+    @Excel(name = "考评类别")
     private String meritType;
 
     /** 考评年月 */
+    @Excel(name = "考评年月")
     private String meritMonth;
 
     private String month1;
@@ -476,12 +481,22 @@ public class DeptEvaluationQuery extends BaseEntity
     {
         return createDate;
     }
+    public void setNum(String num)
+    {
+        this.num = num;
+    }
+
+    public String getNum()
+    {
+        return num;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
                 .append("month1", getMonth1())
                 .append("month2", getMonth2())
+                .append("num", getNum())
             .append("id", getId())
             .append("compId", getCompId())
             .append("meritType", getMeritType())
