@@ -47,7 +47,6 @@ public class HumanDeptController extends BaseController
     * @author 266861
     * @date 2023/6/21 14:59
     **/
-    @RequiresPermissions("human:deptMaintenance:list")
     @GetMapping("/list")
     public TableDataInfo list(HumanDept humanDept)
     {
