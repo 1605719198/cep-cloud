@@ -4,6 +4,7 @@ import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -141,4 +142,13 @@ public interface FinanceAaVoucherDetailMapper
      * @return 结果
      */
     public int deleteFinanceAaVoucherDetailByIds(String[] ids);
+    /**
+     * 按系统别查询
+    * @Description
+    * @Param
+    * @return
+    * @Author 114288
+    * @Date 2023/7/4 12:20
+    **/
+    List<FinanceAaVoucherDetail> selectDetailByPpgrmId(String companyId, String acctPeriod, String code, String voucherAA);
 }

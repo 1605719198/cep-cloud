@@ -35,6 +35,7 @@ public interface IFinanceAaReportInfoService
      */
     public int insertFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo);
 
+
     /**
      * 修改印项目计算记录
      * 

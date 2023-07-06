@@ -126,6 +126,39 @@ public class FinanceAaLedgerlCal extends BaseEntity
     /** 本年累计贷方发生数量 */
     @Excel(name = "本年累计贷方发生数量")
     private BigDecimal yearCrQty;
+    /** 数量
+    * @Description
+    * @Param
+    * @return
+    * @Author 114288
+    * @Date 2023/7/5 10:10
+    **/
+    private BigDecimal qty;
+
+    public BigDecimal getQty() {
+        return qty;
+    }
+
+    public void setQty(BigDecimal qty) {
+        this.qty = qty;
+    }
+
+    public BigDecimal getAmt() {
+        return amt;
+    }
+
+    public void setAmt(BigDecimal amt) {
+        this.amt = amt;
+    }
+
+    /** 金额
+    * @Description
+    * @Param
+    * @return
+    * @Author 114288
+    * @Date 2023/7/5 10:10
+    **/
+    private BigDecimal amt;
 
     public void setId(String id)
     {
@@ -411,6 +444,8 @@ public class FinanceAaLedgerlCal extends BaseEntity
             .append("yearCrAmt", getYearCrAmt())
             .append("yearDrQty", getYearDrQty())
             .append("yearCrQty", getYearCrQty())
+                .append("qty", getQty())
+                .append("amt", getAmt())
             .toString();
     }
 }

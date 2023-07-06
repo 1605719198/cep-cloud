@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.mapper;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaProjectResult;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -60,4 +61,6 @@ public interface FinanceAaProjectResultMapper
      * @return 结果
      */
     public int deleteFinanceAaProjectResultByIds(Long[] ids);
+
+    int deleteFinanceAaProjectResultByPeriod(@Param("companyId")String companyId, @Param("acctPeriod")String acctPeriod, @Param("reportNo")String reportNo);
 }

@@ -30,10 +30,20 @@ public class FinanceAaReportInfo extends BaseEntity
     @Excel(name = "报表id")
     private String reportId;
 
+
+
+    /** 报表no
+     */
+    @Excel(name = "报表代号")
+    private String reportNo;
+    /** 报表name
+     */
+    @Excel(name = "报表名称")
+    private String reportName;
     /** 会计周期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "会计周期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date acctPeriod;
+
+    @Excel(name = "会计周期", width = 30)
+    private String acctPeriod;
 
     /** 状态 */
     @Excel(name = "状态")
@@ -75,12 +85,12 @@ public class FinanceAaReportInfo extends BaseEntity
     {
         return reportId;
     }
-    public void setAcctPeriod(Date acctPeriod)
+    public void setAcctPeriod(String acctPeriod)
     {
         this.acctPeriod = acctPeriod;
     }
 
-    public Date getAcctPeriod()
+    public String getAcctPeriod()
     {
         return acctPeriod;
     }
@@ -111,13 +121,29 @@ public class FinanceAaReportInfo extends BaseEntity
     {
         return createName;
     }
+    public String getReportNo() {
+        return reportNo;
+    }
 
+    public void setReportNo(String reportNo) {
+        this.reportNo = reportNo;
+    }
+
+    public String getReportName() {
+        return reportName;
+    }
+
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("companyId", getCompanyId())
             .append("reportId", getReportId())
+            .append("reportNo", getReportNo())
+            .append("reportName", getReportName())
             .append("acctPeriod", getAcctPeriod())
             .append("status", getStatus())
             .append("info", getInfo())

@@ -22,8 +22,16 @@ public interface FinanceAaReportInfoMapper
     public FinanceAaReportInfo selectFinanceAaReportInfoById(String id);
 
     /**
+     * 查询印项目计算记录
+     *
+     * @param financeAaReportInfo 印项目计算记录
+     * @return 印项目计算记录
+     */
+    public  List<FinanceAaReportInfo> selectFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo);
+
+    /**
      * 查询印项目计算记录列表
-     * 
+     *
      * @param financeAaReportInfo 印项目计算记录
      * @return 印项目计算记录集合
      */
