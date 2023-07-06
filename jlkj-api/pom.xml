@@ -11,6 +11,7 @@
     <modules>
         <module>jlkj-api-system</module>
         <module>jlkj-api-finance</module>
+        <module>jlkj-api-human</module>
     </modules>
 
     <artifactId>jlkj-api</artifactId>

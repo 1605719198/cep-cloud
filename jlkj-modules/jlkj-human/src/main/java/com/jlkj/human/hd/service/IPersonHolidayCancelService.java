@@ -60,11 +60,4 @@ public interface IPersonHolidayCancelService
      */
     public int deletePersonHolidayCancelById(String id);
 
-    /**
-     * 撤回员工销假信息
-     *
-     * @param ids 员工销假主键
-     * @return 结果
-     */
-    public int otherPersonHolidayCancelByIds(String ids);
 }

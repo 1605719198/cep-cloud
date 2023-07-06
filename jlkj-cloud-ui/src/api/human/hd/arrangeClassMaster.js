@@ -26,14 +26,6 @@ export function addArrangeClassMaster(data) {
   })
 }
 
-// 修改排班记录
-export function updateArrangeClassMaster(data) {
-  return request({
-    url: '/human/arrangeClassMaster',
-    method: 'put',
-    data: data
-  })
-}
 
 // 删除排班记录
 export function delArrangeClassMaster(id) {

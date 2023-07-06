@@ -461,4 +461,36 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
         }
         return null;
     }
+
+    /**
+    * @Description 社保核定基数年底核定下年初最新数据
+    * @param
+    * @return 新增数据结果
+    * @author 266861
+    * @date 2023/7/4 9:40
+    **/
+    @Override
+    public int setNewYearSocialSecurity(){
+        int result = 0;
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR)+1;
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        //来年生效日期
+        Date effectDate = calendar.getTime();
+        List<SocialSecurityBasis> basisList = socialSecurityBasisMapper.selectSocialSecurityBasisList(new SocialSecurityBasis());
+        for(SocialSecurityBasis basis : basisList){
+            //修改生效日期
+            basis.setEffectDate(effectDate);
+            SocialSecurityBasisDetail detail = new SocialSecurityBasisDetail();
+            detail.setSocialSecurityId(basis.getId());
+            List<SocialSecurityBasisDetail> detailList = iSocialSecurityBasisDetailService.selectSocialSecurityBasisDetailList(detail);
+            //配置明细列表
+            basis.setDetailList(detailList);
+            insertSocialSecurityBasis(basis);
+            result++;
+        }
+        return result;
+    }
+
 }
