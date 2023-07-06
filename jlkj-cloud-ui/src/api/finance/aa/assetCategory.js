@@ -42,3 +42,11 @@ export function delAssetCategory(id) {
     method: 'delete'
   })
 }
+
+// 查询资产大类清单(下拉选单用)
+export function selectAssetGroupList() {
+  return request({
+    url: '/finance/assetCategory/assetGroupList',
+    method: 'get',
+  })
+}
