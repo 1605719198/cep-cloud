@@ -52,3 +52,10 @@ export function getListPayAmtDetail(data) {
     data: data
   })
 }
+// 删除薪资应付作业
+export function sendAAPayAmt(id) {
+  return request({
+    url: '/human/payAmt/sendAA' + id,
+    method: 'post'
+  })
+}

@@ -87,6 +87,13 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['human:payAmt:remove']"
           >删除</el-button>
+          <el-button
+                      size="mini"
+                      type="text"
+                      icon="el-icon-delete"
+                      @click="handleSendAA(scope.row)"
+                      v-hasPermi="['human:payAmt:edit']"
+          >抛帐</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -224,7 +231,7 @@
 </template>
 
 <script>
-import { listPayAmt, getPayAmt, delPayAmt, addPayAmt, updatePayAmt,getListPayAmtDetail } from "@/api/human/hs/payAmt";
+import { listPayAmt, getPayAmt, delPayAmt, addPayAmt, updatePayAmt,getListPayAmtDetail ,sendAAPayAmt} from "@/api/human/hs/payAmt";
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
 import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
@@ -463,6 +470,17 @@ export default {
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
+
+    /** 删除按钮操作 */
+    handleSendAA(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('确认要抛帐吗？').then(function() {
+        return SendAAPayAmt(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("抛帐成功");
       }).catch(() => {});
     },
 	/** 薪资应付明细序号 */
