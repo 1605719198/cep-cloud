@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoReimbursementDetailMapper">
+    
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoReimbursementDetail" id="FinanceAoReimbursementDetailResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="seqNo"    column="seq_no"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="detailNo"    column="detail_no"    />
+        <result property="invoiceType"    column="invoice_type"    />
+        <result property="crcyCode"    column="crcy_code"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="netAmt"    column="net_amt"    />
+        <result property="taxAmt"    column="tax_amt"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="budgetNo"    column="budget_no"    />
+        <result property="budgetName"    column="budget_name"    />
+        <result property="srlDesc"    column="srl_desc"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoReimbursementDetailVo">
+        SELECT id, parent_id, seq_no, item_no, detail_no, invoice_type, crcy_code, exchange_rate, net_amt, tax_amt, total_amt, budget_no, budget_name, srl_desc, status, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ao_reimbursement_detail
+    </sql>
+
+    <select id="selectFinanceAoReimbursementDetailList" parameterType="com.jlkj.finance.ao.domain.FinanceAoReimbursementDetail" resultMap="FinanceAoReimbursementDetailResult">
+        <include refid="selectFinanceAoReimbursementDetailVo"/>
+        <where>  
+            <if test="parentId != null  and parentId != ''"> AND parent_id = #{parentId}</if>
+            <if test="seqNo != null "> AND seq_no = #{seqNo}</if>
+            <if test="itemNo != null  and itemNo != ''"> AND item_no = #{itemNo}</if>
+            <if test="detailNo != null  and detailNo != ''"> AND detail_no = #{detailNo}</if>
+            <if test="invoiceType != null  and invoiceType != ''"> AND invoice_type = #{invoiceType}</if>
+            <if test="crcyCode != null  and crcyCode != ''"> AND crcy_code = #{crcyCode}</if>
+            <if test="exchangeRate != null "> AND exchange_rate = #{exchangeRate}</if>
+            <if test="netAmt != null "> AND net_amt = #{netAmt}</if>
+            <if test="taxAmt != null "> AND tax_amt = #{taxAmt}</if>
+            <if test="totalAmt != null  and totalAmt != ''"> AND total_amt = #{totalAmt}</if>
+            <if test="budgetNo != null  and budgetNo != ''"> AND budget_no = #{budgetNo}</if>
+            <if test="budgetName != null  and budgetName != ''"> AND budget_name LIKE concat('%', #{budgetName}, '%')</if>
+            <if test="srlDesc != null  and srlDesc != ''"> AND srl_desc = #{srlDesc}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+            <if test="createName != null  and createName != ''"> AND create_name LIKE concat('%', #{createName}, '%')</if>
+            <if test="updateName != null  and updateName != ''"> AND update_name LIKE concat('%', #{updateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoReimbursementDetailById" parameterType="String" resultMap="FinanceAoReimbursementDetailResult">
+        <include refid="selectFinanceAoReimbursementDetailVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoReimbursementDetail" parameterType="com.jlkj.finance.ao.domain.FinanceAoReimbursementDetail">
+        INSERT INTO finance_ao_reimbursement_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="seqNo != null">seq_no,</if>
+            <if test="itemNo != null">item_no,</if>
+            <if test="detailNo != null">detail_no,</if>
+            <if test="invoiceType != null">invoice_type,</if>
+            <if test="crcyCode != null">crcy_code,</if>
+            <if test="exchangeRate != null">exchange_rate,</if>
+            <if test="netAmt != null">net_amt,</if>
+            <if test="taxAmt != null">tax_amt,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="budgetNo != null">budget_no,</if>
+            <if test="budgetName != null">budget_name,</if>
+            <if test="srlDesc != null">srl_desc,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="seqNo != null">#{seqNo},</if>
+            <if test="itemNo != null">#{itemNo},</if>
+            <if test="detailNo != null">#{detailNo},</if>
+            <if test="invoiceType != null">#{invoiceType},</if>
+            <if test="crcyCode != null">#{crcyCode},</if>
+            <if test="exchangeRate != null">#{exchangeRate},</if>
+            <if test="netAmt != null">#{netAmt},</if>
+            <if test="taxAmt != null">#{taxAmt},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="budgetNo != null">#{budgetNo},</if>
+            <if test="budgetName != null">#{budgetName},</if>
+            <if test="srlDesc != null">#{srlDesc},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoReimbursementDetail" parameterType="com.jlkj.finance.ao.domain.FinanceAoReimbursementDetail">
+        UPDATE finance_ao_reimbursement_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="seqNo != null">seq_no = #{seqNo},</if>
+            <if test="itemNo != null">item_no = #{itemNo},</if>
+            <if test="detailNo != null">detail_no = #{detailNo},</if>
+            <if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+            <if test="crcyCode != null">crcy_code = #{crcyCode},</if>
+            <if test="exchangeRate != null">exchange_rate = #{exchangeRate},</if>
+            <if test="netAmt != null">net_amt = #{netAmt},</if>
+            <if test="taxAmt != null">tax_amt = #{taxAmt},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="budgetNo != null">budget_no = #{budgetNo},</if>
+            <if test="budgetName != null">budget_name = #{budgetName},</if>
+            <if test="srlDesc != null">srl_desc = #{srlDesc},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoReimbursementDetailById" parameterType="String">
+        DELETE FROM finance_ao_reimbursement_detail WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoReimbursementDetailByIds" parameterType="String">
+        DELETE FROM finance_ao_reimbursement_detail WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

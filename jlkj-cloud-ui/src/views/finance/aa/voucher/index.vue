@@ -35,7 +35,7 @@
         <el-form-item label="凭证主档" prop="">
           <el-button type="primary" size="mini" @click="handleCreateBlankQuery">创建空白</el-button>
           <el-button type="primary" size="mini" @click="submitForm">保存</el-button>
-          <el-button type="primary" size="mini" @click="handleDeleteForm">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleDeleteForm"  v-hasPermi="['aa:voucher:remove']">删除</el-button>
           <el-button type="primary" size="mini" @click="handleCopyQuery">复制</el-button>
           <el-button type="primary" size="mini" @click="handleHongChongQuery">红冲</el-button>
           <el-button type="primary" size="mini" @click="handleConfirmQuery">确认</el-button>

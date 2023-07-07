@@ -4,7 +4,6 @@ import com.jlkj.finance.aa.domain.FinanceAaVoucherDetail;
 import com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -145,6 +144,7 @@ public interface FinanceAaVoucherDetailMapper
 
 
     /**
+     * 按系统别查询
     * @description 按系统别查询
     * @param companyId
     * @param acctPeriod 会计周期

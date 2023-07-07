@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoAccountCashierMapper">
+    
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoAccountCashier" id="FinanceAoAccountCashierResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="accountId"    column="account_id"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="billId"    column="bill_id"    />
+        <result property="seqNo"    column="seq_no"    />
+        <result property="drCr"    column="dr_cr"    />
+        <result property="acctId"    column="acct_id"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="calIda"    column="cal_ida"    />
+        <result property="calCodea"    column="cal_codea"    />
+        <result property="calIdb"    column="cal_idb"    />
+        <result property="calCodeb"    column="cal_codeb"    />
+        <result property="calIdc"    column="cal_idc"    />
+        <result property="calCodec"    column="cal_codec"    />
+        <result property="calIdd"    column="cal_idd"    />
+        <result property="calCoded"    column="cal_coded"    />
+        <result property="dueDate"    column="due_date"    />
+        <result property="srlDesc"    column="srl_desc"    />
+        <result property="crcyUnit"    column="crcy_unit"    />
+        <result property="frnAmt"    column="frn_amt"    />
+        <result property="amt"    column="amt"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoAccountCashierVo">
+        SELECT id, company_id, account_id, bill_no, bill_id, seq_no, dr_cr, acct_id, acct_code, cal_ida, cal_codea, cal_idb, cal_codeb, cal_idc, cal_codec, cal_idd, cal_coded, due_date, srl_desc, crcy_unit, frn_amt, amt, create_by, create_name, create_time, update_by, update_time, update_name FROM finance_ao_account_cashier
+    </sql>
+
+    <select id="selectFinanceAoAccountCashierList" parameterType="com.jlkj.finance.ao.domain.FinanceAoAccountCashier" resultMap="FinanceAoAccountCashierResult">
+        <include refid="selectFinanceAoAccountCashierVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="billId != null  and billId != ''"> AND bill_id = #{billId}</if>
+            <if test="seqNo != null "> AND seq_no = #{seqNo}</if>
+
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoAccountCashierById" parameterType="String" resultMap="FinanceAoAccountCashierResult">
+        <include refid="selectFinanceAoAccountCashierVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoAccountCashier" parameterType="com.jlkj.finance.ao.domain.FinanceAoAccountCashier">
+        INSERT INTO finance_ao_account_cashier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="accountId != null">account_id,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="billId != null">bill_id,</if>
+            <if test="seqNo != null">seq_no,</if>
+            <if test="drCr != null">dr_cr,</if>
+            <if test="acctId != null">acct_id,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="calIda != null">cal_ida,</if>
+            <if test="calCodea != null">cal_codea,</if>
+            <if test="calIdb != null">cal_idb,</if>
+            <if test="calCodeb != null">cal_codeb,</if>
+            <if test="calIdc != null">cal_idc,</if>
+            <if test="calCodec != null">cal_codec,</if>
+            <if test="calIdd != null">cal_idd,</if>
+            <if test="calCoded != null">cal_coded,</if>
+            <if test="dueDate != null">due_date,</if>
+            <if test="srlDesc != null">srl_desc,</if>
+            <if test="crcyUnit != null">crcy_unit,</if>
+            <if test="frnAmt != null">frn_amt,</if>
+            <if test="amt != null">amt,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="accountId != null">#{accountId},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="billId != null">#{billId},</if>
+            <if test="seqNo != null">#{seqNo},</if>
+            <if test="drCr != null">#{drCr},</if>
+            <if test="acctId != null">#{acctId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="calIda != null">#{calIda},</if>
+            <if test="calCodea != null">#{calCodea},</if>
+            <if test="calIdb != null">#{calIdb},</if>
+            <if test="calCodeb != null">#{calCodeb},</if>
+            <if test="calIdc != null">#{calIdc},</if>
+            <if test="calCodec != null">#{calCodec},</if>
+            <if test="calIdd != null">#{calIdd},</if>
+            <if test="calCoded != null">#{calCoded},</if>
+            <if test="dueDate != null">#{dueDate},</if>
+            <if test="srlDesc != null">#{srlDesc},</if>
+            <if test="crcyUnit != null">#{crcyUnit},</if>
+            <if test="frnAmt != null">#{frnAmt},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoAccountCashier" parameterType="com.jlkj.finance.ao.domain.FinanceAoAccountCashier">
+        UPDATE finance_ao_account_cashier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="accountId != null">account_id = #{accountId},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="billId != null">bill_id = #{billId},</if>
+            <if test="seqNo != null">seq_no = #{seqNo},</if>
+            <if test="drCr != null">dr_cr = #{drCr},</if>
+            <if test="acctId != null">acct_id = #{acctId},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="calIda != null">cal_ida = #{calIda},</if>
+            <if test="calCodea != null">cal_codea = #{calCodea},</if>
+            <if test="calIdb != null">cal_idb = #{calIdb},</if>
+            <if test="calCodeb != null">cal_codeb = #{calCodeb},</if>
+            <if test="calIdc != null">cal_idc = #{calIdc},</if>
+            <if test="calCodec != null">cal_codec = #{calCodec},</if>
+            <if test="calIdd != null">cal_idd = #{calIdd},</if>
+            <if test="calCoded != null">cal_coded = #{calCoded},</if>
+            <if test="dueDate != null">due_date = #{dueDate},</if>
+            <if test="srlDesc != null">srl_desc = #{srlDesc},</if>
+            <if test="crcyUnit != null">crcy_unit = #{crcyUnit},</if>
+            <if test="frnAmt != null">frn_amt = #{frnAmt},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoAccountCashierById" parameterType="String">
+        DELETE FROM finance_ao_account_cashier WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoAccountCashierByIds" parameterType="String">
+        DELETE FROM finance_ao_account_cashier WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

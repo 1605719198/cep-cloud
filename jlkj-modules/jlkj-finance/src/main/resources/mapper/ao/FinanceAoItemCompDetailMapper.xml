@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoItemCompDetailMapper">
     
-    <resultMap type="FinanceAoItemCompDetail" id="FinanceAoItemCompDetailResult">
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoItemCompDetail" id="FinanceAoItemCompDetailResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="itemNo"    column="item_no"    />
@@ -61,7 +61,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join finance_aa_calType crct2 on tcr.company_id = crct2.company_id and  tcr.cal_type_codeB = crct2.cal_type_code
         where t1.id = #{id}
     </select>
-        
+    <select id="selectFinanceAoItemComp" resultType="com.jlkj.finance.ao.domain.FinanceAoItemCompDetail">
+        <include refid="selectFinanceAoItemCompDetailVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+
+        </where>
+    </select>
+
     <insert id="insertFinanceAoItemCompDetail" parameterType="FinanceAoItemCompDetail">
         insert into finance_ao_item_comp_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -1,8 +1,9 @@
 package com.jlkj.finance.ao.mapper;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.finance.ao.domain.FinanceAoReimbursementLoan;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 报支管理-费用报销冲借支单档Mapper接口
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Repository;
  * @date 2023-06-28
  */
 @Repository
-public interface FinanceAoReimbursementLoanMapper 
+public interface FinanceAoReimbursementLoanMapper extends BaseMapper<FinanceAoReimbursementLoan>
 {
+
+
     /**
      * 查询报支管理-费用报销冲借支单档
      * 
@@ -28,6 +31,21 @@ public interface FinanceAoReimbursementLoanMapper
      * @return 报支管理-费用报销冲借支单档集合
      */
     public List<FinanceAoReimbursementLoan> selectFinanceAoReimbursementLoanList(FinanceAoReimbursementLoan financeAoReimbursementLoan);
+    /**
+     * 查询报支管理-费用报销冲借支单档列表
+     *
+     * @param financeAoReimbursementLoan 报支管理-费用报销冲借支单档
+     * @return 报支管理-费用报销冲借支单档集合
+     */
+    public FinanceAoReimbursementLoan selectCancelledAmt(FinanceAoReimbursementLoan financeAoReimbursementLoan);
+
+    /**
+     * 查询报支管理-费用报销冲借支单档列表
+     *
+     * @param financeAoReimbursementLoan 报支管理-费用报销冲借支单档
+     * @return 报支管理-费用报销冲借支单档集合
+     */
+    public List<FinanceAoReimbursementLoan> selectFinanceAoReimbursementLoanListLoan(FinanceAoReimbursementLoan financeAoReimbursementLoan);
 
     /**
      * 新增报支管理-费用报销冲借支单档
@@ -35,6 +53,7 @@ public interface FinanceAoReimbursementLoanMapper
      * @param financeAoReimbursementLoan 报支管理-费用报销冲借支单档
      * @return 结果
      */
+
     public int insertFinanceAoReimbursementLoan(FinanceAoReimbursementLoan financeAoReimbursementLoan);
 
     /**

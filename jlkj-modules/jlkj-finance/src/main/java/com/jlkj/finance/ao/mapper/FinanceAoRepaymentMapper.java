@@ -21,6 +21,13 @@ public interface FinanceAoRepaymentMapper
      * @return 还款单资料档
      */
     public FinanceAoRepayment selectFinanceAoRepaymentById(String id);
+    /**
+     * 查询还款单资料档
+     *
+     * @param loanId 借支id
+     * @return 还款单资料档
+     */
+    public FinanceAoRepayment selectLoanId(String loanId);
 
     /**
      * 查询还款单资料档列表

@@ -2,6 +2,7 @@ package com.jlkj.finance.ao.domain;
 
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @author 265799
  * @date 2023-06-28
  */
+@Data
 public class FinanceAoReimbursementLoan extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -43,7 +45,12 @@ public class FinanceAoReimbursementLoan extends BaseEntity
     /** 异动名称 */
     @Excel(name = "异动名称")
     private String updateName;
-
+    /** 已销账金额 */
+    private BigDecimal totalAmt;
+    /** 借支金额 */
+    private BigDecimal   cancelledAmt;
+    /** 未销账金额 */
+    private BigDecimal   uncollectedAccountsAmt;
     public void setId(String id)
     {
         this.id = id;

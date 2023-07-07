@@ -134,6 +134,16 @@ export const constantRoutes = [
     component: () => import('@/views/finance/aa/voucher/index'),
     name:'voucher'
   },
+  {
+    path: '/detailAccount',
+    component: () => import('@/views/finance/ao/detailAccount/index'),
+    name:'detailAccount'
+  },
+  {
+    path: '/cashierDetail',
+    component: () => import('@/views/finance/ao/cashierDetail/index'),
+    name:'cashierDetail'
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

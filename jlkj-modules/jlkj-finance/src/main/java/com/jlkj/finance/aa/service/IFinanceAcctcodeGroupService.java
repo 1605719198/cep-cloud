@@ -95,7 +95,7 @@ public interface IFinanceAcctcodeGroupService
      */
     public int deleteFinanceAcctcodeGroupByGroupAcctCode(String groupAcctCode);
 
-    /**
+    /**查询集团级会计科目列表
     * @description
     * @param acctCode 会计科目
     * @param companyId 公司别

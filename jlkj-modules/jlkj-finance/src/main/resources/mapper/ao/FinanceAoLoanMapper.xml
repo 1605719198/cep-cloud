@@ -217,5 +217,82 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         group by t1.id, t1.company_id, t1.bill_no, t1.item_no,  t1.apply_name,  t1.create_name, t1.create_time, t1.create_dept, t1.create_dept_name,t1.status
         ORDER BY t1.bill_no, t1.item_no
     </select>
+    <select id="selectFinanceAoLoanByFromId" resultType="com.jlkj.finance.ao.domain.FinanceAoLoan">
+       select
+           a.itemName,
+           a.id,
+           a.company_id,
+           a.bill_no,
+           a.item_no,
+           a.pay_type,
+           a.apply_by,
+           a.apply_name,
+           a.account_by,
+           a.account_name,
+           a.bill_desc,
+           a.due_date,
+           a.account_date,
+           a.pay_date,
+           a.arrange_no,
+           a.voucher_no,
+           a.STATUS,
+           a.create_by,
+           a.create_name,
+           a.create_time,
+           a.create_dept,
+           a.create_dept_name,
+           a.update_by,
+           a.update_name,
+           a.update_time,
+           b.id AS sub_id,
+           b.parent_id AS sub_parent_id,
+           b.seq_no AS sub_seq_no,
+           b.item_no AS sub_item_no,
+           b.detail_no AS sub_detail_no,
+           b.crcy_code AS sub_crcy_code,
+           b.exchange_rate AS sub_exchange_rate,
+           b.invoice_type AS sub_invoice_type,
+           b.net_amt AS sub_net_amt,
+           b.tax_amt AS sub_tax_amt,
+           b.total_amt AS sub_total_amt,
+           b.srl_desc AS sub_srl_desc,
+           b.STATUS AS sub_status,
+           b.create_by AS sub_create_by,
+           b.create_name AS sub_create_name,
+           b.create_time AS sub_create_time,
+           b.update_by AS sub_update_by,
+           b.update_name AS sub_update_name,
+           b.update_time AS sub_update_time
+       FROM
+( SELECT
+            T2.detail_name AS itemName,
+            a.id,
+            a.company_id,
+            a.bill_no,
+            a.item_no,
+            a.pay_type,
+            a.apply_by,
+            a.apply_name,
+            a.account_by,
+            a.account_name,
+            a.bill_desc,
+            a.due_date,
+            a.account_date,
+            a.pay_date,
+            a.arrange_no,
+            a.voucher_no,
+            a.STATUS ,
+            a.create_by,
+            a.create_name,
+            a.create_time,
+            a.create_dept,
+            a.create_dept_name,
+            a.update_by,
+            a.update_name,
+            a.update_time
+        FROM  finance_ao_loan a  LEFT JOIN finance_ao_item_comp_detail T2   ON a.company_id = T2.company_id AND  a.item_no = T2.item_no
+        where a.id = #{id}) a  LEFT JOIN finance_ao_loan_detail b ON b.parent_id = a.id
+        where a.id = #{id}
+    </select>
 
 </mapper>

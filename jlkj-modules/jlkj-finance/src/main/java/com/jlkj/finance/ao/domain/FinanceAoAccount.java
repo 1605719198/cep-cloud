@@ -9,12 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 会计确认主档对象 finance_ao_account
  *
  * @author 265799
- * @date 2023-06-25
+ * @date 2023-07-04
  */
 @Data
 public class FinanceAoAccount extends BaseEntity
@@ -65,9 +66,7 @@ public class FinanceAoAccount extends BaseEntity
     /** 批示结论 */
     @Excel(name = "批示结论")
     private String approvalStatus;
-    /** 处理状态 */
 
-    private String  handleStatus;
     /** 状态 */
     @Excel(name = "状态")
     private String status;
@@ -77,9 +76,16 @@ public class FinanceAoAccount extends BaseEntity
 
     /** 异动人姓名 */
     private String updateName;
+
+    /** 会计处理明细信息 */
+    private List<FinanceAoAccountDetail> detailAccountList;
+    /** 费用报销明细档信息 */
+    private List<FinanceAoReimbursementDetail> financeAoReimbursementDetailList;
+
     /** 记帐币金额 */
-    @Excel(name = "记帐币金额")
+
     private BigDecimal amt;
+
     /** 编号类型 */
     private String  billType;
     /**
@@ -91,6 +97,10 @@ public class FinanceAoAccount extends BaseEntity
      * 结束日期
      */
     private String endDate;
+    /**
+     * 处理状态
+     */
+    private String processingStatus;
 
     public void setId(String id)
     {
@@ -219,6 +229,16 @@ public class FinanceAoAccount extends BaseEntity
         return updateName;
     }
 
+    public List<FinanceAoAccountDetail> getDetailAccountList()
+    {
+        return detailAccountList;
+    }
+
+    public void setDetailAccountList(List<FinanceAoAccountDetail> detailAccountList)
+    {
+        this.detailAccountList = detailAccountList;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -240,6 +260,7 @@ public class FinanceAoAccount extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("updateName", getUpdateName())
+            .append("detailAccountList", getDetailAccountList())
             .toString();
     }
 }

@@ -41,6 +41,25 @@ public class FinanceAoLoanController extends BaseController
     }
 
     /**
+     * 获取借支申请主档详细信息
+     */
+    @RequiresPermissions("finance:loanApply:query")
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") String id)
+    {
+        return success(financeAoLoanService.selectFinanceAoLoanById(id));
+    }
+    /**
+     * 获取借支申请主档详细信息
+     */
+    @RequiresPermissions("finance:loanApply:query")
+    @GetMapping(value = "/loanApplyFrom/{id}")
+    public AjaxResult getLoanApplyFrom(@PathVariable("id") String id)
+    {
+        return success(financeAoLoanService.selectFinanceAoLoanByFromId(id));
+    }
+
+    /**
      * 导出借支申请主档列表
      */
     @RequiresPermissions("finance:loanApply:export")
@@ -53,15 +72,6 @@ public class FinanceAoLoanController extends BaseController
         util.exportExcel(response, list, "借支申请主档数据");
     }
 
-    /**
-     * 获取借支申请主档详细信息
-     */
-    @RequiresPermissions("finance:loanApply:query")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
-        return success(financeAoLoanService.selectFinanceAoLoanById(id));
-    }
 
     /**
      * 新增借支申请主档
