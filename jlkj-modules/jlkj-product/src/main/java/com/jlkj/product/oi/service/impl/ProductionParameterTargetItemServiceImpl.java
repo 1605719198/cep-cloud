@@ -60,12 +60,19 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
      * @return 分页列表
      */
     @Transactional(readOnly = true)
+    @Override
     public IPage<Map<String, String>> getListPage(PageProductionParameterTargetItemDTO pageProductionParameterTargetItemDTO) {
         Page<Map<String, String>> page = new Page<>(pageProductionParameterTargetItemDTO.getCurrent(), pageProductionParameterTargetItemDTO.getSize());
         return getBaseMapper().getListPage(page, pageProductionParameterTargetItemDTO);
     }
 
+    /**
+     * 新增指标项
+     * @param addProductionParameterTargetItemDTO
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public Object addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO) {
         List<ProductionParameterTargetItem> list = list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                 .eq(ProductionParameterTargetItem::getTargetItemTypeId, addProductionParameterTargetItemDTO.getTargetItemTypeId())
@@ -110,7 +117,13 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
         return AjaxResult.success("指标项增加成功");
     }
 
+    /**
+     * 修改指标项
+     * @param updateProductionParameterTargetItemDTO
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public Object editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO) {
         ProductionParameterTargetItem productionParameterTargetItem = getById(updateProductionParameterTargetItemDTO.getId());
         if (null != productionParameterTargetItem) {
@@ -175,7 +188,13 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
         }
     }
 
+    /**
+     * 删除指标项
+     * @param deleteProductionParameterTargetItemDTO
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public Object delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
         ProductionParameterTargetItem productionParameterTargetItem = getById(deleteProductionParameterTargetItemDTO.getId());
         if (null != productionParameterTargetItem) {

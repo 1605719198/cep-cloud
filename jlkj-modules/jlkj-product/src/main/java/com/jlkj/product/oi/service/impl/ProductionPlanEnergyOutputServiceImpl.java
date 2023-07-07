@@ -21,6 +21,11 @@ import java.util.Map;
 public class ProductionPlanEnergyOutputServiceImpl extends ServiceImpl<ProductionPlanEnergyOutputMapper, EnergyMonthPlanOutput>
         implements ProductionPlanEnergyOutputService {
 
+    /**
+     * 查询-分页-发电产量
+     * @param dto 查询条件dto
+     * @return
+     */
     @Override
     public Object getPageData(GetProductionPlanEnergyOutputDTO dto) {
         Page<Map<String, String>> page = new Page<>(dto.getCurrent(), dto.getSize());
