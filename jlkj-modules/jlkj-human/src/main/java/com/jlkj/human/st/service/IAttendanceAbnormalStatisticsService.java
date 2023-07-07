@@ -29,6 +29,14 @@ public interface IAttendanceAbnormalStatisticsService
     public List<AttendanceAbnormalStatistics> selectAttendanceAbnormalStatisticsList(AttendanceAbnormalStatistics attendanceAbnormalStatistics);
 
     /**
+     * 查询缺勤统计列表
+     *
+     * @param attendanceAbnormalStatistics 缺勤统计
+     * @return 缺勤统计集合
+     */
+    public List<AttendanceAbnormalStatistics> selectAbsenceStatisticsList(AttendanceAbnormalStatistics attendanceAbnormalStatistics);
+
+    /**
      * 新增出勤异常统计
      * 
      * @param attendanceAbnormalStatistics 出勤异常统计

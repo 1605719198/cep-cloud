@@ -45,6 +45,18 @@ public class AttendanceAbnormalStatisticsServiceImpl implements IAttendanceAbnor
     }
 
     /**
+     * 查询缺勤统计列表
+     *
+     * @param attendanceAbnormalStatistics 缺勤统计
+     * @return 出勤异常统计
+     */
+    @Override
+    public List<AttendanceAbnormalStatistics> selectAbsenceStatisticsList(AttendanceAbnormalStatistics attendanceAbnormalStatistics)
+    {
+        return attendanceAbnormalStatisticsMapper.selectAbsenceStatisticsList(attendanceAbnormalStatistics);
+    }
+
+    /**
      * 新增出勤异常统计
      *
      * @param attendanceAbnormalStatistics 出勤异常统计

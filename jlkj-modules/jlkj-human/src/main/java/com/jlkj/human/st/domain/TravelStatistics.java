@@ -144,6 +144,12 @@ public class TravelStatistics extends BaseEntity
     @Excel(name = "序号")
     private String num;
 
+    /** 审核日期 */
+    private String appDate;
+
+    /** 审核人 */
+    private String appName;
+
     public void setDate1(Date date1)
     {
         this.date1 = date1;
@@ -477,6 +483,24 @@ public class TravelStatistics extends BaseEntity
     {
         return travelAbroad;
     }
+    public void setAppDate(String appDate)
+    {
+        this.appDate = appDate;
+    }
+
+    public String getAppDate()
+    {
+        return appDate;
+    }
+    public void setAppName(String appName)
+    {
+        this.appName = appName;
+    }
+
+    public String getAppName()
+    {
+        return appName;
+    }
 
     @Override
     public String toString() {
@@ -484,6 +508,8 @@ public class TravelStatistics extends BaseEntity
             .append("id", getId())
                 .append("date1", getDate1())
                 .append("date2", getDate2())
+                .append("appDate", getAppDate())
+                .append("appName", getAppName())
             .append("travelNo", getTravelNo())
                 .append("travelAbroad", getTravelAbroad())
                 .append("num", getNum())
