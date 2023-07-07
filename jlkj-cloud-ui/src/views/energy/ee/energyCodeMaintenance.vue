@@ -67,7 +67,7 @@
               tooltip-effect="dark"
               @selection-change="handleSelectionChange"
               style="margin: 0 0px 0 00px;width: auto;">
-      <el-table-column type="selection" width="20" align="center"/>
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="能源缩写" align="center" prop="engyAc"/>
       <el-table-column label="能源代码" align="center" prop="engyId" sortable/>
       <el-table-column label="能源名称" align="center" prop="engyName" sortable/>

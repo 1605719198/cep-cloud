@@ -37,7 +37,7 @@
 
     <el-table v-loading="loading" height="67vh" stripe :data="tableData" tooltip-effect="dark"
               @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="25" align="center"/>
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="能源代码" align="center" prop="engyId" sortable/>
       <el-table-column label="能源名称" align="center" prop="engyName" sortable/>
       <el-table-column label="成本中心" align="center" prop="costCenter" sortable/>
