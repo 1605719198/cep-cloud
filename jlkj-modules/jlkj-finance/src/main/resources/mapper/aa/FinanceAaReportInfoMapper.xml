@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectFinanceAaReportInfo" parameterType="com.jlkj.finance.aa.domain.FinanceAaReportInfo" resultMap="FinanceAaReportInfoResult">
         SELECT
-            a.report_no as report_no,a.report_name as report_name,b.acct_period as acct_period,b.`status` as status,b.info as info,b.create_name as create_name,b.create_time as create_time
+          a.report_id as report_id, a.report_no as report_no,a.report_name as report_name,b.acct_period as acct_period,b.`status` as status,b.info as info,b.create_name as create_name,b.create_time as create_time
         FROM
             finance_aa_report_defin a
                 LEFT OUTER JOIN finance_aa_report_info b ON a.report_id = b.report_id

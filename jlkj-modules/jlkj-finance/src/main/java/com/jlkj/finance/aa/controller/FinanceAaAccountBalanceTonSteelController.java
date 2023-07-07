@@ -69,7 +69,6 @@ public class FinanceAaAccountBalanceTonSteelController extends BaseController{
         List<FinanceAaLedgerAcctDTO> list = financeAaAccountBalanceTonSteelService.selectListDetailIfSteel(financeAaLedgerAcctDTO);
         List<Map<String, String>> returnList = new ArrayList();
         for(FinanceAaLedgerAcctDTO vo :list){
-         //  Map map=  JSON.parseObject(JSON.toJSONString(vo),Map.class);
             Map map=   BeanMapUtils.create(vo);
             returnList.add(map);
         }

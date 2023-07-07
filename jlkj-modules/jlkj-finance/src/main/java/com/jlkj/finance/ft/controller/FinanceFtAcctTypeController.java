@@ -40,6 +40,7 @@ public class FinanceFtAcctTypeController extends BaseController
         return getDataTable(list);
     }
 
+    
     /**
      * 导出账务代码设定列表
      */

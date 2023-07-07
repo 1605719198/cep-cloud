@@ -47,11 +47,12 @@ public interface FinanceAaProjectResultMapper
     public int updateFinanceAaProjectResult(FinanceAaProjectResult financeAaProjectResult);
 
     /**
-     * 删除印项目计算结果
-     * 
-     * @param id 印项目计算结果主键
-     * @return 结果
-     */
+    * @Description 批量删除
+    * @Param [id]
+    * @return int
+    * @Author 114288
+    * @Date 2023/7/6 16:30
+    **/
     public int deleteFinanceAaProjectResultById(Long id);
 
     /**

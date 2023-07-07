@@ -77,13 +77,10 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     public int insertFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo)
     {
 
-       // FinanceAaProjectContent financeAaProjectContent = new FinanceAaProjectContent();
-        //financeAaProjectContent.setCompanyId(financeAaReportInfo.getCompanyId());
-       // financeAaProjectContent.setReportNo(financeAaReportInfo.getReportNo());
+
         financeAaProjectResultMapper.deleteFinanceAaProjectResultByPeriod(financeAaReportInfo.getCompanyId(),
                 financeAaReportInfo.getAcctPeriod(),financeAaReportInfo.getReportNo());
 
-       // List<FinanceAaProjectContent> financeAaProjectContentList = financeAaProjectContentMapper.selectFinanceProjectContentList(financeAaProjectContent);
         FinanceAaProjectFormula financeAaProjectFormula = new FinanceAaProjectFormula();
         financeAaProjectFormula.setCompanyId(financeAaReportInfo.getCompanyId());
         financeAaProjectFormula.setReportNo(financeAaReportInfo.getReportNo());
@@ -91,7 +88,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
         if(financeAaProjectFormulas==null || financeAaProjectFormulas.size()==0){
             throw new ServiceException("计算失败，报表项目为空！");
         }
-        //log.info("financeAaProjectFormulas 结果=》{}"+financeAaProjectFormulas);
+
        financeAaProjectResultMap = new HashMap<String,FinanceAaProjectResult>();
        for (int i=0;i<financeAaProjectFormulas.size();i++){
            FinanceAaProjectFormula financeProjectFormula =  financeAaProjectFormulas.get(i);
@@ -101,9 +98,8 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
 
 
        }
-      // List<FinanceAaProjectResult> financeAaProjectResults = new ArrayList<>();
+
         for (String key: financeAaProjectResultMap.keySet()){
-           // financeAaProjectResults.add(financeAaProjectResultMap.get(key));
             financeAaProjectResultMapper.insertFinanceAaProjectResult(financeAaProjectResultMap.get(key));
 
     }
@@ -156,7 +152,6 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     * @Date 2023/7/5 9:00
     **/
     private boolean sumKindB(FinanceAaReportInfo financeAaReportInfo, FinanceAaProjectContent financeProjectContent) {
-       // log.info("financeProjectContent 参数=》{}"+financeProjectContent);
         boolean flag = false;
         try{
             String codeKey = financeAaReportInfo.getCompanyId()+"/"+financeAaReportInfo.getAcctPeriod()+"/"+financeProjectContent.getReportId()+"/"+financeProjectContent.getCode();
@@ -175,28 +170,28 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                 financeAaProjectResultMap.put(itemCodeKey,financeAaProjectResultItemCode);
             }
             if (financeAaProjectResultCode!=null ){
-                if (financeProjectContent.getOperator().trim().equals("-")){
+                if (("-").equals(financeProjectContent.getOperator().trim())){
                     financeAaProjectResultItemCode.setAmt(financeAaProjectResultCode.getAmt().negate());
                     financeAaProjectResultItemCode.setQty(financeAaProjectResultCode.getQty().negate());
                 }
                 //判断该AmtQty为A,Q,T
-                if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("A")){
+                if (("A").equals(financeProjectContent.getAmtqty().trim().toUpperCase())){
                     financeAaProjectResultItemCode.setAmt(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getAmt())
                             .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getAmt())));
                     financeAaProjectResultItemCode.setQty(new BigDecimal("0"));
                 }
-                if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("B")){
+                if (("B").equals(financeProjectContent.getAmtqty().trim().toUpperCase())){
                     financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                     financeAaProjectResultItemCode.setQty(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getQty())
                             .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getQty())));
                 }
-                if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("C")){
+                if (("C").equals(financeProjectContent.getAmtqty().trim().toUpperCase())){
                     financeAaProjectResultItemCode.setAmt(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getAmt())
                             .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getAmt())));
                     financeAaProjectResultItemCode.setQty(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getQty())
                             .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getQty())));
                 }
-                if (financeProjectContent.getDrcrkind().trim().equals("H")){
+                if (("H").equals(financeProjectContent.getDrcrkind().trim())){
                     if (financeAaProjectResultItemCode.getAmt().compareTo(new BigDecimal("0"))<0){
                         financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                     }
@@ -206,7 +201,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                     }
 
                 }
-                if (financeProjectContent.getDrcrkind().trim().equals("I")){
+                if (("I").equals(financeProjectContent.getDrcrkind().trim())){
                     if (financeAaProjectResultItemCode.getAmt().compareTo(new BigDecimal("0"))>0){
                         financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                     }
@@ -222,14 +217,6 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                 if (count > 20) {
                     throw new ServiceException("超过recursive超过次数,可能有错误,暂停执行" );
                  }
-               /* FinanceAaProjectContent financeAaProjectContent = new FinanceAaProjectContent();
-                financeAaProjectContent.setCompanyId(financeAaReportInfo.getCompanyId());
-                financeAaProjectContent.setReportNo(financeAaReportInfo.getReportNo());
-                financeAaProjectContent.setKind(ConstantsUtil.CARRYB);
-                financeAaProjectContent.setItemCode(financeAaProjectContent.getCode());
-
-
-                List<FinanceAaProjectContent> financeAaProjectContents =  financeAaProjectContentMapper.selectFinanceAaProjectContentList(financeAaProjectContent);*/
 
                 FinanceAaProjectFormula financeAaProjectFormula = new FinanceAaProjectFormula();
                 financeAaProjectFormula.setCompanyId(financeAaReportInfo.getCompanyId());
@@ -257,28 +244,28 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                             financeAaProjectResultItemCode.setItemCode(financeProjectContent.getItemCode());
                             financeAaProjectResultMap.put(itemCodeKey,financeAaProjectResultItemCode);
                         }
-                        if (financeProjectContent.getOperator().trim().equals("-")) {
+                        if (("-").equals(financeProjectContent.getOperator().trim())) {
                             financeAaProjectResultItemCode.setAmt(financeAaProjectResultItemCode.getAmt().negate());
                             financeAaProjectResultItemCode.setQty(financeAaProjectResultItemCode.getQty().negate());
                         }
                         //判断该AmtQty为A,Q,T
-                        if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("A")) {
+                        if (("A").equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                             financeAaProjectResultItemCode.setAmt(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getAmt())
                                     .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getAmt())));
                             financeAaProjectResultItemCode.setQty(new BigDecimal("0"));
                         }
-                        else if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("Q")) {
+                        else if (("Q").equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                             financeAaProjectResultItemCode.setQty(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getQty())
                                     .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getQty())));
                             financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                         }
-                        else if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("T")) {
+                        else if (("T").equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                             financeAaProjectResultItemCode.setAmt(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getAmt())
                                     .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getAmt())));
                             financeAaProjectResultItemCode.setQty(AssertUtil.bigDecimalValue(financeAaProjectResultItemCode.getQty())
                                     .add(AssertUtil.bigDecimalValue(financeAaProjectResultCode.getQty())));
                         }
-                        if (financeProjectContent.getDrcrkind().trim().equals("H")){
+                        if (("H").equals(financeProjectContent.getDrcrkind().trim())){
                             if (financeAaProjectResultItemCode.getAmt().compareTo(new BigDecimal("0"))<0){
                                 financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                             }
@@ -288,7 +275,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                             }
 
                         }
-                        if (financeProjectContent.getDrcrkind().trim().equals("I")){
+                        if (("I").equals(financeProjectContent.getDrcrkind().trim())){
                             if (financeAaProjectResultItemCode.getAmt().compareTo(new BigDecimal("0"))>0){
                                 financeAaProjectResultItemCode.setAmt(new BigDecimal("0"));
                             }
@@ -328,7 +315,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     **/
     private boolean sumKindA(FinanceAaReportInfo financeAaReportInfo, FinanceAaProjectContent financeProjectContent) {
         String codeCheck = "";
-        String code = "";
+        StringBuilder code = new StringBuilder("");
         String equalsLike = "";
         boolean flag = false;
         try {
@@ -336,22 +323,23 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             BigDecimal amt = BigDecimal.ZERO;
             for (int i = 0; i < financeProjectContent.getCode().length(); i++) {
                 if (financeProjectContent.getCode().trim().charAt(i) == '*') {
-                    code = code + "%";
+                    code.append("%") ;
                     codeCheck = "yes";
-                    financeProjectContent.setCode(code);
+
                     break;
                 } else if (financeProjectContent.getCode().trim().charAt(i) == '@') {
-                    code = code + "_";
-                    financeProjectContent.setCode(code);
+                    code.append("_") ;
                     codeCheck = "no";
                 } else {
-                    code = code + financeProjectContent.getCode().trim().charAt(i);
+                    code.append( financeProjectContent.getCode().trim().charAt(i));
+
                 }
+                financeProjectContent.setCode(code.toString());
             }
-            if (codeCheck.trim().equals("no")) {
-                code = code + "%";
+            if (("no").equals(codeCheck.trim())) {
+                code.append("%") ;
             }
-            if (codeCheck.trim().equals("")) {
+            if (("").equals(codeCheck.trim())) {
                 equalsLike = "=";
             } else {
                 equalsLike = "like";
@@ -371,17 +359,17 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                 financeAaProjectResultMap.put(key,financeAaProjectResult);
             }
             //户号借余、贷余
-            if (financeProjectContent.getDrcrkind().trim().equals("J") || financeProjectContent.getDrcrkind().trim().equals("K")) {
-                amt = this.getKindAByIdCode(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code, equalsLike,financeProjectContent.getDrcrkind().trim());
+            if (("J").equals(financeProjectContent.getDrcrkind().trim() )
+                    || ("K").equals(financeProjectContent.getDrcrkind().trim())) {
+                amt = this.getKindAByIdCode(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), equalsLike,financeProjectContent.getDrcrkind().trim());
             }//结转额
-            else if (financeProjectContent.getDrcrkind().trim().equals("N")) {
-                amt = this.getJZ(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code, financeProjectContent.getDrcrkind().trim());
+            else if (("N").equals(financeProjectContent.getDrcrkind().trim())) {
+                amt = this.getJZ(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), financeProjectContent.getDrcrkind().trim());
             } else {
                 //定义金额取数方式
                 getSumSQL(financeProjectContent.getAmtqty(), financeProjectContent.getDrcrkind().trim());
                 //=====组合会计科目的SQL
-                String sqlstr = composeSQL(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(),equalsLike, code, financeProjectContent.getDrcrkind().trim(), financeProjectContent.getAmtqty().trim());
-                Map[] aa02Amt =  financeAaLedgerlCalMapper.selectByManageReport(financeAaReportInfo.getCompanyId(),financeAaReportInfo.getAcctPeriod(),sumstr,sumstr2,sumstr3,equalsLike,code);
+                Map[] aa02Amt =  financeAaLedgerlCalMapper.selectByManageReport(financeAaReportInfo.getCompanyId(),financeAaReportInfo.getAcctPeriod(),sumstr,sumstr2,sumstr3,equalsLike, String.valueOf(code));
 
                 if (aa02Amt!=null && aa02Amt.length > 0 && aa02Amt[0]!=null) {
                      qty =  AssertUtil.bigDecimalValue(aa02Amt[0].get("qty"));
@@ -391,16 +379,16 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             log.info(financeProjectContent.getItemCode() +"=====qty======"+qty);
             log.info(financeProjectContent.getItemCode() +"=====amt======"+amt);
             //加总前判断正负
-            if (financeProjectContent.getOperator().trim().toUpperCase().equals("-")) {
+            if (("-").equals(financeProjectContent.getOperator().trim().toUpperCase())) {
                 qty = qty.negate();
                 amt = amt.negate();
             }
 
-            if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("A")) {
+            if (("A").equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                 //最后放入db.tbaa73表里的金额
                 financeAaProjectResult.setAmt( AssertUtil.bigDecimalValue(financeAaProjectResult.getAmt()).add(amt));
             } else {
-                if (financeProjectContent.getAmtqty().trim().toUpperCase().equals("B")) {
+                if (("B").equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                     financeAaProjectResult.setQty( AssertUtil.bigDecimalValue(financeAaProjectResult.getQty()).add(qty));
                 } else {
                     //--金额与数量同时计算----
@@ -429,38 +417,6 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
      * */
 
 
-
-    private String composeSQL (String compId, String acctPeriod,String equalslike, String code, String drCrKind,String amtQty) throws NullPointerException{
-        StringBuffer sqlCmd = new StringBuffer(" ");
-
-       /* if (drCrKind.trim().equals("F") || drCrKind.trim().equals("G")) {//借余和贷余
-            if (amtQty.trim().equals("Q") || amtQty.equals("A")) {
-                sqlCmd.append("select sum(" + sumstr + ") as sumTotal from db.TBAA02 ") ;
-                sqlCmd.append("where CompId='" + compId + "' and AcctCode "+ equalslike+ " '"+ code + "' ");
-                sqlCmd.append("and AcctPeriod='"+acctPeriod.trim()+ "' and "+ sumstr3);
-            }else {
-                //--金额与数量同时计算----
-                sqlCmd.append("select sum("+ sumstr+ ") as sumTotal,sum("+ sumstr2+ ") as sumTotal2 from db.TBAA02 ");
-                sqlCmd.append(" where CompId='"	 + compId +  "' and AcctCode "+ equalslike + " '"+ code +"'");
-                sqlCmd.append(" and AcctPeriod='"+ acctPeriod.trim()+ "' and "	+ sumstr3+ "");
-            }
-        }
-        else {
-            if (amtQty.trim().equals("Q") || amtQty.trim().equals("A")) {
-                sqlCmd.append(" select sum("+ sumstr+ ") as sumTotal from db.TBAA02 ");
-                sqlCmd.append(" where CompId='"+ compId + "' and AcctCode "+ equalslike+ " '"+ code+ "'");
-                sqlCmd.append(" and AcctPeriod='"+acctPeriod.trim()+ "'");
-            }else {
-                //--金额与数量同时计算----
-                sqlCmd.append(" select sum("+ sumstr+ ") as sumTotal,sum("+ sumstr2+ ") as sumTotal2 from db.TBAA02");
-                sqlCmd.append(" where CompId='"+ compId	+ "' and AcctCode "	+ equalslike+ " '"+ code+ "'");
-                sqlCmd.append("and AcctPeriod='"+ acctPeriod.trim()+ "'");
-            }
-        }
-*/
-       // Map[] maps= financeAaLedgerlCalMapper.selectByManageReport(compId,acctPeriod,sumstr,sumstr2,sumstr3,equalslike,code);
-        return sqlCmd.toString();
-    }
 
 
     String sumstr = "";
@@ -528,9 +484,9 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             List<FinanceAaVoucherDetail> financeAaVoucherDetailList = financeAaVoucherDetailMapper.selectDetailByPpgrmId(companyId,acctPeriod,code ,"voucherAA" );
             for(int i = 0;financeAaVoucherDetailList!=null && i<financeAaVoucherDetailList.size();i++){
                 FinanceAaVoucherDetail financeAaVoucherDetail = (FinanceAaVoucherDetail)financeAaVoucherDetailList.get(i);
-                if(financeAaVoucherDetail.getDrcr().equals("D")){
+                if(("D").equals(financeAaVoucherDetail.getDrcr())){
                     detailAmt = detailAmt.add(financeAaVoucherDetail.getNtamt());
-                }else if(financeAaVoucherDetail.getDrcr().equals("C")){
+                }else if(("C").equals(financeAaVoucherDetail.getDrcr())){
                     detailAmt = detailAmt.subtract(financeAaVoucherDetail.getNtamt());
                 }
             }

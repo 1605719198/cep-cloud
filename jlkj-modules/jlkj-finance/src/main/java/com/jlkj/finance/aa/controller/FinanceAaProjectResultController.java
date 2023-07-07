@@ -35,9 +35,15 @@ public class FinanceAaProjectResultController extends BaseController
     @Autowired
     private IFinanceAaProjectResultService financeAaProjectResultService;
 
+
     /**
-     * 查询印项目计算结果列表
-     */
+    * @Description 查询印项目计算结果列表
+    * @Param [financeAaProjectResult]
+    * @return com.jlkj.common.core.web.page.TableDataInfo
+    * @Author 114288
+    * @Date 2023/7/6 16:32
+    **/
+
     @RequiresPermissions("finance:projectResult:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAaProjectResult financeAaProjectResult)
@@ -47,9 +53,14 @@ public class FinanceAaProjectResultController extends BaseController
         return getDataTable(list);
     }
 
+
     /**
-     * 导出印项目计算结果列表
-     */
+     * @Description 导出印项目计算结果列表
+     * @Param [financeAaProjectResult]
+     * @return com.jlkj.common.core.web.page.TableDataInfo
+     * @Author 114288
+     * @Date 2023/7/6 16:32
+     **/
     @RequiresPermissions("finance:projectResult:export")
     @Log(title = "印项目计算结果", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -60,9 +71,14 @@ public class FinanceAaProjectResultController extends BaseController
         util.exportExcel(response, list, "印项目计算结果数据");
     }
 
+
     /**
-     * 获取印项目计算结果详细信息
-     */
+    * @Description 获取印项目计算结果详细信息
+    * @Param [id]
+    * @return com.jlkj.common.core.web.domain.AjaxResult
+    * @Author 114288
+    * @Date 2023/7/6 16:32
+    **/
     @RequiresPermissions("finance:projectResult:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -70,9 +86,14 @@ public class FinanceAaProjectResultController extends BaseController
         return success(financeAaProjectResultService.selectFinanceAaProjectResultById(id));
     }
 
+
     /**
-     * 新增印项目计算结果
-     */
+    * @Description 新增印项目计算结果
+    * @Param [financeAaProjectResult]
+    * @return com.jlkj.common.core.web.domain.AjaxResult
+    * @Author 114288
+    * @Date 2023/7/6 16:32
+    **/
     @RequiresPermissions("finance:projectResult:add")
     @Log(title = "印项目计算结果", businessType = BusinessType.INSERT)
     @PostMapping
@@ -81,9 +102,14 @@ public class FinanceAaProjectResultController extends BaseController
         return toAjax(financeAaProjectResultService.insertFinanceAaProjectResult(financeAaProjectResult));
     }
 
+
     /**
-     * 修改印项目计算结果
-     */
+    * @Description 修改印项目计算结果
+    * @Param [financeAaProjectResult]
+    * @return com.jlkj.common.core.web.domain.AjaxResult
+    * @Author 114288
+    * @Date 2023/7/6 16:33
+    **/
     @RequiresPermissions("finance:projectResult:edit")
     @Log(title = "印项目计算结果", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -92,9 +118,14 @@ public class FinanceAaProjectResultController extends BaseController
         return toAjax(financeAaProjectResultService.updateFinanceAaProjectResult(financeAaProjectResult));
     }
 
+
     /**
-     * 删除印项目计算结果
-     */
+    * @Description  删除印项目计算结果
+    * @Param [ids]
+    * @return com.jlkj.common.core.web.domain.AjaxResult
+    * @Author 114288
+    * @Date 2023/7/6 16:33
+    **/
     @RequiresPermissions("finance:projectResult:remove")
     @Log(title = "印项目计算结果", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")

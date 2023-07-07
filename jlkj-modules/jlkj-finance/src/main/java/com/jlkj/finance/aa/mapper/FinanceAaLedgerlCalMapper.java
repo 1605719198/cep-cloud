@@ -185,13 +185,16 @@ public interface FinanceAaLedgerlCalMapper
      */
     List<FinanceAaLedgerAcctDTO> selectAmountNotDisplayedCal(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 
-    /**
-     *户号借余、贷余
+
+    /** 户号借余、贷余
     * @Description
-    * @Param
-    * @return
+    * @Param compId 公司,
+    * @Param  acctPeriod 会计周期
+    * @Param  acctCode 会计科目
+    * @Param drCrType 借贷方类别]
+    * @return java.util.Map[]
     * @Author 114288
-    * @Date 2023/7/4 10:49
+    * @Date 2023/7/7 8:21
     **/
     Map[] getKindAByIdCode(String compId, String acctPeriod, String acctCode, String drCrType);
 
