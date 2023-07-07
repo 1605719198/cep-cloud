@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 @Mapper
-public interface EnergyCodeFoMaterialMapper extends BaseMapper<EnergyCodeForMaterial> {
+public interface EnergyCodeForMaterialMapper extends BaseMapper<EnergyCodeForMaterial> {
 
 }
 

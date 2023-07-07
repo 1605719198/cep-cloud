@@ -13,7 +13,7 @@ import com.jlkj.common.dto.energy.ee.EnergyCodeForMaterialDTO;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.energy.ee.domain.EnergyCode;
 import com.jlkj.energy.ee.domain.EnergyCodeForMaterial;
-import com.jlkj.energy.ee.mapper.EnergyCodeFoMaterialMapper;
+import com.jlkj.energy.ee.mapper.EnergyCodeForMaterialMapper;
 import com.jlkj.energy.ee.mapper.EnergyCodeMapper;
 import com.jlkj.energy.ee.service.EnergyCodeForMaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.List;
  * @Date: 2022-04-28 11:25:31
  */
 @Service
-public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMaterialMapper, EnergyCodeForMaterial>
+public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeForMaterialMapper, EnergyCodeForMaterial>
         implements EnergyCodeForMaterialService {
 
     @Autowired
-    private EnergyCodeFoMaterialMapper energyCodeFoMaterialMapper;
+    private EnergyCodeForMaterialMapper energyCodeForMaterialMapper;
     @Autowired
     private EnergyCodeMapper energyCodeMapper;
 
@@ -42,12 +42,12 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      * @Description: 查询方法
      * @Author: 111191
      * @Date: 2023年7月6日, 0006 下午 02:03:30
-     * @Param: energyCodeFoMaterialDTO
-     * @Return: java.util.List<com.jlkj.energy.ee.domain.EnergyCodeFoMaterial>
+     * @Param: energyCodeForMaterialDTO
+     * @Return: java.util.List<com.jlkj.energy.ee.domain.EnergyCodeForMaterial>
      * @Throws:
      */
     @Override
-    public List<EnergyCodeForMaterial> queryEnergyCodeFoMaterial(EnergyCodeForMaterialDTO energyCodeForMaterial) {
+    public List<EnergyCodeForMaterial> queryEnergyCodeForMaterial(EnergyCodeForMaterialDTO energyCodeForMaterial) {
         LambdaQueryWrapper<EnergyCodeForMaterial> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(energyCodeForMaterial.getEngyIdStart()) && StringUtils.isNotBlank(energyCodeForMaterial.getEngyIdEnd())) {
             queryWrapper.between(EnergyCodeForMaterial::getEngyId, energyCodeForMaterial.getEngyIdStart(),
@@ -58,21 +58,21 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
             queryWrapper.eq(EnergyCodeForMaterial::getEngyId, energyCodeForMaterial.getEngyIdEnd());
         }
 
-        return energyCodeFoMaterialMapper.selectList(queryWrapper);
+        return energyCodeForMaterialMapper.selectList(queryWrapper);
     }
     /**
      * 根据Id查询能源代码
      * @Author: 111191
      * @Date: 2023年7月7日, 0007 上午 09:34:21
      * @param id 查询条件 - 能源代码id
-     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeFoMaterial> 单笔数据结果
+     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeForMaterial> 单笔数据结果
      */
     @Override
-    public EnergyCodeForMaterial queryEnergyCodeFoMaterialById(String id){
+    public EnergyCodeForMaterial queryEnergyCodeForMaterialById(String id){
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("id", id);
         queryWrapper.last("limit 1");
-        return energyCodeFoMaterialMapper.selectOne(queryWrapper);
+        return energyCodeForMaterialMapper.selectOne(queryWrapper);
     }
     /**
      * 新增固液体能源代码对应料号维护资料
@@ -82,13 +82,13 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      * @return int 返回操作成功/失败信息及数据结果
      */
     @Override
-    public int addEnergyCodeFoMaterial(EnergyCodeForMaterial energyCodeForMaterial) {
+    public int addEnergyCodeForMaterial(EnergyCodeForMaterial energyCodeForMaterial) {
         if (isReady(energyCodeForMaterial)) {
             new ServiceException("能源代码为：" + energyCodeForMaterial.getEngyId() + "的资料已存在，请勿重复添加");
         }
         energyCodeForMaterial.setCompId(SecurityUtils.getCompId());
 
-        return energyCodeFoMaterialMapper.insert(energyCodeForMaterial);
+        return energyCodeForMaterialMapper.insert(energyCodeForMaterial);
     }
     /**
      * 修改 固液体能源代码对应料号维护资料
@@ -98,14 +98,14 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      * @return int 返回操作成功/失败信息及数据结果
      */
     @Override
-    public int updateEnergyCodeFoMaterial(EnergyCodeForMaterial energyCodeForMaterial){
+    public int updateEnergyCodeForMaterial(EnergyCodeForMaterial energyCodeForMaterial){
         if (StringUtils.isBlank(energyCodeForMaterial.getCompId())) {
             energyCodeForMaterial.setCompId(SecurityUtils.getCompId());
         }
         LambdaUpdateWrapper<EnergyCodeForMaterial> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(energyCodeForMaterial.getEngyId()), EnergyCodeForMaterial::getEngyId, energyCodeForMaterial.getEngyId());
 
-        return energyCodeFoMaterialMapper.update(energyCodeForMaterial, updateWrapper);
+        return energyCodeForMaterialMapper.update(energyCodeForMaterial, updateWrapper);
     }
     /**
      * 根据engyId 删除数据
@@ -119,7 +119,7 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
         LambdaQueryWrapper<EnergyCodeForMaterial> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(EnergyCodeForMaterial::getEngyId, engyId);
 
-        return energyCodeFoMaterialMapper.delete(queryWrapper);
+        return energyCodeForMaterialMapper.delete(queryWrapper);
     }
     /**
      * 删除固液体能源代码对应料号维护资料
@@ -129,11 +129,11 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      * @return int 操作笔数（删除数）
      */
     @Override
-    public int deleteEnergyCodeFoMaterial(String[] ids){
+    public int deleteEnergyCodeForMaterial(String[] ids){
         int result = 0;
         if (StringUtils.checkValNotNull(ids)) {
             List list = Arrays.asList(ids);
-            result = energyCodeFoMaterialMapper.deleteBatchIds(list);
+            result = energyCodeForMaterialMapper.deleteBatchIds(list);
         } else {
             new ServiceException("请选择要删除的数据项后，再进行操作");
         }

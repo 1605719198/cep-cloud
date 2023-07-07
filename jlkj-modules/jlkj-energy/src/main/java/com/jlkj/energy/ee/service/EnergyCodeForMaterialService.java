@@ -19,18 +19,18 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @Author: 111191
      * @Date: 2023年7月7日, 0007 上午 09:17:33
      * @param energyCodeForMaterialDTO 查询条件
-     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeFoMaterial> 分页结果
+     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeForMaterial> 分页结果
      */
 
-    List<EnergyCodeForMaterial> queryEnergyCodeFoMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO);
+    List<EnergyCodeForMaterial> queryEnergyCodeForMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO);
     /**
      * 根据Id查询能源代码
      * @Author: 111191
      * @Date: 2023年7月7日, 0007 上午 09:34:21
      * @param id 查询条件 - 能源代码id
-     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeFoMaterial> 单笔数据结果
+     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeForMaterial> 单笔数据结果
      */
-    EnergyCodeForMaterial queryEnergyCodeFoMaterialById(String id);
+    EnergyCodeForMaterial queryEnergyCodeForMaterialById(String id);
     /**
      * 新增固液体能源代码对应料号维护资料
      * @Author: 111191
@@ -38,7 +38,7 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @param energyCodeForMaterial 固液体能源代码对应料号维护资料
      * @return int 返回操作成功/失败信息及数据结果
      */
-    int addEnergyCodeFoMaterial(EnergyCodeForMaterial energyCodeForMaterial);
+    int addEnergyCodeForMaterial(EnergyCodeForMaterial energyCodeForMaterial);
     /**
      * 修改 固液体能源代码对应料号维护资料
      * @Author: 111191
@@ -46,7 +46,7 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @param energyCodeForMaterial 固液体能源代码对应料号维护资料
      * @return int 返回操作成功/失败信息及数据结果
      */
-    int updateEnergyCodeFoMaterial(EnergyCodeForMaterial energyCodeForMaterial);
+    int updateEnergyCodeForMaterial(EnergyCodeForMaterial energyCodeForMaterial);
     /**
      * 根据engyId 删除数据
      * @Author: 111191
@@ -62,7 +62,7 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @param ids 能源代码ids 多笔
      * @return int 操作笔数（删除数）
      */
-    int deleteEnergyCodeFoMaterial(String[] ids);
+    int deleteEnergyCodeForMaterial(String[] ids);
     /**
      * 查询能源代码下拉选单(中文label)
      * @Author: 111191

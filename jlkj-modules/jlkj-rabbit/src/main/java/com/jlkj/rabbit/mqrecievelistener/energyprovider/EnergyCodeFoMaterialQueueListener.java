@@ -2,7 +2,7 @@ package com.jlkj.rabbit.mqrecievelistener.energyprovider;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jlkj.common.dto.energy.ee.EnergyCodeFoMaterialDTO;
+import com.jlkj.common.dto.energy.ee.EnergyCodeForMaterialDTO;
 import com.jlkj.rabbit.feign.energyprovider.EnergyFeignService;
 import com.jlkj.rabbit.service.impl.SysQueueDlxServiceImpl;
 import com.rabbitmq.client.Channel;
@@ -73,18 +73,18 @@ public class EnergyCodeFoMaterialQueueListener {
         //判断操作标识
         if (actionCode.equals(ENERGY_N)){
                 //将item复制给EnergyCodeFoMaterialDTO
-                EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO = objectMapper.convertValue(data, EnergyCodeFoMaterialDTO.class);
+                EnergyCodeForMaterialDTO energyCodeForMaterialDTO = objectMapper.convertValue(data, EnergyCodeForMaterialDTO.class);
                 String token = "client-test";
-                energyFeignService.addEnergyCodeFoMaterial(energyCodeFoMaterialDTO, token);
+                energyFeignService.addEnergyCodeFoMaterial(energyCodeForMaterialDTO, token);
         } else if (actionCode.equals(ENERGY_R)) {
             //修改
-                EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO = objectMapper.convertValue(data, EnergyCodeFoMaterialDTO.class);
+                EnergyCodeForMaterialDTO energyCodeForMaterialDTO = objectMapper.convertValue(data, EnergyCodeForMaterialDTO.class);
                 String token = "client-test";
-                energyFeignService.updateEnergyCodeFoMaterial(energyCodeFoMaterialDTO, token);
+                energyFeignService.updateEnergyCodeFoMaterial(energyCodeForMaterialDTO, token);
         } else if (actionCode.equals(ENERGY_D)) {
             //删除
-                EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO = objectMapper.convertValue(data, EnergyCodeFoMaterialDTO.class);
-                String engyId = energyCodeFoMaterialDTO.getEngyId();
+                EnergyCodeForMaterialDTO energyCodeForMaterialDTO = objectMapper.convertValue(data, EnergyCodeForMaterialDTO.class);
+                String engyId = energyCodeForMaterialDTO.getEngyId();
                 String token = "client-test";
                 energyFeignService.deleteEnergyCodeFoMaterial(engyId, token);
         } else {

@@ -38,8 +38,8 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "新增固液体能源代码对应料号维护资料", businessType = BusinessType.INSERT)
     @Operation(summary = "新增固液体能源代码对应料号维护资料")
     @PostMapping("/add")
-    public AjaxResult addEnergyCodeFoMaterial(@Validated @RequestBody EnergyCodeForMaterial energyCodeForMaterial) {
-        return toAjax(energyCodeForMaterialService.addEnergyCodeFoMaterial(energyCodeForMaterial));
+    public AjaxResult addEnergyCodeForMaterial(@Validated @RequestBody EnergyCodeForMaterial energyCodeForMaterial) {
+        return toAjax(energyCodeForMaterialService.addEnergyCodeForMaterial(energyCodeForMaterial));
     }
 
     /**
@@ -52,8 +52,8 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "修改固液体能源代码对应料号维护资料", businessType = BusinessType.UPDATE)
     @Operation(summary = "修改固液体能源代码对应料号维护资料")
     @PostMapping("/update")
-    public AjaxResult updateEnergyCodeFoMaterial(@Validated @RequestBody EnergyCodeForMaterial energyCodeForMaterial) {
-        return toAjax(energyCodeForMaterialService.updateEnergyCodeFoMaterial(energyCodeForMaterial));
+    public AjaxResult updateEnergyCodeForMaterial(@Validated @RequestBody EnergyCodeForMaterial energyCodeForMaterial) {
+        return toAjax(energyCodeForMaterialService.updateEnergyCodeForMaterial(energyCodeForMaterial));
     }
 
     /**
@@ -66,8 +66,8 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "删除固液体能源代码对应料号维护资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除固液体能源代码对应料号维护资料")
     @DeleteMapping("/delete/{ids}")
-    public AjaxResult deleteEnergyCodeFoMaterial(@PathVariable String[] ids) {
-        return toAjax(energyCodeForMaterialService.deleteEnergyCodeFoMaterial(ids));
+    public AjaxResult deleteEnergyCodeForMaterial(@PathVariable String[] ids) {
+        return toAjax(energyCodeForMaterialService.deleteEnergyCodeForMaterial(ids));
     }
 
     /**
@@ -95,9 +95,9 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "固液体能源代码对应料号资料查询与列表", businessType = BusinessType.OTHER)
     @Operation(summary = "固液体能源代码对应料号资料查询与列表")
     @GetMapping("/query")
-    public TableDataInfo queryEnergyCodeFoMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO) {
+    public TableDataInfo queryEnergyCodeForMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO) {
         startPage();
-        return getDataTable(energyCodeForMaterialService.queryEnergyCodeFoMaterial(energyCodeForMaterialDTO));
+        return getDataTable(energyCodeForMaterialService.queryEnergyCodeForMaterial(energyCodeForMaterialDTO));
     }
 
     /**
@@ -111,8 +111,8 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "根据Id查询能源代码", businessType = BusinessType.OTHER)
     @Operation(summary = "根据Id查询能源代码")
     @GetMapping("/queryById/{id}")
-    public AjaxResult queryEnergyCodeFoMaterialById(@PathVariable String id) {
-        EnergyCodeForMaterial list = energyCodeForMaterialService.queryEnergyCodeFoMaterialById(id);
+    public AjaxResult queryEnergyCodeForMaterialById(@PathVariable String id) {
+        EnergyCodeForMaterial list = energyCodeForMaterialService.queryEnergyCodeForMaterialById(id);
         return AjaxResult.success(list);
     }
 

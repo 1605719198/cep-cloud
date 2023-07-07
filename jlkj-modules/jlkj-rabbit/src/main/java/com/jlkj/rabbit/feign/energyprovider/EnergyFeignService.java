@@ -50,21 +50,21 @@ public interface EnergyFeignService {
 
     /**
      * 新增固液体能源代码对应料号维护资料
-     * @param energyCodeFoMaterialDTO
+     * @param energyCodeForMaterialDTO
      * @param token
      * @return
      */
     @PostMapping("/energy/code/material/add")
-    Object addEnergyCodeFoMaterial(EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token);
+    Object addEnergyCodeFoMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO, @RequestHeader("token") String token);
 
     /**
      * 修改固液体能源代码对应料号维护资料
-     * @param energyCodeFoMaterialDTO
+     * @param energyCodeForMaterialDTO
      * @param token
      * @return
      */
     @PostMapping("/energy/code/material/update")
-    Object updateEnergyCodeFoMaterial(EnergyCodeFoMaterialDTO energyCodeFoMaterialDTO, @RequestHeader("token") String token);
+    Object updateEnergyCodeFoMaterial(EnergyCodeForMaterialDTO energyCodeForMaterialDTO, @RequestHeader("token") String token);
 
     /**
      * 删除固液体能源代码对应料号维护资料
