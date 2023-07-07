@@ -4,11 +4,14 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.ft.domain.FinanceFtStatus;
+import com.jlkj.finance.ft.dto.FinanceFtStatusDTO;
 import com.jlkj.finance.ft.mapper.FinanceFtStatusMapper;
+import com.jlkj.finance.ft.service.IFinanceFtStatusDetailService;
 import com.jlkj.finance.ft.service.IFinanceFtStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,6 +26,9 @@ public class FinanceFtStatusServiceImpl implements IFinanceFtStatusService
 {
     @Autowired
     private FinanceFtStatusMapper financeFtStatusMapper;
+
+    @Resource
+    private IFinanceFtStatusDetailService iFinanceFtStatusDetailService;
 
     /**
      * 查询资产使用状态
@@ -57,17 +63,15 @@ public class FinanceFtStatusServiceImpl implements IFinanceFtStatusService
      *
      * @author SunXuTong
      * @date 2023-07-03
-     * @param financeFtStatus 资产使用状态
+     * @param financeFtStatusDTO 资产使用状态
      * @return 结果
      */
     @Override
-    public int insertFinanceFtStatus(FinanceFtStatus financeFtStatus)
+    public int insertFinanceFtStatus(FinanceFtStatusDTO financeFtStatusDTO)
     {
-        financeFtStatus.setUuid(IdUtils.fastSimpleUUID());
-        financeFtStatus.setCreateTime(DateUtils.getNowDate());
-        financeFtStatus.setCreateBy(SecurityUtils.getUsername());
-        financeFtStatus.setCreateName(SecurityUtils.getNickName());
-        return financeFtStatusMapper.insertFinanceFtStatus(financeFtStatus);
+        iFinanceFtStatusDetailService.saveBatch(financeFtStatusDTO.getStatusListA());
+        financeFtStatusDTO.setUuid(IdUtils.fastSimpleUUID());
+        return financeFtStatusMapper.insertFinanceFtStatus(financeFtStatusDTO);
     }
 
     /**
