@@ -143,15 +143,16 @@ public interface FinanceAaVoucherDetailMapper
      */
     public int deleteFinanceAaVoucherDetailByIds(String[] ids);
 
-    /** 
+
+    /**
     * @description 按系统别查询
-    * @param companyId 公司别
+    * @param companyId
     * @param acctPeriod 会计周期
     * @param code 会计科目
-    * @param voucherAA  系统别
+    * @param pgrmId  系统别
     * @return java.util.List<com.jlkj.finance.aa.domain.FinanceAaVoucherDetail>
     * @Author 114288
-    * @Date 2023/7/7 10:28
+    * @Date 2023/7/7 10:38
     **/
-    List<FinanceAaVoucherDetail> selectDetailByPpgrmId(String companyId, String acctPeriod, String code, String voucherAA);
+    List<FinanceAaVoucherDetail> selectDetailByPgrmId(String companyId, String acctPeriod, String code, String pgrmId);
 }

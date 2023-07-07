@@ -19,6 +19,12 @@ public interface IFinanceAaAccountBalanceTonSteelService {
      */
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 
-
+/**
+* @description  查询报表
+* @param financeAaLedgerAcctDTO financeAaLedgerAcctDTO
+* @return java.util.List<com.jlkj.finance.aa.dto.FinanceAaLedgerAcctDTO>
+* @Author 114288
+* @Date 2023/7/7 10:35
+**/
     List<FinanceAaLedgerAcctDTO> reportListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 }

@@ -497,7 +497,7 @@
             and a.status <![CDATA[   !=  ]]> 'P'
         </where>
     </select>
-    <select id="selectDetailByPpgrmId" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+    <select id="selectDetailByPgrmId" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
 
 
     </select>

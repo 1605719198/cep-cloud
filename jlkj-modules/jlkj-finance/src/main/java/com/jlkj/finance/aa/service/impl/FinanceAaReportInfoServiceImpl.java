@@ -481,7 +481,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
         BigDecimal detailAmt = new BigDecimal(0);
         try{
 
-            List<FinanceAaVoucherDetail> financeAaVoucherDetailList = financeAaVoucherDetailMapper.selectDetailByPpgrmId(companyId,acctPeriod,code ,"voucherAA" );
+            List<FinanceAaVoucherDetail> financeAaVoucherDetailList = financeAaVoucherDetailMapper.selectDetailByPgrmId(companyId,acctPeriod,code ,"voucherAA" );
             for(int i = 0;financeAaVoucherDetailList!=null && i<financeAaVoucherDetailList.size();i++){
                 FinanceAaVoucherDetail financeAaVoucherDetail = (FinanceAaVoucherDetail)financeAaVoucherDetailList.get(i);
                 if(("D").equals(financeAaVoucherDetail.getDrcr())){

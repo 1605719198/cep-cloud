@@ -70,9 +70,13 @@ public interface IFinanceAoItemCompService
     public int insertBatch(List<FinanceAoItemComp> financeAoItemComps);
 
 
+
     /**
-     * 查询报支类别下拉选单
-     * @return
-     */
+    * @description  查询报支类别下拉选单
+    * @param companyId 公司别
+    * @return java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+    * @Author 114288
+    * @Date 2023/7/7 10:36
+    **/
     public List<Map<String,String>> selectItemNoList(String companyId);
 }
