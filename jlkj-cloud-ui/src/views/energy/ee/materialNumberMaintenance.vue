@@ -38,26 +38,21 @@
     <el-table v-loading="loading" height="67vh" stripe :data="tableData" tooltip-effect="dark"
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="25" align="center"/>
-      <el-table-column label="能源代码" align="center" prop="engyId"/>
-      <el-table-column label="能源名称" align="center" prop="engyName"/>
-      <el-table-column label="成本中心" align="center" prop="costCenter"/>
-      <el-table-column label="能源量类型" align="center" prop="engyClass">
+      <el-table-column label="能源代码" align="center" prop="engyId" sortable/>
+      <el-table-column label="能源名称" align="center" prop="engyName" sortable/>
+      <el-table-column label="成本中心" align="center" prop="costCenter" sortable/>
+      <el-table-column label="能源量类型" align="center" prop="engyClass" sortable>
         <template v-slot="scope">
           <dict-tag :options="dict.type.engy_engy_class" :value="scope.row.engyClass"/>
         </template>
       </el-table-column>
-      <el-table-column label="来源系统" align="center" prop="engySource"/>
+      <el-table-column label="来源系统" align="center" prop="engySource" sortable/>
       <el-table-column label="料号1" align="center" prop="engyCmp1No"/>
       <el-table-column label="料号2" align="center" prop="engyCmp2No"/>
       <el-table-column label="料号3" align="center" prop="engyCmp3No"/>
       <el-table-column label="料号4" align="center" prop="engyCmp4No"/>
       <el-table-column label="料号5" align="center" prop="engyCmp5No"/>
-      <el-table-column label="料号6" align="center" prop="engyCmp6No"/>
-      <el-table-column label="料号7" align="center" prop="engyCmp7No"/>
-      <el-table-column label="料号8" align="center" prop="engyCmp8No"/>
-      <el-table-column label="料号9" align="center" prop="engyCmp9No"/>
-      <el-table-column label="料号10" align="center" prop="engyCmp10No"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180px">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120px">
         <template v-slot="scope">
           <el-button v-hasPermi="['code:material:update']"
                      size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改
@@ -215,7 +210,7 @@ import {listApplyLike} from "@/api/energy/ee/productionLineCostCenter"
 
 export default {
   name: "materialNumberMaintenance",
-  dicts: ['engy_engy_class','engy_engy_source'],
+  dicts: ['engy_engy_class', 'engy_engy_source'],
   data() {
     return {
       // 弹出层标题
@@ -284,8 +279,8 @@ export default {
     getList() {
       queryInfo(this.queryParams).then(response => {
         this.tableData = response.rows;
-          this.total = response.total;
-          this.loading = false;
+        this.total = response.total;
+        this.loading = false;
       })
     },
     // 多选框选中数据
