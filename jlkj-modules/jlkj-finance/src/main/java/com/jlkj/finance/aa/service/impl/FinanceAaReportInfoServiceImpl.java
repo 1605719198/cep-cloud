@@ -89,7 +89,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             throw new ServiceException("计算失败，报表项目为空！");
         }
 
-       financeAaProjectResultMap = new HashMap();
+       financeAaProjectResultMap = new HashMap(financeAaProjectFormulas.size());
        for (int i=0;i<financeAaProjectFormulas.size();i++){
            FinanceAaProjectFormula financeProjectFormula =  financeAaProjectFormulas.get(i);
            count = 0;
@@ -325,14 +325,12 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                 if (financeProjectContent.getCode().trim().charAt(i) == '*') {
                     code.append("%") ;
                     codeCheck = "yes";
-
                     break;
                 } else if (financeProjectContent.getCode().trim().charAt(i) == '@') {
                     code.append("_") ;
                     codeCheck = "no";
                 } else {
                     code.append( financeProjectContent.getCode().trim().charAt(i));
-
                 }
                 financeProjectContent.setCode(code.toString());
             }
@@ -361,13 +359,13 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             //户号借余、贷余
             if (ConstantsUtil.STR_J.equals(financeProjectContent.getDrcrkind().trim() )
                     || ConstantsUtil.STR_K.equals(financeProjectContent.getDrcrkind().trim())) {
-                amt = this.getKindAByIdCode(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), equalsLike,financeProjectContent.getDrcrkind().trim());
+                amt = this.getKindaByIdCode(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), equalsLike,financeProjectContent.getDrcrkind().trim());
             }//结转额
             else if (ConstantsUtil.STR_N.equals(financeProjectContent.getDrcrkind().trim())) {
-                amt = this.getJZ(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), financeProjectContent.getDrcrkind().trim());
+                amt = this.getJz(financeAaReportInfo.getCompanyId(), financeAaReportInfo.getAcctPeriod(), code.toString(), financeProjectContent.getDrcrkind().trim());
             } else {
                 //定义金额取数方式
-                getSumSQL(financeProjectContent.getAmtqty(), financeProjectContent.getDrcrkind().trim());
+                getSumSql(financeProjectContent.getAmtqty(), financeProjectContent.getDrcrkind().trim());
                 //=====组合会计科目的SQL
                 Map[] aa02Amt =  financeAaLedgerlCalMapper.selectByManageReport(financeAaReportInfo.getCompanyId(),financeAaReportInfo.getAcctPeriod(),sumstr,sumstr2,sumstr3,equalsLike, String.valueOf(code));
 
@@ -383,7 +381,6 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                 qty = qty.negate();
                 amt = amt.negate();
             }
-
             if (ConstantsUtil.STR_A.equals(financeProjectContent.getAmtqty().trim().toUpperCase())) {
                 //最后放入db.tbaa73表里的金额
                 financeAaProjectResult.setAmt( AssertUtil.bigDecimalValue(financeAaProjectResult.getAmt()).add(amt));
@@ -401,8 +398,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             flag = false;
             log.error("",e);
             throw new ServiceException("计算失败，" + e.getMessage());
-
-        }
+       }
         return flag;
 
     }
@@ -422,7 +418,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     String sumstr = "";
     String sumstr2 = "";
     String sumstr3 = "";
-    private void getSumSQL(String amtType, String drCrType) {
+    private void getSumSql(String amtType, String drCrType) {
 
 
             if (ConstantsUtil.STR_A.equals(drCrType.trim())) {
@@ -476,7 +472,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     * @Author 114288
     * @Date 2023/7/4 12:22
     **/
-    private BigDecimal getJZ(String companyId, String acctPeriod, String code, String drCrKind) {
+    private BigDecimal getJz(String companyId, String acctPeriod, String code, String drCrKind) {
 
         BigDecimal detailAmt = new BigDecimal(0);
         try{
@@ -498,8 +494,17 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
 
 
     }
-
-    private BigDecimal getKindAGroupByIdCode(String companyId, String acctPeriod, String code, String drCrKind) {
+/**
+* @description  计算A类型的值
+* @param companyId 公司别
+ * @param acctPeriod 会计周期
+ * @param code 会计科目
+ * @param drCrKind 类别
+* @return java.math.BigDecimal
+* @Author 114288
+* @Date 2023/7/7 10:57
+**/
+    private BigDecimal getKindaGroupByIdaCode(String companyId, String acctPeriod, String code, String drCrKind) {
 
         BigDecimal detailAmt = new BigDecimal(0);
         try {
@@ -543,7 +548,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
      *@Author 114288
      *@Date 2023/7/4 10:39
      */
-    private BigDecimal getKindAByIdCode(String compId, String acctPeriod, String acctCode,String equalslike, String drCrType) {
+    private BigDecimal getKindaByIdCode(String compId, String acctPeriod, String acctCode,String equalslike, String drCrType) {
         BigDecimal detailAmt = new BigDecimal(0);
 
         try {
