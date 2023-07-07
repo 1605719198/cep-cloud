@@ -61,12 +61,16 @@
         queryParams: {
           costCenter: null
         },
+        // 表单校验
         rules: {
           millIdCode: [
-            { validator: checkA, trigger: 'blur' }
+            {required: true, message: "产线代码不能为空", trigger: "blur"}
           ],
           millIdName: [
-            { validator: checkB, trigger: 'blur' }
+            {required: true, message: "产线名称不能为空", trigger: "blur"}
+          ],
+          costCenter: [
+            {required: true, message: "成本中心不能为空", trigger: "blur"}
           ]
         },
       }

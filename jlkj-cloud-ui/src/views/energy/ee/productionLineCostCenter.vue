@@ -98,13 +98,11 @@ export default {
         border: true
       },
       columns: [
-        {label: '工厂产线代码', prop: "millIdCode", sortable: true, minWidth: '100px'},
+        {label: '产线代码', prop: "millIdCode", sortable: true, minWidth: '100px'},
         {label: '产线名称', prop: "millIdName", sortable: true, minWidth: '100px'},
         {label: '成本中心', prop: "costCenter", sortable: true, minWidth: '100px'},
         {label: '建立人员', prop: "createBy", sortable: true, minWidth: '100px'},
-        {label: '建立日期', prop: "createTime", sortable: true, minWidth: '100px'},
-        {label: '修改人员', prop: "updateBy", sortable: true, minWidth: '100px'},
-        {label: '修改日期', prop: "updateTime", sortable: true, minWidth: '100px'},
+        {label: '建立日期', prop: "createTime", sortable: true, minWidth: '100px'}
       ],
       tableData: [],
       openIsDisabled: ''
