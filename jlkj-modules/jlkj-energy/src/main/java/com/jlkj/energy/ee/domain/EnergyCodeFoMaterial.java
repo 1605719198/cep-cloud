@@ -2,6 +2,7 @@ package com.jlkj.energy.ee.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 @TableName(value ="energy_ee_code_fo_material")
 @Data
-public class EnergyCodeFoMaterial implements Serializable {
+public class EnergyCodeFoMaterial {
     /**
      * ID
      */
@@ -117,7 +118,7 @@ public class EnergyCodeFoMaterial implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String createDate;
+    private Date createDate;
 
     /**
      * 修改人员
@@ -129,7 +130,7 @@ public class EnergyCodeFoMaterial implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String updateDate;
+    private Date updateDate;
 
     /**
      * 创建人
