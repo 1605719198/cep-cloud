@@ -219,7 +219,9 @@
           <el-table-column label="币别" prop="crcyCode" width="150" :render-header="addRedstar">
             <template slot-scope="scope">
               <el-form-item :prop="'financeAoLoanDetailList.' + scope.$index + '.crcyCode'" :rules="rules.crcyCode">
-               <el-input v-model="scope.row.crcyCode" placeholder="请输入币别" />
+
+
+
               </el-form-item>
             </template>
           </el-table-column>

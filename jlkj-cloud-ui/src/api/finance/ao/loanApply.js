@@ -8,7 +8,14 @@ export function listLoanApply(query) {
     params: query
   })
 }
-
+// 查询会计处理借支申请
+export function loanList (query) {
+  return request({
+    url: '/finance/loanApply/loanList',
+    method: 'get',
+    params: query
+  })
+}
 // 查询借支申请主档详细
 export function getLoanApply(id) {
   return request({
@@ -16,7 +23,13 @@ export function getLoanApply(id) {
     method: 'get'
   })
 }
-
+// 查询借支申请主档详细
+export function getLoanApplyFrom(id) {
+  return request({
+    url: `/finance/loanApply/loanApplyFrom/` + id,
+    method: 'get'
+  })
+}
 // 新增借支申请主档
 export function addLoanApply(data) {
   return request({
