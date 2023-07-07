@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.mapper.ft.FinanceFtStatusDetailMapper">
+    
+    <resultMap type="FinanceFtStatusDetail" id="FinanceFtStatusDetailResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="statusCode"    column="status_code"    />
+        <result property="assetPurpose"    column="asset_purpose"    />
+        <result property="financePurpose"    column="finance_purpose"    />
+        <result property="isDepr"    column="is_depr"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="detailRemark"    column="detail_remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtStatusDetailVo">
+        SELECT uuid, company_id, status_code, asset_purpose, finance_purpose, is_depr, expense_type, detail_remark, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_status_detail
+    </sql>
+
+    <select id="selectFinanceFtStatusDetailList" parameterType="FinanceFtStatusDetail" resultMap="FinanceFtStatusDetailResult">
+        <include refid="selectFinanceFtStatusDetailVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="statusCode != null  and statusCode != ''"> AND status_code = #{statusCode}</if>
+            <if test="assetPurpose != null  and assetPurpose != ''"> AND asset_purpose = #{assetPurpose}</if>
+            <if test="financePurpose != null  and financePurpose != ''"> AND finance_purpose = #{financePurpose}</if>
+            <if test="isDepr != null  and isDepr != ''"> AND is_depr = #{isDepr}</if>
+            <if test="expenseType != null  and expenseType != ''"> AND expense_type = #{expenseType}</if>
+            <if test="detailRemark != null  and detailRemark != ''"> AND detail_remark = #{detailRemark}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtStatusDetailByUuid" parameterType="String" resultMap="FinanceFtStatusDetailResult">
+        <include refid="selectFinanceFtStatusDetailVo"/>
+        WHERE uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtStatusDetail" parameterType="FinanceFtStatusDetail">
+        INSERT INTO finance_ft_status_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="statusCode != null">status_code,</if>
+            <if test="assetPurpose != null">asset_purpose,</if>
+            <if test="financePurpose != null">finance_purpose,</if>
+            <if test="isDepr != null">is_depr,</if>
+            <if test="expenseType != null">expense_type,</if>
+            <if test="detailRemark != null">detail_remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="statusCode != null">#{statusCode},</if>
+            <if test="assetPurpose != null">#{assetPurpose},</if>
+            <if test="financePurpose != null">#{financePurpose},</if>
+            <if test="isDepr != null">#{isDepr},</if>
+            <if test="expenseType != null">#{expenseType},</if>
+            <if test="detailRemark != null">#{detailRemark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtStatusDetail" parameterType="FinanceFtStatusDetail">
+        UPDATE finance_ft_status_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="statusCode != null">status_code = #{statusCode},</if>
+            <if test="assetPurpose != null">asset_purpose = #{assetPurpose},</if>
+            <if test="financePurpose != null">finance_purpose = #{financePurpose},</if>
+            <if test="isDepr != null">is_depr = #{isDepr},</if>
+            <if test="expenseType != null">expense_type = #{expenseType},</if>
+            <if test="detailRemark != null">detail_remark = #{detailRemark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtStatusDetailByUuid" parameterType="String">
+        DELETE FROM finance_ft_status_detail WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtStatusDetailByUuids" parameterType="String">
+        DELETE FROM finance_ft_status_detail WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>
