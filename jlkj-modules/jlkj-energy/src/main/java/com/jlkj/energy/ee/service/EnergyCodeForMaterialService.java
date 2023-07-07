@@ -30,7 +30,7 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @param id 查询条件 - 能源代码id
      * @return java.util.List<com.jlkj.energy.ee.domain.EnergyCodeFoMaterial> 单笔数据结果
      */
-    List<EnergyCodeForMaterial> queryEnergyCodeFoMaterialById(String id);
+    EnergyCodeForMaterial queryEnergyCodeFoMaterialById(String id);
     /**
      * 新增固液体能源代码对应料号维护资料
      * @Author: 111191
