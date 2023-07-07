@@ -41,6 +41,18 @@ public class AttendanceAbnormalStatisticsController extends BaseController
     }
 
     /**
+     * 查询缺勤统计列表
+     */
+    @RequiresPermissions("human:absenceStatistics:list")
+    @GetMapping("/absenceStatisticsList")
+    public TableDataInfo absenceStatisticsList(AttendanceAbnormalStatistics attendanceAbnormalStatistics)
+    {
+        startPage();
+        List<AttendanceAbnormalStatistics> list = attendanceAbnormalStatisticsService.selectAbsenceStatisticsList(attendanceAbnormalStatistics);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出出勤异常统计列表
      */
     @RequiresPermissions("human:attendanceAbnormalStatistics:export")
