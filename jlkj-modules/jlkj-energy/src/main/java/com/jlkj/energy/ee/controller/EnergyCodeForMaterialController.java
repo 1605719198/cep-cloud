@@ -114,7 +114,7 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Operation(summary = "根据Id查询能源代码")
     @GetMapping("/queryById/{id}")
     public AjaxResult queryEnergyCodeFoMaterialById(@PathVariable String id) {
-        List<EnergyCodeForMaterial> list = energyCodeForMaterialService.queryEnergyCodeFoMaterialById(id);
+        EnergyCodeForMaterial list = energyCodeForMaterialService.queryEnergyCodeFoMaterialById(id);
         return AjaxResult.success(list);
     }
 
