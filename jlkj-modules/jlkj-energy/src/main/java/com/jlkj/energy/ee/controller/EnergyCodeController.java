@@ -11,10 +11,10 @@ import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.energy.ee.domain.EnergyCode;
 import com.jlkj.energy.ee.service.EnergyCodeService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/energy/code")
 public class EnergyCodeController extends BaseController {
 
-    @Autowired
+    @Resource
     EnergyCodeService energyCodeService;
 
     /**
