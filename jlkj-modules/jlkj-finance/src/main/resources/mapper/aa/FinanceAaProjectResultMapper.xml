@@ -92,6 +92,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from finance_aa_project_result where id = #{id}
     </delete>
 
+    <delete id="deleteFinanceAaProjectResultByPeriod" parameterType="String">
+        delete from finance_aa_project_result where
+         company_id = #{companyId}
+         and     report_no = #{reportNo}
+         and acct_period = #{acctPeriod}
+    </delete>
+
+
     <delete id="deleteFinanceAaProjectResultByIds" parameterType="String">
         delete from finance_aa_project_result where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">

@@ -33,6 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="yearCrAmt"    column="year_cr_amt"    />
         <result property="yearDrQty"    column="year_dr_qty"    />
         <result property="yearCrQty"    column="year_cr_Qty"    />
+        <result property="qty"    column="qty"    />
+        <result property="amt"    column="amt"    />
     </resultMap>
 
     <sql id="selectFinanceAaLedgerlCalVo">
@@ -581,6 +583,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='reportType == "4"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec, </if>
         <if test='reportType == "5"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec,T1.cal_named,T1.cal_coded, </if>
         T3.acct_name
+    </select>
+    <select id="getKindAByIdCode" resultType="map">
+        SELECT  IDCODE,SUM(bgn_amt+dr_amt-cr_amt) as AMT from finance_aa_ledgerl_cal
+        WHERE company_Id =  #{companyId}
+         and acct_Period = #{acctPeriod}
+        <if test="acctCode != null  and acctCode != '' ">   and #{acctCode} </if>
+         GROUP BY IDCODE
+        <if test='type  == "J" '> HAVING SUM(bgn_amt+dr_amt-cr_amt)<![CDATA[ > ]]> 0 </if>
+        <if test='type  == "K" '> HAVING SUM(bgn_amt+dr_amt-cr_amt)<![CDATA[ < ]]> 0 </if>
+    </select>
+    <select id="selectByManageReport" parameterType="String" resultType="map">
+        select sum( ${sumstr} ) as qty ,sum( ${sumstr2} ) as amt from finance_aa_ledgerl_cal
+               where company_Id = #{companyId} and acct_code
+        <if test='equalslike == "=" '> = </if>
+        <if test='equalslike == "like" ' > like </if>   #{acctCode}
+               and acct_Period= #{acctPeriod}
+        <if test="sumstr3 != '' and sumstr3 != null "> and #{sumstr3}</if>
+
     </select>
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">

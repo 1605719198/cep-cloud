@@ -31,13 +31,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceAaProjectContentList" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectContent" resultMap="FinanceAaProjectContentResult">
         select t1.id, t1.company_id, t1.report_id, t1.report_no, t1.item_code, t1.operator, t1.kind, t1.code, t1.drcrkind, t1.amtqty, t1.status, t1.create_by, t1.create_name, t1.create_time, t1.update_by, t1.update_name, t1.update_time from finance_aa_project_content t1
         left join finance_aa_report_defin t2 on t1.company_id = t2.company_id and t1.report_no = t2.report_no
+
         <where>
             <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
             <if test="reportNo != null  and reportNo != ''"> and t1.report_no like concat('%', #{reportNo}, '%')</if>
             <if test="reportName != null  and reportName != ''"> and t2.report_name like concat('%', #{reportName}, '%')</if>
             <if test="itemCode != null  and itemCode != ''"> and t1.item_code = #{itemCode}</if>
+            <if test="code != null  and code != ''"> and t1.code = #{code}</if>
+            <if test="kind != null  and kind != ''"> and t1.kind = #{kind}</if>
         </where>
     </select>
+
+    <select id="selectFinanceProjectContentList" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectContent" resultMap="FinanceAaProjectContentResult">
+        select t1.id, t1.company_id, t1.report_id, t1.report_no, t1.item_code, t1.operator, t1.kind, t1.code, t1.drcrkind, t1.amtqty, t1.status, t1.create_by, t1.create_name, t1.create_time, t1.update_by, t1.update_name, t1.update_time from finance_aa_project_content t1
+        left join finance_aa_report_defin t2 on t1.report_no = t2.report_no
+        left join finance_aa_project_formula t3  on t1.report_no = t3.report_no  and t1.item_code = t3.item_code
+        <where>
+            <if test="reportNo != null  and reportNo != ''"> and t1.report_no = #{reportNo}</if>
+            <if test="reportName != null  and reportName != ''"> and t2.report_name like concat('%', #{reportName}, '%')</if>
+            <if test="itemCode != null  and itemCode != ''"> and t1.item_code = #{itemCode}</if>
+        </where>
+        order by t3.item_row,t3.sum_control
+    </select>
+
+
     
     <select id="selectFinanceAaProjectContentById" parameterType="String" resultMap="FinanceAaProjectContentResult">
         <include refid="selectFinanceAaProjectContentVo"/>
