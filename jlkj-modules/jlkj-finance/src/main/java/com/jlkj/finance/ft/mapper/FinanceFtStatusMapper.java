@@ -1,6 +1,7 @@
 package com.jlkj.finance.ft.mapper;
 
 import com.jlkj.finance.ft.domain.FinanceFtStatus;
+import com.jlkj.finance.ft.dto.FinanceFtStatusDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,10 +34,10 @@ public interface FinanceFtStatusMapper
     /**
      * 新增资产使用状态
      * 
-     * @param financeFtStatus 资产使用状态
+     * @param financeFtStatusDTO 资产使用状态
      * @return 结果
      */
-    public int insertFinanceFtStatus(FinanceFtStatus financeFtStatus);
+    public int insertFinanceFtStatus(FinanceFtStatusDTO financeFtStatusDTO);
 
     /**
      * 修改资产使用状态

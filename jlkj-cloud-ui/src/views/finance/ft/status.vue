@@ -143,6 +143,69 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              icon="el-icon-plus"
+              size="mini"
+              @click="addLine"
+              v-hasPermi="['finance:status:add']"
+            >增行</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              :disabled="multiple"
+              @click="delTableItem"
+              v-hasPermi="['finance:status:remove']"
+            >删除</el-button>
+          </el-col>
+        </el-row>
+        <el-table v-loading="loadingA" :data="statusListA" :key="key" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="80" align="center" />
+          <el-table-column label="资产用途" align="center" prop="assetPurpose">
+            <template v-slot="scope">
+              <el-select v-model="scope.row.assetPurpose">
+
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="财务状况用途代码" align="center" prop="financePurpose" >
+            <template v-slot="scope">
+              <el-select v-model="scope.row.financePurpose">
+
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="是否计提折旧" align="center" prop="isDepr" >
+            <template v-slot="scope">
+              <el-select v-model="scope.row.isDepr">
+
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="费用性质" align="center" prop="expenseType" >
+            <template v-slot="scope">
+              <el-select v-model="scope.row.expenseType">
+
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" align="center" prop="detailRemark" >
+            <template v-slot="scope">
+              <el-select v-model="scope.row.detailRemark">
+
+              </el-select>
+            </template>
+          </el-table-column>
+        </el-table>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -164,16 +227,24 @@ export default {
       companyList:[],
       // 遮罩层
       loading: true,
+      loadingA: false,
       // 选中数组
       ids: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
       multiple: true,
+      addMultiple: [],
       // 显示搜索条件
       showSearch: true,
       // 总条数
       total: 0,
+      statusListA:[
+        {
+          uuid: undefined,
+          financePurpose: undefined,
+        }
+      ],
       // 资产使用状态表格数据
       statusList: [],
       // 弹出层标题
@@ -203,7 +274,9 @@ export default {
           { required: true, message: "使用状态名称不能为空", trigger: "blur" },
           {max: 60 ,trigger: 'blur',message: "最大不超过60个字符"}
         ],
-      }
+      },
+      index: 0,
+      key: undefined
     };
   },
   created() {
@@ -262,6 +335,33 @@ export default {
       this.ids = selection.map(item => item.uuid)
       this.single = selection.length!==1
       this.multiple = !selection.length
+      this.addMultiple = selection
+    },
+    // 增加一个空行, 用于录入或显示第一行
+    addLine() {
+      this.index++
+      const newLine = {
+        financePurpose: "",
+        uuid: this.index
+      }
+      this.statusListA.push(newLine)
+    },
+    delTableItem() {
+      // 确认删除
+      if (this.addMultiple.length > 0) {
+        let arrs = [];
+        let ids = this.addMultiple.map(val => val.uuid); //拿到选中的数据id,
+        this.statusListA.forEach(item => {
+          if (!ids.includes(item.uuid)) {
+            // 当uuid在employeeTurnoverList中，表示数据被选中，该将其删除，即将不被选中的保留
+            arrs.push(item);
+          }
+        });
+        this.statusListA = arrs;
+        this.key = Math.random()
+      } else {
+        this.$message.warning("请选择要删除的数据");
+      }
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -290,6 +390,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.statusListA = this.statusListA
             addStatus(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

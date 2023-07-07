@@ -2,15 +2,15 @@ package com.jlkj.product.oi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.dto.productionplanoutputdate.ListProductionPlanOutputDateTargetItemDTO;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanDayDTO;
-import com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl;
-import com.jlkj.product.oi.service.impl.ProductionPlanOutputDateServiceImpl;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
+import com.jlkj.product.oi.service.ProductionPlanOutputDateService;
 import com.jlkj.product.oi.vo.productionplanoutputdate.ListProductionPlanOutputDateTargetItemVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,9 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,16 +44,13 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionPlanOutputDateController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Autowired
-    ProductionPlanOutputDateServiceImpl planOutputDateService;
+    ProductionPlanOutputDateService planOutputDateService;
 
     @Operation(summary = "查询日生产产量计划",
             parameters = {
@@ -68,7 +63,6 @@ public class ProductionPlanOutputDateController {
             }
     )
     @Log(title = "查询日生产产量计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listDateProductionOutputPlans", method = RequestMethod.GET)
     public Object get(@Valid GetProductionPlanDayDTO dto) {
         log.info("params => " + dto);

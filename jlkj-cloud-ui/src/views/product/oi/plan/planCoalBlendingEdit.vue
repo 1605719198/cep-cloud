@@ -140,7 +140,7 @@
 </template>
 <script>
 import {req} from "@/api/production/oi/common";
-import {listMaterialsBoxM, listMaterialsBoxJ, getMaterialsCodeSmallDic} from "@/api/material/mr/parameter/materialCode";
+import {listMaterialsBoxJ, getMaterialsCodeSmallDic} from "@/api/material/mr/parameter/materialCode";
 
 export default {
   name: "planCoalBlendingEdit",
@@ -169,7 +169,7 @@ export default {
     };
     return {
       page: {size: 10000, current: 1, total: 1, order: "create_time", orderby: "asc",},
-      query: {plan_id: ''},
+      query: {planId: ''},
       editIndex: -1,
       loading: false,
       selectWarehouse: [
@@ -225,11 +225,6 @@ export default {
   computed: {
   },
   created() {
-    // listMaterialsBoxM().then(res => {
-    //   this.selectCoalType = res.data;//表格数据
-    // }, error => {
-    //   window.console.log(error);
-    // });
 
     getMaterialsCodeSmallDic().then(res => {
       this.selectSmallCoalType = res.data;//表格数据
@@ -238,7 +233,7 @@ export default {
     });
 
     listMaterialsBoxJ().then(res => {
-      this.selectCokeType = res.data.filter(item => {
+      this.selectCokeType = res.filter(item => {
         return item.materials_code.substring(0,5) === '01501';
       });
     }, error => {
@@ -253,7 +248,7 @@ export default {
     });
     if (this.data.id) {
       this.form = {...this.data};
-      this.query.plan_id = this.form.id;
+      this.query.planId = this.form.id;
     }
     this.form.tableData = [];
     this.form.tableDelData = [];
@@ -263,7 +258,7 @@ export default {
     //载入数据
     onLoad() {
       let that = this;
-      if (this.query.plan_id !== '') {
+      if (this.query.planId !== '') {
         this.loading = true;//加载状态
         let data = {...this.page, ...this.query};
         req('get', 'listProductionPlanCfgCokeDitail', data).then(res => {
@@ -375,7 +370,7 @@ export default {
     handleChange(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          if (this.query.plan_id === '') {
+          if (this.query.planId === '') {
             req('post', 'addProductionPlanCfgCoke', {
               plan_number: this.form.plan_number,
               plan_start_time: this.form.plan_start_time,
@@ -400,7 +395,7 @@ export default {
             });
           } else {
             req('post', 'editProductionPlanCfgCoke', {
-              id: this.query.plan_id,
+              id: this.query.planId,
               plan_number: this.form.plan_number,
               plan_start_time: this.form.plan_start_time,
               plan_end_time: this.form.plan_end_time,

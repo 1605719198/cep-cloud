@@ -1,11 +1,10 @@
 package com.jlkj.energy.ee.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 固、液体能源代码、料号对照
@@ -14,7 +13,7 @@ import java.util.Date;
  */
 @TableName(value ="energy_ee_code_fo_material")
 @Data
-public class EnergyCodeFoMaterial implements Serializable {
+public class EnergyCodeForMaterial extends BaseEntity {
     /**
      * ID
      */
@@ -30,31 +29,37 @@ public class EnergyCodeFoMaterial implements Serializable {
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码,不能为空")
     private String engyId;
 
     /**
      * 能源名称
      */
+    @NotBlank(message = "能源名称,不能为空")
     private String engyName;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "成本中心代号,不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源量类型,不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "来源系统,不能为空")
     private String engySource;
 
     /**
      * 料号1
      */
+    @NotBlank(message = "料号1,不能为空")
     private String engyCmp1No;
 
     /**
@@ -106,50 +111,6 @@ public class EnergyCodeFoMaterial implements Serializable {
      * 能源类别
      */
     private String engyType;
-
-    /**
-     * 建立人员
-     */
-    private String createEmpNo;
-
-    /**
-     * 建立时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String createDate;
-
-    /**
-     * 修改人员
-     */
-    private String updateEmpNo;
-
-    /**
-     * 修改时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String updateDate;
-
-    /**
-     * 创建人
-     */
-    private String createUser;
-
-    /**
-     * 修改人
-     */
-    private String updateUser;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 修改时间
-     */
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

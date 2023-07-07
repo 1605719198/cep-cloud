@@ -24,9 +24,9 @@
             <result property="engyCmp10No" column="engy_cmp10_no" jdbcType="VARCHAR"/>
             <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
             <result property="createEmpNo" column="create_emp_no" jdbcType="VARCHAR"/>
-            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
             <result property="updateEmpNo" column="update_emp_no" jdbcType="VARCHAR"/>
-            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
             <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
             <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>

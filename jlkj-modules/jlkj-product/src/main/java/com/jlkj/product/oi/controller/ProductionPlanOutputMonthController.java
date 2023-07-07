@@ -11,6 +11,8 @@ import com.jlkj.product.oi.dto.productionplanoutputmonth.ListProductionPlanOutpu
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanOneMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.UpdateProductionPlanMonthDTO;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
+import com.jlkj.product.oi.service.ProductionPlanOutputMonthService;
 import com.jlkj.product.oi.service.impl.*;
 import com.jlkj.product.oi.vo.productionplanoutputmonth.ListProductionPlanOutputMonthTargetItemVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,25 +51,14 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionPlanOutputMonthController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Autowired
-    ProductionPlanOutputYearServiceImpl planOutputYearService;
+    ProductionPlanOutputMonthService planOutputMonthService;
 
-    @Autowired
-    ProductionPlanOutputMonthServiceImpl planOutputMonthService;
-
-    @Autowired
-    ProductionPlanOutputDateServiceImpl planOutputDateService;
-
-    @Autowired
-    ProductionPlanRepairServiceImpl planRepairService;
 
     @Operation(summary = "查询月产量计划",
             parameters = {
@@ -79,7 +70,6 @@ public class ProductionPlanOutputMonthController {
             }
     )
     @Log(title = "查询月产量计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listMonthProductionOutputPlans", method = RequestMethod.GET)
     public Object get(@Valid GetProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
@@ -102,7 +92,6 @@ public class ProductionPlanOutputMonthController {
             }
     )
     @Log(title = "查询单条月生产产量计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getMonthProductionOutputPlan", method = RequestMethod.GET)
     public Object getOne(@Valid GetProductionPlanOneMonthDTO dto) {
         log.info("params => " + dto);
@@ -111,7 +100,7 @@ public class ProductionPlanOutputMonthController {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
-        return planOutputMonthService.getOne(dto, itemlist);
+        return planOutputMonthService.getOneCustom(dto, itemlist);
     }
 
     @Operation(summary = "修改月产量计划",
@@ -134,12 +123,11 @@ public class ProductionPlanOutputMonthController {
             }
     )
     @Log(title = "修改月产量计划",businessType = BusinessType.UPDATE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/updateMonthProductionOutputPlan", method = RequestMethod.POST, produces = "application/json")
     public Object update(@Valid @RequestBody UpdateProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return planOutputMonthService.update(dto);
+        return planOutputMonthService.updateCustom(dto);
     }
 
     @Operation(summary = "生产管理-指标跟踪-图表-指标项(月计划)",

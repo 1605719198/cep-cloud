@@ -36,7 +36,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="handleQuery"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort">
+    <el-table v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort" height="72vh">
       <el-table-column prop="plan_year"
                        label="年度"
                        min-width="80px"
@@ -142,7 +142,7 @@
 
 <script>
 import { req } from "@/api/production/oi/common";
-import { getProductionTargetItem, } from "@/api/production/oi/plan";
+import { getProductionTargetItem } from "@/api/production/oi/plan";
 import planElectricityAdd from "./planElectricityAdd";
 
 export default {

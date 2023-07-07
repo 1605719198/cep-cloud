@@ -1,12 +1,18 @@
 package com.jlkj.product.oi.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
-import com.jlkj.product.oi.domain.ProductionPlanOutputYear;
+import com.jlkj.product.oi.domain.*;
+import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
+import com.jlkj.product.oi.dto.productionplantarget.DeleteProductionPlanYearDTO;
 import com.jlkj.product.oi.mapper.ProductionPlanOutputYearMapper;
 import com.jlkj.product.oi.service.ProductionPlanOutputYearService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +30,13 @@ public class ProductionPlanOutputYearServiceImpl extends ServiceImpl<ProductionP
         return getBaseMapper().getList(sql);
     };
 
+    /**
+     * 年产量计划查询
+     * @param itemlist
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public Object get(List<ProductionParameterTargetItem> itemlist) {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_year, ");
@@ -40,6 +53,7 @@ public class ProductionPlanOutputYearServiceImpl extends ServiceImpl<ProductionP
 
         return AjaxResult.success(targetList);
     }
+
 }
 
 

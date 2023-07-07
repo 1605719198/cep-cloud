@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE uuid = #{uuid}
     </select>
         
-    <insert id="insertFinanceFtStatus" parameterType="FinanceFtStatus">
+    <insert id="insertFinanceFtStatus" parameterType="FinanceFtStatusDTO">
         INSERT INTO finance_ft_status
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uuid != null">uuid,</if>

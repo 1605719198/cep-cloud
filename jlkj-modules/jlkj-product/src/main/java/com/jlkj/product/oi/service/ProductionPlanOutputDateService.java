@@ -1,8 +1,10 @@
 package com.jlkj.product.oi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.domain.ProductionPlanOutputDate;
 import com.jlkj.product.oi.dto.productionplanoutputdate.ListProductionPlanOutputDateTargetItemDTO;
+import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanDayDTO;
 import com.jlkj.product.oi.vo.productionplanoutputdate.ListProductionPlanOutputDateTargetItemVO;
 
 import java.util.List;
@@ -20,4 +22,12 @@ public interface ProductionPlanOutputDateService extends IService<ProductionPlan
      * @return 列表数据
      */
     List<ListProductionPlanOutputDateTargetItemVO> getProductionPlanOutputDateTargetItemChartData(ListProductionPlanOutputDateTargetItemDTO listProductionPlanOutputDateTargetItemDTO);
+
+    /**
+     * 查询日生产产量计划
+     * @param dto
+     * @param itemlist
+     * @return
+     */
+    Object get(GetProductionPlanDayDTO dto, List<ProductionParameterTargetItem> itemlist);
 }

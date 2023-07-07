@@ -36,7 +36,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="handleQuery"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort">
+    <el-table v-loading="table.loading" :data="tableData" stripe @sort-change="handleSort" height="72vh">
       <el-table-column prop="plan_year"
                        label="年度"
                        min-width="80px"
@@ -82,7 +82,7 @@
                      icon="el-icon-edit"
                      type="text"
                      v-if="queryYear && !queryMonth"
-                     @click="handleOpenWindow('edit',scope.$index, scope.row)">编辑
+                     @click="handleOpenWindow('edit',scope.$index, scope.row)">修改
           </el-button>
           <el-button v-hasPermi="['deleteYearProductionOutputPlan']"
                      size="mini"
@@ -127,7 +127,7 @@
 
 <script>
 import { req } from "@/api/production/oi/common";
-import { getProductionTargetItem, } from "@/api/production/oi/plan";
+import { getProductionTargetItem } from "@/api/production/oi/plan";
 import planYieldEdit from "./planYieldEdit";
 
 export default {
