@@ -102,4 +102,15 @@ public class FinanceAaReportInfoController extends BaseController
     {
         return toAjax(financeAaReportInfoService.deleteFinanceAaReportInfoByIds(ids));
     }
+
+    /**
+     * 计算印项目计算记录
+     */
+    @RequiresPermissions("finance:reportInfo:compute")
+    @Log(title = "印项目计算记录", businessType = BusinessType.INSERT)
+    @PutMapping("/{ids}")
+    public AjaxResult compute(@PathVariable String[] ids)
+    {
+        return toAjax(financeAaReportInfoService.deleteFinanceAaReportInfoByIds(ids));
+    }
 }

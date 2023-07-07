@@ -20,4 +20,5 @@ public interface IFinanceAaAccountBalanceTonSteelService {
     public List<FinanceAaLedgerAcctDTO> selectListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 
 
+    List<FinanceAaLedgerAcctDTO> reportListDetailIfSteel(FinanceAaLedgerAcctDTO financeAaLedgerAcctDTO);
 }

@@ -55,7 +55,7 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     private String isCash;
 
     /** 级别 */
-    private String level;
+    private int level;
 
     /** 祖级列表 */
     private String ancestors;
@@ -224,15 +224,11 @@ public class FinanceAaAcctcodeCorp extends BaseEntity
     {
         return isCash;
     }
-    public void setLevel(String level)
-    {
-        this.level = level;
-    }
 
-    public String getLevel()
-    {
-        return level;
-    }
+    public int getLevel() { return level; }
+
+    public void setLevel(int level) { this.level = level; }
+
     public void setAncestors(String ancestors)
     {
         this.ancestors = ancestors;

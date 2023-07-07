@@ -19,7 +19,7 @@ public class FinanceAaProjectResult extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    private Long id;
+    private String id;
 
     /** 公司代码 */
     @Excel(name = "公司代码")
@@ -38,9 +38,8 @@ public class FinanceAaProjectResult extends BaseEntity
     private String itemCode;
 
     /** 会计周期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "会计周期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date acctPeriod;
+    @Excel(name = "会计周期", width = 30)
+    private String acctPeriod;
 
     /** 金额实际数 */
     @Excel(name = "金额实际数")
@@ -54,12 +53,12 @@ public class FinanceAaProjectResult extends BaseEntity
     @Excel(name = "新增人名称")
     private String createName;
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public String getId()
     {
         return id;
     }
@@ -99,12 +98,12 @@ public class FinanceAaProjectResult extends BaseEntity
     {
         return itemCode;
     }
-    public void setAcctPeriod(Date acctPeriod)
+    public void setAcctPeriod(String acctPeriod)
     {
         this.acctPeriod = acctPeriod;
     }
 
-    public Date getAcctPeriod()
+    public String getAcctPeriod()
     {
         return acctPeriod;
     }
