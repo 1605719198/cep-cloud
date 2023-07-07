@@ -12,13 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 会计确认主档对象 finance_ao_account
+ * 出纳确认主档对象 finance_ao_cashier
  *
  * @author 265799
- * @date 2023-07-04
+ * @date 2023-07-05
  */
 @Data
-public class FinanceAoAccount extends BaseEntity
+public class FinanceAoCashier extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -37,22 +37,26 @@ public class FinanceAoAccount extends BaseEntity
     @Excel(name = "业务id")
     private String billId;
 
-    /** 签核会计 */
-    @Excel(name = "签核会计")
-    private String accountBy;
+    /** 出纳 */
+    @Excel(name = "出纳")
+    private String cashierBy;
 
-    /** 签核会计姓名 */
-    @Excel(name = "签核会计姓名")
-    private String accountName;
+    /** 出纳姓名 */
+    @Excel(name = "出纳姓名")
+    private String cashierName;
 
-    /** 期望付款方式 */
-    @Excel(name = "期望付款方式")
+    /** 付款方式 */
+    @Excel(name = "付款方式")
     private String payType;
 
     /** 抛帐日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "抛帐日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date postDate;
+
+    /** 传票编号 */
+    @Excel(name = "传票编号")
+    private String voucherNo;
 
     /** 确认时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -72,13 +76,16 @@ public class FinanceAoAccount extends BaseEntity
     private String status;
 
     /** 新增人姓名 */
+    @Excel(name = "新增人姓名")
     private String createName;
 
     /** 异动人姓名 */
+    @Excel(name = "异动人姓名")
     private String updateName;
 
-    /** 会计处理明细信息 */
-    private List<FinanceAoAccountDetail> detailAccountList;
+    /** 出纳确认明细档信息 */
+    private List<FinanceAoAccountCashier> detailAccountLoanList;
+
     /** 费用报销明细档信息 */
     private List<FinanceAoReimbursementDetail> financeAoReimbursementDetailList;
 
@@ -101,7 +108,6 @@ public class FinanceAoAccount extends BaseEntity
      * 处理状态
      */
     private String processingStatus;
-
     public void setId(String id)
     {
         this.id = id;
@@ -138,23 +144,23 @@ public class FinanceAoAccount extends BaseEntity
     {
         return billId;
     }
-    public void setAccountBy(String accountBy)
+    public void setCashierBy(String cashierBy)
     {
-        this.accountBy = accountBy;
+        this.cashierBy = cashierBy;
     }
 
-    public String getAccountBy()
+    public String getCashierBy()
     {
-        return accountBy;
+        return cashierBy;
     }
-    public void setAccountName(String accountName)
+    public void setCashierName(String cashierName)
     {
-        this.accountName = accountName;
+        this.cashierName = cashierName;
     }
 
-    public String getAccountName()
+    public String getCashierName()
     {
-        return accountName;
+        return cashierName;
     }
     public void setPayType(String payType)
     {
@@ -173,6 +179,15 @@ public class FinanceAoAccount extends BaseEntity
     public Date getPostDate()
     {
         return postDate;
+    }
+    public void setVoucherNo(String voucherNo)
+    {
+        this.voucherNo = voucherNo;
+    }
+
+    public String getVoucherNo()
+    {
+        return voucherNo;
     }
     public void setApprovalDate(Date approvalDate)
     {
@@ -229,14 +244,14 @@ public class FinanceAoAccount extends BaseEntity
         return updateName;
     }
 
-    public List<FinanceAoAccountDetail> getDetailAccountList()
+    public List<FinanceAoAccountCashier> getDetailAccountLoanList()
     {
-        return detailAccountList;
+        return detailAccountLoanList;
     }
 
-    public void setDetailAccountList(List<FinanceAoAccountDetail> detailAccountList)
+    public void setFinanceAoAccountCashierList(List<FinanceAoAccountCashier> detailAccountLoanList)
     {
-        this.detailAccountList = detailAccountList;
+        this.detailAccountLoanList = detailAccountLoanList;
     }
 
     @Override
@@ -246,10 +261,11 @@ public class FinanceAoAccount extends BaseEntity
             .append("companyId", getCompanyId())
             .append("billNo", getBillNo())
             .append("billId", getBillId())
-            .append("accountBy", getAccountBy())
-            .append("accountName", getAccountName())
+            .append("cashierBy", getCashierBy())
+            .append("cashierName", getCashierName())
             .append("payType", getPayType())
             .append("postDate", getPostDate())
+            .append("voucherNo", getVoucherNo())
             .append("approvalDate", getApprovalDate())
             .append("approvalComments", getApprovalComments())
             .append("approvalStatus", getApprovalStatus())
@@ -260,7 +276,7 @@ public class FinanceAoAccount extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("updateName", getUpdateName())
-            .append("detailAccountList", getDetailAccountList())
+            .append("detailAccountLoanList", getDetailAccountLoanList())
             .toString();
     }
 }

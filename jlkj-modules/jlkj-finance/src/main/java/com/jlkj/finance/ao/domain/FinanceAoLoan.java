@@ -3,6 +3,7 @@ package com.jlkj.finance.ao.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author 116514
  * @date 2023-06-02
  */
+@Data
 public class FinanceAoLoan extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -56,9 +58,11 @@ public class FinanceAoLoan extends BaseEntity
     private String billDesc;
 
     /** 到期日 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
 
     /** 会计确认日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date accountDate;
 
     /** 实际付款日期 */
@@ -94,6 +98,9 @@ public class FinanceAoLoan extends BaseEntity
 
     /**借支总额*/
     private BigDecimal totalAmt;
+
+    /**联动支出类别名称 */
+    private String itemName;
 
     /** 报支管理-借支申请明细档信息 */
     private List<FinanceAoLoanDetail> financeAoLoanDetailList;

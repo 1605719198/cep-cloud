@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoCashierMapper">
+    
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoCashier" id="FinanceAoCashierResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="billId"    column="bill_id"    />
+        <result property="cashierBy"    column="cashier_by"    />
+        <result property="cashierName"    column="cashier_name"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="postDate"    column="post_date"    />
+        <result property="voucherNo"    column="voucher_no"    />
+        <result property="approvalDate"    column="approval_date"    />
+        <result property="approvalComments"    column="approval_comments"    />
+        <result property="approvalStatus"    column="approval_status"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateName"    column="update_name"    />
+    </resultMap>
+
+    <resultMap id="FinanceAoCashierFinanceAoAccountCashierResult" type="com.jlkj.finance.ao.domain.FinanceAoCashier" extends="FinanceAoCashierResult">
+        <collection property="detailAccountLoanList" notNullColumn="sub_id" javaType="java.util.List" resultMap="FinanceAoAccountCashierResult" />
+    </resultMap>
+
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoAccountCashier" id="FinanceAoAccountCashierResult">
+        <result property="id"    column="sub_id"    />
+        <result property="companyId"    column="sub_company_id"    />
+        <result property="accountId"    column="sub_account_id"    />
+        <result property="billNo"    column="sub_bill_no"    />
+        <result property="billId"    column="sub_bill_id"    />
+        <result property="seqNo"    column="sub_seq_no"    />
+        <result property="drCr"    column="sub_dr_cr"    />
+        <result property="acctId"    column="sub_acct_id"    />
+        <result property="acctCode"    column="sub_acct_code"    />
+        <result property="calIda"    column="sub_cal_ida"    />
+        <result property="calCodea"    column="sub_cal_codea"    />
+        <result property="calIdb"    column="sub_cal_idb"    />
+        <result property="calCodeb"    column="sub_cal_codeb"    />
+        <result property="calIdc"    column="sub_cal_idc"    />
+        <result property="calCodec"    column="sub_cal_codec"    />
+        <result property="calIdd"    column="sub_cal_idd"    />
+        <result property="calCoded"    column="sub_cal_coded"    />
+        <result property="dueDate"    column="sub_due_date"    />
+        <result property="srlDesc"    column="sub_srl_desc"    />
+        <result property="crcyUnit"    column="sub_crcy_unit"    />
+        <result property="frnAmt"    column="sub_frn_amt"    />
+        <result property="amt"    column="sub_amt"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createName"    column="sub_create_name"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="updateName"    column="sub_update_name"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoCashierVo">
+        SELECT id, company_id, bill_no, bill_id, cashier_by, cashier_name, pay_type, post_date, voucher_no, approval_date, approval_comments, approval_status, status, create_by, create_name, create_time, update_by, update_time, update_name FROM finance_ao_cashier
+    </sql>
+
+    <select id="selectFinanceAoCashierList" parameterType="com.jlkj.finance.ao.domain.FinanceAoCashier" resultMap="FinanceAoCashierResult">
+        SELECT
+        *
+        FROM (
+        SELECT
+        *
+        FROM(
+        SELECT
+        a.id AS bill_id,
+        a.company_id,
+        a.bill_no,
+        SUBSTR( a.bill_no, 6, 2 ) AS billType,
+        a.create_time,
+        a.apply_name as cashier_name,
+        SUM(b.total_amt)as amt,
+        CASE
+        WHEN a.`status`= '10' THEN 'N'
+        WHEN a.`status`= '20' OR a.`status`= '40'THEN 'Y'
+        ELSE ''
+        END AS processingStatus,
+        a.`status`
+        FROM
+        finance_ao_reimbursement a
+        LEFT JOIN finance_ao_reimbursement_detail b on
+        a.id = b.parent_id
+        <where>
+            <if test="companyId != null  and companyId != ''">AND a.company_id = #{companyId}</if>
+            <if test="cashierName != null  and cashierName != ''">AND a.apply_name = #{cashierName}</if>
+            <if test="billNo != null  and billNo != ''">AND a.bill_no = #{billNo}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null">and a.create_time
+                between #{ startDate} and #{endDate}
+            </if>
+            AND   (a.status = '04' OR   a.status = '10' OR  a.`status`= '40')
+            AND  a.account_by =  #{cashierBy}
+        </where>
+        GROUP BY
+        a.bill_no
+        ORDER BY
+        a.create_time
+        ) T1
+        union
+        SELECT * FROM (
+        SELECT
+        a.id AS bill_id,
+        a.company_id,
+        a.bill_no,
+        SUBSTR( a.bill_no, 6, 2 ) AS billType,
+        a.create_time,
+        a.apply_name as cashier_name,
+        SUM(b.total_amt)as amt,
+        CASE
+        WHEN a.`status`= '10' THEN 'N'
+        WHEN a.`status`= '20' OR a. `status`= '40'  THEN 'Y'
+        ELSE ''
+        END AS processingStatus,
+        a.`status`
+        FROM
+        finance_ao_loan a
+        LEFT JOIN finance_ao_loan_detail b on
+        a.id = b.parent_id
+        <where>
+            <if test="companyId != null  and companyId != ''">AND a.company_id = #{companyId}</if>
+            <if test="cashierName != null  and cashierName != ''">AND a.apply_name = #{cashierName}</if>
+            <if test="billNo != null  and billNo != ''">AND a.bill_no = #{billNo}</if>
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null">and a.create_time between #{
+            startDate} and #{endDate}
+            </if>
+            AND  (  a.status = '10' OR  a.`status`= '20'OR a. `status`= '40' )
+            AND  a.account_by =  #{cashierBy}
+        </where>
+        GROUP BY
+        a.bill_no
+        ORDER BY
+        a.create_time
+        ) T2
+        union
+        SELECT
+        id AS bill_id,
+        company_id,
+        bill_no,
+        SUBSTR( bill_no, 6, 2 ) AS billType,
+        create_time,
+        loan_name as
+        cashier_name,
+        SUM(amt)as amt,
+        CASE
+        WHEN `status`= '00' THEN 'N'
+        WHEN `status`= '20' THEN 'Y'
+        ELSE ''
+        END AS processingStatus,
+        `status`
+        FROM
+        finance_ao_repayment
+        <where>
+            <if test="companyId != null  and companyId != ''">AND company_id = #{companyId}</if>
+            <if test="cashierName != null  and cashierName != ''">AND loan_name = #{cashierName}</if>
+            <if test="billNo != null  and billNo != ''">AND bill_no = #{billNo}</if>
+            <if test="startDate != '' and startDate!= null and endDate != ''  and endDate != null">and create_time between #{startDate} and #{endDate}
+            </if>
+            AND( `status`= '20' OR `status`= '00')
+        </where>
+        GROUP BY
+        bill_no
+        ORDER BY
+        create_time
+        )T3
+        <where>
+            <if test="companyId != null  and companyId != ''">AND company_id = #{companyId}</if>
+            <if test="cashierName != null  and cashierName != ''">AND cashier_name = #{cashierName}</if>
+            <if test="billNo != null  and billNo != ''">AND bill_no = #{billNo}</if>
+            <if test="startDate != '' and startDate!= null and endDate != ''
+                 and endDate != null">and
+                create_time between #{startDate} and #{endDate}
+            </if>
+            <if test="processingStatus != null  and processingStatus != ''">AND processingStatus = #{processingStatus}</if>
+        </where>
+        ORDER BY
+        create_time
+    </select>
+    
+    <select id="selectFinanceAoCashierById" parameterType="String" resultMap="FinanceAoCashierFinanceAoAccountCashierResult">
+        SELECT a.id, a.company_id, a.bill_no, a.bill_id, a.cashier_by, a.cashier_name, a.pay_type, a.post_date, a.voucher_no, a.approval_date, a.approval_comments, a.approval_status, a.status, a.create_by, a.create_name, a.create_time, a.update_by, a.update_time, a.update_name,
+ b.id as sub_id, b.company_id as sub_company_id, b.account_id as sub_account_id, b.bill_no as sub_bill_no, b.bill_id as sub_bill_id, b.seq_no as sub_seq_no, b.dr_cr as sub_dr_cr, b.acct_id as sub_acct_id, b.acct_code as sub_acct_code, b.cal_ida as sub_cal_ida, b.cal_codea as sub_cal_codea, b.cal_idb as sub_cal_idb, b.cal_codeb as sub_cal_codeb, b.cal_idc as sub_cal_idc, b.cal_codec as sub_cal_codec, b.cal_idd as sub_cal_idd, b.cal_coded as sub_cal_coded, b.due_date as sub_due_date, b.srl_desc as sub_srl_desc, b.crcy_unit as sub_crcy_unit, b.frn_amt as sub_frn_amt, b.amt as sub_amt, b.create_by as sub_create_by, b.create_name as sub_create_name, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.update_name as sub_update_name
+        FROM finance_ao_cashier a
+        LEFT JOIN finance_ao_account_cashier b ON b.account_id = a.id
+        WHERE a.id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoCashier" parameterType="com.jlkj.finance.ao.domain.FinanceAoCashier">
+        INSERT INTO finance_ao_cashier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="billId != null">bill_id,</if>
+            <if test="cashierBy != null">cashier_by,</if>
+            <if test="cashierName != null">cashier_name,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="postDate != null">post_date,</if>
+            <if test="voucherNo != null">voucher_no,</if>
+            <if test="approvalDate != null">approval_date,</if>
+            <if test="approvalComments != null">approval_comments,</if>
+            <if test="approvalStatus != null">approval_status,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="billId != null">#{billId},</if>
+            <if test="cashierBy != null">#{cashierBy},</if>
+            <if test="cashierName != null">#{cashierName},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="postDate != null">#{postDate},</if>
+            <if test="voucherNo != null">#{voucherNo},</if>
+            <if test="approvalDate != null">#{approvalDate},</if>
+            <if test="approvalComments != null">#{approvalComments},</if>
+            <if test="approvalStatus != null">#{approvalStatus},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoCashier" parameterType="com.jlkj.finance.ao.domain.FinanceAoCashier">
+        UPDATE finance_ao_cashier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="billId != null">bill_id = #{billId},</if>
+            <if test="cashierBy != null">cashier_by = #{cashierBy},</if>
+            <if test="cashierName != null">cashier_name = #{cashierName},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="postDate != null">post_date = #{postDate},</if>
+            <if test="voucherNo != null">voucher_no = #{voucherNo},</if>
+            <if test="approvalDate != null">approval_date = #{approvalDate},</if>
+            <if test="approvalComments != null">approval_comments = #{approvalComments},</if>
+            <if test="approvalStatus != null">approval_status = #{approvalStatus},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+        </trim>
+        WHERE bill_id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoCashierById" parameterType="String">
+        DELETE FROM finance_ao_cashier WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoCashierByIds" parameterType="String">
+        DELETE FROM finance_ao_cashier WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteFinanceAoAccountCashierByAccountIds" parameterType="String">
+        DELETE FROM finance_ao_account_cashier WHERE account_id IN
+        <foreach item="accountId" collection="array" open="(" separator="," close=")">
+            #{accountId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFinanceAoAccountCashierByAccountId" parameterType="String">
+        DELETE FROM finance_ao_account_cashier WHERE account_id = #{accountId}
+    </delete>
+
+    <insert id="batchFinanceAoAccountCashier">
+        INSERT INTO finance_ao_account_cashier( id, company_id, account_id, bill_no, bill_id, seq_no, dr_cr, acct_id, acct_code, cal_ida, cal_codea, cal_idb, cal_codeb, cal_idc, cal_codec, cal_idd, cal_coded, due_date, srl_desc, crcy_unit, frn_amt, amt, create_by, create_name, create_time, update_by, update_time, update_name) VALUES
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.companyId}, #{item.accountId}, #{item.billNo}, #{item.billId}, #{item.seqNo}, #{item.drCr}, #{item.acctId}, #{item.acctCode}, #{item.calIda}, #{item.calCodea}, #{item.calIdb}, #{item.calCodeb}, #{item.calIdc}, #{item.calCodec}, #{item.calIdd}, #{item.calCoded}, #{item.dueDate}, #{item.srlDesc}, #{item.crcyUnit}, #{item.frnAmt}, #{item.amt}, #{item.createBy}, #{item.createName}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.updateName})
+        </foreach>
+    </insert>
+</mapper>

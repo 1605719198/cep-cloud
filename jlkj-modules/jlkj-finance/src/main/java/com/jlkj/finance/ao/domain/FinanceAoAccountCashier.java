@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 会计处理明细对象 finance_ao_account_detail
+ * 出纳确认明细档对象 finance_ao_account_cashier
  *
  * @author 265799
- * @date 2023-07-04
+ * @date 2023-07-05
  */
 @Data
-public class FinanceAoAccountDetail extends BaseEntity
+public class FinanceAoAccountCashier extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,8 @@ public class FinanceAoAccountDetail extends BaseEntity
     @Excel(name = "公司别")
     private String companyId;
 
-    /** 会计确认单号 */
-    @Excel(name = "会计确认单号")
+    /** 出纳确认id */
+    @Excel(name = "出纳确认id")
     private String accountId;
 
     /** 业务单号 */
@@ -110,9 +110,11 @@ public class FinanceAoAccountDetail extends BaseEntity
     private BigDecimal amt;
 
     /** 新增人姓名 */
+    @Excel(name = "新增人姓名")
     private String createName;
 
     /** 异动人姓名 */
+    @Excel(name = "异动人姓名")
     private String updateName;
     /** 编码 */
     private String itemNo;

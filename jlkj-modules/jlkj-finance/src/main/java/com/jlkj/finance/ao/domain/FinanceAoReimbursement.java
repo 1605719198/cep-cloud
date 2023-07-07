@@ -3,19 +3,18 @@ package com.jlkj.finance.ao.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
-import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 费用报销主档对象 finance_ao_reimbursement
  *
  * @author 265799
- * @date 2023-06-27
+ * @date 2023-07-03
  */
-@Data
 public class FinanceAoReimbursement extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -34,9 +33,7 @@ public class FinanceAoReimbursement extends BaseEntity
     /** 支出类别 */
     @Excel(name = "支出类别")
     private String itemNo;
-    /** 期望付款方式 */
-    @Excel(name = "期望付款方式")
-    private String payType;
+
     /** 申请人 */
     @Excel(name = "申请人")
     private String applyBy;
@@ -90,6 +87,9 @@ public class FinanceAoReimbursement extends BaseEntity
     /** 新增人部门名称 */
     @Excel(name = "新增人部门名称")
     private String createDeptName;
+
+    /** 费用报销明细档信息 */
+    private List<FinanceAoReimbursementDetail> financeAoReimbursementDetailList;
 
     public void setId(String id)
     {
@@ -245,6 +245,16 @@ public class FinanceAoReimbursement extends BaseEntity
         return createDeptName;
     }
 
+    public List<FinanceAoReimbursementDetail> getFinanceAoReimbursementDetailList()
+    {
+        return financeAoReimbursementDetailList;
+    }
+
+    public void setFinanceAoReimbursementDetailList(List<FinanceAoReimbursementDetail> financeAoReimbursementDetailList)
+    {
+        this.financeAoReimbursementDetailList = financeAoReimbursementDetailList;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -267,6 +277,7 @@ public class FinanceAoReimbursement extends BaseEntity
             .append("createTime", getCreateTime())
             .append("createDept", getCreateDept())
             .append("createDeptName", getCreateDeptName())
+            .append("financeAoReimbursementDetailList", getFinanceAoReimbursementDetailList())
             .toString();
     }
 }

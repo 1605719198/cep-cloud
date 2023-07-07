@@ -23,6 +23,14 @@ public interface FinanceAoLoanMapper
      * @return 借支申请主档
      */
     public FinanceAoLoan selectFinanceAoLoanById(String id);
+    /**
+     * 查询借支申请主档
+     *
+     * @param id 借支申请主档主键
+     * @return 借支申请主档
+     */
+    public FinanceAoLoan selectFinanceAoLoanByFromId(String id);
+
 
     /**
      * 查询借支申请主档列表

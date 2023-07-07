@@ -1,5 +1,6 @@
 package com.jlkj.finance.ao.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.finance.ao.domain.FinanceAoItemCompDetail;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2023-05-30
  */
 @Repository
-public interface FinanceAoItemCompDetailMapper 
+public interface FinanceAoItemCompDetailMapper   extends BaseMapper<FinanceAoItemCompDetail>
 {
     /**
      * 查询报支类别公司设定明细档
@@ -29,7 +30,13 @@ public interface FinanceAoItemCompDetailMapper
      * @return 报支类别公司设定明细档集合
      */
     public List<FinanceAoItemCompDetail> selectFinanceAoItemCompDetailList(FinanceAoItemCompDetail financeAoItemCompDetail);
-
+    /**
+     * 查询报支类别-公司级-设定主档列表
+     *
+     * @param financeAoItemCompDetail 报支类别公司设定明细档
+     * @return 报支类别-公司级-设定主档集合
+     */
+    public FinanceAoItemCompDetail selectFinanceAoItemComp(FinanceAoItemCompDetail financeAoItemCompDetail);
     /**
      * 新增报支类别公司设定明细档
      * 

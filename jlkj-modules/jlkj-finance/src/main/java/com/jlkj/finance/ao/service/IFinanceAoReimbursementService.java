@@ -1,19 +1,16 @@
-package com.jlkj.finance.ao.mapper;
+package com.jlkj.finance.ao.service;
 
 import com.jlkj.finance.ao.domain.FinanceAoReimbursement;
-import com.jlkj.finance.ao.domain.FinanceAoReimbursementDetail;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 费用报销主档Mapper接口
+ * 费用报销主档Service接口
  * 
  * @author 265799
  * @date 2023-07-03
  */
-@Repository
-public interface FinanceAoReimbursementMapper 
+public interface IFinanceAoReimbursementService 
 {
     /**
      * 查询费用报销主档
@@ -25,7 +22,9 @@ public interface FinanceAoReimbursementMapper
 
     /**
      * 查询费用报销主档列表
-     * 
+     *
+     * @author 265799
+     * @date 2023-07-03
      * @param financeAoReimbursement 费用报销主档
      * @return 费用报销主档集合
      */
@@ -33,7 +32,9 @@ public interface FinanceAoReimbursementMapper
 
     /**
      * 新增费用报销主档
-     * 
+     *
+     * @author 265799
+     * @date 2023-07-03
      * @param financeAoReimbursement 费用报销主档
      * @return 结果
      */
@@ -41,50 +42,31 @@ public interface FinanceAoReimbursementMapper
 
     /**
      * 修改费用报销主档
-     * 
+     *
+     * @author 265799
+     * @date 2023-07-03
      * @param financeAoReimbursement 费用报销主档
      * @return 结果
      */
     public int updateFinanceAoReimbursement(FinanceAoReimbursement financeAoReimbursement);
 
     /**
-     * 删除费用报销主档
-     * 
-     * @param id 费用报销主档主键
-     * @return 结果
-     */
-    public int deleteFinanceAoReimbursementById(String id);
-
-    /**
      * 批量删除费用报销主档
-     * 
-     * @param ids 需要删除的数据主键集合
+     *
+     * @author 265799
+     * @date 2023-07-03
+     * @param ids 需要删除的费用报销主档主键集合
      * @return 结果
      */
     public int deleteFinanceAoReimbursementByIds(String[] ids);
 
     /**
-     * 批量删除费用报销明细档
-     * 
-     * @param ids 需要删除的数据主键集合
+     * 删除费用报销主档信息
+     *
+     * @author 265799
+     * @date 2023-07-03
+     * @param id 费用报销主档主键
      * @return 结果
      */
-    public int deleteFinanceAoReimbursementDetailByParentIds(String[] ids);
-    
-    /**
-     * 批量新增费用报销明细档
-     * 
-     * @param financeAoReimbursementDetailList 费用报销明细档列表
-     * @return 结果
-     */
-    public int batchFinanceAoReimbursementDetail(List<FinanceAoReimbursementDetail> financeAoReimbursementDetailList);
-    
-
-    /**
-     * 通过费用报销主档主键删除费用报销明细档信息
-     * 
-     * @param id 费用报销主档ID
-     * @return 结果
-     */
-    public int deleteFinanceAoReimbursementDetailByParentId(String id);
+    public int deleteFinanceAoReimbursementById(String id);
 }

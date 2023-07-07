@@ -30,7 +30,6 @@ public interface FinanceAoItemCompMapper
      * @return 报支类别-公司级-设定主档集合
      */
     public List<FinanceAoItemComp> selectFinanceAoItemCompList(FinanceAoItemComp financeAoItemComp);
-
     /**
      * 新增报支类别-公司级-设定主档
      * 
@@ -80,6 +79,7 @@ public interface FinanceAoItemCompMapper
 
 
     /**
+     * 按公司别查询
      * @description 按公司别查询
      * @param companyId 公司别
      * @return java.util.List<Map<String,String>>
