@@ -27,9 +27,6 @@ import java.util.Map;
 public class ProductionPlanOutputDateServiceImpl extends ServiceImpl<ProductionPlanOutputDateMapper, ProductionPlanOutputDate>
     implements ProductionPlanOutputDateService {
 
-    @Autowired
-    RedissonClient redissonClient;
-
     public List<Map<String, String>> getColToRowList(String sql) {
         return getBaseMapper().getList(sql);
     };
@@ -40,6 +37,14 @@ public class ProductionPlanOutputDateServiceImpl extends ServiceImpl<ProductionP
         return getBaseMapper().getProductionPlanOutputDateTargetItemChartData(listProductionPlanOutputDateTargetItemDTO);
     }
 
+    /**
+     * 查询日生产产量计划
+     * @param dto
+     * @param itemlist
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public Object get(GetProductionPlanDayDTO dto, List<ProductionParameterTargetItem> itemlist) {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_date, ");

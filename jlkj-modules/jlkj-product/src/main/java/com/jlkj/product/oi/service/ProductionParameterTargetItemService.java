@@ -1,7 +1,14 @@
 package com.jlkj.product.oi.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
+import com.jlkj.product.oi.dto.productionparametertargetitem.AddProductionParameterTargetItemDTO;
+import com.jlkj.product.oi.dto.productionparametertargetitem.DeleteProductionParameterTargetItemDTO;
+import com.jlkj.product.oi.dto.productionparametertargetitem.PageProductionParameterTargetItemDTO;
+import com.jlkj.product.oi.dto.productionparametertargetitem.UpdateProductionParameterTargetItemDTO;
+
+import java.util.Map;
 
 /**
 * @author zyf
@@ -10,4 +17,31 @@ import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 */
 public interface ProductionParameterTargetItemService extends IService<ProductionParameterTargetItem> {
 
+    /**
+     * 查询指标项
+     * @param pageProductionParameterTargetItemDTO
+     * @return
+     */
+    IPage<Map<String, String>> getListPage(PageProductionParameterTargetItemDTO pageProductionParameterTargetItemDTO);
+
+    /**
+     * 新增指标项
+     * @param addProductionParameterTargetItemDTO
+     * @return
+     */
+    Object addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO);
+
+    /**
+     * 修改指标项
+     * @param updateProductionParameterTargetItemDTO
+     * @return
+     */
+    Object editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO);
+
+    /**
+     * 删除指标项
+     * @param deleteProductionParameterTargetItemDTO
+     * @return
+     */
+    Object delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO);
 }

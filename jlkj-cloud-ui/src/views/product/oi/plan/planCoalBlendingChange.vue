@@ -19,7 +19,7 @@
           </template>
           <el-table-column fixed="right" label="操作" width="120px">
             <template slot-scope="scope">
-              <el-button size="mini" plain icon="el-icon-success" type="warning"
+              <el-button size="mini" icon="el-icon-success" type="text"
                          @click="handleConfirm(scope.row)"> 切换
               </el-button>
 
@@ -40,8 +40,6 @@
 import {req} from "@/api/production/oi/common";
 import planCoalBlendingEdit from "./planCoalBlendingEdit";
 import planCoalBlendingInfo from "./planCoalBlendingInfo";
-import {mapGetters} from "vuex";
-import {listMaterialsBoxJ} from "@/api/material/mr/parameter/materialCode";
 
 export default {
   components: {
@@ -53,7 +51,7 @@ export default {
     return {
       openDialog: {open: false, type: '', title: '', width: '500px', data: {},},
       page: {size: 10000, current: 1, total: 1, order: "create_time", orderby: "desc",},
-      query: {plan_start_time: '', plan_end_time: '', plan_state: 2, materialId: '', planNumber: ''},
+      query: {planStartTime: '', planEndTime: '', planState: 2, materialId: '', planNumber: ''},
       table: {border: true, loading: true,},
       columns: [
         {label: '计划编号', prop: "plan_number", sortable: true, type: 'year', minWidth: '100px'},
@@ -65,7 +63,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo"]),
   },
   created() {
     this.onLoad();
@@ -77,8 +74,8 @@ export default {
       let data = {...this.page, ...this.query};
       req('get', 'listProductionCfgCokePlans', data).then(res => {
         this.table.loading = false;
-        this.tableData = res.data.data.records;//表格数据
-        this.page.total = res.data.data.total;
+        this.tableData = res.data.records;//表格数据
+        this.page.total = res.total;
 
       }, error => {
         this.table.loading = false;
@@ -113,7 +110,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         req('post', 'changeProductionPlanCfgCokeConfirm', {
-          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.userInfo.userName,
+          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.$store.getters.userInfo.userName,
         }).then(res => {
           if (res.code == 200) {
             this.$message({

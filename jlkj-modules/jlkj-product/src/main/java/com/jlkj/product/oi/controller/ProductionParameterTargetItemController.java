@@ -51,25 +51,7 @@ public class ProductionParameterTargetItemController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
-
-    @Autowired
-    ProductionPlanTargetYearService productionPlanTargetYearService;
-
-    @Autowired
-    ProductionPlanTargetMonthService productionPlanTargetMonthService;
-
-    @Autowired
-    ProductionPlanTargetDateService productionPlanTargetDateService;
-
-    @Autowired
-    ProductionPlanOutputYearService productionPlanOutputYearService;
-
-    @Autowired
-    ProductionPlanOutputMonthService productionPlanOutputMonthService;
-
-    @Autowired
-    ProductionPlanOutputDateService productionPlanOutputDateService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Autowired
     MaterialsCodeServiceImpl materialsCodeService;

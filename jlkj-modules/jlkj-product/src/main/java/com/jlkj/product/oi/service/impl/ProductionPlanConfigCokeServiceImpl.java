@@ -54,6 +54,8 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
     @Resource
     MaterialsCodeService materialsCodeService;
 
+    private static final String SUCCESS = "200";
+
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, String>> getPageData(PageProductionPlanConfigCokeDTO pageProductionPlanConfigCokeDTO) {
@@ -98,8 +100,8 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         save(productionPlanConfigCoke);
         for (AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO : addProductionPlanConfigCokeDTO.getDetailList()) {
             addProductionPlanConfigCokeDetailDTO.setPlanId(productionPlanConfigCoke.getId());
-            R result = (R)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
-            if (!"0".equals(result.getCode())) {
+            AjaxResult result = (AjaxResult)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
+            if (!SUCCESS.equals(result.get("code").toString())) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return result;
             }
@@ -231,8 +233,8 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                         addProductionPlanConfigCokeDetailDTO.setPlanId(productionPlanConfigCoke.getId());
                         addProductionPlanConfigCokeDetailDTO.setCreateUserId(updateProductionPlanConfigCokeDetailDTO.getModifyUserId());
                         addProductionPlanConfigCokeDetailDTO.setCreateUserName(updateProductionPlanConfigCokeDetailDTO.getModifyUserName());
-                        R result = (R)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
-                        if (!"0".equals(result.getCode())) {
+                        AjaxResult result = (AjaxResult)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
+                        if (!SUCCESS.equals(result.get("code").toString())) {
                             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                             return result;
                         }
@@ -242,8 +244,8 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                             productionPlanConfigCokeDetailService.removeById(updateProductionPlanConfigCokeDetailDTO.getId());
                         }
                         else {
-                            R result = (R) productionPlanConfigCokeDetailService.updateData(updateProductionPlanConfigCokeDetailDTO);
-                            if (!"0".equals(result.getCode())) {
+                            AjaxResult result = (AjaxResult) productionPlanConfigCokeDetailService.updateData(updateProductionPlanConfigCokeDetailDTO);
+                            if (!SUCCESS.equals(result.get("code").toString())) {
                                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                                 return result;
                             }

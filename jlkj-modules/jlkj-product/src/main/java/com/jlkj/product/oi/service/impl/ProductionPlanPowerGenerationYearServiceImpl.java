@@ -18,10 +18,10 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -45,30 +45,35 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
     RedissonClient redissonClient;
 
     @Autowired
-    HttpServletRequest httpServletRequest;
-
-    @Autowired
-    com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
-
-    @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanRepairServiceImpl planRepairService;
-
-    @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanTargetYearServiceImpl planTargetYearService;
+    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
 
     @Autowired
     ProductionPlanPowerGenerationMonthServiceImpl planPowerGenerationMonthService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanPowerGenerationDateServiceImpl planPowerGenerationDateService;
+    ProductionPlanPowerGenerationDateServiceImpl planPowerGenerationDateService;
 
     @Resource
     ChangeLogService changeLogService;
 
+    /**
+     * 年发电计划查询
+     * @param sql
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public List<Map<String, String>> getColToRowList(String sql) {
         return getBaseMapper().getList(sql);
     };
 
+    /**
+     * 查询日发电计划
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public Object get(GetProductionPlanMonthDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
@@ -91,7 +96,14 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         return AjaxResult.success(targetList);
     }
 
-    public Object getOne(GetProductionPlanOneMonthDTO dto) {
+    /**
+     * 查询单条月发电计划
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public Object getOneCustom(GetProductionPlanOneMonthDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 2));
@@ -115,6 +127,13 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         return AjaxResult.success(targetList);
     }
 
+    /**
+     * 查询日发电计划
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public Object getDate(GetProductionPlanDayDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
@@ -187,7 +206,14 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         }
     }
 
-    public Object save(AddProductionPowerPlanYearDTO productionPlanYearDTO) {
+    /**
+     * 新增年发电计划
+     * @param productionPlanYearDTO
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object saveCustom(AddProductionPowerPlanYearDTO productionPlanYearDTO) {
         RLock rLock = redissonClient.getLock(getLock("ProductionPlanPowerGenerationYear", productionPlanYearDTO.getPlanYear()));
         rLock.lock();
         try {
@@ -268,7 +294,58 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         return AjaxResult.success();
     }
 
-    public Object update(UpdateProductionPlanMonthDTO dto) {
+    /**
+     * 删除年计划
+     * @param deleteProductionPlanYearDTO
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public AjaxResult delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
+        List<ProductionPlanPowerGenerationYear> yearList = getBaseMapper().selectList(new QueryWrapper<ProductionPlanPowerGenerationYear>().lambda()
+                .eq(ProductionPlanPowerGenerationYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        if (yearList.size() < 1) {
+            return AjaxResult.error("当前年份计划不存在");
+        }
+        if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
+            return AjaxResult.error("往年计划不能删除");
+        }
+
+        StringBuilder content = new StringBuilder();
+        content.append("删除：" + "[计划年度：").append(deleteProductionPlanYearDTO.getPlanYear()).append("],").append("指标项列表：");
+        for (ProductionPlanPowerGenerationYear year: yearList) {
+            ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(year.getTargetItemId());
+            content.append("[指标项目：").append(productionParameterTargetItem.getTargetItemName()).append("],")
+                    .append("[措施及完成目标：").append(year.getMeasuresAndGoals()).append("],")
+                    .append("[责任人：").append(year.getResponsiblePerson()).append("],")
+                    .append("[指标值：").append(year.getTargetItemValue().stripTrailingZeros().toPlainString()).append("],")
+            ;
+        }
+        InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
+        insertChangeLogDTO.setModuleName("生产管理");
+        insertChangeLogDTO.setFunctionName("生产计划->发电指标");
+        insertChangeLogDTO.setContent(content.toString());
+        insertChangeLogDTO.setCreateUserId(deleteProductionPlanYearDTO.getDeleteUserId());
+        insertChangeLogDTO.setCreateUserName(deleteProductionPlanYearDTO.getDeleteUserName());
+        changeLogService.insertChangeLogData(insertChangeLogDTO);
+
+        List<ProductionPlanPowerGenerationMonth> monthList = planPowerGenerationMonthService.list(new QueryWrapper<ProductionPlanPowerGenerationMonth>().lambda()
+                .eq(ProductionPlanPowerGenerationMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        List<ProductionPlanPowerGenerationDate> dateList = planPowerGenerationDateService.list(new QueryWrapper<ProductionPlanPowerGenerationDate>().lambda()
+                .eq(ProductionPlanPowerGenerationDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        planPowerGenerationDateService.removeBatchByIds(dateList, dateList.size());
+        planPowerGenerationMonthService.removeBatchByIds(monthList, monthList.size());
+        getBaseMapper().deleteBatchIds(yearList);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 修改月发电计划
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object updateCustom(UpdateProductionPlanMonthDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("ProductionPlanPowerGenerationMonth", dto.getPlanYear(), dto.getPlanMonth()));
         rLock.lock();
         try {

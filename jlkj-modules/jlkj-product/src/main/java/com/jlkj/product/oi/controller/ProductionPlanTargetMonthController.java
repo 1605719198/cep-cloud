@@ -7,6 +7,8 @@ import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanOneMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.UpdateProductionPlanMonthDTO;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
+import com.jlkj.product.oi.service.ProductionPlanTargetYearService;
 import com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl;
 import com.jlkj.product.oi.service.impl.ProductionPlanTargetDateServiceImpl;
 import com.jlkj.product.oi.service.impl.ProductionPlanTargetMonthServiceImpl;
@@ -44,22 +46,13 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionPlanTargetMonthController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionPlanTargetYearServiceImpl planTargetYearService;
+    ProductionPlanTargetYearService planTargetYearService;
 
     @Autowired
-    ProductionPlanTargetMonthServiceImpl planTargetMonthService;
-
-    @Autowired
-    ProductionPlanTargetDateServiceImpl planTargetDateService;
-
-    @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Operation(summary = "查询月生产指标计划",
             parameters = {
@@ -71,7 +64,6 @@ public class ProductionPlanTargetMonthController {
             }
     )
     @Log(title = "查询月生产指标计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listMonthProductionTargetPlans", method = RequestMethod.GET)
     public Object get(@Valid GetProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
@@ -93,7 +85,6 @@ public class ProductionPlanTargetMonthController {
             }
     )
     @Log(title = "查询单条月生产指标计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getMonthProductionTargetPlan", method = RequestMethod.GET)
     public Object getOne(@Valid GetProductionPlanOneMonthDTO dto) {
         log.info("params => " + dto);
@@ -101,7 +92,7 @@ public class ProductionPlanTargetMonthController {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
-        return planTargetYearService.getOne(dto, itemlist);
+        return planTargetYearService.getOneCustom(dto, itemlist);
     }
 
     @Operation(summary = "修改月指标计划",
@@ -124,11 +115,10 @@ public class ProductionPlanTargetMonthController {
             }
     )
     @Log(title = "修改月指标计划",businessType = BusinessType.UPDATE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/updateMonthProductionTargetPlan", method = RequestMethod.POST, produces = "application/json")
     public Object update(@Valid @RequestBody UpdateProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return planTargetYearService.update(dto);
+        return planTargetYearService.updateCustom(dto);
     }
 }
