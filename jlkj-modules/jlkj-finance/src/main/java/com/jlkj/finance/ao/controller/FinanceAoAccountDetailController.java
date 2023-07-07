@@ -37,7 +37,7 @@ public class FinanceAoAccountDetailController extends BaseController
      * @param financeAoAccountDetail
      * @return
      */
-    @RequiresPermissions("ao:detailAccount:list")
+    @RequiresPermissions("ao:detailAccount:query")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAoAccountDetail financeAoAccountDetail)
     {
@@ -53,7 +53,7 @@ public class FinanceAoAccountDetailController extends BaseController
      * @param financeAoAccountDetail
      * @return
      */
-    @RequiresPermissions("ao:detailAccount:export")
+    @RequiresPermissions("ao:detailAccount:query")
     @Log(title = "会计处理明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAoAccountDetail financeAoAccountDetail)
@@ -96,7 +96,7 @@ public class FinanceAoAccountDetailController extends BaseController
      * @param financeAoAccountDto
      * @return
      */
-    @RequiresPermissions("ao:detailAccount:add")
+    @RequiresPermissions("ao:detailAccount:query")
     @Log(title = "会计处理明细", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAoAccountDto financeAoAccountDto)
@@ -111,7 +111,7 @@ public class FinanceAoAccountDetailController extends BaseController
      * @param financeAoAccountDto
      * @return
      */
-    @RequiresPermissions("ao:detailAccount:edit")
+    @RequiresPermissions("ao:detailAccount:query")
     @Log(title = "会计处理明细", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceAoAccountDto financeAoAccountDto)
@@ -125,7 +125,7 @@ public class FinanceAoAccountDetailController extends BaseController
      * @date 2023-06-25
      * @return
      */
-    @RequiresPermissions("ao:detailAccount:remove")
+    @RequiresPermissions("ao:detailAccount:query")
     @Log(title = "会计处理明细", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

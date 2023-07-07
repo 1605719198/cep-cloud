@@ -69,7 +69,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="batchReview"
-          v-hasPermi="['ao:accountHost:add']"
+          v-hasPermi="['ao:cashier:queryy']"
         >批量审核</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -103,7 +103,7 @@
             type="text"
             icon="el-icon-edit"
             @click="review(scope.row)"
-            v-hasPermi="['ao:accountHost:edit']"
+            v-hasPermi="['ao:cashier:queryy']"
           >审核</el-button>
           <el-button
             v-if="viewOrCancelIf"
@@ -111,7 +111,7 @@
             type="text"
             icon="el-icon-edit"
             @click="review(scope.row)"
-            v-hasPermi="['ao:accountHost:edit']"
+            v-hasPermi="['ao:cashier:queryy']"
           >查看或取消</el-button>
         </template>
       </el-table-column>

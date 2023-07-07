@@ -108,7 +108,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleBorrowingAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:detailAccount:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -119,7 +119,7 @@
                 icon="el-icon-edit"
                 size="mini"
                 @click="handleBorrowingConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:detailAccount:query']"
               >确认</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -130,7 +130,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:detailAccount:query']"
               >取消确认</el-button>
             </el-col>
 
@@ -142,7 +142,7 @@
                 icon="el-icon-download"
                 size="mini"
                 @click="handleBorrowingCase"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >结案</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -153,7 +153,7 @@
                 icon="el-icon-download"
                 size="mini"
                 @click="handleBorrowingCancelCase"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >取消结案</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -164,7 +164,7 @@
                 icon="el-icon-download"
                 size="mini"
                 @click="handleBorrowingReturn"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >退回</el-button>
             </el-col>
           </el-row>
@@ -401,7 +401,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleReimbursementAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:detailAccount:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -413,7 +413,7 @@
                 size="mini"
 
                 @click="handleReimbursementConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:detailAccount:query']"
               >确认</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -424,7 +424,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleReimbursementCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:detailAccount:query']"
               >取消确认</el-button>
             </el-col>
 
@@ -437,7 +437,7 @@
                 size="mini"
 
                 @click="handleReimbursementBorrowingCase"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >结案</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -448,7 +448,7 @@
                 icon="el-icon-download"
                 size="mini"
                 @click="handleReimbursementBorrowingCancelCase"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >取消结案</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -459,7 +459,7 @@
                 icon="el-icon-download"
                 size="mini"
                 @click="handleReimbursementReturn"
-                v-hasPermi="['ao:detailAccount:export']"
+                v-hasPermi="['ao:detailAccount:query']"
               >退回</el-button>
             </el-col>
           </el-row>
@@ -708,7 +708,7 @@
                   type="text"
                   icon="el-icon-edit"
                   @click="handleAddAccountList(scope.row)"
-                  v-hasPermi="['ao:budget:edit']"
+                  v-hasPermi="['ao:detailAccount:query']"
                 >插行
                 </el-button>
                 <el-button
@@ -716,7 +716,7 @@
                   type="text"
                   icon="el-icon-delete"
                   @click="handleDeleteAccountList(scope.row)"
-                  v-hasPermi="['ao:budget:remove']"
+                  v-hasPermi="['ao:detailAccount:query']"
                 >删除
                 </el-button>
               </template>
@@ -733,7 +733,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleRepaymentAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:detailAccount:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -744,7 +744,7 @@
                 icon="el-icon-edit"
                 size="mini"
                 @click="handleRepaymentConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:detailAccount:query']"
               >确认</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -755,7 +755,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleRepaymentCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:detailAccount:query']"
               >取消确认</el-button>
             </el-col>
           </el-row>
@@ -903,7 +903,7 @@
                     type="text"
                     icon="el-icon-edit"
                     @click="handleAddDetailList(scope.row)"
-                    v-hasPermi="['ao:budget:edit']"
+                    v-hasPermi="['ao:detailAccount:query']"
                   >插行
                   </el-button>
                   <el-button
@@ -911,7 +911,7 @@
                     type="text"
                     icon="el-icon-delete"
                     @click="handleDeleteList(scope.row)"
-                    v-hasPermi="['ao:budget:remove']"
+                    v-hasPermi="['ao:detailAccount:query']"
                   >删除
                   </el-button>
                 </template>

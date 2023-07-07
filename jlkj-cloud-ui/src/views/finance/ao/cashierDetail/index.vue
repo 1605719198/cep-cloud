@@ -107,7 +107,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleBorrowingAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -118,7 +118,7 @@
                 icon="el-icon-edit"
                 size="mini"
                 @click="handleBorrowingConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >付款并抛账</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -129,7 +129,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >取消抛账</el-button>
             </el-col>
           </el-row>
@@ -352,7 +352,7 @@
                   type="text"
                   icon="el-icon-edit"
                   @click="handleAddAccountLoanList(scope.row)"
-                  v-hasPermi="['ao:budget:edit']"
+                  v-hasPermi="['ao:cashierDetail:query']"
                 >插行
                 </el-button>
                 <el-button
@@ -360,7 +360,7 @@
                   type="text"
                   icon="el-icon-delete"
                   @click="handleDeleteAccountLoanList(scope.row)"
-                  v-hasPermi="['ao:budget:remove']"
+                  v-hasPermi="['ao:cashierDetail:query']"
                 >删除
                 </el-button>
               </template>
@@ -395,7 +395,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleReimbursementAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -406,7 +406,7 @@
                 icon="el-icon-edit"
                 size="mini"
                 @click="handleReimbursementConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >付款并抛账</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -417,7 +417,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleReimbursementCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >取消抛账</el-button>
             </el-col>
           </el-row>
@@ -666,7 +666,7 @@
                   type="text"
                   icon="el-icon-edit"
                   @click="handleAddAccountList(scope.row)"
-                  v-hasPermi="['ao:budget:edit']"
+                  v-hasPermi="['ao:cashierDetail:query']"
                 >插行
                 </el-button>
                 <el-button
@@ -674,11 +674,28 @@
                   type="text"
                   icon="el-icon-delete"
                   @click="handleDeleteAccountList(scope.row)"
-                  v-hasPermi="['ao:budget:remove']"
+                  v-hasPermi="['ao:cashierDetail:query']"
                 >删除
                 </el-button>
               </template>
             </el-table-column>
+          </el-table>
+          <el-divider content-position="center"></el-divider>
+          <el-row>
+            <el-col :span="24" style="height: 30px">
+              <span>
+                审批记录
+              </span>
+            </el-col>
+          </el-row>
+          <el-table  :data="approvalReimbursementRecordList" >
+            <el-table-column label="序号" align="center" prop="" />
+            <el-table-column label="审核类别" align="center" prop="" />
+            <el-table-column label="审核者" align="center" prop="" />
+            <el-table-column label="审批意见" align="center" prop="" />
+            <el-table-column label="接受时间" align="center" prop="" />
+            <el-table-column label="处理时间" align="center" prop="" />
+            <el-table-column label="处理状态" align="center" prop="" />
           </el-table>
         </div>
         <div  v-if="repaymentIf">
@@ -691,7 +708,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleRepaymentAdd"
-                v-hasPermi="['ao:detailAccount:add']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >保存</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -702,7 +719,7 @@
                 icon="el-icon-edit"
                 size="mini"
                 @click="handleRepaymentConfirm"
-                v-hasPermi="['ao:detailAccount:edit']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >确认</el-button>
             </el-col>
             <el-col :span="1.5">
@@ -713,7 +730,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="handleRepaymentCancelConfirmation"
-                v-hasPermi="['ao:detailAccount:remove']"
+                v-hasPermi="['ao:cashierDetail:query']"
               >取消确认</el-button>
             </el-col>
           </el-row>
@@ -866,7 +883,7 @@
                     type="text"
                     icon="el-icon-edit"
                     @click="handleAddDetailList(scope.row)"
-                    v-hasPermi="['ao:budget:edit']"
+                    v-hasPermi="['ao:cashierDetail:query']"
                   >插行
                   </el-button>
                   <el-button
@@ -874,7 +891,7 @@
                     type="text"
                     icon="el-icon-delete"
                     @click="handleDeleteList(scope.row)"
-                    v-hasPermi="['ao:budget:remove']"
+                    v-hasPermi="['ao:cashierDetail:query']"
                   >删除
                   </el-button>
                 </template>
@@ -976,8 +993,10 @@ export default {
       tableColumnsInput:[],
       //tabs表格初始值
       activeName:'first',
-      // 审批记录表格
+      // 借支审批记录表格
       approvalRecordList: [],
+      // 报销审批记录表格
+      approvalReimbursementRecordList:[],
       // 报销表格数据
       detailAccountList: [],
       // 借支
@@ -1688,7 +1707,7 @@ export default {
         return
       }
     },
-    /** 报销取消确认 */
+    /** 报销取消抛账 */
     handleReimbursementCancelConfirmation() {
       if(this.reimbursementForm.status=='10'){
         this.reimbursementForm.accountDate = new Date()
@@ -1700,30 +1719,7 @@ export default {
         return
       }
     },
-    /** 报销结案 */
-    handleReimbursementBorrowingCase(){
-      if(this.reimbursementForm.status=='10'){
-        this.reimbursementForm.accountDate = new Date()
-        this.reimbursementForm.status='40'
-        this.ReimbursementVal = '结案成功'
-        this.handleReimbursementAdd()
-      }else {
-        this.$message.error('当前状态无法结案！');
-        return
-      }
-    },
-    /** 报销取消结案 */
-    handleReimbursementBorrowingCancelCase(){
-      if(this.reimbursementForm.status=='40'){
-        this.reimbursementForm.accountDate = new Date()
-        this.reimbursementForm.status='04'
-        this.ReimbursementVal = '取消结案成功'
-        this.handleReimbursementAdd()
-      }else {
-        this.$message.error('当前状态无法取消结案！');
-        return
-      }
-    },
+
     /** 还款保存 */
     handleRepaymentAdd() {
       this.$refs["repaymentForm"].validate(valid => {

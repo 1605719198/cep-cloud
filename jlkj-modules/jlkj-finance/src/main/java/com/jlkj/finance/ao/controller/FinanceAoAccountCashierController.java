@@ -37,7 +37,7 @@ public class FinanceAoAccountCashierController extends BaseController
      * @param financeAoAccountCashier
      * @return
      */
-    @RequiresPermissions("ao:cashierDetail:list")
+    @RequiresPermissions("ao:cashierDetail:query")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAoAccountCashier financeAoAccountCashier)
     {
@@ -65,7 +65,7 @@ public class FinanceAoAccountCashierController extends BaseController
      * @param financeAoAccountCashier
      * @return
      */
-    @RequiresPermissions("ao:cashierDetail:export")
+    @RequiresPermissions("ao:cashierDetail:query")
     @Log(title = "出纳确认明细档", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAoAccountCashier financeAoAccountCashier)
@@ -96,7 +96,7 @@ public class FinanceAoAccountCashierController extends BaseController
      * @param financeAoAccountDto
      * @return
      */
-    @RequiresPermissions("ao:cashierDetail:add")
+    @RequiresPermissions("ao:cashierDetail:query")
     @Log(title = "出纳确认明细档", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAoAccountDto financeAoAccountDto)
@@ -111,7 +111,7 @@ public class FinanceAoAccountCashierController extends BaseController
      * @param financeAoAccountDto
      * @return
      */
-    @RequiresPermissions("ao:cashierDetail:edit")
+    @RequiresPermissions("ao:cashierDetail:query")
     @Log(title = "出纳确认明细档", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceAoAccountDto financeAoAccountDto)
@@ -126,7 +126,7 @@ public class FinanceAoAccountCashierController extends BaseController
 
      * @return
      */
-    @RequiresPermissions("ao:cashierDetail:remove")
+    @RequiresPermissions("ao:cashierDetail:query")
     @Log(title = "出纳确认明细档", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)

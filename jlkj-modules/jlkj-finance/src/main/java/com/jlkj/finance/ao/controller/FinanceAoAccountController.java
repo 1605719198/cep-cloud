@@ -31,7 +31,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 查询会计确认主档列表
      */
-    @RequiresPermissions("ao:accountHost:list")
+    @RequiresPermissions("ao:accountHost:query")
     @GetMapping("/list")
     public TableDataInfo list(FinanceAoAccount financeAoAccount)
     {
@@ -42,7 +42,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 查询会计确认主档列表
      */
-    @RequiresPermissions("ao:accountHost:list")
+    @RequiresPermissions("ao:accountHost:query")
     @GetMapping("/detailList")
     public TableDataInfo detailList(FinanceAoAccount financeAoAccount)
     {
@@ -53,7 +53,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 导出会计确认主档列表
      */
-    @RequiresPermissions("ao:accountHost:export")
+    @RequiresPermissions("ao:accountHost:query")
     @Log(title = "会计确认主档", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAoAccount financeAoAccount)
@@ -76,7 +76,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 新增会计确认主档
      */
-    @RequiresPermissions("ao:accountHost:add")
+    @RequiresPermissions("ao:accountHost:query")
     @Log(title = "会计确认主档", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceAoAccount financeAoAccount)
@@ -87,7 +87,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 修改会计确认主档
      */
-    @RequiresPermissions("ao:accountHost:edit")
+    @RequiresPermissions("ao:accountHost:query")
     @Log(title = "会计确认主档", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceAoAccount financeAoAccount)
@@ -97,7 +97,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 修改会计确认主档
      */
-    @RequiresPermissions("ao:accountHost:edit")
+    @RequiresPermissions("ao:accountHost:query")
     @Log(title = "会计确认主档", businessType = BusinessType.UPDATE)
     @PutMapping("/editRepayment")
     public AjaxResult editRepayment(@RequestBody FinanceAoAccount financeAoAccount)
@@ -109,7 +109,7 @@ public class FinanceAoAccountController extends BaseController
     /**
      * 删除会计确认主档
      */
-    @RequiresPermissions("ao:accountHost:remove")
+    @RequiresPermissions("ao:accountHost:query")
     @Log(title = "会计确认主档", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
