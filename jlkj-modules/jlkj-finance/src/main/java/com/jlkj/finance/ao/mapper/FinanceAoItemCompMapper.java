@@ -78,10 +78,14 @@ public interface FinanceAoItemCompMapper
     public List<String> selectDetailsByIds(String[] ids);
 
 
+
     /**
-     * 查询报支类别下拉选单
-     * @return
-     */
+     * @description 按公司别查询
+     * @param companyId 公司别
+     * @return java.util.List<Map<String,String>>
+     * @Author 114288
+     * @Date 2023/7/7 10:28
+     **/
     public List<Map<String,String>> selectItemNoList(String companyId);
 
 }

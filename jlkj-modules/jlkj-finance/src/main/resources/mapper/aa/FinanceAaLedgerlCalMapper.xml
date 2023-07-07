@@ -584,7 +584,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='reportType == "5"'>T1.cal_namea,T1.cal_codea,T1.cal_nameb,T1.cal_codeb,T1.cal_namec,T1.cal_codec,T1.cal_named,T1.cal_coded, </if>
         T3.acct_name
     </select>
-    <select id="getKindAByIdCode" resultType="map">
+    <select id="getKindaByIdCode" resultType="map">
         SELECT  IDCODE,SUM(bgn_amt+dr_amt-cr_amt) as AMT from finance_aa_ledgerl_cal
         WHERE company_Id =  #{companyId}
          and acct_Period = #{acctPeriod}
@@ -602,6 +602,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="sumstr3 != '' and sumstr3 != null "> and #{sumstr3}</if>
 
     </select>
+
 
     <insert id="insertFinanceAaLedgerlCal" parameterType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
         insert into finance_aa_ledgerl_cal

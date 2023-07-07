@@ -27,7 +27,7 @@ public final class AssertUtil {
      * @return 字符串是否有值
      */
     public static boolean isVal(String string) {
-        if (string == null || "null".equals(string) || string.isEmpty()) {
+        if (string == null || ConstantsUtil.NULL.equals(string) || string.isEmpty()) {
             return false;
         }
         return true;

@@ -121,8 +121,76 @@ public class ConstantsUtil extends Constants
      */
     public static final String MONTH11 = "11";
     /**
-     * MONTH05
+     * MONTH12
      */
     public static final String MONTH12 = "12";
+
+    /**
+     * NULL
+     */
+    public static final String NULL = "null";
+
+    /**
+     * -
+     */
+    public static final String LINE = "-";
+
+    /**
+     * A
+     */
+    public static final String STR_A = "A";
+    /**
+     * B
+     */
+    public static final String STR_B = "B";
+    /**
+     * C
+     */
+    public static final String STR_C = "C";
+    /**
+     * D
+     */
+    public static final String STR_D = "D";
+    /**
+     * E
+     */
+    public static final String STR_E = "E";
+    /**
+     * F
+     */
+    public static final String STR_F = "F";
+    /**
+     * G
+     */
+    public static final String STR_G = "G";
+    /**
+     * H
+     */
+    public static final String STR_H = "H";
+    /**
+     * I
+     */
+    public static final String STR_I = "I";
+    /**
+     * 0
+     */
+    public static final String STR_0 = "0";
+    /**
+     * J
+     */
+    public static final String STR_J = "J";
+    /**
+     * K
+     */
+    public static final String STR_K = "K";
+    /**
+     * no
+     */
+    public static final String STR_NO = "no";
+
+    /**
+     * 20
+     */
+    public static final int INT_20 = 20;
 
 }

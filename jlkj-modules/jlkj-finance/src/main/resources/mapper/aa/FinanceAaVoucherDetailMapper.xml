@@ -497,7 +497,10 @@
             and a.status <![CDATA[   !=  ]]> 'P'
         </where>
     </select>
-    <select id="selectDetailByPpgrmId" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail"></select>
+    <select id="selectDetailByPpgrmId" resultType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
+
+
+    </select>
 
     <insert id="insertFinanceAaVoucherDetail" parameterType="com.jlkj.finance.aa.domain.FinanceAaVoucherDetail">
         insert into finance_aa_voucher_detail

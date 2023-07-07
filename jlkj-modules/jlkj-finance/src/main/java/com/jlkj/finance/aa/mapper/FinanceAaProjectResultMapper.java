@@ -47,8 +47,9 @@ public interface FinanceAaProjectResultMapper
     public int updateFinanceAaProjectResult(FinanceAaProjectResult financeAaProjectResult);
 
     /**
-    * @Description 批量删除
-    * @Param [id]
+     * 批量删除
+    * @description 批量删除
+    * @param id id
     * @return int
     * @Author 114288
     * @Date 2023/7/6 16:30
@@ -65,10 +66,10 @@ public interface FinanceAaProjectResultMapper
 
     /**
      * 按会计周期和报表代号删除计算公式值
-    * @Description
-    * @Param companyId 公司别
-    * @Param acctPeriod 会计周期
-    * @Param reportNo 报表代号
+    * @description 按会计周期和报表代号删除计算公式值
+    * @param companyId 公司别
+    * @param acctPeriod 会计周期
+    * @param reportNo 报表代号
     * @return int 笔数
     * @Author 114288
     * @Date 2023/7/6 16:17
