@@ -73,7 +73,7 @@ public interface ISocialSecurityBasisService
     public String importUser(List<SocialSecurityBasisDTO> dtos, Boolean isUpdateSupport, String operName, String compId);
 
     /**
-     * @Description 社保核定基数年底核定下年初最新数据
+     * 社保核定基数年底核定下年初最新数据
      * @param
      * @return 新增数据结果
      * @author 266861

@@ -190,6 +190,13 @@ export default {
   components: { ArrangeClass, ShiftCode,ShiftClass},
   data() {
     return {
+      //出勤选单类型查询
+      attendenceOptionType:{
+        id:'',
+        optionsType:['RestCount','BigSmaNight']
+      },
+      //出勤选单选项列表
+      attendenceOptions:{},
       //公司数据
       companyList:[],
       //登录人工号
@@ -267,6 +274,12 @@ export default {
     },
   },
   methods: {
+    //获取出勤字典
+    getDisc(){
+      getAttendenceOptions(this.attendenceOptionType).then(response=> {
+        this.attendenceOptions=response.data
+      })
+    },
     //设置表单值
     setForm(e){
       this.form.creator = this.nickName;

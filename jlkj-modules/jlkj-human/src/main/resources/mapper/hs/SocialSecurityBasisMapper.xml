@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="medicalInsuranceNo"    column="medical_insurance_no"    />
         <result property="compInsureBookNo"    column="comp_insure_book_no"    />
         <result property="houseAccount"    column="house_account"    />
+        <result property="isCheck"    column="is_check"    />
         <result property="isNew"    column="is_new"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSocialSecurityBasisVo">
-        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, s.effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
+        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, s.effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.is_check, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
         left join human_hm_personnel_info as e on e.emp_no = s.emp_no
     </sql>
 
@@ -65,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectSocialSecurityBasisByEmp" parameterType="SocialSecurityBasis" resultMap="SocialSecurityBasisResult">
-        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, if(s.effect_date>CURDATE(),s.effect_date,CURDATE()) as effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
+        select s.id, s.insure_rea, s.insure_rea_id, s.insure_no, if(s.effect_date>CURDATE(),s.effect_date,CURDATE()) as effect_date, s.main_post_name, s.pos_level, s.birth_date, s.last_exper, s.join_work_date, s.nation, s.reg, s.reg_fea, s.cer_no, s.ent_cor_date, s.now_addr, s.mob_phone, s.basic_pay, s.leave_effect_date, s.emp_ide, s.work_addr, s.emp_fea, s.pay_area_type, s.pay_area_type_id, s.comp_id,e.full_name as emp_name, s.emp_no, s.emp_id, s.version_no, s.msgId, s.medical_insurance_no, s.comp_insure_book_no, s.house_account, s.is_new, s.is_check, s.creator, s.creator_id, s.creator_no, s.create_date from human_hs_social_security_basis s
         left join human_hm_personnel_info as e on e.emp_no = s.emp_no
         where s.emp_no = #{empNo}
         order by version_no desc
@@ -107,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="medicalInsuranceNo != null">medical_insurance_no,</if>
             <if test="compInsureBookNo != null">comp_insure_book_no,</if>
             <if test="houseAccount != null">house_account,</if>
+            <if test="isCheck != null">is_check,</if>
             <if test="isNew != null">is_new,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
@@ -147,6 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compInsureBookNo != null">#{compInsureBookNo},</if>
             <if test="houseAccount != null">#{houseAccount},</if>
             <if test="isNew != null">#{isNew},</if>
+            <if test="isCheck != null">#{isCheck},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="creatorNo != null">#{creatorNo},</if>
@@ -189,6 +192,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="compInsureBookNo != null">comp_insure_book_no = #{compInsureBookNo},</if>
             <if test="houseAccount != null">house_account = #{houseAccount},</if>
             <if test="isNew != null">is_new = #{isNew},</if>
+            <if test="isCheck != null">is_check = #{isCheck},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="creatorNo != null">creator_no = #{creatorNo},</if>

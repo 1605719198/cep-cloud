@@ -21,6 +21,14 @@ public interface PersonClassDetailMapper
     public PersonClassDetail selectPersonClassDetailById(String id);
 
     /**
+     * 查询人员排班明细(某员工某天)
+     *
+     * @param personClassDetail 人员排班明细
+     * @return 人员排班明细
+     */
+    public List<PersonClassDetail> selectPersonClassDetailByEmp(PersonClassDetail personClassDetail);
+
+    /**
      * 查询人员排班明细列表
      * 
      * @param personClassDetail 人员排班明细

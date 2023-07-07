@@ -77,6 +77,15 @@ public interface IPersonClassMasterService
     public int deletePersonClassMasterById(String id);
 
     /**
+     * 年底定时排班
+     *
+     * @return 定时排班结果
+     * @author 266861
+     * @date 2023/7/6 8:46
+     **/
+    public int scheduledPersonClass();
+
+    /**
      * 导入批量排班资料数据
      *
      * @param personClassMasterList 批量排班资料列表

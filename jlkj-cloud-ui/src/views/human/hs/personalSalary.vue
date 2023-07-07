@@ -118,7 +118,7 @@
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="主岗位" align="center" prop="mainPostName" width="280"/>
+      <el-table-column label="主岗位" align="center" prop="mainPostName" width="280" show-overflow-tooltip/>
       <el-table-column label="职位等级" align="center" prop="postLevel"/>
       <el-table-column label="止薪日期" align="center" prop="endPayDate" width="180">
         <template slot-scope="scope">
@@ -134,7 +134,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            v-show="scope.row.isNew==='0'"
+            v-show="new Date(scope.row.effectDate)<new Date()"
             size="mini"
             type="text"
             icon="el-icon-info"
@@ -143,7 +143,7 @@
           >详情
           </el-button>
           <el-button
-            v-show="scope.row.isNew==='1'"
+            v-show="new Date(scope.row.effectDate)>new Date()"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -152,7 +152,7 @@
           >修改
           </el-button>
           <el-button
-            v-show="scope.row.isNew==='1'"
+            v-show="new Date(scope.row.effectDate)>new Date()"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -173,7 +173,7 @@
     />
 
     <!-- 添加或修改薪资核定对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="open" width="1600px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -275,8 +275,7 @@
         </div>
         <el-table
           :data="detailList"
-
-          style="width: 100%;"
+          style="width: 100%;margin-bottom: 10px"
           :row-style="rowStyle"
           :show-header="false"
         >
@@ -394,7 +393,7 @@
     </el-dialog>
 
     <!-- 薪资核定详情对话框 -->
-    <el-dialog :title="title" :visible.sync="openView" width="1400px" append-to-body class="customDialogStyle">
+    <el-dialog :title="title" :visible.sync="openView" width="1600px" append-to-body class="customDialogStyle">
       <el-form ref="formView" :model="form" :rules="(ifEndPay===true)? rules2:null" label-width="100px"
                label-position="left"
       >
@@ -469,8 +468,7 @@
         </div>
         <el-table
           :data="detailList"
-
-          style="width: 100%;"
+          style="width: 100%;margin-bottom: 10px"
           :row-style="rowStyle"
           :show-header="false"
         >

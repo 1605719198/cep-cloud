@@ -123,7 +123,6 @@ public class SocialSecurityBasisController extends BaseController {
     @InnerAuth
     @GetMapping("/setNewYearData")
     public AjaxResult setNewYearSocialSecurity(){
-        System.out.println("进入到Controller");
         return success(socialSecurityBasisService.setNewYearSocialSecurity());
     }
 }

@@ -222,7 +222,7 @@
     </el-dialog>
 
     <!-- 人员卡钟详情对话框 -->
-    <el-dialog :title="title" :visible.sync="openDetail" width="1200px" append-to-body class="customDialogStyle">
+    <el-dialog title="人员卡钟详情" :visible.sync="openDetail" width="1200px" append-to-body class="customDialogStyle">
       <el-form ref="form" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id===null">

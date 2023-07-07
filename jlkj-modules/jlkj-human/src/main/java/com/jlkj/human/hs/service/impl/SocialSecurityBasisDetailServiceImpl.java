@@ -1,7 +1,9 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.human.hm.service.IPersonnelService;
 import com.jlkj.human.hs.domain.SocialSecurityBasis;
 import com.jlkj.human.hs.domain.SocialSecurityBasisDetail;
 import com.jlkj.human.hs.mapper.SocialSecurityBasisDetailMapper;
@@ -23,6 +25,8 @@ public class SocialSecurityBasisDetailServiceImpl implements ISocialSecurityBasi
 {
     @Autowired
     private SocialSecurityBasisDetailMapper socialSecurityBasisDetailMapper;
+    @Autowired
+    private IPersonnelService iPersonnelService;
 
     /**
      * 查询社保公积金标准核定明细
@@ -57,11 +61,16 @@ public class SocialSecurityBasisDetailServiceImpl implements ISocialSecurityBasi
     @Override
     public int insertSocialSecurityBasisDetail(SocialSecurityBasisDetail socialSecurityBasisDetail)
     {
-
         socialSecurityBasisDetail.setId(IdUtils.simpleUUID());
-        socialSecurityBasisDetail.setCreatorId(SecurityUtils.getUserId().toString());
-        socialSecurityBasisDetail.setCreator(SecurityUtils.getNickName());
-        socialSecurityBasisDetail.setCreatorNo(SecurityUtils.getUsername());
+        if(StringUtils.isNotEmpty(SecurityUtils.getUsername())){
+            socialSecurityBasisDetail.setCreatorId(SecurityUtils.getUserId().toString());
+            socialSecurityBasisDetail.setCreatorNo(SecurityUtils.getUsername());
+            socialSecurityBasisDetail.setCreator(SecurityUtils.getNickName());
+        }else{
+            socialSecurityBasisDetail.setCreatorId(null);
+            socialSecurityBasisDetail.setCreatorNo(null);
+            socialSecurityBasisDetail.setCreator("定时启动");
+        }
         socialSecurityBasisDetail.setCreateDate(new Date());
         return socialSecurityBasisDetailMapper.insertSocialSecurityBasisDetail(socialSecurityBasisDetail);
     }

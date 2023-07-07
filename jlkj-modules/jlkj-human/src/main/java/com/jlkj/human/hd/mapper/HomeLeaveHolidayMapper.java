@@ -61,7 +61,7 @@ public interface HomeLeaveHolidayMapper
     public int updateHomeLeaveHoliday(HomeLeaveHoliday homeLeaveHoliday);
 
     /**
-     * @Description 修改某员工某年探亲假数据
+     * 修改某员工某年探亲假数据
      * @param homeLeaveHoliday 探亲假天数设定
      * @return 结果
      * @author 266861

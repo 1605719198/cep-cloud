@@ -70,7 +70,13 @@ public class PersonClassDetailServiceImpl implements IPersonClassDetailService
     public int insertPersonClassDetail(PersonClassDetail personClassDetail)
     {
         personClassDetail.setId(IdUtils.simpleUUID());
-        return personClassDetailMapper.insertPersonClassDetail(personClassDetail);
+        List<PersonClassDetail> dataList = personClassDetailMapper.selectPersonClassDetailByEmp(personClassDetail);
+        if(dataList.isEmpty()){
+            return personClassDetailMapper.insertPersonClassDetail(personClassDetail);
+        }else{
+            personClassDetail.setId(dataList.get(0).getId());
+            return personClassDetailMapper.updatePersonClassDetail(personClassDetail);
+        }
     }
 
     /**

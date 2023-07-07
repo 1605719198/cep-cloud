@@ -74,7 +74,7 @@
             <if test="compId != null  and compId != ''"> and s.comp_id = #{compId}</if>
             <if test="empNo != null  and empNo != ''"> and s.emp_no = #{empNo}</if>
         </where>
-        order by version_no desc
+        order by s.effect_date desc
     </select>
 
     <select id="selectPersonalSalaryChecked" parameterType="PersonalSalary" resultMap="PersonalSalaryResult">
@@ -85,7 +85,7 @@
              and s.is_check = 0
              and s.effect_date &gt;curdate()
         </where>
-        order by version_no desc
+        order by s.effect_date desc
     </select>
 
     <select id="selectPersonalSalaryById" parameterType="String" resultMap="PersonalSalaryResult">

@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.service.impl;
 
 import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.uuid.IdUtils;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -102,8 +104,13 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
     public int insertBatchPersonClassMaster(List<PersonClassMaster> personClassMasterList){
         int number = 0;
         for(PersonClassMaster personClassMaster :personClassMasterList){
-            personClassMaster.setCreator(SecurityUtils.getNickName());
-            personClassMaster.setCreatorId(SecurityUtils.getUsername());
+            if(StringUtils.isNotEmpty(SecurityUtils.getUsername())){
+                personClassMaster.setCreator(SecurityUtils.getNickName());
+                personClassMaster.setCreatorId(SecurityUtils.getUsername());
+            }else{
+                personClassMaster.setCreator("定时启动");
+                personClassMaster.setCreatorId(null);
+            }
             personClassMaster.setCreateDate(new Date());
             insertPersonClassMaster(personClassMaster);
             number++;
@@ -128,6 +135,37 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
         personClassDetail.setPersonClassMasterId(personClassMaster.getId());
         personClassDetailService.setPersonClassDetail(personClassDetail);
         return personClassMasterMapper.updatePersonClassMaster(personClassMaster);
+    }
+
+    /**
+     * 年底定时排班
+     *
+     * @return 定时排班结果
+     * @author 266861
+     * @date 2023/7/6 8:46
+     **/
+    @Override
+    public int scheduledPersonClass(){
+        //排班身份主档插入结果
+        int result = 0;
+        //查询当年最后一天出勤身份明细
+        PersonClassDetail params = new PersonClassDetail();
+        Date lastDate = DateUtils.getLastOfYear(Calendar.getInstance().get(Calendar.YEAR));
+        //来年数据
+        int nextYear = Calendar.getInstance().get(Calendar.YEAR)+1;
+        Date startDate = DateUtils.getFirstOfYear(nextYear);
+        Date endDate = DateUtils.getLastOfYear(nextYear);
+        params.setArrShiDate(lastDate);
+        List<PersonClassDetail> detailList = personClassDetailService.selectPersonClassDetailList(params);
+        //遍历身份设定明细找对应主档
+        for(PersonClassDetail detail: detailList){
+            PersonClassMaster master = selectPersonClassMasterById(detail.getPersonClassMasterId());
+            master.setStartDate(startDate);
+            master.setEndDate(endDate);
+            insertPersonClassMaster(master);
+            result++;
+        }
+        return result;
     }
 
     /**
@@ -175,8 +213,13 @@ public class PersonClassMasterServiceImpl implements IPersonClassMasterService
                 BeanValidators.validateWithException(validator, personClassMaster);
                 personClassMaster.setStatus(String.valueOf(1));
                 personClassMaster.setRemark("2");
-                personClassMaster.setCreator(SecurityUtils.getNickName());
-                personClassMaster.setCreatorId(SecurityUtils.getUsername());
+                if(StringUtils.isNotEmpty(SecurityUtils.getUsername())){
+                    personClassMaster.setCreator(SecurityUtils.getNickName());
+                    personClassMaster.setCreatorId(SecurityUtils.getUsername());
+                }else{
+                    personClassMaster.setCreator("定时启动");
+                    personClassMaster.setCreatorId(null);
+                }
                 personClassMaster.setCreateDate(new Date());
                 insertPersonClassMaster(personClassMaster);
                 successNum++;

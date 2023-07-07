@@ -104,6 +104,11 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
         </dependency>
+        <!-- 人事模块api远程调用 -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-human</artifactId>
+        </dependency>
 
     </dependencies>
 

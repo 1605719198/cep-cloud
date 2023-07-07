@@ -17,7 +17,7 @@
 
     <dependencies>
 
-    	<!-- SpringCloud Alibaba Nacos -->
+        <!-- SpringCloud Alibaba Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -78,7 +78,14 @@
             <artifactId>jlkj-common-swagger</artifactId>
         </dependency>
 
+        <!-- 人事模块远程调用接口 -->
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-human</artifactId>
+        </dependency>
+
     </dependencies>
+
 
     <build>
         <finalName>${project.artifactId}</finalName>

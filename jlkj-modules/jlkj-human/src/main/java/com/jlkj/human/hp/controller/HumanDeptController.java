@@ -71,8 +71,6 @@ public class HumanDeptController extends BaseController
         return getDataTable(list);
     }
 
-
-
     /**
     * @Description 获取部门资料维护详细信息
     * @param deptId 部门id

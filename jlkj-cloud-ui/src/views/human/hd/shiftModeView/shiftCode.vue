@@ -217,7 +217,7 @@
         </el-row>
 
         <el-form-item label="说明" prop="description">
-          <el-input type="textarea" v-model="form.description" placeholder="请输入说明" :autosize="{minRows:2}" />
+          <el-input type="textarea" v-model="form.description" placeholder="请输入说明" :autosize="{minRows:2}" maxlength="100" show-word-limit/>
         </el-form-item>
 
         <el-row :gutter="20">
@@ -281,7 +281,7 @@ export default {
         optionsType:['RestCount','BigSmaNight']
       },
       //出勤选单选项列表
-      attendenceOptions:null,
+      attendenceOptions:{},
       //登录人工号
       userEmpId: this.$store.state.user.name,
       //登录人姓名
@@ -434,8 +434,8 @@ export default {
     //页面初始化
     init(modeData) {
       if(!this.attendenceOptions){
-        this.getDisc();
       }
+      this.getDisc();
       if(this.queryParams.compId!==modeData.compId){
         this.queryParams.shiftmodeId =null;
         this.shiftCodeList = [];

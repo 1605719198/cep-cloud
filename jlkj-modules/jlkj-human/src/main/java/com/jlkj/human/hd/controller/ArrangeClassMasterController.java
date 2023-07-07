@@ -1,19 +1,15 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hd.domain.ArrangeClassMaster;
 import com.jlkj.human.hd.service.IArrangeClassMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * 排班记录Controller
@@ -28,40 +24,6 @@ public class ArrangeClassMasterController extends BaseController
     @Autowired
     private IArrangeClassMasterService arrangeClassMasterService;
 
-    /**
-     * 查询排班记录列表
-     */
-    @RequiresPermissions("human:shiftMode:list")
-    @GetMapping("/list")
-    public TableDataInfo list(ArrangeClassMaster arrangeClassMaster)
-    {
-        startPage();
-        List<ArrangeClassMaster> list = arrangeClassMasterService.selectArrangeClassMasterList(arrangeClassMaster);
-        return getDataTable(list);
-    }
-
-    /**
-     * 导出排班记录列表
-     */
-    @RequiresPermissions("human:shiftMode:export")
-    @Log(title = "排班记录", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, ArrangeClassMaster arrangeClassMaster)
-    {
-        List<ArrangeClassMaster> list = arrangeClassMasterService.selectArrangeClassMasterList(arrangeClassMaster);
-        ExcelUtil<ArrangeClassMaster> util = new ExcelUtil<ArrangeClassMaster>(ArrangeClassMaster.class);
-        util.exportExcel(response, list, "排班记录数据");
-    }
-
-    /**
-     * 获取排班记录详细信息
-     */
-    @RequiresPermissions("human:shiftMode:query")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
-        return success(arrangeClassMasterService.selectArrangeClassMasterById(id));
-    }
 
     /**
      * 新增排班记录
@@ -75,24 +37,16 @@ public class ArrangeClassMasterController extends BaseController
     }
 
     /**
-     * 修改排班记录
-     */
-    @RequiresPermissions("human:shiftMode:edit")
-    @Log(title = "排班记录", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody ArrangeClassMaster arrangeClassMaster)
-    {
-        return toAjax(arrangeClassMasterService.updateArrangeClassMaster(arrangeClassMaster));
+     * @Description 年底定时排班
+     * @return 定时排班结果
+     * @author 266861
+     * @date 2023/7/4 9:40
+     **/
+    @InnerAuth
+    @GetMapping("/scheduledShifts")
+    public AjaxResult scheduledShifts(){
+        return success(arrangeClassMasterService.scheduledShifts());
     }
 
-    /**
-     * 删除排班记录
-     */
-    @RequiresPermissions("human:shiftMode:remove")
-    @Log(title = "排班记录", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
-        return toAjax(arrangeClassMasterService.deleteArrangeClassMasterByIds(ids));
-    }
+
 }

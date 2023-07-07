@@ -208,7 +208,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="排版结束日期" prop="endDate">
+            <el-form-item label="排班结束日期" prop="endDate">
               <el-date-picker clearable
                               style="width: 100%"
                               v-model="form.endDate"
@@ -720,10 +720,14 @@ export default {
     },
     /** 提交按钮 */
     submitForm(){
-      if(this.formpersonClassType==='1'){
-        this.submitFormPerson();
-      }else if(this.formpersonClassType==='2'){
-        this.submitFormDept();
+      if(new Date(this.form.endDate)>new Date(this.form.startDate)){
+        if(this.formpersonClassType==='1'){
+          this.submitFormPerson();
+        }else if(this.formpersonClassType==='2'){
+          this.submitFormDept();
+        }
+      }else{
+        this.$modal.msgError("排班结束日期需大于排班开始日期")
       }
     },
     /** 提交按钮(人员) */

@@ -65,7 +65,7 @@ public class PersonalSalaryController extends BaseController {
         if (result > 0) {
             return success("新增成功");
         } else if(result ==-1) {
-            return error("新增失败，生效日期不能小于当前日期或最大生效日期");
+            return error("新增失败，指定的生效日期和最大生效日期重复");
         }else if(result ==0){
             return error("新增失败，该员工已有未定薪的未生效资料");
         }else{
@@ -95,7 +95,8 @@ public class PersonalSalaryController extends BaseController {
         if (result > 0) {
             return AjaxResult.success("修改成功");
         } else if(result ==-1) {
-            return error("修改失败，生效日期不能小于当前日期或最大生效日期");
+//            return error("修改失败，生效日期不能小于当前日期或最大生效日期");
+            return error("新增失败，指定的生效日期和最大生效日期重复");
         }else if(result ==0){
             return error("修改失败，该员工已有未定薪的未生效资料");
         }else{
