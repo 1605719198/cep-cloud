@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 固液体能源代码对应料号维护controller
  *
@@ -68,7 +66,7 @@ public class EnergyCodeForMaterialController extends BaseController {
     @Log(title = "删除固液体能源代码对应料号维护资料", businessType = BusinessType.DELETE)
     @Operation(summary = "删除固液体能源代码对应料号维护资料")
     @DeleteMapping("/delete/{ids}")
-    public AjaxResult deleteEnergyCodeFoMaterial(@PathVariable List<String> ids) {
+    public AjaxResult deleteEnergyCodeFoMaterial(@PathVariable String[] ids) {
         return toAjax(energyCodeForMaterialService.deleteEnergyCodeFoMaterial(ids));
     }
 

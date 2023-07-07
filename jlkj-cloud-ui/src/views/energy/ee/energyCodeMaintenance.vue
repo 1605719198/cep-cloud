@@ -107,13 +107,8 @@
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+                @pagination="getList"/>
 
     <!-- 添加或修改能源代码对话框 -->
     <el-dialog :title="title" v-if="open" :visible.sync="open" width="700px" append-to-body>
@@ -185,7 +180,7 @@
 
 <script>
 import {addInfo, delInfo, updateInfo, queryInfo, getInfo, queryEngyIds} from "@/api/energy/ee/energyCodeMaintenance";
-import { queryAllUser} from "@/api/system/user";
+import {queryAllUser} from "@/api/system/user";
 
 export default {
   name: "energyCodeMaintenance",
@@ -259,7 +254,7 @@ export default {
       this.loading = false
     })
   },
-  beforeMount(){
+  beforeMount() {
     /** 装载人员信息 */
     queryAllUser().then(response => {
       console.log(response)

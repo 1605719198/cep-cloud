@@ -62,7 +62,7 @@ public interface EnergyCodeForMaterialService extends IService<EnergyCodeForMate
      * @param ids 能源代码ids 多笔
      * @return int 操作笔数（删除数）
      */
-    int deleteEnergyCodeFoMaterial(List<String> ids);
+    int deleteEnergyCodeFoMaterial(String[] ids);
     /**
      * 查询能源代码下拉选单(中文label)
      * @Author: 111191

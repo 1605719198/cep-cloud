@@ -1,7 +1,7 @@
 package com.jlkj.energy.ee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jlkj.energy.ee.domain.EnergyCodeFoMaterial;
+import com.jlkj.energy.ee.domain.EnergyCodeForMaterial;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 @Mapper
-public interface EnergyCodeFoMaterialMapper extends BaseMapper<EnergyCodeFoMaterial> {
+public interface EnergyCodeFoMaterialMapper extends BaseMapper<EnergyCodeForMaterial> {
 
 }
 

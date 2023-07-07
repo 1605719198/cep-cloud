@@ -11,8 +11,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.dto.energy.ee.EnergyCodeForMaterialDTO;
 import com.jlkj.common.security.utils.SecurityUtils;
+import com.jlkj.energy.ee.domain.EnergyCode;
 import com.jlkj.energy.ee.domain.EnergyCodeForMaterial;
 import com.jlkj.energy.ee.mapper.EnergyCodeFoMaterialMapper;
+import com.jlkj.energy.ee.mapper.EnergyCodeMapper;
 import com.jlkj.energy.ee.service.EnergyCodeForMaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
 
     @Autowired
     private EnergyCodeFoMaterialMapper energyCodeFoMaterialMapper;
+    @Autowired
+    private EnergyCodeMapper energyCodeMapper;
 
     private final String[] solidLiquid = {"G000", "Y000"};
 
@@ -125,7 +129,7 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      * @return int 操作笔数（删除数）
      */
     @Override
-    public int deleteEnergyCodeFoMaterial(List<String> ids){
+    public int deleteEnergyCodeFoMaterial(String[] ids){
         int result = 0;
         if (StringUtils.checkValNotNull(ids)) {
             List list = Arrays.asList(ids);
@@ -145,13 +149,13 @@ public class EnergyCodeForMaterialServiceImpl extends ServiceImpl<EnergyCodeFoMa
      */
     @Override
     public JSONArray queryDropDownMenuZh() {
-        LambdaQueryWrapper<EnergyCodeForMaterial> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(EnergyCodeForMaterial::getEngyType, solidLiquid)
-                .orderByAsc(EnergyCodeForMaterial::getEngyId);
-        List<EnergyCodeForMaterial> lists = energyCodeFoMaterialMapper.selectList(queryWrapper);
+        LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(EnergyCode::getEngyType, solidLiquid)
+                .orderByAsc(EnergyCode::getEngyId);
+        List<EnergyCode> lists = energyCodeMapper.selectList(queryWrapper);
         JSONArray array = new JSONArray();
         if (ObjectUtils.isNotEmpty(lists)) {
-            for (EnergyCodeForMaterial energyCode : lists) {
+            for (EnergyCode energyCode : lists) {
                 JSONObject json = new JSONObject();
                 json.put("key", energyCode.getEngyId());
                 json.put("value", energyCode.getEngyId());

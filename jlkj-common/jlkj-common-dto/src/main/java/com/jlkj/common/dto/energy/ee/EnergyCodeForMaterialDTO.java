@@ -4,13 +4,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author 智能研发室 黄兵
  * @date 2022/4/29 - 9:39
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EnergyCodeFoMaterialDTO {
+public class EnergyCodeForMaterialDTO {
 
     /**
      * ID
@@ -26,31 +28,37 @@ public class EnergyCodeFoMaterialDTO {
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码,不能为空")
     private String engyId;
 
     /**
      * 能源名称
      */
+    @NotBlank(message = "能源名称,不能为空")
     private String engyName;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "成本中心,不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源量类型,不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "来源系统,不能为空")
     private String engySource;
 
     /**
      * 料号1
      */
+    @NotBlank(message = "料号1,不能为空")
     private String engyCmp1No;
 
     /**
@@ -122,14 +130,4 @@ public class EnergyCodeFoMaterialDTO {
      * 能源代码结束值
      */
     private String engyIdEnd;
-
-    /**
-     * 当前页
-     */
-    private Long pageNum;
-
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
 }
