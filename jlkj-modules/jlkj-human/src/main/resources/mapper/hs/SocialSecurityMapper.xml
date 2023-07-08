@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="version != null and version != ''">AND version = #{version} </if>
             <if test="salaryProjectId != null and salaryProjectId != ''">AND salary_project_id = #{salaryProjectId} </if>
         </where>
+        ORDER BY version DESC
     </select>
     
     <select id="selectSocialSecurityById" parameterType="String" resultMap="SocialSecurityResult">
@@ -117,10 +118,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM human_hs_social_security WHERE id = #{id}
     </delete>
 
-    <select id="getVersionList" parameterType="String" resultMap="SocialSecurityResult">
-        SELECT distinct version FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY version
-    </select>
-
     <select id="selectMaxVersion" parameterType="String" resultType="map">
         SELECT  effect_date effectDate, version  FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY effect_date DESC limit 1
     </select>
@@ -152,4 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="version != null and version != ''">AND version = #{version} </if>
         </where>
     </select>
+
+    <update id="updateSocialSecurityById" parameterType="String">
+        UPDATE human_hs_social_security SET effect_date = #{effectDate} WHERE pay_area_id = #{payAreaId} AND version= #{version}
+    </update>
 </mapper>

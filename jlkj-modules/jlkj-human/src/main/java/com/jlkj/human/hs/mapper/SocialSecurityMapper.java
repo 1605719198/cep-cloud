@@ -72,14 +72,6 @@ public interface SocialSecurityMapper
     public int deleteSocialSecurityByIds(String[] ids);
 
     /**
-     * 版本号列表
-     *
-     * @param payAreaId 缴费地区
-     * @return 结果
-     */
-    List<SocialSecurity> getVersionList(String payAreaId);
-
-    /**
      * 获取最大版本号
      *
      * @param payAreaId 缴费地区
@@ -113,4 +105,15 @@ public interface SocialSecurityMapper
      * @return 结果
      */
     public List<SocialSecurity> selectSocialSecurityListByVersion(SocialSecurity socialSecurity);
+
+    /**
+     * 新增社保公积金缴费比例数据
+     * @Description 新增社保公积金缴费比例数据
+     * @param version 版本号
+     * @param effectDate 生效日期
+     * @return 社保公积金缴费比例数据
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
+    public  int  updateSocialSecurityById( @Param("payAreaId") String payAreaId,@Param("version") String version,@Param("effectDate") String effectDate);
 }

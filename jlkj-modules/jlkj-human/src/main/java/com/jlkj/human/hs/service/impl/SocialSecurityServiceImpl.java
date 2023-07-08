@@ -12,8 +12,9 @@ import com.jlkj.human.hs.service.ISocialSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 社保公积金缴费比例设定Service业务层处理
@@ -78,9 +79,9 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
             //查询当前公司别 最大版次号 及 生效日期
             Map<String, Object> versionMap = socialSecurityMapper.selectMaxVersion(payAreaId);
             if (!StringUtils.isEmpty(versionMap)) {
-                    Date inEffectDate1 = DateUtils.dateTime("yyyy-MM-dd", versionMap.get("effectDate").toString());
+                String inEffectDate1 = versionMap.get("effectDate").toString();
                     version = Long.parseLong(versionMap.get("version").toString());
-                    if (nowdate.compareTo(inEffectDate1) > 0) {
+                    if (inEffectDate1.compareTo(DateUtils.parseDateToStr("yyyy-MM-dd",nowdate)) < 0) {
                         version = version + 1;
                     }
                 }
@@ -143,8 +144,7 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                         }
                     }
                 }
-
-        return 1;
+        return socialSecurityMapper.updateSocialSecurityById(payAreaId,version.toString(),DateUtils.parseDateToStr("yyyy-MM-dd",inEffectDate));
     }
 
     /**
@@ -179,25 +179,6 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     @Override
     public int deleteSocialSecurityById(String id) {
         return socialSecurityMapper.deleteSocialSecurityById(id);
-    }
-
-    /**
-     * 版本号列表
-     * @return
-     */
-    @Override
-    public List<Map<String,Long>> getVersionList(String payAreaId) {
-        List<SocialSecurity> versionList = socialSecurityMapper.getVersionList(payAreaId);
-        List<Map<String,Long>> collect = new ArrayList<>();
-        if (versionList.size() > 0) {
-            collect = versionList.stream().map(item -> {
-                Map<String, Long> map = new HashMap<>(16);
-                map.put("key", item.getVersion());
-                map.put("value", item.getVersion());
-                return map;
-            }).collect(Collectors.toList());
-        }
-        return collect;
     }
 
 }
