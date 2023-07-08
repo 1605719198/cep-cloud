@@ -33,6 +33,8 @@
             <result property="pbAdjust" column="pb_adjust" jdbcType="DECIMAL"/>
             <result property="otherAdjust" column="other_adjust" jdbcType="DECIMAL"/>
             <result property="score" column="score" jdbcType="DECIMAL"/>
+            <result property="admEmpId" column="adm_emp_id" jdbcType="VARCHAR"/>
+            <result property="lastEmpId" column="last_emp_id" jdbcType="VARCHAR"/>
             <result property="selfScore" column="self_score" jdbcType="DECIMAL"/>
             <result property="admScore" column="adm_score" jdbcType="DECIMAL"/>
             <result property="grade" column="grade" jdbcType="VARCHAR"/>
@@ -52,8 +54,8 @@
         is_kpi,kpi_ratio,kpi_score,
         self_appr,adm_appr,pd_adjust,
         pb_adjust,other_adjust,score,
-        self_score,adm_score,grade,
-        merit_status,creator,creator_id,
-        create_date
+        adm_emp_id,last_emp_id,self_score,
+        adm_score,grade,merit_status,
+        creator,creator_id,create_date
     </sql>
 </mapper>

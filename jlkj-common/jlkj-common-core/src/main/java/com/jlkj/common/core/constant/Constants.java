@@ -491,6 +491,14 @@ public class Constants {
      * @param null
      */
     public static final BigDecimal BIG_DECIMAL_HUNDRED = new BigDecimal("100");
+    /**
+     * 数字 0
+     *
+     * @author 265675
+     * @Date 上午 10:19:43 2023年6月28日
+     * @param null
+     */
+    public static final BigDecimal BIG_DECIMAL_ZERO = new BigDecimal("0");
 
 // ************************************************   以下为 定义其它 类型常量      ***********************************************
 }

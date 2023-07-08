@@ -1,7 +1,7 @@
 package com.jlkj.human.pa.mapper;
 
-import com.jlkj.human.pa.domain.PersonPerformance;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.human.pa.domain.PersonPerformance;
 
 /**
 * @author HuangBing

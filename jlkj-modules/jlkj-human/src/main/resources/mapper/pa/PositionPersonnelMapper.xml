@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.PositionPersonnelMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.pa.domain.PositionPersonnel">
+            <result property="empNo" column="emp_no" jdbcType="VARCHAR"/>
+            <result property="empName" column="emp_name" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="BIGINT"/>
+            <result property="postName" column="post_name" jdbcType="VARCHAR"/>
+            <result property="deptType" column="dept_type" jdbcType="VARCHAR"/>
+            <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+            <result property="parentPostId" column="parent_post_id" jdbcType="BIGINT"/>
+            <result property="parentPostName" column="parent_post_name" jdbcType="VARCHAR"/>
+            <result property="leaderNo" column="leader_no" jdbcType="VARCHAR"/>
+            <result property="leaderName" column="leader_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        emp_no,emp_name,post_id,
+        post_name,dept_type,type_name,
+        parent_post_id,parent_post_name,leader_no,
+        leader_name
+    </sql>
+</mapper>

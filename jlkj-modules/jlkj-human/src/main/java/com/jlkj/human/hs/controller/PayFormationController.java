@@ -60,10 +60,10 @@ public class PayFormationController extends BaseController {
      */
     @RequiresPermissions("human:payFormation:remove")
     @Operation(summary = "删除薪酬项目信息")
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/delPayFormation")
     @Log(title = "删除薪酬项目信息", businessType = BusinessType.DELETE)
-    public Object delPayFormation(@PathVariable String uuid) {
-        iPayFormationService.lambdaUpdate().eq(PayFormation::getUuid, uuid).remove();
+    public Object delPayFormation(@RequestParam List<String> uuid) {
+        iPayFormationService.removeBatchByIds(uuid);
         return AjaxResult.success("删除成功");
     }
 
