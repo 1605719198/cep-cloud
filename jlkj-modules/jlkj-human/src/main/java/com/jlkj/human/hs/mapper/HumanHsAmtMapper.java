@@ -122,4 +122,10 @@ public interface HumanHsAmtMapper
      * @return
      */
     public List<HumanHsAmtDetail>  selectDetailAmtList02(@Param("year") String year,@Param("month") String month);
+    /**
+     * 根据付款申请主档id 查询明细档金额总额
+     * @param parentId
+     * @return
+     */
+    public Map selectSumAmt(@Param("parentId") String parentId);
 }

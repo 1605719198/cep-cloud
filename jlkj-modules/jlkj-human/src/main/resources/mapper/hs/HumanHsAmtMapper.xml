@@ -184,6 +184,10 @@
     <select id="selectDetailAmtList02" parameterType="String" resultMap="HumanHsAmtDetailResult">
     select  sum(k.amt) sub_amt_payable ,k.bank sub_sal_bank_id from (select  b.bon_bank_id  bank,a.emp_id, sum(case a.salary_sheet_location when '01' then a.result else 0 end)-sum(case a.salary_sheet_location when '02' then a.result else 0 end) amt
     from human_hs_salary_result a  left join human_hs_salary b  on  a.emp_id =b.emp_id
-    where  a.year = #{year} and  a.month = #{month} and a.pay_type_id ='02'   group by  a.emp_id,b.sal_bank_id) k   group by  k.bank
+    where  a.year = #{year} and  a.month = #{month} and a.pay_type_id ='02'   and b.is_New='1'  group by  a.emp_id,b.sal_bank_id) k   group by  k.bank
+    </select>
+
+    <select id="selectSumAmt" parameterType="String" resultType="map">
+        select  sum(amt_payable) amt  from human_hs_amt_detail   where  amt_id = #{parentId}
     </select>
 </mapper>

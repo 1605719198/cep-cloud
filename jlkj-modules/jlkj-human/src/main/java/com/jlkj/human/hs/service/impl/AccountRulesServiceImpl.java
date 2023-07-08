@@ -105,19 +105,20 @@ public class AccountRulesServiceImpl implements IAccountRulesService
     @Override
     public int insertAccountRules(List<AccountRules> accountRulesList)
     {
+        int count = 0;
         for(AccountRules accountRules :accountRulesList){
             if(accountRules.getId()!=null){
                 accountRules.setCreatorId(SecurityUtils.getUserId().toString());
                 accountRules.setCreatorNo(SecurityUtils.getUsername());
                 accountRules.setCreator(SecurityUtils.getNickName());
                 accountRules.setCreateDate(new Date());
-                accountRulesMapper.updateAccountRules(accountRules);
+                count= accountRulesMapper.updateAccountRules(accountRules);
 
             }else{
                 accountRules.setId(IdUtils.simpleUUID());
-                accountRulesMapper.insertAccountRules(accountRules);
+                count= accountRulesMapper.insertAccountRules(accountRules);
             }
         }
-        return 1;
+        return count;
     }
 }
