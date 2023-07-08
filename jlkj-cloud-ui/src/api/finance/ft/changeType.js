@@ -42,3 +42,12 @@ export function delChangeType(uuid) {
     method: 'delete'
   })
 }
+
+// 查询变动方式下拉选单
+export function selectChangeTypeList(companyId,billNature) {
+  return request({
+    url: '/finance/changeType/getSelect/'+companyId+"/"+billNature ,
+    method: 'get',
+    //data: data
+  })
+}

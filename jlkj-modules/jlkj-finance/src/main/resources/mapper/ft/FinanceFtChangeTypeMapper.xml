@@ -102,4 +102,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{uuid}
         </foreach>
     </delete>
+    <select id="selectChangeTypeList"  parameterType="String" resultType="map">
+        select change_way value, change_name label from finance_ft_change_type
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="billNature != null  and billNature != ''"> and bill_nature = #{billNature}</if>
+        </where>
+        order by change_way
+    </select>
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 固定资产变动方式Service业务层处理
@@ -106,5 +107,16 @@ public class FinanceFtChangeTypeServiceImpl implements IFinanceFtChangeTypeServi
     public int deleteFinanceFtChangeTypeByUuid(String uuid)
     {
         return financeFtChangeTypeMapper.deleteFinanceFtChangeTypeByUuid(uuid);
+    }
+    /**
+     * @Description:获取变动方式下拉选单
+     * @param:companyId 公司别
+     * @param:billNature 单据性质
+     * @return:java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+     * @Author: 116524_wxj
+     * @Date: 2023/7/8 14:08
+     */
+    public List<Map<String,String>> selectChangeTypeList(String companyId, String billNature){
+        return financeFtChangeTypeMapper.selectChangeTypeList(companyId,billNature);
     }
 }
