@@ -3,7 +3,9 @@ package com.jlkj.energy.ee.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 /**
@@ -29,21 +31,25 @@ public class EnergyConsumeOutput extends BaseEntity {
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "成本中心代号,不能为空")
     private String costCenter;
 
     /**
      * 能源计量日期
      */
+    @NotBlank(message = "能源计量日期,不能为空")
     private String eCountDate;
 
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码,不能为空")
     private String engyId;
 
     /**
      * 耗用产出类别代号
      */
+    @NotBlank(message = "耗用产出类别代号,不能为空")
     private String ioTypeId;
 
     /**
@@ -54,16 +60,19 @@ public class EnergyConsumeOutput extends BaseEntity {
     /**
      * 能源类别
      */
+    @NotBlank(message = "能源类别,不能为空")
     private String engyType;
 
     /**
      * 工厂代号
      */
+    @NotBlank(message = "工厂代号,不能为空")
     private String factoryId;
 
     /**
      * 产线别代号
      */
+    @NotBlank(message = "产线别代号,不能为空")
     private String millId;
 
     /**
@@ -74,16 +83,19 @@ public class EnergyConsumeOutput extends BaseEntity {
     /**
      * 卖方成本中心
      */
+    @NotBlank(message = "卖方成本中心,不能为空")
     private String chargeCostCenter;
 
     /**
      * 卖方工厂代号
      */
+    @NotBlank(message = "卖方工厂代号,不能为空")
     private String chargeFactoryId;
 
     /**
      * 能源产耗量
      */
+    @Range(message = "能源产耗量,不能为空，且必须为数字")
     private BigDecimal proConQty;
 
     /**
