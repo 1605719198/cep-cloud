@@ -60,9 +60,12 @@ public interface FinanceApItemDetailCompanyMapper
      * @return 结果
      */
     public int deleteFinanceApItemDetailCompanyByIds(String[] ids);
-
     /**
-     * 新增该报支类别的同时新增该类别下所有细项资料
-     */
+    * 新增该报支类别的同时新增该类别下所有细项资料
+    *@author 265799
+    *@date 2023/7/7  10:57
+     * @param financeApItemDetails :
+     * @return : int
+    */
     public int insertBatch(List<FinanceApItemDetailDTO> financeApItemDetails);
 }

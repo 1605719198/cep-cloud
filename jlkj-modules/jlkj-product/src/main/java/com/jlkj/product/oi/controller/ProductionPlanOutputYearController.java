@@ -1,27 +1,19 @@
 package com.jlkj.product.oi.controller;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.*;
-import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
 import com.jlkj.product.oi.dto.productionplantarget.AddProductionPlanYearDTO;
 import com.jlkj.product.oi.dto.productionplantarget.DeleteProductionPlanYearDTO;
-import com.jlkj.product.oi.service.ChangeLogService;
-import com.jlkj.product.oi.service.impl.*;
+import com.jlkj.product.oi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,37 +38,22 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionPlanOutputYearController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Autowired
-    ProductionPlanOutputYearServiceImpl planOutputYearService;
+    ProductionPlanOutputYearService planOutputYearService;
 
     @Autowired
-    ProductionPlanOutputMonthServiceImpl planOutputMonthService;
+    ProductionPlanOutputMonthService planOutputMonthService;
 
     @Autowired
-    ProductionPlanOutputDateServiceImpl planOutputDateService;
+    ProductionPlanOutputDateService planOutputDateService;
 
     @Autowired
-    ProductionPlanRepairServiceImpl planRepairService;
-
-    @Autowired
-    ProductionPlanTargetYearServiceImpl planTargetYearService;
-
-    @Autowired
-    ProductionYieldAnalysisYearServiceImpl yieldAnalysisYearService;
-
-    @Autowired
-    ProductionYieldAnalysisMonthServiceImpl yieldAnalysisMonthService;
-
-    @Autowired
-    ProductionYieldAnalysisDateServiceImpl yieldAnalysisDateService;
+    ProductionYieldAnalysisYearService yieldAnalysisYearService;
 
     @Resource
     ChangeLogService changeLogService;
@@ -90,7 +67,6 @@ public class ProductionPlanOutputYearController {
             }
     )
     @Log(title = "年产量计划查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listYearProductionOutputPlans", method = RequestMethod.GET)
     public Object get() {
         log.info("params => listYearProductionOutputPlans");
@@ -120,12 +96,11 @@ public class ProductionPlanOutputYearController {
             }
     )
     @Log(title = "新增年生产产量计划",businessType = BusinessType.INSERT)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/saveYearProductionOutputPlan", method = RequestMethod.POST, produces = "application/json")
     public Object save(@Valid @RequestBody AddProductionPlanYearDTO productionPlanYearDTO) {
         log.info("params => " + productionPlanYearDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, productionPlanYearDTO);
-        return planOutputMonthService.save(productionPlanYearDTO);
+        return planOutputMonthService.saveCustom(productionPlanYearDTO);
     }
 
     @Operation(summary = "删除年计划",
@@ -142,50 +117,10 @@ public class ProductionPlanOutputYearController {
             }
     )
     @Log(title = "删除年计划",businessType = BusinessType.DELETE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/deleteYearProductionOutputPlan", method = RequestMethod.POST, produces = "application/json")
     public Object delete(@Valid @RequestBody DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
         log.info("params => " + deleteProductionPlanYearDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionPlanYearDTO);
-        List<ProductionPlanOutputYear> yearList = planOutputYearService.list(new QueryWrapper<ProductionPlanOutputYear>().lambda()
-                .eq(ProductionPlanOutputYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        if (yearList.size() < 1) {
-//            ResultCode.EXISTSORNOT
-            return AjaxResult.error("当前年份计划不存在");
-        }
-        if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
-            return AjaxResult.error("往年计划不能删除");
-        }
-
-        StringBuilder content = new StringBuilder();
-        content.append("删除：" + "[计划年度：").append(deleteProductionPlanYearDTO.getPlanYear()).append("],");
-        for (ProductionPlanOutputYear year: yearList) {
-            ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(year.getTargetItemId());
-            if (ObjectUtil.isNotNull(productionParameterTargetItem)) {
-                content.append("[").append(productionParameterTargetItem.getTargetItemName()).append("：").append(year.getTargetItemOutput().stripTrailingZeros().toPlainString()).append("],");
-            }
-        }
-        InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
-        insertChangeLogDTO.setModuleName("生产管理");
-        insertChangeLogDTO.setFunctionName("生产计划->焦化产量");
-        insertChangeLogDTO.setContent(content.toString());
-        insertChangeLogDTO.setCreateUserId(deleteProductionPlanYearDTO.getDeleteUserId());
-        insertChangeLogDTO.setCreateUserName(deleteProductionPlanYearDTO.getDeleteUserName());
-        changeLogService.insertChangeLogData(insertChangeLogDTO);
-
-        List<ProductionPlanOutputMonth> monthList = planOutputMonthService.list(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
-                .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        List<ProductionPlanOutputDate> dateList = planOutputDateService.list(new QueryWrapper<ProductionPlanOutputDate>().lambda()
-                .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        planOutputDateService.removeBatchByIds(dateList, dateList.size());
-        planOutputMonthService.removeBatchByIds(monthList, monthList.size());
-        planOutputYearService.removeBatchByIds(yearList, yearList.size());
-        yieldAnalysisYearService.remove(new LambdaQueryWrapper<ProductionYieldAnalysisYear>()
-                .eq(ProductionYieldAnalysisYear::getYear, deleteProductionPlanYearDTO.getPlanYear()));
-        planOutputMonthService.remove(new LambdaQueryWrapper<ProductionPlanOutputMonth>()
-                .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        planOutputDateService.remove(new LambdaQueryWrapper<ProductionPlanOutputDate>()
-                .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        return AjaxResult.success();
+        return planOutputMonthService.delete(deleteProductionPlanYearDTO);
     }
 }

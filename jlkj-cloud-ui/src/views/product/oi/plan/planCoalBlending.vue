@@ -69,35 +69,35 @@
             <template slot-scope="scope">
               <template v-if="scope.row.plan_state === '未确认'">
                 <el-button v-hasPermi="['listProductionCfgCokePlans']"
-                           size="mini" plain icon="el-icon-info" type="info"
+                           size="mini" icon="el-icon-info" type="text"
                            @click="handleOpenWindow('info',scope.$index, scope.row)"> 详情
                 </el-button>
                 <el-button v-hasPermi="['editProductionPlanCfgCoke']"
-                           size="mini" plain icon="el-icon-edit" type="success"
+                           size="mini" icon="el-icon-edit" type="text"
                            @click="handleOpenWindow('edit',scope.$index, scope.row)"> 修改
                 </el-button>
                 <el-button v-hasPermi="['delProductionPlanCfgCoke']"
-                           size="mini" plain icon="el-icon-delete" type="danger"
+                           size="mini" icon="el-icon-delete" type="text"
                            @click="handleDelete(scope.$index, scope.row)">删除
                 </el-button>
                 <el-button v-hasPermi="['editProductionPlanCfgCoke']"
-                           size="mini" plain icon="el-icon-success" type="warning"
+                           size="mini" icon="el-icon-success" type="text"
                            @click="handleConfirm(scope.$index, scope.row)"> 确认
                 </el-button>
               </template>
               <template v-else>
                 <el-button v-hasPermi="['listProductionCfgCokePlans']"
-                           size="mini" plain icon="el-icon-info" type="info"
+                           size="mini" icon="el-icon-info" type="text"
                            @click="handleOpenWindow('info',scope.$index, scope.row)">详情
                 </el-button>
                 <el-button v-hasPermi="['editProductionPlanCfgCoke']"
-                           size="mini" icon="el-icon-edit" type="success" disabled>修改
+                           size="mini" icon="el-icon-edit" type="text" disabled>修改
                 </el-button>
                 <el-button v-hasPermi="['delProductionPlanCfgCoke']"
-                           size="mini" plain icon="el-icon-delete" type="danger" disabled>删除
+                           size="mini" icon="el-icon-delete" type="text" disabled>删除
                 </el-button>
                 <el-button v-hasPermi="['editProductionPlanCfgCoke']"
-                           size="mini" plain icon="el-icon-success" type="success" disabled>已确认
+                           size="mini" icon="el-icon-success" type="text" disabled>已确认
                 </el-button>
               </template>
             </template>
@@ -139,7 +139,6 @@ import {req} from "@/api/production/oi/common";
 import planCoalBlendingEdit from "./planCoalBlendingEdit";
 import planCoalBlendingInfo from "./planCoalBlendingInfo";
 import planCoalBlendingChange from "./planCoalBlendingChange";
-import {mapGetters} from "vuex";
 import {listMaterialsBoxJ} from "@/api/material/mr/parameter/materialCode";
 
 export default {
@@ -181,7 +180,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo"]),
   },
   created() {
     listMaterialsBoxJ().then(res => {
@@ -240,7 +238,7 @@ export default {
     // 清空
     handleEmpty() {
       this.planDate = [];
-      this.query = {planStartTime: '', planEndTime: '', planState: 0,};
+      this.query = {planStartTime: '', planEndTime: '', planState: 0,materialId:''};
       this.planState = '';
       this.onLoad();
     },
@@ -275,7 +273,7 @@ export default {
         req('post', 'delProductionPlanCfgCoke', {
           id: row.id,
           deleteUserId: this.$store.getters.userInfo.userId,
-          deleteUserName: this.userInfo.userName,
+          deleteUserName: this.$store.getters.userInfo.userName,
         }).then(res => {
           if (res.code == 200) {
             this.$message({
@@ -303,7 +301,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         req('post', 'updateProductionPlanCfgCokeConfirm', {
-          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.userInfo.userName,
+          id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.$store.getters.userInfo.userName,
         }).then(res => {
           if (res.code == 200) {
             this.$message({

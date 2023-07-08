@@ -1,56 +1,65 @@
-package com.jlkj.common.dto.energy.ee;
+package com.jlkj.energy.ee.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.baomidou.mybatisplus.annotation.*;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
-/**
- * @author 智能研发室 黄兵
- * @date 2022/4/29 - 9:39
- */
-@Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class EnergyCodeFoMaterialDTO {
+import javax.validation.constraints.NotBlank;
 
+/**
+ * 固、液体能源代码、料号对照
+ * @TableName energy_ee_code_fo_material
+ * @author 265675
+ */
+@TableName(value ="energy_ee_code_fo_material")
+@Data
+public class EnergyCodeForMaterial extends BaseEntity {
     /**
      * ID
      */
-    @TableId
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
      * 公司别
      */
+    @TableField(fill = FieldFill.INSERT)
     private String compId;
 
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码,不能为空")
     private String engyId;
 
     /**
      * 能源名称
      */
+    @NotBlank(message = "能源名称,不能为空")
     private String engyName;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "成本中心代号,不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源量类型,不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "来源系统,不能为空")
     private String engySource;
 
     /**
      * 料号1
      */
+    @NotBlank(message = "料号1,不能为空")
     private String engyCmp1No;
 
     /**
@@ -99,37 +108,10 @@ public class EnergyCodeFoMaterialDTO {
     private String engyCmp10No;
 
     /**
-     * 建立人员
-     */
-    private String createEmpNo;
-
-    /**
-     * 修改人员
-     */
-    private String updateEmpNo;
-
-    /**
      * 能源类别
      */
     private String engyType;
 
-    /**
-     * 能源代码开始值
-     */
-    private String engyIdStart;
-
-    /**
-     * 能源代码结束值
-     */
-    private String engyIdEnd;
-
-    /**
-     * 当前页
-     */
-    private Long pageNum;
-
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

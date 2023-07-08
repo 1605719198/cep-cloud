@@ -93,6 +93,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
+
           <el-button
             v-show="isEffect(scope.row.effectDate)"
             size="mini"
@@ -110,6 +111,14 @@
             @click="obsolete(scope.row)"
             v-hasPermi="['human:personColock:obsolete']"
           >作废
+          </el-button>
+          <el-button
+            v-show="!isEffect(scope.row.effectDate)"
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleDetail(scope.row)"
+          >详情
           </el-button>
         </template>
       </el-table-column>
@@ -190,7 +199,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="10" style="display: flex;flex-direction: row">
             <el-form-item prop="type" label="一级单位" style="width: 240px;">
@@ -206,13 +214,99 @@
             <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>
           </el-checkbox-group>
         </div>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 人员卡钟详情对话框 -->
+    <el-dialog title="人员卡钟详情" :visible.sync="openDetail" width="1200px" append-to-body class="customDialogStyle">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-row :gutter="20">
+          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id===null">
+            <el-form-item prop="type" label="卡钟类型" style="width: 260px;">
+              <el-select v-model="formcolockType" placeholder="请选择卡钟设定类型">
+                <el-option
+                  v-for="dict in attendenceOptions.ColockType"
+                  :key="dict.dicNo"
+                  :label="dict.dicName"
+                  :value="dict.dicNo"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="" prop="deptId" v-if="this.formcolockType==='2'" label-width="10px">
+              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择机构"
+                          :normalizer="normalizer" @select="deptChange" style="width: 200px;"
+              />
+            </el-form-item>
+            <el-form-item label="" prop="empId" v-if="this.formcolockType==='1'" label-width="10px"
+                          style="width: 200px;"
+            >
+              <el-input maxlength="20" v-model="form.empId" placeholder="请选择员工工号" disabled>
+                <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
+              </el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="10" style="display: flex;flex-direction: row" v-if="this.form.id!==null">
+            <el-form-item prop="type" label="卡钟类型" style="width: 260px;">
+              <dict-tag-human-base :options="attendenceOptions.ColockType" :value="formcolockType"/>
+            </el-form-item>
+            <el-form-item label="机构ID" v-if="this.formcolockType==='2'" style="width: 200px;" prop="deptId">
+              {{ form.deptId }}
+            </el-form-item>
+            <el-form-item label="员工工号" v-if="this.formcolockType==='1'" style="width: 200px;" prop="empId">
+              {{ form.empId }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="是否刷卡" prop="checkcard">
+              <el-radio-group v-model="form.checkcard" disabled>
+                <el-radio
+                  v-for="dict in dict.type.sys_yes_no"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{ dict.label }}
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="生效日期" prop="effectDate">
+              <el-date-picker
+                disabled
+                v-model="form.effectDate"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请选择生效日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10" style="display: flex;flex-direction: row">
+            <el-form-item prop="type" label="一级单位" style="width: 240px;">
+              {{ this.form.firstDeptName }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div v-show="this.form.checkcard==='Y'">
+          <el-divider content-position="center">刷卡地点清单</el-divider>
+        </div>
+        <div v-show="this.form.checkcard==='Y'">
+          <el-checkbox-group v-model="checkList" disabled>
+            <el-checkbox v-for="(clock,index) in clockworkList " :label="clock.code">{{ clock.name }}</el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
     <select-user ref="select" @ok="getJobNumber"/>
   </div>
 </template>
@@ -317,6 +411,7 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
+      openDetail: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -512,6 +607,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
+      this.openDetail = false
       this.$nextTick(() => {
         this.reset()
       })
@@ -579,6 +675,37 @@ export default {
     handleUpdate(row) {
       this.reset()
       this.open = true
+      this.checkList = []
+      this.formcolockType = this.colockType
+      const id = row.id || this.ids
+      if (this.colockType === '1') {
+        getPersonColock(id).then(response => {
+          this.form = response.data
+          this.title = '修改人员卡钟'
+        })
+        var param = { personColockId: id }
+        listPersonColockDetail(param).then(response => {
+          response.rows.forEach((value) => {
+            this.checkList.push(value.macId)
+          })
+        })
+      } else {
+        getPersonColockOrg(id).then(response => {
+          this.form = response.data
+          this.title = '修改部门卡钟'
+        })
+        var params = { personColockId: id }
+        listPersonColockDetail(params).then(response => {
+          response.rows.forEach((value) => {
+            this.checkList.push(value.macId)
+          })
+        })
+      }
+    },
+    /** 详情按钮操作 */
+    handleDetail(row) {
+      this.reset()
+      this.openDetail = true
       this.checkList = []
       this.formcolockType = this.colockType
       const id = row.id || this.ids

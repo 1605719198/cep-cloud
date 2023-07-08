@@ -338,7 +338,8 @@
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm(0)">确 定</el-button>
+        <el-button type="primary" @click="submitForm(1)">核准定薪</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -518,7 +519,7 @@
               {{ items.sixTitle }}
             </div>
             <div>
-              <el-select v-model="items.sevIdSta" placeholder="请选择缴费地" class="inputWidth" disabled>
+              <el-select v-model="items.sevIdSta" placeholder="" class="inputWidth" disabled>
                 <el-option
                   v-for="dict in salaryOptions.SocialSecurity"
                   :key="dict.id"
@@ -766,14 +767,17 @@ export default {
       } else {
         return true
       }
-
     },
     //获取社保公积金项目
     getSocialSecurityList(e) {
-      socialSecurity(this.queryParams.compId).then(response => {
-        this.socialSecurityList = response.data
-        this.setSocialSecurityDetail(e)
-      })
+      if(e===1){
+        this.setSocialSecurityDetail(1)
+      }else{
+        socialSecurity(this.queryParams.compId).then(response => {
+          this.socialSecurityList = response.data
+          this.setSocialSecurityDetail()
+        })
+      }
     },
     setSocialSecurityDetail(e) {
       if(!e){
@@ -815,15 +819,6 @@ export default {
       }
       if (e === 1) {
         this.socialSecurityDetail= this.form.detailList;
-        // this.socialSecurityDetail.forEach((values, indexs) => {
-        //   this.form.detailList.forEach((value, index) => {
-        //     if (value.payProId == values.payProId) {
-        //       this.socialSecurityDetail[indexs] = value
-        //       this.form.detailList.splice(index, 1)
-        //     }
-        //   })
-        // })
-        // alert(JSON.stringify(this.socialSecurityDetail))
       }
     },
     /** 查询社保公积金标准核定列表 */
@@ -933,11 +928,12 @@ export default {
       })
     },
     /** 提交按钮 */
-    submitForm() {
+    submitForm(e) {
       let judge = this.judge()
       if (judge) {
         this.$refs['form'].validate(valid => {
           if (valid) {
+            this.form.isCheck = e
             this.setForm()
             this.form.detailList = this.socialSecurityDetail
             if (this.form.id != null) {

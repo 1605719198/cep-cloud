@@ -1,15 +1,9 @@
 package com.jlkj.energy.ee.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.energy.ee.dto.energysolidliquiddata.EnergySolidLiquidDataDTO;
-import com.jlkj.energy.ee.domain.EnergySolidLiquidData;
 import com.jlkj.energy.ee.service.EnergySolidLiquidDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 智能研发室 黄兵
@@ -40,52 +31,8 @@ public class EnergySolidLiquidDataController {
     @Log(title = "查询固液体能源量资料", businessType = BusinessType.OTHER)
     @Operation(summary = "查询固液体能源量资料")
     @GetMapping("/query")
-    public Object queryEnergySolidLiquidData(EnergySolidLiquidDataDTO energySolidLiquidDataDTO) {
-        try {
-            String dateYm = energySolidLiquidDataDTO.getDateYm();
-            String engyDateStart = energySolidLiquidDataDTO.getEngyDateStart();
-            String engyDateEnd = energySolidLiquidDataDTO.getEngyDateEnd();
-            String engyIdStart = energySolidLiquidDataDTO.getEngyIdStart();
-            String engyIdEnd = energySolidLiquidDataDTO.getEngyIdEnd();
-            String costCenterStart = energySolidLiquidDataDTO.getCostCenterStart();
-            String costCenterEnd = energySolidLiquidDataDTO.getCostCenterEnd();
-            Long pageNum = energySolidLiquidDataDTO.getPageNum();
-            Long pageSize = energySolidLiquidDataDTO.getPageSize();
-            LambdaQueryWrapper<EnergySolidLiquidData> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.likeRight(StringUtils.isNotBlank(dateYm), EnergySolidLiquidData::getEngyDate, dateYm);
-            if (StringUtils.isNotBlank(engyDateStart) && StringUtils.isNotBlank(engyDateEnd)) {
-                queryWrapper.between(EnergySolidLiquidData::getEngyDate, engyDateStart, engyDateEnd);
-            }
-            if (StringUtils.isNotBlank(engyIdStart) && StringUtils.isNotBlank(engyIdEnd)) {
-                queryWrapper.between(EnergySolidLiquidData::getEngyId, engyIdStart, engyIdEnd);
-            } else if (StringUtils.isNotBlank(engyIdStart)) {
-                queryWrapper.eq(EnergySolidLiquidData::getEngyId, engyIdStart);
-            } else if (StringUtils.isNotBlank(engyIdEnd)) {
-                queryWrapper.eq(EnergySolidLiquidData::getEngyId, engyIdEnd);
-            }
-            if (StringUtils.isNotBlank(costCenterStart) && StringUtils.isNotBlank(costCenterEnd)) {
-                queryWrapper.between(EnergySolidLiquidData::getCostCenter, costCenterStart, costCenterEnd);
-            } else if (StringUtils.isNotBlank(costCenterStart)) {
-                queryWrapper.eq(EnergySolidLiquidData::getCostCenter, costCenterStart);
-            } else if (StringUtils.isNotBlank(costCenterEnd)){
-                queryWrapper.eq(EnergySolidLiquidData::getCostCenter, costCenterEnd);
-            }
-            Page<EnergySolidLiquidData> page = energySolidLiquidDataService.page(new Page<>(pageNum, pageSize), queryWrapper);
-            //总记录数
-            long total = page.getTotal();
-            //数据list集合
-            List<EnergySolidLiquidData> records = page.getRecords();
-            Map<String,Object> dataMap = new HashMap<>(16);
-            dataMap.put("total",total);
-            dataMap.put("list",records);
-            if (records.isEmpty()){
-                return AjaxResult.success("查无资料", dataMap);
-            } else {
-                return AjaxResult.success("查询成功！", dataMap);
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+    public AjaxResult queryEnergySolidLiquidData(EnergySolidLiquidDataDTO energySolidLiquidDataDTO) {
+        return energySolidLiquidDataService.queryEnergySolidLiquidData(energySolidLiquidDataDTO);
     }
 
     /**
@@ -95,11 +42,7 @@ public class EnergySolidLiquidDataController {
     @Operation(summary = "查询能源代码下拉选单")
     @GetMapping("/queryDropDownMenu")
     public Object queryDropDownMenu() {
-        List<EnergySolidLiquidData> list = energySolidLiquidDataService.list();
-        List<String> list1 = new ArrayList<>();
-        for (EnergySolidLiquidData energySolidLiquidData : list) {
-            list1.add(energySolidLiquidData.getEngyId());
-        }
+        List<String> list1 = energySolidLiquidDataService.queryDropDownMenu();
         return AjaxResult.success(list1);
     }
 }

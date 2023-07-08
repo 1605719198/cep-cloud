@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.energy.ee.mapper.EnergyCodeFoMaterialMapper">
+<mapper namespace="com.jlkj.energy.ee.mapper.EnergyCodeForMaterialMapper">
 
-    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyCodeFoMaterial">
+    <resultMap id="BaseResultMap" type="com.jlkj.energy.ee.domain.EnergyCodeForMaterial">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
             <result property="engyId" column="engy_id" jdbcType="VARCHAR"/>
@@ -24,9 +24,9 @@
             <result property="engyCmp10No" column="engy_cmp10_no" jdbcType="VARCHAR"/>
             <result property="engyType" column="engy_type" jdbcType="VARCHAR"/>
             <result property="createEmpNo" column="create_emp_no" jdbcType="VARCHAR"/>
-            <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
             <result property="updateEmpNo" column="update_emp_no" jdbcType="VARCHAR"/>
-            <result property="updateDate" column="update_date" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
             <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
             <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>

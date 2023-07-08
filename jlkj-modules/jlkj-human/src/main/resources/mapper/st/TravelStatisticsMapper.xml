@@ -7,7 +7,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="TravelStatistics" id="TravelStatisticsResult">
         <result property="id"    column="id"    />
         <result property="travelNo"    column="travel_no"    />
-        <result property="travelAbroad"    column="travel_abroad"    />
         <result property="travelTpye"    column="travel_tpye"    />
         <result property="travelReason"    column="travel_reason"    />
         <result property="compId"    column="comp_id"    />
@@ -39,15 +38,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="resvAttr2"    column="resv_attr2"    />
         <result property="resvAttr3"    column="resv_attr3"    />
         <result property="resvAttr4"    column="resv_attr4"    />
+        <result property="appName"    column="app_name"    />
+        <result property="appDate"    column="app_date"    />
     </resultMap>
 
     <sql id="selectTravelStatisticsVo">
-        SELECT id, travel_no, travel_tpye, travel_reason, travel_abroad, comp_id, emp_id, emp_no, emp_name, dept_name, status, agent_id, agent_no, agent_name, cost_center, contract, start_date, start_time, end_date, end_time, real_start_date, real_start_time, real_end_date, real_end_time, reason_desc, bill_no, is_engineer, creator, creator_id, create_date, resv_attr1, resv_attr2, resv_attr3, resv_attr4 FROM human_hd_travel_application
+        SELECT id, travel_no, travel_tpye, app_name, app_date, travel_reason, comp_id, emp_id, emp_no, emp_name, dept_name, status, agent_id, agent_no, agent_name, cost_center, contract, start_date, start_time, end_date, end_time, real_start_date, real_start_time, real_end_date, real_end_time, reason_desc, bill_no, is_engineer, creator, creator_id, create_date, resv_attr1, resv_attr2, resv_attr3, resv_attr4 FROM human_hd_travel_application
     </sql>
 
     <select id="selectTravelStatisticsList" parameterType="TravelStatistics" resultMap="TravelStatisticsResult">
         SELECT row_number() over(ORDER BY start_date) AS num,emp_no,emp_name,dept_name,start_date,end_date,travel_tpye,
-               travel_reason, travel_abroad,cost_center,bill_no,travel_no,status FROM human_hd_travel_application
+               travel_reason,cost_center,resv_attr1,bill_no,travel_no,status FROM human_hd_travel_application
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="status != null  and status != ''"> AND status = #{status}</if>
@@ -67,7 +68,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="travelNo != null">travel_no,</if>
-            <if test="travelAbroad != null">travel_abroad,</if>
             <if test="travelTpye != null">travel_tpye,</if>
             <if test="travelReason != null">travel_reason,</if>
             <if test="compId != null">comp_id,</if>
@@ -142,7 +142,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE human_hd_travel_application
         <trim prefix="SET" suffixOverrides=",">
             <if test="travelNo != null">travel_no = #{travelNo},</if>
-            <if test="travelAbroad != null">travel_abroad = #{travelAbroad},</if>
             <if test="travelTpye != null">travel_tpye = #{travelTpye},</if>
             <if test="travelReason != null">travel_reason = #{travelReason},</if>
             <if test="compId != null">comp_id = #{compId},</if>

@@ -1,6 +1,7 @@
 package com.jlkj.finance.ft.service;
 
 import com.jlkj.finance.ft.domain.FinanceFtStatus;
+import com.jlkj.finance.ft.dto.FinanceFtStatusDTO;
 
 import java.util.List;
 
@@ -35,10 +36,10 @@ public interface IFinanceFtStatusService
      *
      * @author SunXuTong
      * @date 2023-07-03
-     * @param financeFtStatus 资产使用状态
+     * @param financeFtStatusDTO 资产使用状态
      * @return 结果
      */
-    public int insertFinanceFtStatus(FinanceFtStatus financeFtStatus);
+    public int insertFinanceFtStatus(FinanceFtStatusDTO financeFtStatusDTO);
 
     /**
      * 修改资产使用状态

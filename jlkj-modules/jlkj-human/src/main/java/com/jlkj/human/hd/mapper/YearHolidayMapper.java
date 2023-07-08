@@ -26,7 +26,7 @@ public interface YearHolidayMapper
      * @param yearHoliday 员工年休假设定
      * @return 设定值
      */
-    public YearHoliday selectYearHolidayByempNo(YearHoliday yearHoliday);
+    public List<YearHoliday> selectYearHolidayByempNo(YearHoliday yearHoliday);
 
     /**
      * 查询员工年休假
@@ -67,6 +67,15 @@ public interface YearHolidayMapper
      * @return 结果
      */
     public int updateYearHoliday(YearHoliday yearHoliday);
+
+    /**
+     * 修改某员工某年年休假数据
+     * @param yearHoliday 年休假天数设定
+     * @return 结果
+     * @author 266861
+     * @date 2023/6/29 13:37
+     **/
+    public int updateYearHolidayByEmp(YearHoliday yearHoliday);
 
     /**
      * 删除年休假天数设定

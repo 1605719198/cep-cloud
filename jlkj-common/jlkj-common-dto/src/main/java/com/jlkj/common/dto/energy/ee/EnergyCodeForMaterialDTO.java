@@ -1,60 +1,64 @@
-package com.jlkj.energy.ee.domain;
+package com.jlkj.common.dto.energy.ee;
 
-import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 /**
- * 固、液体能源代码、料号对照
- * @TableName energy_ee_code_fo_material
- * @author 265675
+ * @author 智能研发室 黄兵
+ * @date 2022/4/29 - 9:39
  */
-@TableName(value ="energy_ee_code_fo_material")
 @Data
-public class EnergyCodeFoMaterial implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EnergyCodeForMaterialDTO {
+
     /**
      * ID
      */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId
     private String id;
 
     /**
      * 公司别
      */
-    @TableField(fill = FieldFill.INSERT)
     private String compId;
 
     /**
      * 能源代码
      */
+    @NotBlank(message = "能源代码,不能为空")
     private String engyId;
 
     /**
      * 能源名称
      */
+    @NotBlank(message = "能源名称,不能为空")
     private String engyName;
 
     /**
      * 成本中心代号
      */
+    @NotBlank(message = "成本中心,不能为空")
     private String costCenter;
 
     /**
      * 能源量类型
      */
+    @NotBlank(message = "能源量类型,不能为空")
     private String engyClass;
 
     /**
      * 来源系统
      */
+    @NotBlank(message = "来源系统,不能为空")
     private String engySource;
 
     /**
      * 料号1
      */
+    @NotBlank(message = "料号1,不能为空")
     private String engyCmp1No;
 
     /**
@@ -103,21 +107,9 @@ public class EnergyCodeFoMaterial implements Serializable {
     private String engyCmp10No;
 
     /**
-     * 能源类别
-     */
-    private String engyType;
-
-    /**
      * 建立人员
      */
     private String createEmpNo;
-
-    /**
-     * 建立时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String createDate;
 
     /**
      * 修改人员
@@ -125,32 +117,17 @@ public class EnergyCodeFoMaterial implements Serializable {
     private String updateEmpNo;
 
     /**
-     * 修改时间
+     * 能源类别
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String updateDate;
+    private String engyType;
 
     /**
-     * 创建人
+     * 能源代码开始值
      */
-    private String createUser;
+    private String engyIdStart;
 
     /**
-     * 修改人
+     * 能源代码结束值
      */
-    private String updateUser;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 修改时间
-     */
-    private Date updateTime;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+    private String engyIdEnd;
 }

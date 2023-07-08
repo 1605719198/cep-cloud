@@ -78,7 +78,11 @@ public class ArrangeClassServiceImpl implements IArrangeClassService
     @Override
     public int insertArrangeClass(ArrangeClass arrangeClass)
     {
+        //临时存储主档ID
+        String masterId = arrangeClass.getArrangeClassMasterId();
+        arrangeClass.setArrangeClassMasterId(null);
         List<ArrangeClass> list = arrangeClassMapper.queryArrangeClass(arrangeClass);
+        arrangeClass.setArrangeClassMasterId(masterId);
         if(list.size()==0){
             arrangeClass.setId(IdUtils.simpleUUID());
             return arrangeClassMapper.insertArrangeClass(arrangeClass);

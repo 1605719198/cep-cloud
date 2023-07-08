@@ -110,9 +110,9 @@
                                placeholder="请选择"
                                style="width: 40%!important;">
                       <el-option v-for="item in optionsEngyIdStart"
-                                 :key="item"
-                                 :label="item"
-                                 :value="item">
+                                 :key="item.key"
+                                 :label="item.label"
+                                 :value="item.value">
                       </el-option>
                     </el-select>
                     &nbsp;&nbsp;~
@@ -121,9 +121,9 @@
                                placeholder="请选择"
                                style="width: 40%!important;">
                       <el-option v-for="item in optionsEngyIdEnd"
-                                 :key="item"
-                                 :label="item"
-                                 :value="item">
+                                 :key="item.key"
+                                 :label="item.label"
+                                 :value="item.value">
                       </el-option>
                     </el-select>
                   </el-form-item>

@@ -5,6 +5,14 @@ import lombok.Data;
 
 import java.util.List;
 
+
+/**
+* @Description
+* @Param * @Param null:
+* @return * @return: null
+* @Author Sunxutong
+* @Date 2023/7/7 8:20
+**/
 @Data
 public class FinanceApItemCompDTO {
 

@@ -8,8 +8,10 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.ft.domain.FinanceFtStatus;
+import com.jlkj.finance.ft.dto.FinanceFtStatusDTO;
 import com.jlkj.finance.ft.service.IFinanceFtStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -82,9 +84,9 @@ public class FinanceFtStatusController extends BaseController
     @RequiresPermissions("finance:status:add")
     @Log(title = "资产使用状态", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody FinanceFtStatus financeFtStatus)
+    public AjaxResult add(@Validated @RequestBody FinanceFtStatusDTO financeFtStatusDTO)
     {
-        return toAjax(financeFtStatusService.insertFinanceFtStatus(financeFtStatus));
+        return toAjax(financeFtStatusService.insertFinanceFtStatus(financeFtStatusDTO));
     }
 
     /**

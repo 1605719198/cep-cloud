@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="queryArrangeClass" parameterType="ArrangeClass" resultMap="ArrangeClassResult">
         <include refid="selectArrangeClassVo"/>
         <where>
+            <if test="arrangeClassMasterId != null  and arrangeClassMasterId != ''"> and arrange_class_master_id = #{arrangeClassMasterId}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
             <if test="shiftmodeId != null  and shiftmodeId != ''"> and shiftmode_id = #{shiftmodeId}</if>

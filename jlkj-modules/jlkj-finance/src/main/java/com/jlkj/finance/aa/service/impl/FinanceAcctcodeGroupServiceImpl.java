@@ -9,6 +9,7 @@ import com.jlkj.finance.aa.domain.FinanceAcctcodeGroup;
 import com.jlkj.finance.aa.domain.TreeSelectAcctCode;
 import com.jlkj.finance.aa.mapper.FinanceAcctcodeGroupMapper;
 import com.jlkj.finance.aa.service.IFinanceAcctcodeGroupService;
+import com.jlkj.finance.utils.ConstantsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
         String ancestors = "0";
         int level = 0;
         if (StringUtils.isNotNull(info)){
-            if("Y".equals(info.getIsVoucher())){
+            if(ConstantsUtil.CODE_Y.equals(info.getIsVoucher())){
                 throw new ServiceException("父节点为传票性会计科目，不允许新增");
             }
             parentId = info.getGroupAcctId();
@@ -100,7 +101,7 @@ public class FinanceAcctcodeGroupServiceImpl implements IFinanceAcctcodeGroupSer
     {
         financeAcctcodeGroup.setDisabledDate(null);
         // 禁用要捡核是否有子公司使用（通用方法，删除也有这个判断），有则不允许禁用
-        if("N".equals(financeAcctcodeGroup.getDisabledCode())){
+        if(ConstantsUtil.CODE_N.equals(financeAcctcodeGroup.getDisabledCode())){
             financeAcctcodeGroup.setDisabledDate(DateUtils.getNowDate());
         }
         financeAcctcodeGroup.setUpdateBy(SecurityUtils.getUsername());

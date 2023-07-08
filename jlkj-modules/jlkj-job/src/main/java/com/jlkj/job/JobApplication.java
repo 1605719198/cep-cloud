@@ -14,7 +14,7 @@ import com.jlkj.common.swagger.annotation.EnableCustomSwagger2;
 @EnableCustomConfig
 @EnableCustomSwagger2
 @EnableRyFeignClients
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.jlkj.human.api","com.jlkj.job"})
 public class JobApplication
 {
     public static void main(String[] args)

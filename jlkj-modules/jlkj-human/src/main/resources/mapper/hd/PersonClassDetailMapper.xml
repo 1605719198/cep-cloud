@@ -37,7 +37,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectPersonClassDetailList" parameterType="PersonClassDetail" resultMap="PersonClassDetailResult">
         <include refid="selectPersonClassDetailVo"/>
-        <where>  
+        <where>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="empId != null  and empId != ''"> and emp_id = #{empId}</if>
+            <if test="arrShiDate != null "> and arr_shi_date = #{arrShiDate}</if>
             <if test="personClassMasterId != null  and personClassMasterId != ''"> and person_class_master_id = #{personClassMasterId}</if>
         </where>
     </select>
@@ -45,6 +48,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectPersonClassDetailById" parameterType="String" resultMap="PersonClassDetailResult">
         <include refid="selectPersonClassDetailVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectPersonClassDetailByEmp" parameterType="PersonClassDetail" resultMap="PersonClassDetailResult">
+        <include refid="selectPersonClassDetailVo"/>
+        where emp_id = #{empId} AND arr_shi_date = #{arrShiDate}
     </select>
 
     <select id="selectClassDays" parameterType="personHolidayClassDTO" resultMap="personHolidayClassDTOResult" >

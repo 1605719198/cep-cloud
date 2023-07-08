@@ -5,6 +5,8 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanDayDTO;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
+import com.jlkj.product.oi.service.ProductionPlanTargetYearService;
 import com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl;
 import com.jlkj.product.oi.service.impl.ProductionPlanTargetDateServiceImpl;
 import com.jlkj.product.oi.service.impl.ProductionPlanTargetMonthServiceImpl;
@@ -38,23 +40,15 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 @Slf4j
 public class ProductionPlanTargetDayController {
 
-    @Autowired
-    RedissonClient redissonClient;
 
     @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionPlanTargetYearServiceImpl planTargetYearService;
+    ProductionPlanTargetYearService planTargetYearService;
 
     @Autowired
-    ProductionPlanTargetMonthServiceImpl planTargetMonthService;
-
-    @Autowired
-    ProductionPlanTargetDateServiceImpl planTargetDateService;
-
-    @Autowired
-    ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Operation(summary = "查询日生产指标计划",
             parameters = {
@@ -67,7 +61,6 @@ public class ProductionPlanTargetDayController {
             }
     )
     @Log(title = "查询日生产指标计划",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listDateProductionTargetPlans", method = RequestMethod.GET)
     public Object get(@Valid GetProductionPlanDayDTO dto) {
         log.info("params => " + dto);

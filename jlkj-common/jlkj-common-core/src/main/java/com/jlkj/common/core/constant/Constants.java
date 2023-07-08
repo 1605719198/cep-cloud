@@ -208,6 +208,12 @@ public class Constants {
      * @Date 下午 15:28:43 2023年6月27日
      */
     public static final String STR_TEN = "10";
+  /**
+  *常量字符串 04
+  *@author 265799
+  *@date 2023/7/7  11:10
+  */
+    public static final String STR_ZERO_FOUR = "04";
     /**
      * 常量字符串 11
      *

@@ -44,7 +44,7 @@
     </el-form>
     <div v-show="showClassTable">
       <el-divider></el-divider>
-      <el-form :model="cycleSetData" ref="cycleSetForm" size="small" :inline="true"  >
+      <el-form :model="cycleSetData" ref="cycleSetForm" size="small" :inline="true"   >
         <el-form-item label="排班区间" prop="interval">
           <el-date-picker
             v-model="cycleSetData.interval"
@@ -64,6 +64,7 @@
       </el-form>
 
       <el-table
+        v-loading="loading"
         v-if="refresh"
         :data="tableData"
         :span-method="objectSpanMethod"
@@ -97,13 +98,15 @@ import '@/assets/styles/humanStyles.scss';
 import { listShiftCode } from "@/api/human/hd/shiftCode";
 import { listShiftClass} from "@/api/human/hd/shiftClass";
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
-import { addArrangeClassMaster, updateArrangeClassMaster } from '@/api/human/hd/arrangeClassMaster'
+import { addArrangeClassMaster } from '@/api/human/hd/arrangeClassMaster'
 import { listArrangeClass } from '@/api/human/hd/arrangeClass'
 export default {
   name: 'arrangeClass',
   dicts: ['sys_yes_no'],
   data() {
     return {
+      //遮罩层
+      loading: false,
       //table刷新
       refresh:true,
       //是否显示排班表
@@ -198,6 +201,7 @@ export default {
     },
     //排班按钮点击事件
     setCycleData(){
+      this.loading = true;
       this.resetData(1);
       this.setCycleDate();
     },
@@ -217,6 +221,7 @@ export default {
             if(judge===1){
               this.resetData(0)
               this.$modal.msgError("请检查班次输入项是否正确")
+              this.loading = false;
               judge=0
             }
           }
@@ -224,6 +229,7 @@ export default {
       }else{
         this.resetData(0)
         this.$modal.msgError("请输入周期设定")
+        this.loading = false;
         judge = 0;
       }
       if(judge===1){
@@ -233,14 +239,20 @@ export default {
           var Date1 = new Date(interVal[0])
           var Date2 = new Date(interVal[1])
           var days = null
-          if(Date1.getFullYear()!=Date2.getFullYear()){
+          if(Date1.getFullYear()!==Date2.getFullYear()){
             this.$modal.msgError("排班日期不允许跨年");
+            this.loading = false;
             this.resetData(0)
-          }else if(Date1.getFullYear()!=this.queryParams.classYear.getFullYear()){
+          }else if(Date1.getFullYear()!==this.queryParams.classYear.getFullYear()){
             this.$modal.msgError('请排'+this.queryParams.classYear.getFullYear()+'年的班');
+            this.loading = false;
             this.resetData(0)
-          }else {
-            days=(Date2 - Date1)/(1*24*60*60*1000)+1;
+          }else if(Date1<new Date()){
+            this.$modal.msgError("排班开始日期不能小于当前日期")
+            this.loading = false;
+            this.resetData(0)
+          } else {
+            days=(Date2 - Date1)/(24*60*60*1000)+1;
             var startMonth = String(Date1.getMonth() + 1).padStart(2, '0');
             var startDay = String(Date1.getDate()).padStart(2, '0');
             this.cycleSetData.startMonth = startMonth;
@@ -250,6 +262,8 @@ export default {
             this.setTableData();
             this.saveClassdata();
           }
+        }else{
+          this.$modal.msgWarning("请选择排班区间")
         }
       }
 
@@ -283,22 +297,22 @@ export default {
         Class.order = i
         Class.month = i + '月'
         var monthDays ;
-        if (bigMonth.indexOf(i) != -1) {
+        if (bigMonth.indexOf(i) !== -1) {
           monthDays = 32;
-        } else if (i == 2) {
-          var o = (year % 4 == 0) ? 1 : 0;
+        } else if (i === 2) {
+          var o = (year % 4 === 0) ? 1 : 0;
           monthDays = 29+o;
         } else {
           monthDays = 31
         }
         for (var j = startDay; j < monthDays; j++) {
           startDay = 1;
-          var t = ((haveCycleNumber+1) % CycleDays == 0) ? CycleDays : (haveCycleNumber+1) % CycleDays
+          var t = ((haveCycleNumber+1) % CycleDays === 0) ? CycleDays : (haveCycleNumber+1) % CycleDays
           Class['day' + j] = cycleClass[t-1]
           this.arrangeClassList[i-1]['day' + j] = cycleClass[t-1]
           haveCycleNumber++
-          if(haveCycleNumber==cycleNumber){
-            if(Object.keys(Class).length!=3){
+          if(haveCycleNumber===cycleNumber){
+            if(Object.keys(Class).length!==3){
               // this.arrangeClassList.push(Class);
             }
             return true;
@@ -329,10 +343,7 @@ export default {
       if(this.form.id==null){
         addArrangeClassMaster(this.form).then(response=>{
           this.$modal.msgSuccess("排班成功");
-        })
-      }else{
-        updateArrangeClassMaster(this.form).then(response=>{
-          this.$modal.msgSuccess("修改成功");
+          this.loading = false;
         })
       }
     },
@@ -363,7 +374,7 @@ export default {
             arrangeDetail.shiftCode = value['day'+i]
             arrangeDetail.arrShiDate = year+'-'+month+'-'+day
             this.shiftCodeList.forEach((value,index,array) => {
-              if(value.shiftCode == arrangeDetail.shiftCode){
+              if(value.shiftCode === arrangeDetail.shiftCode){
                 arrangeDetail.shiftId = value.id;
                 arrangeDetail.shiftDesc = '说明'+'：'+value.description+'。班次开始时间：'+value.startHour+':'+value.startMin+'-班次结束时间：'+value.endHour+':'+value.endMin;
               }
@@ -393,6 +404,7 @@ export default {
         }else{
           this.tableData = [];
           this.setTableData();
+          this.loading = false
           this.$modal.msgSuccess("查询成功")
         }
       })
@@ -457,10 +469,10 @@ export default {
         Weekend.order = i
         Weekend.month = i + '月'
         var monthDays ;
-        if (bigMonth.indexOf(i) != -1) {
+        if (bigMonth.indexOf(i) !== -1) {
           monthDays = 32;
         } else if (i == 2) {
-          var o = ((year%400 ==0)||(year % 4 == 0 && year%100 != 0)) ? 1 : 0;
+          var o = ((year%400 ===0)||(year % 4 === 0 && year%100 !== 0)) ? 1 : 0;
           monthDays = 29+o;
         } else {
           monthDays = 31
@@ -506,7 +518,7 @@ export default {
       this.arrangeClassList = [];
       this.weekendList = [];
       this.setInitialArray();
-      if(e==0){
+      if(e===0){
         this.setTableData()
       }
     },

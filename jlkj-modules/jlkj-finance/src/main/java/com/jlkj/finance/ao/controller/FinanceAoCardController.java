@@ -27,7 +27,6 @@ public class FinanceAoCardController extends BaseController
     /**
      * 获取个人信息设置详细信息
      */
-//    @RequiresPermissions("finance:card:query")
     @GetMapping(value = "/{userNo}")
     public AjaxResult getInfo(@PathVariable("userNo") String userNo)
     {

@@ -12,10 +12,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="acctDesc"    column="acct_desc"    />
         <result property="acctClassify"    column="acct_classify"    />
         <result property="acctCoded"    column="acct_codeD"    />
+        <result property="acctNamed"    column="acct_nameD"    />
         <result property="idCoded"    column="id_codeD"    />
         <result property="refNod"    column="ref_noD"    />
         <result property="dueDated"    column="due_dateD"    />
         <result property="acctCodec"    column="acct_codeC"    />
+        <result property="acctNamec"    column="acct_nameC"    />
         <result property="idCodec"    column="id_codeC"    />
         <result property="refNoc"    column="ref_noC"    />
         <result property="dueDatec"    column="due_dateC"    />
@@ -25,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTripAccountRuleVo">
-        select id, comp_id, acct_type, appr_group, acct_desc, acct_classify, acct_codeD, id_codeD, ref_noD, due_dateD, acct_codeC, id_codeC, ref_noC, due_dateC, creator, creator_id, create_date from human_hd_trip_account_rule
+        select id, comp_id, acct_type, appr_group, acct_desc, acct_classify, acct_codeD, acct_nameD, id_codeD, ref_noD, due_dateD, acct_codeC, acct_nameC, id_codeC, ref_noC, due_dateC, creator, creator_id, create_date from human_hd_trip_account_rule
     </sql>
 
     <select id="selectTripAccountRuleList" parameterType="TripAccountRule" resultMap="TripAccountRuleResult">
@@ -63,10 +65,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctDesc != null">acct_desc,</if>
             <if test="acctClassify != null">acct_classify,</if>
             <if test="acctCoded != null">acct_codeD,</if>
+            <if test="acctNamed != null">acct_nameD,</if>
             <if test="idCoded != null">id_codeD,</if>
             <if test="refNod != null">ref_noD,</if>
             <if test="dueDated != null">due_dateD,</if>
             <if test="acctCodec != null">acct_codeC,</if>
+            <if test="acctNamec != null">acct_nameC,</if>
             <if test="idCodec != null">id_codeC,</if>
             <if test="refNoc != null">ref_noC,</if>
             <if test="dueDatec != null">due_dateC,</if>
@@ -82,10 +86,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctDesc != null">#{acctDesc},</if>
             <if test="acctClassify != null">#{acctClassify},</if>
             <if test="acctCoded != null">#{acctCoded},</if>
+            <if test="acctNamed != null">#{acctNamed},</if>
             <if test="idCoded != null">#{idCoded},</if>
             <if test="refNod != null">#{refNod},</if>
             <if test="dueDated != null">#{dueDated},</if>
             <if test="acctCodec != null">#{acctCodec},</if>
+            <if test="acctNamec != null">#{acctNamec},</if>
             <if test="idCodec != null">#{idCodec},</if>
             <if test="refNoc != null">#{refNoc},</if>
             <if test="dueDatec != null">#{dueDatec},</if>
@@ -104,10 +110,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acctDesc != null">acct_desc = #{acctDesc},</if>
             <if test="acctClassify != null">acct_classify = #{acctClassify},</if>
             <if test="acctCoded != null">acct_codeD = #{acctCoded},</if>
+            <if test="acctNamed != null">acct_nameD = #{acctNamed},</if>
             <if test="idCoded != null">id_codeD = #{idCoded},</if>
             <if test="refNod != null">ref_noD = #{refNod},</if>
             <if test="dueDated != null">due_dateD = #{dueDated},</if>
             <if test="acctCodec != null">acct_codeC = #{acctCodec},</if>
+            <if test="acctNamec != null">acct_nameC = #{acctNamec},</if>
             <if test="idCodec != null">id_codeC = #{idCodec},</if>
             <if test="refNoc != null">ref_noC = #{refNoc},</if>
             <if test="dueDatec != null">due_dateC = #{dueDatec},</if>

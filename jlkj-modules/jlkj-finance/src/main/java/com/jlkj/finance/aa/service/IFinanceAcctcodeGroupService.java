@@ -95,11 +95,14 @@ public interface IFinanceAcctcodeGroupService
      */
     public int deleteFinanceAcctcodeGroupByGroupAcctCode(String groupAcctCode);
 
-    /**
-     * 通过会计科目编号查询集团级会计科目
-     * @param acctCode
-     * @return
-     */
+    /**查询集团级会计科目列表
+    * @description
+    * @param acctCode 会计科目
+    * @param companyId 公司别
+    * @return java.util.List<com.jlkj.finance.aa.domain.FinanceAcctcodeGroup>
+    * @Author 114288
+    * @Date 2023/7/7 10:35
+    **/
     public List<FinanceAcctcodeGroup> selectCodeGroupList(String acctCode, String companyId);
 
     /**

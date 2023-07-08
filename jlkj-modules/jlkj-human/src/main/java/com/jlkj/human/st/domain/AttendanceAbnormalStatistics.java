@@ -69,6 +69,9 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     /** 审批状态 */
     private String status;
 
+    /** 缺勤类别 */
+    private String undutyType;
+
     /** 正常出勤时段开始 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "正常出勤时段开始", width = 30, dateFormat = "yyyy-MM-dd")
@@ -110,6 +113,12 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     /** 呈核主管岗位ID */
     private String chiefempnoPostId;
 
+    /** 审核日期 */
+    private String appDate;
+
+    /** 审核人 */
+    private String appName;
+
     /** 呈核主管岗位名称 */
     private String chiefempnoPostname;
 
@@ -141,6 +150,15 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     public String getId()
     {
         return id;
+    }
+    public void setUndutyType(String undutyType)
+    {
+        this.undutyType = undutyType;
+    }
+
+    public String getUndutyType()
+    {
+        return undutyType;
     }
     public void setCompId(String compId)
     {
@@ -367,6 +385,24 @@ public class AttendanceAbnormalStatistics extends BaseEntity
     {
         return chiefempnoPostId;
     }
+    public void setAppDate(String appDate)
+    {
+        this.appDate = appDate;
+    }
+
+    public String getAppDate()
+    {
+        return appDate;
+    }
+    public void setAppName(String appName)
+    {
+        this.appName = appName;
+    }
+
+    public String getAppName()
+    {
+        return appName;
+    }
     public void setChiefempnoPostname(String chiefempnoPostname)
     {
         this.chiefempnoPostname = chiefempnoPostname;
@@ -436,6 +472,7 @@ public class AttendanceAbnormalStatistics extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
                 .append("num", getNum())
+                .append("undutyType", getUndutyType())
             .append("compId", getCompId())
             .append("empId", getEmpId())
             .append("empName", getEmpName())
@@ -460,6 +497,8 @@ public class AttendanceAbnormalStatistics extends BaseEntity
             .append("chiefempnoName", getChiefempnoName())
             .append("chiefempnoPostId", getChiefempnoPostId())
             .append("chiefempnoPostname", getChiefempnoPostname())
+                .append("appDate", getAppDate())
+                .append("appName", getAppName())
             .append("disposeId", getDisposeId())
             .append("auditType", getAuditType())
             .append("creator", getCreator())

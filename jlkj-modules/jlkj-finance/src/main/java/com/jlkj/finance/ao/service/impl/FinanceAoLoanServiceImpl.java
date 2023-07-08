@@ -40,6 +40,20 @@ public class FinanceAoLoanServiceImpl implements IFinanceAoLoanService
     {
         return financeAoLoanMapper.selectFinanceAoLoanById(id);
     }
+    /**
+     * 查询借支申请主档
+     *
+     * @param id 借支申请主档主键
+     * @return 借支申请主档
+     */
+    @Override
+    public FinanceAoLoan selectFinanceAoLoanByFromId(String id)
+    {
+        FinanceAoLoan financeAoLoan = financeAoLoanMapper.selectFinanceAoLoanById(id);
+        FinanceAoLoan financeAoLoan1 = financeAoLoanMapper.selectFinanceAoLoanByFromId(id);
+        financeAoLoan.setItemName(financeAoLoan1.getItemName());
+        return financeAoLoan;
+    }
 
     /**
      * 查询借支申请主档列表

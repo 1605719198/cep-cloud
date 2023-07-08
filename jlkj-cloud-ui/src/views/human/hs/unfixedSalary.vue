@@ -315,8 +315,12 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
+      let param = {
+        compId:this.queryParams.compId,
+        groupType:this.queryParams.groupType
+      }
       this.download('human/unfixedSalary/export', {
-        ...this.queryParams
+        ...param
       }, `"暂未定薪人员数据"_${new Date().getTime()}.xlsx`)
     }
   }

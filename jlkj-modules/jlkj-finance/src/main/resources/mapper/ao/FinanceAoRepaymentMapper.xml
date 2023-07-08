@@ -135,6 +135,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billNo != null  and billNo != ''"> and bill_no like concat(#{billNo},'%' )</if>
         </where>
     </select>
+    <select id="selectLoanId" resultType="com.jlkj.finance.ao.domain.FinanceAoRepayment">
+        <include refid="selectFinanceAoRepaymentVo"/>
+        where loan_id = #{loanId}
+    </select>
 
 
     <insert id="insertBatch">

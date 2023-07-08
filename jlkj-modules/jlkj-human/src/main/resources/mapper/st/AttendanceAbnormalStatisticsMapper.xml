@@ -32,13 +32,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="chiefempnoPostname"    column="chiefempno_postname"    />
         <result property="disposeId"    column="dispose_id"    />
         <result property="auditType"    column="audit_type"    />
+        <result property="undutyType"    column="unduty_type"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
+        <result property="appName"    column="app_name"    />
+        <result property="appDate"    column="app_date"    />
     </resultMap>
 
     <sql id="selectAttendanceAbnormalStatisticsVo">
-        SELECT id, comp_id, emp_id, emp_name, emp_no, post_id, post_name, turn_type_id, turn_type_name,
+        SELECT id, comp_id, emp_id, emp_name, unduty_type, app_name, app_date, emp_no, post_id, post_name, turn_type_id, turn_type_name,
                class_id, class_name, exc_rea_id, prove_rea_id, prove_reason, status, nor_onduty_begin, nor_onduty_end,
                slot_card_onduty, slot_card_offduty, description, chiefempno_id, chiefempno_no, chiefempno_name, chiefempno_post_id,
                chiefempno_postname, dispose_id, audit_type, creator, creator_id, create_date FROM human_hd_attendance_abnormal
@@ -50,6 +53,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="disposeId != null  and disposeId != ''"> AND dispose_id = #{disposeId}</if>
+            <if test="date1 != null ">AND nor_onduty_begin &gt;= #{date1} </if>
+            <if test="date2 != null ">AND nor_onduty_begin &lt;= #{date2} </if>
+        </where>
+        ORDER BY nor_onduty_begin
+    </select>
+
+    <select id="selectAbsenceStatisticsList" parameterType="AttendanceAbnormalStatistics" resultMap="AttendanceAbnormalStatisticsResult">
+        SELECT row_number() over(ORDER BY nor_onduty_begin) AS num,emp_no,emp_name,post_name,nor_onduty_begin,nor_onduty_end,slot_card_onduty,
+        slot_card_offduty,chiefempno_name,app_name,app_date,status,unduty_type FROM human_hd_attendance_abnormal
+        <where>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+            <if test="undutyType != null  and undutyType != ''"> AND unduty_type = #{undutyType}</if>
             <if test="date1 != null ">AND nor_onduty_begin &gt;= #{date1} </if>
             <if test="date2 != null ">AND nor_onduty_begin &lt;= #{date2} </if>
         </where>

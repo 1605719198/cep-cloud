@@ -108,8 +108,8 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
             maxDate = lastData.getEffectDate();
             versionNo = lastData.getVersionNo() + 1;
         }
-        //如果生效日期大于最大生效日期则新增
-        if (personalSalary.getEffectDate().getTime() > maxDate.getTime()) {
+        //如果生效日期不等于最大生效日期则新增
+        if (personalSalary.getEffectDate().getTime() != maxDate.getTime()) {
             if (list.size() != 0) {
                 PersonalSalary newItem = new PersonalSalary();
                 newItem.setId(lastData.getId());
@@ -173,7 +173,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
             PersonalSalary lastData, lastData2;
             if (personalSalary.getId() != null) {
                 lastData = list.get(0);
-                if ((personalSalary.getEffectDate().getTime() >= lastData.getEffectDate().getTime())) {
+                if ((personalSalary.getEffectDate().getTime() != lastData.getEffectDate().getTime())|| personalSalary.getId().equals(lastData.getId())) {
                     PersonalSalary preData = personalSalaryMapper.selectPersonalSalaryById(personalSalary.getId());
                     //如果生效日期不变则修改，反之新增一版本
                     if (personalSalary.getEffectDate().getTime() == preData.getEffectDate().getTime()) {
@@ -182,7 +182,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                         personalSalary.setCreatorNo(SecurityUtils.getUsername());
                         personalSalary.setCreateDate(new Date());
                         personalSalaryMapper.updatePersonalSalary(personalSalary);
-                        return detailService.insertPersonalSalaryDetailByMain(personalSalary);
+                        return detailService.insertPersonalSalaryDetailByMain(personalSalary)+1;
                     } else {
                         return insertPersonalSalary(personalSalary);
                     }
@@ -195,7 +195,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                     return insertPersonalSalary(personalSalary);
                 } else if (list.size() == 1) {
                     lastData = list.get(0);
-                    if (nowDate.getTime() >= lastData.getEffectDate().getTime()) {
+                    if (nowDate.getTime() != lastData.getEffectDate().getTime()) {
                         return insertPersonalSalary(personalSalary);
                     } else {
                         if (personalSalary.getEffectDate().getTime() > nowDate.getTime()) {
@@ -203,7 +203,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                             salary.setId(lastData.getId());
                             salary.setVersionNo(lastData.getVersionNo());
                             personalSalaryMapper.updatePersonalSalary(personalSalary);
-                            return detailService.insertPersonalSalaryDetailByMain(salary);
+                            return detailService.insertPersonalSalaryDetailByMain(salary)+1;
                         } else {
                             return -1;
                         }
@@ -211,15 +211,15 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
                 } else {
                     lastData = list.get(0);
                     lastData2 = list.get(1);
-                    if (nowDate.getTime() >= lastData.getEffectDate().getTime()) {
+                    if (nowDate.getTime() != lastData.getEffectDate().getTime()) {
                         return insertPersonalSalary(personalSalary);
                     } else {
-                        if (personalSalary.getEffectDate().getTime() > lastData2.getEffectDate().getTime()) {
+                        if (personalSalary.getEffectDate().getTime() != lastData2.getEffectDate().getTime()) {
                             PersonalSalary salary = setData(personalSalary);
                             salary.setId(lastData.getId());
                             salary.setVersionNo(lastData.getVersionNo());
                             personalSalaryMapper.updatePersonalSalary(salary);
-                            return detailService.insertPersonalSalaryDetailByMain(salary);
+                            return detailService.insertPersonalSalaryDetailByMain(salary)+1;
                         } else {
                             return -1;
                         }
@@ -344,7 +344,7 @@ public class PersonalSalaryServiceImpl implements IPersonalSalaryService {
         //薪资核定原因
         String payCheckRea = "PayCheckRea";
         OptionTypeDTO optionType = new OptionTypeDTO();
-        optionType.setOptionsType(Arrays.asList(payCheckRea));
+        optionType.setOptionsType(Collections.singletonList(payCheckRea));
         HashMap<String, List<BasisOptionsDTO>> map = salaryBasisService.getBasisOptions(optionType);
         HashMap<String, String[]> map1 = new HashMap<>(32);
         //选单编码ID值转换

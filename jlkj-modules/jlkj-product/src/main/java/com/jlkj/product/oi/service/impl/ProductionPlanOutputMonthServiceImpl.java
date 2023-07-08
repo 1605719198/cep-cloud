@@ -45,25 +45,25 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     RedissonClient redissonClient;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanOutputYearServiceImpl planOutputYearService;
+    ProductionPlanOutputYearServiceImpl planOutputYearService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanOutputDateServiceImpl planOutputDateService;
+    ProductionPlanOutputDateServiceImpl planOutputDateService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanRepairServiceImpl planRepairService;
+    ProductionPlanRepairServiceImpl planRepairService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionPlanTargetYearServiceImpl planTargetYearService;
+    ProductionPlanTargetYearServiceImpl planTargetYearService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionYieldAnalysisYearServiceImpl yieldAnalysisYearService;
+    ProductionYieldAnalysisYearServiceImpl yieldAnalysisYearService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionYieldAnalysisMonthServiceImpl yieldAnalysisMonthService;
+    ProductionYieldAnalysisMonthServiceImpl yieldAnalysisMonthService;
 
     @Autowired
-    com.jlkj.product.oi.service.impl.ProductionYieldAnalysisDateServiceImpl yieldAnalysisDateService;
+    ProductionYieldAnalysisDateServiceImpl yieldAnalysisDateService;
 
     @Resource
     ProductionParameterTargetItemMapper parameterTargetItemMapper;
@@ -79,12 +79,25 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     @Resource
     ChangeLogService changeLogService;
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(月计划)
+     * @param listProductionPlanOutputMonthTargetItemDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionPlanOutputMonthTargetItemVO> getProductionPlanOutputMonthTargetItemChartData(ListProductionPlanOutputMonthTargetItemDTO listProductionPlanOutputMonthTargetItemDTO) {
         return getBaseMapper().getProductionPlanOutputMonthTargetItemChartData(listProductionPlanOutputMonthTargetItemDTO);
     }
 
+    /**
+     * 查询月产量计划
+     * @param dto
+     * @param itemlist
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public Object get(GetProductionPlanMonthDTO dto, List<ProductionParameterTargetItem> itemlist) {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_month, ");
@@ -104,7 +117,15 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         return AjaxResult.success(targetList);
     }
 
-    public Object getOne(GetProductionPlanOneMonthDTO dto, List<ProductionParameterTargetItem> itemlist) {
+    /**
+     * 查询单条月生产产量计划
+     * @param dto
+     * @param itemlist
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public Object getOneCustom(GetProductionPlanOneMonthDTO dto, List<ProductionParameterTargetItem> itemlist) {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_month, ");
         for (ProductionParameterTargetItem item : itemlist) {
@@ -123,7 +144,14 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         return AjaxResult.success(targetList);
     }
 
-    public Object update(UpdateProductionPlanMonthDTO dto) {
+    /**
+     * 修改月产量计划
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object updateCustom(UpdateProductionPlanMonthDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("MonthProductionTargetPlan", dto.getPlanYear(), dto.getPlanMonth()));
         rLock.lock();
         try {
@@ -286,7 +314,14 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         }
     }
 
-    public Object save(AddProductionPlanYearDTO productionPlanYearDTO) {
+    /**
+     * 新增年生产产量计划
+     * @param productionPlanYearDTO
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object saveCustom(AddProductionPlanYearDTO productionPlanYearDTO) {
         RLock rLock = redissonClient.getLock(getLock("saveYearProductionOutputPlan", productionPlanYearDTO.getPlanYear()));
         rLock.lock();
         try {
@@ -343,6 +378,55 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         } finally {
             rLock.unlock();
         }
+        return AjaxResult.success();
+    }
+
+    /**
+     * 删除年计划
+     * @param deleteProductionPlanYearDTO
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public AjaxResult delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
+        List<ProductionPlanOutputYear> yearList = planOutputYearService.list(new QueryWrapper<ProductionPlanOutputYear>().lambda()
+                .eq(ProductionPlanOutputYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        if (yearList.size() < 1) {
+//            ResultCode.EXISTSORNOT
+            return AjaxResult.error("当前年份计划不存在");
+        }
+        if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
+            return AjaxResult.error("往年计划不能删除");
+        }
+
+        StringBuilder content = new StringBuilder();
+        content.append("删除：" + "[计划年度：").append(deleteProductionPlanYearDTO.getPlanYear()).append("],");
+        for (ProductionPlanOutputYear year: yearList) {
+            ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(year.getTargetItemId());
+            if (ObjectUtil.isNotNull(productionParameterTargetItem)) {
+                content.append("[").append(productionParameterTargetItem.getTargetItemName()).append("：").append(year.getTargetItemOutput().stripTrailingZeros().toPlainString()).append("],");
+            }
+        }
+        InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
+        insertChangeLogDTO.setModuleName("生产管理");
+        insertChangeLogDTO.setFunctionName("生产计划->焦化产量");
+        insertChangeLogDTO.setContent(content.toString());
+        insertChangeLogDTO.setCreateUserId(deleteProductionPlanYearDTO.getDeleteUserId());
+        insertChangeLogDTO.setCreateUserName(deleteProductionPlanYearDTO.getDeleteUserName());
+        changeLogService.insertChangeLogData(insertChangeLogDTO);
+
+        List<ProductionPlanOutputMonth> monthList = getBaseMapper().selectList(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
+                .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        List<ProductionPlanOutputDate> dateList = planOutputDateService.list(new QueryWrapper<ProductionPlanOutputDate>().lambda()
+                .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        planOutputDateService.removeBatchByIds(dateList, dateList.size());
+        getBaseMapper().deleteBatchIds(monthList);
+        planOutputYearService.removeBatchByIds(yearList, yearList.size());
+        yieldAnalysisYearService.remove(new LambdaQueryWrapper<ProductionYieldAnalysisYear>()
+                .eq(ProductionYieldAnalysisYear::getYear, deleteProductionPlanYearDTO.getPlanYear()));
+        getBaseMapper().delete(new LambdaQueryWrapper<ProductionPlanOutputMonth>()
+                .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
+        planOutputDateService.remove(new LambdaQueryWrapper<ProductionPlanOutputDate>()
+                .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
         return AjaxResult.success();
     }
 

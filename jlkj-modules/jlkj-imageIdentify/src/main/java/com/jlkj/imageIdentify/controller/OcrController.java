@@ -40,7 +40,6 @@ public class OcrController {
 
     @RequestMapping("/ocr/idCard")
     public Object OcrIdCard(@RequestParam("file") MultipartFile file){
-        long startTime = System.currentTimeMillis();
         if (file != null) {
             System.out.println("doOCR on a jpg image");
             try {
@@ -57,27 +56,9 @@ public class OcrController {
                 System.load(url.getPath());
 
                 BufferedImage faceImg = img;
-
-                //该文件在openCV包C:\opencv\sources\data\haarcascades\中
-//                CascadeClassifier faceDetector = new CascadeClassifier(ClassPathUtils.getPath()+"haarcascades/haarcascade_frontalface_alt2.xml");
-
                 //将BufferedImage转换为Mat对象
-//                Mat mat = ImgChangeUtil.BufImg2Mat(faceImg,BufferedImage.TYPE_4BYTE_ABGR, CvType.CV_8UC3);
                 Mat mat = ImgChangeUtil.BufImg2Mat(faceImg);
-
                 cardUp(mat);
-
-                //对图片进行处理
-//                img = convertImage(img);
-//                ITesseract tesseract = new Tesseract();
-//                //设置中文字体库路径,不设置 默认为resources下
-////                tesseract.setDatapath("D:\\tessdata");
-//                //中文识别
-//                tesseract.setLanguage(language);
-//                String result = tesseract.doOCR(img);
-//                long endTime = System.currentTimeMillis();
-//                System.out.println("扫描的文本："+result);
-//                System.out.println("本次处理耗时：" + (endTime - startTime) + " 毫秒");
                 return AjaxResult.success("处理成功");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -98,13 +79,6 @@ public class OcrController {
 //        image = ImageHelper.convertImageToBinary(image);
         //图像缩放 - 放大n倍图像
         image = ImageHelper.getScaledInstance(image, image.getWidth() * 3, image.getHeight() * 3);
-        return image;
-    }
-    public static BufferedImage convertImage2(BufferedImage image) throws Exception {
-        //图像转换成灰度的简单方法 - 黑白处理
-        image = ImageHelper.convertImageToGrayscale(image);
-        //图像缩放 - 放大n倍图像
-        image = ImageHelper.getScaledInstance(image, image.getWidth() * 2, image.getHeight() * 2);
         return image;
     }
 
@@ -211,7 +185,7 @@ public class OcrController {
         Mat nation= shear(mat,list);
         Imgcodecs.imwrite("D:/Download/nation.jpg", nation);
         BufferedImage nationBuffer=OpencvUtil.Mat2BufImg(nation,".jpg");
-        String nationStr=OCRUtil.getImageMessage(convertImage2(nationBuffer),"chi_sim");
+        String nationStr=OCRUtil.getImageMessage(convertImage(nationBuffer),"chi_sim");
         nationStr=nationStr.replace("\n","");
         return nationStr+"\n";
     }

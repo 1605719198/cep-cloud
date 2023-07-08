@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 能源项目基本资料
@@ -18,7 +16,7 @@ import java.util.Date;
  */
 @TableName(value ="energy_ee_consume_output")
 @Data
-public class EnergyConsumeOutput implements Serializable {
+public class EnergyConsumeOutput extends BaseEntity {
     /**
      * 时间序号
      */
@@ -125,30 +123,6 @@ public class EnergyConsumeOutput implements Serializable {
      * 是否抛AM
      */
     private String throwAm;
-
-    /**
-     * 创建人
-     */
-    private String createUser;
-
-    /**
-     * 修改人
-     */
-    private String updateUser;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
-
-    /**
-     * 修改时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

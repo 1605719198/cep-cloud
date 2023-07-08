@@ -33,9 +33,6 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionPlanEnergyOutputController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired

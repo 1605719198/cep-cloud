@@ -29,7 +29,13 @@ public interface FinanceAaProjectContentMapper
      * @return 集团管理-报表内容资料集合
      */
     public List<FinanceAaProjectContent> selectFinanceAaProjectContentList(FinanceAaProjectContent financeAaProjectContent);
-
+    /**
+     * 查询集团管理-报表内容资料列表
+     *
+     * @param financeAaProjectContent 集团管理-报表内容资料
+     * @return 集团管理-报表内容资料集合
+     */
+    public List<FinanceAaProjectContent> selectFinanceProjectContentList(FinanceAaProjectContent financeAaProjectContent);
     /**
      * 新增集团管理-报表内容资料
      * 

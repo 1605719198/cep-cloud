@@ -6,6 +6,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.InnerAuth;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.SocialSecurityBasis;
@@ -113,4 +114,15 @@ public class SocialSecurityBasisController extends BaseController {
         util.importTemplateExcel(response, "社保公积金核定数据");
     }
 
+    /**
+     * @Description 社保核定基数年底核定下年初最新数据
+     * @return 新增数据结果
+     * @author 266861
+     * @date 2023/7/4 9:40
+     **/
+    @InnerAuth
+    @GetMapping("/setNewYearData")
+    public AjaxResult setNewYearSocialSecurity(){
+        return success(socialSecurityBasisService.setNewYearSocialSecurity());
+    }
 }

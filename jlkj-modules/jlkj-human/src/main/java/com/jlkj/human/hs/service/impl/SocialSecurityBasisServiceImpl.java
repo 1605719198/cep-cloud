@@ -160,9 +160,15 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
         }
         socialSecurityBasis.setIsNew("1");
         socialSecurityBasis.setId(IdUtils.simpleUUID());
-        socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
-        socialSecurityBasis.setCreator(SecurityUtils.getNickName());
-        socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
+        if(!StringUtils.isEmpty(SecurityUtils.getUsername())){
+            socialSecurityBasis.setCreatorId(SecurityUtils.getUserId().toString());
+            socialSecurityBasis.setCreatorNo(SecurityUtils.getUsername());
+            socialSecurityBasis.setCreator(SecurityUtils.getNickName());
+        }else{
+            socialSecurityBasis.setCreatorId(null);
+            socialSecurityBasis.setCreatorNo(null);
+            socialSecurityBasis.setCreator("定时启动");
+        }
         socialSecurityBasis.setCreateDate(new Date());
         return socialSecurityBasis;
     }
@@ -178,7 +184,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
         List<SocialSecurityBasis> list = socialSecurityBasisMapper.selectSocialSecurityBasisByEmp(socialSecurityBasis);
         SocialSecurityBasis lastData;
         SocialSecurityBasis lastData2;
-        if (socialSecurityBasis.getId()!= null) {
+        if (socialSecurityBasis.getId() != null) {
             lastData = list.get(0);
             if ((socialSecurityBasis.getEffectDate().getTime() >= lastData.getEffectDate().getTime())) {
                 SocialSecurityBasis preData = socialSecurityBasisMapper.selectSocialSecurityBasisById(socialSecurityBasis.getId());
@@ -196,39 +202,39 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
             } else {
                 return -1;
             }
-        }else{
+        } else {
             Date nowDate = DateUtils.parseDate(DateUtils.getDate());
-            if(list.size()==0){
+            if (list.size() == 0) {
                 return insertSocialSecurityBasis(socialSecurityBasis);
-            }else if (list.size()==1){
+            } else if (list.size() == 1) {
                 lastData = list.get(0);
-                if(nowDate.getTime()>=lastData.getEffectDate().getTime()){
+                if (nowDate.getTime() >= lastData.getEffectDate().getTime()) {
                     return insertSocialSecurityBasis(socialSecurityBasis);
-                }else{
-                    if(socialSecurityBasis.getEffectDate().getTime()>nowDate.getTime()){
+                } else {
+                    if (socialSecurityBasis.getEffectDate().getTime() > nowDate.getTime()) {
                         SocialSecurityBasis basis = setData(socialSecurityBasis);
                         basis.setId(lastData.getId());
                         basis.setVersionNo(lastData.getVersionNo());
                         socialSecurityBasisMapper.updateSocialSecurityBasis(basis);
                         iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
                         return iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
-                    }else {
+                    } else {
                         return -1;
                     }
                 }
-            }else{
+            } else {
                 lastData = list.get(0);
                 lastData2 = list.get(1);
-                if(nowDate.getTime()>=lastData.getEffectDate().getTime()){
+                if (nowDate.getTime() >= lastData.getEffectDate().getTime()) {
                     return insertSocialSecurityBasis(socialSecurityBasis);
-                }else{
-                    if(socialSecurityBasis.getEffectDate().getTime()>lastData2.getEffectDate().getTime()){
+                } else {
+                    if (socialSecurityBasis.getEffectDate().getTime() > lastData2.getEffectDate().getTime()) {
                         SocialSecurityBasis basis = setData(socialSecurityBasis);
                         basis.setId(lastData.getId());
                         basis.setVersionNo(lastData.getVersionNo());
                         socialSecurityBasisMapper.updateSocialSecurityBasis(basis);
                         return iSocialSecurityBasisDetailService.insertSocialSecurityBasisDetailByMain(basis);
-                    }else {
+                    } else {
                         return -1;
                     }
                 }
@@ -263,7 +269,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
     /**
      * 导入社保公积金数据
      *
-     * @param dtos       社保公积金数据列表
+     * @param dtos            社保公积金数据列表
      * @param isUpdateSupport 是否新增
      * @param operName        操作用户
      * @return 结果
@@ -339,7 +345,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                 basis.setHouseAccount(basisDTO.getHouseAccount());
                 List<SocialSecurityBasisDetail> detailList = new ArrayList<>();
                 boolean stop = false;
-                int excelNumber= 8;
+                int excelNumber = 8;
                 for (int i = 1; i < excelNumber; i++) {
                     if (!stop) {
                         SocialSecurityBasisDetail detail = new SocialSecurityBasisDetail();
@@ -347,7 +353,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                         String thrIdSta = getValue(basisDTO, "ThrIdSta" + i);
                         String fivSta = getValue(basisDTO, "FivSta" + i);
                         String sevIdSta = getValue(basisDTO, "SevIdSta" + i);
-                        errorMsg="缴费地编码不存在";
+                        errorMsg = "缴费地编码不存在";
                         if (!StringUtils.isNull(sevIdSta) && !sevIdSta.isEmpty()) {
                             sevIdSta = map3.get(getValue(basisDTO, "SevIdSta" + i))[0];
                         }
@@ -356,7 +362,7 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                             ProjectPay projectPay = new ProjectPay();
                             projectPay.setPayProCode(payProCode);
                             projectPay.setPayType("2");
-                            errorMsg="社保项目编码不存在";
+                            errorMsg = "社保项目编码不存在";
                             projectPay = projectPayService.selectProjectPayByCode(projectPay);
                             detail.setPayProId(projectPay.getId().toString());
                             detail.setPayProName(projectPay.getPayProName());
@@ -392,16 +398,16 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
                     if (result < 0) {
                         errorMsg = "生效日期不满足要求，新增失败";
                         throw new Exception(errorMsg);
-                    }else{
+                    } else {
                         successNum++;
                         successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
-                }else{
+                } else {
                     int result = updateSocialSecurityBasis(basis);
                     if (result < 0) {
                         errorMsg = "生效日期不满足要求，更新失败";
                         throw new Exception(errorMsg);
-                    }else{
+                    } else {
                         successNum++;
                         successMsg.append("<br/>").append(successNum).append("、员工号 ").append(basisDTO.getEmpNo()).append(" 导入成功");
                     }
@@ -461,4 +467,36 @@ public class SocialSecurityBasisServiceImpl implements ISocialSecurityBasisServi
         }
         return null;
     }
+
+    /**
+     * @param
+     * @return 新增数据结果
+     * @Description 社保核定基数年底核定下年初最新数据
+     * @author 266861
+     * @date 2023/7/4 9:40
+     **/
+    @Override
+    public int setNewYearSocialSecurity() {
+        int result = 0;
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR) + 1;
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        //来年生效日期
+        Date effectDate = calendar.getTime();
+        List<SocialSecurityBasis> basisList = socialSecurityBasisMapper.selectSocialSecurityBasisList(new SocialSecurityBasis());
+        for (SocialSecurityBasis basis : basisList) {
+            //修改生效日期
+            basis.setEffectDate(effectDate);
+            SocialSecurityBasisDetail detail = new SocialSecurityBasisDetail();
+            detail.setSocialSecurityId(basis.getId());
+            List<SocialSecurityBasisDetail> detailList = iSocialSecurityBasisDetailService.selectSocialSecurityBasisDetailList(detail);
+            //配置明细列表
+            basis.setDetailList(detailList);
+            insertSocialSecurityBasis(basis);
+            result++;
+        }
+        return result;
+    }
+
 }

@@ -27,7 +27,7 @@ public final class AssertUtil {
      * @return 字符串是否有值
      */
     public static boolean isVal(String string) {
-        if (string == null || "null".equals(string) || string.isEmpty()) {
+        if (string == null || ConstantsUtil.NULL.equals(string) || string.isEmpty()) {
             return false;
         }
         return true;
@@ -299,8 +299,8 @@ public final class AssertUtil {
         if(AssertUtil.isInval(value)){
             value = BigDecimal.ZERO;
         }
-        String QUANTITY_FORMAT = "##0.000";
-        DecimalFormat df = new DecimalFormat(QUANTITY_FORMAT);
+        String quantityFormat = "##0.000";
+        DecimalFormat df = new DecimalFormat(quantityFormat);
         return df.format(value.stripTrailingZeros());
     }
 
@@ -327,17 +327,5 @@ public final class AssertUtil {
         }
     }
 
-    /**
-     * 判断是否存在汉字
-     * @param countname
-     * @return
-     */
-    public static Boolean checkCountName(String countname) {
-        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-        Matcher m = p.matcher(countname);
-        if (m.find()) {
-            return true;
-        }
-        return false;
-    }
+
 }

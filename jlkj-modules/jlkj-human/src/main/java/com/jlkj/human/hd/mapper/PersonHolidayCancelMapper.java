@@ -1,6 +1,7 @@
 package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.PersonHolidayCancel;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-04-21
  */
+@Repository
 public interface PersonHolidayCancelMapper 
 {
     /**
@@ -60,11 +62,4 @@ public interface PersonHolidayCancelMapper
      */
     public int deletePersonHolidayCancelByIds(String[] ids);
 
-    /**
-     * 批量删除员工销假
-     *
-     * @param ids 需要撤回的数据主键集合
-     * @return 结果
-     */
-    public int personHolidayCancelById(String ids);
 }

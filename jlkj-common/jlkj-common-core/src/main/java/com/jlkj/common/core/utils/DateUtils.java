@@ -154,9 +154,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
      * 获取服务器启动时间
+     *
+     * @return Date 服务器启动时间
      * @author 111191
      * @Date 上午 09:00:12 2023年6月23日, 0023
-     * @return Date 服务器启动时间
      */
 
     public static Date getServerStartDate() {
@@ -166,11 +167,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
      * 计算两个时间差
-     * @author 111191
-     * @Date 上午 09:00:45 2023年6月23日, 0023
+     *
      * @param endDate 结束时间
      * @param nowDate 当前日期
      * @return 返回字符串两个时间差（X天X小时X分钟）
+     * @author 111191
+     * @Date 上午 09:00:45 2023年6月23日, 0023
      */
     public static String getDatePoor(Date endDate, Date nowDate) {
         long nd = 1000 * 24 * 60 * 60;
@@ -331,13 +333,45 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
      * 比较两个字符串（日期格式）的大小, compareTo比较
+     *
      * @param beginDate 开始日期
-     * @param endDate 结束日期
+     * @param endDate   结束日期
      * @return boolean 开始日期大于结束日期 True; 否则为False
      * @author 111191
      * @Date 上午 08:55:55 2023年6月23日, 0023
      */
     public boolean compareDate2(String beginDate, String endDate) throws ParseException {
         return beginDate.compareTo(endDate) > 0 ? true : false;
+    }
+
+    /**
+     * 获取某年最后一天日期
+     *
+     * @param year 年份
+     * @return 某年最后一天日期
+     * @author 266861
+     * @Date 2023/7/6 9:44
+     **/
+    public static Date getLastOfYear(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        calendar.roll(Calendar.DAY_OF_YEAR, -1);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取某年第一天日期
+     *
+     * @param year 年份
+     * @return 某年第一天日期
+     * @author 266861
+     * @Date 2023/7/6 9:44
+     **/
+    public static Date getFirstOfYear(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        return calendar.getTime();
     }
 }

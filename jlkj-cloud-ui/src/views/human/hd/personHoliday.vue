@@ -12,8 +12,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="empNo">
-        <el-input v-model="queryParams.empNo" placeholder="请输入工号" :disabled="true">
-          <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+        <el-input v-model="queryParams.empNo" placeholder="请输入工号">
+          <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
         </el-input>
       </el-form-item>
       <el-form-item label="日期" prop="queryDate">
@@ -46,10 +46,20 @@
         >新增
         </el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-coffee-cup"
+          size="mini"
+          @click="handleBindProcess"
+        >绑定流程
+        </el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="personHolidayList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="personHolidayList" @selection-change="handleSelectionChange" height="67vh">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="工号" align="center" prop="empNo"/>
       <el-table-column label="请假类别" align="center" prop="leaTypeId">
@@ -60,7 +70,11 @@
       <el-table-column label="剩余可请假天数" align="center" prop="remainingDays"/>
       <el-table-column label="请假批示状态" align="center" prop="status">
         <template v-slot="scope">
-          <dict-tag-human-basis :options="attendenceOptions.HolidayStatus" :value="scope.row.status"/>
+          <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>
+        </template>
+        <template v-slot="scope">
+          <el-tag :type="approveTypeTag(scope.row.status)">{{ commentType(scope.row.status) }}</el-tag>
+          <!--          <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="scope.row.status"/>-->
         </template>
       </el-table-column>
       <el-table-column label="请假天数" align="center" prop="leaveShifts"/>
@@ -81,7 +95,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button v-if="scope.row.status === '01'"
+          <el-button v-if="scope.row.status === '0'"
                      size="mini"
                      type="text"
                      icon="el-icon-edit"
@@ -89,7 +103,7 @@
                      v-hasPermi="['human:personHoliday:edit']"
           >修改
           </el-button>
-          <el-button v-if="scope.row.status === '01'"
+          <el-button v-if="scope.row.status === '0'"
                      size="mini"
                      type="text"
                      icon="el-icon-delete"
@@ -97,10 +111,18 @@
                      v-hasPermi="['human:personHoliday:remove']"
           >作废
           </el-button>
-          <el-button v-if="scope.row.status !== '01'"
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-s-promotion"
+            @click="handleSend(scope.row)"
+            v-if="scope.row.status === '0'"
+          >送审
+          </el-button>
+          <el-button v-if="scope.row.status !== '0'"
                      size="mini"
                      type="text"
-                     icon="el-icon-details"
+                     icon="el-icon-info"
                      @click="handleDetails(scope.row)"
           >详情
           </el-button>
@@ -115,248 +137,250 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    <select-user ref="select" @ok="getJobNumber"/>
-
     <!-- 添加或修改员工请假记录对话框 -->
     <el-dialog :title="title"
                :visible.sync="open"
-               width="900px"
+               width="1500px"
                append-to-body
                class="customDialogStyle"
                :close-on-click-modal="false"
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="200px">
-
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="工号" prop="empNo">
-              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
-                <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
-              </el-input>
-              <label :hidden="this.form.postname==null">
-                {{ form.empName }}：{{ form.postname }}
-              </label>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="请假开始时间" prop="startDate">
-              <el-date-picker clearable
-                              style="width: 100%"
-                              v-model="form.startDate"
-                              type="datetime"
-                              placeholder="请选择请假开始时间"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="请假结束时间" prop="endDate">
-              <el-date-picker clearable
-                              style="width: 100%"
-                              v-model="form.endDate"
-                              type="datetime"
-                              placeholder="请选择请假结束时间"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="请假类别" prop="leaTypeId">
-              <el-select v-model="form.leaTypeId" placeholder="请选择请假类别">
-                <el-option
-                  v-for="dict in attendenceOptions.HD001"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="请假天数" prop="leaveShifts">
-              <el-input v-model="form.leaveShifts" type="number" disabled/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="是否包括节假日" prop="isContainHoliday">
-              <el-radio-group v-model="form.isContainHoliday" disabled>
-                <el-radio
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{ dict.label }}
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="剩余可请假天数" prop="remainingDays">
-              <el-input v-model="form.remainingDays" type="number" disabled/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="本月累计天数" prop="monthDays">
-              <el-input v-model="form.monthDays" type="number" disabled/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="本年累计天数" prop="yearDays">
-              <el-input v-model="form.yearDays" type="number" disabled/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="(this.form.id!=null)? 12:24">
-            <el-form-item label="辅助说明" prop="description">
-              <el-input v-model="form.description" type="textarea" placeholder="请输入内容"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="this.form.id!=null">
-            <el-form-item label="审批状态" prop="status" :disabled="this.form.id!=null">
-              <template v-slot="scope">
-                <dict-tag-human-basis :options="attendenceOptions.HolidayStatus" :value="form.status"/>
-              </template>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="输入人" prop="creator">
-              {{ form.creatorId }} {{ form.creator }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="输入日期" prop="createDate">
-              {{ form.createDate }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-      </el-form>
+      <el-tabs :value="procData.processed === true ? 'approval' : 'form'" style="height:500px;overflow: auto">
+        <el-tab-pane label="表单信息" name="form">
+          <el-form ref="form" :model="form" :rules="rules" label-width="200px">
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item label="工号" prop="empNo">
+                  <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+                  </el-input>
+                  <label :hidden="this.form.postname==null">
+                    {{ form.empName }}：{{ form.postname }}
+                  </label>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="请假开始时间" prop="startDate">
+                  <el-date-picker clearable
+                                  style="width: 100%"
+                                  v-model="form.startDate"
+                                  value-format="yyyy-MM-dd HH:mm:ss"
+                                  type="datetime"
+                                  placeholder="请选择请假开始时间"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="请假结束时间" prop="endDate">
+                  <el-date-picker clearable
+                                  style="width: 100%"
+                                  v-model="form.endDate"
+                                  value-format="yyyy-MM-dd HH:mm:ss"
+                                  type="datetime"
+                                  placeholder="请选择请假结束时间"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="请假类别" prop="leaTypeId">
+                  <el-select v-model="form.leaTypeId" placeholder="请选择请假类别" :disabled="this.form.id!==null"
+                             style="width: 100%;"
+                  >
+                    <el-option
+                      v-for="dict in attendenceOptions.HD001"
+                      :key="dict.dicNo"
+                      :label="dict.dicName"
+                      :value="dict.dicNo"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="请假天数" prop="leaveShifts">
+                  <el-input v-model="form.leaveShifts" type="number" disabled/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="是否包括节假日" prop="isContainHoliday">
+                  <el-radio-group v-model="form.isContainHoliday" disabled>
+                    <el-radio
+                      v-for="dict in dict.type.sys_yes_no"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{ dict.label }}
+                    </el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="剩余可请假天数" prop="remainingDays">
+                  <el-input v-model="form.remainingDays" type="number" disabled/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="本月累计天数" prop="monthDays">
+                  <el-input v-model="form.monthDays" type="number" disabled/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="本年累计天数" prop="yearDays">
+                  <el-input v-model="form.yearDays" type="number" disabled/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="(this.form.id!=null)? 12:24">
+                <el-form-item label="辅助说明" prop="description">
+                  <el-input v-model="form.description" type="textarea" placeholder="请输入内容"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12" v-if="this.form.id!=null">
+                <el-form-item label="审批状态" prop="status" :disabled="this.form.id!=null">
+                  <template v-slot="scope">
+                    <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="form.status"/>
+                  </template>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="输入人" prop="creator">
+                  {{ form.creatorId }} {{ form.creator }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="输入日期" prop="createDate">
+                  {{ form.createDate }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="流程信息" name="approval" v-if="open">
+          <flow-detail :procData="procData" @reject="reject"></flow-detail>
+        </el-tab-pane>
+      </el-tabs>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="personHolidayProcess">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
 
     <!-- 详情员工请假记录对话框 -->
-    <el-dialog :title="title" :visible.sync="opencreate" width="900px" append-to-body class="customDialogStyle">
-      <el-form ref="form" :model="form" :rules="rules" label-width="200px">
-
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="工号" prop="empNo">
-              <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
-                <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
-              </el-input>
-              {{ form.empName }}:{{ form.postname }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="请假开始时间" prop="startDate">
-              {{ form.startDate }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="请假结束时间" prop="endDate">
-              {{ form.endDate }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="请假类别" prop="leaTypeId">
-              {{ form.leaTypeId }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="请假天数" prop="leaveShifts">
-              {{ form.leaveShifts }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="是否包括节假日" prop="isContainHoliday" :disabled="this.form.id!=null">
-              <el-radio-group v-model="form.isContainHoliday" :disabled="this.form.id!=null">
-                <el-radio
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{ dict.label }}
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="剩余可请假天数" prop="remainingDays">
-              {{ form.remainingDays }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="本月累计天数" prop="monthDays">
-              {{ form.monthDays }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="本年累计天数" prop="yearDays">
-              {{ form.yearDays }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="(this.form.id!=null)? 12:24">
-            <el-form-item label="辅助说明" prop="description">
-              {{ form.description }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="this.form.id!=null">
-            <el-form-item label="审批状态" prop="status">
-              {{ form.status }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="输入人" prop="creator">
-              {{ form.creatorId }} {{ form.creator }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="输入日期" prop="createDate">
-              {{ form.createDate }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-      </el-form>
+    <el-dialog :title="title" :visible.sync="openDetail" width="1500px" append-to-body class="customDialogStyle">
+      <el-tabs :value="procData.processed === true ? 'approval' : 'form'" style="height:500px;overflow: auto">
+        <el-tab-pane label="表单信息" name="form">
+          <el-form ref="form" :model="form" :rules="rules" label-width="200px">
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item label="工号" prop="empNo">
+                  <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
+                    <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
+                  </el-input>
+                  {{ form.empName }}:{{ form.postname }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="请假开始时间" prop="startDate">
+                  {{ form.startDate }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="请假结束时间" prop="endDate">
+                  {{ form.endDate }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="请假类别" prop="leaTypeId">
+                  {{ form.leaTypeId }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="请假天数" prop="leaveShifts">
+                  {{ form.leaveShifts }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="是否包括节假日" prop="isContainHoliday" :disabled="this.form.id!=null">
+                  <el-radio-group v-model="form.isContainHoliday" :disabled="this.form.id!=null">
+                    <el-radio
+                      v-for="dict in dict.type.sys_yes_no"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{ dict.label }}
+                    </el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="剩余可请假天数" prop="remainingDays">
+                  {{ form.remainingDays }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="本月累计天数" prop="monthDays">
+                  {{ form.monthDays }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="本年累计天数" prop="yearDays">
+                  {{ form.yearDays }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="(this.form.id!=null)? 12:24">
+                <el-form-item label="辅助说明" prop="description">
+                  {{ form.description }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12" v-if="this.form.id!=null">
+                <el-form-item label="审批状态" prop="status">
+                  {{ form.status }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="输入人" prop="creator">
+                  {{ form.creatorId }} {{ form.creator }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="输入日期" prop="createDate">
+                  {{ form.createDate }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="流程信息" name="approval" v-if="openDetail">
+          <flow-detail :procData="procData" @reject="reject"></flow-detail>
+        </el-tab-pane>
+      </el-tabs>
     </el-dialog>
-
-
+    <!--选择流程-->
+    <select-deploy ref="deployProcess" @check="bindProcess"></select-deploy>
+    <!--选择用户-->
+    <select-user ref="select" @ok="getJobNumber"/>
   </div>
 </template>
 
@@ -374,33 +398,35 @@ import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import DictTagHumanBasis from '@/views/components/human/dictTag/humanBaseInfo'
 import selectUser from '@/views/components/human/selectUser/selectUser'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
-import { queryNewPostNameAndChangeDetail } from '@/api/human/hm/employeeTurnover'
-import { yearHoliday } from '@/api/human/hd/yearHoliday'
-import { homeLeaveHoliday } from '@/api/human/hd/homeLeaveHoliday'
-import { getClassMasterByPerson } from '@/api/human/hd/personClassMaster'
+import { yearHoliday, updateYearHolidayByEmp } from '@/api/human/hd/yearHoliday'
+import { homeLeaveHoliday, updateHolidayByEmp } from '@/api/human/hd/homeLeaveHoliday'
 import { getCompHolidaySetting } from '@/api/human/hd/holidaysetting'
-import { getHoliday } from '@/api/human/hd/holidayTable'
-import { queryShiftCode, getShiftCodeByPerson } from '@/api/human/hd/shiftCode'
+import { getShiftCodeByPerson } from '@/api/human/hd/shiftCode'
+import { addOverTime } from '@/api/human/hd/overTime'
+import { startProcess, startProcessOverride } from '@/api/workflow/process'
+import flowDetail from '@/views/components/flowable/detail'
+import { getFromByInsId, getTaskByFormId, saveInstanceForm } from '@/api/workflow/insform'
+import selectDeploy from '@/views/components/flowable/deploy'
 
 export default {
   name: 'PersonHoliday',
   dicts: ['sys_yes_no'],
-  components: { DictTagHumanBasis, selectUser },
+  components: { DictTagHumanBasis, selectUser, flowDetail, selectDeploy },
   data() {
     return {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['HolidayStatus', 'HD001']
+        optionsType: ['FlowStatus', 'HD001']
       },
       //出勤选单选项列表
       attendenceOptions: {},
-      // 遮罩层
-      loading: true,
       //公司列表
       companyList: [],
       //登录人信息
       user: {},
+      // 遮罩层
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -418,16 +444,21 @@ export default {
       // 是否显示弹出层
       open: false,
       // 是否显示详情弹出层
-      opencreate: false,
+      openDetail: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        compId: this.$store.state.user.userInfo.compId,
+        compId: null,
         empNo: null,
         startDate: '',
         endDate: '',
         queryDate: ''
+      },
+      //年休探亲假数据处理参数
+      holidayYeaHomeData: {
+        enough: true,
+        number: 0
       },
       //员工轮班方式
       shiftMode: null,
@@ -437,8 +468,16 @@ export default {
       conDays: null,
       //所选假别参数设定
       holidaySetting: {},
-      //公司节假日设定数据
-      holidayTable: [],
+      //回退数据id
+      deletId: null,
+      //是否回退删除原数据
+      ifDelete: false,
+      //是否获取原请假统计数据
+      ifPreData: false,
+      //原请假统计数据
+      preData: null,
+      //请假统计数据（按年月分类）
+      statisticsData: null,
       //请假错误信息存取
       errorData: {
         ifError: null,
@@ -463,26 +502,73 @@ export default {
         endDate: [
           { required: true, message: '请假结束时间不能为空', trigger: 'change' }
         ]
-      }
+      },
+      // 流程相关数据
+      procData: {
+        // 流程部署id
+        procDefId: undefined,
+        // 流程实例id
+        procInsId: undefined,
+        // 是否待办人
+        processed: false
+      },
+      // 判断页面是跳转还是直接进入
+      taskFlag: undefined,
+      // table选择数据
+      selectionList: []
     }
   },
   watch: {},
+  computed: {
+    commentType() {
+      return val => {
+        switch (val) {
+          case '0':
+            return '未送审'
+          case '1':
+            return '审核中'
+          case '2':
+            return '通过'
+          case '3':
+            return '驳回'
+        }
+      }
+    },
+    approveTypeTag() {
+      return val => {
+        switch (val) {
+          case '0':
+            return 'info'
+          case '1':
+            return 'primary'
+          case '2':
+            return 'success'
+          case '3':
+            return 'danger'
+        }
+      }
+    }
+  },
   created() {
+    this.initTaskParam()
     this.initData()
     this.getCompanyList()
-    this.getList()
     this.getDisc()
   },
   methods: {
     //请假流程
     personHolidayProcess() {
-      //请假结束日期需大于请假开始日期
-      if(this.form.endDate.getTime()>this.form.startDate){
-        this.form.compId = this.queryParams.compId;
-        this.getLeaHoliday()
-      }else{
-        this.$modal.msgError("请假结束日期需大于请假开始日期")
-      }
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          //请假结束日期需大于请假开始日期
+          if (new Date(this.form.endDate).getTime() > new Date(this.form.startDate).getTime()) {
+            this.form.compId = this.queryParams.compId
+            this.getLeaHoliday()
+          } else {
+            this.$modal.msgError('请假结束日期需大于请假开始日期')
+          }
+        }
+      })
     },
     //获取请假假期设定数据
     getLeaHoliday() {
@@ -491,551 +577,575 @@ export default {
         compId: this.form.compId
       }
       getCompHolidaySetting(params).then(response => {
-        if(response.data){
+        if (response.data) {
           this.holidaySetting = response.data
           this.form.isContainHoliday = this.holidaySetting.isIncHol
           this.getShiftMode()
-        }else{
-          this.$modal.msgError("该公司下未找到该请假类别数据")
+        } else {
+          this.$modal.msgError('该公司下未找到该请假类别数据')
         }
       })
     },
     //获取轮班方式和班次数据
     getShiftMode() {
-      var params = {
-        compId: this.form.compId,
-        empId: this.form.empNo
+      //请假开始结束时间
+      let startDate = new Date(this.form.startDate)
+      let endDate = new Date(this.form.endDate)
+      let preDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
+      let params = {
+        empId: this.form.empNo,
+        startDate: getDateTime(1, preDate),
+        endDate: getDateTime(1, endDate),
+        compId: this.form.compId
       }
-      getClassMasterByPerson(params).then(response => {
-        if(response.data){
-          this.shiftMode = response.data
-          //如果轮班方式是常白班：01
-          var cbMode = '01'
-          if (this.shiftMode.shiftmodeName === cbMode) {
-            //班次：常白班
-            var cbCode = '01'
-            var shiftCode = {
-              shiftmodeId: this.shiftMode.shiftmodeId,
-              shiftCode: cbCode
-            }
-            queryShiftCode(shiftCode).then(response => {
-              this.shiftCodeData = response.data
-              this.getHolidayTable()
-            })
-          } else {
-            // 如果轮班方式为非常白班
-            //请假开始结束时间
-            let startDate = this.form.startDate
-            let endDate = this.form.endDate
-            let preDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
-            // let nextDate = endDate
-            // nextDate = new Date(nextDate.setDate(nextDate.getDate()+1))
-            let params = {
-              empId: this.form.empNo,
-              startDate: getDateTime(1, preDate),
-              endDate: getDateTime(1, endDate),
-              compId: this.form.compId
-            }
-            getShiftCodeByPerson(params).then(response => {
-              this.shiftCodeData = response.rows
-              console.log('员工排班数据')
-              this.shiftCodeData.forEach((value)=>{
-                console.log('时间：'+value.createDate+'编码：'+value.shiftCode)
-              })
-              let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (24 * 60 * 60 * 1000)
-              //请假跨天数
-              let conDays = Math.floor(days) + 1
-              console.log('请假跨天数：' + conDays)
-              this.conDays = conDays
-              if (response.total !== (conDays + 1)) {
-                this.$modal.msgError('请假时间段内有未排班天数')
-              } else {
-                this.computeWorkTime(2)
-              }
-            })
-          }
-        }else{
-          this.$modal.msgError("该员工在请假期间未排班")
+      getShiftCodeByPerson(params).then(response => {
+        this.shiftCodeData = response.rows
+        console.log('员工排班数据')
+        this.shiftCodeData.forEach((value) => {
+          console.log('时间：' + value.createDate + ' 编码：' + value.shiftCode)
+        })
+        let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (24 * 60 * 60 * 1000)
+        //请假跨天数
+        let conDays = Math.floor(days) + 1
+        // console.log('请假跨天数：' + conDays)
+        this.conDays = conDays
+        if (response.total !== (conDays + 1)) {
+          this.$modal.msgError('请假时间段内有未排班天数')
+        } else {
+          this.computeWorkTime()
         }
       })
     },
-    //获取节假日设定数据
-    getHolidayTable() {
-      //假日设定:1,全日班，2,休息班，3,法定假日
-      const dateType1 = 1
-      const dateType2 = 2
-      const dateType3 = 3
-      let dateType = (this.form.isContainHoliday === 'Y') ? null : dateType1
-      var param = {
-        compId: this.form.compId,
-        startDate: getDateTime(1, this.form.startDate),
-        endDate: getDateTime(1, this.form.endDate),
-        dateType: dateType
-      }
-      getHoliday(param).then(response => {
-        this.holidayTable = response.rows
-        console.log('节假日设定数据' + JSON.stringify(this.holidayTable))
-        this.computeWorkTime(1)
-      })
-    },
     //计算请假工时
-    computeWorkTime(e) {
+    computeWorkTime() {
+      if (this.ifPreData) {
+        this.preData = {
+          minutes: 0,
+          shifts: 0,
+          yearData: [],
+          monthData: []
+        }
+      } else {
+        this.statisticsData = {
+          minutes: 0,
+          shifts: 0,
+          yearData: [],
+          monthData: []
+        }
+      }
       //请假过程是否有问题
       this.errorData.ifError = false
       //员工请假分钟数
       let personMinute = 0
       //请假班次(天数)
-      let conDay = 0;
+      let conDay = 0
       //一班次时间工作分钟数
       let oneTurnMinute
       //请假开始结束时间
-      let startDate = this.form.startDate
-      let endDate = this.form.endDate
+      let startDate = new Date(this.form.startDate)
+      let endDate = new Date(this.form.endDate)
       //第一天最后一天请假小时分钟
       let personHour1 = parseInt(String(startDate.getHours()).padStart(2, '0'))
       let personMin1 = parseInt(String(startDate.getMinutes()).padStart(2, '0'))
       let personHour2 = parseInt(String(endDate.getHours()).padStart(2, '0'))
       let personMin2 = parseInt(String(endDate.getMinutes()).padStart(2, '0'))
-      //常白班逻辑
-      if (e === 1) {
-        //工作开始结束时间
-        let startHour = parseInt(this.shiftCodeData.startHour)
-        let startMin = parseInt(this.shiftCodeData.startMin)
-        let endHour = parseInt(this.shiftCodeData.endHour)
-        let endMin = parseInt(this.shiftCodeData.endMin)
-        //常白班一天工作分钟
-        let workMinuteDay = parseInt(this.shiftCodeData.conHour) * 60 + parseInt(this.shiftCodeData.conMin)
-        oneTurnMinute = workMinuteDay
-        //请假最小单位数（小时）
-        let leastMinute = parseInt(this.holidaySetting.minUnitDay) * 60
-        //请假未跨天
-        if (getDateTime(1, startDate) === getDateTime(1, endDate)) {
-          console.log("常白班请假未跨天")
-          if(this.holidayTable[0].dateType!=="1"&&this.form.isContainHoliday==='N'){
-            console.log("请假失败，请假当天非工作日")
-            this.errorData.ifError = false
-            this.errorData.errorMsg = "请假失败，请假当天非工作日";
-          }else{
-            if (this.compareTime(startHour, startMin, personHour1, personMin1) > 0) {
-              personHour1 = startHour
-              personMin1 = startMin
+      //请假前一天与倒数第二天时间
+      let firstDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
+      let lastDate = new Date((endDate.getTime() - 24 * 3600 * 1000))
+      //请假前一天，倒数第二天差值数据,第一天，最后一天班次数据
+      let firstData = null, lastData = null, startData = null, endData = null
+      let firstMinute = 0, lastMinute = 0, startMinute = 0, endMinute = 0
+      //最小请假分钟数
+      let leastMinute = 0
+      this.shiftCodeData.forEach((value) => {
+        //工作开始，持续，结束时分
+        let startHour = parseInt(value.startHour)
+        let startMin = parseInt(value.startMin)
+        let conHour = parseInt(value.conHour)
+        let conMin = parseInt(value.conMin)
+        let endHour = parseInt(value.endHour)
+        let endMin = parseInt(value.endMin)
+        let conMinute = conHour * 60 + conMin
+        if (conMinute !== 0) {
+          if (value.createDate === getDateTime(1, startDate)) {
+            startData = value
+          } else if (value.createDate === getDateTime(1, endDate)) {
+            endData = value
+          } else if (value.createDate === getDateTime(1, firstDate)) {
+            if (this.ifOverDay(JSON.stringify(value))) {
+              firstData = value
             }
-            if (this.compareTime(personHour2, personMin2, endHour, endMin) > 0) {
-              personHour2 = endHour
-              personMin2 = endMin
+          } else if (value.createDate === getDateTime(1, lastDate)) {
+            personMinute += conMinute
+            conDay += 1
+            this.computeData(value.createDate, conMinute, 1, 1)
+            if (this.ifOverDay(JSON.stringify(value))) {
+              lastData = value
             }
-            //请假当天分钟数
-            let personConMinute;
-            if(this.compareTime(personHour2,personMin2,personHour1,personMin1)>0){
+          } else {
+            personMinute += conMinute
+            conDay += 1
+            this.computeData(value.createDate, conMinute, 1, 1)
+          }
+        }
+      })
+      //前一天请假时间计算
+      if (firstData != null) {
+        let firstStartHour, firstStartMin
+        if (this.compareTime(personHour1, personMin1, firstData.endHour, firstData.endMin) > 0) {
+          firstStartHour = firstData.endHour
+          firstStartMin = firstData.endMin
+        } else {
+          firstStartHour = personHour1
+          firstStartMin = personMin1
+        }
+        let obj = {
+          startHour: parseInt(firstStartHour) + 24,
+          startMin: firstStartMin,
+          endHour: parseInt(firstData.endHour) + 24,
+          endMin: firstData.endMin,
+          shiftCodeData: firstData
+        }
+        firstMinute = this.computeDayMinute(JSON.stringify(obj))
+        console.log('请假前一天请假时间分钟数：' + firstMinute)
+        personMinute += firstMinute
+        if (firstData.description === 'N') {
+          leastMinute = this.holidaySetting.minUnitDay
+        } else {
+          leastMinute = (parseInt(firstData.conHour) * 60 + parseInt(firstData.conMin)) * this.holidaySetting.minUnitTurns
+        }
+        let firstDay = firstMinute / (parseInt(firstData.conHour) * 60 + parseInt(firstData.conMin))
+        conDay += firstDay
+        this.computeData(firstData.createDate, firstMinute, firstDay, 1)
+        if (firstMinute % leastMinute !== 0) {
+          this.errorData.ifError = true
+          this.errorData.errorMsg = ('前一天请假时间不合规范')
+          console.log('前一天请假时间不合规范')
+        } else {
+          console.log('前一天请假时间符合规范')
+          console.log('前一天请假班次：' + firstDay)
+        }
+      }
+      //第一天请假时间计算
+      if (startData != null) {
+        //工作开始，持续，结束时分
+        let startHour = parseInt(startData.startHour)
+        let startMin = parseInt(startData.startMin)
+        let conHour = parseInt(startData.conHour)
+        let conMin = parseInt(startData.conMin)
+        let endHour = parseInt(startData.endHour)
+        let endMin = parseInt(startData.endMin)
+        //第一天开始小时分钟
+        let startStartHour, startStartMin
+        if (this.compareTime(startData.startHour, startData.startMin, personHour1, personMin1) > 0) {
+          startStartHour = startData.startHour
+          startStartMin = startData.startMin
+        } else {
+          startStartHour = personHour1
+          startStartMin = personMin1
+        }
+        //如果不止一天
+        if (this.conDays !== 1) {
+          //不跨天
+          if (!this.ifOverDay(JSON.stringify(startData))) {
+            if (this.compareTime(startStartHour, startStartMin, startData.endHour, startData.endMin) >= 0) {
+              startMinute = 0
+            } else {
+              let obj = {
+                startHour: startStartHour,
+                startMin: startStartMin,
+                endHour: startData.endHour,
+                endMin: startData.endMin,
+                shiftCodeData: startData
+              }
+              startMinute = this.computeDayMinute(JSON.stringify(obj))
+            }
+          } else {
+            //跨天
+            let obj = {
+              startHour: startStartHour,
+              startMin: startStartMin,
+              endHour: parseInt(startData.endHour) + 24,
+              endMin: parseInt(startData.endMin),
+              shiftCodeData: startData
+            }
+            startMinute = this.computeDayMinute(JSON.stringify(obj))
+          }
+          console.log('第一天请假时间分钟数：' + startMinute)
+          personMinute += startMinute
+        } else {
+          //不跨天
+          if (!this.ifOverDay(JSON.stringify(startData))) {
+            if (this.compareTime(personHour2, personMin2, startData.startHour, startData.startMin) < 0 || this.compareTime(personHour1, personMin1, startData.endHour, startData.endMin) > 0) {
+              startMinute = 0
+              this.errorData.errorMsg = ('请假时长为0')
+              this.errorData.ifError = true
+            } else {
+              if (this.compareTime(personHour2, personMin2, startData.endHour, startData.endMin) > 0) {
+                personHour2 = startData.endHour
+                personMin2 = startData.endMin
+              }
+              if (this.compareTime(personHour1, personMin1, startData.startHour, startData.startMin) < 0) {
+                personHour1 = startData.startHour
+                personMin1 = startData.startMin
+              }
               let obj = {
                 startHour: personHour1,
                 startMin: personMin1,
                 endHour: personHour2,
                 endMin: personMin2,
-                shiftCodeData: this.shiftCodeData
+                shiftCodeData: startData
               }
-              personConMinute = this.computeDayMinute(JSON.stringify(obj))
-            }else{
-              personConMinute = 0;
-            }
-            console.log('请假当天实际分钟数：' + personConMinute)
-            personMinute = personConMinute
-          }
-        } else {
-          console.log("常白班请假已跨天")
-          this.holidayTable.forEach((value) => {
-            if (this.errorData.ifError !== true) {
-              //每日请假分钟数
-              let personConMinute;
-              if (value.holDay === getDateTime(1, startDate)){
-                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
-                  if (this.compareTime(startHour, startMin, personHour1, personMin1) > 0) {
-                    personHour1 = startHour
-                    personMin1 = startMin
-                  }
-                  if(this.compareTime(this.shiftCodeData.endHour,this.shiftCodeData.endMin,personHour1,personMin1)>0){
-                    let obj = {
-                      startHour: personHour1,
-                      startMin: personMin1,
-                      endHour: this.shiftCodeData.endHour,
-                      endMin: this.shiftCodeData.endMin,
-                      shiftCodeData: this.shiftCodeData
-                    }
-                    personConMinute = this.computeDayMinute(JSON.stringify(obj));
-                  }else{
-                    personConMinute = 0;
-                  }
-                }else{
-                  personConMinute = 0;
-                }
-              } else if (value.holDay === getDateTime(1, endDate)) {
-                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
-                  if (this.compareTime(personHour2, personMin2, endHour, endMin) > 0) {
-                    personHour2 = endHour
-                    personMin2 = endMin
-                  }
-                  if(this.compareTime(personHour2,personMin2,this.shiftCodeData.startHour,this.shiftCodeData.startMin)>0){
-                    let obj = {
-                      startHour: this.shiftCodeData.startHour,
-                      startMin: this.shiftCodeData.startMin,
-                      endHour: personHour2,
-                      endMin: personMin2,
-                      shiftCodeData: this.shiftCodeData
-                    }
-                    personConMinute = this.computeDayMinute(JSON.stringify(obj));
-                  }else{
-                    personConMinute = 0;
-                  }
-                }else{
-                  personConMinute = 0;
-                }
-              } else {
-                if(value.dateType==="1"||this.form.isContainHoliday==='Y'){
-                  personConMinute = workMinuteDay;
-                }else{
-                  personConMinute =0;
-                }
-              }
-              personMinute += personConMinute;
-            }
-          })
-        }
-        if (personMinute % leastMinute !== 0 || personMinute===0) {
-          this.errorData.ifError = true
-          this.errorData.errorMsg = "请假失败，请假时长不满足要求";
-        }else{
-          conDay =  parseInt(personMinute) / parseInt(oneTurnMinute) * 100 / 100
-        }
-      } else {
-        //倒班计算
-        //请假前一天与倒数第二天时间
-        let firstDate = new Date((startDate.getTime() - 24 * 3600 * 1000))
-        let lastDate = new Date((endDate.getTime() - 24 * 3600 * 1000))
-        //请假前一天，倒数第二天差值数据,第一天，最后一天班次数据
-        let firstData = null, lastData = null, startData = null, endData = null
-        let firstMinute = 0, lastMinute = 0, startMinute = 0, endMinute = 0
-        //最小请假分钟数
-        let leastMinute = 0
-        this.shiftCodeData.forEach((value) => {
-          //工作开始，持续，结束时分
-          let startHour = parseInt(value.startHour)
-          let startMin = parseInt(value.startMin)
-          let conHour = parseInt(value.conHour)
-          let conMin = parseInt(value.conMin)
-          let endHour = parseInt(value.endHour)
-          let endMin = parseInt(value.endMin)
-          let conMinute = conHour * 60 + conMin
-          if(conMinute!==0){
-            if (value.createDate === getDateTime(1, startDate)) {
-              startData = value
-            } else if (value.createDate === getDateTime(1, endDate)) {
-              endData = value
-            } else if (value.createDate === getDateTime(1, firstDate)) {
-              if (this.ifOverDay(JSON.stringify(value))) {
-                firstData = value
-              }
-            } else if (value.createDate === getDateTime(1, lastDate)) {
-              personMinute += conMinute;
-              conDay +=1;
-              if (this.ifOverDay(JSON.stringify(value))) {
-                lastData = value
-              }
-            } else {
-              personMinute += conMinute
-              conDay +=1;
-            }
-          }
-        })
-        //前一天请假时间计算
-        if(firstData!=null){
-          let firstStartHour,firstStartMin
-          if(this.compareTime(personHour1,personMin1,firstData.endHour,firstData.endMin)>0){
-            firstStartHour = firstData.endHour;
-            firstStartMin = firstData.endMin;
-          }else{
-            firstStartHour = personHour1;
-            firstStartMin = personMin1
-          }
-          let obj = {
-            startHour:parseInt(firstStartHour)+24,
-            startMin:firstStartMin,
-            endHour:parseInt(firstData.endHour)+24,
-            endMin:firstData.endMin,
-            shiftCodeData: firstData
-          }
-          firstMinute = this.computeDayMinute(JSON.stringify(obj))
-          console.log('请假前一天请假时间分钟数：'+firstMinute)
-          personMinute +=firstMinute;
-          leastMinute = (parseInt(firstData.conHour)*60+parseInt(firstData.conMin))*this.holidaySetting.minUnitTurns
-          if(firstMinute%leastMinute!==0){
-            this.errorData.ifError = true;
-            this.errorData.errorMsg=("前一天请假时间不合规范");
-            console.log('前一天请假时间不合规范')
-          }else{
-            let firstDay = firstMinute/(parseInt(firstData.conHour)*60+parseInt(firstData.conMin));
-            conDay += firstDay
-            console.log('前一天请假时间符合规范')
-            console.log('前一天请假班次：'+firstDay)
-          }
-        }
-          //第一天请假时间计算
-          if (startData != null) {
-            //工作开始，持续，结束时分
-            let startHour = parseInt(startData.startHour)
-            let startMin = parseInt(startData.startMin)
-            let conHour = parseInt(startData.conHour)
-            let conMin = parseInt(startData.conMin)
-            let endHour = parseInt(startData.endHour)
-            let endMin = parseInt(startData.endMin)
-            //第一天开始小时分钟
-            let startStartHour, startStartMin
-            if (this.compareTime(startData.startHour, startData.startMin, personHour1, personMin1) > 0) {
-              startStartHour = startData.startHour
-              startStartMin = startData.startMin
-            } else {
-              startStartHour = personHour1
-              startStartMin = personMin1
-            }
-            //如果不止一天
-            if(this.conDays!==1){
-              //不跨天
-              if (!this.ifOverDay(JSON.stringify(startData))) {
-                if(this.compareTime(startStartHour,startStartMin,startData.endHour,startData.endMin)>=0){
-                  startMinute = 0;
-                }else{
-                  let obj = {
-                    startHour: startStartHour,
-                    startMin: startStartMin,
-                    endHour: startData.endHour,
-                    endMin: startData.endMin,
-                    shiftCodeData: startData
-                  }
-                  startMinute = this.computeDayMinute(JSON.stringify(obj))
-                }
-              } else {
-                let obj = {
-                  startHour: startStartHour,
-                  startMin: startStartMin,
-                  endHour: parseInt(startData.endHour) + 24,
-                  endMin: parseInt(startData.endMin),
-                  shiftCodeData: startData
-                }
-                startMinute = this.computeDayMinute(JSON.stringify(obj))
-              }
+              startMinute = this.computeDayMinute(JSON.stringify(obj))
               console.log('第一天请假时间分钟数：' + startMinute)
               personMinute += startMinute
-            }else{
-              //不跨天
-              if (!this.ifOverDay(JSON.stringify(startData))) {
-                if(this.compareTime(personHour2,personMin2,startData.startHour,startData.startMin)<0||this.compareTime(personHour1,personMin1,startData.endHour,startData.endMin)>0){
-                  startMinute = 0;
-                  this.errorData.errorMsg=("请假时长为0");
-                  this.errorData.ifError = true;
-                }else{
-                  if(this.compareTime(personHour2,personMin2,startData.endHour,startData.endMin)>0){
-                    personHour2 = startData.endHour;
-                    personMin2 = startData.endMin;
-                  }
-                  if(this.compareTime(personHour1,personMin1,startData.startHour,startData.startMin)<0){
-                    personHour1 = startData.startHour;
-                    personMin1 = startData.startMin;
-                  }
-                  let obj = {
-                    startHour: personHour1,
-                    startMin: personMin1,
-                    endHour: personHour2,
-                    endMin: personMin2,
-                    shiftCodeData: startData
-                  }
-                  startMinute = this.computeDayMinute(JSON.stringify(obj))
-                  console.log('第一天请假时间分钟数：'+startMinute);
-                  personMinute += startMinute
-                }
-              }else{
-                //跨天
-                if(this.compareTime(personHour2,personMin2,startData.startHour,startData.startMin)<0){
-                  startMinute = 0;
-                  this.errorData.ifError = true;
-                }else{
-                  if(this.compareTime(personHour1,personMin1,startData.startHour,startData.startMin)<0){
-                    personHour1 = startData.startHour;
-                    personMin1 = startData.startMin;
-                  }
-                  let obj = {
-                    startHour: personHour1,
-                    startMin: personMin1,
-                    endHour: personHour2,
-                    endMin: personMin2,
-                    shiftCodeData: startData
-                  }
-                  startMinute = this.computeDayMinute(JSON.stringify(obj))
-                  console.log('第一天请假时间分钟数：'+startMinute);
-                  personMinute += startMinute
-                }
-
-              }
             }
-            leastMinute = (parseInt(startData.conHour) * 60 + parseInt(startData.conMin)) * this.holidaySetting.minUnitTurns
-            if (startMinute % leastMinute !== 0) {
+          } else {
+            //跨天
+            if (this.compareTime(personHour2, personMin2, startData.startHour, startData.startMin) < 0) {
+              startMinute = 0
               this.errorData.ifError = true
-              this.errorData.errorMsg = '第一天请假时间不合规范';
-              console.log('第一天请假时间不合规范')
             } else {
-              let startDay =startMinute/(parseInt(startData.conHour) * 60 + parseInt(startData.conMin))
-              conDay += startDay
-              console.log('第一天请假时间符合规范')
-              console.log('第一天请假班次：'+startDay)
-            }
-          }
-          //最后一天请假时间计算
-          if (endData != null) {
-            if (this.conDays === 2&&this.ifOverDay(JSON.stringify(startData))) {
-              lastData = startData;
-            }
-            //工作开始，持续，结束时分
-            let startHour = parseInt(endData.startHour)
-            let startMin = parseInt(endData.startMin)
-            let conHour = parseInt(endData.conHour)
-            let conMin = parseInt(endData.conMin)
-            let endHour = parseInt(endData.endHour)
-            let endMin = parseInt(endData.endMin)
-            //最后一天开始结束小时分钟
-            let endStartHour, endStartMin, endEndHour, endEndMin
-            if (this.compareTime(personHour2, personMin2, endData.startHour, endData.startMin) > 0) {
-              endStartHour = endData.startHour
-              endStartMin = endData.startMin
-              if(this.compareTime(personHour2,personMin2,endData.endHour,endData.endMin)>0&&!this.ifOverDay(JSON.stringify(endData))){
-                endEndHour = endData.endHour;
-                endEndMin = endData.endMin;
-              }else{
-                endEndHour = personHour2
-                endEndMin = personMin2
+              if (this.compareTime(personHour1, personMin1, startData.startHour, startData.startMin) < 0) {
+                personHour1 = startData.startHour
+                personMin1 = startData.startMin
               }
               let obj = {
-                startHour: endStartHour,
-                startMin: endStartMin,
-                endHour: endEndHour,
-                endMin: endEndMin,
-                shiftCodeData: endData
+                startHour: personHour1,
+                startMin: personMin1,
+                endHour: personHour2,
+                endMin: personMin2,
+                shiftCodeData: startData
               }
-              endMinute = this.computeDayMinute(JSON.stringify(obj))
-              console.log('最后一天请假分钟为：' + endMinute)
-              personMinute += endMinute
-              leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
-              if (endMinute % leastMinute !== 0) {
-                this.errorData.ifError = true
-                this.errorData.errorMsg = '最后一天请假时间不合规范';
-                console.log('最后一天请假时间不合规范')
-              } else {
-                let endDay =endMinute/(parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
-                conDay += endDay
-                console.log('最后一天请假时间符合规范')
-                console.log('最后一天请假班次：'+endDay)
-              }
-            } else if (lastData != null && this.compareTime(personHour2, personMin2, lastData.endHour, lastData.endMin) <= 0) {
-
-              endStartHour = personHour2
-              endStartMin = personMin2
-              endEndHour = lastData.endHour
-              endEndMin = lastData.endMin
-              let obj = {
-                startHour: parseInt(endStartHour) + 24,
-                startMin: endStartMin,
-                endHour: parseInt(endEndHour) + 24,
-                endMin: endEndMin,
-                shiftCodeData: lastData
-              }
-              //倒数第二天实际请假差值时间
-              lastMinute = this.computeDayMinute(JSON.stringify(obj))
-              let realLastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin))-lastMinute
-              console.log('倒数第二天请假分钟为：' + realLastMinute)
-              personMinute -= lastMinute
-              leastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) * this.holidaySetting.minUnitTurns
-              if (realLastMinute % leastMinute !== 0) {
-                this.errorData.ifError = true
-                this.errorData.errorMsg = '倒数第二天请假时间不合规范';
-                console.log('倒数第二天请假时间不合规范')
-              } else {
-                let lastDay = lastMinute/(parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin))
-                conDay -= lastDay
-                console.log('倒数第二天请假时间符合规范')
-                console.log('倒数第二天请假班次：'+(1-lastDay))
-              }
-            } else {
-              endMinute = 0
-              console.log('最后一天请假分钟为：' + endMinute)
-              leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
-              if (endMinute % leastMinute !== 0) {
-                this.errorData.ifError = true
-                this.errorData.errorMsg = '最后一天请假时间不合规范';
-                console.log('最后一天请假时间不合规范')
-              } else {
-                let endDay =endMinute/(parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
-                conDay += endDay
-                console.log('最后一天请假时间符合规范')
-                console.log('最后一天请假班次：'+endDay)
-              }
+              startMinute = this.computeDayMinute(JSON.stringify(obj))
+              console.log('第一天请假时间分钟数：' + startMinute)
+              personMinute += startMinute
             }
           }
+        }
+        if (startData.description === 'N') {
+          leastMinute = this.holidaySetting.minUnitDay
+        } else {
+          leastMinute = (parseInt(startData.conHour) * 60 + parseInt(startData.conMin)) * this.holidaySetting.minUnitTurns
+        }
+        let startDay = startMinute / (parseInt(startData.conHour) * 60 + parseInt(startData.conMin))
+        conDay += startDay
+        this.computeData(startData.createDate, startMinute, startDay, 1)
+        if (startMinute % leastMinute !== 0) {
+          this.errorData.ifError = true
+          this.errorData.errorMsg = '第一天请假时间不合规范'
+          console.log('第一天请假时间不合规范')
+        } else {
+          console.log('第一天请假时间符合规范')
+          console.log('第一天请假班次：' + startDay)
+        }
+      }
+      if (lastData !== null) {
+        if (this.compareTime(personHour2, personMin2, lastData.endHour, lastData.endMin) < 0) {
+          let lastStartHour = personHour2
+          let lastStartMin = personMin2
+          let lastEndHour = lastData.endHour
+          let lastEndMin = lastData.endMin
+          let obj = {
+            startHour: parseInt(lastStartHour) + 24,
+            startMin: lastStartMin,
+            endHour: parseInt(lastEndHour) + 24,
+            endMin: lastEndMin,
+            shiftCodeData: lastData
+          }
+          //倒数第二天实际请假差值时间
+          lastMinute = this.computeDayMinute(JSON.stringify(obj))
+          let realLastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) - lastMinute
+          console.log('倒数第二天请假分钟为：' + realLastMinute)
+          personMinute -= lastMinute
+          if (lastData.description === 'N') {
+            leastMinute = this.holidaySetting.minUnitDay
+          } else {
+            leastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) * this.holidaySetting.minUnitTurns
+          }
+          let lastDay = lastMinute / (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin))
+          conDay -= lastDay
+          this.computeData(lastData.createDate, (0 - lastMinute), (0 - lastDay), 1)
+          if (realLastMinute % leastMinute !== 0) {
+            this.errorData.ifError = true
+            this.errorData.errorMsg = '倒数第二天请假时间不合规范'
+            console.log('倒数第二天请假时间不合规范')
+          } else {
+            console.log('倒数第二天请假时间符合规范')
+            console.log('倒数第二天请假班次：' + (1 - lastDay))
+          }
+        }
+      }
 
+      //最后一天请假时间计算
+      if (endData !== null) {
+        if (this.conDays === 2 && this.ifOverDay(JSON.stringify(startData))) {
+          lastData = startData
+        }
+        //工作开始，持续，结束时分
+        let startHour = parseInt(endData.startHour)
+        let startMin = parseInt(endData.startMin)
+        let conHour = parseInt(endData.conHour)
+        let conMin = parseInt(endData.conMin)
+        let endHour = parseInt(endData.endHour)
+        let endMin = parseInt(endData.endMin)
+        //最后一天开始结束小时分钟
+        let endStartHour, endStartMin, endEndHour, endEndMin
+        if ((this.compareTime(personHour2, personMin2, endData.startHour, endData.startMin) > 0) && (!lastData || this.compareTime(personHour2, personMin2, lastData.endHour, lastData.endMin) > 0)) {
+          endStartHour = endData.startHour
+          endStartMin = endData.startMin
+          if (this.compareTime(personHour2, personMin2, endData.endHour, endData.endMin) > 0 && !this.ifOverDay(JSON.stringify(endData))) {
+            endEndHour = endData.endHour
+            endEndMin = endData.endMin
+          } else {
+            endEndHour = personHour2
+            endEndMin = personMin2
+          }
+          let obj = {
+            startHour: endStartHour,
+            startMin: endStartMin,
+            endHour: endEndHour,
+            endMin: endEndMin,
+            shiftCodeData: endData
+          }
+          endMinute = this.computeDayMinute(JSON.stringify(obj))
+          console.log('最后一天请假分钟为：' + endMinute)
+          personMinute += endMinute
+          if (endData.description === 'N') {
+            leastMinute = this.holidaySetting.minUnitDay
+          } else {
+            leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
+          }
+          let endDay = endMinute / (parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
+          conDay += endDay
+          this.computeData(endData.createDate, endMinute, endDay, 1)
+          if (endMinute % leastMinute !== 0) {
+            this.errorData.ifError = true
+            this.errorData.errorMsg = '最后一天请假时间不合规范'
+            console.log('最后一天请假时间不合规范')
+          } else {
+            console.log('最后一天请假时间符合规范')
+            console.log('最后一天请假班次：' + endDay)
+          }
+        } else {
+          endMinute = 0
+          console.log('最后一天请假分钟为：' + endMinute)
+          if (endData.description === 'N') {
+            leastMinute = this.holidaySetting.minUnitDay
+          } else {
+            leastMinute = (parseInt(endData.conHour) * 60 + parseInt(endData.conMin)) * this.holidaySetting.minUnitTurns
+          }
+          let endDay = endMinute / (parseInt(endData.conHour) * 60 + parseInt(endData.conMin))
+          conDay += endDay
+          this.computeData(endData.createDate, endMinute, endDay, 1)
+          if (endMinute % leastMinute !== 0) {
+            this.errorData.ifError = true
+            this.errorData.errorMsg = '最后一天请假时间不合规范'
+            console.log('最后一天请假时间不合规范')
+          } else {
+            console.log('最后一天请假时间符合规范')
+            console.log('最后一天请假班次：' + endDay)
+          }
+        }
       }
       console.log('员工请假总分钟数：' + personMinute)
       console.log('员工请假总天/班次数：' + conDay)
-      if (this.errorData.ifError === false&&personMinute!==0) {
-        console.log('请假时间符合要求')
-        this.form.leaveShifts = conDay
-        let param = {
-          year: this.form.startDate.getFullYear(),
-          empNo: this.form.empNo,
-          compId: this.form.compId,
-          companyid: this.form.compId,
+      if (!this.ifPreData) {
+        console.log('统计数据为：' + JSON.stringify(this.statisticsData))
+        if (this.errorData.ifError === false && personMinute !== 0) {
+          console.log('请假时间符合要求')
+          this.form.leaveShifts = conDay
+          this.form.leaveHours = personMinute / 60
+          //提交前假别数据处理
+          this.preSubmit()
+          return true
+        } else {
+          console.log('请假时间不符合要求')
+          this.$modal.msgError(this.errorData.errorMsg)
+          this.form.leaveShifts = null
+          return false
         }
-        if(this.form.leaTypeId==='07'){
-          homeLeaveHoliday(param).then(response => {
-            this.homeLeaveHoliday = response
-            alert(JSON.stringify(response))
-          })
-        }else if(this.form.leaTypeId==='09'){
-          yearHoliday(param).then(response => {
-            this.yearHoliday = response.data
-            //总可休天数
-            let preYearDays = this.yearHoliday.preYearDays
-            this.form.remainingDays = preYearDays;
-            //已休天数
-            let restDays = this.yearHoliday.restDays;
-            this.form.yearDays = this.yearHoliday.restDays;
-            if((restDays+this.form.leaveShifts)>preYearDays){
-              this.$modal.msgError("年休假剩余可休时长不足！")
-            }
-          })
-        }else {
-          this.$modal.msgSuccess('请假成功')
-        }
-        return true
       } else {
-        console.log('请假时间不符合要求')
-        this.$modal.msgError(this.errorData.errorMsg);
-        this.form.leaveShifts = null;
-        return false
+        console.log('原请假统计数据为' + JSON.stringify(this.preData))
+        this.ifPreData = false
+        if (this.ifDelete) {
+          this.saveMonthData(-1)
+          this.ifDelete = false
+        }
+      }
+    },
+    //请假时间计算完毕后处理
+    preSubmit() {
+      this.disposePreData()
+      let param = {
+        empNo: this.form.empNo,
+        compId: this.form.compId,
+        companyId: this.form.compId
+      }
+      if (this.form.leaTypeId === '07') {
+        //探亲假情况
+        homeLeaveHoliday(param).then(response => {
+          this.homeLeaveHoliday = response.data
+          this.disposeYearHomeHoliday(1)
+        })
+      } else if (this.form.leaTypeId === '09') {
+        //年休假情况
+        yearHoliday(param).then(response => {
+          this.yearHoliday = response.data
+          this.disposeYearHomeHoliday(2)
+        })
+      } else {
+        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
+        this.form.remainingDays = null
+        this.form.yearDays = null
+        this.submitForm()
+      }
+    },
+    //年休假探亲假数据处理
+    disposeYearHomeHoliday(e) {
+      //假足够
+      let enough = true
+      //假别年数据条数足够
+      let number = 0
+      if (e === 1) {
+        //探亲假
+        for (let i = 0; i < this.homeLeaveHoliday.length; i++) {
+          console.log(this.homeLeaveHoliday[i].year + '探亲假共有' + this.homeLeaveHoliday[i].dueHomeDays + '天已休' + this.homeLeaveHoliday[i].restHomeDays + '天')
+          if (parseInt(this.homeLeaveHoliday[i].year) === new Date().getFullYear()) {
+            this.form.remainingDays = this.homeLeaveHoliday[i].preHomeDays
+            this.form.yearDays = this.homeLeaveHoliday[i].restHomeDays
+          }
+          for (let j = 0; j < this.statisticsData.yearData.length; j++) {
+            if (this.homeLeaveHoliday[i].year === this.statisticsData.yearData[j].year) {
+              if (this.statisticsData.yearData[j].shifts > this.homeLeaveHoliday[i].preHomeDays) {
+                enough = false
+                break
+              } else {
+                this.statisticsData.yearData[j].restHomeDays = this.statisticsData.yearData[j].shifts
+                this.statisticsData.yearData[j].preHomeDays = this.statisticsData.yearData[j].shifts
+                this.statisticsData.yearData[j].restHomeNums += 1
+                if (!this.form.id) {
+                  if (parseInt(this.statisticsData.yearData[j].year) === new Date().getFullYear()) {
+                    this.form.remainingDays -= this.statisticsData.yearData[j].shifts
+                    this.form.yearDays += this.statisticsData.yearData[j].shifts
+                  }
+                }
+              }
+              number++
+            }
+          }
+        }
+      } else {
+        //年休假
+        for (let i = 0; i < this.yearHoliday.length; i++) {
+          console.log(this.yearHoliday[i].year + '年休假共有' + this.yearHoliday[i].preYearDays + '天已休' + this.yearHoliday[i].restDays + '天')
+          if (parseInt(this.yearHoliday[i].year) === new Date().getFullYear()) {
+            this.form.remainingDays = this.yearHoliday[i].preYearDays - this.yearHoliday[i].restDays
+            this.form.yearDays = this.yearHoliday[i].restDays
+          }
+          for (let j = 0; j < this.statisticsData.yearData.length; j++) {
+            if (this.yearHoliday[i].year === this.statisticsData.yearData[j].year) {
+              if (this.yearHoliday[i].restDays + this.statisticsData.yearData[j].shifts > this.yearHoliday[i].preYearDays) {
+                enough = false
+                break
+              } else {
+                this.statisticsData.yearData[j].restDays = this.statisticsData.yearData[j].shifts
+                if (parseInt(this.statisticsData.yearData[j].year) === new Date().getFullYear()) {
+                  if (!this.form.id) {
+                    this.form.remainingDays -= this.statisticsData.yearData[j].shifts
+                    this.form.yearDays += this.statisticsData.yearData[j].shifts
+                  }
+                }
+              }
+              number++
+            }
+          }
+        }
+      }
+      this.holidayYeaHomeData.enough = enough
+      this.holidayYeaHomeData.number = number
+      if (e === 1) {
+        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
+        if (!this.holidayYeaHomeData.enough) {
+          this.$modal.msgError('探亲假天数不足')
+        } else if (this.statisticsData.yearData.length !== this.holidayYeaHomeData.number) {
+          this.$modal.msgError('探亲假数据缺失，无法请假')
+        } else {
+          this.statisticsData.yearData.forEach((value) => {
+            let param = {
+              empNo: this.form.empNo,
+              year: value.year,
+              restHomeDays: value.restHomeDays,
+              preHomeDays: value.preHomeDays,
+              restHomeNums: value.restHomeNums
+            }
+            if (this.form.id) {
+              if (parseInt(value.year) === new Date().getFullYear()) {
+                this.form.remainingDays -= value.shifts
+                this.form.yearDays += value.shifts
+              }
+            }
+            // 修改探亲假数据
+            updateHolidayByEmp(param).then(response => {
+            })
+          })
+          this.submitForm()
+        }
+      } else {
+        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
+        if (!this.holidayYeaHomeData.enough) {
+          this.$modal.msgError('年休假天数不足')
+        } else if (this.statisticsData.yearData.length !== this.holidayYeaHomeData.number) {
+          this.$modal.msgError('年休假数据缺失，无法请假')
+        } else {
+          this.statisticsData.yearData.forEach((value) => {
+            let param = {
+              empNo: this.form.empNo,
+              year: value.year,
+              restDays: value.restDays
+            }
+            if (this.form.id) {
+              if (parseInt(value.year) === new Date().getFullYear()) {
+                this.form.remainingDays -= value.restDays
+                this.form.yearDays += value.restDays
+              }
+            }
+            //修改年休假数据
+            updateYearHolidayByEmp(param).then(response => {
+            })
+          })
+          this.submitForm()
+        }
+      }
+    },
+    //原数据计算处理
+    disposePreData() {
+      if (this.form.id) {
+        this.preData.yearData.forEach((value) => {
+          this.computeData(value.year, value.minutes, value.shifts, -1)
+        })
+        this.preData.monthData.forEach((value) => {
+          this.computeData(value.yearMonth, value.minutes, value.shifts, -2)
+        })
       }
     },
     //计算某班次是否跨天
-    ifOverDay(json){
+    ifOverDay(json) {
       let obj = {}
       //参数对象转化
       if (json != null) {
         obj = JSON.parse(json)
       }
-      let restMin = 0;
-      for(let i=1; i<=obj.restCount; i++ ){
-        if(i===1){
+      let restMin = 0
+      for (let i = 1; i <= obj.restCount; i++) {
+        if (i === 1) {
           restMin += parseInt(obj.restConMin)
-        }else{
-          restMin += parseInt(obj['restConMin'+i])
+        } else {
+          restMin += parseInt(obj['restConMin' + i])
         }
       }
-      let hour = (parseInt(obj.conHour)*60+parseInt(obj.conMin)+restMin)/60
-      return (parseInt(obj.endHour)<parseInt(obj.startHour))||(hour - 24 >= 0)
+      let hour = (parseInt(obj.conHour) * 60 + parseInt(obj.conMin) + restMin) / 60
+      return (parseInt(obj.endHour) < parseInt(obj.startHour)) || (hour - 24 >= 0)
     },
     //计算某天请假时间
     computeDayMinute(json) {
@@ -1044,7 +1154,7 @@ export default {
       if (json != null) {
         obj = JSON.parse(json)
       }
-      if(this.compareTime(obj.shiftCodeData.conHour,obj.shiftCodeData.conMin,0,0)!==0){
+      if (this.compareTime(obj.shiftCodeData.conHour, obj.shiftCodeData.conMin, 0, 0) !== 0) {
         //跨天数据转化
         if (this.ifOverDay(JSON.stringify(obj.shiftCodeData))) {
           obj.shiftCodeData.endHour = parseInt(obj.shiftCodeData.endHour) + 24
@@ -1120,8 +1230,147 @@ export default {
           }
         }
         return personConMinute
-      }else{
-        return 0;
+      } else {
+        return 0
+      }
+    },
+    //工时班次总年月统计方法
+    computeData(date, minutes, shifts, e) {
+      //年数据处理
+      const year = date.substring(0, 4)
+      let data
+      if (this.ifPreData) {
+        data = this.preData
+      } else {
+        data = this.statisticsData
+      }
+      let existYear = false
+      let yearIndex = data.yearData.length
+      for (let i = 0; i < yearIndex; i++) {
+        if (data.yearData[i].year === year) {
+          existYear = true
+          yearIndex = i
+          break
+        }
+      }
+      if (!existYear) {
+        data.yearData.push({
+          year: year,
+          minutes: 0,
+          shifts: 0,
+          restDays: 0,
+          restHomeDays: 0,
+          preHomeDays: 0,
+          restHomeNums: 0
+        })
+      }
+      //月数据处理
+      let yearMonth
+      let month
+      let existMonth
+      let monthIndex
+      if (e !== -1) {
+        yearMonth = date.substring(0, 7)
+        month = date.substring(5, 7)
+        existMonth = false
+        monthIndex = data.monthData.length
+        for (let i = 0; i < monthIndex; i++) {
+          if (data.monthData[i].yearMonth === yearMonth) {
+            existMonth = true
+            monthIndex = i
+            break
+          }
+        }
+        if (!existMonth) {
+          data.monthData.push({
+            yearMonth: yearMonth,
+            year: year,
+            month: month,
+            minutes: 0,
+            shifts: 0
+          })
+        }
+      }
+      if (e > 0) {
+        data.minutes += parseFloat(minutes)
+        data.shifts += parseFloat(shifts)
+        data.yearData[yearIndex].minutes += parseFloat(minutes)
+        data.yearData[yearIndex].shifts += parseFloat(shifts)
+        data.monthData[monthIndex].minutes += parseFloat(minutes)
+        data.monthData[monthIndex].shifts += parseFloat(shifts)
+      } else if (e === -1) {
+        data.minutes -= parseFloat(minutes)
+        data.shifts -= parseFloat(shifts)
+        data.yearData[yearIndex].minutes -= parseFloat(minutes)
+        data.yearData[yearIndex].shifts -= parseFloat(shifts)
+        data.yearData[yearIndex].restDays -= parseFloat(shifts)
+        data.yearData[yearIndex].restHomeDays -= parseFloat(shifts)
+        data.yearData[yearIndex].preHomeDays -= parseFloat(shifts)
+        data.yearData[yearIndex].restHomeNums -= 1
+      } else if (e === -2) {
+        data.monthData[monthIndex].minutes -= parseFloat(minutes)
+        data.monthData[monthIndex].shifts -= parseFloat(shifts)
+      }
+    },
+    /** 保存月度数据(加班汇总表新增) */
+    saveMonthData(e) {
+      if (e > 0) {
+        this.statisticsData.monthData.forEach((value) => {
+          value.holOveType = this.form.leaTypeId
+          value.isHolType = 1
+          value.dutyNum = value.shifts
+          value.hourNum = value.minutes / 60
+          value.empNo = this.form.empNo
+          value.compId = this.form.compId
+          value.dataFrom = 0
+        })
+        addOverTime(this.statisticsData.monthData).then(response => {
+          console.log('加班汇总数据更新成功')
+        })
+      } else {
+        this.preData.monthData.forEach((value) => {
+          value.holOveType = this.form.leaTypeId
+          value.isHolType = 1
+          value.dutyNum = 0 - value.shifts
+          value.hourNum = 0 - value.minutes / 60
+          value.empNo = this.form.empNo
+          value.compId = this.form.compId
+          value.dataFrom = 0
+        })
+        delPersonHoliday(this.deletId).then(response => {
+          this.$modal.msgSuccess('删除成功')
+          this.getList()
+        })
+        addOverTime(this.preData.monthData).then(response => {
+          console.log('加班汇总数据回退成功')
+        })
+        if (this.form.leaTypeId === '07') {
+          this.preData.yearData.forEach((value) => {
+            let param = {
+              empNo: this.form.empNo,
+              year: value.year,
+              restHomeDays: 0 - value.shifts,
+              preHomeDays: 0 - value.shifts,
+              restHomeNums: -1
+            }
+            // 修改探亲假数据
+            updateHolidayByEmp(param).then(response => {
+              console.log('探亲假数据回退成功')
+            })
+          })
+        } else if (this.form.leaTypeId === '09') {
+          this.preData.yearData.forEach((value) => {
+            let param = {
+              empNo: this.form.empNo,
+              year: value.year,
+              restDays: 0 - value.shifts
+            }
+            //修改年休假数据
+            updateYearHolidayByEmp(param).then(response => {
+              console.log('年休假数据回退成功')
+            })
+          })
+        }
       }
     },
     /** 时间大小比较 */
@@ -1130,7 +1379,6 @@ export default {
       var time2 = parseInt(hour2) * 60 + parseInt(min2)
       return time1 - time2
     },
-
     /** 初始化数据 */
     initData() {
       this.user.empNo = this.$store.state.user.name
@@ -1142,16 +1390,10 @@ export default {
     setForm(e) {
       this.form.creator = this.user.empName
       this.form.creatorId = this.user.empNo
-      this.form.createDate = getDateTime(1)
+      this.form.createDate = getDateTime(0)
       if (e === 0) {
-        this.form.status = '01'
+        this.form.status = '0'
       }
-    },
-    /** 查询出勤字典 */
-    getDisc() {
-      getAttendenceOptions(this.attendenceOptionType).then(response => {
-        this.attendenceOptions = response.data
-      })
     },
     /** 查询公司列表 */
     getCompanyList() {
@@ -1178,14 +1420,11 @@ export default {
         return true
       }
     },
-
     // 取消按钮
     cancel() {
       this.open = false
       this.reset()
     },
-
-
     // 表单重置
     reset() {
       this.form = {
@@ -1214,7 +1453,8 @@ export default {
         endDate: null,
         creator: null,
         creatorId: null,
-        createDate: null
+        createDate: null,
+        preShifts: 0
       }
       this.resetForm('form')
     },
@@ -1227,24 +1467,25 @@ export default {
     },
     //日期范围转换
     dateFormat(picker) {
-      if (picker != null && picker != '') {
+      if (picker != null && picker !== '') {
         this.queryParams.startDate = picker[0]
         this.queryParams.endDate = picker[1]
       }
     },
-
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
       this.queryParams.startDate = null
       this.queryParams.endDate = null
-      this.handleQuery(0)
+      this.personHolidayList = []
+      this.total = 0
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.single = selection.length !== 1
       this.multiple = !selection.length
+      this.selectionList = selection
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -1255,11 +1496,20 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs['form'].validate(valid => {
-        if (valid) {
-          this.personHolidayProcess();
-        }
-      })
+      this.saveMonthData(1)
+      if (this.form.id != null) {
+        updatePersonHoliday(this.form).then(response => {
+          this.$modal.msgSuccess('修改成功')
+          this.open = false
+          this.getList()
+        })
+      } else {
+        addPersonHoliday(this.form).then(response => {
+          this.$modal.msgSuccess('新增成功')
+          this.open = false
+          this.getList()
+        })
+      }
     },
     /** 详情按钮操作 */
     handleDetails(row) {
@@ -1267,7 +1517,7 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data
-        this.opencreate = true
+        this.openDetail = true
         this.title = '员工请假记录详情'
       })
     },
@@ -1277,19 +1527,48 @@ export default {
       const id = row.id || this.ids
       getPersonHoliday(id).then(response => {
         this.form = response.data
+        this.ifPreData = true
+        this.getLeaHoliday()
         this.open = true
         this.title = '修改员工请假记录'
       })
+      // 如果不是从我的流程或待办任务跳转，则带formid查询
+      // if (!(this.taskFlag === 'skip')) {
+      // 根据表单id获取是否有绑定启动流程
+      getTaskByFormId(id).then(res => {
+        if (res.data !== undefined) {
+          this.procData.procDefId = res.data.deployId
+          this.procData.procInsId = res.data.instanceId
+          this.procData.formData = this.form
+        }
+        this.open = true
+        this.title = '修改请假申请'
+      })
+      // }
     },
-    /** 删除按钮操作 */
+    /** 作废按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids
-      this.$modal.confirm('是否确认删除员工请假记录编号为"' + ids + '"的数据项？').then(function() {
-        return delPersonHoliday(ids)
-      }).then(() => {
-        this.getList()
-        this.$modal.msgSuccess('删除成功')
-      }).catch(() => {
+      this.loading = true
+      const id = row.id || this.ids
+      this.handleDeleteData(id)
+      // this.$modal.confirm('是否确认删除该数据项？').then(function() {
+      //   return this.handleDeleteData(ids)
+      // }).then(() => {
+      //   this.getList()
+      //   this.$modal.msgSuccess('删除成功')
+      // }).catch(() => {
+      // })
+    },
+    /** 作废数据处理 */
+    handleDeleteData(id) {
+      getPersonHoliday(id).then(response => {
+        this.reset()
+        this.ifPreData = true
+        this.ifDelete = true
+        this.deletId = id
+        this.form = response.data
+        this.getLeaHoliday()
+        // delPersonHoliday(ids)
       })
     },
     /** 工号点击事件 */
@@ -1302,22 +1581,133 @@ export default {
         this.form.empNo = empNo
         this.form.empName = userName
         this.form.compId = compId
-        queryNewPostNameAndChangeDetail(this.form).then(res => {
-          this.form.postname = res.data.list1[0].newPostName
-        })
       } else {
-        this.queryParams.empNo = empId
-        this.getList()
+        this.queryParams.empNo = empNo
       }
+    },
+    /** 查询出勤字典 */
+    getDisc() {
+      getAttendenceOptions(this.attendenceOptionType).then(response => {
+        this.attendenceOptions = response.data
+      })
+    },
+    /** 送审 */
+    handleSend(row) {
+      this.reset()
+      const id = row.id || this.ids
+      getPersonHoliday(id).then(response => {
+        this.form = response.data
+        this.form.compId = this.queryParams.compId
+      }).then(() => {
+        const variables = this.form
+        // 设定流程变量参数 -- 天数
+        variables.days = this.form.leaveShifts
+        // 启动流程并将表单数据加入流程变量
+        startProcessOverride(JSON.stringify(variables)).then(res => {
+          if (res.code === 200) {
+            this.$modal.msgSuccess(res.msg)
+            this.$tab.closeOpenPage({
+              path: '/work/own'
+            })
+            this.form.status = res.data
+            // 流程启动更新状态为 1 => 进行中
+            updatePersonHoliday(this.form).then(res1 => {
+              this.getList()
+            })
+          }
+        })
+      })
+    },
+    /** 绑定流程 */
+    handleBindProcess() {
+      if (this.selectionList.length === 0) {
+        this.$modal.msgWarning('请选择表单数据！')
+      } else {
+        this.$refs.deployProcess.init()
+      }
+    },
+    /** 绑定流程子传父回调函数 */
+    bindProcess(val) {
+      const formList = []
+      const obj = {
+        formId: undefined,
+        deployId: undefined,
+        routerPath: undefined
+      }
+      // 只有未送审和被驳回的表单才能重新绑定流程
+      this.selectionList.forEach(item => {
+        if (item.status === '0' || item.status === '3') {
+          obj.formId = item.id
+          obj.deployId = val
+          obj.routerPath = this.$route.path
+          formList.push(obj)
+        }
+      })
+      alert(JSON.stringify(this.selectionList))
+      alert(JSON.stringify(formList))
+      /** 绑定表单流程 */
+      saveInstanceForm(formList).then(res => {
+        this.$modal.msgSuccess(res.msg)
+      })
+    },
+    /** 初始化流程参数 */
+    initTaskParam() {
+      // taskFlag === 'skip' 赋值
+      if (this.$route.query.taskFlag === 'skip') {
+        // 是否通过跳转进入页面
+        this.taskFlag = this.$route.query && this.$route.query.taskFlag
+        // 流程部署id
+        this.procData.procDefId = this.$route.query && this.$route.query.procDefId
+        // 流程实例id
+        this.procData.procInsId = this.$route.query && this.$route.query.procInsId
+        // 是否待办任务
+        this.procData.processed = this.$route.query && eval(this.$route.query.processed || false)
+        // 跳转过来直接打开dialog
+        this.openDialog()
+      }
+    },
+    /** 拒绝任务后回调方法 */
+    reject(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 3 => 拒绝
+      this.form.status = val.type
+      updatePersonHoliday(this.form).then(res1 => {
+        this.getList()
+      })
+    },
+    /** 审批通过且最后节点执行方法 */
+    complete(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 2 => 审批通过且流程结束
+      this.form.status = val.type
+      updatePersonHoliday(this.form).then(res1 => {
+        this.getList()
+      })
+    },
+    // 我的流程跳转至画面，自动打开dialog
+    openDialog() {
+      // 切换当前状态为审核状态，不允许修改数据
+      // 根据流程实例id查询form表单id
+      const params = { insId: this.procData.procInsId }
+      getFromByInsId(params).then(res => {
+        // 根据id查询form表单数据
+        getPersonHoliday(res.data.formId).then(res1 => {
+          this.form = res1.data
+          this.form.compId = this.queryParams.compId
+          this.procData.formData = this.form
+          this.openDetail = true
+          this.title = '查看流程详情'
+        })
+      })
     }
   }
 }
-
 </script>
-
 <style scoped>
 .inputInner {
-  width: 32%;
+  width: 41%;
 }
 
 </style>

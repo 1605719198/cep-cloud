@@ -203,6 +203,12 @@ public class SocialSecurityBasis extends BaseEntity {
     private String isNew;
 
     /**
+     * 是否定薪确认
+     */
+    @Excel(name = "是否定薪确认")
+    private String isCheck;
+
+    /**
      * 输入人
      */
     @Excel(name = "输入人")

@@ -180,12 +180,10 @@ export default {
   },
   methods: {
     clickRow(row) {
-
       this.$refs.table.toggleRowSelection(row);
       this.$emit("pop",row);
     },
     clickCodeRow(row) {
-
       this.$refs.table.toggleRowSelection(row);
       this.$emit("pop",row);
     },
