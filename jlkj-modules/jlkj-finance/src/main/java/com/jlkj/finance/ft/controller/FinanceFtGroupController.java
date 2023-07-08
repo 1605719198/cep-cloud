@@ -10,6 +10,7 @@ import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.ft.domain.FinanceFtGroup;
 import com.jlkj.finance.ft.service.IFinanceFtGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,8 @@ public class FinanceFtGroupController extends BaseController
 
     /**
      * 查询资产大类基本资料列表
+     * @param financeFtGroup 查询条件
+     * @return 分页数据
      */
     @RequiresPermissions("finance:group:list")
     @GetMapping("/list")
@@ -69,7 +72,7 @@ public class FinanceFtGroupController extends BaseController
     @RequiresPermissions("finance:group:add")
     @Log(title = "资产大类基本资料", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody FinanceFtGroup financeFtGroup)
+    public AjaxResult add(@Validated @RequestBody FinanceFtGroup financeFtGroup)
     {
         return toAjax(financeFtGroupService.insertFinanceFtGroup(financeFtGroup));
     }

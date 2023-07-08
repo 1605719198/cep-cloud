@@ -52,16 +52,17 @@
               :total="personPerformanceTotal"
               :page.sync="queryParams.pageNum"
               :limit.sync="queryParams.pageSize"
+              style="margin-top: -12px;margin-bottom: 24px;right: 48px"
               @pagination="getList"
             />
             <el-table v-loading="loading" :data="personPerformanceList" border @row-click="getPersonPerformance">
-              <el-table-column label="年月" width="75" align="center" prop="meritMonth" />
-              <el-table-column label="类别" width="50" align="center" prop="meritType">
+              <el-table-column label="年月" align="center" prop="meritMonth" />
+              <el-table-column label="类别" align="center" prop="meritType">
                 <template v-slot="scope">
                   <dict-tag-human :options="performanceOptions.MeritType" :value="scope.row.meritType"/>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="95" align="center" prop="meritStatus">
+              <el-table-column label="状态" align="center" prop="meritStatus">
                 <template v-slot="scope">
                   <dict-tag-human :options="performanceOptions.MeritStatus" :value="scope.row.meritStatus"/>
                 </template>
@@ -97,6 +98,7 @@
                   icon="el-icon-right"
                   size="mini"
                   @click="handleSend"
+                  :disabled="showSend"
                   v-hasPermi="['human:personPerformance:send']"
                 >呈送</el-button>
               </el-col>
@@ -144,14 +146,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="人员类别" prop="deptType">
-                    <el-select v-model="form.deptType" disabled>
-                      <el-option
-                        v-for="dict in baseInfoData.HP020"
-                        :key="dict.dicNo"
-                        :label="dict.dicName"
-                        :value="dict.dicNo"
-                      ></el-option>
-                    </el-select>
+                    <dict-tag-human :options="baseInfoData.HP020" :value="form.deptType"/>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -199,7 +194,7 @@
                   <el-table-column label="项次" width="45" align="center" prop="num"/>
                   <el-table-column label="重点工作内容" align="center" prop="item">
                     <template v-slot="scope">
-                      <el-input type="textarea" size="mini" v-model="scope.row.item" placeholder="请输入备注"/>
+                      <el-input type="textarea" size="mini" v-model="scope.row.item" placeholder="请输入重点工作内容"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="完成标准/目标" align="center" prop="itemGoal">
@@ -264,7 +259,7 @@
                   </el-table-column>
                   <el-table-column label="权重%" width="75" align="center" prop="weight">
                     <template v-slot="scope">
-                      <el-input size="mini" v-model="scope.row.weight" placeholder="请输入备注"/>
+                      <el-input size="mini" v-model="scope.row.weight" placeholder="请输入权重"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="实际完成情况" align="center" prop="completeStatue">
@@ -322,7 +317,7 @@
                   <el-table-column label="项次" width="45" align="center" prop="num"/>
                   <el-table-column label="重点工作内容" align="center" prop="item">
                     <template v-slot="scope">
-                      <el-input type="textarea" size="mini" v-model="scope.row.item" placeholder="请输入备注"/>
+                      <el-input type="textarea" size="mini" v-model="scope.row.item" placeholder="请输入重点工作内容"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="完成标准/目标" align="center" prop="itemGoal">
@@ -387,7 +382,7 @@
                   </el-table-column>
                   <el-table-column label="权重%" width="75" align="center" prop="weight">
                     <template v-slot="scope">
-                      <el-input size="mini" v-model="scope.row.weight" placeholder="请输入备注"/>
+                      <el-input size="mini" v-model="scope.row.weight" placeholder="请输入权重"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="实际完成情况" align="center" prop="completeStatue">
@@ -460,7 +455,7 @@
               <el-input-number v-model="planForm.num" controls-position="right" :min="1" />
             </el-form-item>
             <el-form-item label="重点工作内容" prop="item">
-              <el-input type="textarea" v-model="planForm.item" placeholder="请输入指标项目"/>
+              <el-input type="textarea" v-model="planForm.item" placeholder="请输入重点工作内容"/>
             </el-form-item>
             <el-form-item label="完成目标/标准" prop="itemGoal">
               <el-input type="textarea" v-model="planForm.itemGoal" placeholder="请输入完成目标/标准"/>
@@ -531,7 +526,7 @@
               <el-input-number v-model="kpiForm.num" controls-position="right" :min="1" />
             </el-form-item>
             <el-form-item label="重点工作内容" prop="item">
-              <el-input type="textarea" v-model="kpiForm.item" placeholder="请输入指标项目"/>
+              <el-input type="textarea" v-model="kpiForm.item" placeholder="请输入重点工作内容"/>
             </el-form-item>
             <el-form-item label="完成目标/标准" prop="itemGoal">
               <el-input type="textarea" v-model="kpiForm.itemGoal" placeholder="请输入完成目标/标准"/>
@@ -637,8 +632,6 @@ export default {
       scheduleLoading: false,
       // 显示搜索条件
       showSearch: true,
-      // 总条数
-      total: 0,
       // 个人绩效主档表格总条数
       personPerformanceTotal: 0,
       // 个人绩效主档表格数据
@@ -659,6 +652,8 @@ export default {
       open1: false,
       // 删除按钮控制
       showDelete: true,
+      // 呈送按钮控制
+      showSend: true,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -751,6 +746,7 @@ export default {
       this.loading = true;
       listPersonPerformance(this.queryParams).then(response => {
         this.personPerformanceList = response.data.rows;
+        this.personPerformanceTotal = response.data.total;
         this.loading = false;
       });
     },
@@ -774,6 +770,7 @@ export default {
     getScheduleList() {
       this.scheduleList = []
       this.scheduleLoading = true;
+      this.showDelete = true;
       listPersonPerformanceSchedule(this.form).then(res =>{
         this.scheduleList = res.data.rows;
         for (const item of this.scheduleList) {
@@ -781,7 +778,10 @@ export default {
             item.apprEmp = item.apprEmp + '-' + item.apprName
           }
           if (item.num === '1' && item.apprStatus === '0'){
-            this.showDelete = false
+            this.showDelete = false;
+          }
+          if (item.num === '1' && item.apprStatus === '1'){
+            this.showSend = false;
           }
         }
         this.scheduleLoading = false;

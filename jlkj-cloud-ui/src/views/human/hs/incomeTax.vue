@@ -72,10 +72,10 @@
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="国籍" align="center" prop="empTypeId" >
-        <template v-slot="scope">
-          <dict-tag-human :options="salaryOptions.empIdType" :value="scope.row.empTypeId"/>
 
+      <el-table-column label="国籍" align="center" prop="empTypeId">
+        <template v-slot="scope">
+          <dict-tag-human :options="salaryOptions.AchievementType" :value="scope.row.empTypeId"/>
         </template>
       </el-table-column>
       <el-table-column label="月扣除数" align="center" prop="deductNum" />
@@ -175,7 +175,7 @@
             <template v-slot="scope">
               <el-select v-model="scope.row.empTypeId" placeholder="请选择国籍" clearable size="small">
               <el-option
-                v-for="dict in salaryOptions.empIdType"
+                v-for="dict in salaryOptions.EmpIdType"
                 :key="dict.dicNo"
                 :label="dict.dicName"
                 :value="dict.dicNo"
@@ -220,7 +220,7 @@ export default {
       //薪资选单类型查询
       salaryOptionType: {
         id: '',
-        optionsType: ['empIdType'],
+        optionsType: ['AchievementType'],
         compId:null,
       },
       //薪资选单选项列表

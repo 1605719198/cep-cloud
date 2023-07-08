@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.pa.mapper.TeamPerformanceDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.human.pa.domain.TeamPerformanceDetail">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="teamPerformanceId" column="team_performance_id" jdbcType="VARCHAR"/>
+            <result property="compId" column="comp_id" jdbcType="VARCHAR"/>
+            <result property="meritType" column="merit_type" jdbcType="VARCHAR"/>
+            <result property="meritMonth" column="merit_month" jdbcType="VARCHAR"/>
+            <result property="dept" column="dept" jdbcType="VARCHAR"/>
+            <result property="num" column="num" jdbcType="VARCHAR"/>
+            <result property="item" column="item" jdbcType="VARCHAR"/>
+            <result property="dataDept" column="data_dept" jdbcType="VARCHAR"/>
+            <result property="weight" column="weight" jdbcType="DECIMAL"/>
+            <result property="goalValue" column="goal_value" jdbcType="VARCHAR"/>
+            <result property="standard" column="standard" jdbcType="VARCHAR"/>
+            <result property="resultValue" column="result_value" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="DECIMAL"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="creator_id" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,team_performance_id,comp_id,
+        merit_type,merit_month,dept,
+        num,item,data_dept,
+        weight,goal_value,standard,
+        result_value,score,creator,
+        creator_id,create_date
+    </sql>
+</mapper>

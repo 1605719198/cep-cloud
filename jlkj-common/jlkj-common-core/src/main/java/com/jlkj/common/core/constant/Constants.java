@@ -432,8 +432,29 @@ public class Constants {
      * 公司别
      */
     public static final String COMP_ID = "compId";
+    /** 能源成本中心代码前2码 */
+    public static final String ENERGY_W5 = "W5";
+    /** 能源热值单位 */
+    public static final String ENERGY_CAL_UNIT ="KJ/unit";
+    /** 作业代码B */
+    public static final String ENERGY_B = "B";
+    /** 作业代码N */
+    public static final String ENERGY_N = "N";
+     /** 作业代码R */
+    public static final String ENERGY_R = "R";
+     /** 作业代码D */
+    public static final String ENERGY_D = "D";
+    /** 作业代码S */
+    public static final String ENERGY_S = "S";
+    /** 作业代码X */
+    public static final String ENERGY_X = "X";
+     /** IP */
+    public static final String ENERGY_IP = "IP";
+     /** AMIP */
+    public static final String ENERGY_AMIP = "AMIP";
 
-
+    public static final String ENERGY_ERROR_MSG = "资料重复，新增失败！";
+    public static final String ENERGY_ERROR_MSG_CLOSE ="本月已关账！";
 // ************************************************   以下为 Integer 类型常量      ***********************************************
     /**
      * 数字 1
@@ -470,6 +491,14 @@ public class Constants {
      * @param null
      */
     public static final BigDecimal BIG_DECIMAL_HUNDRED = new BigDecimal("100");
+    /**
+     * 数字 0
+     *
+     * @author 265675
+     * @Date 上午 10:19:43 2023年6月28日
+     * @param null
+     */
+    public static final BigDecimal BIG_DECIMAL_ZERO = new BigDecimal("0");
 
 // ************************************************   以下为 定义其它 类型常量      ***********************************************
 }

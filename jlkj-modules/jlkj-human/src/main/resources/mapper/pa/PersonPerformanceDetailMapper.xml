@@ -15,8 +15,8 @@
             <result property="completeTime" column="complete_time" jdbcType="DATE"/>
             <result property="weight" column="weight" jdbcType="DECIMAL"/>
             <result property="completeStatue" column="complete_statue" jdbcType="VARCHAR"/>
-            <result property="selfScore" column="self_score" jdbcType="VARCHAR"/>
-            <result property="admScore" column="adm_score" jdbcType="VARCHAR"/>
+            <result property="selfScore" column="self_score" jdbcType="DECIMAL"/>
+            <result property="admScore" column="adm_score" jdbcType="DECIMAL"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="fieldS" column="field_s" jdbcType="VARCHAR"/>
             <result property="fieldA" column="field_a" jdbcType="VARCHAR"/>

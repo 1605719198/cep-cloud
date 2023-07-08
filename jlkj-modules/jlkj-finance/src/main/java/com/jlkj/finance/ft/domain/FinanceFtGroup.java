@@ -4,7 +4,9 @@ import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 /**
@@ -21,6 +23,7 @@ public class FinanceFtGroup extends BaseEntity
     private String id;
 
     /** 公司别 */
+    @NotBlank(message = "公司别不能为空")
     private String companyId;
 
     /** 资产大类编码 */
@@ -40,10 +43,12 @@ public class FinanceFtGroup extends BaseEntity
 
     /** 数量单位 */
     @Excel(name = "数量单位")
+    @NotBlank(message = "数量单位不能为空")
     private String unit;
 
     /** 耐用期限 */
     @Excel(name = "耐用期限")
+    @Range(min = 0,max = 100,message = "耐用期限最大100，最小0")
     private Long usableMonth;
 
     /** 残值率 */

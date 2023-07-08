@@ -3,6 +3,7 @@ package com.jlkj.human.pa.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.human.pa.domain.PersonPerformance;
 import com.jlkj.human.pa.domain.PersonPerformanceDetail;
+import com.jlkj.human.pa.domain.PersonPerformanceFix;
 import com.jlkj.human.pa.domain.PersonPerformanceSchedule;
 import com.jlkj.human.pa.dto.PersonPerformanceDTO;
 
@@ -23,6 +24,24 @@ public interface IPersonPerformanceService extends IService<PersonPerformance> {
      * @return list 分页数据
      */
     List<PersonPerformance> listPersonPerformance(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 查询固定项目启动档列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 查询参数集
+     * @return list 分页数据
+     */
+    List<PersonPerformanceFix> listPersonPerformanceFix(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 查询考评清单列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 查询参数集
+     * @return list 分页数据
+     */
+    List<PersonPerformance> listEvaluation(PersonPerformanceDTO personPerformanceDTO);
 
     /**
      * 查询个人绩效明细档列表
@@ -79,6 +98,42 @@ public interface IPersonPerformanceService extends IService<PersonPerformance> {
     Object updatePersonPerformanceDetail(PersonPerformanceDetail personPerformanceDetail);
 
     /**
+     * 添加人员绩效明细档自评和实际完成情况
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDetail 添加数据
+     * @return 添加结果
+     */
+    Object updateSelfApprDetail(PersonPerformanceDetail personPerformanceDetail);
+
+    /**
+     * 添加人员绩效主档自评总结
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformance 添加数据
+     * @return 添加结果
+     */
+    Object updateSelfAppr(PersonPerformance personPerformance);
+
+    /**
+     * 添加人员绩效主档主管考评和明细档主管考评分数及备注
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 添加数据
+     * @return 添加结果
+     */
+    Object updateAdmAppr(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 添加考评意见/复核意见、更新明细表主管考评及备注
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 添加数据
+     * @return 添加结果
+     */
+    Object updateAdmEvaluation(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
      * 删除人员绩效主档同时一起删除明细档、进度表
      * @author HuangBing
      * @date 2023-06-20
@@ -104,4 +159,49 @@ public interface IPersonPerformanceService extends IService<PersonPerformance> {
      * @return 呈送结果
      */
     Object sendPersonPerformance(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 呈送固定项目考评
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceDTO 表格数据
+     * @return 呈送结果
+     */
+    Object sendPersonPerformanceFix(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 呈送按钮
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceDTO 表格数据
+     * @return 呈送结果
+     */
+    Object sendSelfAppr(PersonPerformanceDTO personPerformanceDTO);
+
+    /**
+     * 最终主管确认
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformance 表格数据
+     * @return 确认结果
+     */
+    Object confirmPersonalPerformance(PersonPerformance personPerformance);
+
+    /**
+     * 固定项目考评最终主管确认
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformance 表格数据
+     * @return 确认结果
+     */
+    Object confirmPersonalPerformanceFix(PersonPerformance personPerformance);
+
+    /**
+     * 启动固定项目考评
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceFix 表格数据
+     * @return 启动结果
+     */
+    Object startPersonPerformanceFix(PersonPerformanceFix personPerformanceFix);
 }
