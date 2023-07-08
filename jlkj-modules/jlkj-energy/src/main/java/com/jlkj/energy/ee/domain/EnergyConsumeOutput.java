@@ -1,9 +1,6 @@
 package com.jlkj.energy.ee.domain;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import lombok.Data;
 
@@ -20,8 +17,8 @@ public class EnergyConsumeOutput extends BaseEntity {
     /**
      * 时间序号
      */
-    @TableId
-    private String timeSeqNo;
+    @TableId(type = IdType.ASSIGN_ID)
+    private String id;
 
     /**
      * 公司别
@@ -123,6 +120,9 @@ public class EnergyConsumeOutput extends BaseEntity {
      * 是否抛AM
      */
     private String throwAm;
+    /** 报文消息内容 */
+    @TableField(exist = false)
+    private String messageInfo;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
