@@ -389,6 +389,7 @@ export default {
       columnIndex: -1, //列索引
       //登录人信息
       user: {},
+      addForm: []
     };
   },
   created() {
@@ -432,8 +433,15 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.id = selection.map(item => item.id)
-      this.payProCode = selection.map(item => item.payProCode)
-      this.payProName = selection.map(item => item.payProName)
+      this.addForm = []
+      for (let i = 0; i < selection.length; i++) {
+        const form = {
+          payTabCodeId: selection[i].id,
+          payTabCode: selection[i].payProCode,
+          payTabName: selection[i].payProName
+        }
+        this.addForm.push(form)
+      }
     },
     // 多选框选中数据
     handleSelectionChange2(selection) {
@@ -442,24 +450,24 @@ export default {
     // 多选框选中数据
     handleSelectionChange1(selection) {
       this.ids = selection.map(item => item.uuid)
+      this.payTabCodes = selection.map(item => item.payTabCode)
       this.multiple = !selection.length
     },
     handleSelect() {
-      const form = {
-        payTabCodeId: this.id[0],
-        payTabCode: this.payProCode[0],
-        payTabName: this.payProName[0]
-      }
-      if (this.id == "") {
+      if (this.id === undefined) {
         this.$modal.msgError("请选择要分配的用户");
         return;
       }
-      if (this.id.length > 1) {
-        this.$modal.msgError("只能选择一笔数据");
-        return;
+      for (let i = 0; i < this.addForm.length; i++) {
+        for (let j = 0; j < this.form.payTableList.length; j++) {
+          if (this.addForm[i].payTabCode === this.form.payTableList[j].payTabCode) {
+            this.$modal.msgError("不允许重复添加");
+            return;
+          }
+        }
+        this.form.payTableList.push(this.addForm[i])
       }
       this.open = false
-      this.form.payTableList.push(form)
       this.total = this.form.payTableList.length
     },
     /** 新增按钮操作 */
@@ -478,9 +486,10 @@ export default {
       }
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
-      const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除公司级薪资项目维护编号为"' + uuids + '"的数据项？').then(function() {
+    handleDelete() {
+      const uuids = this.ids;
+      const payTabCodes = this.payTabCodes;
+      this.$modal.confirm('是否确认删除公司级薪资项目维护编号为"' + payTabCodes + '"的数据项？').then(function() {
         return delPayTable(uuids);
       }).then(() => {
         this.getList();
@@ -506,13 +515,17 @@ export default {
       })
     },
     handleSave() {
-      this.form.payTableList.map(value => {
-        value.compId = this.queryParams.compId
-      })
-      addPayTable(this.form).then(res => {
-        this.$modal.msgSuccess("新增成功");
-        this.getList();
-      })
+      if (this.form.payTableList.length > 0 ){
+        this.form.payTableList.map(value => {
+          value.compId = this.queryParams.compId
+        })
+        addPayTable(this.form).then(res => {
+          this.$modal.msgSuccess("新增成功");
+          this.getList();
+        })
+      } else {
+        this.$modal.msgWarning("请先添加薪资表项目！！！");
+      }
     },
     openPayTablePop(val,row) {
       this.resetForm("conditionForm");

@@ -1,6 +1,7 @@
 package com.jlkj.finance.ft.mapper;
 
 import com.jlkj.finance.ft.domain.FinanceFtGroup;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author SunXuTong
  * @date 2023-06-21
  */
+@Repository
 public interface FinanceFtGroupMapper 
 {
     /**

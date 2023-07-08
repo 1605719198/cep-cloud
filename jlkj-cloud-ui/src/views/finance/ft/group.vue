@@ -65,14 +65,14 @@
 
     <el-table v-loading="loading" :data="groupList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="资产大类编码" align="center" prop="assetGroupNo" />
-      <el-table-column label="资产大类名称" align="center" prop="assetGroupName" />
+      <el-table-column label="资产大类编码" align="center" prop="assetGroupNo" sortable/>
+      <el-table-column label="资产大类名称" align="center" prop="assetGroupName" sortable/>
       <el-table-column label="数量单位" align="center" prop="unit" />
-      <el-table-column label="耐用年限（月）" align="center" prop="usableMonth" />
-      <el-table-column label="残值率" align="center" prop="scrapRate" />
-      <el-table-column label="折旧方法" align="center" prop="deprMethodName" />
+      <el-table-column label="耐用年限（月）" align="center" prop="usableMonth" sortable/>
+      <el-table-column label="残值率" align="center" prop="scrapRate" sortable/>
+      <el-table-column label="折旧方法" align="center" prop="deprMethodName" sortable/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="text"
@@ -133,12 +133,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="数量单位" prop="unit">
-              <el-input v-model="form.unit" placeholder="请输入数量单位" class="input"/>
+              <el-input v-model="form.unit" placeholder="请输入数量单位" class="input" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="耐用年限" prop="usableMonth">
-              <el-input v-model="form.usableMonth" placeholder="请输入耐用年限（月数）" class="input"/>
+              <el-input v-model="form.usableMonth" placeholder="请输入耐用年限（月数）" min="0" max="100" class="input"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -166,6 +166,8 @@
         <el-form-item label="备注" prop="remark" class="input1">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
         </el-form-item>
+
+        <el-divider content-position="center" direction="horizontal">会计资料维护</el-divider>
 
         <el-row :gutter="20">
           <el-col :span="12">
@@ -226,6 +228,7 @@ import { listGroup, getGroup, delGroup, addGroup, updateGroup } from "@/api/fina
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
 import {selectAssetGroupList} from "@/api/finance/aa/assetCategory";
 import {selectDeprMethodList} from "@/api/finance/aa/deprMethod";
+import {isDecimal, validateEMail, validateNumber, validateValidity} from "@/utils/jlkj";
 
 export default {
   name: "Group",
@@ -269,6 +272,10 @@ export default {
       rules: {
         companyId: [
           { required: true, message: "公司别不能为空", trigger: "blur" },
+        ],
+        scrapRate: [
+          { required: true, validator: validateValidity, trigger: "blur" },
+          { required: true, validator: isDecimal, trigger: "blur" }
         ],
         assetGroupNo: [
           { required: true, message: "资产大类不能为空", trigger: "blur" },
@@ -394,6 +401,7 @@ export default {
               this.getList();
             });
           } else {
+            console.log(this.form);
             addGroup(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

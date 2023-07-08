@@ -93,10 +93,10 @@ public class PayTableController extends BaseController {
      */
     @RequiresPermissions("human:payTable:remove")
     @Operation(summary = "删除公司薪资表项目列表")
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/delPayTable")
     @Log(title = "删除公司薪资表项目列表", businessType = BusinessType.DELETE)
-    public Object delPayTable(@PathVariable String uuid) {
-        iPayTableService.lambdaUpdate().eq(PayTable::getUuid, uuid).remove();
+    public Object delPayTable(@RequestParam List<String> uuid) {
+        iPayTableService.removeBatchByIds(uuid);
         return AjaxResult.success("删除成功");
     }
 }
