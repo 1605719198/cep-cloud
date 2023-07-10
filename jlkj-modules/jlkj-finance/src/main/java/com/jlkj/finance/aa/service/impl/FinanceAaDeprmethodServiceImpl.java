@@ -3,8 +3,8 @@ package com.jlkj.finance.aa.service.impl;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
-import com.jlkj.finance.aa.domain.financeAaDeprmethod;
-import com.jlkj.finance.aa.service.IfinanceAaDeprmethodService;
+import com.jlkj.finance.aa.domain.FinanceAaDeprmethod;
+import com.jlkj.finance.aa.service.IFinanceAaDeprmethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,10 @@ import java.util.Map;
  * @date 2023-05-10
  */
 @Service
-public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodService
+public class FinanceAaDeprmethodServiceImpl implements IFinanceAaDeprmethodService
 {
     @Autowired
-    private com.jlkj.finance.aa.mapper.financeAaDeprmethodMapper financeAaDeprmethodMapper;
+    private com.jlkj.finance.aa.mapper.FinanceAaDeprmethodMapper financeAaDeprmethodMapper;
 
     /**
      * 查询折旧方法维护
@@ -30,9 +30,9 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 折旧方法维护
      */
     @Override
-    public financeAaDeprmethod selectfinanceAaDeprmethodById(String id)
+    public FinanceAaDeprmethod selectFinanceAaDeprmethodById(String id)
     {
-        return financeAaDeprmethodMapper.selectfinanceAaDeprmethodById(id);
+        return financeAaDeprmethodMapper.selectFinanceAaDeprmethodById(id);
     }
 
     /**
@@ -42,9 +42,9 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 折旧方法维护
      */
     @Override
-    public List<financeAaDeprmethod> selectfinanceAaDeprmethodList(financeAaDeprmethod financeAaDeprmethod)
+    public List<FinanceAaDeprmethod> selectFinanceAaDeprmethodList(FinanceAaDeprmethod financeAaDeprmethod)
     {
-        return financeAaDeprmethodMapper.selectfinanceAaDeprmethodList(financeAaDeprmethod);
+        return financeAaDeprmethodMapper.selectFinanceAaDeprmethodList(financeAaDeprmethod);
     }
 
     /**
@@ -54,13 +54,13 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 结果
      */
     @Override
-    public int insertfinanceAaDeprmethod(financeAaDeprmethod financeAaDeprmethod)
+    public int insertFinanceAaDeprmethod(FinanceAaDeprmethod financeAaDeprmethod)
     {
         financeAaDeprmethod.setId(IdUtils.fastSimpleUUID());
         financeAaDeprmethod.setCreateTime(DateUtils.getNowDate());
         financeAaDeprmethod.setCreateBy(SecurityUtils.getUsername());
         financeAaDeprmethod.setCreateName(SecurityUtils.getNickName());
-        return financeAaDeprmethodMapper.insertfinanceAaDeprmethod(financeAaDeprmethod);
+        return financeAaDeprmethodMapper.insertFinanceAaDeprmethod(financeAaDeprmethod);
     }
 
     /**
@@ -70,12 +70,12 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 结果
      */
     @Override
-    public int updatefinanceAaDeprmethod(financeAaDeprmethod financeAaDeprmethod)
+    public int updateFinanceAaDeprmethod(FinanceAaDeprmethod financeAaDeprmethod)
     {
         financeAaDeprmethod.setUpdateTime(DateUtils.getNowDate());
         financeAaDeprmethod.setUpdateBy(SecurityUtils.getUsername());
         financeAaDeprmethod.setUpdateName(SecurityUtils.getNickName());
-        return financeAaDeprmethodMapper.updatefinanceAaDeprmethod(financeAaDeprmethod);
+        return financeAaDeprmethodMapper.updateFinanceAaDeprmethod(financeAaDeprmethod);
     }
 
     /**
@@ -85,9 +85,9 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 结果
      */
     @Override
-    public int deletefinanceAaDeprmethodByIds(String[] ids)
+    public int deleteFinanceAaDeprmethodByIds(String[] ids)
     {
-        return financeAaDeprmethodMapper.deletefinanceAaDeprmethodByIds(ids);
+        return financeAaDeprmethodMapper.deleteFinanceAaDeprmethodByIds(ids);
     }
 
     /**
@@ -97,9 +97,9 @@ public class financeAaDeprmethodServiceImpl implements IfinanceAaDeprmethodServi
      * @return 结果
      */
     @Override
-    public int deletefinanceAaDeprmethodById(String id)
+    public int deleteFinanceAaDeprmethodById(String id)
     {
-        return financeAaDeprmethodMapper.deletefinanceAaDeprmethodById(id);
+        return financeAaDeprmethodMapper.deleteFinanceAaDeprmethodById(id);
     }
 
     /**

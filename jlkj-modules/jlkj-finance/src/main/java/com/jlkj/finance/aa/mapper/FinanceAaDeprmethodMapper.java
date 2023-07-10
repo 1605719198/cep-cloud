@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
-import com.jlkj.finance.aa.domain.financeAaDeprmethod;
+import com.jlkj.finance.aa.domain.FinanceAaDeprmethod;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,8 @@ import java.util.Map;
  * @author SunXuTong
  * @date 2023-05-10
  */
-public interface financeAaDeprmethodMapper 
+@Repository
+public interface FinanceAaDeprmethodMapper
 {
     /**
      * 查询折旧方法维护
@@ -19,7 +21,7 @@ public interface financeAaDeprmethodMapper
      * @param id 折旧方法维护主键
      * @return 折旧方法维护
      */
-    public financeAaDeprmethod selectfinanceAaDeprmethodById(String id);
+    public FinanceAaDeprmethod selectFinanceAaDeprmethodById(String id);
 
     /**
      * 查询折旧方法维护列表
@@ -27,7 +29,7 @@ public interface financeAaDeprmethodMapper
      * @param financeAaDeprmethod 折旧方法维护
      * @return 折旧方法维护集合
      */
-    public List<financeAaDeprmethod> selectfinanceAaDeprmethodList(financeAaDeprmethod financeAaDeprmethod);
+    public List<FinanceAaDeprmethod> selectFinanceAaDeprmethodList(FinanceAaDeprmethod financeAaDeprmethod);
 
     /**
      * 新增折旧方法维护
@@ -35,7 +37,7 @@ public interface financeAaDeprmethodMapper
      * @param financeAaDeprmethod 折旧方法维护
      * @return 结果
      */
-    public int insertfinanceAaDeprmethod(financeAaDeprmethod financeAaDeprmethod);
+    public int insertFinanceAaDeprmethod(FinanceAaDeprmethod financeAaDeprmethod);
 
     /**
      * 修改折旧方法维护
@@ -43,7 +45,7 @@ public interface financeAaDeprmethodMapper
      * @param financeAaDeprmethod 折旧方法维护
      * @return 结果
      */
-    public int updatefinanceAaDeprmethod(financeAaDeprmethod financeAaDeprmethod);
+    public int updateFinanceAaDeprmethod(FinanceAaDeprmethod financeAaDeprmethod);
 
     /**
      * 删除折旧方法维护
@@ -51,7 +53,7 @@ public interface financeAaDeprmethodMapper
      * @param id 折旧方法维护主键
      * @return 结果
      */
-    public int deletefinanceAaDeprmethodById(String id);
+    public int deleteFinanceAaDeprmethodById(String id);
 
     /**
      * 批量删除折旧方法维护
@@ -59,7 +61,7 @@ public interface financeAaDeprmethodMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deletefinanceAaDeprmethodByIds(String[] ids);
+    public int deleteFinanceAaDeprmethodByIds(String[] ids);
 
     /**
      * 查询折旧方法（下拉选单用）

@@ -11,7 +11,7 @@ import com.jlkj.common.core.web.domain.BaseEntity;
  * @author SunXuTong
  * @date 2023-05-10
  */
-public class financeAaDeprmethod extends BaseEntity
+public class FinanceAaDeprmethod extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
