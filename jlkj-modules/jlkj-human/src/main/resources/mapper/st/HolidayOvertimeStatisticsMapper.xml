@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.HolidayOvertimeStatisticsMapper">
+    
+    <resultMap type="HolidayOvertimeStatistics" id="HolidayOvertimeStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="postFullName"    column="post_full_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="legalHolDate"    column="legal_hol_date"    />
+        <result property="turnTypeId"    column="turn_type_id"    />
+        <result property="turnTypeName"    column="turn_type_name"    />
+        <result property="classId"    column="class_id"    />
+        <result property="className"    column="class_name"    />
+        <result property="effectDate"    column="effect_date"    />
+        <result property="extraWorkBegin"    column="extra_work_begin"    />
+        <result property="extraWorkEnd"    column="extra_work_end"    />
+        <result property="extraWorkHours"    column="extra_work_hours"    />
+        <result property="slotCardTime"    column="slot_card_time"    />
+    </resultMap>
+
+    <sql id="selectHolidayOvertimeStatisticsVo">
+        SELECT id, comp_id, emp_id, emp_no, emp_name, post_full_name, post_id, legal_hol_date, turn_type_id, turn_type_name, class_id, class_name, effect_date, extra_work_begin, extra_work_end, extra_work_hours, slot_card_time FROM human_hd_holiday_overtime
+    </sql>
+
+    <select id="selectHolidayOvertimeStatisticsList" parameterType="HolidayOvertimeStatistics" resultMap="HolidayOvertimeStatisticsResult">
+        SELECT row_number() over(ORDER BY extra_work_begin) AS num,emp_no,emp_name,post_full_name,extra_work_begin, extra_work_end,legal_hol_date, turn_type_name,class_name, effect_date,extra_work_hours, slot_card_time FROM human_hd_holiday_overtime
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="date1 != null ">AND extra_work_begin &gt;= #{date1} </if>
+            <if test="date2 != null ">AND extra_work_begin &lt;= #{date2} </if>
+        </where>
+        ORDER BY extra_work_begin
+    </select>
+    
+    <select id="selectHolidayOvertimeStatisticsById" parameterType="String" resultMap="HolidayOvertimeStatisticsResult">
+        <include refid="selectHolidayOvertimeStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertHolidayOvertimeStatistics" parameterType="HolidayOvertimeStatistics">
+        INSERT INTO human_hd_holiday_overtime
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="empId != null">emp_id,</if>
+            <if test="empNo != null">emp_no,</if>
+            <if test="empName != null">emp_name,</if>
+            <if test="postFullName != null">post_full_name,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="legalHolDate != null">legal_hol_date,</if>
+            <if test="turnTypeId != null">turn_type_id,</if>
+            <if test="turnTypeName != null">turn_type_name,</if>
+            <if test="classId != null">class_id,</if>
+            <if test="className != null">class_name,</if>
+            <if test="effectDate != null">effect_date,</if>
+            <if test="extraWorkBegin != null">extra_work_begin,</if>
+            <if test="extraWorkEnd != null">extra_work_end,</if>
+            <if test="extraWorkHours != null">extra_work_hours,</if>
+            <if test="slotCardTime != null">slot_card_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="empId != null">#{empId},</if>
+            <if test="empNo != null">#{empNo},</if>
+            <if test="empName != null">#{empName},</if>
+            <if test="postFullName != null">#{postFullName},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="legalHolDate != null">#{legalHolDate},</if>
+            <if test="turnTypeId != null">#{turnTypeId},</if>
+            <if test="turnTypeName != null">#{turnTypeName},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="className != null">#{className},</if>
+            <if test="effectDate != null">#{effectDate},</if>
+            <if test="extraWorkBegin != null">#{extraWorkBegin},</if>
+            <if test="extraWorkEnd != null">#{extraWorkEnd},</if>
+            <if test="extraWorkHours != null">#{extraWorkHours},</if>
+            <if test="slotCardTime != null">#{slotCardTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHolidayOvertimeStatistics" parameterType="HolidayOvertimeStatistics">
+        UPDATE human_hd_holiday_overtime
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="postFullName != null">post_full_name = #{postFullName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="legalHolDate != null">legal_hol_date = #{legalHolDate},</if>
+            <if test="turnTypeId != null">turn_type_id = #{turnTypeId},</if>
+            <if test="turnTypeName != null">turn_type_name = #{turnTypeName},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="effectDate != null">effect_date = #{effectDate},</if>
+            <if test="extraWorkBegin != null">extra_work_begin = #{extraWorkBegin},</if>
+            <if test="extraWorkEnd != null">extra_work_end = #{extraWorkEnd},</if>
+            <if test="extraWorkHours != null">extra_work_hours = #{extraWorkHours},</if>
+            <if test="slotCardTime != null">slot_card_time = #{slotCardTime},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteHolidayOvertimeStatisticsById" parameterType="String">
+        DELETE FROM human_hd_holiday_overtime WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteHolidayOvertimeStatisticsByIds" parameterType="String">
+        DELETE FROM human_hd_holiday_overtime WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
