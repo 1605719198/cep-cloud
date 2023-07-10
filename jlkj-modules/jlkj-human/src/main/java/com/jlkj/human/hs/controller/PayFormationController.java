@@ -49,12 +49,6 @@ public class PayFormationController extends BaseController {
     @PostMapping
     public Object addPayFormation(@RequestBody PayFormationDTO payFormationDTO) {
         for (PayFormation item : payFormationDTO.getPayFormationList()) {
-            List<PayFormation> list = iPayFormationService.lambdaQuery()
-                    .eq(PayFormation::getCompId, item.getCompId())
-                    .eq(PayFormation::getPayProCode, item.getPayProCode()).list();
-            if (!list.isEmpty()){
-                return AjaxResult.error("薪酬项目不能重复保存");
-            }
             item.setCreator(SecurityUtils.getNickName());
             item.setCreatorId(String.valueOf(SecurityUtils.getUserId()));
         }

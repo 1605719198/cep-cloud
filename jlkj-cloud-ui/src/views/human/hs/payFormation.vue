@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       // 遮罩层
-      loading: false,
+      loading: true,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -190,6 +190,7 @@ export default {
     initData(){
       this.user.compId = this.$store.state.user.userInfo.compId;
       this.queryParams.compId = this.user.compId
+      this.getList();
     },
     /** 查询公司薪酬项目设定列表 */
     getList() {
