@@ -109,6 +109,10 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-api-human</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-finance</artifactId>
+        </dependency>
 
     </dependencies>
 
