@@ -1,6 +1,5 @@
 package com.jlkj.human.hd.controller;
 
-import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
@@ -13,7 +12,6 @@ import com.jlkj.human.hd.service.ITripAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -45,23 +43,10 @@ public class TripAddressController extends BaseController
      * 查询出差地点
      */
     @GetMapping("/listTripAddress")
-    public TableDataInfo listTripAddress(TripAddressDTO tripAddressDTO)
+    public TableDataInfo listTripAddress(TripAddress address)
     {
-        List<TripAddressDTO> list = tripAddressService.selectTripAddress(tripAddressDTO);
+        List<TripAddressDTO> list = tripAddressService.selectTripAddress(address);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出出差地点记录列表
-     */
-    @RequiresPermissions("human:tripAddressRule:export")
-    @Log(title = "出差地点记录", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, TripAddress tripAddress)
-    {
-        List<TripAddress> list = tripAddressService.selectTripAddressList(tripAddress);
-        ExcelUtil<TripAddress> util = new ExcelUtil<TripAddress>(TripAddress.class);
-        util.exportExcel(response, list, "出差地点记录数据");
     }
 
     /**

@@ -3,8 +3,7 @@ package com.jlkj.human.hd.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +14,7 @@ import java.util.Date;
  * @author 266861
  * @date 2023-04-22
  */
+@Data
 public class TripDayRule extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -69,140 +69,4 @@ public class TripDayRule extends BaseEntity
     @Excel(name = "操作日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-    public void setCompId(String compId)
-    {
-        this.compId = compId;
-    }
-
-    public String getCompId()
-    {
-        return compId;
-    }
-    public void setTitleKind(String titleKind)
-    {
-        this.titleKind = titleKind;
-    }
-
-    public String getTitleKind()
-    {
-        return titleKind;
-    }
-    public void setNation(String nation)
-    {
-        this.nation = nation;
-    }
-
-    public String getNation()
-    {
-        return nation;
-    }
-    public void setArea(String area)
-    {
-        this.area = area;
-    }
-
-    public String getArea()
-    {
-        return area;
-    }
-    public void setLodgAllow(BigDecimal lodgAllow)
-    {
-        this.lodgAllow = lodgAllow;
-    }
-
-    public BigDecimal getLodgAllow()
-    {
-        return lodgAllow;
-    }
-    public void setTrafficAllow(BigDecimal trafficAllow)
-    {
-        this.trafficAllow = trafficAllow;
-    }
-
-    public BigDecimal getTrafficAllow()
-    {
-        return trafficAllow;
-    }
-    public void setFoodAllow(BigDecimal foodAllow)
-    {
-        this.foodAllow = foodAllow;
-    }
-
-    public BigDecimal getFoodAllow()
-    {
-        return foodAllow;
-    }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setIsInternal(String isInternal)
-    {
-        this.isInternal = isInternal;
-    }
-
-    public String getIsInternal()
-    {
-        return isInternal;
-    }
-    public void setCreator(String creator)
-    {
-        this.creator = creator;
-    }
-
-    public String getCreator()
-    {
-        return creator;
-    }
-    public void setCreatorId(String creatorId)
-    {
-        this.creatorId = creatorId;
-    }
-
-    public String getCreatorId()
-    {
-        return creatorId;
-    }
-    public void setCreateDate(Date createDate)
-    {
-        this.createDate = createDate;
-    }
-
-    public Date getCreateDate()
-    {
-        return createDate;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("compId", getCompId())
-            .append("titleKind", getTitleKind())
-            .append("nation", getNation())
-            .append("area", getArea())
-            .append("lodgAllow", getLodgAllow())
-            .append("trafficAllow", getTrafficAllow())
-            .append("foodAllow", getFoodAllow())
-            .append("status", getStatus())
-            .append("isInternal", getIsInternal())
-            .append("creator", getCreator())
-            .append("creatorId", getCreatorId())
-            .append("createDate", getCreateDate())
-            .toString();
-    }
 }

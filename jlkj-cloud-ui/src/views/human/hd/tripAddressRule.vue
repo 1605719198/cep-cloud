@@ -45,6 +45,11 @@
     </el-row>
 
     <el-table v-loading="loading" :data="tripAddressRuleList" @selection-change="handleSelectionChange" height="67vh">
+      <el-table-column label="国别" align="center" prop="nation">
+        <template v-slot="scope">
+          <dict-tag-human :options="attendenceOptions.Country" :value="scope.row.nation"/>
+        </template>
+      </el-table-column>
       <el-table-column label="地点" align="center" prop="address" />
       <el-table-column label="拼音缩写" align="center" prop="simpl" />
       <el-table-column label="地点属性" align="center" prop="type" >
@@ -94,6 +99,26 @@
             {{this.form.compName}}
           </label>
         </el-form-item>
+        <el-form-item label="国别" prop="nation">
+          <el-select v-model="form.nation" placeholder="请选择国别" style="width: 100%">
+            <el-option
+              v-for="dict in attendenceOptions.Country"
+              :key="dict.dicNo"
+              :label="dict.dicName"
+              :value="dict.dicNo"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否国内" prop="isInternal">
+          <el-radio-group v-model="form.isInternal">
+            <el-radio
+              v-for="dict in dict.type.sys_yes_no"
+              :key="dict.value"
+              :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="地点" prop="address">
           <el-input v-model="form.address" placeholder="请输入地点" maxlength="100" />
         </el-form-item>
@@ -101,7 +126,7 @@
           <el-input v-model="form.simpl" placeholder="请输入拼音缩写" maxlength="20" />
         </el-form-item>
         <el-form-item label="地点属性" prop="type">
-          <el-select v-model="form.type" placeholder="请选择地点属性">
+          <el-select v-model="form.type" placeholder="请选择地点属性" style="width: 100%">
             <el-option
               v-for="dict in attendenceOptions.AddressType"
               :key="dict.dicNo"
@@ -110,14 +135,12 @@
             ></el-option>
           </el-select>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-address ref="select" @ok="getAddress"></select-address>
   </div>
 </template>
 
@@ -128,10 +151,10 @@ import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
-import SelectAddress from "@/views/components/human/selectView/selectTripAddress";
 export default {
   name: "TripAddressRule",
-  components:{DictTagHuman, SelectAddress},
+  dicts: ['sys_yes_no'],
+  components:{DictTagHuman},
   data() {
     return {
       // 遮罩层
@@ -153,7 +176,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['AddressType']
+        optionsType: ['AddressType','Country']
       },
       //出勤选单选项列表
       attendenceOptions: [],
@@ -184,6 +207,12 @@ export default {
         type:[
           { required:true, message:'地点属性不能为空', trigger: "change"}
         ],
+        nation:[
+          { required:true, message:'请选择国别', trigger:"change"}
+        ],
+        isInternal: [
+          { required:true, message:'请选择是否国内', trigger:"change"}
+        ]
       }
     };
   },
@@ -250,6 +279,8 @@ export default {
         address: null,
         simpl: null,
         type: null,
+        nation: null,
+        isInternal: null,
         creator: null,
         creatorId: null,
         createDate: null
@@ -321,10 +352,6 @@ export default {
       }).catch(() => {});
     },
 
-    /** 点选获取部门信息 */
-    getAddress(val) {
-      alert(JSON.stringify(val))
-    },
   }
 };
 </script>

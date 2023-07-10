@@ -3,7 +3,7 @@
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.dicNo)&&(isId==='false')&&(uuid==='false')">
         <span
-          :key="item.dicNo"
+          :key="item.index"
           :index="index"
         >{{ item.dicName }}</span
         >

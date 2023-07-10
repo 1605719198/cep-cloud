@@ -50,6 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT JOIN human_hs_salary_project_basis p
         ON s.salary_project_id = p.id
         WHERE s.pay_area_id = (SELECT pay_area_id FROM human_hs_social_security_company WHERE comp_id = #{compId})
+        AND version =(SELECT MAX(s.version) AS version  FROM human_hs_social_security s
+        LEFT JOIN human_hs_social_security_company c ON c.pay_area_id = s.pay_area_id
+        WHERE comp_id = #{compId})
     </select>
         
     <insert id="insertSocialSecurity" parameterType="SocialSecurity">

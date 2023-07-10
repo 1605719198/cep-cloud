@@ -77,14 +77,14 @@
         </el-table-column>
       </el-table-column>
 
-      <el-table-column label="借方户号" align="center" prop="idCoded">
-        <el-table-column label="贷方户号" align="center" prop="idCode">
+      <el-table-column label="借方核算项目1" align="center" prop="idCoded">
+        <el-table-column label="贷方核算项目1" align="center" prop="idCode">
         </el-table-column>
       </el-table-column>
 
 
-      <el-table-column label="借方参号" align="center" prop="refNod">
-        <el-table-column label="贷方参号" align="center" prop="refNo">
+      <el-table-column label="借方核算项目2" align="center" prop="refNod">
+        <el-table-column label="贷方核算项目2" align="center" prop="refNo">
         </el-table-column>
       </el-table-column>
 
@@ -193,10 +193,10 @@
                   中文名称
                 </el-col>
                 <el-col :span="4" align="center">
-                  户号
+                  核算项目1
                 </el-col>
                 <el-col :span="4" align="center">
-                  参号
+                  核算项目2
                 </el-col>
               </el-row>
             </el-form-item>
@@ -216,10 +216,10 @@
                   <el-input v-model="form.acctNamed" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.idCoded" disabled></el-input>
+                  <el-input v-model="form.idNamed" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.refNod" disabled></el-input>
+                  <el-input v-model="form.refNamed" disabled></el-input>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -239,10 +239,10 @@
                   <el-input v-model="form.acctNamec" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.idCodec" disabled></el-input>
+                  <el-input v-model="form.idNamec" disabled></el-input>
                 </el-col>
                 <el-col :span="4">
-                  <el-input v-model="form.refNoc" disabled></el-input>
+                  <el-input v-model="form.refNamec" disabled></el-input>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -366,13 +366,17 @@ export default {
       if (this.tagSrc === 'drCodeClick') {
         this.form.acctCoded = val[0].acctCode
         this.form.acctNamed = val[0].acctName
-        this.form.idCoded = val[0].calTypeName1
-        this.form.refNod = val[0].calTypeName2
+        this.form.idCoded = val[0].calTypeCodea
+        this.form.idNamed = val[0].calTypeName1
+        this.form.refNod = val[0].calTypeCodeb
+        this.form.refNamed = val[0].calTypeName2
       }else if(this.tagSrc === 'crCodeClick') {
         this.form.acctCodec = val[0].acctCode
         this.form.acctNamec = val[0].acctName
-        this.form.idCodec = val[0].calTypeName1
-        this.form.refNoc = val[0].calTypeName2
+        this.form.idCodec = val[0].calTypeCodea
+        this.form.idNamec = val[0].calTypeName1
+        this.form.refNoc = val[0].calTypeCodeb
+        this.form.refNamec = val[0].calTypeName2
       }
     },
     //会计类别变化方法
@@ -445,8 +449,8 @@ export default {
             acctClassify: value.acctClassify,
             acctCode: value.acctCoded,
             acctName: value.acctNamed,
-            idCode: value.idCoded,
-            refNo: value.refNod,
+            idCode: value.idNamed,
+            refNo: value.refNamed,
             create: value.creator
           }
           var rule2 = {
@@ -458,8 +462,8 @@ export default {
             acctClassify: value.acctClassify,
             acctCode: value.acctCodec,
             acctName: value.acctNamec,
-            idCode: value.idCodec,
-            refNo: value.refNoc,
+            idCode: value.idNamec,
+            refNo: value.refNamec,
             create: value.createDate
           }
           index++
@@ -488,12 +492,16 @@ export default {
         acctCoded: null,
         acctNamed: null,
         idCoded: null,
+        idNamed: null,
         refNod: null,
+        refNamed: null,
         dueDated: null,
         acctCodec: null,
         acctNamec: null,
         idCodec: null,
+        idNamec: null,
         refNoc: null,
+        refNamec: null,
         dueDatec: null,
         creator: null,
         creatorId: null,
@@ -554,10 +562,6 @@ export default {
           }
         }
       })
-    },
-    //会计科目弹窗点击事件
-    inputClick() {
-
     },
     /** 删除按钮操作 */
     handleDelete(row) {
