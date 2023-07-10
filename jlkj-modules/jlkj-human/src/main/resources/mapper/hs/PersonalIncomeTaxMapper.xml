@@ -104,6 +104,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <update id="updatePersonalIncomeTaxById" parameterType="String">
-        UPDATE FROM human_hs_personal_income_tax SET effectDate WHERE type = #{type} AND  version_no= #{versionNo}
+        UPDATE human_hs_personal_income_tax SET effect_date = #{effectDate} WHERE type = #{type} AND  version_no= #{versionNo}
     </update>
 </mapper>

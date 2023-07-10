@@ -69,10 +69,10 @@ public class MiniStandardServiceImpl implements IMiniStandardService
         Map<String, Object> versionMap = miniStandardMapper.selectMaxVersion(compId);
         if(!StringUtils.isEmpty(versionMap)) {
             //生效日期
-            Date inEffectDate1 = DateUtils.dateTime("yyyy_MM_dd",versionMap.get("effectDate").toString());
+            String inEffectDate1 = versionMap.get("effectDate").toString();
             version = Long.parseLong(versionMap.get("version").toString());
             //生效日期小于操作日期
-            if(nowdate.compareTo(inEffectDate1)<0 ){
+            if(inEffectDate1.compareTo(DateUtils.parseDateToStr("yyyy-MM-dd",nowdate))<0 ){
                 version = version + 1;
             }
         }
@@ -109,7 +109,7 @@ public class MiniStandardServiceImpl implements IMiniStandardService
                 }
             }
         }
-        return 1;
+        return miniStandardMapper.updateMiniStandardById(compId,version.toString(),DateUtils.parseDateToStr("yyyy-MM-dd",inEffectDate));
     }
 
     /**

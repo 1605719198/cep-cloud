@@ -1,5 +1,6 @@
 package com.jlkj.finance.ft.controller;
 
+import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 固定资产变动方式Controller
@@ -94,5 +96,18 @@ public class FinanceFtChangeTypeController extends BaseController
     public AjaxResult remove(@PathVariable String[] uuids)
     {
         return toAjax(financeFtChangeTypeService.deleteFinanceFtChangeTypeByUuids(uuids));
+    }
+
+    /**
+    * @Description: 获取定资产变动方式选单
+    * @param:[companyId 公司别, billNature 单据性质]
+    * @return:java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+    * @Author: 116524_wxj
+    * @Date: 2023/7/8 15:07
+    */
+    @GetMapping(value = "/getSelect/{companyId}/{billNature}")
+    public List<Map<String,String>> selectChangeTypeList(@PathVariable String companyId,@PathVariable String billNature)
+    {
+        return financeFtChangeTypeService.selectChangeTypeList(companyId,billNature);
     }
 }

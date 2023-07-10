@@ -3,7 +3,6 @@ package com.jlkj.human.hs.service;
 import com.jlkj.human.hs.domain.SocialSecurity;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 社保公积金缴费比例设定Service接口
@@ -68,12 +67,4 @@ public interface ISocialSecurityService
      * @return 结果
      */
     public int deleteSocialSecurityById(String id);
-
-    /**
-     * 版本号列表
-     *
-     * @param payAreaId 社保公积金缴费比例设定
-     * @return 结果
-     */
-    List<Map<String,Long>> getVersionList(String payAreaId);
 }

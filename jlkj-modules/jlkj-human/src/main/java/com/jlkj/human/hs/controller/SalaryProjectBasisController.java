@@ -36,6 +36,7 @@ public class SalaryProjectBasisController extends BaseController {
             startPage();
             List<SalaryProjectBasis> list = salaryProjectBasisService.lambdaQuery()
                     .eq(SalaryProjectBasis::getParentid, salaryProjectBasis.getId()).list();
+
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
