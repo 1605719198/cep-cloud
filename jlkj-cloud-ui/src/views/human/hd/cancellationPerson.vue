@@ -263,19 +263,23 @@ export default {
   methods: {
     /** 查询人事注销记录列表 */
     getList() {
-      this.loading = true;
-      listCancellationPerson(this.queryParams).then(response => {
-        this.tableColumns = []
-        if (response.data.rows.empNo!=='') {
-          this.tableColumns.push({ key: 'empNo', name: '工号', align: 'center'})
-        } else if (response.data.rows.orgId!=='') {
-          this.tableColumns.push({ key: 'orgId', name: '机构', align: 'center'})
-        } else if (response.data.rows.clockWorkId!=='') {
-          this.tableColumns.push({ key: 'clockWorkId', name: '刷卡钟', align: 'center'})
+      this.$refs["queryForm"].validate(valid => {
+        if (valid) {
+          this.loading = true;
+          listCancellationPerson(this.queryParams).then(response => {
+            this.tableColumns = []
+            if (response.data.rows.empNo!=='') {
+              this.tableColumns.push({ key: 'empNo', name: '工号', align: 'center'})
+            } else if (response.data.rows.orgId!=='') {
+              this.tableColumns.push({ key: 'orgId', name: '机构', align: 'center'})
+            } else if (response.data.rows.clockWorkId!=='') {
+              this.tableColumns.push({ key: 'clockWorkId', name: '刷卡钟', align: 'center'})
+            }
+            this.cancellationPersonList = response.data.rows;
+            this.total = response.data.total;
+            this.loading = false;
+          });
         }
-        this.cancellationPersonList = response.data.rows;
-        this.total = response.data.total;
-        this.loading = false;
       });
     },
     // 取消按钮
