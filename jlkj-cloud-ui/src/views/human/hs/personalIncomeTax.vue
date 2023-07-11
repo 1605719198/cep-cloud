@@ -25,6 +25,15 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button v-hasPermi="['human:personalIncomeTax:add']" :disabled="multiple" icon="el-icon-edit" type="primary" size="mini" plain  @click="handleSave">保存</el-button>
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['human:personalIncomeTax:remove']"
+        >删除</el-button>
       </el-form-item>
         </el-col>
       </el-row>
@@ -95,7 +104,7 @@
 
 <script>
 
-import { listPersonalIncomeTax, addPersonalIncomeTax, selectVersion } from "@/api/human/hs/personalIncomeTax";
+import { listPersonalIncomeTax, addPersonalIncomeTax, selectVersion, delPersonalIncomeTax } from "@/api/human/hs/personalIncomeTax";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
 
@@ -250,6 +259,16 @@ export default {
       }else {
         this.$modal.msgError("生效日期不能为空");
       }
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除个人所得税比例维护的该数据项？').then(function() {
+        return delPersonalIncomeTax(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     },
     addIndex({row, rowIndex}) {
       row.index = rowIndex

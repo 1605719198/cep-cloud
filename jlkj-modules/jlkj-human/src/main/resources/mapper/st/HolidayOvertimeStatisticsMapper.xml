@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectHolidayOvertimeStatisticsList" parameterType="HolidayOvertimeStatistics" resultMap="HolidayOvertimeStatisticsResult">
-        SELECT row_number() over(ORDER BY extra_work_begin) AS num,emp_no,emp_name,post_full_name,extra_work_begin, extra_work_end,legal_hol_date, turn_type_name,class_name, effect_date,extra_work_hours, slot_card_time FROM human_hd_holiday_overtime
+        SELECT row_number() over(ORDER BY extra_work_begin) AS num,emp_no,emp_name,post_full_name,extra_work_begin, turn_type_name,class_name,extra_work_end,legal_hol_date, effect_date,extra_work_hours, slot_card_time FROM human_hd_holiday_overtime
         <where>  
             <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
             <if test="date1 != null ">AND extra_work_begin &gt;= #{date1} </if>

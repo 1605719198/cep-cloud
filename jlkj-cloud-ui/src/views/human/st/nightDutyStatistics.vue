@@ -11,7 +11,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="shiftDate">
+      <el-form-item label="排班日期" prop="shiftDate">
         <el-date-picker
           v-model="queryParams.shiftDate"
           value-format="yyyy-MM-dd"
