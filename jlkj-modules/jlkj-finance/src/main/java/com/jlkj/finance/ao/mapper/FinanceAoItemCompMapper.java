@@ -80,7 +80,8 @@ public interface FinanceAoItemCompMapper
 
     /**
      * 按公司别查询
-     * @description 按公司别查询
+     * 按公司别查询
+     * @description
      * @param companyId 公司别
      * @return java.util.List<Map<String,String>>
      * @Author 114288

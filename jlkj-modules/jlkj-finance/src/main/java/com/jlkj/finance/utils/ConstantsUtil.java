@@ -193,4 +193,13 @@ public class ConstantsUtil extends Constants
      */
     public static final int INT_20 = 20;
 
+    /**
+     * 1
+     */
+    public static final String STR_1 = "1";
+    /**
+     * 2
+     */
+    public static final String STR_2 = "2";
+
 }

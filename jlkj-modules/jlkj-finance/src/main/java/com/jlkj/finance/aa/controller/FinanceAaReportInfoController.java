@@ -3,6 +3,8 @@ package com.jlkj.finance.aa.controller;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jlkj.finance.aa.dto.FinanceAaReportBalanceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,8 +57,10 @@ public class FinanceAaReportInfoController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceAaReportInfo financeAaReportInfo)
     {
-        List<FinanceAaReportInfo> list = financeAaReportInfoService.selectFinanceAaReportInfoList(financeAaReportInfo);
-        ExcelUtil<FinanceAaReportInfo> util = new ExcelUtil<FinanceAaReportInfo>(FinanceAaReportInfo.class);
+        financeAaReportInfo.setAcctPeriod("2023-06");
+        List<FinanceAaReportBalanceDTO> list = financeAaReportInfoService.updateFinanceAaReportInfo(financeAaReportInfo);
+
+        ExcelUtil<FinanceAaReportBalanceDTO> util = new ExcelUtil<FinanceAaReportBalanceDTO>(FinanceAaReportBalanceDTO.class);
         util.exportExcel(response, list, "印项目计算记录数据");
     }
 
@@ -71,7 +75,7 @@ public class FinanceAaReportInfoController extends BaseController
     }
 
     /**
-     * 新增印项目计算记录
+     * 计算印项目计算记录
      */
     @RequiresPermissions("finance:reportInfo:add")
     @Log(title = "印项目计算记录", businessType = BusinessType.INSERT)
@@ -82,14 +86,16 @@ public class FinanceAaReportInfoController extends BaseController
     }
 
     /**
-     * 修改印项目计算记录
+     * 预览印项目计算记录
      */
     @RequiresPermissions("finance:reportInfo:edit")
     @Log(title = "印项目计算记录", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody FinanceAaReportInfo financeAaReportInfo)
+    public TableDataInfo edit(@RequestBody FinanceAaReportInfo financeAaReportInfo)
     {
-        return toAjax(financeAaReportInfoService.updateFinanceAaReportInfo(financeAaReportInfo));
+        startPage();
+        List<FinanceAaReportBalanceDTO> list = financeAaReportInfoService.updateFinanceAaReportInfo(financeAaReportInfo);
+        return getDataTable(list);
     }
 
     /**

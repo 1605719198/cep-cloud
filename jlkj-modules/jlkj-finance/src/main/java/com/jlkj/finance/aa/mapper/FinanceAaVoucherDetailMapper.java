@@ -143,9 +143,8 @@ public interface FinanceAaVoucherDetailMapper
     public int deleteFinanceAaVoucherDetailByIds(String[] ids);
 
 
-    /**
-     * 按系统别查询
-    * @description 按系统别查询
+    /**按系统别查询
+    * @description
     * @param companyId
     * @param acctPeriod 会计周期
     * @param code 会计科目
