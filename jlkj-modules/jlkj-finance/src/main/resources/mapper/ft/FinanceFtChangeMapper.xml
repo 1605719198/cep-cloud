@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtChangeMapper">
+    
+    <resultMap type="com.jlkj.finance.ft.domain.FinanceFtChange" id="FinanceFtChangeResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="changeNo"    column="change_no"    />
+        <result property="changeName"    column="change_name"    />
+        <result property="changeType"    column="change_type"    />
+        <result property="changeWay"    column="change_way"    />
+        <result property="billNature"    column="bill_nature"    />
+        <result property="changeDate"    column="change_date"    />
+        <result property="changeDesc"    column="change_desc"    />
+        <result property="assetType"    column="asset_type"    />
+        <result property="applyDept"    column="apply_dept"    />
+        <result property="newAssetUser"    column="new_asset_user"    />
+        <result property="applyUser"    column="apply_user"    />
+        <result property="applyDate"    column="apply_date"    />
+        <result property="status"    column="status"    />
+        <result property="period"    column="period"    />
+        <result property="confirmUser"    column="confirm_user"    />
+        <result property="confirmDate"    column="confirm_date"    />
+        <result property="checkUser"    column="check_user"    />
+        <result property="checkDate"    column="check_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="FinanceFtChangeFinanceFtChangeDetailResult" type="com.jlkj.finance.ft.domain.FinanceFtChange" extends="FinanceFtChangeResult">
+        <collection property="financeFtChangeDetailList" notNullColumn="sub_uuid" javaType="java.util.List" resultMap="FinanceFtChangeDetailResult" />
+    </resultMap>
+
+    <resultMap type="com.jlkj.finance.ft.domain.FinanceFtChangeDetail" id="FinanceFtChangeDetailResult">
+        <result property="uuid"    column="sub_uuid"    />
+        <result property="companyId"    column="sub_company_id"    />
+        <result property="changeId"    column="sub_change_id"    />
+        <result property="changeNo"    column="sub_change_no"    />
+        <result property="period"    column="sub_period"    />
+        <result property="changePrice"    column="sub_change_price"    />
+        <result property="assetId"    column="sub_asset_id"    />
+        <result property="assetNo"    column="sub_asset_no"    />
+        <result property="assetGroup"    column="sub_asset_group"    />
+        <result property="newAssetGroup"    column="sub_new_asset_group"    />
+        <result property="assetName"    column="sub_asset_name"    />
+        <result property="newAssetName"    column="sub_new_asset_name"    />
+        <result property="assetDesc"    column="sub_asset_desc"    />
+        <result property="assetType"    column="sub_asset_type"    />
+        <result property="orgValue"    column="sub_org_value"    />
+        <result property="getValue"    column="sub_get_value"    />
+        <result property="accuDepr"    column="sub_accu_depr"    />
+        <result property="deprCount"    column="sub_depr_count"    />
+        <result property="newDeprCount"    column="sub_new_depr_count"    />
+        <result property="deptNo"    column="sub_dept_no"    />
+        <result property="newDeptNo"    column="sub_new_dept_no"    />
+        <result property="assetUser"    column="sub_asset_user"    />
+        <result property="newAssetUser"    column="sub_new_asset_user"    />
+        <result property="userDept"    column="sub_user_dept"    />
+        <result property="newUserDept"    column="sub_new_user_dept"    />
+        <result property="qty"    column="sub_qty"    />
+        <result property="newQty"    column="sub_new_qty"    />
+        <result property="unit"    column="sub_unit"    />
+        <result property="newUnit"    column="sub_new_unit"    />
+        <result property="assetStatus"    column="sub_asset_status"    />
+        <result property="newAssetStatus"    column="sub_new_asset_status"    />
+        <result property="location"    column="sub_location"    />
+        <result property="newLocation"    column="sub_new_location"    />
+        <result property="assetSpec"    column="sub_asset_spec"    />
+        <result property="newAssetSpec"    column="sub_new_asset_spec"    />
+        <result property="contractNo"    column="sub_contract_no"    />
+        <result property="budgetNo"    column="sub_budget_no"    />
+        <result property="supplyerNo"    column="sub_supplyer_no"    />
+        <result property="newSupplyerNo"    column="sub_new_supplyer_no"    />
+        <result property="manufacturer"    column="sub_manufacturer"    />
+        <result property="newManufacturer"    column="sub_new_manufacturer"    />
+        <result property="weight"    column="sub_weight"    />
+        <result property="newWeight"    column="sub_new_weight"    />
+        <result property="capacity"    column="sub_capacity"    />
+        <result property="newCapacity"    column="sub_new_capacity"    />
+        <result property="length"    column="sub_length"    />
+        <result property="newLength"    column="sub_new_length"    />
+        <result property="buildingArea"    column="sub_building_area"    />
+        <result property="newBuildingArea"    column="sub_new_building_area"    />
+        <result property="floorArea"    column="sub_floor_area"    />
+        <result property="newFloorArea"    column="sub_new_floor_area"    />
+        <result property="layerNum"    column="sub_layer_num"    />
+        <result property="newLayerNum"    column="sub_new_layer_num"    />
+        <result property="economyPurpose"    column="sub_economy_purpose"    />
+        <result property="source"    column="sub_source"    />
+        <result property="newSource"    column="sub_new_source"    />
+        <result property="assetCharacter"    column="sub_asset_character"    />
+        <result property="newAssetCharacter"    column="sub_new_asset_character"    />
+        <result property="levels"    column="sub_levels"    />
+        <result property="newLevels"    column="sub_new_levels"    />
+        <result property="materialNo"    column="sub_material_no"    />
+        <result property="locationNo"    column="sub_location_no"    />
+        <result property="tradeNo"    column="sub_trade_no"    />
+        <result property="cardModel"    column="sub_card_model"    />
+        <result property="newCardModel"    column="sub_new_card_model"    />
+        <result property="splitType"    column="sub_split_type"    />
+        <result property="splitCount"    column="sub_split_count"    />
+        <result property="sourceId"    column="sub_source_id"    />
+        <result property="pgrmId"    column="sub_pgrm_id"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createName"    column="sub_create_name"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateName"    column="sub_update_name"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtChangeVo">
+        SELECT uuid, company_id, change_no, change_name, change_type, change_way, bill_nature, change_date, change_desc, asset_type, apply_dept, new_asset_user, apply_user, apply_date, status, period, confirm_user, confirm_date, check_user, check_date, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_change
+    </sql>
+
+    <select id="selectFinanceFtChangeList" parameterType="com.jlkj.finance.ft.domain.FinanceFtChange" resultMap="FinanceFtChangeResult">
+        <include refid="selectFinanceFtChangeVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="changeNo != null  and changeNo != ''"> AND change_no LIKE concat('%', #{changeNo}, '%')</if>
+            <if test="params.beginChangeDate != null and params.beginChangeDate != '' and params.endChangeDate != null and params.endChangeDate != ''"> AND change_date BETWEEN #{params.beginChangeDate} AND #{params.endChangeDate}</if>
+            <if test="params.beginPeriod != null and params.beginPeriod != '' and params.endPeriod != null and params.endPeriod != ''"> AND period BETWEEN #{params.beginPeriod} AND #{params.endPeriod}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtChangeByUuid" parameterType="String" resultMap="FinanceFtChangeDetailResult">
+        SELECT a.uuid, a.company_id, a.change_no, a.change_name, a.change_type, a.change_way, a.bill_nature, a.change_date, a.change_desc, a.asset_type, a.apply_dept, a.new_asset_user, a.apply_user, a.apply_date, a.status, a.period, a.confirm_user, a.confirm_date, a.check_user, a.check_date, a.create_by, a.create_name, a.create_time, a.update_by, a.update_name, a.update_time,
+ b.uuid as sub_uuid, b.company_id as sub_company_id, b.change_id as sub_change_id, b.change_no as sub_change_no, b.period as sub_period, b.change_price as sub_change_price, b.asset_id as sub_asset_id, b.asset_no as sub_asset_no, b.asset_group as sub_asset_group, b.new_asset_group as sub_new_asset_group, b.asset_name as sub_asset_name, b.new_asset_name as sub_new_asset_name, b.asset_desc as sub_asset_desc, b.asset_type as sub_asset_type, b.org_value as sub_org_value, b.get_value as sub_get_value, b.accu_depr as sub_accu_depr, b.depr_count as sub_depr_count, b.new_depr_count as sub_new_depr_count, b.dept_no as sub_dept_no, b.new_dept_no as sub_new_dept_no, b.asset_user as sub_asset_user, b.new_asset_user as sub_new_asset_user, b.user_dept as sub_user_dept, b.new_user_dept as sub_new_user_dept, b.qty as sub_qty, b.new_qty as sub_new_qty, b.unit as sub_unit, b.new_unit as sub_new_unit, b.asset_status as sub_asset_status, b.new_asset_status as sub_new_asset_status, b.location as sub_location, b.new_location as sub_new_location, b.asset_spec as sub_asset_spec, b.new_asset_spec as sub_new_asset_spec, b.contract_no as sub_contract_no, b.budget_no as sub_budget_no, b.supplyer_no as sub_supplyer_no, b.new_supplyer_no as sub_new_supplyer_no, b.manufacturer as sub_manufacturer, b.new_manufacturer as sub_new_manufacturer, b.weight as sub_weight, b.new_weight as sub_new_weight, b.capacity as sub_capacity, b.new_capacity as sub_new_capacity, b.length as sub_length, b.new_length as sub_new_length, b.building_area as sub_building_area, b.new_building_area as sub_new_building_area, b.floor_area as sub_floor_area, b.new_floor_area as sub_new_floor_area, b.layer_num as sub_layer_num, b.new_layer_num as sub_new_layer_num, b.economy_purpose as sub_economy_purpose, b.source as sub_source, b.new_source as sub_new_source, b.asset_character as sub_asset_character, b.new_asset_character as sub_new_asset_character, b.levels as sub_levels, b.new_levels as sub_new_levels, b.material_no as sub_material_no, b.location_no as sub_location_no, b.trade_no as sub_trade_no, b.card_model as sub_card_model, b.new_card_model as sub_new_card_model, b.split_type as sub_split_type, b.split_count as sub_split_count, b.source_id as sub_source_id, b.pgrm_id as sub_pgrm_id, b.create_by as sub_create_by, b.create_name as sub_create_name, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_name as sub_update_name, b.update_time as sub_update_time
+        FROM finance_ft_change a
+        LEFT JOIN finance_ft_change_detail b ON b.change_id = a.uuid
+        WHERE a.uuid = #{uuid}
+    </select>
+        
+    <insert id="insertFinanceFtChange" parameterType="com.jlkj.finance.ft.domain.FinanceFtChange">
+        INSERT INTO finance_ft_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="changeNo != null">change_no,</if>
+            <if test="changeName != null">change_name,</if>
+            <if test="changeType != null">change_type,</if>
+            <if test="changeWay != null">change_way,</if>
+            <if test="billNature != null">bill_nature,</if>
+            <if test="changeDate != null">change_date,</if>
+            <if test="changeDesc != null">change_desc,</if>
+            <if test="assetType != null">asset_type,</if>
+            <if test="applyDept != null">apply_dept,</if>
+            <if test="newAssetUser != null">new_asset_user,</if>
+            <if test="applyUser != null">apply_user,</if>
+            <if test="applyDate != null">apply_date,</if>
+            <if test="status != null">status,</if>
+            <if test="period != null">period,</if>
+            <if test="confirmUser != null">confirm_user,</if>
+            <if test="confirmDate != null">confirm_date,</if>
+            <if test="checkUser != null">check_user,</if>
+            <if test="checkDate != null">check_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="changeNo != null">#{changeNo},</if>
+            <if test="changeName != null">#{changeName},</if>
+            <if test="changeType != null">#{changeType},</if>
+            <if test="changeWay != null">#{changeWay},</if>
+            <if test="billNature != null">#{billNature},</if>
+            <if test="changeDate != null">#{changeDate},</if>
+            <if test="changeDesc != null">#{changeDesc},</if>
+            <if test="assetType != null">#{assetType},</if>
+            <if test="applyDept != null">#{applyDept},</if>
+            <if test="newAssetUser != null">#{newAssetUser},</if>
+            <if test="applyUser != null">#{applyUser},</if>
+            <if test="applyDate != null">#{applyDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="period != null">#{period},</if>
+            <if test="confirmUser != null">#{confirmUser},</if>
+            <if test="confirmDate != null">#{confirmDate},</if>
+            <if test="checkUser != null">#{checkUser},</if>
+            <if test="checkDate != null">#{checkDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtChange" parameterType="com.jlkj.finance.ft.domain.FinanceFtChange">
+        UPDATE finance_ft_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="changeNo != null">change_no = #{changeNo},</if>
+            <if test="changeName != null">change_name = #{changeName},</if>
+            <if test="changeType != null">change_type = #{changeType},</if>
+            <if test="changeWay != null">change_way = #{changeWay},</if>
+            <if test="billNature != null">bill_nature = #{billNature},</if>
+            <if test="changeDate != null">change_date = #{changeDate},</if>
+            <if test="changeDesc != null">change_desc = #{changeDesc},</if>
+            <if test="assetType != null">asset_type = #{assetType},</if>
+            <if test="applyDept != null">apply_dept = #{applyDept},</if>
+            <if test="newAssetUser != null">new_asset_user = #{newAssetUser},</if>
+            <if test="applyUser != null">apply_user = #{applyUser},</if>
+            <if test="applyDate != null">apply_date = #{applyDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="period != null">period = #{period},</if>
+            <if test="confirmUser != null">confirm_user = #{confirmUser},</if>
+            <if test="confirmDate != null">confirm_date = #{confirmDate},</if>
+            <if test="checkUser != null">check_user = #{checkUser},</if>
+            <if test="checkDate != null">check_date = #{checkDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteFinanceFtChangeByUuid" parameterType="String">
+        DELETE FROM finance_ft_change WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteFinanceFtChangeByUuids" parameterType="String">
+        DELETE FROM finance_ft_change WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteFinanceFtChangeDetailByChangeIds" parameterType="String">
+        DELETE FROM finance_ft_change_detail WHERE change_id IN
+        <foreach item="changeId" collection="array" open="(" separator="," close=")">
+            #{changeId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFinanceFtChangeDetailByChangeId" parameterType="String">
+        DELETE FROM finance_ft_change_detail WHERE change_id = #{changeId}
+    </delete>
+
+    <insert id="batchFinanceFtChangeDetail">
+        INSERT INTO finance_ft_change_detail( uuid, company_id, change_id, change_no, period, change_price, asset_id, asset_no, asset_group, new_asset_group, asset_name, new_asset_name, asset_desc, asset_type, org_value, get_value, accu_depr, depr_count, new_depr_count, dept_no, new_dept_no, asset_user, new_asset_user, user_dept, new_user_dept, qty, new_qty, unit, new_unit, asset_status, new_asset_status, location, new_location, asset_spec, new_asset_spec, contract_no, budget_no, supplyer_no, new_supplyer_no, manufacturer, new_manufacturer, weight, new_weight, capacity, new_capacity, length, new_length, building_area, new_building_area, floor_area, new_floor_area, layer_num, new_layer_num, economy_purpose, source, new_source, asset_character, new_asset_character, levels, new_levels, material_no, location_no, trade_no, card_model, new_card_model, split_type, split_count, source_id, pgrm_id, create_by, create_name, create_time, update_by, update_name, update_time) VALUES
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.uuid}, #{item.companyId}, #{item.changeId}, #{item.changeNo}, #{item.period}, #{item.changePrice}, #{item.assetId}, #{item.assetNo}, #{item.assetGroup}, #{item.newAssetGroup}, #{item.assetName}, #{item.newAssetName}, #{item.assetDesc}, #{item.assetType}, #{item.orgValue}, #{item.getValue}, #{item.accuDepr}, #{item.deprCount}, #{item.newDeprCount}, #{item.deptNo}, #{item.newDeptNo}, #{item.assetUser}, #{item.newAssetUser}, #{item.userDept}, #{item.newUserDept}, #{item.qty}, #{item.newQty}, #{item.unit}, #{item.newUnit}, #{item.assetStatus}, #{item.newAssetStatus}, #{item.location}, #{item.newLocation}, #{item.assetSpec}, #{item.newAssetSpec}, #{item.contractNo}, #{item.budgetNo}, #{item.supplyerNo}, #{item.newSupplyerNo}, #{item.manufacturer}, #{item.newManufacturer}, #{item.weight}, #{item.newWeight}, #{item.capacity}, #{item.newCapacity}, #{item.length}, #{item.newLength}, #{item.buildingArea}, #{item.newBuildingArea}, #{item.floorArea}, #{item.newFloorArea}, #{item.layerNum}, #{item.newLayerNum}, #{item.economyPurpose}, #{item.source}, #{item.newSource}, #{item.assetCharacter}, #{item.newAssetCharacter}, #{item.levels}, #{item.newLevels}, #{item.materialNo}, #{item.locationNo}, #{item.tradeNo}, #{item.cardModel}, #{item.newCardModel}, #{item.splitType}, #{item.splitCount}, #{item.sourceId}, #{item.pgrmId}, #{item.createBy}, #{item.createName}, #{item.createTime}, #{item.updateBy}, #{item.updateName}, #{item.updateTime})
+        </foreach>
+    </insert>
+    <select id="selectMaxChangeNo" parameterType="String" resultType="string">
+        select IFNULL(max(change_no),"")changeNo from finance_ft_change
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="changeNo != null  and changeNo != ''"> and change_no like concat(#{changeNo},'%' )</if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtCardMapper">
+    
+    <resultMap type="com.jlkj.finance.ft.domain.FinanceFtCard" id="FinanceFtCardResult">
+        <result property="assetId"    column="asset_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="assetNo"    column="asset_no"    />
+        <result property="assetGroup"    column="asset_group"    />
+        <result property="finAssetGroup"    column="fin_asset_group"    />
+        <result property="accountCode"    column="account_code"    />
+        <result property="assetName"    column="asset_name"    />
+        <result property="deptAssetNo"    column="dept_asset_no"    />
+        <result property="assetBakNo"    column="asset_bak_no"    />
+        <result property="deptNo"    column="dept_no"    />
+        <result property="assetUser"    column="asset_user"    />
+        <result property="userDept"    column="user_dept"    />
+        <result property="costCenter"    column="cost_center"    />
+        <result property="usableMonth"    column="usable_month"    />
+        <result property="usedMonth"    column="used_month"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="location"    column="location"    />
+        <result property="qty"    column="qty"    />
+        <result property="unit"    column="unit"    />
+        <result property="source"    column="source"    />
+        <result property="assetCharacter"    column="asset_character"    />
+        <result property="assetSpec"    column="asset_spec"    />
+        <result property="orgValue"    column="org_value"    />
+        <result property="getValue"    column="get_value"    />
+        <result property="beforeAccuDepr"    column="before_accu_depr"    />
+        <result property="monthDeprRate"    column="month_depr_rate"    />
+        <result property="monthDeprAmt"    column="month_depr_amt"    />
+        <result property="accuDepr"    column="accu_depr"    />
+        <result property="minusPrepare"    column="minus_prepare"    />
+        <result property="scrapRate"    column="scrap_rate"    />
+        <result property="scrapAmt"    column="scrap_amt"    />
+        <result property="isCleared"    column="is_cleared"    />
+        <result property="addCauseCode"    column="add_cause_code"    />
+        <result property="addPeriod"    column="add_period"    />
+        <result property="addDate"    column="add_date"    />
+        <result property="clearCauseCode"    column="clear_cause_code"    />
+        <result property="clearPeriod"    column="clear_period"    />
+        <result property="clearDate"    column="clear_date"    />
+        <result property="clearUser"    column="clear_user"    />
+        <result property="contractNo"    column="contract_no"    />
+        <result property="budgetNo"    column="budget_no"    />
+        <result property="supplyerNo"    column="supplyer_no"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="weight"    column="weight"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="length"    column="length"    />
+        <result property="buildingArea"    column="building_area"    />
+        <result property="floorArea"    column="floor_area"    />
+        <result property="layerNum"    column="layer_num"    />
+        <result property="economyPurpose"    column="economy_purpose"    />
+        <result property="levels"    column="levels"    />
+        <result property="assetDesc"    column="asset_desc"    />
+        <result property="product"    column="product"    />
+        <result property="cardModel"    column="card_model"    />
+        <result property="pgrmId"    column="pgrm_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateName"    column="update_name"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceFtCardVo">
+        SELECT asset_id, company_id, asset_no, asset_group, fin_asset_group, account_code, asset_name, dept_asset_no, asset_bak_no, dept_no, asset_user, user_dept, cost_center, usable_month, used_month, start_date, location, qty, unit, source, asset_character, asset_spec, org_value, get_value, before_accu_depr, month_depr_rate, month_depr_amt, accu_depr, minus_prepare, scrap_rate, scrap_amt, is_cleared, add_cause_code, add_period, add_date, clear_cause_code, clear_period, clear_date, clear_user, contract_no, budget_no, supplyer_no, manufacturer, weight, capacity, length, building_area, floor_area, layer_num, economy_purpose, levels, asset_desc, product, card_model, pgrm_id, create_by, create_name, create_time, update_by, update_name, update_time FROM finance_ft_card
+    </sql>
+
+    <select id="selectFinanceFtCardList" parameterType="com.jlkj.finance.ft.domain.FinanceFtCard" resultMap="FinanceFtCardResult">
+        <include refid="selectFinanceFtCardVo"/>
+        <where>  
+            <if test="assetId != null  and assetId != ''"> AND asset_id = #{assetId}</if>
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="assetNo != null  and assetNo != ''"> AND asset_no = #{assetNo}</if>
+            <if test="assetGroup != null  and assetGroup != ''"> AND asset_group = #{assetGroup}</if>
+            <if test="finAssetGroup != null  and finAssetGroup != ''"> AND fin_asset_group = #{finAssetGroup}</if>
+            <if test="accountCode != null  and accountCode != ''"> AND account_code = #{accountCode}</if>
+            <if test="assetName != null  and assetName != ''"> AND asset_name LIKE concat('%', #{assetName}, '%')</if>
+            <if test="deptAssetNo != null  and deptAssetNo != ''"> AND dept_asset_no = #{deptAssetNo}</if>
+            <if test="assetBakNo != null  and assetBakNo != ''"> AND asset_bak_no = #{assetBakNo}</if>
+            <if test="deptNo != null  and deptNo != ''"> AND dept_no = #{deptNo}</if>
+            <if test="assetUser != null  and assetUser != ''"> AND asset_user = #{assetUser}</if>
+            <if test="userDept != null  and userDept != ''"> AND user_dept = #{userDept}</if>
+            <if test="costCenter != null  and costCenter != ''"> AND cost_center = #{costCenter}</if>
+            <if test="usableMonth != null "> AND usable_month = #{usableMonth}</if>
+            <if test="usedMonth != null "> AND used_month = #{usedMonth}</if>
+            <if test="startDate != null "> AND start_date = #{startDate}</if>
+            <if test="isCleared != null  and isCleared != ''"> AND is_cleared = #{isCleared}</if>
+            <if test="addCauseCode != null  and addCauseCode != ''"> AND add_cause_code = #{addCauseCode}</if>
+            <if test="addPeriod != null "> AND add_period = #{addPeriod}</if>
+            <if test="clearCauseCode != null  and clearCauseCode != ''"> AND clear_cause_code = #{clearCauseCode}</if>
+            <if test="clearPeriod != null "> AND clear_period = #{clearPeriod}</if>
+            <if test="clearDate != null "> AND clear_date = #{clearDate}</if>
+            <if test="clearUser != null  and clearUser != ''"> AND clear_user = #{clearUser}</if>
+            <if test="cardModel != null  and cardModel != ''"> AND card_model = #{cardModel}</if>
+            <if test="pgrmId != null  and pgrmId != ''"> AND pgrm_id = #{pgrmId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceFtCardByAssetId" parameterType="String" resultMap="FinanceFtCardResult">
+        <include refid="selectFinanceFtCardVo"/>
+        WHERE asset_id = #{assetId}
+    </select>
+    <select id="selectCardListForPop" parameterType="com.jlkj.finance.ft.domain.FinanceFtCard" resultMap="FinanceFtCardResult">
+        <include refid="selectFinanceFtCardVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="assetNo != null  and assetNo != ''"> AND asset_no = #{assetNo}</if>
+            <if test="assetGroup != null  and assetGroup != ''"> AND asset_group = #{assetGroup}</if>
+            <if test="assetName != null  and assetName != ''"> AND asset_name LIKE concat('%', #{assetName}, '%')</if>
+            <if test="deptAssetNo != null  and deptAssetNo != ''"> AND dept_asset_no = #{deptAssetNo}</if>
+            <if test="deptNo != null  and deptNo != ''"> AND dept_no = #{deptNo}</if>
+            <if test="assetUser != null  and assetUser != ''"> AND asset_user = #{assetUser}</if>
+            <if test="userDept != null  and userDept != ''"> AND user_dept = #{userDept}</if>
+            <if test="isCleared != null  and isCleared != ''"> AND is_cleared = #{isCleared}</if>
+            and asset_id not in (select c.asset_id from (select a.asset_id from finance_ft_change_detail a,
+            finance_ft_change b where  b.uuid = a.change_id and b.change_type= #{product} and b.status='00')c)
+        </where>
+        order by asset_no
+
+    </select>
+    <insert id="insertFinanceFtCard" parameterType="com.jlkj.finance.ft.domain.FinanceFtCard">
+        INSERT INTO finance_ft_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="assetId != null and assetId != ''">asset_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="assetNo != null">asset_no,</if>
+            <if test="assetGroup != null">asset_group,</if>
+            <if test="finAssetGroup != null">fin_asset_group,</if>
+            <if test="accountCode != null">account_code,</if>
+            <if test="assetName != null">asset_name,</if>
+            <if test="deptAssetNo != null">dept_asset_no,</if>
+            <if test="assetBakNo != null">asset_bak_no,</if>
+            <if test="deptNo != null">dept_no,</if>
+            <if test="assetUser != null">asset_user,</if>
+            <if test="userDept != null">user_dept,</if>
+            <if test="costCenter != null">cost_center,</if>
+            <if test="usableMonth != null">usable_month,</if>
+            <if test="usedMonth != null">used_month,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="location != null">location,</if>
+            <if test="qty != null">qty,</if>
+            <if test="unit != null">unit,</if>
+            <if test="source != null">source,</if>
+            <if test="assetCharacter != null">asset_character,</if>
+            <if test="assetSpec != null">asset_spec,</if>
+            <if test="orgValue != null">org_value,</if>
+            <if test="getValue != null">get_value,</if>
+            <if test="beforeAccuDepr != null">before_accu_depr,</if>
+            <if test="monthDeprRate != null">month_depr_rate,</if>
+            <if test="monthDeprAmt != null">month_depr_amt,</if>
+            <if test="accuDepr != null">accu_depr,</if>
+            <if test="minusPrepare != null">minus_prepare,</if>
+            <if test="scrapRate != null">scrap_rate,</if>
+            <if test="scrapAmt != null">scrap_amt,</if>
+            <if test="isCleared != null">is_cleared,</if>
+            <if test="addCauseCode != null">add_cause_code,</if>
+            <if test="addPeriod != null">add_period,</if>
+            <if test="addDate != null">add_date,</if>
+            <if test="clearCauseCode != null">clear_cause_code,</if>
+            <if test="clearPeriod != null">clear_period,</if>
+            <if test="clearDate != null">clear_date,</if>
+            <if test="clearUser != null">clear_user,</if>
+            <if test="contractNo != null">contract_no,</if>
+            <if test="budgetNo != null">budget_no,</if>
+            <if test="supplyerNo != null">supplyer_no,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="weight != null">weight,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="length != null">length,</if>
+            <if test="buildingArea != null">building_area,</if>
+            <if test="floorArea != null">floor_area,</if>
+            <if test="layerNum != null">layer_num,</if>
+            <if test="economyPurpose != null">economy_purpose,</if>
+            <if test="levels != null">levels,</if>
+            <if test="assetDesc != null">asset_desc,</if>
+            <if test="product != null">product,</if>
+            <if test="cardModel != null">card_model,</if>
+            <if test="pgrmId != null">pgrm_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="assetId != null and assetId != ''">#{assetId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="assetNo != null">#{assetNo},</if>
+            <if test="assetGroup != null">#{assetGroup},</if>
+            <if test="finAssetGroup != null">#{finAssetGroup},</if>
+            <if test="accountCode != null">#{accountCode},</if>
+            <if test="assetName != null">#{assetName},</if>
+            <if test="deptAssetNo != null">#{deptAssetNo},</if>
+            <if test="assetBakNo != null">#{assetBakNo},</if>
+            <if test="deptNo != null">#{deptNo},</if>
+            <if test="assetUser != null">#{assetUser},</if>
+            <if test="userDept != null">#{userDept},</if>
+            <if test="costCenter != null">#{costCenter},</if>
+            <if test="usableMonth != null">#{usableMonth},</if>
+            <if test="usedMonth != null">#{usedMonth},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="location != null">#{location},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="source != null">#{source},</if>
+            <if test="assetCharacter != null">#{assetCharacter},</if>
+            <if test="assetSpec != null">#{assetSpec},</if>
+            <if test="orgValue != null">#{orgValue},</if>
+            <if test="getValue != null">#{getValue},</if>
+            <if test="beforeAccuDepr != null">#{beforeAccuDepr},</if>
+            <if test="monthDeprRate != null">#{monthDeprRate},</if>
+            <if test="monthDeprAmt != null">#{monthDeprAmt},</if>
+            <if test="accuDepr != null">#{accuDepr},</if>
+            <if test="minusPrepare != null">#{minusPrepare},</if>
+            <if test="scrapRate != null">#{scrapRate},</if>
+            <if test="scrapAmt != null">#{scrapAmt},</if>
+            <if test="isCleared != null">#{isCleared},</if>
+            <if test="addCauseCode != null">#{addCauseCode},</if>
+            <if test="addPeriod != null">#{addPeriod},</if>
+            <if test="addDate != null">#{addDate},</if>
+            <if test="clearCauseCode != null">#{clearCauseCode},</if>
+            <if test="clearPeriod != null">#{clearPeriod},</if>
+            <if test="clearDate != null">#{clearDate},</if>
+            <if test="clearUser != null">#{clearUser},</if>
+            <if test="contractNo != null">#{contractNo},</if>
+            <if test="budgetNo != null">#{budgetNo},</if>
+            <if test="supplyerNo != null">#{supplyerNo},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="length != null">#{length},</if>
+            <if test="buildingArea != null">#{buildingArea},</if>
+            <if test="floorArea != null">#{floorArea},</if>
+            <if test="layerNum != null">#{layerNum},</if>
+            <if test="economyPurpose != null">#{economyPurpose},</if>
+            <if test="levels != null">#{levels},</if>
+            <if test="assetDesc != null">#{assetDesc},</if>
+            <if test="product != null">#{product},</if>
+            <if test="cardModel != null">#{cardModel},</if>
+            <if test="pgrmId != null">#{pgrmId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceFtCard" parameterType="com.jlkj.finance.ft.domain.FinanceFtCard">
+        UPDATE finance_ft_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="assetNo != null">asset_no = #{assetNo},</if>
+            <if test="assetGroup != null">asset_group = #{assetGroup},</if>
+            <if test="finAssetGroup != null">fin_asset_group = #{finAssetGroup},</if>
+            <if test="accountCode != null">account_code = #{accountCode},</if>
+            <if test="assetName != null">asset_name = #{assetName},</if>
+            <if test="deptAssetNo != null">dept_asset_no = #{deptAssetNo},</if>
+            <if test="assetBakNo != null">asset_bak_no = #{assetBakNo},</if>
+            <if test="deptNo != null">dept_no = #{deptNo},</if>
+            <if test="assetUser != null">asset_user = #{assetUser},</if>
+            <if test="userDept != null">user_dept = #{userDept},</if>
+            <if test="costCenter != null">cost_center = #{costCenter},</if>
+            <if test="usableMonth != null">usable_month = #{usableMonth},</if>
+            <if test="usedMonth != null">used_month = #{usedMonth},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="assetCharacter != null">asset_character = #{assetCharacter},</if>
+            <if test="assetSpec != null">asset_spec = #{assetSpec},</if>
+            <if test="orgValue != null">org_value = #{orgValue},</if>
+            <if test="getValue != null">get_value = #{getValue},</if>
+            <if test="beforeAccuDepr != null">before_accu_depr = #{beforeAccuDepr},</if>
+            <if test="monthDeprRate != null">month_depr_rate = #{monthDeprRate},</if>
+            <if test="monthDeprAmt != null">month_depr_amt = #{monthDeprAmt},</if>
+            <if test="accuDepr != null">accu_depr = #{accuDepr},</if>
+            <if test="minusPrepare != null">minus_prepare = #{minusPrepare},</if>
+            <if test="scrapRate != null">scrap_rate = #{scrapRate},</if>
+            <if test="scrapAmt != null">scrap_amt = #{scrapAmt},</if>
+            <if test="isCleared != null">is_cleared = #{isCleared},</if>
+            <if test="addCauseCode != null">add_cause_code = #{addCauseCode},</if>
+            <if test="addPeriod != null">add_period = #{addPeriod},</if>
+            <if test="addDate != null">add_date = #{addDate},</if>
+            <if test="clearCauseCode != null">clear_cause_code = #{clearCauseCode},</if>
+            <if test="clearPeriod != null">clear_period = #{clearPeriod},</if>
+            <if test="clearDate != null">clear_date = #{clearDate},</if>
+            <if test="clearUser != null">clear_user = #{clearUser},</if>
+            <if test="contractNo != null">contract_no = #{contractNo},</if>
+            <if test="budgetNo != null">budget_no = #{budgetNo},</if>
+            <if test="supplyerNo != null">supplyer_no = #{supplyerNo},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="buildingArea != null">building_area = #{buildingArea},</if>
+            <if test="floorArea != null">floor_area = #{floorArea},</if>
+            <if test="layerNum != null">layer_num = #{layerNum},</if>
+            <if test="economyPurpose != null">economy_purpose = #{economyPurpose},</if>
+            <if test="levels != null">levels = #{levels},</if>
+            <if test="assetDesc != null">asset_desc = #{assetDesc},</if>
+            <if test="product != null">product = #{product},</if>
+            <if test="cardModel != null">card_model = #{cardModel},</if>
+            <if test="pgrmId != null">pgrm_id = #{pgrmId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE asset_id = #{assetId}
+    </update>
+
+    <delete id="deleteFinanceFtCardByAssetId" parameterType="String">
+        DELETE FROM finance_ft_card WHERE asset_id = #{assetId}
+    </delete>
+
+    <delete id="deleteFinanceFtCardByAssetIds" parameterType="String">
+        DELETE FROM finance_ft_card WHERE asset_id IN
+        <foreach item="assetId" collection="array" open="(" separator="," close=")">
+            #{assetId}
+        </foreach>
+    </delete>
+</mapper>

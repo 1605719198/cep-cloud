@@ -244,11 +244,11 @@ public class FinanceFtChangeDetail extends BaseEntity
 
     /** 资产性质 */
     @Excel(name = "资产性质")
-    private String character;
+    private String assetCharacter;
 
     /** 新资产性质 */
     @Excel(name = "新资产性质")
-    private String newCharacter;
+    private String newAssetCharacter;
 
     /** 装备水平 */
     @Excel(name = "装备水平")
@@ -806,23 +806,23 @@ public class FinanceFtChangeDetail extends BaseEntity
     {
         return newSource;
     }
-    public void setCharacter(String character)
+    public void setAssetCharacter(String assetCharacter)
     {
-        this.character = character;
+        this.assetCharacter = assetCharacter;
     }
 
-    public String getCharacter()
+    public String getAssetCharacter()
     {
-        return character;
+        return assetCharacter;
     }
-    public void setNewCharacter(String newCharacter)
+    public void setNewAssetCharacter(String newAssetCharacter)
     {
-        this.newCharacter = newCharacter;
+        this.newAssetCharacter = newAssetCharacter;
     }
 
-    public String getNewCharacter()
+    public String getNewAssetCharacter()
     {
-        return newCharacter;
+        return newAssetCharacter;
     }
     public void setLevels(String levels)
     {
@@ -1001,8 +1001,8 @@ public class FinanceFtChangeDetail extends BaseEntity
             .append("economyPurpose", getEconomyPurpose())
             .append("source", getSource())
             .append("newSource", getNewSource())
-            .append("character", getCharacter())
-            .append("newCharacter", getNewCharacter())
+            .append("assetCharacter", getAssetCharacter())
+            .append("newAssetCharacter", getNewAssetCharacter())
             .append("levels", getLevels())
             .append("newLevels", getNewLevels())
             .append("materialNo", getMaterialNo())
