@@ -257,7 +257,6 @@ export default {
   beforeMount() {
     /** 装载人员信息 */
     queryAllUser().then(response => {
-      console.log(response)
       this.resUserDiction = response.rows;
     })
   },

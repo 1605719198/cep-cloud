@@ -27,7 +27,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsBankVo">
-		select a.bank_id, a.bank_code, a.bank_name, a.bank_describe, a.bank_version, a.exam_type, b.type_name,a.online_date, a.picture_url, nvl(c.judge_number,0) as judge_number,nvl(d.radio_number,0) as radio_number,nvl(e.choice_number,0) as choice_number,a.radio_score, a.choice_score, a.judge_score, a.status, a.create_by, a.create_dept, a.create_time from exam_questions_bank a
+		select a.bank_id, a.bank_code, a.bank_name, a.bank_describe, a.bank_version, a.exam_type,
+               b.type_name,a.online_date, a.picture_url, nvl(c.judge_number,0) as judge_number,nvl(d.radio_number,0)
+                   as radio_number,nvl(e.choice_number,0) as choice_number,a.radio_score, a.choice_score,
+               a.judge_score, a.status, a.create_by, a.create_dept, a.create_time from human_ex_questions_bank a
 		left join exam_type b on b.type_id = a.exam_type
 		left join
 		(
@@ -66,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamQuestionsBank" parameterType="ExamQuestionsBank" >
-        insert into exam_questions_bank
+        insert into human_ex_questions_bank
         <trim prefix="(" suffix=")" suffixOverrides=",">
             bank_id,
             <if test="bankCode != null">bank_code,</if>
@@ -85,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             create_time,
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(bank_id),0) + 1  from exam_questions_bank),
+            (select nvl(max(bank_id),0) + 1  from human_ex_questions_bank),
             <if test="bankCode != null">#{bankCode},</if>
             <if test="bankName != null and bankName != ''">#{bankName},</if>
             <if test="bankDescribe != null">#{bankDescribe},</if>
@@ -104,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamQuestionsBank" parameterType="ExamQuestionsBank">
-        update exam_questions_bank
+        update human_ex_questions_bank
         <trim prefix="SET" suffixOverrides=",">
             <if test="bankId != null">bank_id = #{bankId},</if>
             <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
@@ -125,11 +128,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamQuestionsBankById" parameterType="String">
-        delete from exam_questions_bank where bank_code = #{bankCode}
+        delete from human_ex_questions_bank where bank_code = #{bankCode}
     </delete>
 
     <delete id="deleteExamQuestionsBankByIds" parameterType="String">
-        delete from exam_questions_bank where bank_code in 
+        delete from human_ex_questions_bank where bank_code in
         <foreach item="bankCode" collection="array" open="(" separator="," close=")">
             #{bankCode}
         </foreach>

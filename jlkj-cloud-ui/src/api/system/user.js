@@ -148,10 +148,9 @@ export function selectUser(query) {
   })
 }
 // 查询所有用户列表，用于用户数据字典
-export function queryAllUser(query) {
+export function queryAllUser() {
   return request({
     url: '/system/user/queryAllUser',
-    method: 'get',
-    params: query
+    method: 'get'
   })
 }

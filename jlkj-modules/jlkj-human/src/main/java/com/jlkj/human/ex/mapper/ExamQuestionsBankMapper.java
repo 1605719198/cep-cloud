@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * 题库管理Mapper接口
  * 
- * @author qnsdt
- * @date 2022-12-19
+ * @author 111191
+ * @date 2023-07-11
  */
 public interface ExamQuestionsBankMapper 
 {

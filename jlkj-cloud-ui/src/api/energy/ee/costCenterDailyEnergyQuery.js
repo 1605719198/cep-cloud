@@ -16,7 +16,7 @@ export const querySumInfo = (data) => request({
 // 查询下拉选单
 export function queryEngyIds(data) {
   return request({
-    url: '/energy/energy/code/queryDropDownMenu',
+    url: '/energy/energy/code/queryDropDownMenuZh',
     method: 'get',
     data: data
   })

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Date;
 
 /**
- * 题库管理对象 exam_questions_bank
+ * 题库管理对象 human_ex_questions_bank
  * 
  * @author qnsdt
  * @date 2022-12-19

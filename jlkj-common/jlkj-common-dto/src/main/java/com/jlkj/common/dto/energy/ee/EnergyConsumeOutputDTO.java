@@ -1,6 +1,7 @@
 package com.jlkj.common.dto.energy.ee;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -115,11 +116,13 @@ public class EnergyConsumeOutputDTO {
     /**
      * 能源计量日期开始
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private String eCountDateStart;
 
     /**
      * 能源计量日期结束
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private String eCountDateEnd;
 
     /**
@@ -147,13 +150,7 @@ public class EnergyConsumeOutputDTO {
      */
     private String MessageInfo;
 
-    /**
-     * 当前页
-     */
-    private Long pageNum;
+    /** 查询排序  */
+    private String  orderByNo;
 
-    /**
-     * 每页记录数
-     */
-    private Long pageSize;
 }
