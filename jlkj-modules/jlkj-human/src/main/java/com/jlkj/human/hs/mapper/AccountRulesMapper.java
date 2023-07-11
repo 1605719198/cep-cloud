@@ -1,7 +1,9 @@
 package com.jlkj.human.hs.mapper;
 
-import java.util.List;
 import com.jlkj.human.hs.domain.AccountRules;
+import com.jlkj.human.hs.domain.SalaryProjectBasis;
+
+import java.util.List;
 
 /**
  * 抛帐规则维护Mapper接口
@@ -58,4 +60,12 @@ public interface AccountRulesMapper
      * @return 结果
      */
     public int deleteAccountRulesByIds(String[] ids);
+
+    /**
+     * 查询公司薪酬项目表树
+     *
+     * @param compId 公司
+     * @return 抛帐规则维护集合
+     */
+    public  List<SalaryProjectBasis> getPayTable(String  compId);
 }

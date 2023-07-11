@@ -374,6 +374,7 @@ export default {
 
     //点击节点方法
     handleNodeClick(data) {
+      debugger
       this.queryParams.code = data.id;
       this.tableData = []
       this.onLoad()

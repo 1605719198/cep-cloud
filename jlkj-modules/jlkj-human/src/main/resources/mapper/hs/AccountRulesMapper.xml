@@ -26,7 +26,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
     </resultMap>
-
+    <resultMap type="SalaryProjectBasis" id="SalaryProjectBasisResult">
+        <result property="id"    column="id"    />
+        <result property="payProCode"    column="pay_pro_code"    />
+        <result property="payProName"    column="pay_pro_name"    />
+        <result property="isSta"    column="is_sta"    />
+        <result property="staCon"    column="sta_con"    />
+        <result property="isPostPro"    column="is_post_pro"    />
+        <result property="isEmpPro"    column="is_emp_pro"    />
+        <result property="isLov"    column="is_lov"    />
+        <result property="lovConId"    column="lov_con_id"    />
+        <result property="salaryDescribe"    column="salary_describe"    />
+        <result property="parentid"    column="parentid"    />
+        <result property="parents"    column="parents"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="isShowno"    column="is_showno"    />
+        <result property="num"    column="num"    />
+        <result property="defaultValue"    column="default_value"    />
+        <result property="status"    column="status"    />
+        <result property="ifUsed"    column="if_used"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
     <sql id="selectAccountRulesVo">
         select id, code, apprGroup, infoCode, infoName, costUnit, costType, acctCodeD, efNoD, idCodeD, dueDateD, acctCodeC, idCodeC, refNoC, dueDateC, comp_id, creator, creator_no, creator_id, create_date from human_hs_account_rules
     </sql>
@@ -145,4 +167,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+
+    <select id="getPayTable" parameterType="String" resultMap="SalaryProjectBasisResult">
+        select  s2.pay_pro_code, s2.pay_pro_name, s2.sta_con, s2.is_lov, s2.id ,s2.parentid, concat(s2.parents,',',s2.id) as parentsLevel, (LENGTH(concat(s2.parents,',',s2.id))-LENGTH(REPLACE(concat(s2.parents,',',s2.id),',',''))) as parents, s2.if_end, s2.lov_con_id, b.info_code as default_value from human_hs_salary_project_basis as s2
+                                                                                                                                                                                                                                                                                                                                            left join human_hs_salary_basis b
+                on s2.lov_con_id = b.id and s2.is_lov='1'
+                                                                                                                                                                                                                                                                                                                                            left join human_hs_pay_table p2
+                on p2.pay_tab_code_id = s2.id and p2.comp_id =  #{compId}
+        where (instr((select group_concat(distinct(parents)) as parents from (select CONCAT(s.parents) as parents from human_hs_pay_table p
+                                                                                                                               left join human_hs_salary_project_basis s
+                on p.pay_tab_code_id = s.id
+                                                                              where p.comp_id =  #{compId} and s.status = '0' )as a),s2.id) or s2.id in (select s.id from human_hs_pay_table p
+                                                                                                                                                                             left join human_hs_salary_project_basis s
+                on p.pay_tab_code_id = s.id
+                                                                                                                                                    where p.comp_id =  #{compId} and s.status = '0' ))
+
+        order by parentsLevel
+
+    </select>
 </mapper>
