@@ -1,20 +1,18 @@
-package com.jlkj.human.ex.mapper;
+package com.jlkj.human.ex.service;
 
 import com.jlkj.human.ex.domain.ExamQuestionsProperty;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 题目属性Mapper接口
+ * 题目属性Service接口
  * 
- * @author qnsdt
- * @date 2022-12-28
+ * @author 111191
+ * @date 2023-7-11
  */
-@Repository
-public interface ExamQuestionsListMapper 
+public interface IExamQuestionsListService 
 {
- 
+
     /**
      * 查询题目属性列表
      * 
@@ -25,10 +23,11 @@ public interface ExamQuestionsListMapper
     /**
      *
      * @Author: 111191
-     * @Date: 2023年7月11日, 0011 下午 02:44:13
+     * @Date: 2023年7月11日, 0011 下午 02:43:23
      * @param examCode
      * @return java.util.List<com.jlkj.human.ex.domain.ExamQuestionsProperty>
      */
     List<ExamQuestionsProperty> selectChoiceExamQuestionsList(String examCode);
+
 
 }

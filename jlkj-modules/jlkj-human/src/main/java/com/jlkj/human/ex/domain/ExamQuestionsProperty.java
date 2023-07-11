@@ -64,15 +64,6 @@ public class ExamQuestionsProperty extends BaseEntity
     @Excel(name = "状态")
     private Integer status;
 
-    private String createBy;
-    
-    public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
 
 	/** 创建部门 */
     private Long createDept;

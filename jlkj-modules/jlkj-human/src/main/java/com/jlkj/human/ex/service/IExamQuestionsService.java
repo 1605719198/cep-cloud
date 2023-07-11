@@ -1,16 +1,16 @@
-package com.jlkj.human.ex.mapper;
+package com.jlkj.human.ex.service;
 
 import com.jlkj.human.ex.domain.ExamQuestions;
 
 import java.util.List;
 
 /**
- * 考试题目Mapper接口
+ * 考试题目Service接口
  * 
  * @author qnsdt
  * @date 2022-12-28
  */
-public interface ExamQuestionsMapper 
+public interface IExamQuestionsService 
 {
     /**
      * 查询考试题目
@@ -45,18 +45,18 @@ public interface ExamQuestionsMapper
     public int updateExamQuestions(ExamQuestions examQuestions);
 
     /**
-     * 删除考试题目
+     * 批量删除考试题目
+     * 
+     * @param questionsCodes 需要删除的考试题目ID
+     * @return 结果
+     */
+    public int deleteExamQuestionsByIds(String[] questionsCodes);
+
+    /**
+     * 删除考试题目信息
      * 
      * @param questionsCode 考试题目ID
      * @return 结果
      */
     public int deleteExamQuestionsById(String questionsCode);
-
-    /**
-     * 批量删除考试题目
-     * 
-     * @param questionsCodes 需要删除的数据ID
-     * @return 结果
-     */
-    public int deleteExamQuestionsByIds(String[] questionsCodes);
 }

@@ -1,19 +1,17 @@
-package com.jlkj.human.ex.mapper;
+package com.jlkj.human.ex.service;
 
 
 import com.jlkj.human.ex.domain.ExamBankPicture;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 题库图片Mapper接口
+ * 题库图片Service接口
  * 
  * @author qnsdt
  * @date 2022-12-22
  */
-@Repository
-public interface ExamBankPictureMapper 
+public interface IExamBankPictureService 
 {
     /**
      * 查询题库图片
@@ -48,18 +46,18 @@ public interface ExamBankPictureMapper
     public int updateExamBankPicture(ExamBankPicture examBankPicture);
 
     /**
-     * 删除题库图片
+     * 批量删除题库图片
+     * 
+     * @param photoCodes 需要删除的题库图片ID
+     * @return 结果
+     */
+    public int deleteExamBankPictureByIds(String[] photoCodes);
+
+    /**
+     * 删除题库图片信息
      * 
      * @param photoCode 题库图片ID
      * @return 结果
      */
     public int deleteExamBankPictureById(String photoCode);
-
-    /**
-     * 批量删除题库图片
-     * 
-     * @param photoCodes 需要删除的数据ID
-     * @return 结果
-     */
-    public int deleteExamBankPictureByIds(String[] photoCodes);
 }

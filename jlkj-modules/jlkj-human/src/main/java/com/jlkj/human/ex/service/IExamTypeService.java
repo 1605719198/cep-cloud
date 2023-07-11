@@ -1,16 +1,17 @@
-package com.jlkj.human.ex.mapper;
+package com.jlkj.human.ex.service;
 
 import com.jlkj.human.ex.domain.ExamType;
+import com.jlkj.human.ex.domain.TypeTreeSelect;
 
 import java.util.List;
 
 /**
- * 考试分类Mapper接口
+ * 考试分类Service接口
  * 
  * @author qnsdt
  * @date 2022-12-14
  */
-public interface ExamTypeMapper 
+public interface IExamTypeService 
 {
     /**
      * 查询考试分类
@@ -29,6 +30,22 @@ public interface ExamTypeMapper
     public List<ExamType> selectExamTypeList(ExamType examType);
 
     /**
+     * 构建前端所需要树结构
+     * 
+     * @param examTypeList 部门列表
+     * @return 树结构列表
+     */
+    public List<ExamType> buildTypeTree(List<ExamType> examTypeList);
+
+    /**
+     * 构建前端所需要下拉树结构
+     * 
+     * @param examTypeList 部门列表
+     * @return 下拉树结构列表
+     */
+    public List<TypeTreeSelect> buildTypeTreeSelect(List<ExamType> examTypeList);
+
+    /**
      * 新增考试分类
      * 
      * @param examType 考试分类
@@ -45,18 +62,18 @@ public interface ExamTypeMapper
     public int updateExamType(ExamType examType);
 
     /**
-     * 删除考试分类
+     * 批量删除考试分类
+     * 
+     * @param typeIds 需要删除的考试分类ID
+     * @return 结果
+     */
+    public int deleteExamTypeByIds(Long[] typeIds);
+
+    /**
+     * 删除考试分类信息
      * 
      * @param typeId 考试分类ID
      * @return 结果
      */
     public int deleteExamTypeById(Long typeId);
-
-    /**
-     * 批量删除考试分类
-     * 
-     * @param typeIds 需要删除的数据ID
-     * @return 结果
-     */
-    public int deleteExamTypeByIds(Long[] typeIds);
 }

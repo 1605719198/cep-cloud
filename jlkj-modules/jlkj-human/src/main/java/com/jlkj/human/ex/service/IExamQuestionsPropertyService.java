@@ -1,16 +1,16 @@
-package com.jlkj.human.ex.mapper;
+package com.jlkj.human.ex.service;
 
 import com.jlkj.human.ex.domain.ExamQuestionsProperty;
 
 import java.util.List;
 
 /**
- * 题目属性Mapper接口
+ * 题目属性Service接口
  * 
- * @author qnsdt
- * @date 2022-12-28
+ * @author 111191
+ * @date 2023-07-11
  */
-public interface ExamQuestionsPropertyMapper 
+public interface IExamQuestionsPropertyService 
 {
     /**
      * 查询题目属性
@@ -45,18 +45,18 @@ public interface ExamQuestionsPropertyMapper
     public int updateExamQuestionsProperty(ExamQuestionsProperty examQuestionsProperty);
 
     /**
-     * 删除题目属性
+     * 批量删除题目属性
+     * 
+     * @param questionsCodes 需要删除的题目属性ID
+     * @return 结果
+     */
+    public int deleteExamQuestionsPropertyByIds(String[] questionsCodes);
+
+    /**
+     * 删除题目属性信息
      * 
      * @param questionsCode 题目属性ID
      * @return 结果
      */
     public int deleteExamQuestionsPropertyById(String questionsCode);
-
-    /**
-     * 批量删除题目属性
-     * 
-     * @param questionsCodes 需要删除的数据ID
-     * @return 结果
-     */
-    public int deleteExamQuestionsPropertyByIds(String[] questionsCodes);
 }

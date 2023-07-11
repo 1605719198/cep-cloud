@@ -1,7 +1,8 @@
 package com.jlkj.human.ex.mapper;
 
+import com.jlkj.human.ex.domain.ExamQuestionsAnswer;
+
 import java.util.List;
-import com.hig.questions.domain.ExamQuestionsAnswer;
 
 /**
  * 考试题目答案Mapper接口

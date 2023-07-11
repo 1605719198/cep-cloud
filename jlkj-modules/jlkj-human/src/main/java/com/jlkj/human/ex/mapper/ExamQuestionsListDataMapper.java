@@ -1,8 +1,8 @@
 package com.jlkj.human.ex.mapper;
 
-import java.util.List;
+import com.jlkj.human.ex.domain.ExamQuestionsListData;
 
-import com.hig.onlineexam.domain.dto.ExamQuestionsListData;
+import java.util.List;
 
 public interface ExamQuestionsListDataMapper {
 	public List<ExamQuestionsListData> selectQuestionsList(ExamQuestionsListData examQuestionsListData);
