@@ -1,10 +1,8 @@
 package com.jlkj.human.ex.domain;
 
-import java.util.List;
-
-import com.hig.questions.domain.ExamQuestionsAnswer;
-
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ExamQuestionsData {

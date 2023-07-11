@@ -1,11 +1,11 @@
 package com.jlkj.human.ex.service.impl;
 
+import com.jlkj.human.ex.domain.ExamTitleData;
+import com.jlkj.human.ex.mapper.ExamTitleDataMapper;
+import com.jlkj.human.ex.service.IExamTitleDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hig.onlineexam.domain.dto.ExamTitleData;
-import com.hig.onlineexam.mapper.ExamTitleDataMapper;
-import com.hig.onlineexam.service.IExamTitleDataService;
 
 @Service
 public class ExamTitleDataServiceImpl implements IExamTitleDataService {

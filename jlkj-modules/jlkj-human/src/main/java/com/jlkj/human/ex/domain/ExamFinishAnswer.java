@@ -1,9 +1,9 @@
 package com.jlkj.human.ex.domain;
 
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 考试成绩对象 exam_finish_answer

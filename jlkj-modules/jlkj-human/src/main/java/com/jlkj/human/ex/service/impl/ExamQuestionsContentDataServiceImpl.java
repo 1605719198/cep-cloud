@@ -1,13 +1,10 @@
 package com.jlkj.human.ex.service.impl;
 
-import java.util.List;
-
+import com.jlkj.human.ex.domain.ExamQuestionsContentData;
+import com.jlkj.human.ex.mapper.ExamQuestionsContentDataMapper;
+import com.jlkj.human.ex.service.IExamQuestionsContentDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.hig.onlineexam.domain.dto.ExamQuestionsContentData;
-import com.hig.onlineexam.mapper.ExamQuestionsContentDataMapper;
-import com.hig.onlineexam.service.IExamQuestionsContentDataService;
 
 @Service
 public class ExamQuestionsContentDataServiceImpl implements IExamQuestionsContentDataService {

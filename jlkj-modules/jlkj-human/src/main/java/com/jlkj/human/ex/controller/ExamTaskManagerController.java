@@ -137,7 +137,7 @@ public class ExamTaskManagerController extends BaseController {
         String url = fileResult.getData().getUrl();
         ExamTaskPicture examTaskPicture =
                 new ExamTaskPicture(examCodes, "", url, fileResult.getData().getName(),
-                        "", loginUser.getUsername());
+                        "", loginUser.getUserName());
         try {
             examTaskPictureService.deleteExamTaskPictureById(examCodes);
             examTaskPictureService.insertExamTaskPicture(examTaskPicture);

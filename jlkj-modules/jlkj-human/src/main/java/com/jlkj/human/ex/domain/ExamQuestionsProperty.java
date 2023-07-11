@@ -189,7 +189,6 @@ public class ExamQuestionsProperty extends BaseEntity
 		this.rightAnswer = rightAnswer;
 		this.answerAnalyse = answerAnalyse;
 		this.status = status;
-		this.createBy = createBy;
 		this.createDept = createDept;
 	}
 
@@ -207,7 +206,6 @@ public class ExamQuestionsProperty extends BaseEntity
 		this.rightAnswer = rightAnswer;
 		this.answerAnalyse = answerAnalyse;
 		this.status = status;
-		this.createBy = createBy;
 		this.createDept = createDept;
 	}
 
