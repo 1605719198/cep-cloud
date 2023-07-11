@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hs.mapper.PayamtRulesMapper">
+    
+    <resultMap type="PayamtRules" id="PayamtRulesResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="apprgroup"    column="apprGroup"    />
+        <result property="infocode"    column="infoCode"    />
+        <result property="infoname"    column="infoName"    />
+        <result property="acctcoded"    column="acctCodeD"    />
+        <result property="efnod"    column="efNoD"    />
+        <result property="idcoded"    column="idCodeD"    />
+        <result property="duedated"    column="dueDateD"    />
+        <result property="acctcodec"    column="acctCodeC"    />
+        <result property="idcodec"    column="idCodeC"    />
+        <result property="refnoc"    column="refNoC"    />
+        <result property="duedatec"    column="dueDateC"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="creatBy"    column="creat_by"    />
+        <result property="creatNo"    column="creat_no"    />
+        <result property="creatId"    column="creat_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPayamtRulesVo">
+        select id, code, apprGroup, infoCode, infoName, acctCodeD, efNoD, idCodeD, dueDateD, acctCodeC, idCodeC, refNoC, dueDateC, comp_id, creat_by, creat_no, creat_id, create_time from human_hs_payamt_rules
+    </sql>
+
+    <select id="selectPayamtRulesList" parameterType="PayamtRules" resultMap="PayamtRulesResult">
+        <include refid="selectPayamtRulesVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="apprgroup != null  and apprgroup != ''"> and apprGroup = #{apprgroup}</if>
+            <if test="infocode != null  and infocode != ''"> and infoCode = #{infocode}</if>
+            <if test="infoname != null  and infoname != ''"> and infoName like concat('%', #{infoname}, '%')</if>
+            <if test="acctcoded != null  and acctcoded != ''"> and acctCodeD = #{acctcoded}</if>
+            <if test="efnod != null  and efnod != ''"> and efNoD = #{efnod}</if>
+            <if test="idcoded != null  and idcoded != ''"> and idCodeD = #{idcoded}</if>
+            <if test="duedated != null "> and dueDateD = #{duedated}</if>
+            <if test="acctcodec != null  and acctcodec != ''"> and acctCodeC = #{acctcodec}</if>
+            <if test="idcodec != null  and idcodec != ''"> and idCodeC = #{idcodec}</if>
+            <if test="refnoc != null  and refnoc != ''"> and refNoC = #{refnoc}</if>
+            <if test="duedatec != null "> and dueDateC = #{duedatec}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="creatBy != null  and creatBy != ''"> and creat_by = #{creatBy}</if>
+            <if test="creatNo != null  and creatNo != ''"> and creat_no = #{creatNo}</if>
+            <if test="creatId != null  and creatId != ''"> and creat_id = #{creatId}</if>
+        </where>
+    </select>
+    <select  id="selectPayamtRules" parameterType="PayamtRules" resultMap="PayamtRulesResult">
+        select  a.info_name as  infoName ,a.info_code  infoCode,b.id, b.code, b.apprGroup, c.cal_type_name  as idCodeD , d.cal_type_name  as efNoD, b.dueDateD, b.acctCodeC,b.acctCodeD,
+        e.cal_type_name  as idCodeC, f.cal_type_name  as refNoC, b.dueDateC, b.comp_id, b.creat_by, b.creat_no, b.creat_id, b.create_time
+        from   human_hs_salary_basis a   left  join  human_hs_payamt_rules  b    on   a.info_code  =b. infoCode
+        left join  finance_aa_calType  c  on  b.comp_id =c.company_id  and   b.idCodeD =  c.cal_type_code
+        left join  finance_aa_calType d  on  b.comp_id =d.company_id  and   b.efNoD =  d.cal_type_code
+        left join  finance_aa_calType  e  on  b.comp_id =e.company_id  and   b.idCodeC =  e.cal_type_code
+        left join  finance_aa_calType f on  b.comp_id =f.company_id  and   b.refNoC =  f.cal_type_code
+
+        <if test="compId != null  and compId != ''"> and b.comp_id = #{compId}</if>
+        <if test="infocode != null  and infocode != ''"> and b.infoCode = #{infocode}</if>
+        where
+        a.parentid  in( select  id   from   human_hs_salary_basis  where  info_code ='payamtProject')
+
+    </select>
+    <select id="selectPayamtRulesById" parameterType="String" resultMap="PayamtRulesResult">
+        <include refid="selectPayamtRulesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPayamtRules" parameterType="PayamtRules">
+        insert into human_hs_payamt_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="apprgroup != null">apprGroup,</if>
+            <if test="infocode != null">infoCode,</if>
+            <if test="infoname != null">infoName,</if>
+            <if test="acctcoded != null">acctCodeD,</if>
+            <if test="efnod != null">efNoD,</if>
+            <if test="idcoded != null">idCodeD,</if>
+            <if test="duedated != null">dueDateD,</if>
+            <if test="acctcodec != null">acctCodeC,</if>
+            <if test="idcodec != null">idCodeC,</if>
+            <if test="refnoc != null">refNoC,</if>
+            <if test="duedatec != null">dueDateC,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="creatBy != null">creat_by,</if>
+            <if test="creatNo != null">creat_no,</if>
+            <if test="creatId != null">creat_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="apprgroup != null">#{apprgroup},</if>
+            <if test="infocode != null">#{infocode},</if>
+            <if test="infoname != null">#{infoname},</if>
+            <if test="acctcoded != null">#{acctcoded},</if>
+            <if test="efnod != null">#{efnod},</if>
+            <if test="idcoded != null">#{idcoded},</if>
+            <if test="duedated != null">#{duedated},</if>
+            <if test="acctcodec != null">#{acctcodec},</if>
+            <if test="idcodec != null">#{idcodec},</if>
+            <if test="refnoc != null">#{refnoc},</if>
+            <if test="duedatec != null">#{duedatec},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="creatBy != null">#{creatBy},</if>
+            <if test="creatNo != null">#{creatNo},</if>
+            <if test="creatId != null">#{creatId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePayamtRules" parameterType="PayamtRules">
+        update human_hs_payamt_rules
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="apprgroup != null">apprGroup = #{apprgroup},</if>
+            <if test="infocode != null">infoCode = #{infocode},</if>
+            <if test="infoname != null">infoName = #{infoname},</if>
+            <if test="acctcoded != null">acctCodeD = #{acctcoded},</if>
+            <if test="efnod != null">efNoD = #{efnod},</if>
+            <if test="idcoded != null">idCodeD = #{idcoded},</if>
+            <if test="duedated != null">dueDateD = #{duedated},</if>
+            <if test="acctcodec != null">acctCodeC = #{acctcodec},</if>
+            <if test="idcodec != null">idCodeC = #{idcodec},</if>
+            <if test="refnoc != null">refNoC = #{refnoc},</if>
+            <if test="duedatec != null">dueDateC = #{duedatec},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="creatBy != null">creat_by = #{creatBy},</if>
+            <if test="creatNo != null">creat_no = #{creatNo},</if>
+            <if test="creatId != null">creat_id = #{creatId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePayamtRulesById" parameterType="String">
+        delete from human_hs_payamt_rules where id = #{id}
+    </delete>
+
+    <delete id="deletePayamtRulesByIds" parameterType="String">
+        delete from human_hs_payamt_rules where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectPayamtRulesByCode" parameterType="String" resultMap="PayamtRulesResult">
+        <include refid="selectPayamtRulesVo"/>
+        where code = #{code}
+    </select>
+</mapper>

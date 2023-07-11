@@ -3,6 +3,7 @@ package com.jlkj.human.hs.service.impl;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.hs.domain.AccountRules;
+import com.jlkj.human.hs.domain.SalaryProjectBasis;
 import com.jlkj.human.hs.mapper.AccountRulesMapper;
 import com.jlkj.human.hs.service.IAccountRulesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,5 +121,17 @@ public class AccountRulesServiceImpl implements IAccountRulesService
             }
         }
         return count;
+    }
+
+    /**
+     * 查询公司薪酬项目
+     *
+     * @param compId 抛帐规则维护
+     * @return 抛帐规则维护
+     */
+    @Override
+    public List<SalaryProjectBasis> selectSalaryProjectTableList(String  compId)
+    {
+        return accountRulesMapper.getPayTable(compId);
     }
 }

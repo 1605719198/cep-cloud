@@ -1,6 +1,7 @@
 package com.jlkj.human.hs.service;
 
 import com.jlkj.human.hs.domain.AccountRules;
+import com.jlkj.human.hs.domain.SalaryProjectBasis;
 
 import java.util.List;
 
@@ -66,4 +67,12 @@ public interface IAccountRulesService
      * @return
      */
     public int insertAccountRules(List<AccountRules> accountRulesList);
+    /**
+    * @Description 查询公司薪酬表项目
+    * @Param No such property: code for class: Script1
+    * @return
+    * @Author 116519
+    * @Date 2023-07-10 16:29
+    **/
+    public  List<SalaryProjectBasis> selectSalaryProjectTableList(String  compId);
 }

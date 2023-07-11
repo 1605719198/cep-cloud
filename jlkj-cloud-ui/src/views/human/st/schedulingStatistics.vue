@@ -11,9 +11,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="班次开始时间" prop="extraWorkBegin" label-width="100px">
+      <el-form-item label="轮班方式" prop="shiftmodeId">
+        <el-select v-model="queryParams.shiftmodeId" placeholder="请选择轮班方式" style="width: 100%;" >
+          <el-option
+            v-for="dict in shiftModeList"
+            :key="dict.id"
+            :label="dict.turnTypeName"
+            :value="dict.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="班别" prop="classId">
+        <el-select v-model="queryParams.classId" placeholder="请选择班别" style="width: 100%">
+          <el-option
+            v-for="dict in shiftClassList"
+            :key="dict.id"
+            :label="dict.className"
+            :value="dict.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="开始时间" prop="startDate">
         <el-date-picker
-          v-model="queryParams.extraWorkBegin"
+          v-model="queryParams.startDate"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="~"
@@ -31,42 +51,30 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['human:holidayOvertimeStatistics:export']"
+          v-hasPermi="['human:schedulingStatistics:export']"
         >导出</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="holidayOvertimeStatisticsList" >
+    <el-table v-loading="loading" :data="schedulingStatisticsList" >
       <el-table-column label="序号" align="center" prop="num" width="60"/>
-      <el-table-column label="工号" align="center" prop="empNo" />
-      <el-table-column label="姓名" align="center" prop="empName" />
-      <el-table-column label="岗位全称" align="center" prop="postFullName" />
-      <el-table-column label="法定假日期" align="center" prop="legalHolDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.legalHolDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="轮班方式" align="center" prop="turnTypeName" />
       <el-table-column label="班别" align="center" prop="className" />
-      <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
+      <el-table-column label="开始时间" align="center" prop="startDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="班次开始时间" align="center" prop="extraWorkBegin" width="180">
+      <el-table-column label="结束时间" align="center" prop="endDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.extraWorkBegin, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="班次结束时间" align="center" prop="extraWorkEnd" width="180">
+      <el-table-column label="周期设定" align="center" prop="rule" />
+      <el-table-column label="输入人" align="center" prop="creator" />
+      <el-table-column label="输入日期" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.extraWorkEnd, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="加班时数" align="center" prop="extraWorkHours" />
-      <el-table-column label="刷卡时间" align="center" prop="slotCardTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.slotCardTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -82,19 +90,21 @@
 </template>
 
 <script>
-import { listHolidayOvertimeStatistics } from "@/api/human/st/holidayOvertimeStatistics";
+import { listSchedulingStatistics } from "@/api/human/st/schedulingStatistics";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
+import {listShiftMode} from "@/api/human/hd/shiftMode";
+import {listShiftClass} from "@/api/human/hd/shiftClass";
 
 export default {
-  name: "HolidayOvertimeStatistics",
+  name: "SchedulingStatistics",
   data() {
     return {
+      //公司列表
+      companyList:[],
       //轮班方式列表
       shiftModeList:[],
       //班别列表
       shiftClassList:[],
-      //公司列表
-      companyList:[],
       // 遮罩层
       loading: false,
       // 选中数组
@@ -107,8 +117,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 倒班人员法定假日加班统计表格数据
-      holidayOvertimeStatisticsList: [],
+      // 年度排班统计表格数据
+      schedulingStatisticsList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -118,7 +128,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: this.$store.state.user.userInfo.compId,
-        extraWorkBegin: null,
+        shiftmodeId: '',
+        classId: '',
+        startDate: null,
         date1:'',
         date2:'',
       },
@@ -129,15 +141,35 @@ export default {
       }
     };
   },
+  watch:{
+    'queryParams.compId':{
+      deep:true,
+      immediate:true,
+      handler:function( newV){
+        this.getShiftList();
+      }
+    },
+    'queryParams.shiftmodeId':{
+      deep:true,
+      immediate:false,
+      handler:function(newV){
+        if(newV!=null){
+          this.getShiftClass();
+        }else{
+          this.shiftClassList=[];
+        }
+      }
+    }
+  },
   created() {
     this.getCompanyList();
   },
   methods: {
-    /** 查询倒班人员法定假日加班统计列表 */
+    /** 查询年度排班统计列表 */
     getList() {
       this.loading = true;
-      listHolidayOvertimeStatistics(this.queryParams).then(response => {
-        this.holidayOvertimeStatisticsList = response.rows;
+      listSchedulingStatistics(this.queryParams).then(response => {
+        this.schedulingStatisticsList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -149,12 +181,27 @@ export default {
         }
       )
     },
+    //查询轮班方式
+    getShiftList(){
+      listShiftMode(this.queryParams).then(response => {
+        this.shiftModeList = response.rows
+      })
+    },
+    //查询班别
+    getShiftClass(){
+      var queryParams = {
+        shiftmodeId:this.queryParams.shiftmodeId
+      }
+      listShiftClass(queryParams).then(response => {
+        this.shiftClassList = response.rows;
+      });
+    },
     /** 日期查询范围变更*/
     dateFormat(val){
       if(val==null){
         this.queryParams.date1=null
         this.queryParams.date2=null
-        this.queryParams.extraWorkBegin=null
+        this.queryParams.startDate=null
         return
       }
       this.queryParams.date1 =val[0];
@@ -165,21 +212,18 @@ export default {
       this.form = {
         id: null,
         compId: null,
-        empId: null,
-        empNo: null,
-        empName: null,
-        postFullName: null,
-        postId: null,
-        legalHolDate: null,
-        turnTypeId: null,
+        shiftmodeId: null,
         turnTypeName: null,
         classId: null,
         className: null,
-        effectDate: null,
-        extraWorkBegin: null,
-        extraWorkEnd: null,
-        extraWorkHours: null,
-        slotCardTime: null
+        startDate: null,
+        endDate: null,
+        rule: null,
+        versionNo: null,
+        isNew: null,
+        creator: null,
+        creatorId: null,
+        createDate: null
       };
       this.resetForm("form");
     },
@@ -190,7 +234,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:倒班人员法定假日加班统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:年度排班统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&shiftmodeId='+this.queryParams.shiftmodeId+'&classId='+this.queryParams.classId, '_blank');
     }
   }
 };
