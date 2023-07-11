@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamTypeVo">
-        select type_id, parent_id, type_code, type_name, order_id, status, create_by, create_time from exam_type
+        select type_id, parent_id, type_code, type_name, order_id, status, create_by, create_time from human_ex_type
     </sql>
 
     <select id="selectExamTypeList" parameterType="ExamType" resultMap="ExamTypeResult">
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamType" parameterType="ExamType" >
-        insert into exam_type
+        insert into human_ex_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
             type_id,
             <if test="parentId != null">parent_id,</if>
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             create_time,
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(type_id),0) + 1 from exam_type),
+            (select nvl(max(type_id),0) + 1 from human_ex_type),
             <if test="parentId != null">#{parentId},</if>
             <if test="typeCode != null">#{typeCode},</if>
             <if test="typeName != null and typeName != ''">#{typeName},</if>
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamType" parameterType="ExamType">
-        update exam_type
+        update human_ex_type
         <trim prefix="SET" suffixOverrides=",">
             <if test="parentId != null">parent_id = #{parentId},</if>
             <if test="typeCode != null">type_code = #{typeCode},</if>
@@ -70,11 +70,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamTypeById" parameterType="Long">
-        delete from exam_type where type_id = #{typeId}
+        delete from human_ex_type where type_id = #{typeId}
     </delete>
 
     <delete id="deleteExamTypeByIds" parameterType="String">
-        delete from exam_type where type_id in 
+        delete from human_ex_type where type_id in
         <foreach item="typeId" collection="array" open="(" separator="," close=")">
             #{typeId}
         </foreach>
