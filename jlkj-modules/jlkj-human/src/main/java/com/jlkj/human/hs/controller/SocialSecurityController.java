@@ -104,13 +104,4 @@ public class SocialSecurityController extends BaseController
     {
         return toAjax(socialSecurityService.deleteSocialSecurityByIds(ids));
     }
-
-    /**
-     * 获取版本列表
-     */
-    @GetMapping("/selectVersion/{payAreaId}")
-    public AjaxResult selectVersion(@PathVariable String payAreaId)
-    {
-        return AjaxResult.success(socialSecurityService.getVersionList(payAreaId));
-    }
 }

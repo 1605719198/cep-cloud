@@ -68,4 +68,11 @@ public interface IHumanHsAmtService
      * @return 薪资应付作业集合
      */
     public List<HumanHsAmtDetail> getDetailAmtList(HumanHsAmt humanHsAmt);
+    /**
+     * 批量删除薪资应付作业
+     *
+     * @param ids 需要删除的薪资应付作业主键集合
+     * @return 结果
+     */
+    public int sendAA(String[] ids);
 }

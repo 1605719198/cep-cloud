@@ -27,9 +27,10 @@ public class IncomeTaxController extends BaseController
 {
     @Autowired
     private IIncomeTaxService incomeTaxService;
-
     /**
      * 查询各公司所得税起征点设定列表
+     * @param incomeTax
+     * @return
      */
     @RequiresPermissions("human:incomeTax:list")
     @GetMapping("/list")
@@ -41,8 +42,12 @@ public class IncomeTaxController extends BaseController
     }
 
     /**
-     * 导出各公司所得税起征点设定列表
-     */
+    * @Description
+    * @Param 导出各公司所得税起征点设定列表
+    * @return
+    * @Author 你的名字或工号
+    * @Date 2023-06-26 15:41
+    **/
     @RequiresPermissions("human:incomeTax:export")
     @Log(title = "各公司所得税起征点设定", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -71,7 +76,12 @@ public class IncomeTaxController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody IncomeTax incomeTax)
     {
-        return toAjax(incomeTaxService.insertIncomeTax(incomeTax));
+        int count =incomeTaxService.insertIncomeTax(incomeTax);
+        if(count>0){
+            return success("新增成功");
+        }else{
+            return error("新增失败");
+        }
     }
 
     /**

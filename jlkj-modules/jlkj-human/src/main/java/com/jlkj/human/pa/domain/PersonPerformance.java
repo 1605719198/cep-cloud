@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.common.core.annotation.Excel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -28,31 +29,37 @@ public class PersonPerformance implements Serializable {
     /**
      * 公司别
      */
+    @Excel(name = "公司")
     private String compId;
 
     /**
      * 考评类别（1-月度，2-季度，3-年度）
      */
+    @Excel(name = "考评类别")
     private String meritType;
 
     /**
      * 考评年月
      */
+    @Excel(name = "考评年月")
     private String meritMonth;
 
     /**
      * 员工ID
      */
+    @Excel(name = "员工编号/姓名")
     private String empId;
 
     /**
      * 岗位类别（岗位管理作业）
      */
+    @Excel(name = "人员类别")
     private String deptType;
 
     /**
      * 一级单位
      */
+    @Excel(name = "单位")
     private String dept;
 
     /**
@@ -63,6 +70,7 @@ public class PersonPerformance implements Serializable {
     /**
      * 职称
      */
+    @Excel(name = "职称")
     private String jobTitleId;
 
     /**
@@ -158,7 +166,18 @@ public class PersonPerformance implements Serializable {
     /**
      * 考评得分
      */
+    @Excel(name = "考绩分数")
     private BigDecimal score;
+
+    /**
+     * 考评主管
+     */
+    private String admEmpId;
+
+    /**
+     * 最终复核主管
+     */
+    private String lastEmpId;
 
     /**
      * 自评得分
@@ -173,6 +192,7 @@ public class PersonPerformance implements Serializable {
     /**
      * 等第
      */
+    @Excel(name = "考评年月")
     private String grade;
 
     /**
@@ -188,11 +208,13 @@ public class PersonPerformance implements Serializable {
     /**
      * 输入人
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String creator;
 
     /**
      * 输入人ID
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String creatorId;
 
     /**

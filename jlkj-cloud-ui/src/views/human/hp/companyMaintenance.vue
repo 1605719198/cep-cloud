@@ -658,7 +658,7 @@ export default {
         ],
         orderNum:[
           { required: true, validator: (rule, value, callback)=>{
-            this.numberLength(rule,value,callback,false,10,1)
+            this.numberLength(rule,value,callback,false,10,0)
             }, trigger: "blur" }
         ]
       }

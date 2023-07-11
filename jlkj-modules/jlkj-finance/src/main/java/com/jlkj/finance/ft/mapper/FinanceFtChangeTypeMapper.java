@@ -1,8 +1,10 @@
 package com.jlkj.finance.ft.mapper;
 
 import com.jlkj.finance.ft.domain.FinanceFtChangeType;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 固定资产变动方式Mapper接口
@@ -67,4 +69,15 @@ public interface FinanceFtChangeTypeMapper
      * @return 结果
      */
     public int deleteFinanceFtChangeTypeByUuids(String[] uuids);
+
+    /**
+     * 按公司别查询
+     * @description 按公司别查询
+     * @param companyId 公司别
+     * @return java.util.List<Map<String,String>>
+     * @Author 114288
+     * @Date 2023/7/7 10:28
+     **/
+    @SuppressWarnings("MybatisXMapperMethodInspection")
+    public List<Map<String,String>> selectChangeTypeList(@Param("companyId") String companyId, @Param("billNature") String billNature);
 }

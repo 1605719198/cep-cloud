@@ -49,13 +49,13 @@ public class TripAddressServiceImpl implements ITripAddressService
     /**
      * 查询出差地点记录列表
      *
-     * @param tripAddressDTO 出差地点记录
+     * @param address 出差地点记录
      * @return 出差地点记录
      */
     @Override
-    public List<TripAddressDTO> selectTripAddress(TripAddressDTO tripAddressDTO)
+    public List<TripAddressDTO> selectTripAddress(TripAddress address)
     {
-        return tripAddressMapper.selectTripAddress(tripAddressDTO);
+        return tripAddressMapper.selectTripAddress(address);
     }
 
     /**

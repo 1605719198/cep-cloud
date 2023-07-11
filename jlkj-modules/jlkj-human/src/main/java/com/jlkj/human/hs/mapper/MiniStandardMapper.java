@@ -89,4 +89,16 @@ public interface MiniStandardMapper
      * @Date 2023/6/26 15:35
      **/
     public int deleteMiniStandardByVersion(@Param("compId") String compId, @Param("version") Long version);
+
+    /**
+     * 新增工资标准数据
+     * @Description 新增工资标准数据
+     * @param compId 公司别
+     * @param effectDate 生效日期
+     * @param version 版本号
+     * @return 最低工资标准新增结果
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
+    public int updateMiniStandardById(@Param("compId") String compId,@Param("version") String version,@Param("effectDate") String effectDate);
 }

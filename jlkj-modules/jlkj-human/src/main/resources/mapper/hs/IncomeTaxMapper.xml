@@ -115,4 +115,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteIncomeTaxByVersion" parameterType="map">
         delete from human_hs_income_tax where comp_id = #{compId} and  version= #{version}
     </delete>
+
+
+    <insert id="batchInsertIncomeTax">
+        insert into human_hs_income_tax(uuid, comp_id, emp_type_id, deduct_num, remark, effect_date, version, resv_attr1, resv_attr2, creator, creator_id, creator_name, create_date) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.uuid}, #{item.comp_id}, #{item.emp_type_id}, #{item.deduct_num},  #{item.remark}, #{item.effect_date},  #{item.version},
+            #{item.resv_attr1}, #{item.resv_attr2}, #{item.creator}, #{item.creator_id}, #{item.creator_name}, #{item.create_date})
+        </foreach>
+    </insert>
 </mapper>

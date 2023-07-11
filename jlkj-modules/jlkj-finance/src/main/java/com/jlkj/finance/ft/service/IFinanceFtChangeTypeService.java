@@ -3,6 +3,7 @@ package com.jlkj.finance.ft.service;
 import com.jlkj.finance.ft.domain.FinanceFtChangeType;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 固定资产变动方式Service接口
@@ -59,4 +60,15 @@ public interface IFinanceFtChangeTypeService
      * @return 结果
      */
     public int deleteFinanceFtChangeTypeByUuid(String uuid);
+
+    /**
+     * 查询变动方式下拉选单
+     * @description  查询变动方式下拉选单
+     * @param companyId 公司别
+     * @param billNature 单据性质
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+     * @Author 116524
+     * @Date 2023/7/7 10:36
+     **/
+    public List<Map<String,String>> selectChangeTypeList(String companyId,String billNature);
 }

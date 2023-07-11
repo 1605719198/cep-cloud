@@ -51,9 +51,16 @@ public class TripAccountRule extends BaseEntity
     @Excel(name = "借方户号")
     private String idCoded;
 
+    /** 借方户号名称 */
+    private String idNamed;
+
+
     /** 借方参号 */
     @Excel(name = "借方参号")
     private String refNod;
+
+    /** 借方参号名称 */
+    private String refNamed;
 
     /** 借方到期日 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -71,9 +78,15 @@ public class TripAccountRule extends BaseEntity
     @Excel(name = "贷方户号")
     private String idCodec;
 
+    /** 贷方户号名称 */
+    private String idNamec;
+
     /** 贷方参号 */
     @Excel(name = "贷方参号")
     private String refNoc;
+
+    /** 贷方参号名称 */
+    private String refNamec;
 
     /** 贷方到期日 */
     @JsonFormat(pattern = "yyyy-MM-dd")

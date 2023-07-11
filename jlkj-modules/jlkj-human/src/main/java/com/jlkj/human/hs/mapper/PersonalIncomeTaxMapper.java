@@ -88,4 +88,16 @@ public interface PersonalIncomeTaxMapper
      * @Date 2023/6/26 15:35
      **/
     public int deletePersonalIncomeTaxByVersionNo(@Param("type") String type, @Param("versionNo") Long versionNo);
+
+    /**
+     * 新增个人所得税数据
+     * @Description 新增个人所得税数据
+     * @param type 类别
+     * @param versionNo 版本号
+     * @param effectDate 生效日期
+     * @return 个人所得税新增结果
+     * @author 267383
+     * @Date 2023/6/26 15:35
+     **/
+    public  int  updatePersonalIncomeTaxById(@Param("type") String type, @Param("versionNo") String versionNo,@Param("effectDate") String effectDate);
 }

@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import com.jlkj.common.core.utils.BeanCopyUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hs.domain.IncomeTax;
 import com.jlkj.human.hs.mapper.IncomeTaxMapper;
@@ -56,11 +57,12 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
     }
 
     /**
-     * 新增各公司所得税起征点设定
-     *
-     * @param incomeTax 各公司所得税起征点设定
-     * @return 结果
-     */
+    * @Description
+    * @Param 新增各公司所得税起征点设定
+    * @return
+    * @Author 116519
+    * @Date 2023-06-26 17:38
+    **/
     @Override
     public int insertIncomeTax(IncomeTax incomeTax)
     {
@@ -75,17 +77,9 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
         }
         List<IncomeTax> incomeTaxList = incomeTax.getIncometaxDetailListList();
         for (IncomeTax item : incomeTaxList) {
-            item.setUuid(IdUtils.simpleUUID());
-            item.setCompId(incomeTax.getCompId());
-            item.setEffectDate(incomeTax.getEffectDate());
-            item.setVersion(incomeTax.getVersion());
-            item.setCreator(incomeTax.getCreator());
-            item.setCreatorId(incomeTax.getCreatorId());
-            item.setCreatorName(incomeTax.getCreatorName());
-            item.setCreateDate(incomeTax.getCreateDate());
-             incomeTaxMapper.insertIncomeTax(item);
+            BeanCopyUtils.copy(incomeTax,item);
         }
-        return 1;
+        return incomeTaxMapper.batchInsertIncomeTax(incomeTaxList);
     }
 
     /**
@@ -101,18 +95,10 @@ public class IncomeTaxServiceImpl implements IIncomeTaxService
        int  del =  incomeTaxMapper.deleteIncomeTaxByVersion(incomeTax.getCompId(),incomeTax.getVersion());
         List<IncomeTax> incomeTaxList = incomeTax.getIncometaxDetailListList();
         for (IncomeTax item : incomeTaxList) {
-            item.setEffectDate(incomeTax.getEffectDate());
-            item.setCreator(incomeTax.getCreator());
-            item.setCreatorId(incomeTax.getCreatorId());
-            item.setCreatorName(incomeTax.getCreatorName());
-            item.setCreateDate(incomeTax.getCreateDate());
+            BeanCopyUtils.copy(incomeTax,item);
             item.setUuid(IdUtils.simpleUUID());
-            item.setVersion(incomeTax.getVersion());
-            item.setCompId(incomeTax.getCompId());
-            incomeTaxMapper.insertIncomeTax(item);
-
         }
-        return 1;
+        return incomeTaxMapper.batchInsertIncomeTax(incomeTaxList);
     }
 
     /**

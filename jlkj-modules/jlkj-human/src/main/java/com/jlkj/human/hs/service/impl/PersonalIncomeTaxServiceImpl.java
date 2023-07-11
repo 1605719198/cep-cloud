@@ -72,10 +72,10 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
         //如果没有最大版本时，默认1
         if(!StringUtils.isEmpty(versionNoMap)) {
             //生效日期
-            Date inEffectDate1 = DateUtils.dateTime("yyyy_MM_dd",versionNoMap.get("effectDate").toString());
+            String inEffectDate1 = versionNoMap.get("effectDate").toString();
             versionNo = Long.parseLong(versionNoMap.get("versionNo").toString());
             //生效日期小于操作日期
-            if(nowdate.compareTo(inEffectDate1)<0 ){
+            if( inEffectDate1.compareTo(DateUtils.parseDateToStr("yyyy-MM-dd",nowdate))<0){
                 versionNo = versionNo + 1;
             }
         }
@@ -111,17 +111,9 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                     personalIncomeTaxMapper.insertPersonalIncomeTax(personalIncomeTax);
                 }
             }
-        }
+        }//@Param("versionNo" String versionNo
         //统一更新版本生效日期update（versionNo，type） 计划生效日期inEffectDate 更新
-
-
-
-
-
-        
-
-
-        return 1;
+        return personalIncomeTaxMapper.updatePersonalIncomeTaxById(type,versionNo.toString(),DateUtils.parseDateToStr("yyyy-MM-dd",inEffectDate));
     }
 
     /**

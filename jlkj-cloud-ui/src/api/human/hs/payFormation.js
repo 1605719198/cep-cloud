@@ -19,9 +19,9 @@ export function addPayFormation(data) {
 }
 
 // 删除公司薪酬项目设定
-export function delPayFormation(uuid) {
+export function delPayFormation(uuids) {
   return request({
-    url: '/human/payFormation/' + uuid,
+    url: `/human/payFormation/delPayFormation?uuid=${uuids}`,
     method: 'delete'
   })
 }

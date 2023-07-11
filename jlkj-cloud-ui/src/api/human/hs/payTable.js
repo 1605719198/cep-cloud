@@ -19,9 +19,9 @@ export function addPayTable(data) {
 }
 
 // 删除公司级薪资项目维护
-export function delPayTable(uuid) {
+export function delPayTable(uuids) {
   return request({
-    url: '/human/payTable/' + uuid,
+    url: `/human/payTable/delPayTable?uuid=${uuids}`,
     method: 'delete'
   })
 }

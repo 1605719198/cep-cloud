@@ -18,7 +18,7 @@
         <el-select v-model="queryParams.type" placeholder="请选择地点属性" clearable>
           <el-option
             v-for="dict in attendenceOptions.AddressType"
-            :key="dict.dicNo"
+            :key="dict.id.toString()"
             :label="dict.dicName"
             :value="dict.dicNo"
           ></el-option>
@@ -33,6 +33,11 @@
       <el-table @row-click="clickRow" ref="table" :data="addressList" @selection-change="handleSelectionChange"
                 height="360px">
         <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column label="国别" align="center" prop="nation">
+          <template v-slot="scope">
+            <dict-tag-human :options="attendenceOptions.Country" :value="scope.row.nation"/>
+          </template>
+        </el-table-column>
         <el-table-column label="地点" align="center" prop="address" />
         <el-table-column label="拼音缩写" align="center" prop="simpl" />
         <el-table-column label="地点属性" align="center" prop="type" >
@@ -89,7 +94,7 @@ export default {
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
-        optionsType: ['AddressType']
+        optionsType: ['AddressType','Country']
       },
       //出勤选单选项列表
       attendenceOptions: [],
@@ -100,22 +105,21 @@ export default {
         compId: null,
         address: null,
         type: null,
+        nation: null,
+        isInternal: null,
       },
     };
   },
-  created() {
-  },
-  watch: {
-    'queryParams.compId'(val) {
-      this.getList();
-    }
+  mounted() {
+    this.getDisc()
+    this.getCompanyList()
   },
   methods: {
     // 显示弹框
-    show(val) {
-      this.getDisc()
-      this.getCompanyList()
-      this.queryParams.compId=val;
+    show(compId,nation,isInternal) {
+      this.queryParams.compId=compId;
+      this.queryParams.nation = nation;
+      this.queryParams.isInternal = isInternal;
       this.getList();
       this.visible = true;
       this.isSingle = true;

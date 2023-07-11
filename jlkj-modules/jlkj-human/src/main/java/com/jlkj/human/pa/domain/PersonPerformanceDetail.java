@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * 个人绩效计划明细档
+ * @author HuangBing
  * @TableName human_pa_person_performance_detail
  */
 @TableName(value ="human_pa_person_performance_detail")
@@ -75,12 +76,12 @@ public class PersonPerformanceDetail implements Serializable {
     /**
      * 自评
      */
-    private String selfScore;
+    private BigDecimal selfScore;
 
     /**
      * 主管考评
      */
-    private String admScore;
+    private BigDecimal admScore;
 
     /**
      * 备注
@@ -115,11 +116,13 @@ public class PersonPerformanceDetail implements Serializable {
     /**
      * 输入人
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String creator;
 
     /**
      * 输入人ID
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String creatorId;
 
     /**

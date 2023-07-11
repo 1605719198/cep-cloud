@@ -15,27 +15,27 @@
         <el-select v-model="queryParams.titleKind" placeholder="请选择人员类别" clearable>
           <el-option
             v-for="dict in baseInfoData.people_hierarchy"
-            :key="dict.dicNo"
+            :key="dict.uuid"
             :label="dict.dicName"
             :value="dict.dicNo"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="国别" prop="nation">
-        <el-select v-model="queryParams.nation" placeholder="请选择国别" clearable>
-          <el-option
-            v-for="dict in attendenceOptions.Country"
-            :key="dict.dicNo"
-            :label="dict.dicName"
-            :value="dict.dicNo"
-          />
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="国别" prop="nation">-->
+<!--        <el-select v-model="queryParams.nation" placeholder="请选择国别" clearable>-->
+<!--          <el-option-->
+<!--            v-for="dict in attendenceOptions.Country"-->
+<!--            :key="dict.id.toString()"-->
+<!--            :label="dict.dicName"-->
+<!--            :value="dict.dicNo"-->
+<!--          />-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
       <el-form-item label="城市" prop="area">
         <el-select v-model="queryParams.area" placeholder="请选择城市" clearable>
           <el-option
             v-for="dict in cityList"
-            :key="dict.dicNo"
+            :key="dict.id"
             :label="dict.dicName"
             :value="dict.dicNo"
           />
@@ -61,18 +61,6 @@
       </el-col>
       <el-col :span="1.5">
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-delete"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleDelete"-->
-<!--          v-hasPermi="['human:tripDayRule:remove']"-->
-<!--        >删除-->
-<!--        </el-button>-->
-<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -142,8 +130,8 @@
     />
 
     <!-- 添加或修改出差日标准维护对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body class="customDialogStyle">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body class="customDialogStyle">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" v-if="refresh">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司别" prop="compName">
@@ -153,14 +141,13 @@
           <el-col :span="12">
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="人员类别" prop="titleKind">
-              <el-select v-model="form.titleKind" placeholder="请选择人员类别" clearable>
+              <el-select v-model="form.titleKind" placeholder="请选择人员类别" style="width: 100%" clearable>
                 <el-option
                   v-for="dict in baseInfoData.people_hierarchy"
-                  :key="dict.dicNo"
+                  :key="dict.uuid"
                   :label="dict.dicName"
                   :value="dict.dicNo"
                 />
@@ -169,10 +156,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="国别" prop="nation">
-              <el-select v-model="form.nation" placeholder="请选择国别" clearable>
+              <el-select v-model="form.nation" placeholder="请选择国别" style="width: 100%" clearable>
                 <el-option
                   v-for="dict in attendenceOptions.Country"
-                  :key="dict.dicNo"
+                  :key="dict.id.toString()"
                   :label="dict.dicName"
                   :value="dict.dicNo"
                 />
@@ -180,24 +167,19 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="城市" prop="area">
-              <el-select v-model="form.area" placeholder="请选择城市" clearable>
-                <el-option
-                  v-for="dict in cityList"
-                  :key="dict.dicNo"
-                  :label="dict.dicName"
-                  :value="dict.dicNo"
-                />
-              </el-select>
+            <el-form-item label="城市" prop="areaName">
+              <el-input maxlength="32"  v-model="form.areaName" placeholder="请选择城市" disabled>
+                <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否国内" prop="isInternal">
               <el-radio-group v-model="form.isInternal">
                 <el-radio
+                  disabled
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
                   :label="dict.value"
@@ -207,24 +189,22 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="住宿费" prop="lodgAllow">
-              <el-input v-model="form.lodgAllow" placeholder="请输入住宿费" type="number"/>
+              <el-input v-model.number="form.lodgAllow" placeholder="请输入住宿费" type="number"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="交通费" prop="trafficAllow">
-              <el-input v-model="form.trafficAllow" placeholder="请输入交通费" type="number"/>
+              <el-input v-model.number="form.trafficAllow" placeholder="请输入交通费" type="number"/>
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="伙食费" prop="foodAllow">
-              <el-input v-model="form.foodAllow" placeholder="请输入伙食费" type="number"/>
+              <el-input v-model.number="form.foodAllow" placeholder="请输入伙食费" type="number"/>
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="this.form.id!=null">
@@ -240,7 +220,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20" v-if="this.form.id!=null">
           <el-col :span="12">
             <el-form-item label="操作日期" prop="createDate">
@@ -253,14 +232,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <select-address ref="select" @ok="getAddress"></select-address>
   </div>
 </template>
 
@@ -276,6 +254,7 @@ import {
   listTripDayArea,
 } from '@/api/human/hd/tripDayRule'
 import { listTripAddress } from '@/api/human/hd/tripAddressRule'
+import SelectAddress from "@/views/components/human/selectView/hd/selectTripAddress";
 import { getAttendenceOptions } from '@/api/human/hd/attendenceBasis'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
@@ -283,9 +262,11 @@ import { getDateTime } from "@/api/human/hd/ahumanUtils"
 export default {
   name: 'TripDayRule',
   dicts: ['sys_yes_no', 'sys_normal_disable'],
-  components: { DictTagHuman },
+  components: { DictTagHuman, SelectAddress },
   data() {
     return {
+      //刷新
+      refresh: true,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -347,28 +328,34 @@ export default {
           { required: true, message: '公司别不能为空', trigger: 'blur' }
         ],
         lodgAllow: [
-          {max:22, message: '住宿费长度不能超过22', trigger: 'blur' }
+          { type: 'number',min:0,max:100000000, message: '住宿费必须在0到100000000之间', trigger: 'blur' }
         ],
         trafficAllow: [
-          {max:22, message: '交通费长度不能超过22', trigger: 'blur' }
+          { type: 'number',min:0, max:100000000, message: '交通费必须在0到100000000之间', trigger: 'blur' }
         ],
         foodAllow: [
-          {max:22, message: '伙食费长度不能超过22', trigger: 'blur' }
+          { type: 'number',min:0, max:100000000,  message: '伙食费必须在0到100000000之间', trigger: 'blur' }
         ],
       }
     }
   },
   watch: {
     'queryParams.compId'(val) {
-      this.getList();
-      this.getDisc();
-    }
+      if(val){
+        this.queryParams.titleKind = null;
+        this.queryParams.nation = null;
+        this.queryParams.area = null;
+        this.getList();
+        listTripAddress(this.queryParams).then(response => {
+          this.cityList = response.rows;
+        })
+      }
+    },
   },
   created() {
-    this.initData()
-    this.getCompanyList()
-    this.getDisc()
-    this.getList()
+    this.getDisc();
+    this.initData();
+    this.getCompanyList();
   },
   methods: {
     //表单数据配置
@@ -431,6 +418,7 @@ export default {
         titleKind: null,
         nation: null,
         area: null,
+        areaName: null,
         lodgAllow: null,
         trafficAllow: null,
         foodAllow: null,
@@ -472,6 +460,11 @@ export default {
       getTripDayRule(id).then(response => {
         this.form = response.data
         this.setForm();
+        this.cityList.forEach((value)=>{
+          if(value.dicNo === this.form.area){
+            this.form.areaName = value.dicName
+          }
+        })
         this.open = true
         this.title = '修改出差日标准维护'
       })
@@ -507,12 +500,19 @@ export default {
       }).catch(() => {
       })
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('human/tripDayRule/export', {
-        ...this.queryParams
-      }, `tripDayRule_${new Date().getTime()}.xlsx`)
-    }
+    /** 点选获取地点信息 */
+    getAddress(val) {
+      this.form.area = val[0].simpl
+      this.form.areaName = val[0].address;
+      this.form.isInternal = val[0].isInternal;
+      this.form.nation = val[0].nation
+      this.refresh = false;
+      this.refresh = true;
+    },
+    /** 人员选单事件 */
+    inputClick() {
+      this.$refs.select.show(this.queryParams.compId,this.form.nation,null);
+    },
   }
 }
 </script>

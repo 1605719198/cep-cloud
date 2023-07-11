@@ -61,11 +61,43 @@ public interface IncomeTaxMapper
      * @return 结果
      */
     public int deleteIncomeTaxByUuids(String[] uuids);
-
+/**
+* @Description
+* @Param 根据公司别 取得版本号下拉选单
+* @return
+* @Author 116519
+* @Date 2023-06-26 16:56
+**/
     List<IncomeTax> getVersionList(String compId);
 
+/**
+* @Description
+* @Param 根据公司别  取得当前最大版本号
+* @return
+* @Author 116519
+* @Date 2023-06-26 16:56
+**/
 
     Map<String,Object> selectMaxVersion(String compId);
+
+    /**
+    * @Description
+    * @Param 根据公司别 和版本号删除明细资料
+    * @return
+    * @Author 116519
+    * @Date 2023-06-26 16:56
+    **/
+
     public int deleteIncomeTaxByVersion(@Param("compId") String compId,@Param("version") Long version);
+
+   /**
+   * @Description
+   * @Param 批量新增
+   * @return
+   * @Author 116519
+   * @Date 2023-06-26 16:57
+   **/
+
+    public int batchInsertIncomeTax(List<IncomeTax> incomeTaxList);
 
 }

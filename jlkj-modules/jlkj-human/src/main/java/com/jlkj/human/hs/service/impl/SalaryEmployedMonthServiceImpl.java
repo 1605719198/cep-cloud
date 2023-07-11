@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Validator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 员工受雇月维护Service业务层处理
@@ -66,17 +67,25 @@ public class SalaryEmployedMonthServiceImpl implements ISalaryEmployedMonthServi
             SalaryEmployedMonth param = new SalaryEmployedMonth();
             param.setEmpNo(salaryEmployedMonth.getEmpNo());
             List<SalaryEmployedMonth> salaryEmployedMonths = salaryEmployedMonthMapper.selectSalaryEmployedMonthList(param);
-            for (SalaryEmployedMonth item : salaryEmployedMonths) {
-                if (!item.getEmpNo().isEmpty()) {
-                    throw new ServiceException("员工不允许重复");
-                }
-            }
+            //修改
             if (salaryEmployedMonth.getId() != null) {
+                for (SalaryEmployedMonth item : salaryEmployedMonths) {
+                    //当前保存ID不等于查询数据ID时
+                    if(!Objects.equals(item.getId(), salaryEmployedMonth.getId())){
+                        throw new ServiceException("员工不允许重复");
+                    }
+                }
                 salaryEmployedMonth.setCreatorId(SecurityUtils.getUserId().toString());
                 salaryEmployedMonth.setCreator(SecurityUtils.getNickName());
                 salaryEmployedMonth.setCreateDate(new Date());
                 salaryEmployedMonthMapper.updateSalaryEmployedMonth(salaryEmployedMonth);
             } else {
+                for (SalaryEmployedMonth item : salaryEmployedMonths) {
+                    //当前保存ID不等于查询数据ID时
+                    if(!item.getEmpNo().isEmpty() ){
+                        throw new ServiceException("员工不允许重复");
+                    }
+                }
                 salaryEmployedMonth.setId(IdUtils.simpleUUID());
                 salaryEmployedMonthMapper.insertSalaryEmployedMonth(salaryEmployedMonth);
             }

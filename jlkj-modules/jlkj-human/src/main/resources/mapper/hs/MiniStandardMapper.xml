@@ -105,4 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteMiniStandardByVersion" parameterType="map">
         DELETE FROM human_hs_mini_standard WHERE comp_id = #{compId} AND  version= #{version}
     </delete>
+
+    <update id="updateMiniStandardById" parameterType="String">
+        UPDATE human_hs_mini_standard SET effect_date = #{effectDate} WHERE comp_id = #{compId} AND version= #{version}
+    </update>
 </mapper>

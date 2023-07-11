@@ -5,6 +5,7 @@ import com.jlkj.common.core.constant.TokenConstants;
 import com.jlkj.common.core.context.SecurityContextHolder;
 import com.jlkj.common.core.utils.ServletUtils;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -122,6 +123,14 @@ public class SecurityUtils
     public static String getNickName()
     {
             return getLoginUser().getSysUser().getNickName();
+    }
+
+    /**
+     * 获取用户实体类
+     * @return
+     */
+    public static SysUser getUser() {
+        return getLoginUser().getSysUser();
     }
     /**
      * @description 取得当前登录人员的公司别信息

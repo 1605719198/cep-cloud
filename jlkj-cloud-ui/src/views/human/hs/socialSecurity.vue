@@ -9,9 +9,9 @@
               <div style="background:#409EFF" align="center">
                 缴费地区
               </div>
-                <div id="changeColor" v-for="(dict,index) in salaryOptions.SocialSecurity" align="center" @click="changePostName(dict,index)">
-                  {{dict.dicName}}
-                </div>
+              <div id="changeColor" v-for="(dict,index) in salaryOptions.SocialSecurity" align="center" @click="changePostName(dict,index)">
+                {{dict.dicName}}
+              </div>
             </div>
           </el-col>
           <!-- 右侧列表 -->
@@ -20,7 +20,7 @@
               <div class="avue-crud__search" style="border: 0">
                 <el-row>
                   <el-col :span="20">
-                    <el-form :inline="true">
+                    <el-form :inline="true" >
                       <el-form-item label="版本号" prop="version">
                         <el-select v-model="queryParams.version" placeholder="请选择版本号">
                           <el-option
@@ -33,7 +33,7 @@
                       </el-form-item>
                       <!-- 操作按钮 -->
                       <el-form-item>
-                      <el-button type="primary" icon="el-icon-search" plain size="mini" @click="handleQuery">搜索</el-button>
+                        <el-button type="primary" icon="el-icon-search" plain size="mini" @click="handleQuery">搜索</el-button>
                       </el-form-item>
                       <el-form-item>
                         <el-button v-hasPermi="['human:socialSecurity:add']" icon="el-icon-edit" type="primary" size="mini" plain :disabled="multiple" @click="handleSave">保存</el-button>
@@ -76,118 +76,118 @@
                   </el-form>
                 </el-row>
               </div>
-    <div>
+              <div>
 
-      <el-form ref="form" :model="form" :rules="rules">
-      <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="form.socialSecurityList" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="社保公积金项目" align="center" prop="salaryProjectId" width="120">
-        <template v-slot="scope">
-          <el-select v-model="scope.row.salaryProjectId" >
-            <el-option
-              v-for="dict in salaryList"
-              :key="dict.id"
-              :label="dict.payProName"
-              :value="dict.id"
-            />
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column label="单位缴纳比例%" align="center" prop="comPro" width="120">
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comPro'" :rules="rules.mon">
-          <el-input v-model="scope.row.comPro" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="单位附加金额" align="center" prop="comMon" >
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comMon'" :rules="rules.mon">
-          <el-input v-model="scope.row.comMon" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="个人缴纳比例%" align="center" prop="perPro" width="120">
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perPro'" :rules="rules.mon">
-          <el-input v-model="scope.row.perPro" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="个人附加金额" align="center" prop="perMon" >
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perMon'" :rules="rules.mon">
-          <el-input v-model="scope.row.perMon" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="基数上限" align="center" prop="baseUcl" >
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
-          <el-input v-model="scope.row.baseUcl" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="基数下限" align="center" prop="baseLl" >
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
-          <el-input v-model="scope.row.baseLl" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="小数位数" align="center" prop="deciBit" >
-        <template v-slot="scope">
-          <el-form-item :prop="'socialSecurityList.' + scope.$index + '.deciBit'" :rules="rules.mon">
-          <el-input v-model="scope.row.deciBit" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="进位方式" align="center" prop="carryMode">
-        <template v-slot="scope">
-          <el-select v-model="scope.row.carryMode" >
-            <el-option
-              v-for="dict in salaryOptions.CarryMethod"
-              :key="dict.dicNo"
-              :label="dict.dicName"
-              :value="dict.dicNo"
-            />
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column label="生效日期" align="center" prop="effectDate" >
-        <template v-slot="scope">
-          <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="输入人" align="center" prop="creator" />
-      <el-table-column label="输入日期" align="center" prop="createDate" >
-        <template v-slot="scope">
-          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-      </el-form>
+                <el-form ref="form" :model="form" :rules="rules">
+                  <el-table height="70vh" size="small" v-loading="table.loading" :row-class-name="addIndex" :data="form.socialSecurityList" @selection-change="handleSelectionChange" @row-click="addLine" stripe>
+                    <el-table-column type="selection" width="55" align="center" />
+                    <el-table-column label="社保公积金项目" align="center" prop="salaryProjectId" width="120">
+                      <template v-slot="scope">
+                        <el-select v-model="scope.row.salaryProjectId" >
+                          <el-option
+                            v-for="dict in salaryList"
+                            :key="dict.id"
+                            :label="dict.payProName"
+                            :value="dict.id"
+                          />
+                        </el-select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="单位缴纳比例%" align="center" prop="comPro" width="120">
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comPro'" :rules="rules.mon">
+                          <el-input v-model="scope.row.comPro" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="单位附加金额" align="center" prop="comMon" >
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.comMon'" :rules="rules.mon">
+                          <el-input v-model="scope.row.comMon" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="个人缴纳比例%" align="center" prop="perPro" width="120">
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perPro'" :rules="rules.mon">
+                          <el-input v-model="scope.row.perPro" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="个人附加金额" align="center" prop="perMon" >
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.perMon'" :rules="rules.mon">
+                          <el-input v-model="scope.row.perMon" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="基数上限" align="center" prop="baseUcl" >
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
+                          <el-input v-model="scope.row.baseUcl" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="基数下限" align="center" prop="baseLl" >
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.baseUcl'" :rules="rules.mon">
+                          <el-input v-model="scope.row.baseLl" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="小数位数" align="center" prop="deciBit" >
+                      <template v-slot="scope">
+                        <el-form-item :prop="'socialSecurityList.' + scope.$index + '.deciBit'" :rules="rules.mon">
+                          <el-input v-model="scope.row.deciBit" placeholder="请输入内容"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="进位方式" align="center" prop="carryMode">
+                      <template v-slot="scope">
+                        <el-select v-model="scope.row.carryMode" >
+                          <el-option
+                            v-for="dict in salaryOptions.CarryMethod"
+                            :key="dict.dicNo"
+                            :label="dict.dicName"
+                            :value="dict.dicNo"
+                          />
+                        </el-select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="生效日期" align="center" prop="effectDate" >
+                      <template v-slot="scope">
+                        <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="输入人" align="center" prop="creator" />
+                    <el-table-column label="输入日期" align="center" prop="createDate" >
+                      <template v-slot="scope">
+                        <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-form>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="onLoad"
-    />
-    </div>
+                <pagination
+                  v-show="total>0"
+                  :total="total"
+                  :page.sync="queryParams.pageNum"
+                  :limit.sync="queryParams.pageSize"
+                  @pagination="onLoad"
+                />
+              </div>
             </div>
           </el-col>
 
 
-      </el-row>
+        </el-row>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
-import { listSocialSecurity, delSocialSecurity, addSocialSecurity, selectVersion, updateSocialSecurity} from "@/api/human/hs/socialSecurity";
+import { listSocialSecurity, delSocialSecurity, addSocialSecurity } from "@/api/human/hs/socialSecurity";
 import { listSalaryProjectBasis} from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
@@ -250,7 +250,7 @@ export default {
         pageSize: 10,
         date: null,
         payAreaId: null,
-        version: null,
+        version: undefined,
         effectDate: null,
       },
       // 表单参数
@@ -262,7 +262,7 @@ export default {
         mon: [
           { pattern: /^\d+$|^\d+[.]?\d+$/, message: "请输入数字", trigger: "change"},
         ]
-      }
+      },
     };
   },
   created() {
@@ -288,12 +288,6 @@ export default {
       this.nickName= this.$store.state.user.userInfo.nickName;
       this.logincompId= this.$store.state.user.userInfo.compId;
     },
-    //获取缴费地区列表
-    getVersionList() {
-      selectVersion(this.queryParams.payAreaId).then(response => {
-        this.versionList = response.data
-      })
-    },
     //表单值设置
     setForm(e){
       this.form.creator = this.nickName;
@@ -310,11 +304,9 @@ export default {
         this.salaryOptions = response.data;
       })
     },
-
     addIndex({row, rowIndex}) {
       row.index = rowIndex
     },
-
     // 表单重置
     reset() {
       this.form = {
@@ -375,7 +367,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-        const ids = row.id || this.ids;
+      const ids = row.id || this.ids;
       for (const idsKey in  this.multipleSelection) {
         if ( this.multipleSelection[idsKey].effectDate > getDateTime(1)) {
           this.$modal.confirm('是否确认删除此数据项？').then(function () {
@@ -390,17 +382,17 @@ export default {
           break;
         }
       }
-      // this.multipleSelection()
     },
     //点击节点方法
     changePostName(data,index){
-      this.queryParams.version = null;
       this.queryParams.effectDate = null;
       this.queryParams.payAreaId = data.dicNo;
       this.queryParams.date = null;
-      this.getVersionList()
-      this.form.socialSecurityList = []
-      this.onLoad()
+      listSocialSecurity(this.queryParams).then(response => {
+        this.queryParams.version = response.rows[0].version
+        this.form.socialSecurityList = []
+        this.onLoad();
+      })
     },
     //载入数据
     onLoad() {
@@ -427,19 +419,19 @@ export default {
     },
     // 增加一个空行, 用于录入或显示第一行
     addLine(row) {
-        if (!row||this.form.socialSecurityList.length == row.index + 1) {
-          const newLine = {
-            id: null,
-            creator: this.nickName,
-            creatorId: this.$store.state.user.name,
-            createDate: getDateTime(1),
-            parentid: this.queryParams.id,
-            payAreaId: this.queryParams.payAreaId,
-            effectDate: this.queryParams.effectDate,
-          }
-          this.index++
-          this.form.socialSecurityList.push(newLine)
+      if (!row||this.form.socialSecurityList.length == row.index + 1) {
+        const newLine = {
+          id: null,
+          creator: this.nickName,
+          creatorId: this.$store.state.user.name,
+          createDate: getDateTime(1),
+          parentid: this.queryParams.id,
+          payAreaId: this.queryParams.payAreaId,
+          effectDate: this.queryParams.effectDate,
         }
+        this.index++
+        this.form.socialSecurityList.push(newLine)
+      }
     },
   }
 };

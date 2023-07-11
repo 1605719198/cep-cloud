@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="address"    column="address"    />
         <result property="simpl"    column="simpl"    />
         <result property="type"    column="type"    />
+        <result property="nation"    column="nation"    />
+        <result property="isInternal"    column="is_internal"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
@@ -23,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTripAddressVo">
-        select id, comp_id, address, simpl, type, creator, creator_id, create_date from human_hd_trip_address
+        select id, comp_id, address, simpl, type, nation, is_internal, creator, creator_id, create_date from human_hd_trip_address
     </sql>
 
     <select id="selectTripAddressList" parameterType="TripAddress" resultMap="TripAddressResult">
@@ -31,12 +33,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="nation != null  and nation != ''"> and nation = #{nation}</if>
+            <if test="isInternal != null  and isInternal != ''"> and is_internal = #{isInternal}</if>
             <if test="address != null  and address != ''"> and address like concat('%', #{address} , '%') </if>
         </where>
     </select>
 
-    <select id="selectTripAddress" parameterType="TripAddressDTO" resultMap="TripAddressDTOResult">
-        select comp_id, address, simpl, type from human_hd_trip_address
+    <select id="selectTripAddress" parameterType="TripAddress" resultMap="TripAddressDTOResult">
+        select id, comp_id, address, simpl, type from human_hd_trip_address
         <where>
             <if test="compId !=null and compId !=''">and comp_id = #{compId}</if>
         </where>
@@ -55,6 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null">address,</if>
             <if test="simpl != null">simpl,</if>
             <if test="type != null">type,</if>
+            <if test="nation != null">nation,</if>
+            <if test="isInternal != null">is_internal,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="createDate != null">create_date,</if>
@@ -65,6 +71,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null">#{address},</if>
             <if test="simpl != null">#{simpl},</if>
             <if test="type != null">#{type},</if>
+            <if test="nation != null">#{nation},</if>
+            <if test="isInternal != null">{isInternal},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="createDate != null">#{createDate},</if>
@@ -78,6 +86,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null">address = #{address},</if>
             <if test="simpl != null">simpl = #{simpl},</if>
             <if test="type != null">type = #{type},</if>
+            <if test="nation != null">nation = #{nation},</if>
+            <if test="isInternal != null">is_internal = #{isInternal},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>

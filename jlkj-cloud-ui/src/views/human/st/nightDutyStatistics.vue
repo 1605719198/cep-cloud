@@ -120,7 +120,7 @@ export default {
       if(val==null){
         this.queryParams.date1=null
         this.queryParams.date2=null
-        this.queryParams.norOndutyBegin=null
+        this.queryParams.shiftDate=null
         return
       }
       this.queryParams.date1 =val[0];

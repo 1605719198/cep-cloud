@@ -107,6 +107,8 @@ export default {
       loading: false,
       // 选中数组
       ids: [],
+      // 选中数组
+      dutyCodes: [],
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -145,6 +147,7 @@ export default {
         compId:null,
       },
       directorData: [],
+      dicName: [],
       key: undefined,
     };
   },
@@ -213,7 +216,16 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
+      this.dicName = []
       this.ids = selection.map(item => item.uuid)
+      this.dutyCodes = selection.map(item => item.dutyCode)
+      for (const item of this.dutyCodes) {
+        for (const itemElement of this.directorData.Responsibility) {
+          if (item === itemElement.dicNo){
+            this.dicName.push(itemElement.dicName)
+          }
+        }
+      }
       this.multiple = !selection.length
     },
     /** 保存按钮操作 */
@@ -230,8 +242,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
+      const uuid = this.dicName;
       const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除各公司人事业务负责人编号为"' + uuids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除各公司人事业务负责人编号为"' + uuid + '"的数据项？').then(function() {
         return delDirector(uuids);
       }).then(() => {
         this.getList();

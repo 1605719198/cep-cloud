@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jlkj.human.pa.domain.PersonPerformance;
 import com.jlkj.human.pa.domain.PersonPerformanceDetail;
 import lombok.Data;
 
@@ -163,6 +164,16 @@ public class PersonPerformanceDTO implements Serializable {
     private BigDecimal score;
 
     /**
+     * 考评主管
+     */
+    private String admEmpId;
+
+    /**
+     * 最终复核主管
+     */
+    private String lastEmpId;
+
+    /**
      * 自评得分
      */
     private BigDecimal selfScore;
@@ -223,6 +234,21 @@ public class PersonPerformanceDTO implements Serializable {
      * KPIList
      */
     private List<PersonPerformanceDetail> kpiList;
+
+    /**
+     * performanceScoreList
+     */
+    private List<PersonPerformance> performanceScoreList;
+
+    /**
+     * performanceScoreList
+     */
+    private List<PersonPerformance> fixedProjectList;
+
+    /**
+     * performanceScoreList
+     */
+    private Boolean finalSupervisor;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

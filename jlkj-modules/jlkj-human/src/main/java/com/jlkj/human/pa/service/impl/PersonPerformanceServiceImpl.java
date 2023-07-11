@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.constant.Constants;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -35,6 +36,12 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
     private IPersonPerformanceDetailService personPerformanceDetailService;
     @Resource
     private IPersonPerformanceScheduleService personPerformanceScheduleService;
+    @Resource
+    private IPersonPerformanceFixService personPerformanceFixService;
+    @Resource
+    private IPositionPersonnelService positionPersonnelService;
+    @Resource
+    private PersonPerformanceMapper personPerformanceMapper;
 
     /**
      * 查询个人绩效主档列表
@@ -49,6 +56,44 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
                 .eq(PersonPerformance::getCompId, personPerformanceDTO.getCompId())
                 .eq(PersonPerformance::getMeritType, personPerformanceDTO.getMeritType())
                 .eq(StringUtils.isNotBlank(personPerformanceDTO.getEmpId()), PersonPerformance::getEmpId, personPerformanceDTO.getEmpId())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getIsFix()), PersonPerformance::getIsFix, personPerformanceDTO.getIsFix())
+                .between(PersonPerformance::getMeritMonth, personPerformanceDTO.getStartTime(), personPerformanceDTO.getEndTime()).list();
+        return list;
+    }
+
+    /**
+     * 查询固定项目启动档列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 查询参数集
+     * @return list 分页数据
+     */
+    @Override
+    public List<PersonPerformanceFix> listPersonPerformanceFix(PersonPerformanceDTO personPerformanceDTO){
+        List<PersonPerformanceFix> list = personPerformanceFixService.lambdaQuery()
+                .eq(PersonPerformanceFix::getCompId, personPerformanceDTO.getCompId())
+                .eq(PersonPerformanceFix::getMeritType, personPerformanceDTO.getMeritType())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getEmpId()), PersonPerformanceFix::getEmpId, personPerformanceDTO.getEmpId())
+                .between(PersonPerformanceFix::getMeritMonth, personPerformanceDTO.getStartTime(), personPerformanceDTO.getEndTime()).list();
+        return list;
+    }
+
+    /**
+     * 查询考评清单列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 查询参数集
+     * @return list 分页数据
+     */
+    @Override
+    public List<PersonPerformance> listEvaluation(PersonPerformanceDTO personPerformanceDTO){
+        List<PersonPerformance> list = lambdaQuery()
+                .eq(PersonPerformance::getCompId, personPerformanceDTO.getCompId())
+                .eq(PersonPerformance::getMeritType, personPerformanceDTO.getMeritType())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getDept()), PersonPerformance::getDept, personPerformanceDTO.getDept())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getAdmEmpId()), PersonPerformance::getAdmEmpId, personPerformanceDTO.getAdmEmpId())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getDeptType()), PersonPerformance::getDeptType, personPerformanceDTO.getDeptType())
+                .eq(StringUtils.isNotBlank(personPerformanceDTO.getMeritStatus()), PersonPerformance::getMeritStatus, personPerformanceDTO.getMeritStatus())
                 .between(PersonPerformance::getMeritMonth, personPerformanceDTO.getStartTime(), personPerformanceDTO.getEndTime()).list();
         return list;
     }
@@ -104,8 +149,6 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
         personPerformance.setFixRatio(deptType.getFixRatio());
         personPerformance.setKpiRatio(deptType.getKpiRatio());
         personPerformance.setMeritStatus(Constants.STR_ZERO);
-        personPerformance.setCreator(SecurityUtils.getNickName());
-        personPerformance.setCreatorId(String.valueOf(SecurityUtils.getUserId()));
         save(personPerformance);
         if (Constants.STR_ZERO.equals(deptType.getIsFix())) {
             PersonPerformanceDetail personPerformanceDetail = new PersonPerformanceDetail();
@@ -120,6 +163,7 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
                     .eq(PersonPerformance::getDeptType, personPerformance.getDeptType()).one();
             for (int i = 0; i < list.size(); i++){
                 personPerformanceDetail.setNum(String.valueOf(i+1));
+                personPerformanceDetail.setCompId(personPerformance.getCompId());
                 personPerformanceDetail.setPersonPerformanceId(performance.getId());
                 personPerformanceDetail.setItem(list.get(i).getItem());
                 personPerformanceDetail.setItemGoal(list.get(i).getDataDept());
@@ -182,6 +226,102 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
                 .eq(PersonPerformanceDetail::getId, personPerformanceDetail.getId())
                 .update(personPerformanceDetail);
         return AjaxResult.success("修改成功");
+    }
+
+    /**
+     * 添加人员绩效明细档自评和实际完成情况
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDetail 添加数据
+     * @return 添加结果
+     */
+    @Override
+    public Object updateSelfApprDetail(@Validated PersonPerformanceDetail personPerformanceDetail){
+        personPerformanceDetailService.lambdaUpdate()
+                .eq(PersonPerformanceDetail::getId, personPerformanceDetail.getId())
+                .update(personPerformanceDetail);
+        personPerformanceScheduleService.lambdaUpdate()
+                .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_THREE)
+                .eq(PersonPerformanceSchedule::getNum, Constants.STR_THREE)
+                .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDetail.getPersonPerformanceId()).update();
+        return AjaxResult.success("修改成功");
+    }
+
+    /**
+     * 添加人员绩效主档自评总结
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformance 添加数据
+     * @return 添加结果
+     */
+    @Override
+    public Object updateSelfAppr(@Validated PersonPerformance personPerformance){
+        lambdaUpdate()
+                .eq(PersonPerformance::getId, personPerformance.getId())
+                .update(personPerformance);
+        personPerformanceScheduleService.lambdaUpdate()
+                .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_THREE)
+                .eq(PersonPerformanceSchedule::getNum, Constants.STR_THREE)
+                .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformance.getId()).update();
+        return AjaxResult.success("修改成功");
+    }
+
+    /**
+     * 添加人员绩效主档主管考评和明细档主管考评分数及备注
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 添加数据
+     * @return 添加结果
+     */
+    @Override
+    public Object updateAdmAppr(@Validated PersonPerformanceDTO personPerformanceDTO){
+        BigDecimal count = BigDecimal.ZERO;
+        BigDecimal kpiCount = BigDecimal.ZERO;
+        PersonPerformance personPerformance = new PersonPerformance();
+        BeanUtils.copyProperties(personPerformanceDTO, personPerformance);
+        for (PersonPerformanceDetail item : personPerformanceDTO.getKeyWorkItemsList()){
+            count = count.add(item.getWeight());
+        }
+        for (PersonPerformanceDetail item : personPerformanceDTO.getKpiList()){
+            kpiCount = kpiCount.add(item.getWeight());
+        }
+        if (count.compareTo(Constants.BIG_DECIMAL_HUNDRED) == Constants.INT_ZERO && kpiCount.compareTo(Constants.BIG_DECIMAL_HUNDRED) == Constants.INT_ZERO){
+            lambdaUpdate()
+                    .eq(PersonPerformance::getId, personPerformanceDTO.getId())
+                    .update(personPerformance);
+            personPerformanceDetailService.updateBatchById(personPerformanceDTO.getKeyWorkItemsList());
+            personPerformanceDetailService.updateBatchById(personPerformanceDTO.getKpiList());
+            return AjaxResult.success("修改成功");
+        } else {
+            return AjaxResult.error("计划权重不为100%，请调整！！！");
+        }
+    }
+
+    /**
+     * 添加考评意见/复核意见、更新明细表主管考评及备注
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personPerformanceDTO 添加数据
+     * @return 添加结果
+     */
+    @Override
+    public Object updateAdmEvaluation(@Validated PersonPerformanceDTO personPerformanceDTO){
+        BigDecimal count = BigDecimal.ZERO;
+        PersonPerformance personPerformance = new PersonPerformance();
+        BeanUtils.copyProperties(personPerformanceDTO, personPerformance);
+        for (PersonPerformanceDetail item : personPerformanceDTO.getKeyWorkItemsList()){
+            count = count.add(item.getWeight());
+        }
+        if (count.compareTo(Constants.BIG_DECIMAL_HUNDRED) == Constants.INT_ZERO){
+            lambdaUpdate()
+                    .set(PersonPerformance::getMeritStatus, Constants.STR_ONE)
+                    .eq(PersonPerformance::getId, personPerformanceDTO.getId())
+                    .update(personPerformance);
+            personPerformanceDetailService.updateBatchById(personPerformanceDTO.getKeyWorkItemsList());
+            return AjaxResult.success("修改成功");
+        } else {
+            return AjaxResult.error("计划权重不为100%，请调整！！！");
+        }
     }
 
     /**
@@ -260,6 +400,219 @@ public class PersonPerformanceServiceImpl extends ServiceImpl<PersonPerformanceM
             return AjaxResult.success("呈送成功");
         } else {
             return AjaxResult.error("计划权重不为100%，请调整！！！");
+        }
+    }
+
+    /**
+     * 呈送固定项目考评
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceDTO 表格数据
+     * @return 呈送结果
+     */
+    @Override
+    public Object sendPersonPerformanceFix(PersonPerformanceDTO personPerformanceDTO){
+        for (PersonPerformance item : personPerformanceDTO.getFixedProjectList()){
+            if (!Constants.STR_ONE.equals(item.getMeritStatus())){
+                return AjaxResult.error("主管考评未完成，请检查！");
+            }
+        }
+        personPerformanceScheduleService.lambdaUpdate()
+                .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_ONE)
+                .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDTO.getId())
+                .eq(PersonPerformanceSchedule::getNum, Constants.STR_ONE).update();
+        return AjaxResult.success("呈送成功");
+    }
+
+    /**
+     * 呈送按钮
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceDTO 表格数据
+     * @return 呈送结果
+     */
+    @Override
+    public Object sendSelfAppr(PersonPerformanceDTO personPerformanceDTO){
+        if (personPerformanceDTO.getFinalSupervisor().equals(false)){
+            personPerformanceScheduleService.lambdaUpdate()
+                    .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_ONE)
+                    .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                    .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                    .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                    .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDTO.getId())
+                    .eq(PersonPerformanceSchedule::getNum, Constants.STR_THREE).update();
+            personPerformanceScheduleService.lambdaUpdate()
+                    .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_FOUR)
+                    .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                    .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                    .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                    .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDTO.getId())
+                    .eq(PersonPerformanceSchedule::getNum, Constants.STR_FOUR).update();
+            return AjaxResult.success("呈送成功");
+        } else {
+            BigDecimal pointSelfCount = BigDecimal.ZERO;
+            BigDecimal pointAdmCount = BigDecimal.ZERO;
+            BigDecimal kpiSelfCount = BigDecimal.ZERO;
+            BigDecimal kpiAdmCount = BigDecimal.ZERO;
+            BigDecimal selfCount;
+            BigDecimal admCount;
+            PersonPerformance personPerformance = new PersonPerformance();
+            if (StringUtils.isNotNull(personPerformanceDTO.getSelfAppr()) && StringUtils.isNotNull(personPerformanceDTO.getAdmAppr())){
+                for (PersonPerformanceDetail item : personPerformanceDTO.getKeyWorkItemsList()){
+                    if (item.getSelfScore().compareTo(Constants.BIG_DECIMAL_ZERO) > 0 && item.getAdmScore().compareTo(Constants.BIG_DECIMAL_ZERO) > 0){
+                        pointSelfCount = pointSelfCount.add(item.getSelfScore());
+                        pointAdmCount = pointAdmCount.add(item.getAdmScore());
+                    } else {
+                        return AjaxResult.error("明细项缺少自评/考核分数");
+                    }
+                }
+                for (PersonPerformanceDetail item : personPerformanceDTO.getKpiList()){
+                    if (item.getSelfScore().compareTo(Constants.BIG_DECIMAL_ZERO) > 0 && item.getAdmScore().compareTo(Constants.BIG_DECIMAL_ZERO) > 0){
+                        kpiSelfCount = kpiSelfCount.add(item.getSelfScore());
+                        kpiAdmCount = kpiAdmCount.add(item.getAdmScore());
+                    } else {
+                        return AjaxResult.error("明细项缺少自评/考核分数");
+                    }
+                }
+                personPerformanceScheduleService.lambdaUpdate()
+                        .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_ONE)
+                        .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                        .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                        .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                        .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDTO.getId())
+                        .eq(PersonPerformanceSchedule::getNum, Constants.STR_FOUR).update();
+                personPerformanceScheduleService.lambdaUpdate()
+                        .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_FIVE)
+                        .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                        .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                        .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                        .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformanceDTO.getId())
+                        .eq(PersonPerformanceSchedule::getNum, Constants.STR_FIVE).update();
+                pointSelfCount = pointSelfCount.multiply(BigDecimal.valueOf(personPerformanceDTO.getPointRatio()));
+                pointAdmCount = pointAdmCount.multiply(BigDecimal.valueOf(personPerformanceDTO.getPointRatio()));
+                kpiSelfCount = kpiSelfCount.multiply(BigDecimal.valueOf(personPerformanceDTO.getKpiRatio()));
+                kpiAdmCount = kpiAdmCount.multiply(BigDecimal.valueOf(personPerformanceDTO.getKpiRatio()));
+                selfCount = pointSelfCount.add(kpiSelfCount);
+                admCount = pointAdmCount.add(kpiAdmCount);
+                personPerformance.setPointScore(pointSelfCount);
+                personPerformance.setKpiScore(kpiSelfCount);
+                personPerformance.setSelfScore(selfCount.add(personPerformanceDTO.getOtherAdjust()));
+                personPerformance.setAdmScore(admCount.add(personPerformanceDTO.getOtherAdjust()));
+                lambdaUpdate().eq(PersonPerformance::getId, personPerformanceDTO.getId()).update(personPerformance);
+                return AjaxResult.success("呈送成功");
+            } else {
+                return AjaxResult.error("计划明细未自评/考评");
+            }
+        }
+    }
+
+    /**
+     * 最终主管确认
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformance 表格数据
+     * @return 确认结果
+     */
+    @Override
+    public Object confirmPersonalPerformance(PersonPerformance personPerformance){
+        personPerformanceScheduleService.lambdaUpdate()
+                .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_ONE)
+                .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformance.getId())
+                .eq(PersonPerformanceSchedule::getNum, Constants.STR_FIVE).update();
+        return AjaxResult.success("确认成功");
+    }
+
+    /**
+     * 固定项目考评最终主管确认
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformance 表格数据
+     * @return 确认结果
+     */
+    @Override
+    public Object confirmPersonalPerformanceFix(PersonPerformance personPerformance){
+        personPerformanceScheduleService.lambdaUpdate()
+                .set(PersonPerformanceSchedule::getApprStatus, Constants.STR_ONE)
+                .set(PersonPerformanceSchedule::getApprTime, DateUtils.getTime())
+                .set(PersonPerformanceSchedule::getApprEmp, SecurityUtils.getUsername())
+                .set(PersonPerformanceSchedule::getApprName, SecurityUtils.getNickName())
+                .eq(PersonPerformanceSchedule::getPersonPerformanceId, personPerformance.getId())
+                .eq(PersonPerformanceSchedule::getNum, Constants.STR_TWO).update();
+        return AjaxResult.success("确认成功");
+    }
+
+    /**
+     * 启动固定项目考评
+     * @author HuangBing
+     * @date 2023-6-20
+     * @param personPerformanceFix 表格数据
+     * @return 启动结果
+     */
+    @Override
+    public Object startPersonPerformanceFix(PersonPerformanceFix personPerformanceFix){
+        PersonPerformance personPerformance = new PersonPerformance();
+        PersonPerformanceSchedule personPerformanceSchedule = new PersonPerformanceSchedule();
+        PersonPerformanceDetail personPerformanceDetail = new PersonPerformanceDetail();
+        String[] project = {"主管考评","最终主管复核"};
+        personPerformanceFix.setId(IdUtils.fastSimpleUUID());
+        personPerformanceFix.setMeritStatus(Constants.STR_ONE);
+        personPerformanceFixService.save(personPerformanceFix);
+        DeptType deptType = deptTypeService.lambdaQuery()
+                .eq(DeptType::getCompId, personPerformanceFix.getCompId())
+                .eq(DeptType::getDeptType, personPerformanceFix.getDeptType())
+                .eq(DeptType::getEffcMonth, personPerformanceFix.getMeritMonth()).one();
+        List<PositionPersonnel> list = positionPersonnelService.lambdaQuery()
+                .eq(PositionPersonnel::getLeaderNo, personPerformanceFix.getEmpId())
+                .eq(PositionPersonnel::getDeptType, personPerformanceFix.getDeptType()).list();
+        List<DeptTypeDetail> deptTypeDetailList = deptTypeDetailService.lambdaQuery()
+                .eq(DeptTypeDetail::getDeptTypeId, deptType.getId()).list();
+        if (list.isEmpty()){
+            return AjaxResult.error("该人员没有下级人员！");
+        } else {
+            for (PositionPersonnel item : list){
+                personPerformance.setId(IdUtils.fastSimpleUUID());
+                personPerformance.setEmpId(item.getEmpNo());
+                personPerformance.setPostId(String.valueOf(item.getPostId()));
+                personPerformance.setDeptType(item.getDeptType());
+                personPerformance.setCompId(personPerformanceFix.getCompId());
+                personPerformance.setMeritType(personPerformanceFix.getMeritType());
+                personPerformance.setMeritMonth(personPerformanceFix.getMeritMonth());
+                personPerformance.setDept(personPerformanceFix.getDept());
+                personPerformance.setIsFix(Constants.STR_ZERO);
+                personPerformance.setFixId(personPerformanceFix.getId());
+                personPerformance.setMeritStatus(Constants.STR_FOUR);
+                save(personPerformance);
+                for (int i = 0; i < deptTypeDetailList.size(); i++){
+                    personPerformanceDetail.setNum(String.valueOf(i+1));
+                    personPerformanceDetail.setCompId(personPerformanceFix.getCompId());
+                    personPerformanceDetail.setPersonPerformanceId(personPerformance.getId());
+                    personPerformanceDetail.setItem(deptTypeDetailList.get(i).getItem());
+                    personPerformanceDetail.setItemGoal(deptTypeDetailList.get(i).getDataDept());
+                    personPerformanceDetail.setWeight(deptTypeDetailList.get(i).getWeight());
+                    personPerformanceDetail.setCompleteTime(DateUtils.getMaxMonthDate1(personPerformanceFix.getMeritMonth()));
+                    personPerformanceDetail.setType(Constants.STR_THREE);
+                    personPerformanceDetailService.save(personPerformanceDetail);
+                }
+            }
+            for (int i = 0; i < project.length; i++) {
+                personPerformanceSchedule.setId(IdUtils.fastSimpleUUID());
+                personPerformanceSchedule.setPersonPerformanceId(personPerformanceFix.getId());
+                personPerformanceSchedule.setCompId(personPerformanceFix.getCompId());
+                personPerformanceSchedule.setProject(project[i]);
+                personPerformanceSchedule.setNum(String.valueOf(i+1));
+                personPerformanceSchedule.setApprStatus(Constants.STR_ZERO);
+                personPerformanceSchedule.setApprTime(DateUtils.getNowDate());
+                personPerformanceSchedule.setApprEmp(SecurityUtils.getUsername());
+                personPerformanceSchedule.setApprName(SecurityUtils.getNickName());
+                personPerformanceScheduleService.save(personPerformanceSchedule);
+            }
+            return AjaxResult.success("确认成功");
         }
     }
 }

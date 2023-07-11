@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       // 遮罩层
-      loading: false,
+      loading: true,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -190,6 +190,7 @@ export default {
     initData(){
       this.user.compId = this.$store.state.user.userInfo.compId;
       this.queryParams.compId = this.user.compId
+      this.getList();
     },
     /** 查询公司薪酬项目设定列表 */
     getList() {
@@ -230,6 +231,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange1(selection) {
       this.ids = selection.map(item => item.uuid)
+      this.payProCodes = selection.map(item => item.payProCode)
       this.multiple = !selection.length;
     },
     handleSelect() {
@@ -265,9 +267,10 @@ export default {
       }
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
-      const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除公司薪酬项目设定编号为"' + uuids + '"的数据项？').then(function() {
+    handleDelete() {
+      const uuids = this.ids;
+      const payProCodes = this.payProCodes;
+      this.$modal.confirm('是否确认删除公司薪酬项目设定编号为"' + payProCodes + '"的数据项？').then(function() {
         return delPayFormation(uuids);
       }).then(() => {
         this.getList();

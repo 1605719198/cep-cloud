@@ -46,7 +46,11 @@
               @pagination="getList"
             />
             <el-table v-loading="loading" :data="deptTypeList" border @row-click="queryDeptTypeDetail">
-              <el-table-column label="人员类别" align="center" prop="deptType" />
+              <el-table-column label="人员类别" align="center" prop="deptType">
+                <template v-slot="scope">
+                  <dict-tag-human :options="baseInfoData.HP020" :value="scope.row.deptType"/>
+                </template>
+              </el-table-column>
               <el-table-column label="生效年月" align="center" prop="effcMonth" />
             </el-table>
           </el-col>
@@ -91,9 +95,9 @@
                     <el-select v-model="form.deptType" :disabled="changeDeptType" placeholder="人员类别">
                       <el-option
                         v-for="dict in baseInfoData.HP020"
-                        :key="dict.uuid"
+                        :key="dict.dicNo"
                         :label="dict.dicNo + '-' + dict.dicName"
-                        :value="dict.uuid"
+                        :value="dict.dicNo"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -249,9 +253,11 @@ import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {getBaseInfo} from "@/api/human/hm/baseInfo";
 import {isIntegerNotMust} from "@/utils/jlkj";
 import {getSalaryOptions} from "@/api/human/hs/salaryBasis";
+import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 
 export default {
   name: "DeptType",
+  components: {DictTagHuman },
   data() {
     return {
       // 遮罩层

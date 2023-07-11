@@ -36,7 +36,7 @@ public interface TripAddressMapper
      * @param tripAddressDTO 出差地点查询条件
      * @return 出差地点记录集合
      */
-    public List<TripAddressDTO> selectTripAddress(TripAddressDTO tripAddressDTO);
+    public List<TripAddressDTO> selectTripAddress(TripAddress address);
 
     /**
      * 新增出差地点记录
