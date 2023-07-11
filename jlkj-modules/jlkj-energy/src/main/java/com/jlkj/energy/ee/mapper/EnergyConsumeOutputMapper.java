@@ -2,6 +2,7 @@ package com.jlkj.energy.ee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.energy.ee.domain.EnergyConsumeOutput;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author 265675
@@ -9,6 +10,7 @@ import com.jlkj.energy.ee.domain.EnergyConsumeOutput;
 * @createDate 2022-05-05 08:33:10
 * @domain com.jlkj.energy.ee.domain.EnergyConsumeOutput
 */
+@Repository
 public interface EnergyConsumeOutputMapper extends BaseMapper<EnergyConsumeOutput> {
 
 }

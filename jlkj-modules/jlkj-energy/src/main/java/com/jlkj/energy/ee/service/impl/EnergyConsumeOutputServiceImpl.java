@@ -74,15 +74,45 @@ public class EnergyConsumeOutputServiceImpl extends ServiceImpl<EnergyConsumeOut
         } else if (StringUtils.isNotBlank(energyConsumeOutputDTO.getCostCenter2())) {
             queryWrapper.eq(EnergyConsumeOutput::getCostCenter, energyConsumeOutputDTO.getCostCenter2());
         }
-        if (StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdStart())
-                && StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdEnd())) {
+        if (StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdStart()) && StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdEnd())) {
             queryWrapper.between(EnergyConsumeOutput::getEngyId, energyConsumeOutputDTO.getEngyIdStart(),
                     energyConsumeOutputDTO.getEngyIdEnd());
-        } else if (StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdStart())) {
-            queryWrapper.eq(EnergyConsumeOutput::getEngyId, energyConsumeOutputDTO.getEngyIdStart());
-        } else if (StringUtils.isNotBlank(energyConsumeOutputDTO.getEngyIdEnd())) {
-            queryWrapper.eq(EnergyConsumeOutput::getEngyId, energyConsumeOutputDTO.getEngyIdEnd());
         }
+        if (StringUtils.isNotBlank(energyConsumeOutputDTO.getOrderByNo())) {
+            switch (energyConsumeOutputDTO.getOrderByNo()) {
+                case "0A":
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getCostCenter);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getECountDate);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getEngyId);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getIoTypeId);
+                    break;
+                case "0B":
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getECountDate);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getCostCenter);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getEngyId);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getIoTypeId);
+                    break;
+                case "0C":
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getEngyId);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getECountDate);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getCostCenter);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getIoTypeId);
+                    break;
+                case "0D":
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getIoTypeId);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getEngyId);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getECountDate);
+                    queryWrapper.orderByDesc(EnergyConsumeOutput::getCostCenter);
+                    break;
+                default:
+                    queryWrapper.orderByAsc(EnergyConsumeOutput::getCostCenter);
+                    queryWrapper.orderByAsc(EnergyConsumeOutput::getECountDate);
+                    queryWrapper.orderByAsc(EnergyConsumeOutput::getEngyId);
+                    queryWrapper.orderByAsc(EnergyConsumeOutput::getIoTypeId);
+                    break;
+            }
+        }
+
         return energyConsumeOutputMapper.selectList(queryWrapper);
     }
 
@@ -116,14 +146,18 @@ public class EnergyConsumeOutputServiceImpl extends ServiceImpl<EnergyConsumeOut
     public int addEnergyConsumeOutput(EnergyConsumeOutput energyConsumeOutput) {
         int result = 0;
         LambdaQueryWrapper<EnergyCode> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StringUtils.isNotBlank(energyConsumeOutput.getEngyId()), EnergyCode::getEngyId,
-                energyConsumeOutput.getEngyId());
+        queryWrapper.groupBy(EnergyCode::getEngyId,EnergyCode::getEngyName);
         Map<String, Object> map = energyCodeMapper.selectMaps(queryWrapper).get(0);
-        if(!StringUtils.isEmpty(map)){
-            energyConsumeOutput.setEngyType(map.get("engy_type").toString() == null ? "" : map.get("engy_type").toString() );
-            energyConsumeOutput.setAcctSys(map.get("acct_sys").toString() == null ? "" : map.get("acct_sys").toString());
-            energyConsumeOutput.setEngyUnit(map.get("engy_unit").toString() == null ? "" : map.get("engy_unit").toString());
-        }else {
+        if (!StringUtils.isEmpty(map)) {
+            energyConsumeOutput.setEngyName(map.get("engy_name").toString() == null ? "" :
+                    map.get("engy_name").toString());
+            energyConsumeOutput.setEngyType(map.get("engy_type").toString() == null ? "" :
+                    map.get("engy_type").toString());
+            energyConsumeOutput.setAcctSys(map.get("acct_sys").toString() == null ? "" :
+                    map.get("acct_sys").toString());
+            energyConsumeOutput.setEngyUnit(map.get("engy_unit").toString() == null ? "" :
+                    map.get("engy_unit").toString());
+        } else {
             new ServiceException("未查询到" + energyConsumeOutput.getEngyId() + "的能源代码配置信息。");
         }
         if (energyConsumeOutput.getCostCenter().startsWith(Constants.ENERGY_W5)) {
@@ -273,7 +307,7 @@ public class EnergyConsumeOutputServiceImpl extends ServiceImpl<EnergyConsumeOut
     private void createTBEE10(EnergyConsumeOutput energyConsumeOutput, String dataTypeIdx, String activityId) {
         //将资料新增入t_energy_cost_output表
         EnergyCostOutput energyCostOutput = new EnergyCostOutput();
-        BeanCopyUtils.copy(energyConsumeOutput,energyCostOutput);
+        BeanCopyUtils.copy(energyConsumeOutput, energyCostOutput);
         //  财务用能源单位
         energyCostOutput.setEngyUnit(energyConsumeOutput.getEngyUnitF());
         //  交易资料指示码(N/O)

@@ -269,15 +269,6 @@ export default {
       /** UserDictFullName 显示工号_姓名 */
       return this.UserDictFullName(this.resUserDiction, row.createBy);
     },
-    // 分页数据
-    handleSizeChange(val) {
-      this.queryParams.pageSize = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.queryParams.pageNum = val
-      this.getList()
-    },
     //获取数据刷新页面
     getList() {
       queryInfo(this.queryParams).then(response => {
