@@ -374,4 +374,82 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         calendar.set(Calendar.YEAR, year);
         return calendar.getTime();
     }
+    /**
+     * 字符串  yyyy-MM-dd HH:mm:ss
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:05
+     * @param date
+     * @return java.lang.String
+     */
+    public static String toString(Date date) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateformat.format(date);
+    }
+    /**
+     * 字符串 MMdd
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:11
+     * @param date
+     * @return java.lang.String
+     */
+    public static String toMonthDayString(Date date) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("MMdd");
+        return dateformat.format(date);
+    }
+    /**
+     * 字符串yyyy
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:14
+     * @param date
+     * @return java.lang.String
+     */
+    public static String toYearString(Date date) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy");
+        return dateformat.format(date);
+    }
+    /**
+     * 字符串 yyyyMMdd
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:18
+     * @param
+     * @return java.lang.String
+     */
+    public static String toDateString() {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+        return dateformat.format(new Date());
+    }
+    /**
+     * 字符串 yyyy-MM-dd
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:22
+     * @param date
+     * @return java.lang.String
+     */
+    public static String toShortDateString(Date date) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateformat.format(date);
+    }
+    /**
+     * 字符串月日 MMdd
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:25
+     * @param
+     * @return java.lang.String
+     */
+    public static String toMonthDayString() {
+        SimpleDateFormat dateformat = new SimpleDateFormat("MMdd");
+        return dateformat.format(new Date());
+    }
+    /**
+     * 字符串年 yyyy
+     * @Author: 111191
+     * @Date: 2023年7月11日, 0011 下午 12:49:49
+     * @param 
+     * @return java.lang.String
+     */
+    public static String toYearString() {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy");
+        return dateformat.format(new Date());
+
+    }
 }
