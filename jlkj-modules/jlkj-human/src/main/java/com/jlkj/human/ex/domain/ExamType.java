@@ -1,15 +1,15 @@
 package com.jlkj.human.ex.domain;
 
+import com.jlkj.common.core.annotation.Excel;
+import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.jlkj.common.core.annotation.Excel;
-import com.jlkj.common.core.web.domain.BaseEntity;
-
 /**
- * 考试分类对象 exam_type
+ * 考试分类对象 human_ex_type
  * 
  * @author qnsdt
  * @date 2022-12-14
@@ -56,9 +56,6 @@ public class ExamType extends BaseEntity
         this.typeId = typeId;
     }
 
-
-
-	
 	public Long getTypeId() 
     {
         return typeId;
