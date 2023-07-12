@@ -351,6 +351,7 @@ public class SysUserController extends BaseController {
      * @date: 2023年7月5日, 0005 上午 09:28:07
      * @return: com.jlkj.common.core.web.domain.AjaxResult
      */
+    @Log(title = "用户管理", businessType = BusinessType.OTHER)
     @GetMapping("/queryAllUser")
     public TableDataInfo queryAllUser() {
         List<SysUser> userList = userService.queryAllUserDicts();
