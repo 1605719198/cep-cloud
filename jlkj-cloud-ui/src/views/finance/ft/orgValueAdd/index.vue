@@ -123,10 +123,10 @@
 
     <!-- 添加或修改资产变动单主档对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" >
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="公司别" prop="companyId">
+            <el-form-item label="公司别" prop="companyId" label-width="80px">
               <el-select v-model="form.companyId" >
                 <el-option
                   v-for="item in companyList"
@@ -138,20 +138,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="单据名称" prop="changeName">
+            <el-form-item label="单据名称" prop="changeName" label-width="80px">
               <el-input v-model="form.changeName" placeholder="请输入单据名称" maxlength="100"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="单据编号" prop="changeNo" >
+            <el-form-item label="单据编号" prop="changeNo" label-width="80px">
               {{form.changeNo}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="变动方式" prop="changeWay">
-              <el-select v-model="form.changeWay" filterable placeholder="请输入变动方式"  >
+            <el-form-item label="变动方式" prop="changeWay" label-width="80px">
+              <el-select v-model="form.changeWay" filterable placeholder="请输入变动方式" label-width="80px" >
                 <el-option
                   v-for="item in changeWayList"
                   :key="item.value"
@@ -162,7 +162,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="变动日期" prop="changeDate">
+            <el-form-item label="变动日期" prop="changeDate" label-width="80px">
               <el-date-picker clearable  style="width:160px"
                               v-model="form.changeDate"
                               type="date"
@@ -172,26 +172,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="单据状态" prop="status">
-              {{form.status}}
+            <el-form-item label="单据状态" prop="status" label-width="80px">
+              <template >
+                <dict-tag :options="dict.type.ft_status" :value="form.status"/>
+              </template>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="变动原因描述" prop="changeDesc">
+            <el-form-item label="变动原因描述" prop="changeDesc" label-width="80px">
               <el-input v-model="form.changeDesc"  type="textarea"  maxlength="200" show-word-limit placeholder="请输入">
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="申请人" prop="applyUser">
-              {{form.applyUser}}
+            <el-form-item label="申请人" prop="applyUser" label-width="80px">
+              {{this.UserDictFullName(this.resUserDiction,form.applyUser)}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="申请日期" prop="applyDate">
-              {{form.applyDate}}
+            <el-form-item label="申请日期" prop="applyDate" label-width="80px">
+              <span style="text-align: center;display:block;width: 121px">{{ parseTime(form.applyDate, '{y}-{m}-{d}') }}</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -204,31 +206,39 @@
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleDeleteFinanceFtChangeDetail">删除</el-button>
           </el-col>
         </el-row>
-        <el-table :data="financeFtChangeDetailList" :row-class-name="rowFinanceFtChangeDetailIndex" @selection-change="handleFinanceFtChangeDetailSelectionChange" ref="financeFtChangeDetail">
+        <el-table :data="form.financeFtChangeDetailList" :row-class-name="rowFinanceFtChangeDetailIndex" @selection-change="handleFinanceFtChangeDetailSelectionChange"
+                  ref="financeFtChangeDetail"  :key="indexKey">
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="资产编码" prop="assetNo" width="120" :render-header="addRedstar">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.assetNo" placeholder="请输入资产编码" disabled/>
+              <el-input v-model="scope.row.assetNo"  disabled/>
             </template>
           </el-table-column>
           <el-table-column label="资产名称" prop="assetName" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.assetName" placeholder="请输入资产名称" disabled/>
+              <el-input v-model="scope.row.assetName"  disabled/>
             </template>
           </el-table-column>
-          <el-table-column label="增加金额" prop="changePrice" width="100" :render-header="addRedstar" :rules="rules.changePrice">
+          <el-table-column label="增加金额" prop="changePrice" width="150" :render-header="addRedstar" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.changePrice" placeholder="请输入增加金额" />
+              <el-form-item :prop="'financeFtChangeDetailList.' + scope.$index + '.changePrice'" :rules="rules.changePrice" >
+                <el-input-number v-model="scope.row.changePrice"  placeholder="请输入增加金额"  :min="1" style="width:120px"/>
+              </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="数量" prop="qty" width="80">
+          <el-table-column label="原值" prop="orgValue" width="100" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.qty" placeholder="请输入数量" disabled/>
+              <el-input v-model="scope.row.orgValue" disabled/>
             </template>
           </el-table-column>
-          <el-table-column label="归属部门" prop="deptNo" width="150">
+          <el-table-column label="数量" prop="qty" width="80" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.deptNo" placeholder="请输入归属部门" disabled/>
+              <el-input v-model="scope.row.qty" disabled/>
+            </template>
+          </el-table-column>
+          <el-table-column label="归属部门" prop="deptNo" width="150" >
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.deptNo" disabled/>
             </template>
           </el-table-column>
         </el-table>
@@ -247,13 +257,21 @@ import { listOrgValueAdd, getOrgValueAdd, delOrgValueAdd, addOrgValueAdd, update
 import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 import {getChangeTypeName, selectChangeTypeList} from "@/api/finance/ft/changeType";
 import selectCard from "@/views/finance/ft/card/selectCard";
-import {queryAllUser} from "@/api/system/user";
+import {queryAllUser,getAvatorByUserName} from "@/api/system/user";
 export default {
   name: "OrgValueAdd",
   components: { selectCard},
   dicts: ['ft_status'],
   data() {
     return {
+      //设置日期智能选择当期日期及以前
+     //date-picker 加属性:picker-options="pickerOptions"
+      pickerOptions:{
+        disabledDate(time){
+          return time.getTime()>Date.now();
+        }
+      },
+      indexKey:0,
       resUserDiction:[],
       // 会计公司下拉选单
       companyList: [],
@@ -261,8 +279,10 @@ export default {
       changeWayList: [],
       // 遮罩层
       loading: true,
+      selectCardIds:[],
       // 选中数组
       ids: [],
+      changeNos: [],
       // 子表选中数据
       checkedFinanceFtChangeDetail: [],
       // 非单个禁用
@@ -299,6 +319,7 @@ export default {
         companyId: "J00",
         product: "C",
         isCleared: "0",
+        assetId:[],
 
       },
       // 查询变动方式参数
@@ -323,10 +344,10 @@ export default {
           { required: true, message: "变动日期不能为空", trigger: "change" }
         ],
         changeDesc: [
-          { required: true, message: "变动原因描述不能为空", trigger: "change" }
+          { required: true, message: "变动原因描述不能为空", trigger: "blur" }
         ],
         changePrice: [
-          { required: true, message: "增加金额不能为空", trigger: "change" }
+          { required: true, message: "增加金额不能为空", trigger: "blur" }
         ],
       }
     };
@@ -344,30 +365,37 @@ export default {
     })
   },
   methods: {
+    // 获取当前登录用户名称/信息
+    getName(){
+      getAvatorByUserName(this.$store.state.user.name).then( response => {
+        this.form.applyUser=response.data.userName
+        this.logincompId=response.data.compId
+        this.queryParams.companyId=response.data.compId;
+        this.form.companyId=response.data.compId;
+      })
+    },
     userFormat(row,column){
       return this.UserDictFullName(this.resUserDiction,row.applyUser);
 
     },
     changeWayFormat(row,column){
-     // alert(this.changeWayList);
-      //return '';
       return getChangeTypeName(this.changeWayList,row.changeWay);
 
     },
 
     parentChoose(data){
       console.log(data);
-      data.map((item) => this.financeFtChangeDetailList.push(item));
+      data.map((item) => {
+        this.form.financeFtChangeDetailList.push(item);
+        this.selectCardIds.push(item.assetId);
+      });
+      console.log(this.form.financeFtChangeDetailList);
+      this.indexKey+=1;
+      this.queryCardParams.assetId = this.selectCardIds;
     },
     /** 打开资产卡片挑选弹窗 */
     openSelectPop() {
       this.$refs.selectCard.show();
-      /*this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$refs.selectCard.show();
-        }
-      });*/
-
     },
     getCompanyList() {
       selectCompanyList().then(response => {
@@ -411,7 +439,7 @@ export default {
         changeName: null,
         changeType: "C",
         changeWay: null,
-        billNature: null,
+        billNature: "A2",
         changeDate: null,
         changeDesc: null,
         assetType: null,
@@ -430,9 +458,10 @@ export default {
         createTime: null,
         updateBy: null,
         updateName: null,
-        updateTime: null
+        updateTime: null,
+       financeFtChangeDetailList :[]
       };
-      this.financeFtChangeDetailList = [];
+      this.form.financeFtChangeDetailList = [];
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -450,6 +479,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.uuid)
+      this.changeNos = selection.map(item => item.changeNo)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -457,8 +487,15 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加资产变动单主档";
+      this.title = "添加资产原值增加单";
       this.form.companyId = this.queryParams.companyId
+      this.form.changeDate = new Date();
+      this.form.applyDate = new Date();
+      // this.form.status = "00";
+      this.getName();
+      if(this.changeWayList.length=1){
+        this.form.changeWay = this.changeWayList[0].value;
+      }
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -468,7 +505,7 @@ export default {
         this.form = response.data;
         this.financeFtChangeDetailList = response.data.financeFtChangeDetailList;
         this.open = true;
-        this.title = "修改资产变动单主档";
+        this.title = "修改资产原值增加单";
       });
     },
     /** 提交按钮 */
@@ -495,12 +532,14 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const uuids = row.uuid || this.ids;
-      this.$modal.confirm('是否确认删除资产变动单主档编号为"' + uuids + '"的数据项？').then(function() {
+      const changeNos = row.changeNo || this.changeNos;
+      this.$modal.confirm('是否确认删除资产变动单编号为"' + changeNos + '"的数据项？').then(function() {
         return delOrgValueAdd(uuids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+      this.indexKey+=1;
     },
 	/** 资产变动单主档序号 */
     rowFinanceFtChangeDetailIndex({ row, rowIndex }) {
@@ -523,18 +562,24 @@ export default {
       obj.assetUser = "";
       obj.userDept = "";
       obj.qty = "";
-      this.financeFtChangeDetailList.push(obj);
+      this.form.financeFtChangeDetailList.push(obj);
     },
     /** 资产变动单主档删除按钮操作 */
     handleDeleteFinanceFtChangeDetail() {
       if (this.checkedFinanceFtChangeDetail.length == 0) {
-        this.$modal.msgError("请先选择要删除的资产变动单主档数据");
+        this.$modal.msgError("请先选择要删除的资产数据");
       } else {
-        const financeFtChangeDetailList = this.financeFtChangeDetailList;
+        const financeFtChangeDetailList = this.form.financeFtChangeDetailList;
         const checkedFinanceFtChangeDetail = this.checkedFinanceFtChangeDetail;
-        this.financeFtChangeDetailList = financeFtChangeDetailList.filter(function(item) {
+        this.form.financeFtChangeDetailList = financeFtChangeDetailList.filter(function(item) {
           return checkedFinanceFtChangeDetail.indexOf(item.index) == -1
         });
+        this.indexKey+=1;
+        this.form.financeFtChangeDetailList.map((item) => {
+          this.selectCardIds.clear();
+          this.selectCardIds.push(item.assetId);
+        });
+        this.queryCardParams.assetId = this.selectCardIds;
       }
     },
     /** 复选框选中数据 */

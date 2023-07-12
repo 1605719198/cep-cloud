@@ -140,7 +140,7 @@ public class FinanceFtCardController extends BaseController
     public TableDataInfo selectCardList(FinanceFtCard financeFtCard)
     {
         startPage();
-        List<FinanceFtCard> list = financeFtCardService.selectFinanceFtCardList(financeFtCard);
+        List<FinanceFtCard> list = financeFtCardService.selectCardListForPop(financeFtCard);
         return getDataTable(list);
     }
 }
