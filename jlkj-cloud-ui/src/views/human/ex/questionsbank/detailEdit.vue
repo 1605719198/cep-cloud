@@ -126,7 +126,7 @@
 <script>
 import { newGuid } from '@/utils/guidtool'
 import { addQuestionsbank, updateQuestionsbank } from "@/api/human/ex/questionsbank";
-import { typeTreeSelect } from "@/api/human/ex/examtype";
+import { typeTreeSelect } from "@/api/human/ex/examType";
 import CropperImage from './CropperImage'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";

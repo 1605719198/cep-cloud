@@ -131,7 +131,7 @@
 import { listQuestionsbank, getQuestionsbank, delQuestionsbank, addQuestionsbank, updateQuestionsbank,
   exportQuestionsbank } from "@/api/human/ex/questionsbank";
 import { listExamtype, getExamtype, typeTreeSelect, delExamtype, addExamtype, updateExamtype, exportExamtype } from
-    "@/api/human/ex/examtype";
+    "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import QuestionsList from './questionsList'
