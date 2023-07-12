@@ -9,6 +9,14 @@ export function listItemComp(query) {
   })
 }
 
+// 查询报支类别下拉选单
+export function getItemNoList(companyId) {
+  return request({
+    url: '/finance/itemComp/itemNoList/' + companyId,
+    method: 'get'
+  })
+}
+
 // 查询报支类别公司设置详细
 export function getItemComp(id) {
   return request({
