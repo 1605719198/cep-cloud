@@ -79,12 +79,18 @@
 
     <el-table v-loading="loading" :data="orgValueAddList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="单据编号" align="center" prop="changeNo" />
+      <el-table-column label="单据编号" align="center" prop="changeNo" sortable/>
       <el-table-column label="单据名称" align="center" prop="changeName" />
-      <el-table-column label="部门" align="center" prop="applyDept" />
-      <el-table-column label="变动日期" align="center" prop="changeDate" width="180">
+      <el-table-column label="变动方式" align="center" prop="changeWay" :formatter="changeWayFormat"/>
+      <el-table-column label="申请人" align="center" prop="applyUser" :formatter="userFormat" sortable/>
+      <el-table-column label="变动日期" align="center" prop="changeDate" width="180" sortable>
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.changeDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="单据状态" align="center" prop="status" >
+        <template v-slot="scope">
+          <dict-tag :options="dict.type.ft_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -137,8 +143,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="单据编号" prop="changeNo">
-              <el-input v-model="form.changeNo" placeholder="请输入单据编号" />
+            <el-form-item label="单据编号" prop="changeNo" >
+              {{form.changeNo}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -167,6 +173,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="单据状态" prop="status">
+              {{form.status}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -179,15 +186,16 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="申请人" prop="applyUser">
-              <el-input v-model="form.applyUser" placeholder="请输入申请人" />
+              {{form.applyUser}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="申请日期" prop="applyDate">
+              {{form.applyDate}}
             </el-form-item>
           </el-col>
         </el-row>
-        <el-divider content-position="center">资产变动单主档信息</el-divider>
+<!--        <el-divider content-position="center">资产信息</el-divider>-->
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="openSelectPop">挑选资产</el-button>
@@ -223,13 +231,6 @@
               <el-input v-model="scope.row.deptNo" placeholder="请输入归属部门" disabled/>
             </template>
           </el-table-column>
-
-          <el-table-column label="资产保管人部门" prop="userDept" width="150">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.userDept" placeholder="请输入资产保管人部门" disabled/>
-            </template>
-          </el-table-column>
-
         </el-table>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -244,13 +245,16 @@
 <script>
 import { listOrgValueAdd, getOrgValueAdd, delOrgValueAdd, addOrgValueAdd, updateOrgValueAdd } from "@/api/finance/ft/orgValueAdd";
 import { selectCompanyList } from "@/api/finance/aa/companyGroup";
-import {selectChangeTypeList} from "../../../../api/finance/ft/changeType";
+import {getChangeTypeName, selectChangeTypeList} from "@/api/finance/ft/changeType";
 import selectCard from "@/views/finance/ft/card/selectCard";
+import {queryAllUser} from "@/api/system/user";
 export default {
   name: "OrgValueAdd",
   components: { selectCard},
+  dicts: ['ft_status'],
   data() {
     return {
+      resUserDiction:[],
       // 会计公司下拉选单
       companyList: [],
       // 变动方式下拉选单
@@ -288,7 +292,7 @@ export default {
         companyId: null,
         changeNo: null,
         changeDate: null,
-        period: null,
+        changeType: "C",
       },
       // 查询资产卡片参数
       queryCardParams: {
@@ -329,10 +333,28 @@ export default {
   },
   created() {
     this.getCompanyList();
-    this.getChangeTypeList();
+    //this.getChangeTypeList();
     this.getList();
   },
+  beforeMount() {
+    this.getChangeTypeList();
+    /** 装载人员信息 */
+    queryAllUser().then(response => {
+      this.resUserDiction = response.rows;
+    })
+  },
   methods: {
+    userFormat(row,column){
+      return this.UserDictFullName(this.resUserDiction,row.applyUser);
+
+    },
+    changeWayFormat(row,column){
+     // alert(this.changeWayList);
+      //return '';
+      return getChangeTypeName(this.changeWayList,row.changeWay);
+
+    },
+
     parentChoose(data){
       console.log(data);
       data.map((item) => this.financeFtChangeDetailList.push(item));

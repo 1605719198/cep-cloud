@@ -71,10 +71,11 @@ public class FinanceFtChangeServiceImpl implements IFinanceFtChangeService
     @Override
     public int insertFinanceFtChange(FinanceFtChange financeFtChange)
     {
-        financeFtChange.setCreateTime(DateUtils.getNowDate());
         financeFtChange.setUuid(IdUtils.simpleUUID());
+        financeFtChange.setApplyDate(DateUtils.getNowDate());
+        financeFtChange.setApplyUser(SecurityUtils.getUsername());
         financeFtChange.setChangeNo(this.getChangeNo(financeFtChange.getCompanyId(), ConstantsUtil.STR_C));
-        financeFtChange.setStatus("00");
+        financeFtChange.setStatus(ConstantsUtil.STR_00);
         financeFtChange.setCreateName(SecurityUtils.getNickName());
         int rows = financeFtChangeMapper.insertFinanceFtChange(financeFtChange);
         insertFinanceFtChangeDetail(financeFtChange);
