@@ -25,18 +25,16 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/questions/examtype")
-public class ExamTypeController extends BaseController
-{
+public class ExamTypeController extends BaseController{
     @Autowired
     private IExamTypeService examTypeService;
-
     @Autowired
     private TokenService tokenService;
 
     /**
      * 查询考试分类列表
      */
-    @RequiresPermissions("questions:examtype:list")
+    @RequiresPermissions("human:examType:list")
     @GetMapping("/list")
     public AjaxResult list(ExamType examType)
     {
@@ -47,7 +45,7 @@ public class ExamTypeController extends BaseController
     /**
      * 导出考试分类列表
      */
-    @RequiresPermissions("questions:examtype:export")
+    @RequiresPermissions("human:examType:export")
     @Log(title = "考试分类", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamType examType)
@@ -69,7 +67,7 @@ public class ExamTypeController extends BaseController
     /**
      * 获取考试分类详细信息
      */
-    @RequiresPermissions("questions:examtype:query")
+    @RequiresPermissions("human:examType:query")
     @GetMapping(value = "/{typeId}")
     public AjaxResult getInfo(@PathVariable("typeId") Long typeId)
     {
@@ -79,7 +77,7 @@ public class ExamTypeController extends BaseController
     /**
      * 新增考试分类
      */
-    @RequiresPermissions("questions:examtype:add")
+    @RequiresPermissions("human:examType:add")
     @Log(title = "考试分类", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamType examType)
@@ -92,7 +90,7 @@ public class ExamTypeController extends BaseController
     /**
      * 修改考试分类
      */
-    @RequiresPermissions("questions:examtype:edit")
+    @RequiresPermissions("human:examType:edit")
     @Log(title = "考试分类", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamType examType)
@@ -103,7 +101,7 @@ public class ExamTypeController extends BaseController
     /**
      * 删除考试分类
      */
-    @RequiresPermissions("questions:examtype:remove")
+    @RequiresPermissions("human:examType:remove")
     @Log(title = "考试分类", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{typeIds}")
     public AjaxResult remove(@PathVariable Long[] typeIds)
