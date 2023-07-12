@@ -166,7 +166,7 @@
 
 <script>
 import { listQuestionsbank, delQuestionsbank, addQuestionsbank, updateQuestionsbank, exportQuestionsbank } from "@/api/human/ex/questionsbank";
-import { listExamtype, typeTreeSelect} from "@/api/human/ex/examtype";
+import { listExamtype, typeTreeSelect} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import DetailEdit from './detailEdit';
