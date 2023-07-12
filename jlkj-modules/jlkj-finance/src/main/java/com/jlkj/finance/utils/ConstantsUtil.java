@@ -202,4 +202,9 @@ public class ConstantsUtil extends Constants
      */
     public static final String STR_2 = "2";
 
+    public static final String STR_00 = "00";
+    public static final String STR_10 = "10";
+    public static final String STR_20 = "20";
+    public static final String STR_40 = "40";
+
 }

@@ -3,6 +3,7 @@ package com.jlkj.finance.ft.mapper;
 import java.util.List;
 import com.jlkj.finance.ft.domain.FinanceFtChange;
 import com.jlkj.finance.ft.domain.FinanceFtChangeDetail;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -97,4 +98,12 @@ public interface FinanceFtChangeMapper
      * @return 结果
      */
     public int deleteFinanceFtChangeDetailByChangeId(String uuid);
+
+    /**
+     * 查询最大流水号
+     * @param companyId
+     * @param changeNo
+     * @return
+     */
+    public String selectMaxChangeNo(@Param("companyId") String companyId, @Param("changeNo")String changeNo);
 }
