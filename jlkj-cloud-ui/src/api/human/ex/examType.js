@@ -26,7 +26,6 @@ export function typeTreeSelect() {
 
 // 新增考试分类
 export function addExamtype(data) {
-  debugger
   return request({
     url: '/human/examtype/add',
     method: 'post',
