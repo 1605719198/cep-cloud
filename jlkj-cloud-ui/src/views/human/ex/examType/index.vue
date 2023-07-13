@@ -62,7 +62,7 @@
         </el-form-item>
         <el-form-item label="状态" label-width="85px">
           <el-radio-group v-model="form.status">
-            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">
+            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value*1">
               {{ dict.label }}
             </el-radio>
           </el-radio-group>
@@ -77,7 +77,14 @@
 </template>
 
 <script>
-import {listExamType, getExamtype, delExamtype, addExamtype, updateExamtype} from "@/api/human/ex/examType";
+import {
+  listExamType,
+  getExamtype,
+  delExamtype,
+  addExamtype,
+  updateExamtype,
+  typeTreeSelect
+} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -157,10 +164,9 @@ export default {
     /** 查询考试分类下拉树结构 */
     getTreeselect() {
       listExamType().then(response => {
-        const data = {typeId: 0, typeName: '顶级节点', children: []};
-        if (response.data.length > 0) {
-          data.children = this.handleTree(response.data, "typeId", "parentId");
-        }
+        this.examtypeOptions = [];
+        const data = { typeId: 0, typeName: '顶级节点', children: [] };
+        data.children = this.handleTree(response.data, "typeId", "parentId");
         this.examtypeOptions.push(data);
       });
     },
@@ -197,7 +203,6 @@ export default {
     handleAdd(row) {
       this.reset();
       this.getTreeselect();
-      debugger
       if (row != null && row.typeId) {
         this.form.parentId = row.typeId;
       } else {
