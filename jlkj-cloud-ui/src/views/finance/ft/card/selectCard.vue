@@ -41,7 +41,7 @@
       <el-button type="primary" @click="handleSelectCard">确 定</el-button>
       <el-button @click="visible = false">取 消</el-button>
     </div>
-<!--    <label>ddd {{queryData}}</label>-->
+<!--   <label>ddd {{queryData}}</label>-->
   </el-dialog>
 </template>
 
@@ -79,6 +79,7 @@ export default {
         assetUser: '',
         product:'',
         isCleared:'',
+        assetId:''
       }
     };
   },
@@ -105,6 +106,11 @@ export default {
       this.queryParams.product = this.queryData.product;
       this.queryParams.companyId = this.queryData.companyId;
       this.queryParams.isCleared = this.queryData.isCleared;
+      if(this.queryData.assetId != undefined && this.queryData.assetId.length>0){
+        this.queryParams.assetId = this.queryData.assetId.join(",");
+      }else{
+        this.queryParams.assetId="";
+      }
       selectCardList(this.queryParams).then(res => {
         this.assetList = res.rows;
         this.total = res.total;

@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import { listSocialSecurity, delSocialSecurity, addSocialSecurity } from "@/api/human/hs/socialSecurity";
+import { listSocialSecurity, delSocialSecurity, addSocialSecurity, selectVersion } from "@/api/human/hs/socialSecurity";
 import { listSalaryProjectBasis} from "@/api/human/hs/salaryProjectBasis";
 import {getDateTime} from "@/api/human/hd/ahumanUtils";
 import { getSalaryOptions } from "@/api/human/hs/salaryBasis";
@@ -250,7 +250,7 @@ export default {
         pageSize: 10,
         date: null,
         payAreaId: null,
-        version: undefined,
+        version: null,
         effectDate: null,
       },
       // 表单参数
@@ -287,6 +287,12 @@ export default {
       this.userEmpId= this.$store.state.user.name;
       this.nickName= this.$store.state.user.userInfo.nickName;
       this.logincompId= this.$store.state.user.userInfo.compId;
+    },
+    //获取缴费地区列表
+    getVersionList() {
+      selectVersion(this.queryParams.payAreaId).then(response => {
+        this.versionList = response.data
+      })
     },
     //表单值设置
     setForm(e){
@@ -385,14 +391,13 @@ export default {
     },
     //点击节点方法
     changePostName(data,index){
+      this.queryParams.version = null;
       this.queryParams.effectDate = null;
       this.queryParams.payAreaId = data.dicNo;
       this.queryParams.date = null;
-      listSocialSecurity(this.queryParams).then(response => {
-        this.queryParams.version = response.rows[0].version
-        this.form.socialSecurityList = []
-        this.onLoad();
-      })
+      this.getVersionList()
+      this.form.socialSecurityList = []
+      this.onLoad()
     },
     //载入数据
     onLoad() {

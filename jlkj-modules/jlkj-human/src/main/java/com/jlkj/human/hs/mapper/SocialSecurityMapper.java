@@ -72,6 +72,14 @@ public interface SocialSecurityMapper
     public int deleteSocialSecurityByIds(String[] ids);
 
     /**
+     * 版本号列表
+     *
+     * @param payAreaId 缴费地区
+     * @return 结果
+     */
+    List<SocialSecurity> getVersionList(String payAreaId);
+
+    /**
      * 获取最大版本号
      *
      * @param payAreaId 缴费地区

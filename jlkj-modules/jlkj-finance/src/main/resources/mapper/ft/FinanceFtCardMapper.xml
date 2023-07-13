@@ -119,8 +119,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="assetUser != null  and assetUser != ''"> AND asset_user = #{assetUser}</if>
             <if test="userDept != null  and userDept != ''"> AND user_dept = #{userDept}</if>
             <if test="isCleared != null  and isCleared != ''"> AND is_cleared = #{isCleared}</if>
+            <if test="product != null  and product != ''">
             and asset_id not in (select c.asset_id from (select a.asset_id from finance_ft_change_detail a,
             finance_ft_change b where  b.uuid = a.change_id and b.change_type= #{product} and b.status='00')c)
+            </if>
+            <if test="assetId != null  and assetId != ''">
+            and asset_id not in
+            <foreach collection="assetId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            </if>
         </where>
         order by asset_no
 

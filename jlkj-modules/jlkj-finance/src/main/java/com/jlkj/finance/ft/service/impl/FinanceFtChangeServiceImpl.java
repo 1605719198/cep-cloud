@@ -143,6 +143,8 @@ public class FinanceFtChangeServiceImpl implements IFinanceFtChangeService
     {
         List<FinanceFtChangeDetail> financeFtChangeDetailList = financeFtChange.getFinanceFtChangeDetailList();
         String uuid = financeFtChange.getUuid();
+        String changeNo = financeFtChange.getChangeNo();
+        String companyId = financeFtChange.getCompanyId();
         if (StringUtils.isNotNull(financeFtChangeDetailList))
         {
             List<FinanceFtChangeDetail> list = new ArrayList<FinanceFtChangeDetail>();
@@ -150,6 +152,8 @@ public class FinanceFtChangeServiceImpl implements IFinanceFtChangeService
             {
                 financeFtChangeDetail.setUuid(IdUtils.simpleUUID());
                 financeFtChangeDetail.setChangeId(uuid);
+                financeFtChangeDetail.setChangeNo(changeNo);
+                financeFtChangeDetail.setCompanyId(companyId);
                 list.add(financeFtChangeDetail);
             }
             if (list.size() > 0)
