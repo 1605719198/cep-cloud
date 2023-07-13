@@ -35,7 +35,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="姓名" prop="fullName">
-          <el-input v-model="form.fullName" placeholder="请输入姓名" :maxlength="10"/>
+          <el-input v-model="form.fullName" placeholder="请输入姓名" :maxlength="6"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -45,7 +45,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="曾用名" prop="nameUsedBefore">
-          <el-input v-model="form.nameUsedBefore" placeholder="请输入曾用名" :maxlength="10"/>
+          <el-input v-model="form.nameUsedBefore" placeholder="请输入曾用名" :maxlength="6"/>
         </el-form-item>
       </el-col>
     </el-row>
@@ -296,7 +296,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="户口所在地邮编" prop="registeredPermanentResidencePostalCode">
-          <el-input v-model="form.registeredPermanentResidencePostalCode" placeholder="请输入户口所在地邮编" :maxlength="20"/>
+          <el-input v-model="form.registeredPermanentResidencePostalCode" placeholder="请输入户口所在地邮编" :maxlength="6"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">

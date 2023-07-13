@@ -82,14 +82,14 @@
             <el-row>
               <el-col :span="6">
                 <el-form-item label="工号" prop="empNo">
-                  <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :disabled="true">
+                  <el-input v-model="addJsonForm.empNo" placeholder="请输入工号" :maxlength="6" :disabled="true">
                     <el-button slot="append" icon="el-icon-search" @click="inputClick" v-show="updatePop"></el-button>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="姓名" prop="empName">
-                  <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :disabled="!updatePop"/>
+                  <el-input v-model="addJsonForm.empName" placeholder="请输入姓名" :maxlength="6" :disabled="!updatePop"/>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
