@@ -42,7 +42,13 @@ export function delManufacturerBasics(id) {
 
 }
 
-
+// 厂商编码
+export function selectManufacturerList(companyId) {
+  return request({
+    url: '/finance/finance/manufacturer/selectManufacturerList/' + companyId,
+    method: 'get'
+  })
+}
 
 
 // 修改厂商采购关系资料
