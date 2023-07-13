@@ -1,41 +1,31 @@
 package com.jlkj.finance.ft.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-
-import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
-import com.jlkj.finance.ao.domain.FinanceAoItemComp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.jlkj.common.core.web.controller.BaseController;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.ft.domain.FinanceFtChange;
 import com.jlkj.finance.ft.service.IFinanceFtChangeService;
-import com.jlkj.common.core.web.controller.BaseController;
-import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.web.page.TableDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
  * 资产变动单主档Controller
- * @Description:
+ * @Description:固定资产原值减少单维护
  * @author 116524
  * @date 2023-07-04
  * @version:V1.0
  */
 @RestController
-@RequestMapping("/ft/orgValueAdd")
-public class FinanceFtOrgValueAddController extends BaseController
+@RequestMapping("/ft/orgValueSubtract")
+public class FinanceFtOrgValueSubtractController extends BaseController
 {
     @Autowired
     private IFinanceFtChangeService financeFtChangeService;
@@ -49,7 +39,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      */
 
 
-    @RequiresPermissions("finance:ft:orgValueAdd:list")
+    @RequiresPermissions("finance:ft:orgValueSubtract:list")
     @GetMapping("/list")
     public TableDataInfo list(FinanceFtChange financeFtChange)
     {
@@ -65,7 +55,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      * @param financeFtChange
      * @return
      */
-    @RequiresPermissions("finance:ft:orgValueAdd:export")
+    @RequiresPermissions("finance:ft:orgValueSubtract:export")
     @Log(title = "资产变动单主档", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FinanceFtChange financeFtChange)
@@ -82,7 +72,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      * @param uuid
      * @return
      */
-    @RequiresPermissions("finance:ft:orgValueAdd:query")
+    @RequiresPermissions("finance:ft:orgValueSubtract:query")
     @GetMapping(value = "/{uuid}")
     public AjaxResult getInfo(@PathVariable("uuid") String uuid)
     {
@@ -96,7 +86,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      * @param financeFtChange
      * @return
      */
-    @RequiresPermissions("finance:ft:orgValueAdd:add")
+    @RequiresPermissions("finance:ft:orgValueSubtract:add")
     @Log(title = "资产变动单主档", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FinanceFtChange financeFtChange)
@@ -111,7 +101,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      * @param financeFtChange
      * @return
      */
-    @RequiresPermissions("finance:ft:orgValueAdd:edit")
+    @RequiresPermissions("finance:ft:orgValueSubtract:edit")
     @Log(title = "资产变动单主档", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FinanceFtChange financeFtChange)
@@ -126,7 +116,7 @@ public class FinanceFtOrgValueAddController extends BaseController
      * @param uuids
      * @return
      */
-    @RequiresPermissions("finance:ft:orgValueAdd:remove")
+    @RequiresPermissions("finance:ft:orgValueSubtract:remove")
     @Log(title = "资产变动单主档", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uuids}")
     public AjaxResult remove(@PathVariable String[] uuids)
