@@ -2,12 +2,8 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="类别名称" prop="typeName">
-        <el-input
-          v-model="queryParams.typeName"
-          placeholder="请输入类别名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
+        <el-input v-model="queryParams.typeName" placeholder="请输入类别名称" clearable size="small"
+                  @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -18,25 +14,15 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['human:examType:add']"
-        >新增
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+                   v-hasPermi="['human:examType:add']">新增
         </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="examtypeList"
-      row-key="typeId"
-      default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    <el-table v-loading="loading" :data="examtypeList" row-key="typeId" default-expand-all
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column label="上级类别ID" align="center" prop="parentId"/>
       <el-table-column label="类别代码" align="center" prop="typeCode"/>
@@ -45,29 +31,14 @@
       <el-table-column label="状态" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:examType:edit']"
-          >修改
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+                     v-hasPermi="['human:examType:edit']">修改
           </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-plus"
-            @click="handleAdd(scope.row)"
-            v-hasPermi="['human:examType:add']"
-          >新增
+          <el-button size="mini" type="text" icon="el-icon-plus" @click="handleAdd(scope.row)"
+                     v-hasPermi="['human:examType:add']">新增
           </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['human:examType:remove']"
-          >删除
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+                     v-hasPermi="['human:examType:remove']">删除
           </el-button>
         </template>
       </el-table-column>
@@ -91,11 +62,8 @@
         </el-form-item>
         <el-form-item label="状态" label-width="85px">
           <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{ dict.label }}
+            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">
+              {{ dict.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -115,10 +83,10 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "ExamType",
+  dicts: ['sys_normal_disable'],
   components: {
     Treeselect
   },
-  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -128,7 +96,7 @@ export default {
       // 考试分类表格数据
       examtypeList: [],
       // 考试分类树选项
-      examtypeOptions: undefined,
+      examtypeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -150,11 +118,11 @@ export default {
       // 创建时间字典
       createTimeOptions: [],
       // 查询参数
-      queryParams: {
-        typeName: '',
-      },
+      queryParams: {},
       // 表单参数
-      form: {},
+      form: {
+        status: 0,
+      },
       // 表单校验
       rules: {
         typeName: [
@@ -189,10 +157,10 @@ export default {
     /** 查询考试分类下拉树结构 */
     getTreeselect() {
       listExamType().then(response => {
-        console.log(response)
-        this.examtypeOptions = [];
         const data = {typeId: 0, typeName: '顶级节点', children: []};
-        data.children = this.handleTree(response.data, "typeId", "parentId");
+        if (response.data.length > 0) {
+          data.children = this.handleTree(response.data, "typeId", "parentId");
+        }
         this.examtypeOptions.push(data);
       });
     },
