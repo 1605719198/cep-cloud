@@ -22,7 +22,7 @@ import java.util.List;
  * @Date: 2023-07-11
  */
 @RestController
-@RequestMapping("/questions/bankpicture")
+@RequestMapping("bankpicture")
 public class ExamBankPictureController extends BaseController
 {
     @Autowired
@@ -31,7 +31,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 查询题库图片列表
      */
-    @RequiresPermissions("questions:bankpicture:list")
+    @RequiresPermissions("human:bankpicture:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamBankPicture examBankPicture)
     {
@@ -43,7 +43,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 导出题库图片列表
      */
-    @RequiresPermissions("questions:bankpicture:export")
+    @RequiresPermissions("human:bankpicture:export")
     @Log(title = "题库图片", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamBankPicture examBankPicture)
@@ -56,7 +56,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 获取题库图片详细信息
      */
-    @RequiresPermissions("questions:bankpicture:query")
+    @RequiresPermissions("human:bankpicture:query")
     @GetMapping(value = "/{photoCode}")
     public AjaxResult getInfo(@PathVariable("photoCode") String photoCode)
     {
@@ -66,7 +66,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 新增题库图片
      */
-    @RequiresPermissions("questions:bankpicture:add")
+    @RequiresPermissions("human:bankpicture:add")
     @Log(title = "题库图片", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamBankPicture examBankPicture)
@@ -77,7 +77,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 修改题库图片
      */
-    @RequiresPermissions("questions:bankpicture:edit")
+    @RequiresPermissions("human:bankpicture:edit")
     @Log(title = "题库图片", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamBankPicture examBankPicture)
@@ -88,7 +88,7 @@ public class ExamBankPictureController extends BaseController
     /**
      * 删除题库图片
      */
-    @RequiresPermissions("questions:bankpicture:remove")
+    @RequiresPermissions("human:bankpicture:remove")
     @Log(title = "题库图片", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{photoCodes}")
     public AjaxResult remove(@PathVariable String[] photoCodes)

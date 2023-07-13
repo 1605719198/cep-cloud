@@ -18,9 +18,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <select id="selectExamQuestionsContent" parameterType="ExamQuestionsContentData" resultMap="ExamQuestionsContentDataResult">
-	    select a.bank_code, c.exam_code, a.questions_id, c.questions_number,a.questions_code, b.questions_content,a.questions_type, a.questions_score, a.rate_number from exam_questions_property a
-		left join exam_questions_content b on b.questions_code = a.questions_code
-		left join exam_task_questions c on c.questions_code  = a.questions_code and c.exam_code = #{examCode}
+	    select a.bank_code, c.exam_code, a.questions_id, c.questions_number,a.questions_code, b.questions_content,a.questions_type, a.questions_score, a.rate_number from human_ex_questions_property a
+		left join human_ex_questions_content b on b.questions_code = a.questions_code
+		left join human_ex_task_questions c on c.questions_code  = a.questions_code and c.exam_code = #{examCode}
 		where a.questions_code = #{questionsCode}
     </select>
 

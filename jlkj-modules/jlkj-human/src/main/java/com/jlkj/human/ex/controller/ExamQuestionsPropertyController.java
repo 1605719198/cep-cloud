@@ -25,7 +25,7 @@ import java.util.List;
  * @Date:  2023-07-11
  */
 @RestController
-@RequestMapping("/questions/questionsproperty")
+@RequestMapping("/questionsproperty")
 public class ExamQuestionsPropertyController extends BaseController
 {
     @Autowired
@@ -37,7 +37,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 查询题目属性列表
      */
-    @RequiresPermissions("questions:questionsproperty:list")
+    @RequiresPermissions("human:questionsproperty:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamQuestionsProperty examQuestionsProperty)
     {
@@ -49,7 +49,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 导出题目属性列表
      */
-    @RequiresPermissions("questions:questionsproperty:export")
+    @RequiresPermissions("human:questionsproperty:export")
     @Log(title = "题目属性", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamQuestionsProperty examQuestionsProperty)
@@ -62,7 +62,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 获取题目属性详细信息
      */
-    @RequiresPermissions("questions:questionsproperty:query")
+    @RequiresPermissions("human:questionsproperty:query")
     @GetMapping(value = "/{questionsCode}")
     public AjaxResult getInfo(@PathVariable("questionsCode") String questionsCode)
     {
@@ -72,7 +72,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 新增题目属性
      */
-    @RequiresPermissions("questions:questionsproperty:add")
+    @RequiresPermissions("human:questionsproperty:add")
     @Log(title = "题目属性", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ExamQuestionsProperty examQuestionsProperty)
@@ -86,7 +86,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 修改题目属性
      */
-    @RequiresPermissions("questions:questionsproperty:edit")
+    @RequiresPermissions("human:questionsproperty:edit")
     @Log(title = "题目属性", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult edit(@RequestBody ExamQuestionsProperty examQuestionsProperty)
@@ -97,7 +97,7 @@ public class ExamQuestionsPropertyController extends BaseController
     /**
      * 删除题目属性
      */
-    @RequiresPermissions("questions:questionsproperty:remove")
+    @RequiresPermissions("human:questionsproperty:remove")
     @Log(title = "题目属性", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{questionsCodes}")
     public AjaxResult remove(@PathVariable String[] questionsCodes)

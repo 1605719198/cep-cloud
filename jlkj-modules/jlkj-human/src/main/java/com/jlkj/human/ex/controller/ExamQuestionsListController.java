@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2022-12-28
  */
 @RestController
-@RequestMapping("/questions/questionslist")
+@RequestMapping("/questionslist")
 public class ExamQuestionsListController extends BaseController
 {
     @Autowired

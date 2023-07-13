@@ -22,30 +22,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsPropertyVo">
-		select rownum, bank_code, questions_id, questions_code, questions_title, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from 
+		select  @rownum:=@rownum+1, aa.bank_code, aa.questions_id, aa.questions_code, aa.questions_title, aa.questions_type, aa.questions_score, aa.rate_number, aa.right_answer,
+               aa.answer_analyse, aa.status, aa.create_by, aa.create_dept, aa.create_time from  (select @rownum:=0) r,
 		(   
-		select bank_code, questions_id, questions_code, substr(questions_title,1,50) as questions_title, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from exam_questions_property
-		)    
+		select bank_code, questions_id, questions_code, substr(questions_title,1,50) as questions_title, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from human_ex_questions_property
+		)   aa
     </sql>
 
     <select id="selectExamQuestionsPropertyList" parameterType="ExamQuestionsProperty" resultMap="ExamQuestionsPropertyResult">
         <include refid="selectExamQuestionsPropertyVo"/>
         <where>  
-          <if test="bankCode != null  and bankCode != ''"> and bank_code = #{bankCode}</if>
+          <if test="bankCode != null  and bankCode != ''"> and aa.bank_code = #{bankCode}</if>
         </where>
         order by questions_id        
     </select>
     
     <select id="selectExamQuestionsPropertyById" parameterType="String" resultMap="ExamQuestionsPropertyResult">
         <include refid="selectExamQuestionsPropertyVo"/>
-        where questions_code = #{questionsCode}
+        where aa.questions_id = #{questionsId}
     </select>
         
     <insert id="insertExamQuestionsProperty" parameterType="ExamQuestionsProperty" >
-        insert into exam_questions_property
+        insert into human_ex_questions_property
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">bank_code,</if>
-            questions_id,
             <if test="questionsCode != null">questions_code,</if>
             <if test="questionsTitle != null">questions_title,</if>
             <if test="questionsType != null">questions_type,</if>
@@ -56,11 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             status,
             <if test="createBy != null">create_by,</if>
             <if test="createDept != null">create_dept,</if>
-            create_time,
+            <if test="createTime != null">create_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">#{bankCode},</if>
-            (select nvl(max(questions_id),0) + 1  from exam_questions_property),
             <if test="questionsCode != null">#{questionsCode},</if>
             <if test="questionsTitle != null">#{questionsTitle},</if>
             <if test="questionsType != null">#{questionsType},</if>
@@ -71,12 +70,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             0,
             <if test="createBy != null">#{createBy},</if>
             <if test="createDept != null">#{createDept},</if>
-            sysdate,
+            <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
 
     <update id="updateExamQuestionsProperty" parameterType="ExamQuestionsProperty">
-        update exam_questions_property
+        update human_ex_questions_property
         <trim prefix="SET" suffixOverrides=",">
             <if test="bankCode != null">bank_code = #{bankCode},</if>
             <if test="questionsId != null">questions_id = #{questionsId},</if>
@@ -95,11 +94,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamQuestionsPropertyById" parameterType="String">
-        delete from exam_questions_property where questions_code = #{questionsCode}
+        delete from human_ex_questions_property where questions_code = #{questionsCode}
     </delete>
 
     <delete id="deleteExamQuestionsPropertyByIds" parameterType="String">
-        delete from exam_questions_property where questions_code in 
+        delete from human_ex_questions_property where questions_code in 
         <foreach item="questionsCode" collection="array" open="(" separator="," close=")">
             #{questionsCode}
         </foreach>

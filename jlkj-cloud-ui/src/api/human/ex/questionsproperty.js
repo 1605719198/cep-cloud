@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询题目属性列表
 export function listQuestionsproperty(query) {
   return request({
-    url: '/questions/questionsproperty/list',
+    url: '/human/questionsproperty/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listQuestionsproperty(query) {
 // 查询题目属性详细
 export function getQuestionsproperty(questionsCode) {
   return request({
-    url: '/questions/questionsproperty/' + questionsCode,
+    url: '/human/questionsproperty/' + questionsCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getQuestionsproperty(questionsCode) {
 // 新增题目属性
 export function addQuestionsproperty(data) {
   return request({
-    url: '/questions/questionsproperty/add',
+    url: '/human/questionsproperty/add',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addQuestionsproperty(data) {
 // 修改题目属性
 export function updateQuestionsproperty(data) {
   return request({
-    url: '/questions/questionsproperty/update',
+    url: '/human/questionsproperty/update',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateQuestionsproperty(data) {
 // 删除题目属性
 export function delQuestionsproperty(questionsCode) {
   return request({
-    url: '/questions/questionsproperty/delete/' + questionsCode,
+    url: '/human/questionsproperty/delete/' + questionsCode,
     method: 'get'
   })
 }
@@ -46,7 +46,7 @@ export function delQuestionsproperty(questionsCode) {
 // 导出题目属性
 export function exportQuestionsproperty(query) {
   return request({
-    url: '/questions/questionsproperty/export',
+    url: '/human/questionsproperty/export',
     method: 'get',
     params: query
   })
