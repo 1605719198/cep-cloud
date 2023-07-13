@@ -56,4 +56,13 @@ public interface IPersonnelService extends IService<Personnel> {
      * @return 结果
      */
     Object addPersonnelBasicInfo(Personnel personnel);
+
+    /**
+     * 获取人员基本信息查询列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personnel 查询参数集
+     * @return list 返回数据
+     */
+    List<Personnel> getPersonnelBasicInfoList(Personnel personnel);
 }

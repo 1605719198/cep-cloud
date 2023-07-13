@@ -43,6 +43,7 @@ public class FinanceAaReportInfo extends BaseEntity
     /** 会计周期 */
 
     @Excel(name = "会计周期", width = 30)
+    @JsonFormat(pattern ="yyyy-MM",timezone="GMT+8")
     private String acctPeriod;
 
     /** 状态 */

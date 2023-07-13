@@ -257,7 +257,6 @@ export default {
   beforeMount() {
     /** 装载人员信息 */
     queryAllUser().then(response => {
-      console.log(response)
       this.resUserDiction = response.rows;
     })
   },
@@ -268,15 +267,6 @@ export default {
       // return this.UserDictOnlyName(this.resUserDiction, row.createBy);
       /** UserDictFullName 显示工号_姓名 */
       return this.UserDictFullName(this.resUserDiction, row.createBy);
-    },
-    // 分页数据
-    handleSizeChange(val) {
-      this.queryParams.pageSize = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.queryParams.pageNum = val
-      this.getList()
     },
     //获取数据刷新页面
     getList() {

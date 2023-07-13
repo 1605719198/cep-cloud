@@ -3,6 +3,7 @@ package com.jlkj.finance.ap.service;
 import com.jlkj.finance.ap.domain.FinanceApItemComp;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设置Service接口
@@ -66,4 +67,12 @@ public interface IFinanceApItemCompService
      * @return
      */
     public int insertBatch(List<FinanceApItemComp> financeApItemComps);
+ /**
+ *获取报支类别公司设定明细档费用细项
+ *@author 265799
+ *@date 2023/7/12  10:52
+  * @param companyId :
+  * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+ */
+    public List<Map<String,String>> selectItemNoList(String companyId);
 }

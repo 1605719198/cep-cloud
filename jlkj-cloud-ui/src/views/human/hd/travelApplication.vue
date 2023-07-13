@@ -177,7 +177,7 @@
               <el-col :span="8">
                 <el-form-item label="出差类别" align="left" :required="true" >
                   <el-form-item prop="travelTpye" size="large" style="display: inline-block">
-                    <el-radio-group v-model="form.travelTpye" @change="changeType()">
+                    <el-radio-group v-model="form.travelTpye">
                       <el-radio
                         style="margin-right: 5px"
                         v-for="dict in attendenceOptions.TravelType"
@@ -310,7 +310,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="form.travelTpye=='01'">
+            <el-row>
               <el-col :span="6">
                 <el-form-item label="出差地点1" prop="billNo">
                   <el-input v-model="form.resvAttr1" placeholder="请选择出差地点" class="inputInner" style="width: 200px">
@@ -337,61 +337,6 @@
                   <el-input v-model="form.resvAttr4" placeholder="请选择出差地点" class="inputInner" style="width: 200px">
                     <el-button slot="append" icon="el-icon-search" @click="inputCenter()" clearable></el-button>
                   </el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row v-if="form.travelTpye=='02'" >
-              <el-col :span="6">
-                <el-form-item label="出差地点1" prop="resvAttr1">
-
-                  <el-select :popper-append-to-body="false" v-model="form.resvAttr1"  placeholder="请选择出差地点" >
-                    <el-option
-                      v-for="dict in attendenceOptions.Country"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="出差地点2" prop="resvAttr2">
-                  <el-select :popper-append-to-body="false" v-model="form.resvAttr2"  placeholder="请选择出差地点" >
-                    <el-option
-                      v-for="dict in attendenceOptions.Country"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="出差地点3" prop="resvAttr3">
-
-                  <el-select :popper-append-to-body="false" v-model="form.resvAttr3"  placeholder="请选择出差地点" >
-                    <el-option
-                      v-for="dict in attendenceOptions.Country"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    />
-                  </el-select>
-
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="出差地点4" prop="resvAttr4">
-
-                  <el-select :popper-append-to-body="false" v-model="form.resvAttr4"  placeholder="请选择出差地点" >
-                    <el-option
-                      v-for="dict in attendenceOptions.Country"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    />
-                  </el-select>
-
                 </el-form-item>
               </el-col>
             </el-row>
@@ -837,10 +782,10 @@ export default {
         ...this.queryParams
       }, `travelapplication_${new Date().getTime()}.xlsx`)
     },
-    /** 工号点击事件 */
+    /** 出差地点点击事件 */
     inputCenter() {
-      //this.tagsrc = val;
-      // this.$refs.select.show();
+      this.tagsrc = val;
+      this.$refs.select.show();
     },
     /** 工号点击事件 */
     inputClick(val) {

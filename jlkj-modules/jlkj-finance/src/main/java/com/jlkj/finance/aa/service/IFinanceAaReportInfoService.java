@@ -2,6 +2,7 @@ package com.jlkj.finance.aa.service;
 
 import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaReportInfo;
+import com.jlkj.finance.aa.dto.FinanceAaReportBalanceDTO;
 
 /**
  * 印项目计算记录Service接口
@@ -42,7 +43,7 @@ public interface IFinanceAaReportInfoService
      * @param financeAaReportInfo 印项目计算记录
      * @return 结果
      */
-    public int updateFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo);
+    public List<FinanceAaReportBalanceDTO> updateFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo);
 
     /**
      * 批量删除印项目计算记录

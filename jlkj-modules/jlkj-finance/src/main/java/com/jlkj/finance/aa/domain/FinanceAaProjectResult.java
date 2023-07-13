@@ -37,6 +37,22 @@ public class FinanceAaProjectResult extends BaseEntity
     @Excel(name = "印表项目")
     private String itemCode;
 
+
+    /** 项目名称 */
+    @Excel(name = "项目名称")
+    private String itemName;
+
+
+    /** 行次 */
+    @Excel(name = "行次")
+    private Long itemRow;
+
+
+    /** 类别 */
+    @Excel(name = "类别")
+    private String itemType;
+
+
     /** 会计周期 */
     @Excel(name = "会计周期", width = 30)
     private String acctPeriod;
@@ -135,6 +151,30 @@ public class FinanceAaProjectResult extends BaseEntity
         return createName;
     }
 
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public Long getItemRow() {
+        return itemRow;
+    }
+
+    public void setItemRow(Long itemRow) {
+        this.itemRow = itemRow;
+    }
+
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -143,6 +183,9 @@ public class FinanceAaProjectResult extends BaseEntity
             .append("reportId", getReportId())
             .append("reportNo", getReportNo())
             .append("itemCode", getItemCode())
+            .append("itemRow", getItemRow())
+            .append("itemName", getItemName())
+            .append("itemType", getItemType())
             .append("acctPeriod", getAcctPeriod())
             .append("amt", getAmt())
             .append("qty", getQty())

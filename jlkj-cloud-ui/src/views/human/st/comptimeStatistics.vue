@@ -11,7 +11,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="startDate">
+      <el-form-item label="补休开始日期" prop="startDate" label-width="100px">
         <el-date-picker
           v-model="queryParams.startDate"
           value-format="yyyy-MM-dd"

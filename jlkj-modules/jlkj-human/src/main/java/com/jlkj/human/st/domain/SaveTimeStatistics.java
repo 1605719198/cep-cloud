@@ -24,7 +24,7 @@ public class SaveTimeStatistics extends BaseEntity
     private String compId;
 
     /** 年 */
-    private String year;
+    private Long year;
 
     /** 月（1-1月，2-1月，…… 12-12月，13-15季度，14-2季度，15-3季度，16-4季度，17-年） */
     private Long month;
@@ -99,12 +99,12 @@ public class SaveTimeStatistics extends BaseEntity
     {
         return compId;
     }
-    public void setYear(String year)
+    public void setYear(Long year)
     {
         this.year = year;
     }
 
-    public String getYear()
+    public Long getYear()
     {
         return year;
     }

@@ -1,8 +1,9 @@
 package com.jlkj.system.api.model;
 
+import com.jlkj.system.api.domain.SysUser;
+
 import java.io.Serializable;
 import java.util.Set;
-import com.jlkj.system.api.domain.SysUser;
 
 /**
  * 用户信息
@@ -26,7 +27,7 @@ public class LoginUser implements Serializable
     /**
      * 用户名
      */
-    private String username;
+    private String userName;
 
     /**
      * 登录时间
@@ -57,6 +58,10 @@ public class LoginUser implements Serializable
      * 用户信息
      */
     private SysUser sysUser;
+    /**
+     * 用户姓名（真实姓名）
+     */
+    private String nickName;
 
     public String getToken()
     {
@@ -78,14 +83,14 @@ public class LoginUser implements Serializable
         this.userid = userid;
     }
 
-    public String getUsername()
+    public String getUserName()
     {
-        return username;
+        return userName;
     }
 
-    public void setUsername(String username)
+    public void setUsername(String userName)
     {
-        this.username = username;
+        this.userName = userName;
     }
 
     public Long getLoginTime()
@@ -146,5 +151,13 @@ public class LoginUser implements Serializable
     public void setSysUser(SysUser sysUser)
     {
         this.sysUser = sysUser;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

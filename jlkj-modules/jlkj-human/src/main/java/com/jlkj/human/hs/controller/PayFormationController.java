@@ -1,6 +1,5 @@
 package com.jlkj.human.hs.controller;
 
-import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
@@ -50,12 +49,6 @@ public class PayFormationController extends BaseController {
     @PostMapping
     public Object addPayFormation(@RequestBody PayFormationDTO payFormationDTO) {
         for (PayFormation item : payFormationDTO.getPayFormationList()) {
-            List<PayFormation> list = iPayFormationService.lambdaQuery()
-                    .eq(PayFormation::getCompId, item.getCompId())
-                    .eq(PayFormation::getPayProCode, item.getPayProCode()).list();
-            if (StringUtils.isNotNull(list)){
-                return AjaxResult.error("薪酬项目不能重复保存");
-            }
             item.setCreator(SecurityUtils.getNickName());
             item.setCreatorId(String.valueOf(SecurityUtils.getUserId()));
         }

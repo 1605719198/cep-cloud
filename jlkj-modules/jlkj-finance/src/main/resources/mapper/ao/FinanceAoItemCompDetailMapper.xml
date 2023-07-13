@@ -69,6 +69,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
+    <select id="selectItemNoList" resultType="java.util.Map">
+        select detail_no value, detail_name label from finance_ao_item_comp_detail
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+        </where>
+        order by detail_no
+    </select>
 
     <insert id="insertFinanceAoItemCompDetail" parameterType="FinanceAoItemCompDetail">
         insert into finance_ao_item_comp_detail

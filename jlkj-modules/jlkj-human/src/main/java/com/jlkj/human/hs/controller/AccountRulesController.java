@@ -8,6 +8,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.hs.domain.AccountRules;
+import com.jlkj.human.hs.domain.SalaryProjectBasis;
 import com.jlkj.human.hs.service.IAccountRulesService;
 import com.jlkj.human.hs.service.ISalaryProjectBasisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,19 +93,18 @@ public class AccountRulesController extends BaseController {
         return toAjax(accountRulesService.deleteAccountRulesByIds(ids));
     }
 
-
-//    /**
-//     * 查询薪酬项目树结构
-//     */
-//    @RequiresPermissions("human:accountRules:list")
-//    /**
-//     * 获取集团级薪资项目下拉树列表
-//     */
-//    @GetMapping("/listTree/{compId}")
-//    public AjaxResult listTree(@PathVariable String compId) {
-//        List<SalaryProjectBasis> salaryProjectBasiss = salaryProjectBasisService.selectSalaryProjectTableList(compId);
-//        return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
-//    }
+    /**
+     * 查询薪酬项目树结构
+     */
+    @RequiresPermissions("human:accountRules:list")
+    /**
+     * 获取集团级薪资项目下拉树列表
+     */
+    @GetMapping("/listTree/{compId}")
+    public AjaxResult listTree(@PathVariable String compId) {
+        List<SalaryProjectBasis> salaryProjectBasiss = accountRulesService.selectSalaryProjectTableList(compId);
+        return AjaxResult.success(salaryProjectBasisService.buildSalaryProjectTreeSelect(salaryProjectBasiss));
+    }
 }
 
 

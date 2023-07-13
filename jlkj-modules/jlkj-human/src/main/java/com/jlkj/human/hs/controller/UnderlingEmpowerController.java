@@ -69,10 +69,10 @@ public class UnderlingEmpowerController extends BaseController {
      */
     @RequiresPermissions("human:underlingEmpower:remove")
     @Operation(summary = "删除各公司主管查询下属薪资授权设定信息")
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/delUnderlingEmpower")
     @Log(title = "删除各公司主管查询下属薪资授权设定信息", businessType = BusinessType.DELETE)
-    public Object delUnderlingEmpower(@PathVariable String uuid) {
-        iUnderlingEmpowerService.lambdaUpdate().eq(UnderlingEmpower::getUuid, uuid).remove();
+    public Object delUnderlingEmpower(@RequestParam List<String> uuid) {
+        iUnderlingEmpowerService.removeBatchByIds(uuid);
         return AjaxResult.success("删除成功");
     }
 }

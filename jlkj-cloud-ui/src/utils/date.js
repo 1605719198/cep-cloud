@@ -3,13 +3,13 @@ export const calcDate = (date1, date2) => {
 
   var days = Math.floor(date3 / (24 * 3600 * 1000))
 
-  var leave1 = date3 % (24 * 3600 * 1000) //计算天数后剩余的毫秒数  
+  var leave1 = date3 % (24 * 3600 * 1000) //计算天数后剩余的毫秒数
   var hours = Math.floor(leave1 / (3600 * 1000))
 
-  var leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数  
+  var leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数
   var minutes = Math.floor(leave2 / (60 * 1000))
 
-  var leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数  
+  var leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数
   var seconds = Math.round(date3 / 1000)
   return {
     leave1,
@@ -75,4 +75,77 @@ export function getDays (year, month) {
     days[1] = 29
   }
   return days[month - 1]
+}
+
+export function dateToString(date) {
+  var year = date.getFullYear();//年
+  var month = date.getMonth();//月
+  var day = date.getDate();//日
+  var hours = date.getHours();//时
+  var min = date.getMinutes();//分
+  var second = date.getSeconds();//秒
+  return year + "-" +
+    ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+    (day > 9 ? day : ("0" + day)) + " " +
+    (hours > 9 ? hours : ("0" + hours)) + ":" +
+    (min > 9 ? min : ("0" + min)) + ":" +
+    (second > 9 ? second : ("0" + second));
+}
+
+export function dateTextToString(text) {
+  const date = new Date(text)
+  var year = date.getFullYear();//年
+  var month = date.getMonth();//月
+  var day = date.getDate();//日
+  var hours = date.getHours();//时
+  var min = date.getMinutes();//分
+  var second = date.getSeconds();//秒
+  return year + "-" +
+    ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+    (day > 9 ? day : ("0" + day)) + " " +
+    (hours > 9 ? hours : ("0" + hours)) + ":" +
+    (min > 9 ? min : ("0" + min)) + ":" +
+    (second > 9 ? second : ("0" + second));
+}
+
+export function dateTextToDateString(text) {
+  const date = new Date(text)
+  var year = date.getFullYear();//年
+  var month = date.getMonth();//月
+  var day = date.getDate();//日
+  var hours = date.getHours();//时
+  var min = date.getMinutes();//分
+  var second = date.getSeconds();//秒
+  return year + "-" +
+    ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+    (day > 9 ? day : ("0" + day)) ;
+}
+
+export function dateTextToDatetimeString(text) {
+  const date = new Date(text)
+  var year = date.getFullYear();//年
+  var month = date.getMonth();//月
+  var day = date.getDate();//日
+  var hours = date.getHours();//时
+  var min = date.getMinutes();//分
+  var second = date.getSeconds();//秒
+  return year + "-" +
+    ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+    (day > 9 ? day : ("0" + day)) + " " +
+    (hours > 9 ? hours : ("0" + hours)) + ":" +
+    (min > 9 ? min : ("0" + min)) ;
+}
+
+export function dateRemoveSeconds(date) {
+  var year = date.getFullYear();//年
+  var month = date.getMonth();//月
+  var day = date.getDate();//日
+  var hours = date.getHours();//时
+  var min = date.getMinutes();//分
+  // var second = date.getSeconds();//秒
+  return year + "-" +
+    ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+    (day > 9 ? day : ("0" + day)) + " " +
+    (hours > 9 ? hours : ("0" + hours)) + ":" +
+    (min > 9 ? min : ("0" + min)) + ":00" ;
 }

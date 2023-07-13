@@ -12,9 +12,8 @@ import com.jlkj.human.hs.service.ISocialSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 社保公积金缴费比例设定Service业务层处理
@@ -99,15 +98,12 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
                 }
             }else {
                 List<SocialSecurity> socialSecurityVersion = socialSecurityMapper.selectSocialSecurityListByVersion(socialSecurities);
-                for (SocialSecurity item : socialSecurityVersion) {
-                    if (!ObjectUtil.isEmpty(socialSecurityVersion)) {
-                        List<SocialSecurity> socialSecurityCompanies = socialSecurityMapper.selectSocialSecurityListBySalaryProjectId(socialSecurities);
-                        for (SocialSecurity items : socialSecurityCompanies) {
-                            if (!ObjectUtil.isEmpty(socialSecurityCompanies)) {
-                                throw new ServiceException("同一版本下社保公积金项目不允许重复");
-                            }
-                        }
-                    }
+                Object[] objects = socialSecurityList.stream().map(SocialSecurity::getSalaryProjectId).distinct().toArray();
+                if(objects.length!=socialSecurityList.size()){
+                    throw new ServiceException("同一版本下社保公积金项目不允许重复");
+                }
+                if (!ObjectUtil.isEmpty(socialSecurityVersion)) {
+                    throw new ServiceException("同一版本下社保公积金项目不允许重复");
                 }
             }
         }
@@ -179,6 +175,25 @@ public class SocialSecurityServiceImpl implements ISocialSecurityService {
     @Override
     public int deleteSocialSecurityById(String id) {
         return socialSecurityMapper.deleteSocialSecurityById(id);
+    }
+
+    /**
+     * 版本号列表
+     * @return
+     */
+    @Override
+    public List<Map<String,Long>> getVersionList(String payAreaId) {
+        List<SocialSecurity> versionList = socialSecurityMapper.getVersionList(payAreaId);
+        List<Map<String,Long>> collect = new ArrayList<>();
+        if (versionList.size() > 0) {
+            collect = versionList.stream().map(item -> {
+                Map<String, Long> map = new HashMap<>(16);
+                map.put("key", item.getVersion());
+                map.put("value", item.getVersion());
+                return map;
+            }).collect(Collectors.toList());
+        }
+        return collect;
     }
 
 }

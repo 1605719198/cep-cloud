@@ -1,15 +1,5 @@
 package com.jlkj.system.controller;
 
-import java.util.Arrays;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import com.jlkj.common.core.constant.UserConstants;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.utils.StringUtils;
@@ -26,6 +16,11 @@ import com.jlkj.system.api.domain.SysFile;
 import com.jlkj.system.api.domain.SysUser;
 import com.jlkj.system.api.model.LoginUser;
 import com.jlkj.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 
 /**
  * 个人信息 业务处理
@@ -146,7 +141,7 @@ public class SysProfileController extends BaseController
                 return error("文件服务异常，请联系管理员");
             }
             String url = fileResult.getData().getUrl();
-            if (userService.updateUserAvatar(loginUser.getUsername(), url))
+            if (userService.updateUserAvatar(loginUser.getUserName(), url))
             {
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", url);

@@ -74,6 +74,7 @@ public interface FinanceFtChangeTypeMapper
      * 按公司别查询
      * @description 按公司别查询
      * @param companyId 公司别
+     * @param billNature 单据类型
      * @return java.util.List<Map<String,String>>
      * @Author 114288
      * @Date 2023/7/7 10:28

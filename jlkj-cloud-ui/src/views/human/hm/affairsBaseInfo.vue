@@ -6,7 +6,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="工号" prop="empNo">
-          <el-input v-model="form.empNo" placeholder="请输入工号"/>
+          <el-input v-model="form.empNo" placeholder="请输入工号" :maxlength="6"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -35,17 +35,17 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="姓名" prop="fullName">
-          <el-input v-model="form.fullName" placeholder="请输入姓名"/>
+          <el-input v-model="form.fullName" placeholder="请输入姓名" :maxlength="6"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="英文名" prop="englishName">
-          <el-input v-model="form.englishName" placeholder="请输入英文名"/>
+          <el-input v-model="form.englishName" placeholder="请输入英文名" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="曾用名" prop="nameUsedBefore">
-          <el-input v-model="form.nameUsedBefore" placeholder="请输入曾用名"/>
+          <el-input v-model="form.nameUsedBefore" placeholder="请输入曾用名" :maxlength="6"/>
         </el-form-item>
       </el-col>
     </el-row>
@@ -241,7 +241,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="病史说明" prop="medicalHistoryDescription">
-          <el-input v-model="form.medicalHistoryDescription" placeholder="请输入病史说明"/>
+          <el-input v-model="form.medicalHistoryDescription" :maxlength="200" placeholder="请输入病史说明"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -296,7 +296,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="户口所在地邮编" prop="registeredPermanentResidencePostalCode">
-          <el-input v-model="form.registeredPermanentResidencePostalCode" placeholder="请输入户口所在地邮编"/>
+          <el-input v-model="form.registeredPermanentResidencePostalCode" placeholder="请输入户口所在地邮编" :maxlength="6"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -315,12 +315,12 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="身高" prop="height">
-          <el-input v-model="form.height" placeholder="请输入身高"><span slot="suffix">CM</span></el-input>
+          <el-input v-model="form.height" placeholder="请输入身高" :maxlength="4"><span slot="suffix">CM</span></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="体重" prop="weight">
-          <el-input v-model="form.weight" placeholder="请输入体重"><span slot="suffix">KG</span></el-input>
+          <el-input v-model="form.weight" placeholder="请输入体重" :maxlength="4"><span slot="suffix">KG</span></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -351,7 +351,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="毕业学校" prop="firstRecordGraduateSchool">
-          <el-input v-model="form.firstRecordGraduateSchool" placeholder="请输入毕业学校"/>
+          <el-input v-model="form.firstRecordGraduateSchool" placeholder="请输入毕业学校" :maxlength="15"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -442,7 +442,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="毕业学校" prop="lastRecordGraduateSchool">
-          <el-input v-model="form.lastRecordGraduateSchool" placeholder="请输入毕业学校"/>
+          <el-input v-model="form.lastRecordGraduateSchool" placeholder="请输入毕业学校" :maxlength="15"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -533,7 +533,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="等级证书" prop="firstForeignLanguageLevelCertificate">
-          <el-input v-model="form.firstForeignLanguageLevelCertificate" placeholder="请输入等级证书"/>
+          <el-input v-model="form.firstForeignLanguageLevelCertificate" placeholder="请输入等级证书" :maxlength="100"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -574,7 +574,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="等级证书" prop="secondForeignLanguageLevelCertificate">
-          <el-input v-model="form.secondForeignLanguageLevelCertificate" placeholder="请输入等级证书"/>
+          <el-input v-model="form.secondForeignLanguageLevelCertificate" placeholder="请输入等级证书" :maxlength="100"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -589,7 +589,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="计算机类型" prop="computerType">
-          <el-input v-model="form.computerType" placeholder="请输入计算机类型"/>
+          <el-input v-model="form.computerType" placeholder="请输入计算机类型" :maxlength="100"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -608,7 +608,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="等级证书" prop="computerTypeLevelCertificate">
-          <el-input v-model="form.computerTypeLevelCertificate" placeholder="请输入等级证书"/>
+          <el-input v-model="form.computerTypeLevelCertificate" placeholder="请输入等级证书" :maxlength="100"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -623,34 +623,34 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="特长" prop="specialty">
-          <el-input v-model="form.specialty" placeholder="请输入特长"/>
+          <el-input v-model="form.specialty" placeholder="请输入特长" :maxlength="200"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="办公地点" prop="officeAddress">
-          <el-input v-model="form.officeAddress" placeholder="请输入办公地点"/>
+          <el-input v-model="form.officeAddress" placeholder="请输入办公地点" :maxlength="100"/>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
         <el-form-item label="本人手机" prop="myMobilePhone">
-          <el-input v-model="form.myMobilePhone" placeholder="请输入本人手机"/>
+          <el-input v-model="form.myMobilePhone" placeholder="请输入本人手机" :maxlength="30"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="办公电话" prop="officeTelephone">
-          <el-input v-model="form.officeTelephone" placeholder="请输入办公电话"/>
+          <el-input v-model="form.officeTelephone" placeholder="请输入办公电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="内线" prop="insideLine">
-          <el-input v-model="form.insideLine" placeholder="请输入内线"/>
+          <el-input v-model="form.insideLine" placeholder="请输入内线" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="办公Email" prop="officeEmail">
-          <el-input v-model="form.officeEmail" placeholder="请输入"><span slot="suffix">@ejianlong.com</span></el-input>
+          <el-input v-model="form.officeEmail" placeholder="请输入" :maxlength="32"><span slot="suffix">@ejianlong.com</span></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -669,12 +669,12 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="如没有，请说明原因" prop="reasonsForNotTerminatingTheContract">
-          <el-input v-model="form.reasonsForNotTerminatingTheContract" placeholder="请输入未解除合同原因"/>
+          <el-input v-model="form.reasonsForNotTerminatingTheContract" placeholder="请输入未解除合同原因" :maxlength="100"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="档案所在地" prop="archivesLocation">
-          <el-input v-model="form.archivesLocation" placeholder="请输入档案所在地"/>
+          <el-input v-model="form.archivesLocation" placeholder="请输入档案所在地" :maxlength="32"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -691,105 +691,105 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="档案编码" prop="archivesNumber">
-          <el-input v-model="form.archivesNumber" placeholder="请输入档案编码"/>
+          <el-input v-model="form.archivesNumber" placeholder="请输入档案编码" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="与建龙员工亲属姓名" prop="relativeFullName">
-          <el-input v-model="form.relativeFullName" placeholder="请输入与建龙员工亲属姓名"/>
+          <el-input v-model="form.relativeFullName" placeholder="请输入与建龙员工亲属姓名" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="亲属关系" prop="relationship">
-          <el-input v-model="form.relationship" placeholder="请输入亲属关系"/>
+          <el-input v-model="form.relationship" placeholder="请输入亲属关系" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="单位" prop="relationDepartment">
-          <el-input v-model="form.relationDepartment" placeholder="请输入单位"/>
+          <el-input v-model="form.relationDepartment" placeholder="请输入单位" :maxlength="50"/>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
         <el-form-item label="联系电话" prop="relationTelephone">
-          <el-input v-model="form.relationTelephone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.relationTelephone" placeholder="请输入联系电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="推荐人姓名" prop="recommenderName">
-          <el-input v-model="form.recommenderName" placeholder="请输入推荐人姓名"/>
+          <el-input v-model="form.recommenderName" placeholder="请输入推荐人姓名" :maxlength="15"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="与本人关系" prop="recommenderRelationship">
-          <el-input v-model="form.recommenderRelationship" placeholder="请输入与本人关系"/>
+          <el-input v-model="form.recommenderRelationship" placeholder="请输入与本人关系" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="单位" prop="recommenderDepartment">
-          <el-input v-model="form.recommenderDepartment" placeholder="请输入单位"/>
+          <el-input v-model="form.recommenderDepartment" placeholder="请输入单位" :maxlength="20"/>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
         <el-form-item label="联系电话" prop="recommenderTelephone">
-          <el-input v-model="form.recommenderTelephone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.recommenderTelephone" placeholder="请输入联系电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="紧急联络人" prop="emergencyContactPerson">
-          <el-input v-model="form.emergencyContactPerson" placeholder="请输入紧急联络人"/>
+          <el-input v-model="form.emergencyContactPerson" placeholder="请输入紧急联络人" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="与本人关系" prop="emergencyContactPersonRelationship">
-          <el-input v-model="form.emergencyContactPersonRelationship" placeholder="请输入与本人关系"/>
+          <el-input v-model="form.emergencyContactPersonRelationship" placeholder="请输入与本人关系" :maxlength="10"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="联系电话" prop="emergencyContactPersonTelephone">
-          <el-input v-model="form.emergencyContactPersonTelephone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.emergencyContactPersonTelephone" placeholder="请输入联系电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
         <el-form-item label="Email" prop="emergencyContactPersonEmail">
-          <el-input v-model="form.emergencyContactPersonEmail" placeholder="请输入Email"/>
+          <el-input v-model="form.emergencyContactPersonEmail" placeholder="请输入Email" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="家庭住址" prop="homeAddress">
-          <el-input v-model="form.homeAddress" placeholder="请输入家庭住址"/>
+          <el-input v-model="form.homeAddress" placeholder="请输入家庭住址" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="邮政编码" prop="homePostCode">
-          <el-input v-model="form.homePostCode" placeholder="请输入邮政编码"/>
+          <el-input v-model="form.homePostCode" placeholder="请输入邮政编码" :maxlength="10"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="联系电话" prop="homeTelephone">
-          <el-input v-model="form.homeTelephone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.homeTelephone" placeholder="请输入联系电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="6">
         <el-form-item label="现住址" prop="nowAddress">
-          <el-input v-model="form.nowAddress" placeholder="请输入现住址"/>
+          <el-input v-model="form.nowAddress" placeholder="请输入现住址" :maxlength="50"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="邮政编码" prop="nowAddressPostCode">
-          <el-input v-model="form.nowAddressPostCode" placeholder="请输入邮政编码"/>
+          <el-input v-model="form.nowAddressPostCode" placeholder="请输入邮政编码" :maxlength="10"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="联系电话" prop="nowAddressTelephone">
-          <el-input v-model="form.nowAddressTelephone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.nowAddressTelephone" placeholder="请输入联系电话" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -859,8 +859,7 @@ export default {
       rules: {
         empNo: [
           { pattern: /^[+]?(0|([1-9]\d*))?$/, message: "请输入数字", trigger: "blur"},
-          { required: true, message: "工号不能为空", trigger: "blur" },
-          { max: 6, message: '工号长度必须为6位数字', trigger: 'blur' }
+          { required: true, message: "工号不能为空", trigger: "blur" }
         ],
         certificateTypeId: [
           { required: true, message: "证件类型不能为空", trigger: "blur" }
@@ -869,6 +868,9 @@ export default {
           { required: true, validator: validateSfz, trigger: "blur" }
         ],
         fullName: [
+          { required: true, validator: checkRealName, trigger: "blur" }
+        ],
+        nameUsedBefore: [
           { required: true, validator: checkRealName, trigger: "blur" }
         ],
         firstRecordGraduateSchool: [

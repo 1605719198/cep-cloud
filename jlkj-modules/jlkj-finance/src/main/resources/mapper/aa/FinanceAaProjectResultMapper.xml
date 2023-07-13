@@ -16,6 +16,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createBy"    column="create_by"    />
         <result property="createName"    column="create_name"    />
         <result property="createTime"    column="create_time"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemRow"    column="item_row"    />
+        <result property="itemType"    column="item_type"    />
     </resultMap>
 
     <sql id="selectFinanceAaProjectResultVo">
@@ -35,7 +38,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
         </where>
     </select>
-    
+    <select id="selectFinanceAaProjectResults" parameterType="com.jlkj.finance.aa.domain.FinanceAaProjectResult" resultMap="FinanceAaProjectResultResult">
+        select t1.id as id , t1.company_id as company_id, t1.report_id as report_id, t1.report_no as report_no, t1.item_code as item_code, t1.acct_period as acct_period
+        , t1.amt as amt, t1.qty as qty, t1.create_by as create_by, t1.create_name as create_name, t1.create_time as create_time,t2.item_name as item_name , t2.item_row as item_row
+        , t2.item_type as item_type
+        from finance_aa_project_result t1, finance_aa_project_formula t2 where t1.report_no = t2.report_no
+        and  t1.item_code = t2.item_code
+            <if test="companyId != null and companyId != ''"> and t1.company_id = #{companyId}</if>
+            <if test="reportId != null  and reportId != ''"> and t1.report_id = #{reportId}</if>
+            <if test="reportNo != null  and reportNo != ''"> and t1.report_no = #{reportNo}</if>
+            <if test="itemCode != null  and itemCode != ''"> and t1.item_code = #{itemCode}</if>
+            <if test="acctPeriod != null "> and t1.acct_period = #{acctPeriod}</if>
+            order by t2.item_type, t2.item_row
+
+    </select>
+
     <select id="selectFinanceAaProjectResultById" parameterType="Long" resultMap="FinanceAaProjectResultResult">
         <include refid="selectFinanceAaProjectResultVo"/>
         where id = #{id}

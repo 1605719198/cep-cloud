@@ -6,6 +6,7 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.dto.energy.ee.EnergyConsumeOutputDTO;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.energy.ee.domain.EnergyConsumeOutput;
 import com.jlkj.energy.ee.service.EnergyConsumeOutputService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,7 @@ public class EnergyConsumeOutputController extends BaseController {
     @Log(title = "接收报文执行每日能源产耗资料(t_energy_consume_output)档的新增", businessType = BusinessType.INSERT)
     @Operation(summary = "新增每日能源产耗资料")
     @PostMapping("/eeozc1/xctl")
+    @RequiresPermissions("ee:energy:add")
     public AjaxResult addEnergyConsumeOutput(@Validated  @RequestBody EnergyConsumeOutput energyConsumeOutput) {
         return toAjax(energyConsumeOutputService.addEnergyConsumeOutput(energyConsumeOutput));
     }
@@ -49,10 +51,10 @@ public class EnergyConsumeOutputController extends BaseController {
     @Log(title = "成本中心日能耗资料查询", businessType = BusinessType.OTHER)
     @Operation(summary = "查询成本中心日能耗资料")
     @GetMapping("/query")
+    @RequiresPermissions("consume:output:query")
     public TableDataInfo queryEnergyConsumeOutput(EnergyConsumeOutputDTO energyConsumeOutputDTO) {
         startPage();
-        List<EnergyConsumeOutput> list = energyConsumeOutputService.queryEnergyConsumeOutput(energyConsumeOutputDTO);
-        return getDataTable(list);
+        return getDataTable(energyConsumeOutputService.queryEnergyConsumeOutput(energyConsumeOutputDTO));
     }
 
     /**

@@ -67,7 +67,6 @@ export default {
   },
   methods: {
     handleChange(val) {
-      console.log(val);
     }
   }
 };
@@ -93,14 +92,5 @@ export default {
 .plan_main {
   height: 82vh;
   background-color: #FFF;
-}
-
-.el-card__body {
-  padding: 10px 10px 20px 20px;
-}
-</style>
-<style>
-.el-select-dropdown__wrap.el-scrollbar__wrap {
-  margin-bottom: 0 !important;
 }
 </style>

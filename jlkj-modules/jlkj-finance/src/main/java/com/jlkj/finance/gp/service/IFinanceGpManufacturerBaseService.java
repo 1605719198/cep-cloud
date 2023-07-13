@@ -1,7 +1,9 @@
 package com.jlkj.finance.gp.service;
 
-import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -64,4 +66,12 @@ public interface IFinanceGpManufacturerBaseService
      * @return 结果
      */
     public int deleteFinanceGpManufacturerBaseById(String id);
+    /**
+    *  厂商编码调用
+    *@author 265799
+    *@date 2023/7/10  15:27
+     * @param companyId : 
+     * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+    */        
+    public List<Map<String,String>> selectManufacturerList(String companyId);
 }

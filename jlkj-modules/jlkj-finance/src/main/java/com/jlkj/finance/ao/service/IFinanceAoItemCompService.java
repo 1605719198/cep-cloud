@@ -73,7 +73,8 @@ public interface IFinanceAoItemCompService
 
     /**
      * 查询报支类别下拉选单
-    * @description  查询报支类别下拉选单
+     *  查询报支类别下拉选单
+    * @description
     * @param companyId 公司别
     * @return java.util.List<java.util.Map<java.lang.String,java.lang.String>>
     * @Author 114288

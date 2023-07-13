@@ -51,3 +51,15 @@ export function selectChangeTypeList(companyId,billNature) {
     //data: data
   })
 }
+// 回显变动方式名称 格式：变动方式 _ 名称
+export function getChangeTypeName(datas, value) {
+
+  const actions = [];
+  Object.keys(datas).some((key) => {
+    if (datas[key].value == ('' + value)) {
+      actions.push(datas[key].value + '_' +datas[key].label);
+      return true;
+    }
+  })
+  return actions.join('');
+}

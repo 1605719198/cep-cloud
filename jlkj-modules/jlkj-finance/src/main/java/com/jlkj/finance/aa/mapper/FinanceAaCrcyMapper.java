@@ -1,6 +1,7 @@
 package com.jlkj.finance.aa.mapper;
 
 import com.jlkj.finance.aa.domain.FinanceAaCrcy;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author SunXuTong
  * @date 2023-04-07
  */
+@Service
 public interface FinanceAaCrcyMapper 
 {
     /**

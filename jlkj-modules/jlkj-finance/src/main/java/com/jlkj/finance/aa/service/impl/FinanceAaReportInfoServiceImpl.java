@@ -8,7 +8,9 @@ import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.aa.domain.*;
+import com.jlkj.finance.aa.dto.FinanceAaReportBalanceDTO;
 import com.jlkj.finance.aa.mapper.*;
+import com.jlkj.finance.aa.report.FinanceAaReportBalance;
 import com.jlkj.finance.utils.AssertUtil;
 import com.jlkj.finance.utils.ConstantsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,8 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     private FinanceAaVoucherDetailMapper financeAaVoucherDetailMapper;
     @Autowired
     private FinanceAaProjectFormulaMapper financeAaProjectFormulaMapper;
+    @Autowired
+    private FinanceAaReportBalance financeAaReportBalance;
     /**
      * 查询印项目计算记录
      *
@@ -59,7 +63,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
      */
     @Override
     public List<FinanceAaReportInfo> selectFinanceAaReportInfoList(FinanceAaReportInfo financeAaReportInfo)
-    {
+    {   financeAaReportInfo.setAcctPeriod(financeAaReportInfo.getAcctPeriod().substring(0,7));
         return financeAaReportInfoMapper.selectFinanceAaReportInfo(financeAaReportInfo);
     }
 
@@ -77,39 +81,60 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     public int insertFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo)
     {
 
-
+        String year = String.format("%ty",DateUtils.dateTime(DateUtils.YYYY_MM,financeAaReportInfo.getAcctPeriod()) );
+        String month = String.format("%tm",DateUtils.dateTime(DateUtils.YYYY_MM,financeAaReportInfo.getAcctPeriod()));
+        financeAaReportInfo.setAcctPeriod(financeAaReportInfo.getAcctPeriod().substring(0,7));
         financeAaProjectResultMapper.deleteFinanceAaProjectResultByPeriod(financeAaReportInfo.getCompanyId(),
                 financeAaReportInfo.getAcctPeriod(),financeAaReportInfo.getReportNo());
+        String msg = "计算成功";
+        try{
+            FinanceAaProjectFormula financeAaProjectFormula = new FinanceAaProjectFormula();
+            financeAaProjectFormula.setCompanyId(financeAaReportInfo.getCompanyId());
+            financeAaProjectFormula.setReportNo(financeAaReportInfo.getReportNo());
+            List<FinanceAaProjectFormula> financeAaProjectFormulas =   financeAaProjectFormulaMapper.selectFinanceAaProjectFormulaList(financeAaProjectFormula);
+            if(financeAaProjectFormulas==null || financeAaProjectFormulas.size()==0){
+                throw new ServiceException("计算失败，报表项目为空！");
+            }
 
-        FinanceAaProjectFormula financeAaProjectFormula = new FinanceAaProjectFormula();
-        financeAaProjectFormula.setCompanyId(financeAaReportInfo.getCompanyId());
-        financeAaProjectFormula.setReportNo(financeAaReportInfo.getReportNo());
-        List<FinanceAaProjectFormula> financeAaProjectFormulas =   financeAaProjectFormulaMapper.selectFinanceAaProjectFormulaList(financeAaProjectFormula);
-        if(financeAaProjectFormulas==null || financeAaProjectFormulas.size()==0){
-            throw new ServiceException("计算失败，报表项目为空！");
+            financeAaProjectResultMap = new HashMap(financeAaProjectFormulas.size());
+            for (int i=0;i<financeAaProjectFormulas.size();i++){
+                FinanceAaProjectFormula financeProjectFormula =  financeAaProjectFormulas.get(i);
+                count = 0;
+                compute71(financeAaReportInfo,financeProjectFormula);
+            }
+
+            for (String key: financeAaProjectResultMap.keySet()){
+                financeAaProjectResultMapper.insertFinanceAaProjectResult(financeAaProjectResultMap.get(key));
+
+            }
+        }catch (Exception e){
+            msg =  e.getMessage();
+
+
         }
 
-       financeAaProjectResultMap = new HashMap(financeAaProjectFormulas.size());
-       for (int i=0;i<financeAaProjectFormulas.size();i++){
-           FinanceAaProjectFormula financeProjectFormula =  financeAaProjectFormulas.get(i);
-           count = 0;
-           compute71(financeAaReportInfo,financeProjectFormula);
+        List<FinanceAaReportInfo> financeAaReportInfos =  financeAaReportInfoMapper.selectFinanceAaReportInfoList(financeAaReportInfo);
+        int count = 0 ;
+        if(financeAaReportInfos!=null && financeAaReportInfos.size()>0){
+            financeAaReportInfo =  financeAaReportInfos.get(0);
+            financeAaReportInfo.setStatus("Y");
+            financeAaReportInfo.setInfo(msg);
+            financeAaReportInfo.setCreateBy(SecurityUtils.getUsername());
+            financeAaReportInfo.setCreateName(SecurityUtils.getNickName());
+            financeAaReportInfo.setCreateTime(DateUtils.getNowDate());
+            count = financeAaReportInfoMapper.updateFinanceAaReportInfo(financeAaReportInfo);
+        }else{
+            financeAaReportInfo.setStatus("Y");
+            financeAaReportInfo.setId(IdUtils.simpleUUID());
+            financeAaReportInfo.setInfo(msg);
+            financeAaReportInfo.setCreateBy(SecurityUtils.getUsername());
+            financeAaReportInfo.setCreateName(SecurityUtils.getNickName());
+            financeAaReportInfo.setCreateTime(DateUtils.getNowDate());
+            count = financeAaReportInfoMapper.insertFinanceAaReportInfo(financeAaReportInfo);
+        }
 
 
-
-       }
-
-        for (String key: financeAaProjectResultMap.keySet()){
-            financeAaProjectResultMapper.insertFinanceAaProjectResult(financeAaProjectResultMap.get(key));
-
-    }
-
-        financeAaReportInfo.setStatus("Y");
-        financeAaReportInfo.setId(IdUtils.simpleUUID());
-        financeAaReportInfo.setCreateBy(SecurityUtils.getUsername());
-        financeAaReportInfo.setCreateName(SecurityUtils.getNickName());
-        financeAaReportInfo.setCreateTime(DateUtils.getNowDate());
-        return financeAaReportInfoMapper.insertFinanceAaReportInfo(financeAaReportInfo);
+        return count;
     }
 
     private boolean compute71(FinanceAaReportInfo financeAaReportInfo, FinanceAaProjectFormula financeProjectFormula) {
@@ -330,10 +355,12 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
                     code.append("_") ;
                     codeCheck = "no";
                 } else {
+                    log.info(financeProjectContent.getItemCode() +"=======financeProjectContent.getCode().trim().charAt(i)===="+financeProjectContent.getCode().trim().charAt(i));
                     code.append( financeProjectContent.getCode().trim().charAt(i));
                 }
-                financeProjectContent.setCode(code.toString());
+
             }
+
             if (ConstantsUtil.STR_NO.equals(codeCheck.trim())) {
                 code.append("%") ;
             }
@@ -342,7 +369,7 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
             } else {
                 equalsLike = "like";
             }
-
+            financeProjectContent.setCode(code.toString());
             log.info(financeProjectContent.getItemCode() +"==========="+code);
             String key = financeAaReportInfo.getCompanyId()+"/"+financeAaReportInfo.getAcctPeriod()+"/"+financeProjectContent.getReportId()+"/"+financeProjectContent.getItemCode();
             FinanceAaProjectResult financeAaProjectResult = financeAaProjectResultMap.get(key);
@@ -419,8 +446,6 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     String sumstr2 = "";
     String sumstr3 = "";
     private void getSumSql(String amtType, String drCrType) {
-
-
             if (ConstantsUtil.STR_A.equals(drCrType.trim())) {
                 sumstr = "IFNULL(IFNULL(dr_qty,0),0)-IFNULL(IFNULL(cr_qty,0),0)";
                 sumstr2 = "IFNULL(dr_amt,0)-IFNULL(cr_amt,0)";
@@ -596,9 +621,12 @@ public class FinanceAaReportInfoServiceImpl implements IFinanceAaReportInfoServi
     @Override
 
 
-    public int updateFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo)
+    public List<FinanceAaReportBalanceDTO> updateFinanceAaReportInfo(FinanceAaReportInfo financeAaReportInfo)
     {
-        return financeAaReportInfoMapper.updateFinanceAaReportInfo(financeAaReportInfo);
+        financeAaReportInfo.setAcctPeriod(financeAaReportInfo.getAcctPeriod().substring(0,7));
+        List<FinanceAaReportBalanceDTO> list =  financeAaReportBalance.query(financeAaReportInfo);
+
+        return list;
     }
 
     /**

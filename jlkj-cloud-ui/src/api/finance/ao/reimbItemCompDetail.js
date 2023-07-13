@@ -8,7 +8,14 @@ export function listReimbItemCompDetail(query) {
     params: query
   })
 }
-
+// 预付款调查询方法
+export function selectDetailNoList(query) {
+  return request({
+    url: `/finance/reimbItemCompDetail/selectDetailNoList`,
+    method: 'get',
+    params: query
+  })
+}
 // 查询报支类别公司设定明细档详细
 export function getReimbItemCompDetail(id) {
   return request({

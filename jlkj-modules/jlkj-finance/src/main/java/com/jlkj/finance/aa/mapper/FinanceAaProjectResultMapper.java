@@ -75,4 +75,14 @@ public interface FinanceAaProjectResultMapper
     * @Date 2023/7/6 16:17
     **/
     int deleteFinanceAaProjectResultByPeriod(@Param("companyId")String companyId, @Param("acctPeriod")String acctPeriod, @Param("reportNo")String reportNo);
+
+
+    /**
+    *管理报表查询
+    * @param financeAaProjectResult
+    * @return java.util.List<com.jlkj.finance.aa.domain.FinanceAaProjectResult>
+    * @Author 114288
+    * @Date 2023/7/10 10:27
+    **/
+    List<FinanceAaProjectResult> selectFinanceAaProjectResults(FinanceAaProjectResult financeAaProjectResult);
 }

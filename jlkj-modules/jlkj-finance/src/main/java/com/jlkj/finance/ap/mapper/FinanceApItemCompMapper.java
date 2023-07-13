@@ -1,6 +1,7 @@
 package com.jlkj.finance.ap.mapper;
 
 import com.jlkj.finance.ap.domain.FinanceApItemComp;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author SunXuTong
  * @date 2023-06-06
  */
+@Repository
 public interface FinanceApItemCompMapper 
 {
     /**
@@ -28,6 +30,14 @@ public interface FinanceApItemCompMapper
      * @return 报支类别公司设置集合
      */
     public List<FinanceApItemComp> selectFinanceApItemCompList(FinanceApItemComp financeApItemComp);
+    /**
+     * 查询报支类别公司设置列表
+     *
+     * @param financeApItemComp 报支类别公司设置
+     * @return 报支类别公司设置集合
+     */
+    public FinanceApItemComp selectFinanceApItemComp(FinanceApItemComp financeApItemComp);
+
 
     /**
      * 新增报支类别公司设置
@@ -74,4 +84,14 @@ public interface FinanceApItemCompMapper
      * @return
      */
     public List<Map<String,String>> selectItemNosByIds(String[] ids);
+    /**
+     *查询下拉选单
+     *@author 265799
+     *@date 2023/7/12  10:53
+     * @param companyId :
+     * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+     */
+    public List<Map<String,String>> selectItemNoList(String companyId);
 }
+
+

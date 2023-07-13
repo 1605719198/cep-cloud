@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Data
 public class EnergyConsumeOutput extends BaseEntity {
     /**
-     * 时间序号
+     * 雪花主键
      */
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
@@ -45,7 +45,11 @@ public class EnergyConsumeOutput extends BaseEntity {
      */
     @NotBlank(message = "能源代码,不能为空")
     private String engyId;
-
+    /**
+     * 能源名称
+     */
+    @NotBlank(message = "能源名称,不能为空")
+    private String engyName;
     /**
      * 耗用产出类别代号
      */

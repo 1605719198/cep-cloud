@@ -5,6 +5,7 @@ import com.jlkj.finance.ao.domain.FinanceAoItemCompDetail;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设定明细档Mapper接口
@@ -76,4 +77,14 @@ public interface FinanceAoItemCompDetailMapper   extends BaseMapper<FinanceAoIte
      * @return
      */
     public int insertBatch(List<FinanceAoItemCompDetail> financeAoItemCompDetails);
+    /**
+     * 报支类别公司设定明细档
+     * @description 报支类别公司设定明细档
+     * @param financeAoItemCompDetail 报支类别公司设定明细档
+     * @return java.util.List<Map<String,String>>
+     * @Author 114288
+     * @Date 2023/7/7 10:28
+     **/
+    public List<Map<String,String>> selectItemNoList(FinanceAoItemCompDetail financeAoItemCompDetail);
+
 }

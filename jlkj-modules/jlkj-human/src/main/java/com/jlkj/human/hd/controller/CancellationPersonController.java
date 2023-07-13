@@ -57,11 +57,12 @@ public class CancellationPersonController extends BaseController {
         BeanUtils.copyProperties(cancellationPersonDTO, cancellationPerson);
         List<CancellationPerson> list = iCancellationPersonService.lambdaQuery()
                 .eq(CancellationPerson::getCompanyId, cancellationPerson.getCompanyId())
+                .and(wrapper -> wrapper
                 .eq(CancellationPerson::getOrgId, cancellationPerson.getOrgId())
                 .or()
                 .eq(CancellationPerson::getEmpNo, cancellationPerson.getEmpNo())
                 .or()
-                .eq(CancellationPerson::getClockWorkId, cancellationPerson.getClockWorkId())
+                .eq(CancellationPerson::getClockWorkId, cancellationPerson.getClockWorkId()))
                 .apply("date_format (check_start_date,'%Y-%m-%d') >= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getStartTime())
                 .apply("date_format (check_end_date,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", cancellationPersonDTO.getEndTime())
                 .list();

@@ -11,7 +11,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="norOndutyBegin">
+      <el-form-item label="正常出勤时段开始" prop="norOndutyBegin" label-width="140px">
         <el-date-picker
           v-model="queryParams.norOndutyBegin"
           value-format="yyyy-MM-dd"

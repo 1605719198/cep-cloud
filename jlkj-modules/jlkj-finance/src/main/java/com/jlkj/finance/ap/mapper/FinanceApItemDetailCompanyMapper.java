@@ -2,8 +2,10 @@ package com.jlkj.finance.ap.mapper;
 
 import com.jlkj.finance.ap.domain.FinanceApItemDetailCompany;
 import com.jlkj.finance.ap.dto.FinanceApItemDetailDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司细项Mapper接口
@@ -11,6 +13,7 @@ import java.util.List;
  * @author SunXuTong
  * @date 2023-06-08
  */
+@Repository
 public interface FinanceApItemDetailCompanyMapper 
 {
     /**
@@ -68,4 +71,15 @@ public interface FinanceApItemDetailCompanyMapper
      * @return : int
     */
     public int insertBatch(List<FinanceApItemDetailDTO> financeApItemDetails);
+
+    /**
+    *报支类别公司设定明细档
+    *@author 265799
+    *@date 2023/7/12  11:13
+     * @param financeApItemDetailCompany :
+     * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+    */
+    public List<Map<String,String>> selectItemNoList(FinanceApItemDetailCompany financeApItemDetailCompany);
+
 }
+

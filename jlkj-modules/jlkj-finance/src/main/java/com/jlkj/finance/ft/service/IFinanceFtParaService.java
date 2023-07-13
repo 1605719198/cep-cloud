@@ -59,4 +59,14 @@ public interface IFinanceFtParaService
      * @return 结果
      */
     public int deleteFinanceFtParaById(String id);
+
+
+    /**
+    * @Description: 根据固定资产参数键名获取value值
+    * @param:[paramKey]固定资产参数键名
+    * @return:java.lang.String 参数键值
+    * @Author: 116524_wxj
+    * @Date: 2023/7/13 9:22
+    */
+    public String getParamValue(String paramKey);
 }

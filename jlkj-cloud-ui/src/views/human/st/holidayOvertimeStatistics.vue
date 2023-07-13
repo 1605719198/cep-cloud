@@ -11,7 +11,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="日期区间" prop="extraWorkBegin">
+      <el-form-item label="班次开始时间" prop="extraWorkBegin" label-width="100px">
         <el-date-picker
           v-model="queryParams.extraWorkBegin"
           value-format="yyyy-MM-dd"
@@ -36,8 +36,8 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="holidayOvertimeStatisticsList" @selection-change="handleSelectionChange">
-      <el-table-column label="序号" align="center" prop="num" />
+    <el-table v-loading="loading" :data="holidayOvertimeStatisticsList" >
+      <el-table-column label="序号" align="center" prop="num" width="60"/>
       <el-table-column label="工号" align="center" prop="empNo" />
       <el-table-column label="姓名" align="center" prop="empName" />
       <el-table-column label="岗位全称" align="center" prop="postFullName" />
@@ -46,8 +46,8 @@
           <span>{{ parseTime(scope.row.legalHolDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="轮班方式中文" align="center" prop="turnTypeName" />
-      <el-table-column label="班别中文" align="center" prop="className" />
+      <el-table-column label="轮班方式" align="center" prop="turnTypeName" />
+      <el-table-column label="班别" align="center" prop="className" />
       <el-table-column label="生效日期" align="center" prop="effectDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.effectDate, '{y}-{m}-{d}') }}</span>
@@ -89,6 +89,10 @@ export default {
   name: "HolidayOvertimeStatistics",
   data() {
     return {
+      //轮班方式列表
+      shiftModeList:[],
+      //班别列表
+      shiftClassList:[],
       //公司列表
       companyList:[],
       // 遮罩层
@@ -126,7 +130,7 @@ export default {
     };
   },
   created() {
-    this.getCompanyList()
+    this.getCompanyList();
   },
   methods: {
     /** 查询倒班人员法定假日加班统计列表 */

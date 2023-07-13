@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jlkj.finance.aa.mapper.financeAaDeprmethodMapper">
+<mapper namespace="com.jlkj.finance.aa.mapper.FinanceAaDeprmethodMapper">
     
-    <resultMap type="com.jlkj.finance.aa.domain.financeAaDeprmethod" id="financeAaDeprmethodResult">
+    <resultMap type="com.jlkj.finance.aa.domain.FinanceAaDeprmethod" id="FinanceAaDeprmethodResult">
         <result property="id"    column="id"    />
         <result property="deprNo"    column="depr_no"    />
         <result property="deprName"    column="depr_name"    />
@@ -16,24 +16,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
-    <sql id="selectfinanceAaDeprmethodVo">
+    <sql id="selectFinanceAaDeprmethodVo">
         select id, depr_no, depr_name, create_by, create_name, create_time, update_by, update_name, update_time from finance_aa_deprMethod
     </sql>
 
-    <select id="selectfinanceAaDeprmethodList" parameterType="com.jlkj.finance.aa.domain.financeAaDeprmethod" resultMap="financeAaDeprmethodResult">
-        <include refid="selectfinanceAaDeprmethodVo"/>
+    <select id="selectFinanceAaDeprmethodList" parameterType="com.jlkj.finance.aa.domain.FinanceAaDeprmethod" resultMap="FinanceAaDeprmethodResult">
+        <include refid="selectFinanceAaDeprmethodVo"/>
         <where>  
             <if test="deprNo != null  and deprNo != ''"> and depr_no = #{deprNo}</if>
             <if test="deprName != null  and deprName != ''"> and depr_name like concat('%', #{deprName}, '%')</if>
         </where>
     </select>
     
-    <select id="selectfinanceAaDeprmethodById" parameterType="String" resultMap="financeAaDeprmethodResult">
-        <include refid="selectfinanceAaDeprmethodVo"/>
+    <select id="selectFinanceAaDeprmethodById" parameterType="String" resultMap="FinanceAaDeprmethodResult">
+        <include refid="selectFinanceAaDeprmethodVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertfinanceAaDeprmethod" parameterType="com.jlkj.finance.aa.domain.financeAaDeprmethod">
+    <insert id="insertFinanceAaDeprmethod" parameterType="com.jlkj.finance.aa.domain.FinanceAaDeprmethod">
         insert into finance_aa_deprMethod
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updatefinanceAaDeprmethod" parameterType="com.jlkj.finance.aa.domain.financeAaDeprmethod">
+    <update id="updateFinanceAaDeprmethod" parameterType="com.jlkj.finance.aa.domain.FinanceAaDeprmethod">
         update finance_aa_deprMethod
         <trim prefix="SET" suffixOverrides=",">
             <if test="deprNo != null">depr_no = #{deprNo},</if>
@@ -74,11 +74,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deletefinanceAaDeprmethodById" parameterType="String">
+    <delete id="deleteFinanceAaDeprmethodById" parameterType="String">
         delete from finance_aa_deprMethod where id = #{id}
     </delete>
 
-    <delete id="deletefinanceAaDeprmethodByIds" parameterType="String">
+    <delete id="deleteFinanceAaDeprmethodByIds" parameterType="String">
         delete from finance_aa_deprMethod where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}

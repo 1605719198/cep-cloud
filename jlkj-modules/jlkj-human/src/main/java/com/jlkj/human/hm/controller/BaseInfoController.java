@@ -1,6 +1,5 @@
 package com.jlkj.human.hm.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
@@ -44,12 +43,12 @@ public class BaseInfoController extends BaseController {
     @Log(title = "获取子节点查询列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取子节点查询列表")
     @GetMapping("/list")
-    public Object getChildrenList(BaseInfoDTO baseInfoDTO) {
+    public Object getChildrenList(Baseinfo baseinfo) {
         try {
             startPage();
-            List<Baseinfo> list = baseinfoService.query()
-                    .eq(StringUtils.isNotBlank(baseInfoDTO.getUuid()), "parent_id", baseInfoDTO.getUuid())
-                    .orderByAsc("dic_no+1").list();
+            List<Baseinfo> list = baseinfoService.lambdaQuery()
+                    .eq(Baseinfo::getParentId, baseinfo.getUuid())
+                    .orderByAsc(Baseinfo::getDicNo).list();
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {
@@ -94,8 +93,7 @@ public class BaseInfoController extends BaseController {
     @Log(title = "选单数据编辑", businessType = BusinessType.UPDATE)
     public Object updateBaseInfo(@RequestBody Baseinfo baseinfo) {
         try {
-            boolean result = baseinfoService.lambdaUpdate()
-                    .eq(StringUtils.isNotBlank(baseinfo.getUuid()), Baseinfo::getUuid, baseinfo.getUuid()).update();
+            boolean result = baseinfoService.updateById(baseinfo);
             if (result) {
                 return AjaxResult.success("保存成功");
             } else {
