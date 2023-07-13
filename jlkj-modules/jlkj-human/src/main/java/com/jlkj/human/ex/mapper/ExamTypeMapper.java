@@ -1,15 +1,17 @@
 package com.jlkj.human.ex.mapper;
 
 import com.jlkj.human.ex.domain.ExamType;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * 考试分类Mapper接口
  * 
- * @author qnsdt
- * @date 2022-12-14
+ * @author 111191
+ * @date 2023-07-12
  */
+@Repository
 public interface ExamTypeMapper 
 {
     /**

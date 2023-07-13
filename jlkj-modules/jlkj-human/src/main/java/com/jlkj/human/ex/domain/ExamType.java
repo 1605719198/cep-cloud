@@ -1,7 +1,10 @@
 package com.jlkj.human.ex.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,11 +17,14 @@ import java.util.List;
  * @author qnsdt
  * @date 2022-12-14
  */
+@Data
+@TableName(value ="human_ex_type")
 public class ExamType extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 类别id */
+    @TableId
     private Long typeId;
 
     /** parentid */

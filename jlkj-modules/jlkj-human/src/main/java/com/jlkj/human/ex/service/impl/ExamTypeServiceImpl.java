@@ -1,6 +1,5 @@
 package com.jlkj.human.ex.service.impl;
 
-import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.human.ex.domain.ExamType;
 import com.jlkj.human.ex.domain.TypeTreeSelect;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
  * 考试分类Service业务层处理
  * 
  * @author qnsdt
- * @date 2022-12-14
+ * @Date:  2022-12-14
  */
 @Service
 public class ExamTypeServiceImpl implements IExamTypeService
@@ -59,7 +58,6 @@ public class ExamTypeServiceImpl implements IExamTypeService
     @Override
     public int insertExamType(ExamType examType)
     {
-        examType.setCreateTime(DateUtils.getNowDate());
         return examTypeMapper.insertExamType(examType);
     }
 
