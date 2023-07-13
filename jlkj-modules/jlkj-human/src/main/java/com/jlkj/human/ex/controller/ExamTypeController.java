@@ -1,6 +1,5 @@
 package com.jlkj.human.ex.controller;
 
-import com.jlkj.common.core.utils.ServletUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -10,7 +9,6 @@ import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.common.security.service.TokenService;
 import com.jlkj.human.ex.domain.ExamType;
 import com.jlkj.human.ex.service.IExamTypeService;
-import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +17,13 @@ import java.util.List;
 
 /**
  * 考试分类Controller
- * 
+ *
  * @author 111191
  * @date 2023-07-11
  */
 @RestController
-@RequestMapping("/questions/examtype")
-public class ExamTypeController extends BaseController{
+@RequestMapping("/examtype")
+public class ExamTypeController extends BaseController {
     @Autowired
     private IExamTypeService examTypeService;
     @Autowired
@@ -36,8 +34,7 @@ public class ExamTypeController extends BaseController{
      */
     @RequiresPermissions("human:examType:list")
     @GetMapping("/list")
-    public AjaxResult list(ExamType examType)
-    {
+    public AjaxResult list(ExamType examType) {
         List<ExamType> list = examTypeService.selectExamTypeList(examType);
         return AjaxResult.success(list);
     }
@@ -48,29 +45,27 @@ public class ExamTypeController extends BaseController{
     @RequiresPermissions("human:examType:export")
     @Log(title = "考试分类", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public void export(HttpServletResponse response,ExamType examType)
-    {
+    public void export(HttpServletResponse response, ExamType examType) {
         List<ExamType> list = examTypeService.selectExamTypeList(examType);
         ExcelUtil<ExamType> util = new ExcelUtil<ExamType>(ExamType.class);
-        util.exportExcel(response,list, "考试分类数据");
+        util.exportExcel(response, list, "考试分类数据");
     }
 
     /**
      * 获取部门下拉树列表
      */
     @GetMapping("/typetreeselect")
-    public AjaxResult treeselect(ExamType examType)
-    {
-    	List<ExamType> list = examTypeService.selectExamTypeList(examType);    	
+    public AjaxResult treeselect(ExamType examType) {
+        List<ExamType> list = examTypeService.selectExamTypeList(examType);
         return AjaxResult.success(examTypeService.buildTypeTreeSelect(list));
     }
+
     /**
      * 获取考试分类详细信息
      */
     @RequiresPermissions("human:examType:query")
     @GetMapping(value = "/{typeId}")
-    public AjaxResult getInfo(@PathVariable("typeId") Long typeId)
-    {
+    public AjaxResult getInfo(@PathVariable("typeId") Long typeId) {
         return AjaxResult.success(examTypeService.selectExamTypeById(typeId));
     }
 
@@ -79,11 +74,8 @@ public class ExamTypeController extends BaseController{
      */
     @RequiresPermissions("human:examType:add")
     @Log(title = "考试分类", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody ExamType examType)
-    {
-    	LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-    	examType.setCreateBy(loginUser.getUserName());
+    @PostMapping("/add")
+    public AjaxResult add(@RequestBody ExamType examType) {
         return toAjax(examTypeService.insertExamType(examType));
     }
 
@@ -93,8 +85,7 @@ public class ExamTypeController extends BaseController{
     @RequiresPermissions("human:examType:edit")
     @Log(title = "考试分类", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody ExamType examType)
-    {
+    public AjaxResult edit(@RequestBody ExamType examType) {
         return toAjax(examTypeService.updateExamType(examType));
     }
 
@@ -103,9 +94,8 @@ public class ExamTypeController extends BaseController{
      */
     @RequiresPermissions("human:examType:remove")
     @Log(title = "考试分类", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{typeIds}")
-    public AjaxResult remove(@PathVariable Long[] typeIds)
-    {
+    @DeleteMapping("/{typeIds}")
+    public AjaxResult remove(@PathVariable Long[] typeIds) {
         return toAjax(examTypeService.deleteExamTypeByIds(typeIds));
     }
 }
