@@ -27,6 +27,7 @@ export function typeTreeSelect() {
 
 // 新增考试分类
 export function addExamtype(data) {
+  debugger
   return request({
     url: '/human/questions/examtype',
     method: 'post',
@@ -36,6 +37,7 @@ export function addExamtype(data) {
 
 // 修改考试分类
 export function updateExamtype(data) {
+  debugger
   return request({
     url: '/human/questions/examtype',
     method: 'put',

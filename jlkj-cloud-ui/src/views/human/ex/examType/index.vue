@@ -42,7 +42,7 @@
       <el-table-column label="类别代码" align="center" prop="typeCode"/>
       <el-table-column label="类别名称" align="center" prop="typeName"/>
       <el-table-column label="顺序Id" align="center" prop="orderId"/>
-      <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat"/>
+      <el-table-column label="状态" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button
@@ -196,38 +196,7 @@ export default {
         this.examtypeOptions.push(data);
       });
     },
-    // 类别id字典翻译
-    typeIdFormat(row, column) {
-      return this.selectDictLabel(this.typeIdOptions, row.typeId);
-    },
-    // 上级类别ID字典翻译
-    parentIdFormat(row, column) {
-      return this.selectDictLabel(this.parentIdOptions, row.parentId);
-    },
-    // 类别代码字典翻译
-    typeCodeFormat(row, column) {
-      return this.selectDictLabel(this.typeCodeOptions, row.typeCode);
-    },
-    // 类别名称字典翻译
-    typeNameFormat(row, column) {
-      return this.selectDictLabel(this.typeNameOptions, row.typeName);
-    },
-    // 顺序Id字典翻译
-    orderIdFormat(row, column) {
-      return this.selectDictLabel(this.orderIdOptions, row.orderId);
-    },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 创建者字典翻译
-    createByFormat(row, column) {
-      return this.selectDictLabel(this.createByOptions, row.createBy);
-    },
-    // 创建时间字典翻译
-    createTimeFormat(row, column) {
-      return this.selectDictLabel(this.createTimeOptions, row.createTime);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -260,6 +229,7 @@ export default {
     handleAdd(row) {
       this.reset();
       this.getTreeselect();
+      debugger
       if (row != null && row.typeId) {
         this.form.parentId = row.typeId;
       } else {
@@ -287,13 +257,13 @@ export default {
         if (valid) {
           if (this.form.typeId != null) {
             updateExamtype(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addExamtype(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -311,7 +281,7 @@ export default {
         return delExamtype(row.typeId);
       }).then(() => {
         this.getList();
-        this.msgSuccess("删除成功");
+        this.$modal.msgSuccess("删除成功");
       }).catch(() => {
       });
     }
