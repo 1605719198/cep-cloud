@@ -264,7 +264,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="案由摘要" prop="billDesc"  label-width="96px">
-              <el-input v-model="form.billDesc" placeholder="请输入摘要"  style="width: 217px"/>
+              <el-input v-model="form.billDesc" placeholder="请输入摘要"  style="width: 217px" maxlength="200" show-word-limit/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -401,7 +401,7 @@
               <el-form-item
                 :prop="'financeApLoanDetailList.' + scope.$index + '.srlDesc'" :rules="rulesLoanDetailList.srlDesc">
 
-              <el-input v-model="scope.row.srlDesc" placeholder="请输入摘要说明" />
+              <el-input v-model="scope.row.srlDesc" placeholder="请输入摘要说明"  maxlength="200" show-word-limit/>
               </el-form-item>
             </template>
           </el-table-column>
