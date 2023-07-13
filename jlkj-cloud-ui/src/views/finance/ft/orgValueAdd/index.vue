@@ -166,6 +166,7 @@
               <el-date-picker clearable  style="width:160px"
                               v-model="form.changeDate"
                               type="date"
+                              :picker-options="pickerOptions"
                               value-format="yyyy-MM-dd"
                               placeholder="请选择变动日期">
               </el-date-picker>
@@ -211,36 +212,36 @@
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="资产编码" prop="assetNo" width="120" :render-header="addRedstar">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.assetNo"  disabled/>
+              <el-input v-model="scope.row.assetNo"  readonly/>
             </template>
           </el-table-column>
           <el-table-column label="资产名称" prop="assetName" width="150">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.assetName"  disabled/>
+              <el-input v-model="scope.row.assetName"  readonly/>
             </template>
           </el-table-column>
           <el-table-column label="增加金额" prop="changePrice" width="150" :render-header="addRedstar" >
             <template slot-scope="scope">
               <el-form-item :prop="'financeFtChangeDetailList.' + scope.$index + '.changePrice'" :rules="rules.changePrice" >
-                <el-input-number v-model="scope.row.changePrice"  placeholder="请输入增加金额"  :min="1" style="width:120px"/>
+                <el-input  type="number" v-model="scope.row.changePrice"  placeholder="请输入"  :min="1" style="width:120px"/>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="原值" prop="orgValue" width="100" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.orgValue" disabled/>
+              <el-input v-model="scope.row.orgValue" readonly/>
             </template>
           </el-table-column>
           <el-table-column label="数量" prop="qty" width="80" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.qty" disabled/>
+              <el-input v-model="scope.row.qty" readonly/>
             </template>
           </el-table-column>
-          <el-table-column label="归属部门" prop="deptNo" width="150" >
+<!--          <el-table-column label="归属部门" prop="deptNo" width="150" >
             <template slot-scope="scope">
-              <el-input v-model="scope.row.deptNo" disabled/>
+              <el-input v-model="scope.row.deptNo" readonly/>
             </template>
-          </el-table-column>
+          </el-table-column>-->
         </el-table>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -258,19 +259,18 @@ import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 import {getChangeTypeName, selectChangeTypeList} from "@/api/finance/ft/changeType";
 import selectCard from "@/views/finance/ft/card/selectCard";
 import {queryAllUser,getAvatorByUserName} from "@/api/system/user";
+import {getParamValue} from "../../../../api/finance/ft/para";
+import {strToDate} from "../../../../utils/util";
 export default {
   name: "OrgValueAdd",
   components: { selectCard},
   dicts: ['ft_status'],
   data() {
     return {
-      //设置日期智能选择当期日期及以前
+      assetMonth :null ,
+      //设置日期智能选择指定日期及以后
      //date-picker 加属性:picker-options="pickerOptions"
-      pickerOptions:{
-        disabledDate(time){
-          return time.getTime()>Date.now();
-        }
-      },
+      pickerOptions:{},
       indexKey:0,
       resUserDiction:[],
       // 会计公司下拉选单
@@ -341,7 +341,7 @@ export default {
           { required: true, message: "变动方式不能为空", trigger: "change" }
         ],
         changeDate: [
-          { required: true, message: "变动日期不能为空", trigger: "change" }
+          { required: true, message: "变动日期不能为空", trigger: "change" },
         ],
         changeDesc: [
           { required: true, message: "变动原因描述不能为空", trigger: "blur" }
@@ -354,8 +354,8 @@ export default {
   },
   created() {
     this.getCompanyList();
-    //this.getChangeTypeList();
     this.getList();
+    this.getAssetMonth();
   },
   beforeMount() {
     this.getChangeTypeList();
@@ -365,6 +365,24 @@ export default {
     })
   },
   methods: {
+    getAssetMonth(){
+        getParamValue("asset_month").then( response => {
+          console.log(response);
+          if(undefined!=response){
+            this.assetMonth = strToDate(response+"-01","-").getTime();
+          }else{
+            this.assetMonth = Date.now() ;
+          }
+          console.log( this.assetMonth);
+          const that = this;
+          this.pickerOptions = {
+            disabledDate(time) {
+              console.log("in-pickeerOptions");
+              return time.getTime() < that.assetMonth;
+            }
+          };
+        })
+    },
     // 获取当前登录用户名称/信息
     getName(){
       getAvatorByUserName(this.$store.state.user.name).then( response => {
@@ -463,6 +481,7 @@ export default {
       };
       this.form.financeFtChangeDetailList = [];
       this.resetForm("form");
+      this.queryCardParams.assetId =[];
     },
     /** 搜索按钮操作 */
     handleQuery() {

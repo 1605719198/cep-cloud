@@ -95,4 +95,19 @@ public class FinanceFtParaController extends BaseController
     {
         return toAjax(financeFtParaService.deleteFinanceFtParaByIds(ids));
     }
+
+
+    /**
+    * @Description: 根据固定资产参数键名获取参数键值
+    * @param:[paramKey] 参数键名
+    * @return:String 参数键值
+    * @Author: 116524_wxj
+    * @Date: 2023/7/13 9:23
+    */
+    @GetMapping(value = "/getParamValue/{paramKey}")
+    public String getParamValue(@PathVariable("paramKey") String paramKey)
+    {
+        return financeFtParaService.getParamValue(paramKey);
+    }
+
 }
