@@ -575,8 +575,8 @@ export default {
           return checkedFinanceFtChangeDetail.indexOf(item.index) == -1
         });
         this.indexKey+=1;
+        this.selectCardIds = [];
         this.form.financeFtChangeDetailList.map((item) => {
-          this.selectCardIds.clear();
           this.selectCardIds.push(item.assetId);
         });
         this.queryCardParams.assetId = this.selectCardIds;
