@@ -41,7 +41,62 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAaCashflowCodeVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectFinanceAaCashflowCodeListPop"
+            resultType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode">
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    COUNT( cash_flow_code ) AS acount,
+                    cash_flow_name,
+                    cash_flow_code,
+                    isunabl,
+                    inorout,
+                    queDataWay
+                FROM
+                    (
+                        SELECT
+                            a.cash_flow_name,
+                            a.cash_flow_code,
+                            a.isunabl,
+                            a.inorout,
+                            a.queDataWay
+                        FROM
+                            finance_aa_cashflow_code a
+                        WHERE
+                            1 = 1
+                             AND a.parent_id = #{id}
+                        UNION ALL
+                        SELECT
+                            b.cash_flow_name,
+                            b.cash_flow_code,
+                            b.isunabl,
+                            b.inorout,
+                            b.queDataWay
+                        FROM
+                            finance_aa_cashflow_code_compid b
+                        WHERE
+                            1 = 1
+                          AND b.parent_code  = #{cashFlowCode}
+                    ) c
+                WHERE
+                    1 = 1
+                GROUP BY
+                    cash_flow_code
+            ) d
+        WHERE
+            acount = 1
+    </select>
+    <select id="selectListPop" resultType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode">
+        <include refid="selectFinanceAaCashflowCodeVo"/>
+        <where>
+            <if test="parentCode != null  and parentCode != ''"> and cash_flow_code = #{parentCode}</if>
+
+        </where>
+        order by cash_flow_code
+    </select>
+
     <insert id="insertFinanceAaCashflowCode" parameterType="com.jlkj.finance.aa.domain.FinanceAaCashflowCode">
         insert into finance_aa_cashflow_code
         <trim prefix="(" suffix=")" suffixOverrides=",">

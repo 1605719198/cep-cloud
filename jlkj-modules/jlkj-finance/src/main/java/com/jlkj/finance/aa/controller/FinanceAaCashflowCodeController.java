@@ -1,30 +1,20 @@
 package com.jlkj.finance.aa.controller;
 
-import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-
-import com.jlkj.finance.aa.dto.FinanceAaCashflowCodeDTO;
-import com.jlkj.finance.ip.dto.FinanceCostDownTypeTreeDTO;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.jlkj.common.core.utils.poi.ExcelUtil;
+import com.jlkj.common.core.web.controller.BaseController;
+import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
+import com.jlkj.finance.aa.dto.FinanceAaCashflowCodeDTO;
 import com.jlkj.finance.aa.service.IFinanceAaCashflowCodeService;
-import com.jlkj.common.core.web.controller.BaseController;
-import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.utils.poi.ExcelUtil;
-import com.jlkj.common.core.web.page.TableDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 现金流量代码Controller
@@ -51,6 +41,17 @@ public class FinanceAaCashflowCodeController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 查询现金流量代码列表
+     */
+    @RequiresPermissions("aa:code:list")
+    @GetMapping("/listPop")
+    public TableDataInfo listPop(FinanceAaCashflowCode financeAaCashflowCode)
+    {
+        startPage();
+        List<FinanceAaCashflowCode> list = financeAaCashflowCodeService.selectFinanceAaCashflowCodeListPop(financeAaCashflowCode);
+        return getDataTable(list);
+    }
     /**
      * 导出现金流量代码列表
      */

@@ -8,6 +8,14 @@ export function listCode(query) {
     params: query
   })
 }
+// 查询现金流量代码列表
+export function listCodePop(query) {
+  return request({
+    url: '/finance/code/listPop',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询现金流量代码详细
 export function getCode(id) {
