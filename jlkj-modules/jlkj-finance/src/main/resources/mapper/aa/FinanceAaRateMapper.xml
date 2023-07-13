@@ -33,7 +33,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ratecrcy != null  and ratecrcy != ''"> and rateCrcy = #{ratecrcy}</if>
         </where>
     </select>
-    
+    <select id="selectFinanceAaRateRateValue" parameterType="com.jlkj.finance.aa.domain.FinanceAaRate" resultMap="FinanceAaRateResult">
+        <include refid="selectFinanceAaRateVo"/>
+        <where>
+
+            <if test="startDate != '' and startDate!= null and endDate != '' and endDate != null"> and rateDate  between #{startDate} and #{endDate}</if>
+            <if test="ratecrcy != null  and ratecrcy != ''"> and rateCrcy = #{ratecrcy}</if>
+        </where>
+        order by rateDate DESC
+    </select>
     <select id="selectFinanceAaRateById" parameterType="String" resultMap="FinanceAaRateResult">
         <include refid="selectFinanceAaRateVo"/>
         where id = #{id}

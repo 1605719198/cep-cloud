@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设置Controller
@@ -105,5 +106,18 @@ public class FinanceApItemCompController extends BaseController
     public AjaxResult addBatch(@RequestBody List<FinanceApItemComp> financeApItemComps)
     {
         return toAjax(financeApItemCompService.insertBatch(financeApItemComps));
+    }
+/**
+*获取报支类别公司设定明细档费用细项
+*@author 265799
+*@date 2023/7/12  10:51
+ * @param companyId :
+ * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+*/
+    @RequiresPermissions("finance:reimbItemComp:query")
+    @GetMapping(value = "/itemNoList/{companyId}")
+    public List<Map<String,String>> selectItemNoList(@PathVariable("companyId") String companyId)
+    {
+        return financeApItemCompService.selectItemNoList(companyId);
     }
 }

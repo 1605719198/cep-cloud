@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsAnswerVo">
-        select questions_code, option_code, option_describe, is_right, order_id from exam_questions_answer
+        select questions_code, option_code, option_describe, is_right, order_id from human_ex_questions_answer
     </sql>
 
     <select id="selectExamQuestionsAnswerList" parameterType="ExamQuestionsAnswer" resultMap="ExamQuestionsAnswerResult">
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectExamQuestionsOptionList" parameterType="String" resultMap="ExamQuestionsAnswerResult">
-        select questions_code,option_code,option_describe,order_id from exam_questions_answer 
+        select questions_code,option_code,option_describe,order_id from human_ex_questions_answer 
         where questions_code = #{questionsCode} 
         order by order_id
     </select>
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamQuestionsAnswer" parameterType="ExamQuestionsAnswer" >
-        insert into exam_questions_answer
+        insert into human_ex_questions_answer
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="questionsCode != null and questionsCode != ''">questions_code,</if>
             <if test="optionCode != null and optionCode != ''">option_code,</if>
@@ -52,14 +52,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isRight != null">#{isRight},</if>
             <if test="orderId != null">#{orderId},</if>
             <if test="orderId == null or orderId == ''">
-                (select nvl(max(order_id),0) + 1  from exam_questions_answer where questions_code = #{questionsCode}),              
+                (select ifnull(max(a.order_id),0) + 1  from human_ex_questions_answer  a where questions_code = #{questionsCode}),
             </if>
             
          </trim>
     </insert>
 
     <update id="updateExamQuestionsAnswer" parameterType="ExamQuestionsAnswer">
-        update exam_questions_answer
+        update human_ex_questions_answer
         <trim prefix="SET" suffixOverrides=",">
             <if test="optionCode != null and optionCode != ''">option_code = #{optionCode},</if>
             <if test="optionDescribe != null and optionDescribe != ''">option_describe = #{optionDescribe},</if>
@@ -70,11 +70,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamQuestionsAnswerById" parameterType="String">
-        delete from exam_questions_answer where questions_code = #{questionsCode}
+        delete from human_ex_questions_answer where questions_code = #{questionsCode}
     </delete>
 
     <delete id="deleteExamQuestionsAnswerByIds" parameterType="String">
-        delete from exam_questions_answer where questions_code in 
+        delete from human_ex_questions_answer where questions_code in 
         <foreach item="questionsCode" collection="array" open="(" separator="," close=")">
             #{questionsCode}
         </foreach>

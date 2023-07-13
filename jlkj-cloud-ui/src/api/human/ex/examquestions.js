@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询考试题目列表
 export function listExamquestions(query) {
   return request({
-    url: '/questions/examquestions/list',
+    url: '/human/examquestions/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listExamquestions(query) {
 // 查询考试题目详细
 export function getExamquestions(questionsCode) {
   return request({
-    url: '/questions/examquestions/' + questionsCode,
+    url: '/human/examquestions/' + questionsCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getExamquestions(questionsCode) {
 // 新增考试题目
 export function addExamquestions(data) {
   return request({
-    url: '/questions/examquestions/add',
+    url: '/human/examquestions/add',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addExamquestions(data) {
 // 修改考试题目
 export function updateExamquestions(data) {
   return request({
-    url: '/questions/examquestions/update',
+    url: '/human/examquestions/update',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateExamquestions(data) {
 // 删除考试题目
 export function delExamquestions(questionsCode) {
   return request({
-    url: '/questions/examquestions/delete/' + questionsCode,
+    url: '/human/examquestions/delete/' + questionsCode,
     method: 'get'
   })
 }
@@ -46,7 +46,7 @@ export function delExamquestions(questionsCode) {
 // 导出考试题目
 export function exportExamquestions(query) {
   return request({
-    url: '/questions/examquestions/export',
+    url: '/human/examquestions/export',
     method: 'get',
     params: query
   })

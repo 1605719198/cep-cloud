@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询题目属性列表
 export function listQuestions(query) {
   return request({
-    url: '/questions/questionslist/list',
+    url: '/human/questionslist/list',
     method: 'get',
     params: query
   })
@@ -11,7 +11,7 @@ export function listQuestions(query) {
 
 export function chiceListQuestions(examCode) {
   return request({
-    url: '/questions/questionslist/selectlist/' + examCode,
+    url: '/human/questionslist/selectlist/' + examCode,
     method: 'get'
   })
 }

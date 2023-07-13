@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询考试题目答案列表
 export function listAnswer(query) {
   return request({
-    url: '/questions/answer/list',
+    url: '/human/answer/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listAnswer(query) {
 // 查询考试题目答案详细
 export function getAnswer(questionsCode) {
   return request({
-    url: '/questions/answer/' + questionsCode,
+    url: '/human/answer/' + questionsCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getAnswer(questionsCode) {
 // 新增考试题目答案
 export function addAnswer(data) {
   return request({
-    url: '/questions/answer/add',
+    url: '/human/answer/add',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addAnswer(data) {
 // 修改考试题目答案
 export function updateAnswer(data) {
   return request({
-    url: '/questions/answer/update',
+    url: '/human/answer/update',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateAnswer(data) {
 // 删除考试题目答案
 export function delAnswer(questionsCode) {
   return request({
-    url: '/questions/answer/delete/' + questionsCode,
+    url: '/human/answer/delete/' + questionsCode,
     method: 'get'
   })
 }
@@ -46,7 +46,7 @@ export function delAnswer(questionsCode) {
 // 导出考试题目答案
 export function exportAnswer(query) {
   return request({
-    url: '/questions/answer/export',
+    url: '/human/answer/export',
     method: 'get',
     params: query
   })

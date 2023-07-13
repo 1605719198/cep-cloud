@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamBankPictureVo">
-        select photo_id, photo_code, photo_path, photo_url, file_name, original_name, create_by, create_time, status from exam_bank_picture
+        select photo_id, photo_code, photo_path, photo_url, file_name, original_name, create_by, create_time, status from human_ex_bank_picture
     </sql>
 
     <select id="selectExamBankPictureList" parameterType="ExamBankPicture" resultMap="ExamBankPictureResult">
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamBankPicture" parameterType="ExamBankPicture" >
-        insert into exam_bank_picture
+        insert into human_ex_bank_picture
         <trim prefix="(" suffix=")" suffixOverrides=",">
             photo_id,
             <if test="photoCode != null">photo_code,</if>
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             status,
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(photo_id),0) + 1  from exam_bank_picture),
+            (select nvl(max(photo_id),0) + 1  from human_ex_bank_picture),
             <if test="photoCode != null">#{photoCode},</if>
             <if test="photoPath != null">#{photoPath},</if>
             <if test="photoUrl != null">#{photoUrl},</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamBankPicture" parameterType="ExamBankPicture">
-        update exam_bank_picture
+        update human_ex_bank_picture
         <trim prefix="SET" suffixOverrides=",">
             <if test="photoId != null">photo_id = #{photoId},</if>
             <if test="photoPath != null">photo_path = #{photoPath},</if>
@@ -74,11 +74,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamBankPictureById" parameterType="String">
-        delete from exam_bank_picture where photo_code = #{photoCode}
+        delete from human_ex_bank_picture where photo_code = #{photoCode}
     </delete>
 
     <delete id="deleteExamBankPictureByIds" parameterType="String">
-        delete from exam_bank_picture where photo_code in 
+        delete from human_ex_bank_picture where photo_code in 
         <foreach item="photoCode" collection="array" open="(" separator="," close=")">
             #{photoCode}
         </foreach>

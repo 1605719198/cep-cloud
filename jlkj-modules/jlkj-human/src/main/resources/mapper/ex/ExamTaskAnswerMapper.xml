@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamTaskAnswerVo">
-        select exam_code, user_code, questions_code, questions_number, questions_type, questions_answer, is_mark, is_current from exam_task_answer
+        select exam_code, user_code, questions_code, questions_number, questions_type, questions_answer, is_mark, is_current from human_ex_task_answer
     </sql>
 
     <select id="selectExamTaskAnswerList" parameterType="ExamTaskAnswer" resultMap="ExamTaskAnswerResult">
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamTaskAnswer" parameterType="ExamTaskAnswer">
-        insert into exam_task_answer
+        insert into human_ex_task_answer
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="examCode != null and examCode != ''">exam_code,</if>
             <if test="userCode != null and userCode != ''">user_code,</if>
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamTaskAnswer" parameterType="ExamTaskAnswer">
-        update exam_task_answer
+        update human_ex_task_answer
         <trim prefix="SET" suffixOverrides=",">
             <if test="userCode != null and userCode != ''">user_code = #{userCode},</if>
             <if test="questionsCode != null and questionsCode != ''">questions_code = #{questionsCode},</if>
@@ -69,15 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamTaskAnswer" parameterType="ExamTaskAnswer">
-        delete from exam_task_answer where exam_code = #{examCode} and user_code = #{userCode} and questions_code = #{questionsCode}
+        delete from human_ex_task_answer where exam_code = #{examCode} and user_code = #{userCode} and questions_code = #{questionsCode}
     </delete>
     
     <delete id="deleteExamTaskAnswerById" parameterType="String">
-        delete from exam_task_answer where exam_code = #{examCode}
+        delete from human_ex_task_answer where exam_code = #{examCode}
     </delete>
 
     <delete id="deleteExamTaskAnswerByIds" parameterType="String">
-        delete from exam_task_answer where exam_code in 
+        delete from human_ex_task_answer where exam_code in 
         <foreach item="examCode" collection="array" open="(" separator="," close=")">
             #{examCode}
         </foreach>

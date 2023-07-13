@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ap.mapper.FinanceApConfirmDetailMapper">
+    
+    <resultMap type="com.jlkj.finance.ap.domain.FinanceApConfirmDetail" id="FinanceApConfirmDetailResult">
+        <result property="billId"    column="bill_id"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="seqNo"    column="seq_no"    />
+        <result property="drCr"    column="dr_cr"    />
+        <result property="acctId"    column="acct_id"    />
+        <result property="acctCode"    column="acct_code"    />
+        <result property="calIda"    column="cal_ida"    />
+        <result property="calCodea"    column="cal_codea"    />
+        <result property="calIdb"    column="cal_idb"    />
+        <result property="calCodeb"    column="cal_codeb"    />
+        <result property="calIdc"    column="cal_idc"    />
+        <result property="calCodec"    column="cal_codec"    />
+        <result property="calIdd"    column="cal_idd"    />
+        <result property="calCoded"    column="cal_coded"    />
+        <result property="dueDate"    column="due_date"    />
+        <result property="contractNo"    column="contract_no"    />
+        <result property="contractName"    column="contract_name"    />
+        <result property="srlDesc"    column="srl_desc"    />
+        <result property="plancode"    column="planCode"    />
+        <result property="manufacturerId"    column="manufacturer_id"    />
+        <result property="manufacturerNo"    column="manufacturer_no"    />
+        <result property="crcyUnit"    column="crcy_unit"    />
+        <result property="frnAmt"    column="frn_amt"    />
+        <result property="amt"    column="amt"    />
+        <result property="paidAmt"    column="paid_amt"    />
+        <result property="paidFrnAmt"    column="paid_frn_amt"    />
+        <result property="dispatchAmt"    column="dispatch_amt"    />
+        <result property="dispatchFrnAmt"    column="dispatch_frn_amt"    />
+        <result property="writeoffLoan"    column="writeoff_loan"    />
+        <result property="payMark"    column="pay_mark"    />
+    </resultMap>
+
+    <sql id="selectFinanceApConfirmDetailVo">
+        SELECT bill_id, bill_no, company_id, seq_no, dr_cr, acct_id, acct_code, cal_ida, cal_codea, cal_idb, cal_codeb, cal_idc, cal_codec, cal_idd, cal_coded, due_date, contract_no, contract_name, srl_desc, planCode, manufacturer_id, manufacturer_no, crcy_unit, frn_amt, amt, paid_amt, paid_frn_amt, dispatch_amt, dispatch_frn_amt, writeoff_loan, pay_mark FROM finance_ap_confirm_detail
+    </sql>
+
+    <select id="selectFinanceApConfirmDetailList" parameterType="com.jlkj.finance.ap.domain.FinanceApConfirmDetail" resultMap="FinanceApConfirmDetailResult">
+        <include refid="selectFinanceApConfirmDetailVo"/>
+        <where>  
+            <if test="billId != null  and billId != ''"> AND bill_id = #{billId}</if>
+            <if test="billNo != null  and billNo != ''"> AND bill_no = #{billNo}</if>
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="seqNo != null "> AND seq_no = #{seqNo}</if>
+            <if test="drCr != null  and drCr != ''"> AND dr_cr = #{drCr}</if>
+            <if test="acctId != null  and acctId != ''"> AND acct_id = #{acctId}</if>
+            <if test="acctCode != null  and acctCode != ''"> AND acct_code = #{acctCode}</if>
+            <if test="calIda != null  and calIda != ''"> AND cal_ida = #{calIda}</if>
+            <if test="calCodea != null  and calCodea != ''"> AND cal_codea = #{calCodea}</if>
+            <if test="calIdb != null  and calIdb != ''"> AND cal_idb = #{calIdb}</if>
+            <if test="calCodeb != null  and calCodeb != ''"> AND cal_codeb = #{calCodeb}</if>
+            <if test="calIdc != null  and calIdc != ''"> AND cal_idc = #{calIdc}</if>
+            <if test="calCodec != null  and calCodec != ''"> AND cal_codec = #{calCodec}</if>
+            <if test="calIdd != null  and calIdd != ''"> AND cal_idd = #{calIdd}</if>
+            <if test="calCoded != null  and calCoded != ''"> AND cal_coded = #{calCoded}</if>
+            <if test="dueDate != null "> AND due_date = #{dueDate}</if>
+            <if test="contractNo != null  and contractNo != ''"> AND contract_no = #{contractNo}</if>
+            <if test="contractName != null  and contractName != ''"> AND contract_name LIKE concat('%', #{contractName}, '%')</if>
+            <if test="srlDesc != null  and srlDesc != ''"> AND srl_desc = #{srlDesc}</if>
+            <if test="plancode != null  and plancode != ''"> AND planCode = #{plancode}</if>
+            <if test="manufacturerId != null  and manufacturerId != ''"> AND manufacturer_id = #{manufacturerId}</if>
+            <if test="manufacturerNo != null  and manufacturerNo != ''"> AND manufacturer_no = #{manufacturerNo}</if>
+            <if test="crcyUnit != null  and crcyUnit != ''"> AND crcy_unit = #{crcyUnit}</if>
+            <if test="frnAmt != null "> AND frn_amt = #{frnAmt}</if>
+            <if test="amt != null "> AND amt = #{amt}</if>
+            <if test="paidAmt != null "> AND paid_amt = #{paidAmt}</if>
+            <if test="paidFrnAmt != null "> AND paid_frn_amt = #{paidFrnAmt}</if>
+            <if test="dispatchAmt != null "> AND dispatch_amt = #{dispatchAmt}</if>
+            <if test="dispatchFrnAmt != null "> AND dispatch_frn_amt = #{dispatchFrnAmt}</if>
+            <if test="writeoffLoan != null  and writeoffLoan != ''"> AND writeoff_loan = #{writeoffLoan}</if>
+            <if test="payMark != null  and payMark != ''"> AND pay_mark = #{payMark}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceApConfirmDetailByBillId" parameterType="String" resultMap="FinanceApConfirmDetailResult">
+        <include refid="selectFinanceApConfirmDetailVo"/>
+        WHERE bill_id = #{billId}
+    </select>
+        
+    <insert id="insertFinanceApConfirmDetail" parameterType="com.jlkj.finance.ap.domain.FinanceApConfirmDetail">
+        INSERT INTO finance_ap_confirm_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billId != null">bill_id,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="seqNo != null">seq_no,</if>
+            <if test="drCr != null">dr_cr,</if>
+            <if test="acctId != null">acct_id,</if>
+            <if test="acctCode != null">acct_code,</if>
+            <if test="calIda != null">cal_ida,</if>
+            <if test="calCodea != null">cal_codea,</if>
+            <if test="calIdb != null">cal_idb,</if>
+            <if test="calCodeb != null">cal_codeb,</if>
+            <if test="calIdc != null">cal_idc,</if>
+            <if test="calCodec != null">cal_codec,</if>
+            <if test="calIdd != null">cal_idd,</if>
+            <if test="calCoded != null">cal_coded,</if>
+            <if test="dueDate != null">due_date,</if>
+            <if test="contractNo != null">contract_no,</if>
+            <if test="contractName != null">contract_name,</if>
+            <if test="srlDesc != null">srl_desc,</if>
+            <if test="plancode != null">planCode,</if>
+            <if test="manufacturerId != null">manufacturer_id,</if>
+            <if test="manufacturerNo != null">manufacturer_no,</if>
+            <if test="crcyUnit != null">crcy_unit,</if>
+            <if test="frnAmt != null">frn_amt,</if>
+            <if test="amt != null">amt,</if>
+            <if test="paidAmt != null">paid_amt,</if>
+            <if test="paidFrnAmt != null">paid_frn_amt,</if>
+            <if test="dispatchAmt != null">dispatch_amt,</if>
+            <if test="dispatchFrnAmt != null">dispatch_frn_amt,</if>
+            <if test="writeoffLoan != null">writeoff_loan,</if>
+            <if test="payMark != null">pay_mark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billId != null">#{billId},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="seqNo != null">#{seqNo},</if>
+            <if test="drCr != null">#{drCr},</if>
+            <if test="acctId != null">#{acctId},</if>
+            <if test="acctCode != null">#{acctCode},</if>
+            <if test="calIda != null">#{calIda},</if>
+            <if test="calCodea != null">#{calCodea},</if>
+            <if test="calIdb != null">#{calIdb},</if>
+            <if test="calCodeb != null">#{calCodeb},</if>
+            <if test="calIdc != null">#{calIdc},</if>
+            <if test="calCodec != null">#{calCodec},</if>
+            <if test="calIdd != null">#{calIdd},</if>
+            <if test="calCoded != null">#{calCoded},</if>
+            <if test="dueDate != null">#{dueDate},</if>
+            <if test="contractNo != null">#{contractNo},</if>
+            <if test="contractName != null">#{contractName},</if>
+            <if test="srlDesc != null">#{srlDesc},</if>
+            <if test="plancode != null">#{plancode},</if>
+            <if test="manufacturerId != null">#{manufacturerId},</if>
+            <if test="manufacturerNo != null">#{manufacturerNo},</if>
+            <if test="crcyUnit != null">#{crcyUnit},</if>
+            <if test="frnAmt != null">#{frnAmt},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="paidAmt != null">#{paidAmt},</if>
+            <if test="paidFrnAmt != null">#{paidFrnAmt},</if>
+            <if test="dispatchAmt != null">#{dispatchAmt},</if>
+            <if test="dispatchFrnAmt != null">#{dispatchFrnAmt},</if>
+            <if test="writeoffLoan != null">#{writeoffLoan},</if>
+            <if test="payMark != null">#{payMark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceApConfirmDetail" parameterType="com.jlkj.finance.ap.domain.FinanceApConfirmDetail">
+        UPDATE finance_ap_confirm_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="seqNo != null">seq_no = #{seqNo},</if>
+            <if test="drCr != null">dr_cr = #{drCr},</if>
+            <if test="acctId != null">acct_id = #{acctId},</if>
+            <if test="acctCode != null">acct_code = #{acctCode},</if>
+            <if test="calIda != null">cal_ida = #{calIda},</if>
+            <if test="calCodea != null">cal_codea = #{calCodea},</if>
+            <if test="calIdb != null">cal_idb = #{calIdb},</if>
+            <if test="calCodeb != null">cal_codeb = #{calCodeb},</if>
+            <if test="calIdc != null">cal_idc = #{calIdc},</if>
+            <if test="calCodec != null">cal_codec = #{calCodec},</if>
+            <if test="calIdd != null">cal_idd = #{calIdd},</if>
+            <if test="calCoded != null">cal_coded = #{calCoded},</if>
+            <if test="dueDate != null">due_date = #{dueDate},</if>
+            <if test="contractNo != null">contract_no = #{contractNo},</if>
+            <if test="contractName != null">contract_name = #{contractName},</if>
+            <if test="srlDesc != null">srl_desc = #{srlDesc},</if>
+            <if test="plancode != null">planCode = #{plancode},</if>
+            <if test="manufacturerId != null">manufacturer_id = #{manufacturerId},</if>
+            <if test="manufacturerNo != null">manufacturer_no = #{manufacturerNo},</if>
+            <if test="crcyUnit != null">crcy_unit = #{crcyUnit},</if>
+            <if test="frnAmt != null">frn_amt = #{frnAmt},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="paidAmt != null">paid_amt = #{paidAmt},</if>
+            <if test="paidFrnAmt != null">paid_frn_amt = #{paidFrnAmt},</if>
+            <if test="dispatchAmt != null">dispatch_amt = #{dispatchAmt},</if>
+            <if test="dispatchFrnAmt != null">dispatch_frn_amt = #{dispatchFrnAmt},</if>
+            <if test="writeoffLoan != null">writeoff_loan = #{writeoffLoan},</if>
+            <if test="payMark != null">pay_mark = #{payMark},</if>
+        </trim>
+        WHERE bill_id = #{billId}
+    </update>
+
+    <delete id="deleteFinanceApConfirmDetailByBillId" parameterType="String">
+        DELETE FROM finance_ap_confirm_detail WHERE bill_id = #{billId}
+    </delete>
+
+    <delete id="deleteFinanceApConfirmDetailByBillIds" parameterType="String">
+        DELETE FROM finance_ap_confirm_detail WHERE bill_id IN
+        <foreach item="billId" collection="array" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+    </delete>
+</mapper>

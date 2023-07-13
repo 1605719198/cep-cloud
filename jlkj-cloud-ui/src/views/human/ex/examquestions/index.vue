@@ -71,7 +71,7 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(item)"
-                            v-hasPermi="['questions:questionsbank:edit']"
+                            v-hasPermi="['human:questionsbank:edit']"
                           >编辑</el-button>
                         </div>
                       </div>
@@ -97,7 +97,7 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(questionsbankList[index + 1])"
-                            v-hasPermi="['questions:questionsbank:edit']"
+                            v-hasPermi="['human:questionsbank:edit']"
                           >编辑</el-button>
                         </div>
                       </div>
@@ -128,10 +128,9 @@
 </template>
 
 <script>
-import { listQuestionsbank, getQuestionsbank, delQuestionsbank, addQuestionsbank, updateQuestionsbank,
-  exportQuestionsbank } from "@/api/human/ex/questionsbank";
-import { listExamtype, getExamtype, typeTreeSelect, delExamtype, addExamtype, updateExamtype, exportExamtype } from
-    "@/api/human/ex/examtype";
+import { listQuestionsbank} from "@/api/human/ex/questionsbank";
+import { listExamtype, typeTreeSelect } from
+    "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import QuestionsList from './questionsList'

@@ -1,5 +1,6 @@
 package com.jlkj.human.hs.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
@@ -74,6 +75,29 @@ public class MiniStandardServiceImpl implements IMiniStandardService
             //生效日期小于操作日期
             if(inEffectDate1.compareTo(DateUtils.parseDateToStr("yyyy-MM-dd",nowdate))<0 ){
                 version = version + 1;
+            }
+        }
+        for (MiniStandard miniStandards : miniStandardList) {
+            if (miniStandards.getUuid() != null) {
+                MiniStandard dbMiniStandard = miniStandardMapper.selectMiniStandardByUuid(miniStandards.getUuid());
+                if (!dbMiniStandard.getSalaryStandard().equals(miniStandards.getSalaryStandard())) {
+                    List<MiniStandard> miniStandardVersion = miniStandardMapper.selectMiniStandardListByVersion(miniStandards);
+                    if (!ObjectUtil.isEmpty(miniStandardVersion)) {
+                        List<MiniStandard> miniStandardCompanies = miniStandardMapper.selectMiniStandardListBySalaryStandard(miniStandards);
+                        if (!ObjectUtil.isEmpty(miniStandardCompanies)) {
+                            throw new ServiceException("同一版本下社保公积金项目不允许重复");
+                        }
+                    }
+                }
+            }else {
+                List<MiniStandard> miniStandardVersion = miniStandardMapper.selectMiniStandardListByVersion(miniStandards);
+                Object[] objects = miniStandardList.stream().map(MiniStandard::getSalaryStandard).distinct().toArray();
+                if(objects.length!=miniStandardList.size()){
+                    throw new ServiceException("同一版本下工资标准类型不允许重复");
+                }
+                if (!ObjectUtil.isEmpty(miniStandardVersion)) {
+                    throw new ServiceException("同一版本下工资标准类型不允许重复");
+                }
             }
         }
         if(!StringUtils.isEmpty(versionMap)) {

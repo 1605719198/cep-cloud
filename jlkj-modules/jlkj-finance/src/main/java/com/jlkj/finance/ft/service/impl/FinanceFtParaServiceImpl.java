@@ -101,4 +101,24 @@ public class FinanceFtParaServiceImpl implements IFinanceFtParaService
     {
         return financeFtParaMapper.deleteFinanceFtParaById(id);
     }
+
+    /**
+     * @Description: 根据固定资产参数键名获取value值
+     * @param:[paramKey]固定资产参数键名
+     * @return:java.lang.String 参数键值
+     * @Author: 116524_wxj
+     * @Date: 2023/7/13 9:22
+     */
+    @Override
+    public String getParamValue(String paramKey){
+        String paramValue = "" ;
+        FinanceFtPara financeFtPara = new FinanceFtPara();
+        financeFtPara.setParameterKey(paramKey);
+        List<FinanceFtPara> financeFtParamList = financeFtParaMapper.selectFinanceFtParaList(financeFtPara);
+        if(null!=financeFtParamList && financeFtParamList.size()>0){
+            FinanceFtPara param = financeFtParamList.get(0);
+            paramValue = param.getParameterValue();
+        }
+        return paramValue;
+    }
 }

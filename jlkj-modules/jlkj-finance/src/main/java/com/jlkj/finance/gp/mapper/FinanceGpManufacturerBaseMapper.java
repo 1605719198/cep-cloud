@@ -1,8 +1,10 @@
 package com.jlkj.finance.gp.mapper;
 
-import java.util.List;
 import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -68,4 +70,14 @@ public interface FinanceGpManufacturerBaseMapper
      * @return 结果
      */
     public int deleteFinanceGpManufacturerBaseByIds(String[] ids);
+
+/**
+*
+*@author 265799
+*@date 2023/7/10  15:31
+ * @param companyId : 
+ * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+*/        
+
+    public List<Map<String,String>> selectManufacturerList(String companyId);
 }

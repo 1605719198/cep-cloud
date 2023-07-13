@@ -33,12 +33,9 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <div class = "ueditor-area">
-            <span class = "star-text">*</span>
-            <span class= "ueditor-title">试题题目</span>
-          </div>
-          <vue-ueditor-wrap v-model="textValue" :config="editConfig" @ready="onEditorReady"  :destroy="true"></vue-ueditor-wrap>
-          <br>
+          <el-form-item label="试题题目" prop="questionsTitle">
+            <el-input v-model="form.questionsTitle" type="textarea" placeholder="请输入答案分析" />
+          </el-form-item>
           <el-form-item label="题目分数" prop="questionsScore">
             <el-input-number v-model="form.questionsScore" :min="1" :max="20" label="请输入题目分数"></el-input-number>
           </el-form-item>
@@ -123,15 +120,13 @@
 </template>
 
 <script>
-import VueUeditorWrap from 'vue-ueditor-wrap'
 import { newGuid } from '@/utils/guidtool'
-import {  addExamquestions, updateExamquestions} from "@/api/human/ex/examquestions";
-import {  getQuestionscontent } from "@/api/human/ex/questionscontent";
-import { listAnswer } from "@/api/human/ex/answer";
+import { addExamquestions, updateExamquestions } from "@/api/human/ex/examquestions";
+import { getQuestionscontent } from "@/api/human/ex/questionscontent";
+import { listAnswer, getAnswer } from "@/api/human/ex/answer";
 
 export default {
   name: "Examquestions",
-  components: { VueUeditorWrap},
   data() {
     return {
       // 表单参数
@@ -187,7 +182,7 @@ export default {
         // 初始容器宽度
         initialFrameWidth: '100%',
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: baseApiUrl + '/ueditor/config',
+        serverUrl:  process.env.VUE_APP_BASE_API+'/ueditor/config',
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
         UEDITOR_HOME_URL: '/exam_online_ui/UEditor/'
       },
@@ -245,7 +240,7 @@ export default {
       listAnswer(this.queryParams).then(response => {
         this.answerList = response.rows;
         this.showData()
-        this.getContent()
+        //this.getContent()
       });
     },
     showData () {
@@ -258,26 +253,27 @@ export default {
         this.checkItem = this.form.rightAnswer.split(",")
       }
     },
-    getContent() {
-      getQuestionscontent(this.form.questionsCode).then(response => {
-        this.textValue = response.data.questionsContent
-      });
-    },
+    // getContent() {
+    //   getQuestionscontent(this.form.questionsCode).then(response => {
+    //     this.textValue = response.data.questionsContent
+    //   });
+    // },
     onClose () {
       this.$emit('refreshData')
     },
     checkData () {
+      debugger
       if (this.form.questionsType === undefined || this.form.questionsType === null) {
         this.$message.error('未选择题目类型')
         return false
       }
 
-      if (this.Ueditor.getContentTxt() === null || this.Ueditor.getContentTxt() === '') {
-        this.$message.error('未输入试题题目')
+      if (this.form.questionsTitle === undefined || this.form.questionsTitle === null) {
+        this.$message.error('未填写试题题目')
         return false
       }
-      this.form.questionsTitle = this.Ueditor.getContentTxt()
-      this.form.questionsContent = this.textValue
+      // this.form.questionsTitle = this.Ueditor.getContentTxt()
+      // this.form.questionsContent = this.textValue
       if (this.form.questionsScore === undefined || this.form.questionsScore === null || this.form.questionsScore <= 0) {
         this.$message.error('题目分数不能为零')
         return false

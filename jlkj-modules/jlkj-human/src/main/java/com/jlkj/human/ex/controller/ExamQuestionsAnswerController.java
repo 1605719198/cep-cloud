@@ -22,7 +22,7 @@ import java.util.List;
  * @Date:  2023-07-11
  */
 @RestController
-@RequestMapping("/questions/answer")
+@RequestMapping("/answer")
 public class ExamQuestionsAnswerController extends BaseController
 {
     @Autowired
@@ -49,7 +49,7 @@ public class ExamQuestionsAnswerController extends BaseController
     /**
      * 导出考试题目答案列表
      */
-    @RequiresPermissions("questions:answer:export")
+    @RequiresPermissions("human:answer:export")
     @Log(title = "考试题目答案", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamQuestionsAnswer examQuestionsAnswer)
@@ -62,7 +62,7 @@ public class ExamQuestionsAnswerController extends BaseController
     /**
      * 获取考试题目答案详细信息
      */
-    @RequiresPermissions("questions:answer:query")
+    @RequiresPermissions("human:answer:query")
     @GetMapping(value = "/{questionsCode}")
     public AjaxResult getInfo(@PathVariable("questionsCode") String questionsCode)
     {
@@ -72,7 +72,7 @@ public class ExamQuestionsAnswerController extends BaseController
     /**
      * 新增考试题目答案
      */
-    @RequiresPermissions("questions:answer:add")
+    @RequiresPermissions("human:answer:add")
     @Log(title = "考试题目答案", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ExamQuestionsAnswer examQuestionsAnswer)
@@ -83,7 +83,7 @@ public class ExamQuestionsAnswerController extends BaseController
     /**
      * 修改考试题目答案
      */
-    @RequiresPermissions("questions:answer:edit")
+    @RequiresPermissions("human:answer:edit")
     @Log(title = "考试题目答案", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult edit(@RequestBody ExamQuestionsAnswer examQuestionsAnswer)
@@ -94,7 +94,7 @@ public class ExamQuestionsAnswerController extends BaseController
     /**
      * 删除考试题目答案
      */
-    @RequiresPermissions("questions:answer:remove")
+    @RequiresPermissions("human:answer:remove")
     @Log(title = "考试题目答案", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{questionsCodes}")
     public AjaxResult remove(@PathVariable String[] questionsCodes)

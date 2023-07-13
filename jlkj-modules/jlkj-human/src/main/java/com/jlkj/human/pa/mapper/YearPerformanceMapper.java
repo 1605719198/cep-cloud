@@ -1,5 +1,6 @@
 package com.jlkj.human.pa.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.human.pa.domain.YearPerformance;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author 267383
  * @date 2023-06-09
  */
-public interface YearPerformanceMapper 
+public interface YearPerformanceMapper extends BaseMapper<YearPerformance>
 {
     /**
      * 查询年度绩效主档
@@ -27,14 +28,6 @@ public interface YearPerformanceMapper
      * @return 年度绩效主档集合
      */
     public List<YearPerformance> selectYearPerformanceList(YearPerformance yearPerformance);
-
-    /**
-     * 新增年度绩效主档
-     * 
-     * @param yearPerformance 年度绩效主档
-     * @return 结果
-     */
-    public int insertYearPerformance(YearPerformance yearPerformance);
 
     /**
      * 修改年度绩效主档

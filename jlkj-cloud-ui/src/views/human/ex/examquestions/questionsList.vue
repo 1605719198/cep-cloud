@@ -21,16 +21,7 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="试题类型" prop="questionsType">
-          <el-select v-model="queryParams.questionsType" placeholder="请选择试题类型" clearable size="small">
-            <el-option
-              v-for="dict in questionsTypeOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            />
-          </el-select>
-        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -45,7 +36,7 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['questions:examquestions:add']"
+            v-hasPermi="['human:examquestions:add']"
           >新增</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -56,7 +47,7 @@
             size="mini"
             :disabled="multiple"
             @click="handleDelete"
-            v-hasPermi="['questions:examquestions:remove']"
+            v-hasPermi="['human:examquestions:remove']"
           >删除</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -67,7 +58,7 @@
             size="mini"
         :loading="exportLoading"
             @click="handleExport"
-            v-hasPermi="['questions:examquestions:export']"
+            v-hasPermi="['human:examquestions:export']"
           >导出</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -77,7 +68,7 @@
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="序号" width = "60" align="center" prop="rownum"  />
         <el-table-column label="试题题目"  align="center"  prop="questionsTitle"  />
-        <el-table-column label="试题类型" width = "80" align="center" prop="questionsType" :formatter="questionsTypeFormat" />
+
         <el-table-column label="分数" width = "60" align="center" prop="questionsScore" />
         <el-table-column label="复杂度" width = "150" align="center" >
           <template slot-scope="scope">
@@ -127,7 +118,7 @@
 <script>
 import { listQuestionsproperty,} from "@/api/human/ex/questionsproperty";
 import {  delExamquestions, addExamquestions, updateExamquestions, exportExamquestions } from "@/api/human/ex/examquestions";
-import ExamQuestions from './examQuestions'
+import ExamQuestions from "@/views/human/ex/examquestions/examQuestions";
 
 export default {
   name: "Questionslist",
@@ -167,11 +158,11 @@ export default {
       // 试题内容字典
       questionsContentOptions: [],
       // 试题类型字典
-      questionsTypeOptions: [
-        {dictValue: 1, dictLabel: '判断题'},
-        {dictValue: 2, dictLabel: '单选题'},
-        {dictValue: 3, dictLabel: '多选题'}
-        ],
+      // questionsTypeOptions: [
+      //   {dictValue: 1, dictLabel: '判断题'},
+      //   {dictValue: 2, dictLabel: '单选题'},
+      //   {dictValue: 3, dictLabel: '多选题'}
+      //   ],
       // 题目分数字典
       questionsScoreOptions: [],
       // 复杂度字典
@@ -194,7 +185,7 @@ export default {
         pageSize: 10,
         bankCode: null,
         questionsTitle: null,
-        questionsType: null,
+       // questionsType: null,
       },
       // 表单参数
       form: {},
@@ -227,46 +218,20 @@ export default {
         this.loading = false;
       });
     },
-    // 试题id字典翻译
-    questionsIdFormat(row, column) {
-      return this.selectDictLabel(this.questionsIdOptions, row.questionsId);
-    },
-    // 试题代码字典翻译
-    questionsCodeFormat(row, column) {
-      return this.selectDictLabel(this.questionsCodeOptions, row.questionsCode);
-    },
-    // 试题题目字典翻译
-    questionsTitleFormat(row, column) {
-      return this.selectDictLabel(this.questionsTitleOptions, row.questionsTitle);
-    },
+
+
+
     // 试题内容字典翻译
     questionsContentFormat(row, column) {
       return this.selectDictLabel(this.questionsContentOptions, row.questionsContent);
     },
-    // 试题类型字典翻译
-    questionsTypeFormat(row, column) {
-      return this.selectDictLabel(this.questionsTypeOptions, row.questionsType);
-    },
-    // 题目分数字典翻译
-    questionsScoreFormat(row, column) {
-      return this.selectDictLabel(this.questionsScoreOptions, row.questionsScore);
-    },
-    // 复杂度字典翻译
-    rateNumberFormat(row, column) {
-      return this.selectDictLabel(this.rateNumberOptions, row.rateNumber);
-    },
-    // 正确答案字典翻译
-    rightAnswerFormat(row, column) {
-      return this.selectDictLabel(this.rightAnswerOptions, row.rightAnswer);
-    },
+
+
     // 答案分析字典翻译
     answerAnalyseFormat(row, column) {
       return this.selectDictLabel(this.answerAnalyseOptions, row.answerAnalyse);
     },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
+
     // 创建者字典翻译
     createByFormat(row, column) {
       return this.selectDictLabel(this.createByOptions, row.createBy);
@@ -291,7 +256,7 @@ export default {
         questionsCode: null,
         questionsTitle: null,
         questionsContent: null,
-        questionsType: null,
+      //  questionsType: null,
         questionsScore: null,
         rateNumber: null,
         rightAnswer: null,

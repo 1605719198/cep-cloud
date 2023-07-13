@@ -8,7 +8,14 @@ export function listRate(query) {
     params: query
   })
 }
-
+// 查询利率汇率管理列表
+export function selecCrcyunitList(query) {
+  return request({
+    url: '/finance/rate/listCrcyUnit',
+    method: 'get',
+    params: query
+  })
+}
 // 查询利率汇率管理详细
 export function getRate(id) {
   return request({

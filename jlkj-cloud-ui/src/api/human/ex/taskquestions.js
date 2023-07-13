@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询任务题目列表
 export function listTaskquestions(query) {
   return request({
-    url: '/exam/taskquestions/list',
+    url: '/human/taskquestions/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listTaskquestions(query) {
 // 查询任务题目详细
 export function getTaskquestions(examCode) {
   return request({
-    url: '/exam/taskquestions/' + examCode,
+    url: '/human/taskquestions/' + examCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getTaskquestions(examCode) {
 // 新增任务题目
 export function addTaskquestions(data) {
   return request({
-    url: '/exam/taskquestions',
+    url: '/human/taskquestions',
     method: 'post',
     data: data
   })
@@ -28,7 +28,7 @@ export function addTaskquestions(data) {
 
 export function batchUpdateTaskquestions(data) {
   return request({
-    url: '/exam/taskquestions/batchupdate',
+    url: '/human/taskquestions/batchupdate',
     method: 'post',
     data: data
   })
@@ -37,7 +37,7 @@ export function batchUpdateTaskquestions(data) {
 // 修改任务题目
 export function updateTaskquestions(data) {
   return request({
-    url: '/exam/taskquestions/update',
+    url: '/human/taskquestions/update',
     method: 'post',
     data: data
   })
@@ -46,7 +46,7 @@ export function updateTaskquestions(data) {
 // 删除任务题目
 export function delTaskquestions(examCode) {
   return request({
-    url: '/exam/taskquestions/delete/' + examCode,
+    url: '/human/taskquestions/delete/' + examCode,
     method: 'get'
   })
 }
@@ -54,7 +54,7 @@ export function delTaskquestions(examCode) {
 // 导出任务题目
 export function exportTaskquestions(query) {
   return request({
-    url: '/exam/taskquestions/export',
+    url: '/human/taskquestions/export',
     method: 'get',
     params: query
   })

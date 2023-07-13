@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick" :before-leave="leaveTab" >
+    <el-tabs v-model="activeName" @tab-click="handleClick"
+             :before-leave="leaveTab" >
       <el-tab-pane label="增加用户申请" name="first">
         <index @change="changeData"></index>
       </el-tab-pane>

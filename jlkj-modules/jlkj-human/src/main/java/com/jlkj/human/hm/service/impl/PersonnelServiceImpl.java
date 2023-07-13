@@ -192,4 +192,19 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
             }
         }
     }
+
+    /**
+     * 获取人员基本信息查询列表
+     * @author HuangBing
+     * @date 2023-06-20
+     * @param personnel 查询参数集
+     * @return list 返回数据
+     */
+    @Override
+    public List<Personnel> getPersonnelBasicInfoList(Personnel personnel){
+        List<Personnel> list = lambdaQuery()
+                .eq(StringUtils.isNotBlank(personnel.getCompId()), Personnel::getCompId, personnel.getCompId())
+                .eq(Personnel::getEmpNo, personnel.getEmpNo()).list();
+        return list;
+    }
 }

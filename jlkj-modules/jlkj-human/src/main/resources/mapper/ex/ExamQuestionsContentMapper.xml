@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsContentVo">
-        select questions_code, questions_content from exam_questions_content
+        select questions_code, questions_content from human_ex_questions_content
     </sql>
 
     <select id="selectExamQuestionsContentList" parameterType="ExamQuestionsContent" resultMap="ExamQuestionsContentResult">
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamQuestionsContent" parameterType="ExamQuestionsContent" >
-        insert into exam_questions_content
+        insert into human_ex_questions_content
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="questionsCode != null">questions_code,</if>
             <if test="questionsContent != null and questionsContent != ''">questions_content,</if>
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamQuestionsContent" parameterType="ExamQuestionsContent">
-        update exam_questions_content
+        update human_ex_questions_content
         <trim prefix="SET" suffixOverrides=",">
             <if test="questionsContent != null and questionsContent != ''">questions_content = #{questionsContent},</if>
         </trim>
@@ -45,11 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamQuestionsContentById" parameterType="String">
-        delete from exam_questions_content where questions_code = #{questionsCode}
+        delete from human_ex_questions_content where questions_code = #{questionsCode}
     </delete>
 
     <delete id="deleteExamQuestionsContentByIds" parameterType="String">
-        delete from exam_questions_content where questions_code in 
+        delete from human_ex_questions_content where questions_code in 
         <foreach item="questionsCode" collection="array" open="(" separator="," close=")">
             #{questionsCode}
         </foreach>

@@ -2,12 +2,8 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="类别名称" prop="typeName">
-        <el-input
-          v-model="queryParams.typeName"
-          placeholder="请输入类别名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
+        <el-input v-model="queryParams.typeName" placeholder="请输入类别名称" clearable size="small"
+                  @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -18,56 +14,31 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['human:examType:add']"
-        >新增
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+                   v-hasPermi="['human:examType:add']">新增
         </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="examtypeList"
-      row-key="typeId"
-      default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    <el-table v-loading="loading" :data="examtypeList" row-key="typeId" default-expand-all
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column label="上级类别ID" align="center" prop="parentId"/>
       <el-table-column label="类别代码" align="center" prop="typeCode"/>
       <el-table-column label="类别名称" align="center" prop="typeName"/>
       <el-table-column label="顺序Id" align="center" prop="orderId"/>
-      <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat"/>
+      <el-table-column label="状态" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:examType:edit']"
-          >修改
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+                     v-hasPermi="['human:examType:edit']">修改
           </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-plus"
-            @click="handleAdd(scope.row)"
-            v-hasPermi="['human:examType:add']"
-          >新增
+          <el-button size="mini" type="text" icon="el-icon-plus" @click="handleAdd(scope.row)"
+                     v-hasPermi="['human:examType:add']">新增
           </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['human:examType:remove']"
-          >删除
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+                     v-hasPermi="['human:examType:remove']">删除
           </el-button>
         </template>
       </el-table-column>
@@ -91,11 +62,8 @@
         </el-form-item>
         <el-form-item label="状态" label-width="85px">
           <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{ dict.label }}
+            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value*1">
+              {{ dict.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -109,16 +77,23 @@
 </template>
 
 <script>
-import {listExamType, getExamtype, delExamtype, addExamtype, updateExamtype} from "@/api/human/ex/examType";
+import {
+  listExamType,
+  getExamtype,
+  delExamtype,
+  addExamtype,
+  updateExamtype,
+  typeTreeSelect
+} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "ExamType",
+  dicts: ['sys_normal_disable'],
   components: {
     Treeselect
   },
-  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -128,7 +103,7 @@ export default {
       // 考试分类表格数据
       examtypeList: [],
       // 考试分类树选项
-      examtypeOptions: undefined,
+      examtypeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -150,11 +125,11 @@ export default {
       // 创建时间字典
       createTimeOptions: [],
       // 查询参数
-      queryParams: {
-        typeName: '',
-      },
+      queryParams: {},
       // 表单参数
-      form: {},
+      form: {
+        status: 0,
+      },
       // 表单校验
       rules: {
         typeName: [
@@ -189,45 +164,13 @@ export default {
     /** 查询考试分类下拉树结构 */
     getTreeselect() {
       listExamType().then(response => {
-        console.log(response)
         this.examtypeOptions = [];
-        const data = {typeId: 0, typeName: '顶级节点', children: []};
+        const data = { typeId: 0, typeName: '顶级节点', children: [] };
         data.children = this.handleTree(response.data, "typeId", "parentId");
         this.examtypeOptions.push(data);
       });
     },
-    // 类别id字典翻译
-    typeIdFormat(row, column) {
-      return this.selectDictLabel(this.typeIdOptions, row.typeId);
-    },
-    // 上级类别ID字典翻译
-    parentIdFormat(row, column) {
-      return this.selectDictLabel(this.parentIdOptions, row.parentId);
-    },
-    // 类别代码字典翻译
-    typeCodeFormat(row, column) {
-      return this.selectDictLabel(this.typeCodeOptions, row.typeCode);
-    },
-    // 类别名称字典翻译
-    typeNameFormat(row, column) {
-      return this.selectDictLabel(this.typeNameOptions, row.typeName);
-    },
-    // 顺序Id字典翻译
-    orderIdFormat(row, column) {
-      return this.selectDictLabel(this.orderIdOptions, row.orderId);
-    },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 创建者字典翻译
-    createByFormat(row, column) {
-      return this.selectDictLabel(this.createByOptions, row.createBy);
-    },
-    // 创建时间字典翻译
-    createTimeFormat(row, column) {
-      return this.selectDictLabel(this.createTimeOptions, row.createTime);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -287,13 +230,13 @@ export default {
         if (valid) {
           if (this.form.typeId != null) {
             updateExamtype(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addExamtype(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -311,7 +254,7 @@ export default {
         return delExamtype(row.typeId);
       }).then(() => {
         this.getList();
-        this.msgSuccess("删除成功");
+        this.$modal.msgSuccess("删除成功");
       }).catch(() => {
       });
     }

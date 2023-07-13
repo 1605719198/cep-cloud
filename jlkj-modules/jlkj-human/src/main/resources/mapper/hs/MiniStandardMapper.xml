@@ -109,4 +109,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateMiniStandardById" parameterType="String">
         UPDATE human_hs_mini_standard SET effect_date = #{effectDate} WHERE comp_id = #{compId} AND version= #{version}
     </update>
+
+    <select id="selectMiniStandardListBySalaryStandard" parameterType="MiniStandard" resultMap="MiniStandardResult">
+        <include refid="selectMiniStandardVo"/>
+        <where>
+            <if test="salaryStandard != null and salaryStandard != ''">AND salary_standard = #{salaryStandard} </if>
+            <if test="compId != null and compId != ''">AND comp_id = #{compId} </if>
+        </where>
+    </select>
+
+    <select id="selectMiniStandardListByVersion" parameterType="MiniStandard" resultMap="MiniStandardResult">
+        <include refid="selectMiniStandardVo"/>
+        <where>
+            <if test="salaryStandard != null and salaryStandard != ''">AND salary_standard = #{salaryStandard} </if>
+            <if test="compId != null and compId != ''">AND comp_id = #{compId} </if>
+            <if test="version != null and version != ''">AND version = #{version} </if>
+        </where>
+    </select>
 </mapper>

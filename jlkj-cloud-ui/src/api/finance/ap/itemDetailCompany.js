@@ -51,3 +51,11 @@ export function copyToComp(data) {
     data: data
   })
 }
+// 预付款调查询方法
+export function selectDetailNoList(query) {
+  return request({
+    url: `/finance/itemDetailCompany/selectDetailNoList`,
+    method: 'get',
+    params: query
+  })
+}

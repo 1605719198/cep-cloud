@@ -42,3 +42,10 @@ export function delPara(id) {
     method: 'delete'
   })
 }
+// 根据参数键名查询键值
+export function getParamValue(paramKey) {
+  return request({
+    url: '/finance/ft/para/getParamValue/' + paramKey,
+    method: 'get'
+  })
+}

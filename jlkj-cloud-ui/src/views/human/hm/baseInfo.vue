@@ -131,7 +131,7 @@ export default {
         total: 0,
         uuid: '1633336433080074242'
       },
-      uuid: '',
+      uuid: undefined,
       table: {
         border: true,
         loading: false,
@@ -145,6 +145,7 @@ export default {
     menuData: {
       handler(val) {
         val.forEach(item => {
+          this.uuid = item.uuid
           this.defaultShowNodes.push(item.uuid);
         })
       },
@@ -165,6 +166,7 @@ export default {
     //点击节点方法
     handleNodeClick(data) {
       this.queryParams.uuid = data.uuid
+      this.uuid = this.queryParams.uuid
       this.tableData = []
       this.onLoad()
     },

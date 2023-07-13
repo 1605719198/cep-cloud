@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsVo">
-        select bank_code, questions_id, questions_code, questions_title, questions_content, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from exam_questions
+        select bank_code, questions_id, questions_code, questions_title, questions_content, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from human_ex_questions
     </sql>
 
     <select id="selectExamQuestionsList" parameterType="ExamQuestions" resultMap="ExamQuestionsResult">
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamQuestions" parameterType="ExamQuestions" >
-        insert into exam_questions
+        insert into human_ex_questions
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">bank_code,</if>
             questions_id,
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">#{bankCode},</if>
-            (select nvl(max(questions_id),0) + 1 from exam_questions),
+            (select nvl(max(questions_id),0) + 1 from human_ex_questions),
             <if test="questionsCode != null">#{questionsCode},</if>            
             <if test="questionsTitle != null">#{questionsTitle},</if>
             <if test="questionsContent != null">#{questionsContent},</if>
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamQuestions" parameterType="ExamQuestions">
-        update exam_questions
+        update human_ex_questions
         <trim prefix="SET" suffixOverrides=",">
             <if test="bankCode != null">bank_code = #{bankCode},</if>
             <if test="questionsId != null">questions_id = #{questionsId},</if>
@@ -95,11 +95,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamQuestionsById" parameterType="String">
-        delete from exam_questions where questions_code = #{questionsCode}
+        delete from human_ex_questions where questions_code = #{questionsCode}
     </delete>
 
     <delete id="deleteExamQuestionsByIds" parameterType="String">
-        delete from exam_questions where questions_code in 
+        delete from human_ex_questions where questions_code in 
         <foreach item="questionsCode" collection="array" open="(" separator="," close=")">
             #{questionsCode}
         </foreach>

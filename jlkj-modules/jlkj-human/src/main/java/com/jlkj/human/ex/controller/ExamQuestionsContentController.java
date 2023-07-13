@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2022-12-28
  */
 @RestController
-@RequestMapping("/questions/questionscontent")
+@RequestMapping("/questionscontent")
 public class ExamQuestionsContentController extends BaseController
 {
     @Autowired
@@ -31,7 +31,7 @@ public class ExamQuestionsContentController extends BaseController
     /**
      * 查询题目内容表列表
      */
-    @RequiresPermissions("questions:questionscontent:list")
+    @RequiresPermissions("human:questionscontent:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamQuestionsContent examQuestionsContent)
     {
@@ -43,7 +43,7 @@ public class ExamQuestionsContentController extends BaseController
     /**
      * 导出题目内容表列表
      */
-    @RequiresPermissions("questions:questionscontent:export")
+    @RequiresPermissions("human:questionscontent:export")
     @Log(title = "题目内容表", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamQuestionsContent examQuestionsContent)
@@ -65,7 +65,7 @@ public class ExamQuestionsContentController extends BaseController
     /**
      * 新增题目内容表
      */
-    @RequiresPermissions("questions:questionscontent:add")
+    @RequiresPermissions("human:questionscontent:add")
     @Log(title = "题目内容表", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamQuestionsContent examQuestionsContent)
@@ -76,7 +76,7 @@ public class ExamQuestionsContentController extends BaseController
     /**
      * 修改题目内容表
      */
-    @RequiresPermissions("questions:questionscontent:edit")
+    @RequiresPermissions("human:questionscontent:edit")
     @Log(title = "题目内容表", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamQuestionsContent examQuestionsContent)
@@ -87,7 +87,7 @@ public class ExamQuestionsContentController extends BaseController
     /**
      * 删除题目内容表
      */
-    @RequiresPermissions("questions:questionscontent:remove")
+    @RequiresPermissions("human:questionscontent:remove")
     @Log(title = "题目内容表", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{questionsCodes}")
     public AjaxResult remove(@PathVariable String[] questionsCodes)

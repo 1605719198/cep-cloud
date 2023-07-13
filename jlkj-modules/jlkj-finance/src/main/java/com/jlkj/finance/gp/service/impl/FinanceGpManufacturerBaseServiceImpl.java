@@ -1,12 +1,14 @@
 package com.jlkj.finance.gp.service.impl;
 
-import java.util.List;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
+import com.jlkj.finance.gp.mapper.FinanceGpManufacturerBaseMapper;
+import com.jlkj.finance.gp.service.IFinanceGpManufacturerBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.gp.mapper.FinanceGpManufacturerBaseMapper;
-import com.jlkj.finance.gp.domain.FinanceGpManufacturerBase;
-import com.jlkj.finance.gp.service.IFinanceGpManufacturerBaseService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 销售管理-厂商基本资料Service业务层处理
@@ -100,5 +102,17 @@ public class FinanceGpManufacturerBaseServiceImpl implements IFinanceGpManufactu
     public int deleteFinanceGpManufacturerBaseById(String id)
     {
         return financeGpManufacturerBaseMapper.deleteFinanceGpManufacturerBaseById(id);
+    }
+
+ /**
+ *
+ *@author 265799
+ *@date 2023/7/10  15:32
+  * @param companyId : 
+  * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+ */        
+    @Override
+    public List<Map<String,String>> selectManufacturerList(String companyId){
+        return financeGpManufacturerBaseMapper.selectManufacturerList(companyId);
     }
 }
