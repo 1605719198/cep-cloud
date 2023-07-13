@@ -62,10 +62,10 @@ public class PayBankController extends BaseController {
      */
     @RequiresPermissions("human:payBank:remove")
     @Operation(summary = "删除各公司薪资薪资支付银行维护信息")
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/delPayBank")
     @Log(title = "删除各公司薪资薪资支付银行维护信息", businessType = BusinessType.DELETE)
-    public Object delPayBank(@PathVariable String uuid) {
-        iPayBankService.lambdaUpdate().eq(PayBank::getUuid, uuid).remove();
+    public Object delPayBank(@RequestParam List<String> uuid) {
+        iPayBankService.removeBatchByIds(uuid);
         return AjaxResult.success("删除成功");
     }
 

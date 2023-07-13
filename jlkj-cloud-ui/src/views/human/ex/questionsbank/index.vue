@@ -441,7 +441,7 @@ export default {
 
   .photo-area {
     -webkit-box-align: left;
-    margin-left: 0 px;
+    margin-left: 0px;
   }
 
   .title-photo {
