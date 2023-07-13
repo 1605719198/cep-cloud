@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoExpenseBillsMapper">
+    
+    <resultMap type="FinanceAoExpenseBills" id="FinanceAoExpenseBillsResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="crcyCode"    column="crcy_code"    />
+        <result property="billMedium"    column="bill_medium"    />
+        <result property="billNo"    column="bill_no"    />
+        <result property="billName"    column="bill_name"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="purchaseName"    column="purchase_name"    />
+        <result property="purchaseTaxid"    column="purchase_taxid"    />
+        <result property="purchaseAddress"    column="purchase_address"    />
+        <result property="purchaseBank"    column="purchase_bank"    />
+        <result property="saleName"    column="sale_name"    />
+        <result property="saleTaxid"    column="sale_taxid"    />
+        <result property="saleAddress"    column="sale_address"    />
+        <result property="saleBank"    column="sale_bank"    />
+        <result property="saleAmt"    column="sale_amt"    />
+        <result property="taxAmt"    column="tax_amt"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="plusOrMinus"    column="plus_or_minus"    />
+        <result property="billUser"    column="bill_user"    />
+        <result property="billDate"    column="bill_date"    />
+        <result property="status"    column="status"    />
+        <result property="linkNo"    column="link_no"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFinanceAoExpenseBillsVo">
+        SELECT id, company_id, crcy_code, bill_medium, bill_no, bill_name, bill_type, purchase_name, purchase_taxid, purchase_address, purchase_bank, sale_name, sale_taxid, sale_address, sale_bank, sale_amt, tax_amt, total_amt, plus_or_minus, bill_user, bill_date, status, link_no, create_by, create_name, create_time FROM finance_ao_bills
+    </sql>
+
+    <select id="selectFinanceAoExpenseBillsList" parameterType="FinanceAoExpenseBills" resultMap="FinanceAoExpenseBillsResult">
+        <include refid="selectFinanceAoExpenseBillsVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="billUser != null  and billUser != ''"> AND bill_user = #{billUser}</if>
+            <if test="status != null "> AND status = #{status}</if>
+            <if test="billDate != null "> AND bill_date = #{billDate}</if>
+            <if test="saleName != null  and saleName != ''"> AND sale_name = #{saleName}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceAoExpenseBillsById" parameterType="String" resultMap="FinanceAoExpenseBillsResult">
+        <include refid="selectFinanceAoExpenseBillsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertFinanceAoExpenseBills" parameterType="FinanceAoExpenseBills">
+        INSERT INTO finance_ao_bills
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="crcyCode != null">crcy_code,</if>
+            <if test="billMedium != null">bill_medium,</if>
+            <if test="billNo != null">bill_no,</if>
+            <if test="billName != null">bill_name,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="purchaseName != null">purchase_name,</if>
+            <if test="purchaseTaxid != null">purchase_taxid,</if>
+            <if test="purchaseAddress != null">purchase_address,</if>
+            <if test="purchaseBank != null">purchase_bank,</if>
+            <if test="saleName != null">sale_name,</if>
+            <if test="saleTaxid != null">sale_taxid,</if>
+            <if test="saleAddress != null">sale_address,</if>
+            <if test="saleBank != null">sale_bank,</if>
+            <if test="saleAmt != null">sale_amt,</if>
+            <if test="taxAmt != null">tax_amt,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="plusOrMinus != null">plus_or_minus,</if>
+            <if test="billUser != null">bill_user,</if>
+            <if test="billDate != null">bill_date,</if>
+            <if test="status != null">status,</if>
+            <if test="linkNo != null">link_no,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="crcyCode != null">#{crcyCode},</if>
+            <if test="billMedium != null">#{billMedium},</if>
+            <if test="billNo != null">#{billNo},</if>
+            <if test="billName != null">#{billName},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="purchaseName != null">#{purchaseName},</if>
+            <if test="purchaseTaxid != null">#{purchaseTaxid},</if>
+            <if test="purchaseAddress != null">#{purchaseAddress},</if>
+            <if test="purchaseBank != null">#{purchaseBank},</if>
+            <if test="saleName != null">#{saleName},</if>
+            <if test="saleTaxid != null">#{saleTaxid},</if>
+            <if test="saleAddress != null">#{saleAddress},</if>
+            <if test="saleBank != null">#{saleBank},</if>
+            <if test="saleAmt != null">#{saleAmt},</if>
+            <if test="taxAmt != null">#{taxAmt},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="plusOrMinus != null">#{plusOrMinus},</if>
+            <if test="billUser != null">#{billUser},</if>
+            <if test="billDate != null">#{billDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="linkNo != null">#{linkNo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceAoExpenseBills" parameterType="FinanceAoExpenseBills">
+        UPDATE finance_ao_bills
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="crcyCode != null">crcy_code = #{crcyCode},</if>
+            <if test="billMedium != null">bill_medium = #{billMedium},</if>
+            <if test="billNo != null">bill_no = #{billNo},</if>
+            <if test="billName != null">bill_name = #{billName},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="purchaseName != null">purchase_name = #{purchaseName},</if>
+            <if test="purchaseTaxid != null">purchase_taxid = #{purchaseTaxid},</if>
+            <if test="purchaseAddress != null">purchase_address = #{purchaseAddress},</if>
+            <if test="purchaseBank != null">purchase_bank = #{purchaseBank},</if>
+            <if test="saleName != null">sale_name = #{saleName},</if>
+            <if test="saleTaxid != null">sale_taxid = #{saleTaxid},</if>
+            <if test="saleAddress != null">sale_address = #{saleAddress},</if>
+            <if test="saleBank != null">sale_bank = #{saleBank},</if>
+            <if test="saleAmt != null">sale_amt = #{saleAmt},</if>
+            <if test="taxAmt != null">tax_amt = #{taxAmt},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="plusOrMinus != null">plus_or_minus = #{plusOrMinus},</if>
+            <if test="billUser != null">bill_user = #{billUser},</if>
+            <if test="billDate != null">bill_date = #{billDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="linkNo != null">link_no = #{linkNo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFinanceAoExpenseBillsById" parameterType="String">
+        DELETE FROM finance_ao_bills WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceAoExpenseBillsByIds" parameterType="String">
+        DELETE FROM finance_ao_bills WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
