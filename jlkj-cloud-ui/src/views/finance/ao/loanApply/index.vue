@@ -74,7 +74,7 @@
       <el-table-column label="申请人" align="center" prop="applyBy" />
       <el-table-column label="经办人" align="center" prop="createName" />
       <el-table-column label="经办人部门" align="center" prop="createDeptName" />
-      <el-table-column label="借支总额" align="center" prop="totalAmt" />
+      <el-table-column label="借支总额" align="center" />
       <el-table-column label="状态" align="center" prop="status" show-overflow-tooltip>
         <template v-slot="scope">
           <dict-tag :options="dict.type.ao_loan_status" :value="scope.row.status"/>
@@ -219,9 +219,7 @@
           <el-table-column label="币别" prop="crcyCode" width="150" :render-header="addRedstar">
             <template slot-scope="scope">
               <el-form-item :prop="'financeAoLoanDetailList.' + scope.$index + '.crcyCode'" :rules="rules.crcyCode">
-
-
-
+                <el-input v-model="scope.row.crcyCode" placeholder="请输入币别" />
               </el-form-item>
             </template>
           </el-table-column>
@@ -262,8 +260,6 @@ import { listLoanApply, getLoanApply, delLoanApply, addLoanApply, updateLoanAppl
 import { getItemNoList } from "@/api/finance/ao/reimbItemComp";
 import { selectCompanyList } from "@/api/finance/aa/companyGroup";
 import selectUser from "@/views/components/human/selectUser/selectUser";
-import Treeselect from "@riophae/vue-treeselect";
-import log from "../../../monitor/job/log";
 export default {
   name: "LoanApply",
   dicts: ['ao_loan_status','ao_voucher_type'],
@@ -517,11 +513,9 @@ export default {
       if (this.checkedFinanceAoLoanDetail.length == 0) {
         this.$modal.msgError("请先选择要删除的报支管理-借支申请明细档数据");
       } else {
-        const financeAoLoanDetailList = this.form.financeAoLoanDetailList;
-        const checkedFinanceAoLoanDetail = this.checkedFinanceAoLoanDetail;
-        this.form.financeAoLoanDetailList = financeAoLoanDetailList.filter(function(item) {
-          return checkedFinanceAoLoanDetail.indexOf(item.index) == -1
-        });
+        let filterArr = this.form.financeAoLoanDetailList.filter(item => this.checkedFinanceAoLoanDetail.indexOf(item.index) == -1);
+        this.form.financeAoLoanDetailList.splice(0,this.form.financeAoLoanDetailList.length,...filterArr);
+        this.$refs.financeAoLoanDetail.clearSelection();
       }
     },
     /** 复选框选中数据 */
