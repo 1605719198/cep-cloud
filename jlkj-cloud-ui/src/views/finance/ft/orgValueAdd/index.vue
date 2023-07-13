@@ -80,7 +80,7 @@
     <el-table v-loading="loading" :data="orgValueAddList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="单据编号" align="center" prop="changeNo" sortable/>
-      <el-table-column label="单据名称" align="center" prop="changeName" />
+      <el-table-column label="单据名称" align="center" prop="changeName" :show-overflow-tooltip="true"/>
       <el-table-column label="变动方式" align="center" prop="changeWay" :formatter="changeWayFormat"/>
       <el-table-column label="申请人" align="center" prop="applyUser" :formatter="userFormat" sortable/>
       <el-table-column label="变动日期" align="center" prop="changeDate" width="180" sortable>
@@ -367,17 +367,14 @@ export default {
   methods: {
     getAssetMonth(){
         getParamValue("asset_month").then( response => {
-          console.log(response);
           if(undefined!=response){
             this.assetMonth = strToDate(response+"-01","-").getTime();
           }else{
             this.assetMonth = Date.now() ;
           }
-          console.log( this.assetMonth);
           const that = this;
           this.pickerOptions = {
             disabledDate(time) {
-              console.log("in-pickeerOptions");
               return time.getTime() < that.assetMonth;
             }
           };
@@ -402,12 +399,10 @@ export default {
     },
 
     parentChoose(data){
-      console.log(data);
       data.map((item) => {
         this.form.financeFtChangeDetailList.push(item);
         this.selectCardIds.push(item.assetId);
       });
-      console.log(this.form.financeFtChangeDetailList);
       this.indexKey+=1;
       this.queryCardParams.assetId = this.selectCardIds;
     },

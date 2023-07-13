@@ -123,6 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceFtChangeVo"/>
         <where>  
             <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="changeType != null  and changeType != ''"> AND change_Type  = #{changeType}</if>
             <if test="changeNo != null  and changeNo != ''"> AND change_no LIKE concat('%', #{changeNo}, '%')</if>
             <if test="params.beginChangeDate != null and params.beginChangeDate != '' and params.endChangeDate != null and params.endChangeDate != ''"> AND change_date BETWEEN #{params.beginChangeDate} AND #{params.endChangeDate}</if>
             <if test="params.beginPeriod != null and params.beginPeriod != '' and params.endPeriod != null and params.endPeriod != ''"> AND period BETWEEN #{params.beginPeriod} AND #{params.endPeriod}</if>
