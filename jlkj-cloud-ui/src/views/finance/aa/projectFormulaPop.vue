@@ -88,7 +88,8 @@ export default {
   },
   methods: {
     // 显示弹框
-    show(val) {
+    show(val,itemCode) {
+      this.queryParams.itemCode = itemCode;
       this.getList();
       this.visible = true;
       this.isSingle = val
