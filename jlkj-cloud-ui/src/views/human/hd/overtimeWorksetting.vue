@@ -178,22 +178,22 @@ export default {
       // 表单校验
       rules: {
         holUnit: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         oveUnit: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         monthOve: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         resvAttr1: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         resvAttr2: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         resvAttr3: [
-          { maxlength: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
       }
     };

@@ -6,19 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @Description 年底定时排班
- * @author 266861
- * @date 2023/7/4 9:10
- **/
-
-@Component("ScheduledShiftsTask")
-public class ScheduledShiftsTask {
+ * @description: 月度出勤汇总
+ * @Author: 266861
+ * @date: 2023/7/13 8:15
+ */
+@Component("AttendanceSummaryTask")
+public class AttendanceSummaryTask {
     @Autowired
     private RemoteHdApiService remoteHdApiService;
-    public void scheduledShifts(){
+    public void attendanceSummary(){
         try {
-            remoteHdApiService.scheduledShifts(SecurityConstants.INNER);
-        } catch (Exception e) {
+            remoteHdApiService.attendanceSummary(SecurityConstants.INNER);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

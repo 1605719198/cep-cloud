@@ -456,8 +456,9 @@ export default {
           // 获取流程实例状态为 2 =》 审批完成且通过
           getHisByProcInsId(this.taskForm.procInsId).then(res => {
             if (res.data === 2) {
-              const compData = {type: res.data, formData: this.procData.formData}
+              const compData = {type: res.data, formData: this.procData.formData,his: this.historyProcNodeList}
               this.completeEmit(compData)
+
             }
             this.$modal.msgSuccess(response.msg);
             this.goBack();

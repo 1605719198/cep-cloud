@@ -6,8 +6,8 @@
 
     <resultMap id="BaseResultMap" type="com.jlkj.human.hd.domain.AttendanceGather">
             <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
-            <result property="year" column="year" jdbcType="VARCHAR"/>
-            <result property="month" column="month" jdbcType="VARCHAR"/>
+            <result property="year" column="year" jdbcType="INTEGER"/>
+            <result property="month" column="month" jdbcType="INTEGER"/>
             <result property="dueAttDuty" column="due_att_duty" jdbcType="DECIMAL"/>
             <result property="dueAttHou" column="due_att_hou" jdbcType="DECIMAL"/>
             <result property="shoAttDuty" column="sho_att_duty" jdbcType="DECIMAL"/>
@@ -46,6 +46,72 @@
             <result property="updShoAttHou" column="upd_sho_att_hou" jdbcType="DECIMAL"/>
             <result property="updActAttDuty" column="upd_act_att_duty" jdbcType="DECIMAL"/>
             <result property="updActAttHou" column="upd_act_att_hou" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap type="AttendanceGather" id="AttendanceGatherResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="year"    column="year"    />
+        <result property="month"    column="month"    />
+        <result property="dueAttDuty"    column="due_att_duty"    />
+        <result property="dueAttDay"    column="due_att_day"    />
+        <result property="dueAttHou"    column="due_att_hou"    />
+        <result property="shoAttDuty"    column="sho_att_duty"    />
+        <result property="shoAttDay"    column="sho_att_day"    />
+        <result property="shoAttHou"    column="sho_att_hou"    />
+        <result property="actAttDuty"    column="act_att_duty"    />
+        <result property="actAttDay"    column="act_att_day"    />
+        <result property="actAttHou"    column="act_att_hou"    />
+        <result property="updDueAttDuty"    column="upd_due_att_duty"    />
+        <result property="updDueAttDay"    column="upd_due_att_day"    />
+        <result property="updDueAttHou"    column="upd_due_att_hou"    />
+        <result property="updShoAttDuty"    column="upd_sho_att_duty"    />
+        <result property="updShoAttDay"    column="upd_sho_att_day"    />
+        <result property="updShoAttHou"    column="upd_sho_att_hou"    />
+        <result property="updActAttDuty"    column="upd_act_att_duty"    />
+        <result property="updActAttDay"    column="upd_act_att_day"    />
+        <result property="updActAttHou"    column="upd_act_att_hou"    />
+        <result property="lateNum"    column="late_num"    />
+        <result property="leaNum"    column="lea_num"    />
+        <result property="truDuty"    column="tru_duty"    />
+        <result property="truDay"    column="tru_day"    />
+        <result property="truHou"    column="tru_hou"    />
+        <result property="befEntDuty"    column="bef_ent_duty"    />
+        <result property="befEntDay"    column="bef_ent_day"    />
+        <result property="befEntHou"    column="bef_ent_hou"    />
+        <result property="aftEntDuty"    column="aft_ent_duty"    />
+        <result property="aftEntDay"    column="aft_ent_day"    />
+        <result property="aftEntHou"    column="aft_ent_hou"    />
+        <result property="bigNig"    column="big_nig"    />
+        <result property="smaNig"    column="sma_nig"    />
+        <result property="savHou"    column="sav_hou"    />
+        <result property="dueResHou"    column="due_res_hou"    />
+        <result property="resHou"    column="res_hou"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="empNo"    column="emp_no"    />
+        <result property="empName"    column="emp_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="creator"    column="creator"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="resvAttr1a"    column="resv_attr1A"    />
+        <result property="resvAttr2a"    column="resv_attr2A"    />
+        <result property="datafrom"    column="datafrom"    />
+        <result property="resvAttr3a"    column="resv_attr3A"    />
+        <result property="resvAttr4a"    column="resv_attr4A"    />
+        <result property="resvAttr5a"    column="resv_attr5A"    />
+        <result property="resvAttr6a"    column="resv_attr6A"    />
+        <result property="resvAttr7a"    column="resv_attr7A"    />
+        <result property="resvAttr8a"    column="resv_attr8A"    />
+        <result property="resvAttr9a"    column="resv_attr9A"    />
+        <result property="resvAttr10a"    column="resv_attr10A"    />
+        <result property="overTimeHou"    column="over_time_hou"    />
+        <result property="restHou"    column="rest_hou"    />
+        <result property="holDuty"    column="hol_duty"    />
+        <result property="holDay"    column="hol_day"    />
+        <result property="holHou"    column="hol_hou"    />
+        <result property="bigSmaNig"    column="big_sma_nig"    />
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -147,4 +213,17 @@
         bef_ent_duty,aft_ent_duty,sav_hou,
         tru_duty,due_att_duty,act_att_duty
     </select>
+
+    <select id="selectSummaryEmp" parameterType="AttendanceGather" resultMap="AttendanceGatherResult">
+        SELECT DISTINCT(g.emp_id), g.emp_no, g.emp_name, g.comp_id FROM human_hd_attendance_gather g
+        LEFT JOIN human_hm_personnel_info p on g.emp_id = p.id
+        WHERE p.status = 1 AND g.emp_id NOT IN (SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = IF(#{month}=12,#{year}+1,#{year}) AND month = if(#{month}=12,1,#{month}+1)) AND g.emp_id IN(SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = #{year} AND month = #{month})
+    </select>
+
+    <insert id="batchSummaryData" parameterType="java.util.List">
+        INSERT INTO human_hd_attendance_gather (uuid,year,month,due_att_duty,due_att_day,due_att_hou,sho_att_duty,sho_att_day,sho_att_hou,act_att_duty,act_att_day,act_att_hou,upd_due_att_duty,upd_due_att_day,upd_due_att_hou,upd_sho_att_duty,upd_sho_att_day,upd_sho_att_hou,upd_act_att_duty,upd_act_att_day,upd_act_att_hou,late_num,lea_num,tru_duty,tru_day,tru_hou,bef_ent_duty,bef_ent_day,bef_ent_hou,aft_ent_duty,aft_ent_day,aft_ent_hou,big_nig,sma_nig,sav_hou,due_res_hou,res_hou,emp_id,emp_no,emp_name,post_id,post_name,comp_id,creator,creator_id,create_date,resv_attr1A,datafrom,resv_attr3A,resv_attr4A,resv_attr5A,resv_attr6A,resv_attr7A,resv_attr8A,resv_attr9A,resv_attr10A,over_time_hou,rest_hou,hol_duty,hol_day,hol_hou,big_sma_nig) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.uuid}, #{item.year}, #{item.month}, #{item.dueAttDuty}, #{item.dueAttDay}, #{item.dueAttHou}, #{item.shoAttDuty}, #{item.shoAttDay}, #{item.shoAttHou}, #{item.actAttDuty}, #{item.actAttDay}, #{item.actAttHou}, #{item.updDueAttDuty}, #{item.updDueAttDay}, #{item.updDueAttHou}, #{item.updShoAttDuty},  #{item.updShoAttDay}, #{item.updShoAttHou}, #{item.updActAttDuty}, #{item.updActAttDay}, #{item.updActAttHou} #{item.lateNum}, #{item.leaNum}, #{item.truDuty}, #{item.truDay}, #{item.truHou}, #{item.befEntDuty}, #{item.befEntDay}, #{item.befEntHou}, #{item.aftEntDuty}, #{item.aftEntDay}, #{item.aftEntHou}, #{item.bigNig}, #{item.smaNig}, #{item.savHou}, #{item.dueResHou}, #{item.resHou}, #{item.empId}, #{item.empNo}, #{item.empName}, #{item.postId}, #{item.postName}, #{item.compId}, #{item.creator}, #{item.creatorId}, #{item.createDate}, #{item.resvAttr1a}, #{item.datafrom}, #{item.resvAttr3a}, #{item.resvAttr4a}, #{item.resvAttr5a}, #{item.resvAttr6a}, #{item.resvAttr7a}, #{item.resvAttr8a}, #{item.resvAttr9a}, #{item.resvAttr10a}, #{item.overTimeHou}, #{item.holDuty}, #{item.holDay}, #{item.holHou}, #{item.bigSmaNig})
+        </foreach>
+    </insert>
 </mapper>

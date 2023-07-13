@@ -453,8 +453,6 @@ export default {
       getPostMaintenance(postId).then(response => {
         this.form = response.data;
         this.form.versionNo++;
-        this.form.updateBy = this.nickName;
-        this.form.updateTime = getDateTime(0);
         this.addOrUpdateVisible = true;
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(this.form)

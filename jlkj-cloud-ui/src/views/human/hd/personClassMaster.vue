@@ -781,7 +781,7 @@ export default {
     /** 删除人员卡钟按钮操作 */
     handleDeletePerson(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除人员卡钟编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该人员卡钟数据项？').then(function() {
         return delPersonClassMaster(ids);
       }).then(() => {
         this.getList(1);
@@ -790,7 +790,7 @@ export default {
     },
     handleDeleteDept(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除部门卡钟编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该部门卡钟数据项？').then(function() {
         return delOrgClassMaster(ids);
       }).then(() => {
         this.getList(1);

@@ -121,6 +121,13 @@ public class PersonHolidayCancel extends BaseEntity
     /** 本年累计小时数 */
     private BigDecimal yearHours;
 
+    /** 审核人 */
+    private String appName;
+
+    /** 审核日期*/
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date appDate;
+
     /** 输入人 */
     private String creator;
 

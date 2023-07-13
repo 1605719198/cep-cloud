@@ -241,15 +241,6 @@ export default {
     this.initData();
   },
   methods: {
-    //选单查询测试方法
-    test(){
-      getSalaryOptions(this.salaryOptionType).then(response =>{
-        alert(JSON.stringify(response))
-      })
-      getSalaryDeepOptions(this.salaryOptionType).then(response =>{
-        alert(JSON.stringify(response))
-      })
-    },
     //获取公司列表
     getCompanyList() {
       selectCompany().then(response => {
@@ -380,7 +371,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除员工薪资基本资料维护编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除该数据项？').then(function() {
         return delSalaryBasis(ids);
       }).then(() => {
         this.getList();

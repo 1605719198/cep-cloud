@@ -48,5 +48,4 @@ public class ArrangeClassMasterController extends BaseController
         return success(arrangeClassMasterService.scheduledShifts());
     }
 
-
 }

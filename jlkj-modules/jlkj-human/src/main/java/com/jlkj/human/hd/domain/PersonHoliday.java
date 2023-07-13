@@ -97,6 +97,13 @@ public class PersonHoliday extends BaseEntity
     @Excel(name = "请假结束时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date endDate;
 
+    /** 审核人 */
+    private String appName;
+
+    /** 审核日期*/
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date appDate;
+
     /** 输入人 */
     private String creator;
 

@@ -180,7 +180,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="定员" prop="planCapacity">
-                  <el-input v-model="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
+                  <el-input v-model.number="form.planCapacity" placeholder="请输入定员" type="number" maxlength="10"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -198,7 +198,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="排序序号" prop="postSort">
-                  <el-input v-model="form.postSort" placeholder="请输入排序序号" type="number" maxlength="5"/>
+                  <el-input v-model.number="form.postSort" placeholder="请输入排序序号" type="number" maxlength="5"/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -445,10 +445,12 @@ export default {
           { required: true, message: '驻外地点不能为空', trigger: 'blur' }
         ],
         planCapacity: [
-          { required: true, message: '定员不能为空', trigger: 'blur' }
+          { required: true, message: '定员不能为空', trigger: 'blur' },
+          { type: 'number',min:0,max:1000000, message: '必须在0到1000000之间', trigger: 'blur' }
         ],
         postSort: [
-          { required: true, message: '显示顺序不能为空', trigger: 'blur' }
+          { required: true, message: '显示顺序不能为空', trigger: 'blur' },
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         costCenterId: [
           { required: true, message: '成本中心不能为空', trigger: 'blur' }

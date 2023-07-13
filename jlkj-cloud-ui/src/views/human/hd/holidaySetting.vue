@@ -126,12 +126,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="常白班请假最小单位(小时)" prop="minUnitDay">
-              <el-input v-model="form.minUnitDay" placeholder="请输入常白班请假最小单位" type="number"/>
+              <el-input v-model.number="form.minUnitDay" placeholder="请输入常白班请假最小单位" type="number"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="常白班请假最小单位(班次)" prop="isNeedCheck">
-              <el-input v-model="form.isNeedCheck" placeholder="请输入常白班请假最小单位" type="number"/>
+              <el-input v-model.number="form.isNeedCheck" placeholder="请输入常白班请假最小单位" type="number"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,7 +150,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="倒班请假最小单位(班次)" prop="minUnitTurns">
-              <el-input v-model="form.minUnitTurns" placeholder="请输入倒班请假最小单位" type="number"/>
+              <el-input v-model.number="form.minUnitTurns" placeholder="请输入倒班请假最小单位" type="number"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -277,13 +277,13 @@ export default {
         ],
         minUnitDay: [
           { required: true, message: "常白班请假最小单位不能为空", trigger: "blur" },
-          { max: 5, message: "该字段最长为5", trigger: "blur" }
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         isNeedCheck: [
-          { max: 5, message: "该字段最长为5", trigger: "blur" }
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         minUnitTurns: [
-          { max: 5, message: "该字段最长为5", trigger: "blur" }
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
       },
       rulescopy:{
@@ -481,7 +481,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除假别参数设定编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除所选假别参数设定数据项？').then(function() {
         return delHolidaysetting(ids);
       }).then(() => {
         this.getList();

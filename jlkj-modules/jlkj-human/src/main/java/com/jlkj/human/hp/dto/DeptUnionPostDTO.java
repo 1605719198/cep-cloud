@@ -28,6 +28,9 @@ public class DeptUnionPostDTO extends BaseEntity {
     /** 岗位id*/
     private Long postId;
 
+    /** 岗位编码 */
+    private String postCode;
+
     /** 子部门 */
     private List<DeptUnionPostDTO> children ;
 

@@ -25,5 +25,25 @@ public interface RemoteHdApiService {
      **/
     @GetMapping("/arrangeClassMaster/scheduledShifts")
     AjaxResult scheduledShifts(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
-}
 
+    /**
+     * 月度存班
+     * @param source 请求来源
+     * @return 定时排班结果
+     * @author 266861
+     * @date 2023/7/4 9:40
+     **/
+    @GetMapping("/saveTime/scheduledZeroing")
+    public AjaxResult scheduledZeroing(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 月初出勤汇总
+     *
+     * @param source 请求来源
+     * @return 出勤汇总结果
+     * @author 266861
+     * @Date 2023/7/12 13:34
+     **/
+    @GetMapping("/attendanceGather/summary")
+    public AjaxResult attendanceSummary(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+}

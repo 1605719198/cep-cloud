@@ -79,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status &lt;= #{status}</if>
             <if test="orgId != null "> and org_id = #{orgId}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="postCode != null  and postCode != ''"> and post_code = #{postCode}</if>
             <if test="postName != null  and postName != ''"> and post_name like concat('%', #{postName}, '%')</if>
         </where>
         order by post_sort asc
@@ -103,8 +104,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptId != null">dept_id,</if>
             <if test="specialityTypeId != null and specialityTypeId != ''">speciality_type_id,</if>
             <if test="specialityId != null and specialityId != ''">speciality_id,</if>
+            <if test="deptType != null">dept_type,</if>
             <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id,</if>
-            <if test="deptType != null and deptType != ''">dept_type,</if>
             <if test="postTypeId != null and postTypeId != ''">post_type_id,</if>
             <if test="jobTitleId != null">job_title_id,</if>
             <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
@@ -158,14 +159,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="otherClaim != null">other_claim,</if>
             <if test="knowTec != null">know_tec,</if>
             <if test="proAct != null">pro_act,</if>
-         </trim>
+            <if test="remark != null">remark,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="postCode != null and postCode != ''">#{postCode},</if>
             <if test="postName != null and postName != ''">#{postName},</if>
             <if test="deptId != null">#{deptId},</if>
             <if test="specialityTypeId != null and specialityTypeId != ''">#{specialityTypeId},</if>
-            <if test="deptType != null and deptType != ''">#{deptType},</if>
             <if test="specialityId != null and specialityId != ''">#{specialityId},</if>
+            <if test="deptType != null">#{deptType},</if>
             <if test="postSequenceId != null and postSequenceId != ''">#{postSequenceId},</if>
             <if test="postTypeId != null and postTypeId != ''">#{postTypeId},</if>
             <if test="jobTitleId != null">#{jobTitleId},</if>
@@ -220,7 +222,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="otherClaim != null">#{otherClaim},</if>
             <if test="knowTec != null">#{knowTec},</if>
             <if test="proAct != null">#{proAct},</if>
-         </trim>
+            <if test="remark != null">#{remark},</if>
+        </trim>
     </insert>
 
     <select id="selectSysPostByPostCode" parameterType="HumanPost" resultMap="HumanPostResult">

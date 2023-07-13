@@ -24,9 +24,9 @@
             <div class="page3_div_right">
               <div class="page3_div_right_child" style="height: 16%;">
                   <label style="margin-left:112px; ">年龄</label>
-                  <el-input v-model="form.minAge" placeholder="" style="width: 80px;margin-left: 20px;margin-right: 10px;" type="number" maxlength="3"/>
+                  <el-input v-model="form.minAge" placeholder="" style="width: 80px;margin-left: 20px;margin-right: 10px;" type="number" maxlength="3" @blur="watchAge"/>
                   ——
-                  <el-input v-model="form.maxAge" placeholder="" style="width: 80px;margin-left: 10px;"  type="number" maxlength="3"/>
+                  <el-input v-model="form.maxAge" placeholder="" style="width: 80px;margin-left: 10px;"  type="number" maxlength="3" @blur="watchAge"/>
 
                   <label prop="gender" style="margin-left: 50px;">性别</label>
                   <el-radio-group v-model="form.gender" style="margin-left: 20px;">
@@ -104,6 +104,27 @@ export default {
     }
   },
   methods:{
+    watchAge(){
+      if(this.form.maxAge!==null&&this.form.minAge!==null){
+        if(this.form.minAge>=this.form.maxAge){
+          this.$modal.msgError("最大年龄应大于最小年龄")
+          this.form.minAge=1;
+          this.form.maxAge=99
+        }
+      }
+      if(this.form.minAge>99){
+        this.form.minAge=99
+      }
+      if(this.form.minAge<1){
+        this.form.minAge=1
+      }
+      if(this.form.maxAge>99){
+        this.form.maxAge=99
+      }
+      if(this.form.maxAge<1){
+        this.form.maxAge=1
+      }
+    },
     init(form) {
       this.form=form;
       this.visible = true;
