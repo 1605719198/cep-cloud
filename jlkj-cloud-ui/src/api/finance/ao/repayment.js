@@ -45,10 +45,21 @@ export function delRepayment(id) {
 
 
 // 查询借支申请单
-export function selectLoanApply(companyId) {
+export function selectLoanApply(query) {
   return request({
-    url: '/finance/repayment/loanApply/' + companyId,
-    method: 'get'
+    url: '/finance/repayment/loanApply',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询还款单资料档列表
+export function qryList(query) {
+  return request({
+    url: '/finance/repayment/qryList',
+    method: 'get',
+    params: query
   })
 }
 
