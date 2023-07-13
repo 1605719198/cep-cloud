@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ap.mapper.FinanceApLoanDetailMapper">
+    
+    <resultMap type="com.jlkj.finance.ap.domain.FinanceApLoanDetail" id="FinanceApLoanDetailResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="itemNo"    column="item_no"    />
+        <result property="detailNo"    column="detail_no"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="invoiceType"    column="invoice_type"    />
+        <result property="netAmt"    column="net_amt"    />
+        <result property="taxAmt"    column="tax_amt"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="contract"    column="contract"    />
+        <result property="budget"    column="budget"    />
+        <result property="srlDesc"    column="srl_desc"    />
+        <result property="status"    column="status"    />
+        <result property="amt"    column="amt"    />
+    </resultMap>
+
+    <sql id="selectFinanceApLoanDetailVo">
+        SELECT id, parent_id, item_no, detail_no, amt,exchange_rate, invoice_type, net_amt, tax_amt, total_amt, contract, budget, srl_desc, status FROM finance_ap_loan_detail
+    </sql>
+
+    <select id="selectFinanceApLoanDetailList" parameterType="com.jlkj.finance.ap.domain.FinanceApLoanDetail" resultMap="FinanceApLoanDetailResult">
+        <include refid="selectFinanceApLoanDetailVo"/>
+        <where>  
+            <if test="parentId != null  and parentId != ''"> AND parent_id = #{parentId}</if>
+            <if test="itemNo != null  and itemNo != ''"> AND item_no = #{itemNo}</if>
+            <if test="detailNo != null  and detailNo != ''"> AND detail_no = #{detailNo}</if>
+            <if test="exchangeRate != null "> AND exchange_rate = #{exchangeRate}</if>
+            <if test="invoiceType != null  and invoiceType != ''"> AND invoice_type = #{invoiceType}</if>
+            <if test="netAmt != null "> AND net_amt = #{netAmt}</if>
+            <if test="taxAmt != null "> AND tax_amt = #{taxAmt}</if>
+            <if test="totalAmt != null "> AND total_amt = #{totalAmt}</if>
+            <if test="contract != null  and contract != ''"> AND contract = #{contract}</if>
+            <if test="budget != null  and budget != ''"> AND budget = #{budget}</if>
+            <if test="srlDesc != null  and srlDesc != ''"> AND srl_desc = #{srlDesc}</if>
+            <if test="status != null  and status != ''"> AND status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceApLoanDetailById" parameterType="String" resultMap="FinanceApLoanDetailResult">
+        <include refid="selectFinanceApLoanDetailVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertFinanceApLoanDetail" parameterType="com.jlkj.finance.ap.domain.FinanceApLoanDetail">
+        INSERT INTO finance_ap_loan_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="itemNo != null">item_no,</if>
+            <if test="detailNo != null">detail_no,</if>
+            <if test="amt != null">amt,</if>
+            <if test="exchangeRate != null">exchange_rate,</if>
+            <if test="invoiceType != null">invoice_type,</if>
+            <if test="netAmt != null">net_amt,</if>
+            <if test="taxAmt != null">tax_amt,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="contract != null">contract,</if>
+            <if test="budget != null">budget,</if>
+            <if test="srlDesc != null">srl_desc,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="itemNo != null">#{itemNo},</if>
+            <if test="amt != null">amt,</if>
+            <if test="detailNo != null">#{detailNo},</if>
+            <if test="exchangeRate != null">#{exchangeRate},</if>
+            <if test="invoiceType != null">#{invoiceType},</if>
+            <if test="netAmt != null">#{netAmt},</if>
+            <if test="taxAmt != null">#{taxAmt},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="contract != null">#{contract},</if>
+            <if test="budget != null">#{budget},</if>
+            <if test="srlDesc != null">#{srlDesc},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceApLoanDetail" parameterType="com.jlkj.finance.ap.domain.FinanceApLoanDetail">
+        UPDATE finance_ap_loan_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="itemNo != null">item_no = #{itemNo},</if>
+            <if test="amt != null">amt,</if>
+            <if test="detailNo != null">detail_no = #{detailNo},</if>
+            <if test="exchangeRate != null">exchange_rate = #{exchangeRate},</if>
+            <if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+            <if test="netAmt != null">net_amt = #{netAmt},</if>
+            <if test="taxAmt != null">tax_amt = #{taxAmt},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="budget != null">budget = #{budget},</if>
+            <if test="srlDesc != null">srl_desc = #{srlDesc},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFinanceApLoanDetailById" parameterType="String">
+        DELETE FROM finance_ap_loan_detail WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceApLoanDetailByIds" parameterType="String">
+        DELETE FROM finance_ap_loan_detail WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

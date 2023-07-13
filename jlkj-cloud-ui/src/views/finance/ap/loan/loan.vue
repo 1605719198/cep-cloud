@@ -91,7 +91,7 @@
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" size="mini" v-if="moreConditionsIf" @click="handleMoreConditions">更多条件</el-button>
         <el-button type="primary" icon="el-icon-circle-close" size="mini" v-if="hideIf" @click="handleHideQuery">隐藏</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+
       </el-form-item>
     </el-form>
 
@@ -218,8 +218,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="申请日期" prop="createTime" label-width="96px">
-              <span style="text-align: center;display:block;width: 121px">{{ form.createTime }}</span>
+            <el-form-item label="申请日期" prop="createDay" label-width="96px">
+              <span style="text-align: center;display:block;width: 121px">{{ parseTime(form.createDay, '{y}-{m}-{d}') }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -370,8 +370,9 @@
             <template slot-scope="scope">
               <el-form-item
                 :prop="'financeApLoanDetailList.' + scope.$index + '.totalAmt'"  :rules="rulesLoanDetailList.totalAmt">
-                <el-input-number v-model="scope.row.totalAmt" placeholder="请输入金额"
-                        @input="changNum(scope.row)"   style="width: 131px;" />
+                <el-input v-model="scope.row.totalAmt" placeholder="请输入金额"
+                                 oninput="if(value<0)value=0" type="number"
+                                 @input="changNum(scope.row)"   style="width: 131px;"  />
               </el-form-item>
             </template>
           </el-table-column>
@@ -580,7 +581,7 @@ export default {
         let day = now.getDate();
         this.queryParam.endDate=  year + "-" + month + "-" + day;
         this.queryParam.startDate=year + "-" + month +'-01'
-        this.queryParam.ratecrcy = val.value
+        this.queryParam.ratecrcy =this.form.crcyunit
         selecCrcyunitList(this.queryParam).then(response => {
        this.rateValue=  response.data.ratevalue
           if(!!this.rateValue){
@@ -611,8 +612,8 @@ export default {
     voucherNoClick(row) {
       this.$router.push({
         name: 'Voucher', query: {
-          voucherNo: row.voucherNo,
-          companyId: row.companyId
+          voucherNo: row,
+          companyId: this.form.companyId
         }
       });
     },
@@ -719,7 +720,8 @@ export default {
         salesmanName: null,
         createBy: null,
         createName: null,
-        createTime:new Date() ,
+        createTime:null,
+        createDay:null,
         createDept: null,
         createDeptName: null,
         updateBy: null,
@@ -739,10 +741,10 @@ export default {
       this.getList();
     },
     /** 重置按钮操作 */
-    resetQuery() {
+ /*   resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
-    },
+    },*/
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
@@ -758,6 +760,11 @@ export default {
     handleAdd() {
       this.reset();
       this.getItemNoList()
+      let now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+      this.form.createDay =  year + "-" + month + "-" + day;
       this.changeCrcyUnit(this.getDicts("gp_currency_type"))
       this.open = true;
       this.title = "添加预付申请主档";
@@ -769,6 +776,7 @@ export default {
       const id = row.id || this.ids
       getLoan(id).then(response => {
         this.form = response.data;
+        this.form.createDay = this.form.createTime
         this.companyIdName =  this.form.companyId
         this.changeCrcyUnit(this.getDicts("gp_currency_type"))
         this.open = true;
@@ -779,13 +787,18 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.exchangeRate=this.rateValue
           if (this.form.financeApLoanDetailList.length>0){
             if (this.form.id != null) {
-              updateLoan(this.form).then(response => {
-                this.$modal.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              });
+              if (this.form.status=="00"){
+                updateLoan(this.form).then(response => {
+                  this.$modal.msgSuccess("修改成功");
+                  this.open = false;
+                  this.getList();
+                });
+              }else {
+                this.$modal.msgError("当前状态不允许修改");
+              }
             } else {
               addLoan(this.form).then(response => {
                 this.$modal.msgSuccess("新增成功");

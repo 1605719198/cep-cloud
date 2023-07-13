@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司细项Controller
@@ -95,4 +96,11 @@ public class FinanceApItemDetailCompanyController extends BaseController
     {
         return toAjax(financeApItemDetailCompanyService.deleteFinanceApItemDetailCompanyByIds(ids));
     }
+    @RequiresPermissions("finance:reimbItemComp:query")
+    @GetMapping(value = "/selectDetailNoList")
+    public List<Map<String,String>> selectItemNoList(FinanceApItemDetailCompany financeApItemDetailCompany)
+    {
+        return financeApItemDetailCompanyService.selectItemNoList(financeApItemDetailCompany);
+    }
 }
+

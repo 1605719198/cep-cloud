@@ -65,7 +65,7 @@
               <dict-tag :options="dict.type.aa_source_sys" :value="scope.row.apid"/>
             </template>
           </el-table-column>
-          <el-table-column label="摘要" align="center" prop="voucherDesc" :show-overflow-tooltip='true'/>
+          <el-table-column label="/finance" align="center" prop="voucherDesc" :show-overflow-tooltip='true'/>
           <el-table-column label="借方金额" align="center" prop="drAmt"/>
           <el-table-column label="贷方金额" align="center" prop="crAmt"/>
           <el-table-column label="制单人" align="center" prop="pastuserName"/>

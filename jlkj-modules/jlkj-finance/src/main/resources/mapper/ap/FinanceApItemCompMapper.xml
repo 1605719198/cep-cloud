@@ -114,6 +114,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
         )
     </select>
+    <select id="selectItemNoList" resultType="java.util.Map">
+
+            select item_no value, item_name label from finance_ap_item_comp
+            <where>
+                <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+
+            </where>
+
+    </select>
+    <select id="selectFinanceApItemComp" resultType="com.jlkj.finance.ap.domain.FinanceApItemComp">
+        <include refid="selectFinanceApItemCompVo"/>
+        <where>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="itemNo != null  and itemNo != ''"> and item_no = #{itemNo}</if>
+        </where>
+    </select>
+
 
     <delete id="deleteFinanceApItemCompByIds" parameterType="String">
         delete from finance_ap_item_comp where id in 

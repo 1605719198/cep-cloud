@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设定明细档Service业务层处理
@@ -96,5 +97,13 @@ public class FinanceAoItemCompDetailServiceImpl implements IFinanceAoItemCompDet
     public int deleteFinanceAoItemCompDetailById(String id)
     {
         return financeAoItemCompDetailMapper.deleteFinanceAoItemCompDetailById(id);
+    }
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectItemNoList(FinanceAoItemCompDetail financeAoItemCompDetail){
+        return financeAoItemCompDetailMapper.selectItemNoList(financeAoItemCompDetail);
     }
 }

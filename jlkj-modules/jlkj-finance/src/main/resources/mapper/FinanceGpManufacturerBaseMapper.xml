@@ -79,6 +79,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by manufacturer_id
     </select>
+    <select id="selectManufacturerList" resultType="java.util.Map">
+        select manufacturer_id value, manufacturer_chinese_name label from finance_gp_manufacturer_base
+        <where>
+            <if test="companyId != null  and companyId != ''"> and comp_id = #{companyId}</if>
+        </where>
+        order by manufacturer_id
+    </select>
 
     <insert id="insertFinanceGpManufacturerBase" parameterType="com.jlkj.finance.gp.domain.FinanceGpManufacturerBase">
         insert into finance_gp_manufacturer_base

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +34,15 @@ public class RemoteAaApiFactory implements FallbackFactory<RemoteAaApiService>
                 List<Map<String,String>> list = new ArrayList<>();
                 Map<String,String> errMap = new HashMap<>(2);
                 errMap.put("errMsg","查询财务公司(下拉选单用)失败:" + throwable.getMessage());
+                list.add(errMap);
+                return list;
+            }
+
+            @Override
+            public List<Map<String, String>> selectManufacturerList(String companyId, String source) {
+                List<Map<String,String>> list = new ArrayList<>();
+                Map<String,String> errMap = new HashMap<>(2);
+                errMap.put("errMsg","查询财务厂商编码(下拉选单用)失败:" + throwable.getMessage());
                 list.add(errMap);
                 return list;
             }
