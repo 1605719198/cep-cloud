@@ -19,9 +19,9 @@ export function addPayBank(data) {
 }
 
 // 删除各公司薪资支付银行维护
-export function delPayBank(uuid) {
+export function delPayBank(uuids) {
   return request({
-    url: '/human/payBank/' + uuid,
+    url: `/human/payBank/delPayBank?uuid=${uuids}`,
     method: 'delete'
   })
 }
