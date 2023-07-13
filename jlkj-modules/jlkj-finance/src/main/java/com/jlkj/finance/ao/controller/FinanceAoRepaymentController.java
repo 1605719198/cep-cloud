@@ -61,7 +61,7 @@ public class FinanceAoRepaymentController extends BaseController
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
-        return success(financeAoRepaymentService.selectFinanceAoRepaymentById(id));
+        return success(financeAoRepaymentService.selectRepaymentById(id));
     }
 
     /**
@@ -102,11 +102,23 @@ public class FinanceAoRepaymentController extends BaseController
      * 查询借支申请单
      */
     @RequiresPermissions("finance:repayment:query")
-    @GetMapping(value = "/loanApply/{companyId}")
-    public TableDataInfo selectLoanApply(@PathVariable("companyId") String companyId)
+    @GetMapping(value = "/loanApply")
+    public TableDataInfo selectLoanApply(FinanceAoRepayment financeAoRepayment)
     {
         startPage();
-        List<Map<String, String>> list = financeAoRepaymentService.selectLoanApply(companyId);
+        List<Map<String, String>> list = financeAoRepaymentService.selectLoanApply(financeAoRepayment.getCompanyId());
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询还款单列表
+     */
+    @RequiresPermissions("finance:repayment:list")
+    @GetMapping("/qryList")
+    public TableDataInfo qryList(FinanceAoRepayment financeAoRepayment)
+    {
+        startPage();
+        List<Map<String,Object>> list = financeAoRepaymentService.selectRepaymentList(financeAoRepayment);
         return getDataTable(list);
     }
 
