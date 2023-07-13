@@ -141,7 +141,42 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
         return null;
     }
-
+    /**
+     * 日期加减天数
+     * @param oDate 日期
+     * @param num 天数
+     * @return
+     * @throws ParseException
+     */
+    public static String addDay(String oDate, Integer num) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date newDate = df.parse(oDate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(newDate);
+            cal.add(Calendar.HOUR_OF_DAY, num * 24);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.format(cal.getTime());
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * 当前日期加减天数
+     * @param num 天数
+     * @return
+     * @throws ParseException
+     */
+    public static String addCurDay( Integer num)  {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(newDate);
+        cal.add(Calendar.HOUR_OF_DAY, num * 24);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(cal.getTime());
+    }
     /**
      * 获得当前月--结束日期
      *

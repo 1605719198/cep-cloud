@@ -39,7 +39,15 @@ public class FinanceAaRateController extends BaseController
         List<FinanceAaRate> list = financeAaRateService.selectFinanceAaRateList(financeAaRate);
         return getDataTable(list);
     }
-
+    /**
+     * 获取利率汇率管理详细信息
+     */
+    @RequiresPermissions("finance:rate:query")
+    @GetMapping(value = "/listCrcyUnit")
+    public AjaxResult getInfo(FinanceAaRate financeAaRate)
+    {
+        return success(financeAaRateService.selectFinanceAaRateRateValue(financeAaRate));
+    }
     /**
      * 导出利率汇率管理列表
      */

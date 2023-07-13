@@ -1,18 +1,17 @@
 import request from '@/utils/request'
 
 // 查询考试分类列表
-export function listExamType(query) {
-  return request({
-    url: '/human/questions/examtype/list',
-    method: 'get',
-    params: query
-  })
-}
+export const listExamType = (data) => request({
+  url: '/human/examtype/list',
+  method: 'get',
+  params: data
+});
+
 
 // 查询考试分类详细
 export function getExamtype(typeId) {
   return request({
-    url: '/human/questions/examtype/' + typeId,
+    url: '/human/examtype/' + typeId,
     method: 'get'
   })
 }
@@ -20,7 +19,7 @@ export function getExamtype(typeId) {
 // 查询考试分类详细
 export function typeTreeSelect() {
   return request({
-    url: '/human/questions/examtype/typetreeselect',
+    url: '/human/examtype/typetreeselect',
     method: 'get'
   })
 }
@@ -28,7 +27,7 @@ export function typeTreeSelect() {
 // 新增考试分类
 export function addExamtype(data) {
   return request({
-    url: '/human/questions/examtype',
+    url: '/human/examtype/add',
     method: 'post',
     data: data
   })
@@ -37,7 +36,7 @@ export function addExamtype(data) {
 // 修改考试分类
 export function updateExamtype(data) {
   return request({
-    url: '/human/questions/examtype',
+    url: '/human/examtype',
     method: 'put',
     data: data
   })
@@ -46,7 +45,7 @@ export function updateExamtype(data) {
 // 删除考试分类
 export function delExamtype(typeId) {
   return request({
-    url: '/human/questions/examtype/' + typeId,
+    url: '/human/examtype/' + typeId,
     method: 'delete'
   })
 }
@@ -54,7 +53,7 @@ export function delExamtype(typeId) {
 // 导出考试分类
 export function exportExamtype(query) {
   return request({
-    url: '/human/questions/examtype/export',
+    url: '/human/examtype/export',
     method: 'get',
     params: query
   })

@@ -242,6 +242,7 @@ export default {
     };
   },
   created() {
+    this.queryParams.compId = this.$store.state.user.userInfo.compId
     getBaseInfo(this.baseInfo).then(response => {
       this.baseInfoData = response.data
     });

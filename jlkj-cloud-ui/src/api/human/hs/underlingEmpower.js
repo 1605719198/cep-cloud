@@ -19,9 +19,9 @@ export function addUnderlingEmpower(data) {
 }
 
 // 删除各公司主管查询下属薪资授权设定
-export function delUnderlingEmpower(uuid) {
+export function delUnderlingEmpower(uuids) {
   return request({
-    url: '/human/underlingEmpower/' + uuid,
+    url: `/human/underlingEmpower/delUnderlingEmpower?uuid=${uuids}`,
     method: 'delete'
   })
 }

@@ -121,6 +121,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM human_hs_social_security WHERE id = #{id}
     </delete>
 
+    <select id="getVersionList" parameterType="String" resultMap="SocialSecurityResult">
+        SELECT distinct version FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY version
+    </select>
+
     <select id="selectMaxVersion" parameterType="String" resultType="map">
         SELECT  effect_date effectDate, version  FROM human_hs_social_security WHERE pay_area_id = #{payAreaId} ORDER BY effect_date DESC limit 1
     </select>

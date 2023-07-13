@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="year"    column="year"    />
         <result property="empId"    column="emp_id"    />
         <result property="yearScore"    column="year_score"    />
-        <result property="rank"    column="rank"    />
+        <result property="grade"    column="grade"    />
         <result property="admScore"    column="adm_score"    />
         <result property="admEmpId"    column="adm_emp_id"    />
         <result property="score"    column="score"    />
@@ -25,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="proportion"    column="proportion"    />
     </resultMap>
 
-    <sql id="selectYearPerformanceVo">
-        SELECT id, comp_id, dept, post_id, year, people, proportion, emp_id, year_score, adm_score, adm_emp_id, score, status, creator, creator_id, creator_no, create_date FROM human_pa_year_performance
+    <sql id="Base_Column_List">
+        SELECT id, comp_id, dept, post_id, year, people, proportion, emp_id, year_score, grade, adm_score, adm_emp_id, score, status, creator, creator_id, creator_no, create_date FROM human_pa_year_performance
     </sql>
 
     <select id="selectYearPerformanceList" parameterType="YearPerformance" resultMap="YearPerformanceResult">
@@ -44,51 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
        GROUP BY status
     </select>
-    
+
     <select id="selectYearPerformanceById" parameterType="String" resultMap="YearPerformanceResult">
-        <include refid="selectYearPerformanceVo"/>
+        <include refid="Base_Column_List"/>
         WHERE id = #{id}
     </select>
-        
-    <insert id="insertYearPerformance" parameterType="YearPerformance">
-        INSERT INTO human_pa_year_performance
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="compId != null">comp_id,</if>
-            <if test="dept != null">dept,</if>
-            <if test="postId != null">post_id,</if>
-            <if test="year != null">year,</if>
-            <if test="empId != null">emp_id,</if>
-            <if test="yearScore != null">year_score,</if>
-            <if test="rank != null">rank,</if>
-            <if test="admScore != null">adm_score,</if>
-            <if test="admEmpId != null">adm_emp_id,</if>
-            <if test="score != null">score,</if>
-            <if test="status != null">status,</if>
-            <if test="creator != null">creator,</if>
-            <if test="creatorId != null">creator_id,</if>
-            <if test="creatorNo != null">creator_no,</if>
-            <if test="createDate != null">create_date,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="compId != null">#{compId},</if>
-            <if test="dept != null">#{dept},</if>
-            <if test="postId != null">#{postId},</if>
-            <if test="year != null">#{year},</if>
-            <if test="empId != null">#{empId},</if>
-            <if test="yearScore != null">#{yearScore},</if>
-            <if test="rank != null">#{rank},</if>
-            <if test="admScore != null">#{admScore},</if>
-            <if test="admEmpId != null">#{admEmpId},</if>
-            <if test="score != null">#{score},</if>
-            <if test="status != null">#{status},</if>
-            <if test="creator != null">#{creator},</if>
-            <if test="creatorId != null">#{creatorId},</if>
-            <if test="creatorNo != null">#{creatorNo},</if>
-            <if test="createDate != null">#{createDate},</if>
-         </trim>
-    </insert>
 
     <update id="updateYearPerformance" parameterType="YearPerformance">
         UPDATE human_pa_year_performance
@@ -99,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="year != null">year = #{year},</if>
             <if test="empId != null">emp_id = #{empId},</if>
             <if test="yearScore != null">year_score = #{yearScore},</if>
-            <if test="rank != null">rank = #{rank},</if>
+            <if test="grade != null">grade = #{grade},</if>
             <if test="admScore != null">adm_score = #{admScore},</if>
             <if test="admEmpId != null">adm_emp_id = #{admEmpId},</if>
             <if test="score != null">score = #{score},</if>

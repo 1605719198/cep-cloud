@@ -28,21 +28,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectExamQuestionsBankVo">
 		select a.bank_id, a.bank_code, a.bank_name, a.bank_describe, a.bank_version, a.exam_type,
-               b.type_name,a.online_date, a.picture_url, nvl(c.judge_number,0) as judge_number,nvl(d.radio_number,0)
-                   as radio_number,nvl(e.choice_number,0) as choice_number,a.radio_score, a.choice_score,
+               b.type_name,a.online_date, a.picture_url, ifnull(c.judge_number,0) as judge_number,ifnull(d.radio_number,0)
+                   as radio_number,ifnull(e.choice_number,0) as choice_number,a.radio_score, a.choice_score,
                a.judge_score, a.status, a.create_by, a.create_dept, a.create_time from human_ex_questions_bank a
-		left join exam_type b on b.type_id = a.exam_type
+		left join human_ex_type b on b.type_id = a.exam_type
 		left join
 		(
-		select bank_code,count(questions_type) as judge_number from exam_questions_property where questions_type = 1 group by bank_code
+		select bank_code,count(questions_type) as judge_number from human_ex_questions_property where questions_type = 1 group by bank_code
 		) c on c.bank_code = a.bank_code
 		left join
 		(
-		select bank_code,count(questions_type) as radio_number from exam_questions_property where questions_type = 2 group by bank_code
+		select bank_code,count(questions_type) as radio_number from human_ex_questions_property where questions_type = 2 group by bank_code
 		) d on d.bank_code = a.bank_code
 		left join
 		(
-		select bank_code,count(questions_type) as choice_number from exam_questions_property where questions_type = 3 group by bank_code
+		select bank_code,count(questions_type) as choice_number from human_ex_questions_property where questions_type = 3 group by bank_code
 		) e on e.bank_code = a.bank_code    
     </sql>
 
@@ -71,7 +71,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertExamQuestionsBank" parameterType="ExamQuestionsBank" >
         insert into human_ex_questions_bank
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            bank_id,
             <if test="bankCode != null">bank_code,</if>
             <if test="bankName != null and bankName != ''">bank_name,</if>
             <if test="bankDescribe != null">bank_describe,</if>
@@ -82,13 +81,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="radioScore != null">radio_score,</if>
             <if test="choiceScore != null">choice_score,</if>
             <if test="judgeScore != null">judge_score,</if>
-            status,
+            <if test="status != null">status,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createDept != null">create_dept,</if>
-            create_time,
+            <if test="createTime != null">create_time</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(bank_id),0) + 1  from human_ex_questions_bank),
             <if test="bankCode != null">#{bankCode},</if>
             <if test="bankName != null and bankName != ''">#{bankName},</if>
             <if test="bankDescribe != null">#{bankDescribe},</if>
@@ -102,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             0,
             <if test="createBy != null">#{createBy},</if>
             <if test="createDept != null">#{createDept},</if>
-            sysdate,
+            <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
 

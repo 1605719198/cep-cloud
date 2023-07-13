@@ -143,4 +143,12 @@ public class FinanceApItemCompServiceImpl implements IFinanceApItemCompService
         }
         return 1;
     }
+    /**
+     * 查询报支类别下拉选单
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> selectItemNoList(String companyId){
+        return financeApItemCompMapper.selectItemNoList(companyId);
+    }
 }

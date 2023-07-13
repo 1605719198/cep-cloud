@@ -3,6 +3,7 @@ package com.jlkj.finance.aa.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author SunXuTong
  * @date 2023-04-17
  */
+@Data
 public class FinanceAaRate extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -52,7 +54,10 @@ public class FinanceAaRate extends BaseEntity
 
     /** 异动名称 */
     private String updateName;
-
+    /** 起始日期 */
+    private String startDate;
+    /** 截止日期 */
+    private String endDate;
     public void setId(String id)
     {
         this.id = id;

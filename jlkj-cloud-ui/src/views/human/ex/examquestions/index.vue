@@ -71,7 +71,7 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(item)"
-                            v-hasPermi="['questions:questionsbank:edit']"
+                            v-hasPermi="['human:questionsbank:edit']"
                           >编辑</el-button>
                         </div>
                       </div>

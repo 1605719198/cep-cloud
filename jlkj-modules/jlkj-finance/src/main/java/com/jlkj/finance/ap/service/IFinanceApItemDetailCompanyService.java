@@ -3,6 +3,7 @@ package com.jlkj.finance.ap.service;
 import com.jlkj.finance.ap.domain.FinanceApItemDetailCompany;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司细项Service接口
@@ -59,4 +60,12 @@ public interface IFinanceApItemDetailCompanyService
      * @return 结果
      */
     public int deleteFinanceApItemDetailCompanyById(String id);
+   /**
+   *获取报支类别公司设定明细档费用细项
+   *@author 265799
+   *@date 2023/7/12  11:11
+    * @param financeApItemDetailCompany :
+    * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+   */
+    public List<Map<String,String>> selectItemNoList(FinanceApItemDetailCompany financeApItemDetailCompany);
 }

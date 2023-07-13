@@ -199,7 +199,8 @@
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleDeleteFinanceAoLoanDetail">删除</el-button>
           </el-col>
         </el-row>
-        <el-table :data="form.financeAoLoanDetailList" :row-class-name="rowFinanceAoLoanDetailIndex" @selection-change="handleFinanceAoLoanDetailSelectionChange" ref="financeAoLoanDetail">
+        <el-table :data="form.financeAoLoanDetailList"
+                  :row-class-name="rowFinanceAoLoanDetailIndex" @selection-change="handleFinanceAoLoanDetailSelectionChange" ref="financeAoLoanDetail">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="原始凭证类型" prop="invoiceType" width="150" :render-header="addRedstar">
             <template slot-scope="scope">
@@ -219,9 +220,6 @@
           <el-table-column label="币别" prop="crcyCode" width="150" :render-header="addRedstar">
             <template slot-scope="scope">
               <el-form-item :prop="'financeAoLoanDetailList.' + scope.$index + '.crcyCode'" :rules="rules.crcyCode">
-
-
-
               </el-form-item>
             </template>
           </el-table-column>

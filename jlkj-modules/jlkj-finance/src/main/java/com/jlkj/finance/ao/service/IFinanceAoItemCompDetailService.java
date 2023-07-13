@@ -1,7 +1,9 @@
 package com.jlkj.finance.ao.service;
 
-import java.util.List;
 import com.jlkj.finance.ao.domain.FinanceAoItemCompDetail;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设定明细档Service接口
@@ -58,4 +60,14 @@ public interface IFinanceAoItemCompDetailService
      * @return 结果
      */
     public int deleteFinanceAoItemCompDetailById(String id);
+
+/**
+*获取报支类别公司设定明细档费用细项
+*@author 265799
+*@date 2023/7/11  11:03
+ * @param financeAoItemCompDetail :
+ * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+*/
+    public List<Map<String,String>> selectItemNoList(FinanceAoItemCompDetail financeAoItemCompDetail);
 }
+

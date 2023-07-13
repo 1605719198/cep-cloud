@@ -27,6 +27,13 @@ public interface IFinanceAaRateService
      * @return 利率汇率管理集合
      */
     public List<FinanceAaRate> selectFinanceAaRateList(FinanceAaRate financeAaRate);
+    /**
+     * 查询利率汇率管理列表
+     *
+     * @param financeAaRate 利率汇率管理
+     * @return 利率汇率管理集合
+     */
+    public FinanceAaRate selectFinanceAaRateRateValue(FinanceAaRate financeAaRate);
 
     /**
      * 新增利率汇率管理

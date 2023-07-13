@@ -47,7 +47,19 @@ public class FinanceAaRateServiceImpl implements IFinanceAaRateService
     {
         return financeAaRateMapper.selectFinanceAaRateList(financeAaRate);
     }
+    /**
+     * 应付管理查询利率汇率管理列表
+     *
+     * @param financeAaRate 利率汇率管理
+     * @return 利率汇率管理
+     */
+    @Override
+    public FinanceAaRate selectFinanceAaRateRateValue(FinanceAaRate financeAaRate)
+    {
+        List<FinanceAaRate> financeAaRates = financeAaRateMapper.selectFinanceAaRateRateValue(financeAaRate);
 
+        return financeAaRates.get(0);
+    }
     /**
      * 新增利率汇率管理
      *

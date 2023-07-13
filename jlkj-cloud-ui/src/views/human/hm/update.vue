@@ -9,7 +9,7 @@
           <el-col :span="24">
             <el-form-item prop="dicNo"
                           label="资料代号">
-              <el-input v-model="form.dicNo"></el-input>
+              <el-input v-model="form.dicNo" :maxlength="50"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -17,7 +17,7 @@
           <el-col :span="24">
             <el-form-item prop="dicName"
                           label="资料名称">
-              <el-input v-model="form.dicName"></el-input>
+              <el-input v-model="form.dicName" :maxlength="50"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

@@ -214,9 +214,9 @@ export default {
       })
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
+    handleDelete() {
       const uuid = this.dicName;
-      const uuids = row.uuid || this.ids;
+      const uuids = this.ids;
       this.$modal.confirm('是否确认删除各公司主管查询下属薪资授权设定编号为"' + uuid + '"的数据项？').then(function() {
         return delUnderlingEmpower(uuids);
       }).then(() => {

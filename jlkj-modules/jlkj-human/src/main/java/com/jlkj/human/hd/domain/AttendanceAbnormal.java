@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -147,6 +148,16 @@ public class AttendanceAbnormal implements Serializable {
      * 输入人ID
      */
     private String creatorId;
+
+    /**
+     * 异常班次
+     */
+    private BigDecimal truDuty;
+
+    /**
+     * 异常小时数
+     */
+    private BigDecimal truHou;
 
     /**
      * 输入日期

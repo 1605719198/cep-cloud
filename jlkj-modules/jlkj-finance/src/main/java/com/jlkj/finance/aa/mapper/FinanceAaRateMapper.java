@@ -29,6 +29,14 @@ public interface FinanceAaRateMapper
     public List<FinanceAaRate> selectFinanceAaRateList(FinanceAaRate financeAaRate);
 
     /**
+     * 查询利率汇率管理列表
+     *
+     * @param financeAaRate 利率汇率管理
+     * @return 利率汇率管理集合
+     */
+    public List<FinanceAaRate> selectFinanceAaRateRateValue(FinanceAaRate financeAaRate);
+
+    /**
      * 查询利率汇率管理列表 查重
      *
      * @param financeAaRate 利率汇率管理

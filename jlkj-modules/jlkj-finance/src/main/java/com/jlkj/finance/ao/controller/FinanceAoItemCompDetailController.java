@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报支类别公司设定明细档Controller
@@ -105,5 +106,18 @@ public class FinanceAoItemCompDetailController extends BaseController
     public AjaxResult changeStatus(@RequestBody FinanceAoItemCompDetail financeAoItemCompDetail)
     {
         return toAjax(financeAoItemCompDetailService.updateFinanceAoItemCompDetail(financeAoItemCompDetail));
+    }
+/**
+*获取报支类别公司设定明细档费用细项
+*@author 265799
+*@date 2023/7/11  10:27
+ * @param financeAoItemCompDetail :
+ * @return : java.util.List<java.util.Map<java.lang.String,java.lang.String>>
+*/
+    @RequiresPermissions("finance:reimbItemComp:query")
+    @GetMapping(value = "/selectDetailNoList")
+    public List<Map<String,String>> selectItemNoList(FinanceAoItemCompDetail financeAoItemCompDetail)
+    {
+        return financeAoItemCompDetailService.selectItemNoList(financeAoItemCompDetail);
     }
 }
