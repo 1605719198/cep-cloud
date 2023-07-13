@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -156,6 +157,16 @@ public class AttendanceAbnormalDTO implements Serializable {
      * 结束时间
      */
     private String endTime;
+
+    /**
+     * 异常班次
+     */
+    private BigDecimal truDuty;
+
+    /**
+     * 异常小时数
+     */
+    private BigDecimal truHou;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

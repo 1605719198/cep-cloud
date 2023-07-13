@@ -44,12 +44,12 @@ public class BaseInfoController extends BaseController {
     @Log(title = "获取子节点查询列表",businessType = BusinessType.OTHER)
     @Operation(summary = "获取子节点查询列表")
     @GetMapping("/list")
-    public Object getChildrenList(BaseInfoDTO baseInfoDTO) {
+    public Object getChildrenList(Baseinfo baseinfo) {
         try {
             startPage();
-            List<Baseinfo> list = baseinfoService.query()
-                    .eq(StringUtils.isNotBlank(baseInfoDTO.getUuid()), "parent_id", baseInfoDTO.getUuid())
-                    .orderByAsc("dic_no+1").list();
+            List<Baseinfo> list = baseinfoService.lambdaQuery()
+                    .eq(Baseinfo::getParentId, baseinfo.getUuid())
+                    .orderByAsc(Baseinfo::getDicNo).list();
             if (list.isEmpty()) {
                 return AjaxResult.error("查无资料");
             } else {

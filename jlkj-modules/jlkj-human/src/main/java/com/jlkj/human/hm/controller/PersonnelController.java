@@ -84,20 +84,7 @@ public class PersonnelController extends BaseController {
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")
     public Object getPersonnelBasicInfoList(Personnel personnel) {
-        try {
-            String compId = personnel.getCompId();
-            String empNo = personnel.getEmpNo();
-            LambdaQueryWrapper<Personnel> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(StringUtils.isNotBlank(compId), Personnel::getCompId, compId).eq(Personnel::getEmpNo, empNo);
-            List<Personnel> list = personnelService.list(queryWrapper);
-            if (list.isEmpty()) {
-                return AjaxResult.error("查无资料");
-            } else {
-                return AjaxResult.success("查询成功！", list);
-            }
-        } catch (Exception e) {
-            return AjaxResult.error();
-        }
+        return personnelService.getPersonnelBasicInfoList(personnel);
     }
 
     /**
