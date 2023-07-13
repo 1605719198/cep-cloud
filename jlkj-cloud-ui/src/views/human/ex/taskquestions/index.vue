@@ -15,7 +15,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['exam:taskquestions:add']"
+          v-hasPermi="['human:taskquestions:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -26,7 +26,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['exam:taskquestions:edit']"
+          v-hasPermi="['human:taskquestions:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -37,7 +37,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['exam:taskquestions:remove']"
+          v-hasPermi="['human:taskquestions:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -48,7 +48,7 @@
           size="mini"
 		  :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['exam:taskquestions:export']"
+          v-hasPermi="['human:taskquestions:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>

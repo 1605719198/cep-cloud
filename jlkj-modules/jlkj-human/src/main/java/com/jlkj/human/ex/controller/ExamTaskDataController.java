@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2023年7月11日, 0011 上午 11:42:32
  */
 @RestController
-@RequestMapping("/exam/examtask")
+@RequestMapping("/examtask")
 public class ExamTaskDataController extends BaseController {
     @Autowired
     private IExamTaskDataService examTaskDataService;

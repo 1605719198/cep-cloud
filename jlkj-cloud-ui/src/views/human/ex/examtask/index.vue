@@ -90,28 +90,28 @@
                           type="text"
                           icon="el-icon-edit"
                           @click="handleUpdateContent(item)"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >内容</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-date"
                           @click="handleUpdateQuestions(item)"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >组卷</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-user"
                           @click="handleUpdateUsers(item)"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >选人</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-delete"
                           @click="handleDelete(item)"
-                          v-hasPermi="['exam:examtask:remove']"
+                          v-hasPermi="['human:examtask:remove']"
                         >删除</el-button>
                       </div>
                     </div>
@@ -137,28 +137,28 @@
                           type="text"
                           icon="el-icon-edit"
                           @click="handleUpdateContent(examtaskList[index + 1])"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >内容</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-date"
                           @click="handleUpdateQuestions(examtaskList[index + 1])"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >组卷</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-user"
                           @click="handleUpdateUsers(examtaskList[index + 1])"
-                          v-hasPermi="['exam:examtask:edit']"
+                          v-hasPermi="['human:examtask:edit']"
                         >选人</el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-delete"
                           @click="handleDelete(examtaskList[index + 1])"
-                          v-hasPermi="['exam:examtask:remove']"
+                          v-hasPermi="['human:examtask:remove']"
                         >删除</el-button>
                       </div>
                     </div>
@@ -298,7 +298,7 @@ export default {
     };
   },
   created() {
-    this.hosturl = baseApiUrl
+    this.hosturl = process.env.VUE_APP_BASE_API;
     this.getList();
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
@@ -318,66 +318,7 @@ export default {
         this.loading = false;
       });
     },
-    // 考试序号字典翻译
-    examIdFormat(row, column) {
-      return this.selectDictLabel(this.examIdOptions, row.examId);
-    },
-    // 考试代码字典翻译
-    examCodeFormat(row, column) {
-      return this.selectDictLabel(this.examCodeOptions, row.examCode);
-    },
-    // 考试名称字典翻译
-    examNameFormat(row, column) {
-      return this.selectDictLabel(this.examNameOptions, row.examName);
-    },
-    // 考试说明字典翻译
-    examDescribeFormat(row, column) {
-      return this.selectDictLabel(this.examDescribeOptions, row.examDescribe);
-    },
-    // 组卷方式字典翻译
-    buildTypeFormat(row, column) {
-      return this.selectDictLabel(this.buildTypeOptions, row.buildType);
-    },
-    // 强制抽卷字典翻译
-    forceDoneFormat(row, column) {
-      return this.selectDictLabel(this.forceDoneOptions, row.forceDone);
-    },
-    // 考试题库字典翻译
-    examBankFormat(row, column) {
-      return this.selectDictLabel(this.examBankOptions, row.examBank);
-    },
-    // 图片链接字典翻译
-    pictureUrlFormat(row, column) {
-      return this.selectDictLabel(this.pictureUrlOptions, row.pictureUrl);
-    },
-    // 开始时间字典翻译
-    startTimeFormat(row, column) {
-      return this.selectDictLabel(this.startTimeOptions, row.startTime);
-    },
-    // 结束时间字典翻译
-    endTimeFormat(row, column) {
-      return this.selectDictLabel(this.endTimeOptions, row.endTime);
-    },
-    // 考试时长字典翻译
-    examDurationFormat(row, column) {
-      return this.selectDictLabel(this.examDurationOptions, row.examDuration);
-    },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    // 创建者字典翻译
-    createByFormat(row, column) {
-      return this.selectDictLabel(this.createByOptions, row.createBy);
-    },
-    // 创建部门字典翻译
-    createDeptFormat(row, column) {
-      return this.selectDictLabel(this.createDeptOptions, row.createDept);
-    },
-    // 创建时间字典翻译
-    createTimeFormat(row, column) {
-      return this.selectDictLabel(this.createTimeOptions, row.createTime);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;

@@ -12,7 +12,6 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.common.security.service.TokenService;
 import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.ex.domain.ExamTaskManager;
 import com.jlkj.human.ex.domain.ExamTaskPicture;
@@ -36,12 +35,10 @@ import java.util.List;
  * @date 2023-01-06
  */
 @RestController
-@RequestMapping("/exam/examtask")
+@RequestMapping("/examtask")
 public class ExamTaskManagerController extends BaseController {
     @Autowired
     private IExamTaskManagerService examTaskManagerService;
-    @Autowired
-    private TokenService tokenService;
     @Autowired
     private IExamTaskPictureService examTaskPictureService;
     @Autowired
@@ -50,7 +47,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 查询创建考试列表
      */
-    @RequiresPermissions("exam:examtask:list")
+    @RequiresPermissions("human:examtask:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamTaskManager examTaskManager) {
 
@@ -70,7 +67,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 导出创建考试列表
      */
-    @RequiresPermissions("exam:examtask:export")
+    @RequiresPermissions("human:examtask:export")
     @Log(title = "创建考试", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response, ExamTaskManager examTaskManager) {
@@ -82,7 +79,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 获取创建考试详细信息
      */
-    @RequiresPermissions("exam:examtask:query")
+    @RequiresPermissions("human:examtask:query")
     @GetMapping(value = "/{examCode}")
     public AjaxResult getInfo(@PathVariable("examCode") String examCode) {
         return AjaxResult.success(examTaskManagerService.selectExamTaskManagerById(examCode));
@@ -91,7 +88,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 新增创建考试
      */
-    @RequiresPermissions("exam:examtask:add")
+    @RequiresPermissions("human:examtask:add")
     @Log(title = "创建考试", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ExamTaskManager examTaskManager) {
@@ -101,7 +98,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 修改创建考试
      */
-    @RequiresPermissions("exam:examtask:edit")
+    @RequiresPermissions("human:examtask:edit")
     @Log(title = "创建考试", businessType = BusinessType.UPDATE)
     // @PutMapping
     @PostMapping("/update")
@@ -112,7 +109,7 @@ public class ExamTaskManagerController extends BaseController {
     /**
      * 删除创建考试
      */
-    @RequiresPermissions("exam:examtask:remove")
+    @RequiresPermissions("human:examtask:remove")
     @Log(title = "创建考试", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{examCodes}")
     public AjaxResult remove(@PathVariable String[] examCodes) {
