@@ -72,14 +72,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFinanceAaLedgerlCal" resultType="com.jlkj.finance.aa.domain.FinanceAaLedgerlCal">
         <include refid="selectFinanceAaLedgerlCalVo"/>
         <where>
-            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
-            <if test="acctPeriod != null  and acctPeriod != ''"> and acct_period = #{acctPeriod}</if>
-            <if test="acctId != null  and acctId != ''"> and acct_id = #{acctId}</if>
-            <if test="acctCode != null  and acctCode != ''"> and acct_code = #{acctCode}</if>
-            and cal_ida = #{calIda}
-            and cal_idb = #{calIdb}
-            and cal_idc = #{calIdc}
-            and cal_idd = #{calIdd}
+            <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="acctPeriod != null  and acctPeriod != ''"> AND acct_period = #{acctPeriod}</if>
+            <if test="acctId != null  and acctId != ''"> AND acct_id = #{acctId}</if>
+            <if test="acctCode != null  and acctCode != ''"> AND acct_code = #{acctCode}</if>
+            <if test="calIda != null  and calIda != ''"> AND cal_ida = #{calIda}</if>
+            <if test="calIdb != null  and calIdb != ''"> AND cal_idb = #{calIdb}</if>
+            <if test="calIdc != null  and calIdc != ''"> AND cal_idc = #{calIdc}</if>
+            <if test="calIdd != null  and calIdd != ''"> AND cal_idd = #{calIdd}</if>
+
+            <if test="calIda = null  or calIda = ''">AND ( cal_ida is  null   or cal_ida = '')</if>
+            <if test="calIdb = null  or calIdb = ''">AND ( cal_idb is  null   or cal_idb = '')</if>
+            <if test="calIdc = null  or calIdc = ''">AND ( cal_idc is  null   or cal_idc = '')</if>
+            <if test="calIdd = null  or calIdd = ''">AND ( cal_idd is  null   or cal_idd = '')</if>
 
         </where>
     </select>
