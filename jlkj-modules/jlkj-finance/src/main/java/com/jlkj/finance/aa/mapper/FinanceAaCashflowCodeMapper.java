@@ -1,8 +1,9 @@
 package com.jlkj.finance.aa.mapper;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 现金流量代码Mapper接口
@@ -28,6 +29,20 @@ public interface FinanceAaCashflowCodeMapper
      * @return 现金流量代码集合
      */
     public List<FinanceAaCashflowCode> selectFinanceAaCashflowCodeList(FinanceAaCashflowCode financeAaCashflowCode);
+    /**
+     * 查询现金流量代码列表
+     *
+     * @param financeAaCashflowCode 现金流量代码
+     * @return 现金流量代码集合
+     */
+    public List<FinanceAaCashflowCode> selectFinanceAaCashflowCodeListPop(FinanceAaCashflowCode financeAaCashflowCode);
+    /**
+     * 查询现金流量代码列表
+     *
+     * @param financeAaCashflowCode 现金流量代码
+     * @return 现金流量代码集合
+     */
+    public FinanceAaCashflowCode selectListPop(FinanceAaCashflowCode financeAaCashflowCode);
 
     /**
      * 新增现金流量代码

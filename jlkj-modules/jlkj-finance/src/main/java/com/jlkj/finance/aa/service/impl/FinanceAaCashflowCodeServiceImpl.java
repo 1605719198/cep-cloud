@@ -1,27 +1,16 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import cn.hutool.core.util.IdUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jlkj.common.core.mapper.BaseMapperPlus;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
 import com.jlkj.finance.aa.dto.FinanceAaCashflowCodeDTO;
-import com.jlkj.finance.ac.domain.FinanceCostCode;
-import com.jlkj.finance.ac.domain.FinanceCostTree;
-import com.jlkj.finance.gp.domain.ManufacturerTree;
-import com.jlkj.finance.gp.dto.ManufacturerTreeDTO;
-import com.jlkj.finance.ip.dto.FinanceCostDownTypeTreeDTO;
+import com.jlkj.finance.aa.mapper.FinanceAaCashflowCodeMapper;
+import com.jlkj.finance.aa.service.IFinanceAaCashflowCodeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAaCashflowCodeMapper;
-import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
-import com.jlkj.finance.aa.service.IFinanceAaCashflowCodeService;
+
+import java.util.List;
 
 import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
 
@@ -62,6 +51,18 @@ public class FinanceAaCashflowCodeServiceImpl implements
     {
         return financeAaCashflowCodeMapper.selectFinanceAaCashflowCodeList(financeAaCashflowCode);
     }
+    /**
+     * 查询现金流量代码列表
+     *
+     * @param financeAaCashflowCode 现金流量代码
+     * @return 现金流量代码
+     */
+    @Override
+    public List<FinanceAaCashflowCode> selectFinanceAaCashflowCodeListPop(FinanceAaCashflowCode financeAaCashflowCode)
+    {
+        FinanceAaCashflowCode financeAaCashflowCode1 = financeAaCashflowCodeMapper.selectListPop(financeAaCashflowCode);
+        return financeAaCashflowCodeMapper.selectFinanceAaCashflowCodeListPop(financeAaCashflowCode1);
+    }
 
     /**
      * 新增现金流量代码
@@ -84,8 +85,6 @@ public class FinanceAaCashflowCodeServiceImpl implements
                 financeAaCashflowCodeDTO.setCreateTime(DateUtils.getNowDate());
                 financeAaCashflowCodeDTO.setCreateBy(getUsername());
                 financeAaCashflowCodeDTO.setId(IdUtil.randomUUID());
-
-
                 BeanUtils.copyProperties(financeAaCashflowCodeDTO,financeAaCashflowCode);
                 insertFinanceAaCashflowCode = financeAaCashflowCodeMapper.insertFinanceAaCashflowCode(financeAaCashflowCode);
             }
