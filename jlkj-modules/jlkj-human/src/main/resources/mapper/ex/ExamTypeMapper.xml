@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectExamTypeList" parameterType="ExamType" resultMap="ExamTypeResult">
         <include refid="selectExamTypeVo"/>
         <where>  
-            <if test="typeName != null  and typeName != ''"> and type_name like '%' || #{typeName} || '%'</if>
+            <if test="typeName != null  and typeName != ''"> and type_name  like concat('%', #{typeName}, '%')</if>
         </where>
     </select>
     
@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertExamType" parameterType="ExamType" >
         insert into human_ex_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">#{type_id},</if>
             <if test="parentId != null">parent_id,</if>
             <if test="typeCode != null">type_code,</if>
             <if test="typeName != null and typeName != ''">type_name,</if>
@@ -43,13 +44,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">#{typeId},</if>
             <if test="parentId != null">#{parentId},</if>
             <if test="typeCode != null">#{typeCode},</if>
             <if test="typeName != null and typeName != ''">#{typeName},</if>
             <if test="orderId != null">#{orderId},</if>
             0,
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
+            <if test="createTime != null">#{createTime}</if>
          </trim>
     </insert>
 
