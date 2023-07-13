@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询题库管理列表
 export function listQuestionsbank(query) {
   return request({
-    url: '/questions/questionsbank/list',
+    url: '/human/questionsbank/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listQuestionsbank(query) {
 // 查询题库管理列表
 export function listQuestionsbankBycode(codes) {
   return request({
-    url: '/questions/questionsbank/arraylist/' + codes,
+    url: '/human/questionsbank/arraylist/' + codes,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function listQuestionsbankBycode(codes) {
 // 查询题库管理详细
 export function getQuestionsbank(bankCode) {
   return request({
-    url: '/questions/questionsbank/' + bankCode,
+    url: '/human/questionsbank/' + bankCode,
     method: 'get'
   })
 }
@@ -28,7 +28,7 @@ export function getQuestionsbank(bankCode) {
 // 新增题库管理
 export function addQuestionsbank(data) {
   return request({
-    url: '/questions/questionsbank',
+    url: '/human/questionsbank',
     method: 'post',
     data: data
   })
@@ -37,7 +37,7 @@ export function addQuestionsbank(data) {
 // 修改题库管理
 export function updateQuestionsbank(data) {
   return request({
-    url: '/questions/questionsbank',
+    url: '/human/questionsbank',
     method: 'put',
     data: data
   })
@@ -46,7 +46,7 @@ export function updateQuestionsbank(data) {
 // 删除题库管理
 export function delQuestionsbank(bankCode) {
   return request({
-    url: '/questions/questionsbank/' + bankCode,
+    url: '/human/questionsbank/' + bankCode,
     method: 'delete'
   })
 }
@@ -54,7 +54,7 @@ export function delQuestionsbank(bankCode) {
 // 导出题库管理
 export function exportQuestionsbank(query) {
   return request({
-    url: '/questions/questionsbank/export',
+    url: '/human/questionsbank/export',
     method: 'get',
     params: query
   })
@@ -63,7 +63,7 @@ export function exportQuestionsbank(query) {
 // 新增
 export function uploadPhoto(bankcode, data) {
   return request({
-    url: '/questions/questionsbank/uploadphoto/' + bankcode,
+    url: '/human/questionsbank/uploadphoto/' + bankcode,
     method: 'post',
     data: data
   })

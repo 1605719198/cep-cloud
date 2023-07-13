@@ -37,7 +37,7 @@ import java.util.List;
  * @date 2022-12-19
  */
 @RestController
-@RequestMapping("/questions/questionsbank")
+@RequestMapping("/questionsbank")
 public class ExamQuestionsBankController extends BaseController {
     @Autowired
     private IExamQuestionsBankService examQuestionsBankService;
@@ -51,7 +51,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 查询题库管理列表
      */
-    @RequiresPermissions("questions:questionsbank:list")
+    @RequiresPermissions("human:questionsbank:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamQuestionsBank examQuestionsBank) {
         startPage();
@@ -68,7 +68,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 导出题库管理列表
      */
-    @RequiresPermissions("questions:questionsbank:export")
+    @RequiresPermissions("human:questionsbank:export")
     @Log(title = "题库管理", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response, ExamQuestionsBank examQuestionsBank) {
@@ -80,7 +80,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 获取题库管理详细信息
      */
-    @RequiresPermissions("questions:questionsbank:query")
+    @RequiresPermissions("human:questionsbank:query")
     @GetMapping(value = "/{bankCode}")
     public AjaxResult getInfo(@PathVariable("bankCode") String bankCode) {
         return AjaxResult.success(examQuestionsBankService.selectExamQuestionsBankById(bankCode));
@@ -89,7 +89,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 新增题库管理
      */
-    @RequiresPermissions("questions:questionsbank:add")
+    @RequiresPermissions("human:questionsbank:add")
     @Log(title = "题库管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamQuestionsBank examQuestionsBank) {
@@ -104,7 +104,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 修改题库管理
      */
-    @RequiresPermissions("questions:questionsbank:edit")
+    @RequiresPermissions("human:questionsbank:edit")
     @Log(title = "题库管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamQuestionsBank examQuestionsBank) {
@@ -115,7 +115,7 @@ public class ExamQuestionsBankController extends BaseController {
     /**
      * 删除题库管理
      */
-    @RequiresPermissions("questions:questionsbank:remove")
+    @RequiresPermissions("human:questionsbank:remove")
     @Log(title = "题库管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{bankCodes}")
     public AjaxResult remove(@PathVariable String[] bankCodes) {

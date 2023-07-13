@@ -34,24 +34,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertExamType" parameterType="ExamType" >
         insert into human_ex_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            type_id,
             <if test="parentId != null">parent_id,</if>
             <if test="typeCode != null">type_code,</if>
             <if test="typeName != null and typeName != ''">type_name,</if>
             <if test="orderId != null">order_id,</if>
             status,
             <if test="createBy != null">create_by,</if>
-            create_time,
+            <if test="createTime != null">create_time</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(type_id),0) + 1 from human_ex_type),
             <if test="parentId != null">#{parentId},</if>
             <if test="typeCode != null">#{typeCode},</if>
             <if test="typeName != null and typeName != ''">#{typeName},</if>
             <if test="orderId != null">#{orderId},</if>
             0,
             <if test="createBy != null">#{createBy},</if>
-            sysdate,
+            <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
 
