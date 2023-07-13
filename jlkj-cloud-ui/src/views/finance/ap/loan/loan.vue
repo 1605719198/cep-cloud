@@ -91,6 +91,7 @@
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" size="mini" v-if="moreConditionsIf" @click="handleMoreConditions">更多条件</el-button>
         <el-button type="primary" icon="el-icon-circle-close" size="mini" v-if="hideIf" @click="handleHideQuery">隐藏</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
 
       </el-form-item>
     </el-form>
@@ -469,6 +470,8 @@ export default {
         status: '00',
         startDate: null,
         endDate: null,
+        queryParams: null,
+        itemNo: null,
       },
       // 查询参数
       queryParam: {
@@ -480,6 +483,9 @@ export default {
         startDate: null,
         endDate: null,
         ratecrcy: null,
+        createName: null,
+        createDeptName: null,
+        salesmanName: null,
       },
       // 会计公司下拉选单
       companyList: [],
@@ -546,6 +552,8 @@ export default {
       indexKey:0,
       //汇率
       rateValue:null,
+      // 查询公司下拉选单名称
+      queryCompanyId:null,
     };
   },
   created() {
@@ -644,6 +652,7 @@ export default {
       selectCompanyList().then(response => {
         this.companyList = response;
         this.queryParams.companyId = this.companyList[0].value
+        this.queryCompanyId = this.companyList[0].value
         this.getManufacturerList()
         this.getItemNoList()
       });
@@ -741,10 +750,22 @@ export default {
       this.getList();
     },
     /** 重置按钮操作 */
- /*   resetQuery() {
-      this.resetForm("queryForm");
+    resetQuery() {
+      this.queryParams={
+        pageNum: 1,
+        pageSize: 10,
+        companyId: this.queryCompanyId,
+        billNo: null,
+        manufacturer: null,
+        dueDate: null,
+        status: '00',
+        startDate: null,
+        endDate: null,
+        queryParams: null,
+        itemNo: null,
+      },
       this.handleQuery();
-    },*/
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
