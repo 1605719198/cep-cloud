@@ -91,6 +91,22 @@ public interface MiniStandardMapper
     public int deleteMiniStandardByVersion(@Param("compId") String compId, @Param("version") Long version);
 
     /**
+     * 获取工资标准类型最大版本号
+     *
+     * @param miniStandard 工资标准类型
+     * @return 结果
+     */
+    public List<MiniStandard> selectMiniStandardListBySalaryStandard(MiniStandard miniStandard);
+
+    /**
+     * 获取工资标准类型版本号
+     *
+     * @param miniStandard 工资标准类型
+     * @return 结果
+     */
+    public List<MiniStandard> selectMiniStandardListByVersion(MiniStandard miniStandard);
+
+    /**
      * 新增工资标准数据
      * @Description 新增工资标准数据
      * @param compId 公司别

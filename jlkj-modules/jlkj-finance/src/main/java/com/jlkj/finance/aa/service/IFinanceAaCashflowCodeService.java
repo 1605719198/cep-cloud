@@ -1,9 +1,9 @@
 package com.jlkj.finance.aa.service;
 
-import java.util.List;
 import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
 import com.jlkj.finance.aa.dto.FinanceAaCashflowCodeDTO;
-import com.jlkj.finance.ip.dto.FinanceCostDownTypeTreeDTO;
+
+import java.util.List;
 
 /**
  * 现金流量代码Service接口
@@ -29,6 +29,13 @@ public interface IFinanceAaCashflowCodeService
      * @return 现金流量代码集合
      */
     public List<FinanceAaCashflowCode> selectFinanceAaCashflowCodeList(FinanceAaCashflowCode financeAaCashflowCode);
+    /**
+     * 查询现金流量代码列表
+     *
+     * @param financeAaCashflowCode 现金流量代码
+     * @return 现金流量代码集合
+     */
+    public List<FinanceAaCashflowCode> selectFinanceAaCashflowCodeListPop(FinanceAaCashflowCode financeAaCashflowCode);
 
     /**
      * 新增现金流量代码

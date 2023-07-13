@@ -195,8 +195,6 @@
                       </el-table-column>
                     </el-table>
                   </el-form>
-
-
                 <pagination
                   v-show="total>0"
                   :total="total"
@@ -211,17 +209,20 @@
         </div>
       </el-col>
     </el-row>
+    <codePop ref="select" @ok="getJobNumber"/>
   </div>
 </template>
 
 <script>
-import {listCodecompid, getCode, delCodecompid, addCodecompid,
+import {listCodecompid, delCodecompid, addCodecompid,
   updateCodecompid, getTreeNodeCompId} from "@/api/finance/aa/codecompid";
-import {isPassword, validateContacts} from "../../../../utils/jlkj";
+import {isPassword,} from "../../../../utils/jlkj";
 import {selectCompanyList} from "@/api/finance/aa/companyGroup";
+import codePop from "@/views/finance/aa/codecompid/codePop";
 export default {
   name: "Code",
   dicts: ['aa_quedataway', 'aa_inorout', 'sys_yes_no'],
+  components: {codePop},
   data() {
     return {
       defaultProps: {
@@ -296,6 +297,11 @@ export default {
     }
   },
   methods: {
+    /** 流量返回弹窗*/
+    getJobNumber() {
+      this.getList()
+      this.getCompanyList();
+    },
     getCompanyList() {
       selectCompanyList().then(response => {
         this.companyList = response;
@@ -417,13 +423,18 @@ export default {
 
     /** 细项维护添加按钮操作 */
     handleAddTCapitalDetail() {
-      let obj = {};
+      if (this.form.parentId == null) {
+        this.$modal.msgError("请点击树节点再点击添加");
+        return
+      }
+      this.$refs.select.show( this.form);
+/*      let obj = {};
       obj.cashFlowCode = "";
       obj.cashFlowName = "";
       obj.isunabl = "";
       obj.inorout = "";
       obj.quedataway = "";
-      this.form.tCodeList.push(obj);
+      this.form.tCodeList.push(obj);*/
     },
     /** 现金流量代码删除 */
     handleDeleteTCapitalDetail(row) {

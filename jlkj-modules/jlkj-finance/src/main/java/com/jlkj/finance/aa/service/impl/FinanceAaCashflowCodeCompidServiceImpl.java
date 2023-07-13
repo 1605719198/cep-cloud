@@ -1,18 +1,18 @@
 package com.jlkj.finance.aa.service.impl;
 
-import java.util.List;
-
 import cn.hutool.core.util.IdUtil;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
-import com.jlkj.finance.aa.domain.FinanceAaCashflowCode;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.finance.aa.domain.FinanceAaCashflowCodeCompid;
 import com.jlkj.finance.aa.dto.FinanceAaCashflowCodeDTO;
+import com.jlkj.finance.aa.mapper.FinanceAaCashflowCodeCompidMapper;
+import com.jlkj.finance.aa.service.IFinanceAaCashflowCodeCompidService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.finance.aa.mapper.FinanceAaCashflowCodeCompidMapper;
-import com.jlkj.finance.aa.domain.FinanceAaCashflowCodeCompid;
-import com.jlkj.finance.aa.service.IFinanceAaCashflowCodeCompidService;
+
+import java.util.List;
 
 import static com.jlkj.common.security.utils.SecurityUtils.getUsername;
 
@@ -64,7 +64,7 @@ public class FinanceAaCashflowCodeCompidServiceImpl implements IFinanceAaCashflo
         int insertFinanceAaCashflowCode = 0;
         for ( FinanceAaCashflowCodeDTO financeAaCashflowCodeDTO:projectIds){
             FinanceAaCashflowCodeCompid financeAaCashflowCodeCompid = new FinanceAaCashflowCodeCompid();
-            if (financeAaCashflowCodeDTO.getId()!=null){
+            if (!StringUtils.isEmpty(financeAaCashflowCodeDTO.getId())){
                 financeAaCashflowCodeDTO.setUpdateTime(DateUtils.getNowDate());
                 financeAaCashflowCodeDTO.setUpdateBy(getUsername());
                 BeanUtils.copyProperties(financeAaCashflowCodeDTO,financeAaCashflowCodeCompid);
