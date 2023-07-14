@@ -27,6 +27,7 @@ export function addTaskquestions(data) {
 }
 
 export function batchUpdateTaskquestions(data) {
+
   return request({
     url: '/human/taskquestions/batchupdate',
     method: 'post',
