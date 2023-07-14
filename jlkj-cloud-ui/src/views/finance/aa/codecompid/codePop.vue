@@ -114,7 +114,6 @@ export default {
         this.queryParam = queryParams;
         this.form = queryParams;
       }
-      console.log( this.form);
       this.getList();
       this.visible = true;
     },
@@ -153,7 +152,7 @@ export default {
         this.codeList[i].parentName = this.form.parentName
         this.form.codeList = this.codeList
       }
-      console.log(this.form);
+
           addCodecompid(this.form).then(response => {
             this.$modal.msgSuccess("保存成功");
             this.$emit("ok",this.codeList);
