@@ -253,11 +253,6 @@ export default {
         this.checkItem = this.form.rightAnswer.split(",")
       }
     },
-    // getContent() {
-    //   getQuestionscontent(this.form.questionsCode).then(response => {
-    //     this.textValue = response.data.questionsContent
-    //   });
-    // },
     onClose () {
       this.$emit('refreshData')
     },
