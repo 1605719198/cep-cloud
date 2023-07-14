@@ -80,7 +80,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="一级机构" prop="leader" v-if="refresh">
-              <el-input  v-model="form.deptName" disabled>
+              <el-input  v-model="form.deptName" maxlength="2000" disabled>
                 <el-button slot="append" icon="el-icon-search" @click="inputClick()"></el-button>
               </el-input>
             </el-form-item>

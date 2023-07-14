@@ -1643,8 +1643,6 @@ export default {
           formList.push(obj)
         }
       })
-      alert(JSON.stringify(this.selectionList))
-      alert(JSON.stringify(formList))
       /** 绑定表单流程 */
       saveInstanceForm(formList).then(res => {
         this.$modal.msgSuccess(res.msg)

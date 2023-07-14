@@ -54,4 +54,13 @@ public interface IAttendanceGatherService extends IService<AttendanceGather> {
      * @return 结果
      */
     public String importUser(List<AttendanceGatherDTO> attendanceGatherList, Boolean isUpdateSupport, String operName);
+
+    /**
+     * 月初出勤汇总
+     *
+     * @return 出勤汇总结果
+     * @author 266861
+     * @Date 2023/7/12 13:34
+     **/
+    public int attendanceSummary();
 }

@@ -28,13 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="leaveShifts"    column="leave_shifts"    />
         <result property="startDate"    column="start_date"    />
         <result property="endDate"    column="end_date"    />
+        <result property="appName"    column="app_name"    />
+        <result property="appDate"    column="app_date"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
     <sql id="selectPersonHolidayVo">
-        select id, comp_id, emp_no, emp_id, emp_name, postname, postid, org_parent_id, org_id, lea_type_id, is_contain_holiday, description, remaining_days, month_days, month_hours, year_days, year_hours, status, status_cancel, leave_hours, leave_shifts, start_date, end_date, creator, creator_id, create_date from human_hd_person_holiday
+        select id, comp_id, emp_no, emp_id, emp_name, postname, postid, org_parent_id, org_id, lea_type_id, is_contain_holiday, description, remaining_days, month_days, month_hours, year_days, year_hours, status, status_cancel, leave_hours, leave_shifts, start_date, end_date, app_name, app_date, creator, creator_id, create_date from human_hd_person_holiday
     </sql>
 
     <select id="selectPersonHolidayList" parameterType="PersonHoliday" resultMap="PersonHolidayResult">
@@ -78,6 +80,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leaveShifts != null">leave_shifts,</if>
             <if test="startDate != null">start_date,</if>
             <if test="endDate != null">end_date,</if>
+            <if test="appName != null">app_name,</if>
+            <if test="appDate != null">app_date,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="createDate != null">create_date,</if>
@@ -106,6 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leaveShifts != null">#{leaveShifts},</if>
             <if test="startDate != null">#{startDate},</if>
             <if test="endDate != null">#{endDate},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="appDate != null">#{appDate},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="createDate != null">#{createDate},</if>
@@ -137,6 +143,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leaveShifts != null">leave_shifts = #{leaveShifts},</if>
             <if test="startDate != null">start_date = #{startDate},</if>
             <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="appName != null">app_name = #{appName},</if>
+            <if test="appDate != null">app_date = #{appDate},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>

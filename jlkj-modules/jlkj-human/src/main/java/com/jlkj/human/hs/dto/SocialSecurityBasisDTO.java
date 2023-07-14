@@ -38,7 +38,7 @@ public class SocialSecurityBasisDTO {
      * 生效日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "生效日期*", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "生效日期*(例：2023-01-01)", width = 30)
     private Date effectDate;
 
     /**

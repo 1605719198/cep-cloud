@@ -42,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="parentId"    column="parent_id"    />
         <result property="compId"    column="comp_id"    />
         <result property="postId"    column="post_id"    />
+        <result property="postCode"    column="post_code"    />
     </resultMap>
 
     <resultMap type="FirstDeptDTO" id="FirstDeptResult">
@@ -108,9 +109,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectDeptUnionPost" parameterType="DeptUnionPostDTO" resultMap="DeptUnionPostResult">
-        SELECT 0 AS dept_id,dept_id AS parent_id,post_name AS name,comp_id,post_id FROM sys_post WHERE comp_id= 'J00'
+        SELECT CONCAT(dept_id,post_id)  AS dept_id,dept_id AS parent_id,post_name AS name,comp_id,post_id, post_code as post_code FROM sys_post WHERE comp_id= #{compId}
         UNION ALL
-        SELECT dept_id,parent_id,dept_name AS name,comp_id,'' AS post_id FROM sys_dept WHERE comp_id= 'J00'
+        SELECT dept_id,parent_id,dept_name AS name,comp_id,'' AS post_id, null as post_code FROM sys_dept WHERE comp_id= #{compId}
     </select>
 
     
