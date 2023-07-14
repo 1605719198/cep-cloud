@@ -79,6 +79,23 @@ public interface FinanceAoRepaymentMapper
 
 
     /**
+     * 查询还款单资料档（连表查询）
+     * @param id
+     * @return
+     */
+    public Map<String,Object> selectRepaymentById(String id);
+
+
+
+    /**
+     * 还款单清单查询
+     * @param financeAoRepayment
+     * @return
+     */
+    public List<Map<String,Object>> selectRepaymentList(FinanceAoRepayment financeAoRepayment);
+
+
+    /**
      * 查询最大流水号
      * @param companyId
      * @param billNo

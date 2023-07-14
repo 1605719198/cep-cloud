@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Component("ScheduledShiftsTask")
 public class ScheduledShiftsTask {
-
     @Autowired
     private RemoteHdApiService remoteHdApiService;
     public void scheduledShifts(){

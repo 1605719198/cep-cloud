@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.finance.ao.mapper.FinanceAoRepaymentMapper">
     
-    <resultMap type="FinanceAoRepayment" id="FinanceAoRepaymentResult">
+    <resultMap type="com.jlkj.finance.ao.domain.FinanceAoRepayment" id="FinanceAoRepaymentResult">
         <result property="id"    column="id"    />
         <result property="companyId"    column="company_id"    />
         <result property="billNo"    column="bill_no"    />
@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, company_id, bill_no, loan_id, pay_type, loan_by, loan_name, amt, pay_date, voucher_no, status, create_by, create_name, create_time, update_by, update_name, update_time from finance_ao_repayment
     </sql>
 
-    <select id="selectFinanceAoRepaymentList" parameterType="FinanceAoRepayment" resultMap="FinanceAoRepaymentResult">
+    <select id="selectFinanceAoRepaymentList" parameterType="com.jlkj.finance.ao.domain.FinanceAoRepayment" resultMap="FinanceAoRepaymentResult">
         <include refid="selectFinanceAoRepaymentVo"/>
         <where>  
             <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertFinanceAoRepayment" parameterType="FinanceAoRepayment">
+    <insert id="insertFinanceAoRepayment" parameterType="com.jlkj.finance.ao.domain.FinanceAoRepayment">
         insert into finance_ao_repayment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -85,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateFinanceAoRepayment" parameterType="FinanceAoRepayment">
+    <update id="updateFinanceAoRepayment" parameterType="com.jlkj.finance.ao.domain.FinanceAoRepayment">
         update finance_ao_repayment
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">company_id = #{companyId},</if>
@@ -128,6 +128,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by a.billNo
     </select>
 
+
+    <select id="selectRepaymentById"  parameterType="String" resultType="map">
+        select a.id,a.company_id companyId,a.bill_no billNo,a.pay_type payType,a.amt,a.pay_date payDate,a.status,a.update_time updateTime,b.loanNo, b.loanBy,b.loanName,b.totalAmt,(ifnull(c.hkAmt,0) + ifnull(d.bxAmt,0) - a.amt) reimbAmt, b.totalAmt - ifnull(c.hkAmt,0) - ifnull(d.bxAmt,0) + a.amt unreimbAmt
+        from finance_ao_repayment a INNER JOIN (SELECT t1.id loanId, t1.company_id companyId,t1.bill_no loanNo, t1.apply_by loanBy,t1.apply_name loanName,sum(t2.total_amt) totalAmt FROM finance_ao_loan t1 INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id GROUP BY t1.bill_no) b on a.loan_id = b.loanId
+        LEFT JOIN (select loan_id,sum(amt) hkAmt from finance_ao_repayment GROUP BY loan_id) c ON b.loanId = c.loan_id
+        LEFT JOIN (select loan_id,sum(amt) bxAmt from finance_ao_reimbursement_loan GROUP BY loan_id) d ON b.loanId = d.loan_id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectRepaymentList"  parameterType="com.jlkj.finance.ao.domain.FinanceAoRepayment" resultType="map">
+        select t1.id, t1.bill_no billNo ,t2.bill_no loanNo ,t2.apply_by applyBy ,t2.apply_name applyName,t2.create_by createBy,t2.create_name createName,t2.totalAmt,t1.amt,t1.status
+        from finance_ao_repayment t1 INNER JOIN (
+            select a.id,a.bill_no,a.apply_by,a.apply_name,a.create_by,a.create_name,sum(b.total_amt) totalAmt from finance_ao_loan a inner join finance_ao_loan_detail b on a.id=b.parent_id GROUP BY a.id
+        ) t2 on t1.loan_id = t2.id
+        <where>
+            <if test="companyId != null  and companyId != ''"> and t1.company_id = #{companyId}</if>
+            <if test="billNo != null  and billNo != ''"> and (t1.bill_no like concat('%', #{billNo},'%' ) or (t2.bill_no like concat('%', #{billNo},'%' )))</if>
+            <if test="createBy != null  and createBy != ''"> and t2.apply_by = #{createBy}</if>
+            <if test="params.beginDate != null and params.beginDate != ''"> and t1.pay_date BETWEEN #{params.beginDate} AND #{params.endDate} </if>
+        </where>
+        order by t2.bill_no,t1.bill_no
+    </select>
+
     <select id="selectMaxBillNo" parameterType="String" resultType="string">
         select max(bill_no) from finance_ao_repayment
         <where>
@@ -139,6 +162,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAoRepaymentVo"/>
         where loan_id = #{loanId}
     </select>
+
+
 
 
     <insert id="insertBatch">

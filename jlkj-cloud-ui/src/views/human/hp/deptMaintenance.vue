@@ -95,7 +95,7 @@
           <el-table-column label="机构编码" align="center" width="120" prop="deptCode" show-overflow-tooltip/>
           <el-table-column label="机构名称" align="center" width="300" prop="deptName" show-overflow-tooltip/>
           <el-table-column label="排序序号" align="center" prop="orderNum" show-overflow-tooltip/>
-          <el-table-column label="输入人" align="center" prop="updateBy" show-overflow-tooltip/>
+          <el-table-column label="输入人" align="center" prop="updateBy" show-overflow-tooltip :formatter="userFormat"/>
           <el-table-column label="状态" align="center" prop="status">
             <template v-slot="scope">
               <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -196,7 +196,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="排序序号" prop="orderNum">
-              <el-input maxlength="22" v-model="form.orderNum" type="number" placeholder="请输入排序序号"/>
+              <el-input  v-model.number="form.orderNum" type="number" placeholder="请输入排序序号"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -227,7 +227,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入人员" prop="updateBy">
-              {{ form.updateBy }}
+              {{ userFormat(this.form,1) }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -276,7 +276,7 @@
           </el-table-column>
           <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
             <template v-slot="scope">
-              <span>{{ scope.row.updateBy }}</span>
+              <span>{{ userFormat(scope.row)}}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
@@ -361,7 +361,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入人员" prop="updateBy">
-              {{ form.updateBy }}
+              {{ userFormat(form,1) }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -409,7 +409,7 @@
           </el-table-column>
           <el-table-column label="变更人" prop="updateBy" align="center" show-overflow-tooltip>
             <template v-slot="scope">
-              <span>{{ scope.row.updateBy }}</span>
+              <span>{{ userFormat(scope.row) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="变更日期" prop="updateTime" show-overflow-tooltip>
@@ -494,7 +494,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="输入人员" prop="updateBy">
-              {{ versionForm.updateBy }}
+              {{ userFormat(versionForm,1) }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -592,6 +592,7 @@ import {
   selectCompany,
   getVersion
 } from '@/api/human/hp/deptMaintenance'
+import {queryAllUser} from "@/api/system/user"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
@@ -602,6 +603,8 @@ export default {
   components: { Treeselect, DictTagHuman },
   data() {
     return {
+      //用户字典
+      resUserDiction: [],
       // 部门资料导入参数
       upload: {
         // 是否显示弹出层（部门资料导入）
@@ -750,6 +753,9 @@ export default {
         ],
         fax: [
           { pattern: /^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/, message: '传真格式不正确', trigger: 'blur' }
+        ],
+        orderNum:[
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ]
       },
       rulescopy: {
@@ -759,7 +765,7 @@ export default {
         newCompId: [
           { required: true, message: '目标公司不能为空', trigger: 'change' }
         ]
-      }
+      },
     }
   },
   watch: {
@@ -782,7 +788,24 @@ export default {
     this.getHumandisc()
     this.initData()
   },
+  beforeMount() {
+    /** 装载人员信息 */
+    queryAllUser().then(response => {
+      this.resUserDiction = response.rows;
+    })
+  },
   methods: {
+    // 人员字典翻译
+    userFormat(row, column){
+      let showBy = (row.updateBy)? 'updateBy' : 'createBy'
+      if(column){
+        /** UserDictFullName 显示工号_姓名 */
+        return this.UserDictFullName(this.resUserDiction, row[showBy]);
+      }else{
+        /** UserDictOnlyName 只显示姓名 */
+        return this.UserDictOnlyName(this.resUserDiction, row[showBy]);
+      }
+    },
     //获取公司列表
     getCompanyList() {
       selectCompany().then(response => {
@@ -805,7 +828,7 @@ export default {
     //表单数据配置
     setForm(e) {
       if (e === 0) {
-        this.form.createBy = this.user.empName
+        this.form.createBy = this.user.empNo
         this.form.createTime = getDateTime(0)
         this.form.effectDate = getDateTime(1)
         this.form.versionNo = 1
@@ -813,10 +836,8 @@ export default {
         this.form.isNew = 1
         this.form.status = '0'
       } else if (e === 1) {
-        this.form.versionNo++
+        this.form.versionNo++;
       }
-      this.form.updateBy = this.user.empName
-      this.form.updateTime = getDateTime(0)
     },
     /** 点选获取人员信息 */
     getJobNumber(val) {
@@ -993,8 +1014,8 @@ export default {
       this.formcopy = {
         oldCompId: '',
         newCompId: '',
-        createBy: this.user.empName,
-        updateBy: this.user.empName,
+        createBy: this.user.empNo,
+        updateBy: this.user.empNo,
         createTime: getDateTime(0),
         updateTime: getDateTime(0)
       }
@@ -1110,8 +1131,9 @@ export default {
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = '部门资料导入'
-      this.upload.open = true
+      // this.upload.title = '部门资料导入'
+      // this.upload.open = true
+      this.$modal.msgWarning("需求待定中……")
     },
     /** 下载模板操作 */
     importTemplate() {

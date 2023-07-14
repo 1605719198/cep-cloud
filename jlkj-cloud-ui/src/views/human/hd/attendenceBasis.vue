@@ -372,7 +372,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除员工出勤基本资料维护编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除所选中的数据项？').then(function() {
         return delAttendenceBasis(ids);
       }).then(() => {
         this.getList();

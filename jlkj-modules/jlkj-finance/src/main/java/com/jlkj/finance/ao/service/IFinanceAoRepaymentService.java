@@ -72,6 +72,22 @@ public interface IFinanceAoRepaymentService
 
 
     /**
+     * 查询还款单资料档（连表查询）
+     * @param id
+     * @return
+     */
+    public Map<String,Object> selectRepaymentById(String id);
+
+
+    /**
+     * 还款单清单查询
+     * @param financeAoRepayment
+     * @return
+     */
+    public List<Map<String,Object>> selectRepaymentList(FinanceAoRepayment financeAoRepayment);
+
+
+    /**
      * 批量新增还款单资料档
      * @param financeAoRepayments
      * @return

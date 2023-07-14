@@ -344,7 +344,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除出差地点记录编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除所选数据项？').then(function() {
         return delTripAddressRule(ids);
       }).then(() => {
         this.getList();

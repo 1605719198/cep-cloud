@@ -94,34 +94,34 @@
         where post_id = #{postId}
     </update>
 
-    <insert id="insertSysPostVersion" parameterType="HumanPostVersion" useGeneratedKeys="true" keyProperty="postId">
+    <insert id="insertSysPostVersion" parameterType="HumanPostVersion" useGeneratedKeys="true" keyProperty="id">
         insert into sys_post_version
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="postId != null and postId != ''">post_id,</if>
+            <if test="postId != null">post_id,</if>
             <if test="postCode != null and postCode != ''">post_code,</if>
-            <if test="postName != null and postName != ''">post_name,</if>
+            <if test="postName != null">post_name,</if>
             <if test="deptId != null">dept_id,</if>
-            <if test="specialityTypeId != null and specialityTypeId != ''">speciality_type_id,</if>
-            <if test="specialityId != null and specialityId != ''">speciality_id,</if>
-            <if test="postSequenceId != null and postSequenceId != ''">post_sequence_id,</if>
-            <if test="deptType != null and deptType != ''">dept_type,</if>
-            <if test="postTypeId != null and postTypeId != ''">post_type_id,</if>
+            <if test="specialityTypeId != null">speciality_type_id,</if>
+            <if test="specialityId != null">speciality_id,</if>
+            <if test="deptType != null">dept_type,</if>
+            <if test="postSequenceId != null">post_sequence_id,</if>
+            <if test="postTypeId != null">post_type_id,</if>
             <if test="jobTitleId != null">job_title_id,</if>
-            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="serialNumber != null">serial_number,</if>
             <if test="shiftWorkId != null">shift_work_id,</if>
             <if test="employmentNatureId != null">employment_nature_id,</if>
             <if test="workAddressId != null">work_address_id,</if>
-            <if test="workAddress != null and workAddress != ''">work_address,</if>
-            <if test="overseasLocations != null and overseasLocations != ''">overseas_locations,</if>
+            <if test="workAddress != null">work_address,</if>
+            <if test="overseasLocations != null">overseas_locations,</if>
             <if test="ifSpeciallyAssignedPerson != null">if_specially_assigned_person,</if>
             <if test="planCapacity != null">plan_capacity,</if>
             <if test="nowCapacity != null">now_capacity,</if>
             <if test="postSort != null">post_sort,</if>
             <if test="capacityBasis != null">capacity_basis,</if>
-            <if test="costCenterId != null and costCenterId != ''">cost_center_id,</if>
-            <if test="status != null and status != ''">status,</if>
+            <if test="costCenterId != null">cost_center_id,</if>
+            <if test="status != null">status,</if>
             <if test="parentPostId != null">parent_post_id,</if>
-            <if test="parentPostName != null and parentPostName != ''">parent_post_name,</if>
+            <if test="parentPostName != null">parent_post_name,</if>
             <if test="positionsClassId != null">positions_class_id,</if>
             <if test="orgId != null">org_id,</if>
             <if test="orgName != null">org_name,</if>
@@ -162,29 +162,29 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="postId != null">#{postId},</if>
             <if test="postCode != null and postCode != ''">#{postCode},</if>
-            <if test="postName != null and postName != ''">#{postName},</if>
+            <if test="postName != null">#{postName},</if>
             <if test="deptId != null">#{deptId},</if>
-            <if test="specialityTypeId != null and specialityTypeId != ''">#{specialityTypeId},</if>
-            <if test="deptType != null and deptType != ''">#{deptType},</if>
-            <if test="specialityId != null and specialityId != ''">#{specialityId},</if>
-            <if test="postSequenceId != null and postSequenceId != ''">#{postSequenceId},</if>
-            <if test="postTypeId != null and postTypeId != ''">#{postTypeId},</if>
+            <if test="specialityTypeId != null">#{specialityTypeId},</if>
+            <if test="specialityId != null">#{specialityId},</if>
+            <if test="deptType != null">#{deptType},</if>
+            <if test="postSequenceId != null">#{postSequenceId},</if>
+            <if test="postTypeId != null">#{postTypeId},</if>
             <if test="jobTitleId != null">#{jobTitleId},</if>
-            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
             <if test="shiftWorkId != null">#{shiftWorkId},</if>
             <if test="employmentNatureId != null">#{employmentNatureId},</if>
             <if test="workAddressId != null">#{workAddressId},</if>
-            <if test="workAddress != null and workAddress != ''">#{workAddress},</if>
-            <if test="overseasLocations != null and overseasLocations != ''">#{overseasLocations},</if>
+            <if test="workAddress != null">#{workAddress},</if>
+            <if test="overseasLocations != null">#{overseasLocations},</if>
             <if test="ifSpeciallyAssignedPerson != null">#{ifSpeciallyAssignedPerson},</if>
             <if test="planCapacity != null">#{planCapacity},</if>
             <if test="nowCapacity != null">#{nowCapacity},</if>
             <if test="postSort != null">#{postSort},</if>
             <if test="capacityBasis != null">#{capacityBasis},</if>
-            <if test="costCenterId != null and costCenterId != ''">#{costCenterId},</if>
-            <if test="status != null and status != ''">#{status},</if>
+            <if test="costCenterId != null">#{costCenterId},</if>
+            <if test="status != null">#{status},</if>
             <if test="parentPostId != null">#{parentPostId},</if>
-            <if test="parentPostName != null and parentPostName != ''">#{parentPostName},</if>
+            <if test="parentPostName != null">#{parentPostName},</if>
             <if test="positionsClassId != null">#{positionsClassId},</if>
             <if test="orgId != null">#{orgId},</if>
             <if test="orgName != null">#{orgName},</if>

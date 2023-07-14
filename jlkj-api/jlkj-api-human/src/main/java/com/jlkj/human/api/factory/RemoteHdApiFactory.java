@@ -18,9 +18,15 @@ public class RemoteHdApiFactory implements FallbackFactory<RemoteHdApiService> {
         return new RemoteHdApiService()
         {
             @Override
-            public AjaxResult scheduledShifts(String source){
+            public AjaxResult scheduledShifts(String source){ return AjaxResult.error("操作失败"); }
+
+            @Override
+            public AjaxResult scheduledZeroing(String source){
                 return AjaxResult.error("操作失败");
             }
+
+            @Override
+            public AjaxResult attendanceSummary(String source) { return AjaxResult.error("操作失败"); }
         };
     }
 }

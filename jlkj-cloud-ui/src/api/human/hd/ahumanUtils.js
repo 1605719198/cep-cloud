@@ -25,3 +25,23 @@ export function getDateTime(e,dates){
     return ymdhms
   }
 }
+
+// 数字长度校验
+export function numberLength(rule,value,callback,required,maxLength,minLength) {
+  const re = /^[0-9]*[1-9][0-9]*$/;
+  const rsCheck = re.test(value);
+  if(required){
+  }
+  if (!rsCheck) {
+    // callback(new Error('请输入正整数'));
+    callback()
+  }else{
+    let str = value.toString();
+    let length = str.length;
+    if((maxLength&&length>maxLength)||(minLength&&length<minLength)){
+      callback(new Error('请输入长度为'+minLength+'到'+maxLength+'之间的数'))
+    }else{
+      callback();
+    }
+  }
+}

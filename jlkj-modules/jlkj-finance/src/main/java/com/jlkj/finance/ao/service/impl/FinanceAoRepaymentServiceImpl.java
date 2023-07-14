@@ -72,6 +72,8 @@ public class FinanceAoRepaymentServiceImpl implements IFinanceAoRepaymentService
     @Override
     public int updateFinanceAoRepayment(FinanceAoRepayment financeAoRepayment)
     {
+        financeAoRepayment.setUpdateBy(SecurityUtils.getUsername());
+        financeAoRepayment.setUpdateName(SecurityUtils.getNickName());
         financeAoRepayment.setUpdateTime(DateUtils.getNowDate());
         return financeAoRepaymentMapper.updateFinanceAoRepayment(financeAoRepayment);
     }
@@ -108,6 +110,27 @@ public class FinanceAoRepaymentServiceImpl implements IFinanceAoRepaymentService
     @Override
     public List<Map<String,String>> selectLoanApply(String companyId){
         return financeAoRepaymentMapper.selectLoanApply(companyId);
+    }
+
+
+    /**
+     * 查询还款单资料档（连表查询）
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String,Object> selectRepaymentById(String id){
+        return financeAoRepaymentMapper.selectRepaymentById(id);
+    }
+
+    /**
+     * 还款单清单查询
+     * @param financeAoRepayment
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> selectRepaymentList(FinanceAoRepayment financeAoRepayment){
+        return financeAoRepaymentMapper.selectRepaymentList(financeAoRepayment);
     }
 
 

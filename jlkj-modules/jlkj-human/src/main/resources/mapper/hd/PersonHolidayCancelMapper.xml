@@ -36,13 +36,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="monthHours"    column="month_hours"    />
         <result property="yearDays"    column="year_days"    />
         <result property="yearHours"    column="year_hours"    />
+        <result property="appName"    column="app_name"    />
+        <result property="appDate"    column="app_date"    />
         <result property="creator"    column="creator"    />
         <result property="creatorId"    column="creator_id"    />
         <result property="createDate"    column="create_date"    />
     </resultMap>
 
     <sql id="selectPersonHolidayCancelVo">
-        select id, person_holiday_id, comp_id, emp_no, emp_id, emp_name, post_name, post_id, org_parent_id, org_id, start_date, end_date, leave_days, ori_start_date, ori_end_date, ori_leave_days, lea_type_id, leave_shifts, leave_hours, mor_leave_hours, mor_leave_shifts, status, is_all, description, is_contain_holiday, remaining_days, month_days, month_hours, year_days, year_hours, creator, creator_id, create_date from human_hd_person_holiday_cancel
+        select id, person_holiday_id, comp_id, emp_no, emp_id, emp_name, post_name, post_id, org_parent_id, org_id, start_date, end_date, leave_days, ori_start_date, ori_end_date, ori_leave_days, lea_type_id, leave_shifts, leave_hours, mor_leave_hours, mor_leave_shifts, status, is_all, description, is_contain_holiday, remaining_days, month_days, month_hours, year_days, year_hours, app_name, app_date, creator, creator_id, create_date from human_hd_person_holiday_cancel
     </sql>
 
     <select id="selectPersonHolidayCancelList" parameterType="PersonHolidayCancel" resultMap="PersonHolidayCancelResult">
@@ -95,6 +97,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="monthHours != null">month_hours,</if>
             <if test="yearDays != null">year_days,</if>
             <if test="yearHours != null">year_hours,</if>
+            <if test="appName != null">app_name,</if>
+            <if test="appDate != null">app_date,</if>
             <if test="creator != null">creator,</if>
             <if test="creatorId != null">creator_id,</if>
             <if test="createDate != null">create_date,</if>
@@ -130,6 +134,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="monthHours != null">#{monthHours},</if>
             <if test="yearDays != null">#{yearDays},</if>
             <if test="yearHours != null">#{yearHours},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="appDate != null">#{appDate},</if>
             <if test="creator != null">#{creator},</if>
             <if test="creatorId != null">#{creatorId},</if>
             <if test="createDate != null">#{createDate},</if>
@@ -168,6 +174,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="monthHours != null">month_hours = #{monthHours},</if>
             <if test="yearDays != null">year_days = #{yearDays},</if>
             <if test="yearHours != null">year_hours = #{yearHours},</if>
+            <if test="appName != null">app_name = #{appName},</if>
+            <if test="appDate != null">app_date = #{appDate},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="creatorId != null">creator_id = #{creatorId},</if>
             <if test="createDate != null">create_date = #{createDate},</if>

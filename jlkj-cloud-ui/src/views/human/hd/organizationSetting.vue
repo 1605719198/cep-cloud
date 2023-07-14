@@ -315,40 +315,39 @@ export default {
       rules: {
         onDutyTime: [
           { required: true, message: "上班打卡有效时间不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         offDutyTime: [
           { required: true, message: "下班打卡有效时间不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         lateTime: [
           { required: true, message: "迟到时间不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         leaTime: [
           { required: true, message: "早退时间不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         delayTime: [
           { required: true, message: "缓冲时间不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         effectDate: [
           { required: true, message: "生效日期不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
         ],
         beforeCheckDays: [
           { required: true, message: "往前审核天数不能为空", trigger: "blur" },
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         offDutyAm: [
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         onDutyPm: [
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
         spaceTime: [
-          { max: 10, message: "输入长度最大为10",trigger: "blur"}
+          { type: 'number',min:0,max:10000, message: '必须在0到10000之间', trigger: 'blur' }
         ],
 
       }

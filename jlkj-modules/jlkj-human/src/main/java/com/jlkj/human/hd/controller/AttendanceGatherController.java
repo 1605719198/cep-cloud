@@ -344,4 +344,16 @@ public class AttendanceGatherController extends BaseController {
     {
         iAttendanceGatherService.importTemplate(response);
     }
+
+    /**
+     * 月初出勤汇总
+     *
+     * @return 出勤汇总结果
+     * @author 266861
+     * @Date 2023/7/12 13:34
+     **/
+    @GetMapping("/summary")
+    public AjaxResult attendanceSummary(){
+        return success(iAttendanceGatherService.attendanceSummary());
+    }
 }

@@ -32,11 +32,10 @@
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
                  label-width="68px"
         >
-          <el-form-item label="岗位编码" prop="postId">
-            <el-input maxlength="10"
+          <el-form-item label="岗位编码" prop="postCode">
+            <el-input
                       clearable
-                      v-model="queryParams.postId"
-                      type="number"
+                      v-model="queryParams.postCode"
                       placeholder="请输入岗位编码"
             />
           </el-form-item>
@@ -55,7 +54,7 @@
             </template>
           </el-table-column>
           <el-table-column label="部门" align="center" prop="departmentName" width="100"/>
-          <el-table-column label="岗位编码" align="center" prop="postId" width="75"/>
+          <el-table-column label="岗位编码" align="center" prop="postCode" width="75"/>
           <el-table-column label="职位中文名称" align="center" prop="postName" width="350" show-overflow-tooltip/>
           <el-table-column label="手机" align="center" prop="myMobilePhone"/>
           <el-table-column label="办公电话" align="center" prop="officeTelephone"/>
@@ -65,6 +64,7 @@
 
         <pagination
           :total="total"
+          v-show="total>0"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
@@ -79,7 +79,7 @@ import '@/assets/styles/humanStyles.scss'
 import DictTagHumanBase from '@/views/components/human/dictTag/humanBaseInfo'
 import { getBaseInfo } from '@/api/human/hm/baseInfo'
 import { deptPostTree, selectCompany, queryPersonByPost } from '@/api/human/hp/deptMaintenance'
-
+import { listPostMaintenance } from '@/api/human/hp/postMaintenance'
 export default {
   name: 'deptPost',
   dicts: ['sys_normal_disable'],
@@ -131,7 +131,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         compId: null,
-        postId: null
+        postCode: null,
+        postId: null,
       },
       // 表单参数
       form: {},
@@ -199,6 +200,7 @@ export default {
     handleNodeClick(data) {
       if (data.postId) {
         this.queryParams.postId = data.postId
+        // this.queryParams.postCode = data.postCode
         this.getList()
       }
     },
@@ -207,21 +209,37 @@ export default {
       this.loading = true
       queryPersonByPost(this.queryParams).then(response => {
         this.postPersons = response.data.rows
-        alert(JSON.stringify(response))
         this.loading = false
         this.total = response.data.total
       })
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      if(this.queryParams.postCode){
+        let param = {
+          postCode :this.queryParams.postCode,
+          compId: this.queryParams.compId
+        }
+        listPostMaintenance(param).then(response=>{
+          if(response.total===1){
+            this.queryParams.postId = response.rows[0].postId;
+            this.queryParams.pageNum = 1
+            this.getList()
+          }else if(response.total===0){
+            this.postPersons = [];
+            this.total = 0;
+          }
+        })
+      }else{
+        this.$modal.msgWarning("请输入岗位编码")
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
       this.compId = this.logincompId
-      this.handleQuery()
+      this.postPersons = [];
+      this.total = 0;
     }
   }
 }

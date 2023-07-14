@@ -266,9 +266,9 @@ export default {
     inputAcctName(val) {
       this.indexRow= val.index
       if(this.form.itemList[this.indexRow-1].kind=='A'){
-        this.$refs.selectAcctcodeGroupPop.show();
+        this.$refs.selectAcctcodeGroupPop.show(false);
       }else if(this.form.itemList[this.indexRow-1].kind=='B'){
-        this.$refs.selectProjectFormulaPop.show();
+        this.$refs.selectProjectFormulaPop.show(false,this.queryParams.itemCode);
       }else{
         this.$modal.msgError("请先选择代码类别");
       }
@@ -276,10 +276,20 @@ export default {
 
     },
     getAcctCodeCorpPop(val){
-      this.form.itemList[this.indexRow-1].code=val[0].groupAcctCode
+      this.form.itemList[this.indexRow-1].code=val[0].groupAcctCode;
+      if(val.length>1){
+        for (let i = 1; i<val.length; i++){
+          this.handleAddItemList("",val[i].groupAcctCode,"A")
+        }
+      }
     },
     getProjectFormulaPop(val){
       this.form.itemList[this.indexRow-1].code=val[0].itemCode
+      if(val.length>1){
+        for (let i = 1; i<val.length; i++){
+          this.handleAddItemList("",val[i].itemCode,"B")
+        }
+      }
     },
     /** 查询现金流量代码-对应会计科目列表 */
     getList() {
@@ -373,13 +383,14 @@ export default {
       row.index = rowIndex + 1;
     },
     /** 细项维护添加按钮操作 */
-    handleAddItemList() {
+    handleAddItemList(event,code,kind) {
       let obj = {};
       obj.companyId = "";
       obj.reportId = "";
       obj.reportNo = "";
       obj.itemCode = "";
-      obj.code = "";
+      obj.kind = kind || "";
+      obj.code = code || "";
       obj.status = "0";
       this.form.itemList.push(obj);
     },

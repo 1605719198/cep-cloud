@@ -1,12 +1,12 @@
 package com.jlkj.finance.ao.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 还款单资料档对象 finance_ao_repayment
@@ -143,10 +143,6 @@ public class FinanceAoRepayment extends BaseEntity
     public Date getPayDate()
     {
         return payDate;
-    }
-    public void setVoucherNo(String voucherNo)
-    {
-        this.voucherNo = voucherNo;
     }
 
     public String getVoucherNo()
