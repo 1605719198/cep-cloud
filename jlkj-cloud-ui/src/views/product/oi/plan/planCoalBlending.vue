@@ -3,20 +3,20 @@
     <div class="avue-crud__search" style="border: 0">
       <el-form :model="query" ref="query" :inline="true">
             <el-form-item label="计划编号" prop="planNumber">
-              <el-input type="text" placeholder="计划编号" v-model="query.planNumber" clearable/>
+              <el-input type="text" placeholder="计划编号" size="small" v-model="query.planNumber" clearable/>
             </el-form-item>
             <el-form-item label="计划日期" prop="planDate">
-              <el-date-picker v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
+              <el-date-picker v-model="planDate" type="daterange" size="small" start-placeholder="计划开始日期" range-separator="-"
                               end-placeholder="计划结束日期"/>
             </el-form-item>
             <el-form-item label="状态" prop="planState">
-              <el-select v-model="planState" placeholder="选择状态" clearable>
+              <el-select v-model="planState" size="small" placeholder="选择状态" clearable>
                 <el-option v-for="item in selectStates" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
             </el-form-item>
             <el-form-item label="焦炭等级" prop="materialId">
-              <el-select v-model="query.materialId" placeholder="选择焦炭等级" clearable>
+              <el-select v-model="query.materialId" size="small" placeholder="选择焦炭等级" clearable>
                 <el-option v-for="item in selectCokeType" :key="item.id" :label="item.materials_name" :value="item.id"/>
               </el-select>
             </el-form-item>
@@ -184,7 +184,7 @@ export default {
   created() {
     listMaterialsBoxJ().then(res => {
       // this.selectCokeType = res.data;//表格数据
-      this.selectCokeType = res.filter(item => {
+      this.selectCokeType = res.data.filter(item => {
         return item.materials_code.substring(0, 5) === '01501';
       });
     }, error => {
@@ -275,14 +275,12 @@ export default {
           deleteUserId: this.$store.getters.userInfo.userId,
           deleteUserName: this.$store.getters.userInfo.userName,
         }).then(res => {
-          if (res.code == 200) {
-            this.$message({
-              type: "success", message: "操作成功！", duration: 1000,
-              onClose: () => {
-                this.onLoad();
-              }
-            });
-          }
+          this.$message({
+            type: "success", message: "删除成功！", duration: 1000,
+            onClose: () => {
+              this.onLoad();
+            }
+          });
         }, error => {
           window.console.log(error);
         });
@@ -303,14 +301,12 @@ export default {
         req('post', 'updateProductionPlanCfgCokeConfirm', {
           id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.$store.getters.userInfo.userName,
         }).then(res => {
-          if (res.code == 200) {
-            this.$message({
-              type: "success", message: "操作成功！", duration: 1000,
-              onClose: () => {
-                this.onLoad();
-              }
+          this.$message({
+            type: "success", message: "确认成功！", duration: 1000,
+            onClose: () => {
+              this.onLoad();
+            }
             });
-          }
         }, error => {
           window.console.log(error);
         });

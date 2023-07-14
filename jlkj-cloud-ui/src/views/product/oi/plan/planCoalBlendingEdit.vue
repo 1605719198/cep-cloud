@@ -68,20 +68,20 @@
 <!--          </template>-->
 <!--        </el-table-column>-->
 
-        <el-table-column prop="coal_type_name" label="煤种"/>
-        <el-table-column prop="materials_small_name" label="小煤种">
+        <el-table-column prop="coal_type_name" label="煤种" width="150"/>
+        <el-table-column prop="materials_small_name" label="小煤种" width="300">
           <template slot-scope="scope">
             <template v-if="editIndex === scope.$index">
               <el-form-item label="" :prop="'tableData.'+scope.$index+'.materials_small_code'" :rules="rules.materials_small_code"
-                            label-width="0px" size="small">
+                            label-width="0px" size="small" style="width: 250px;">
                 <el-select v-model="scope.row.materials_small_code" placeholder="选择小煤种">
-                  <el-option v-for="item in selectSmallCoalType" :key="item.id" :label="item.materials_small_name" :value="item.materials_small_code"
+                  <el-option v-for="item in selectSmallCoalType" :key="item.id" :label="item.materials_small_name+'_'+item.materials_small_code" :value="item.materials_small_code"
                              @click.native="changeSmallCoalType(item)"/>
                 </el-select>
               </el-form-item>
             </template>
             <template v-else>
-              <div class="cell">{{ scope.row.materials_small_name }}</div>
+              <div class="cell">{{ scope.row.materials_small_name+'_'+scope.row.materials_small_code }}</div>
             </template>
           </template>
         </el-table-column>
@@ -141,9 +141,13 @@
 <script>
 import {req} from "@/api/production/oi/common";
 import {listMaterialsBoxJ, getMaterialsCodeSmallDic} from "@/api/material/mr/parameter/materialCode";
+import Temporary from "@/views/logistics/wv/temporary";
+import TemplateBar from "@/views/product/oi/statistics/templateBar";
 
 export default {
   name: "planCoalBlendingEdit",
+  components: {TemplateBar, Temporary},
+
   props: ['data'],
   data() {
     let positiveNumber = (rule, value, callback) => {
@@ -233,7 +237,7 @@ export default {
     });
 
     listMaterialsBoxJ().then(res => {
-      this.selectCokeType = res.filter(item => {
+      this.selectCokeType = res.data.filter(item => {
         return item.materials_code.substring(0,5) === '01501';
       });
     }, error => {
@@ -366,7 +370,6 @@ export default {
       this.form.material_name = item.materials_name;
     },
 
-
     handleChange(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
@@ -382,14 +385,12 @@ export default {
               create_user_name: this.$store.getters.userInfo.nickName,
               detail_list: this.form.tableData,
             }).then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: "success", message: "操作成功！", duration: 1000,
-                  onClose: () => {
-                    this.$emit('submitSave', res.msg)
-                  }
-                });
-              }
+              this.$message({
+                type: "success", message: "新增成功！", duration: 1000,
+                onClose: () => {
+                  this.$emit('submitSave', res.msg)
+                }
+              });
             }, error => {
               window.console.log(error);
             });
@@ -406,14 +407,12 @@ export default {
               modify_user_name: this.$store.getters.userInfo.nickName,
               detail_list: [...this.form.tableData, ...this.form.tableDelData],
             }).then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: "success", message: "操作成功！", duration: 1000,
-                  onClose: () => {
-                    this.$emit('submitSave', res.msg)
-                  }
-                });
-              }
+              this.$message({
+                type: "success", message: "修改成功！", duration: 1000,
+                onClose: () => {
+                  this.$emit('submitSave', res.msg)
+                }
+              });
             }, error => {
               window.console.log(error);
             });

@@ -3,6 +3,7 @@
     <el-form :model="query" ref="query" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="计划年份" prop="planYear">
         <el-date-picker v-model="query.planYear"
+                        size="small"
                         type="year"
                         placeholder="计划年份"
                         value-format="yyyy" />
@@ -11,6 +12,7 @@
                     prop="planMonth">
         <el-date-picker v-model="query.planMonth"
                         type="month"
+                        size="small"
                         placeholder="计划月份"
                         format="MM"
                         value-format="M" />

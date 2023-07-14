@@ -38,8 +38,8 @@
               <el-table-column prop="equipmentType" label="设备类型" sortable minWidth="150"/>
               <el-table-column fixed="right" label="操作" width="150" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini" plain icon="el-icon-circle-plus" type="primary"
-                             @click="handleAdd(scope.$index, scope.row)">添加
+                  <el-button size="mini" icon="el-icon-thumb" type="text"
+                             @click="handleAdd(scope.$index, scope.row)">选择
                   </el-button>
                 </template>
               </el-table-column>
