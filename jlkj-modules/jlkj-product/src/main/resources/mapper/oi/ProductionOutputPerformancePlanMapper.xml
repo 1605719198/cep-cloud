@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionOutputPerformancePlanMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.product.oi.domain.ProductionOutputPerformancePlan">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="furnaceArea" column="furnace_area" jdbcType="INTEGER"/>
+        <result property="releasedNum" column="released_num" jdbcType="INTEGER"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="furnaceNum" column="furnace_num" jdbcType="INTEGER"/>
+        <result property="lastCoalLoadTime" column="last_coal_load_time" jdbcType="TIMESTAMP"/>
+        <result property="planCokingTime" column="plan_coking_time" jdbcType="VARCHAR"/>
+        <result property="planFocusTime" column="plan_focus_time" jdbcType="TIMESTAMP"/>
+        <result property="syncId" column="sync_id" jdbcType="INTEGER"/>
+        <result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+        <result property="pushId" column="push_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,furnace_area,released_num,
+        class_name,furnace_num,last_coal_load_time,
+        plan_coking_time,plan_focus_time,sync_id,
+        operate_time,push_id
+    </sql>
+
+    <select id="getProductionOutputPerformancePlanPageData" parameterType="com.jlkj.product.oi.dto.productionoutputperformanceplan.PageProductionOutputPerformancePlanDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformanceplan.PageProductionOutputPerformancePlanVO">
+        select
+            a.id,
+            a.furnace_area,
+            a.released_num,
+            a.class_name,
+            a.furnace_num,
+            case when ISNULL(a.last_coal_load_time) then '' else DATE_FORMAT(a.last_coal_load_time,'%Y-%m-%d %H:%i:%s') end as last_coal_load_time,
+            a.plan_coking_time,
+            case when ISNULL(a.plan_focus_time) then '' else DATE_FORMAT(a.plan_focus_time,'%Y-%m-%d %H:%i:%s') end as plan_focus_time,
+            case when push_id is null then '未推' else '已推' end as status
+        from t_production_output_performance_plan a
+        where 1=1
+          and (#{condition.furnaceArea} = -1 or a.furnace_area = #{condition.furnaceArea})
+          and (#{condition.className} = '' or a.class_name like concat('%',#{condition.className},'%'))
+          and (#{condition.startTime} = '' or a.plan_focus_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
+          and (#{condition.endTime} = '' or a.plan_focus_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
