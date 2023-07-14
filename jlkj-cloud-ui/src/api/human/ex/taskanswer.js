@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询考试实时数据列表
 export function listTaskanswer(query) {
   return request({
-    url: '/onlineexam/taskanswer/list',
+    url: '/human/onlineexam/taskanswer/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listTaskanswer(query) {
 // 查询考试实时数据详细
 export function getTaskanswer(examCode) {
   return request({
-    url: '/onlineexam/taskanswer/' + examCode,
+    url: '/human/onlineexam/taskanswer/' + examCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getTaskanswer(examCode) {
 // 新增考试实时数据
 export function addTaskanswer(data) {
   return request({
-    url: '/onlineexam/taskanswer',
+    url: '/human/onlineexam/taskanswer',
     method: 'post',
     data: data
   })

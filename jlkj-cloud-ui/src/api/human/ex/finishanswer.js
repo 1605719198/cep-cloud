@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询考试成绩列表
 export function listFinishanswer(query) {
   return request({
-    url: '/onlineexam/finishanswer/list',
+    url: '/human/onlineexam/finishanswer/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listFinishanswer(query) {
 // 查询考试成绩详细
 export function getFinishanswer(examCode) {
   return request({
-    url: '/onlineexam/finishanswer/' + examCode,
+    url: '/human/onlineexam/finishanswer/' + examCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getFinishanswer(examCode) {
 // 新增考试成绩
 export function addFinishanswer(data) {
   return request({
-    url: '/onlineexam/finishanswer',
+    url: '/human/onlineexam/finishanswer',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addFinishanswer(data) {
 // 维护考试成绩
 export function saveFinishanswer(data) {
   return request({
-    url: '/onlineexam/finishanswer/save',
+    url: '/human/onlineexam/finishanswer/save',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function saveFinishanswer(data) {
 // 修改考试成绩
 export function updateFinishanswer(data) {
   return request({
-    url: '/onlineexam/finishanswer',
+    url: '/human/onlineexam/finishanswer',
     method: 'put',
     data: data
   })
@@ -47,7 +47,7 @@ export function updateFinishanswer(data) {
 // 删除考试成绩
 export function delFinishanswer(examCode) {
   return request({
-    url: '/onlineexam/finishanswer/' + examCode,
+    url: '/human/onlineexam/finishanswer/' + examCode,
     method: 'delete'
   })
 }
@@ -55,7 +55,7 @@ export function delFinishanswer(examCode) {
 // 导出考试成绩
 export function exportFinishanswer(query) {
   return request({
-    url: '/onlineexam/finishanswer/export',
+    url: '/human/onlineexam/finishanswer/export',
     method: 'get',
     params: query
   })

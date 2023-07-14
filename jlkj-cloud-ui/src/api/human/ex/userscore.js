@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询考试成绩列表
 export function listUserscore(query) {
   return request({
-    url: '/onlineexam/userscore/list',
+    url: '/human/userscore/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listUserscore(query) {
 // 查询考试成绩详细
 export function getUserscore(examCode) {
   return request({
-    url: '/onlineexam/userscore/' + examCode,
+    url: '/human/userscore/' + examCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getUserscore(examCode) {
 // 新增考试成绩
 export function addUserscore(data) {
   return request({
-    url: '/onlineexam/userscore',
+    url: '/human/userscore',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addUserscore(data) {
 // 维护考试成绩
 export function intoUserscore(data) {
   return request({
-    url: '/onlineexam/userscore/into',
+    url: '/human/userscore/into',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function intoUserscore(data) {
 // 修改考试成绩
 export function updateUserscore(data) {
   return request({
-    url: '/onlineexam/userscore',
+    url: '/human/userscore',
     method: 'put',
     data: data
   })
@@ -47,7 +47,7 @@ export function updateUserscore(data) {
 // 删除考试成绩
 export function delUserscore(examCode) {
   return request({
-    url: '/onlineexam/userscore/' + examCode,
+    url: '/human/userscore/' + examCode,
     method: 'delete'
   })
 }
@@ -55,7 +55,7 @@ export function delUserscore(examCode) {
 // 导出考试成绩
 export function exportUserscore(query) {
   return request({
-    url: '/onlineexam/userscore/export',
+    url: '/human/userscore/export',
     method: 'get',
     params: query
   })
