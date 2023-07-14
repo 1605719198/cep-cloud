@@ -7,11 +7,10 @@ import com.jlkj.product.oi.dto.productioncokeshedoutput.*;
 import com.jlkj.product.oi.vo.productioncokeshedoutput.PageProductionCokeShedOutputVO;
 
 /**
- * 服务接口-焦棚产量维护
- *
- * @author sudeyou
- * @since 2022-10-18 14:57:19
- */
+*@description: 服务接口-焦棚产量维护
+*@Author: 265823
+*@date: 2023/7/10 14:16
+*/
 public interface ProductionCokeShedOutputService extends IService<ProductionCokeShedOutput> {
 
     /**
@@ -24,29 +23,27 @@ public interface ProductionCokeShedOutputService extends IService<ProductionCoke
     /**
      * 焦棚产量维护-新增
      * @param insertProductionCokeShedOutputDTO 新增dto
-     * @return 执行结果
      */
-    Object insertProductionCokeShedOutputData(InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO);
+    void insertProductionCokeShedOutputData(InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO);
 
     /**
      * 焦棚产量维护-修改
      * @param updateProductionCokeShedOutputDTO 修改dto
      * @return 执行结果
      */
-    Object updateProductionCokeShedOutputData(UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO);
+    void updateProductionCokeShedOutputData(UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO);
 
     /**
      * 焦棚产量维护-确认
      * @param confirmProductionCokeShedOutputDTO 修改dto
-     * @return 执行结果
      */
-    Object confirmProductionCokeShedOutputData(ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO);
+    void confirmProductionCokeShedOutputData(ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO);
 
     /**
      * 焦棚产量维护-删除
      * @param deleteProductionCokeShedOutputDTO 删除dto
      * @return 执行结果
      */
-    Object deleteProductionCokeShedOutputData(DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO);
+    void deleteProductionCokeShedOutputData(DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO);
 }
 

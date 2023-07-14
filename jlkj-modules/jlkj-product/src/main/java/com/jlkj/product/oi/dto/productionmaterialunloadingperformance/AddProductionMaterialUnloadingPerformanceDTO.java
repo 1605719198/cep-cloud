@@ -41,5 +41,10 @@ public class AddProductionMaterialUnloadingPerformanceDTO {
     private String className;
 
     private String unloadingTime;
+    // 0609新增 来源地代码
+    private String fromCode;
+
+    // 0609新增 来源地名称
+    private String fromDecs;
 
 }

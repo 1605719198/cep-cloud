@@ -60,18 +60,18 @@
                materials_code,
                materials_name,
                SUM(single_hole_production) / 1000 weight
-        FROM product_oi_output_performance_manual_bake
-        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-          AND production_date &lt; concat(curdate(), ' 20:00:00')
+        FROM t_production_output_performance_manual_bake
+        WHERE CONCAT(production_date,' ',actual_production_time) &gt;= concat(DATE_SUB(#{startDate}, interval 1 day), ' 20:00:00')
+          AND CONCAT(production_date,' ',actual_production_time) &lt; concat(#{endDate}, ' 20:00:00')
         GROUP BY coke_type, materials_code, materials_name
         UNION ALL
         SELECT 10000,
                materials_code,
                materials_name,
                SUM(single_hole_production) / 1000 weight
-        FROM product_oi_output_performance_manual_bake
-        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-          AND production_date &lt; concat(curdate(), ' 20:00:00')
+        FROM t_production_output_performance_manual_bake
+        WHERE CONCAT(production_date,' ',actual_production_time) &gt;= concat(DATE_SUB(#{startDate}, interval 1 day), ' 20:00:00')
+          AND CONCAT(production_date,' ',actual_production_time) &lt; concat(#{endDate}, ' 20:00:00')
         GROUP BY materials_code, materials_name
     </select>
 
@@ -80,41 +80,61 @@
         FROM (
                  SELECT SUM(complete_pound_num) weight
                  FROM logistics_wv_trans_actual_nut
-                 WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-                   AND pound_date &lt; concat(curdate(), ' 20:00:00')
+                 WHERE pound_date &gt;= concat(DATE_SUB(#{startDate}, interval 1 day), ' 20:00:00')
+                   AND pound_date &lt; concat(#{endDate}, ' 20:00:00')
+                   AND compute_flag &gt; 0
                  UNION ALL
                  SELECT SUM(complete_pound_num) weight
                  FROM logistics_wv_trans_actual_fines
-                 WHERE pound_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-                   AND pound_date &lt; concat(curdate(), ' 20:00:00')
+                 WHERE pound_date &gt;= concat(DATE_SUB(#{startDate}, interval 1 day), ' 20:00:00')
+                   AND pound_date &lt; concat(#{endDate}, ' 20:00:00')
+                   AND compute_flag &gt; 0
              ) a
     </select>
     <select id="getTodayYieldByStoveCount" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT COUNT(*) AS stoveCount FROM product_oi_output_performance_manual_bake
-        WHERE production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-          AND production_date &lt; concat(curdate(), ' 20:00:00')
+        SELECT coke_type,COUNT(*) AS stoveCount FROM t_production_output_performance_manual_bake
+        WHERE CONCAT(production_date,' ',actual_production_time) &gt;= concat(DATE_SUB(#{startDate}, interval 1 day), ' 20:00:00')
+          AND CONCAT(production_date,' ',actual_production_time) &lt; concat(#{endDate}, ' 20:00:00')
+        GROUP BY coke_type
     </select>
 
 
     <select id="getTodayConsumption" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT SUM(CASE WHEN type = '焦炭'
-THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
-               SUM(CASE WHEN type = 'W000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS water,
-               SUM(CASE WHEN type = 'P000' THEN IFNULL(weight, 0.0) ELSE 0.0 END)      AS electricity
+        SELECT ROUND(IFNULL(coke, 0), 3)                          AS coke,
+               ROUND(IFNULL(coal, 0), 3)                          AS coal,
+               IFNULL(water, 0)                                   AS water,
+               IFNULL(electricity, 0)                             AS electricity,
+               IFNULL(ROUND(IFNULL(coal, 0) / coke, 2), 0)        AS ton_coal,
+               IFNULL(ROUND(IFNULL(water, 0) / coke, 2), 0)       AS ton_water,
+               IFNULL(ROUND(IFNULL(electricity, 0) / coke, 2), 0) AS ton_electricity
         FROM (
-                 SELECT '焦炭' AS                                   type,
-                        CAST(SUM(loading_coal)/ 1000 as decimal(18, 2)) weight
-                 FROM product_oi_output_performance_manual_bake a
-                          LEFT JOIN product_oi_output_performance_manual_coal b on b.id = a.coal_record_id
-                 WHERE a.production_date &gt;= concat(DATE_SUB(curdate(), interval 1 day), ' 20:00:00')
-                   AND a.production_date &lt; concat(curdate(), ' 20:00:00')
-                 UNION ALL
-                 SELECT engy_type,
-                        CAST(SUM(qty) as decimal(18, 2))
-                 FROM v_energy_board_ems_data a
-                 WHERE STR_TO_DATE(e_count_date, '%Y%m%d') = curdate()
-                 GROUP BY engy_type
-             ) a
+                 SELECT ROUND(SUM(IFNULL(pro_con_qty, 0)), 2) AS water
+                 FROM v_energy_consume_output
+                 WHERE dict_value = '水消耗'
+                   AND e_count_date_class <![CDATA[ >= ]]> #{startDate}
+                   AND e_count_date_class <![CDATA[ <= ]]> #{endDate}
+             ) a,
+             (
+                 SELECT ROUND(SUM(IFNULL(pro_con_qty, 0)), 2) AS electricity
+                 FROM v_energy_consume_output
+                 WHERE dict_value = '耗电量'
+                   AND e_count_date_class <![CDATA[ >= ]]> #{startDate}
+                   AND e_count_date_class <![CDATA[ <= ]]> #{endDate}
+             ) b,
+             (
+                 SELECT SUM(single_hole_production) / 1000 AS coke
+                 FROM t_production_output_performance_manual_bake a
+                          LEFT JOIN t_production_output_performance_manual_coal b on b.id = a.coal_record_id
+                 WHERE DATE_FORMAT(DATE_ADD(CONCAT(a.production_date, ' ', actual_production_time), INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+                   AND DATE_FORMAT(DATE_ADD(CONCAT(a.production_date, ' ', actual_production_time), INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+             ) c,
+             (
+                 SELECT SUM(material_weight) / 1000 AS coal
+                 FROM t_production_configure_coal_species_performance a
+                          INNER JOIN t_production_configure_coal_species_performance_detail b on b.main_id = a.id
+                 WHERE configure_coal_species_date  <![CDATA[ >= ]]> #{startDate}
+                   AND configure_coal_species_date  <![CDATA[ >= ]]> #{endDate}
+             ) d
     </select>
 
 
@@ -136,52 +156,72 @@ THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
     </select>
 
     <select id="getTodayCokeShipmentInternal" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT complete_pound_num AS weight,
-               goods_no           AS material_code,
-               goods_name         AS materials_name
-        FROM logistics_wv_trans_actual_coke
-        WHERE compute_flag &lt; 0
-          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
-        UNION ALL
-        SELECT complete_pound_num,
-               goods_no,
-               goods_name
-        FROM logistics_wv_trans_actual_nut
-        WHERE compute_flag &lt; 0
-          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
-        UNION ALL
-        SELECT complete_pound_num,
-               goods_no,
-               goods_name
-        FROM logistics_wv_trans_actual_fines
-        WHERE compute_flag &lt; 0
-          AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+        SELECT
+            material_code,
+            materials_name,
+            SUM(weight) AS weight
+        FROM (
+                 SELECT complete_pound_num AS weight,
+                        goods_no           AS material_code,
+                        goods_name         AS materials_name
+                 FROM t_logistics_trans_actual_coke
+                 WHERE compute_flag &lt; 0
+                   AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+                 UNION ALL
+                 SELECT complete_pound_num,
+                        goods_no,
+                        goods_name
+                 FROM t_logistics_trans_actual_nut
+                 WHERE compute_flag &lt; 0
+                   AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+                 UNION ALL
+                 SELECT complete_pound_num,
+                        goods_no,
+                        goods_name
+                 FROM t_logistics_trans_actual_fines
+                 WHERE compute_flag &lt; 0
+                   AND DATE_FORMAT(pound_date, '%Y-%m-%d') = curdate()
+             ) a
+        GROUP BY material_code,materials_name
     </select>
 
     <select id="getTodayCokeShipmentOutgoing" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT net_wgt AS weight,
+        SELECT SUM(net_wgt) AS weight,
                material_code,
                materials_name
-        FROM product_oi_coke_factory_performance a
+        FROM t_production_coke_factory_performance a
         WHERE DATE_FORMAT(loading_time, '%Y-%m-%d') = curdate()
+        GROUP BY material_code,materials_name
     </select>
 
     <select id="getTodayCokeSteam" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
-        SELECT '产量' AS type,
-               IFNULL(SUM(a.qty),0) AS qty
-        FROM v_energy_board_ems_data a
-                 LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
-        WHERE a.engy_type IN
-              (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气')
-          and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
+        SELECT
+            '产量' AS type,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '超高压蒸汽'
+          AND e_count_date_class <![CDATA[ >= ]]> #{startDate}
+          AND e_count_date_class <![CDATA[ <= ]]> #{endDate}
+        GROUP BY dict_value,e_count_date_class
         UNION ALL
         SELECT '回收量',
-               IFNULL(SUM(a.qty),0) AS qty
-        FROM v_energy_board_ems_data a
-                 LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
-        WHERE a.engy_type IN
-              (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸汽回收量')
-          and DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') = curdate()
+               IFNULL(c.boiler_reheat_steam1, 0) +
+               IFNULL(c.boiler_reheat_steam2, 0) +
+               IFNULL(c.boiler_reheat_steam3, 0) +
+               IFNULL(c.boiler_reheat_steam4, 0) -
+               IFNULL(b.boiler_reheat_steam1, 0) -
+               IFNULL(b.boiler_reheat_steam2, 0) -
+               IFNULL(b.boiler_reheat_steam3, 0) -
+               IFNULL(b.boiler_reheat_steam4, 0) AS boiler_reheat_steam
+        FROM (
+                 SELECT MAX(time) last_time, MIN(time) first_time, COUNT(*) n
+                 FROM t_production_report_energy a
+                 WHERE DATE_FORMAT(DATE_ADD(time, INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+                   AND DATE_FORMAT(DATE_ADD(time, INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+             ) a
+                 LEFT JOIN t_production_report_energy b on a.first_time = b.time
+                 LEFT JOIN t_production_report_energy c on a.last_time = c.time
     </select>
 
     <select id="getCoalConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
@@ -260,6 +300,145 @@ THEN IFNULL(weight, 0.0) ELSE 0.0 END)  AS coke,
             ) a
             GROUP BY date
             ) AS b on a.date = b.date
+    </select>
+    <select id="getCraftCokeTemp" resultType="java.util.Map">
+        SELECT
+            *
+        FROM t_production_report_craft_coke_temp
+        WHERE
+            time = (SELECT MAX(time) FROM t_production_report_craft_coke_temp)
+        ORDER BY coke_oven_number
+    </select>
+
+    <select id="getCokeTotalYield" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            '全焦率' AS name,
+            ROUND(100 * (single_hole_production * (100 - cokeMT))/(coal * (100 - coalMT)),0) AS value
+        FROM
+            (
+            SELECT SUM(single_hole_production) / 1000 AS single_hole_production
+            FROM t_production_output_performance_manual_bake a
+            LEFT JOIN t_production_output_performance_manual_coal b on b.id = a.coal_record_id
+            WHERE DATE_FORMAT(DATE_ADD(CONCAT(a.production_date, ' ', actual_production_time), INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+            AND DATE_FORMAT(DATE_ADD(CONCAT(a.production_date, ' ', actual_production_time), INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+            ) a,
+            (SELECT mt AS cokeMT FROM v_quality_ts_record
+            WHERE recordtype='JX'
+            AND DATE_FORMAT(DATE_ADD(test_time , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+            AND DATE_FORMAT(DATE_ADD(test_time , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+            ORDER BY test_time LIMIT 1
+            ) b,
+            (SELECT mt AS coalMT FROM v_quality_ts_record
+            WHERE recordtype='MA' AND coalType='F'
+            AND DATE_FORMAT(DATE_ADD(test_time , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+            AND DATE_FORMAT(DATE_ADD(test_time , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+            ORDER BY test_time LIMIT 1
+            ) c,
+            (SELECT SUM(material_weight) / 1000 AS coal
+            FROM t_production_configure_coal_species_performance a
+            INNER JOIN t_production_configure_coal_species_performance_detail b on b.main_id = a.id
+            WHERE configure_coal_species_date  <![CDATA[ >= ]]> #{startDate}
+            AND configure_coal_species_date  <![CDATA[ >= ]]> #{endDate}
+            ) d
+        UNION ALL
+        SELECT '冶金焦率',
+               ROUND((weight - IFNULL(jf,0) - IFNULL(jd,0))*100/weight,0)
+        FROM
+            (SELECT SUM(single_hole_production)  AS weight FROM t_production_output_performance_manual_bake
+             WHERE
+                     DATE_FORMAT(DATE_ADD(CONCAT(production_date,' ',actual_production_time) , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+               AND DATE_FORMAT(DATE_ADD(CONCAT(production_date,' ',actual_production_time) , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+            ) a,
+            (SELECT SUM(complete_pound_num)  AS jf FROM t_logistics_trans_actual_fines
+             WHERE pound_date <![CDATA[ >= ]]> #{startDate}
+               AND pound_date <![CDATA[ <= ]]> #{endDate}
+               AND compute_flag > 0
+            ) b,
+            (SELECT SUM(complete_pound_num) AS jd FROM t_logistics_trans_actual_nut
+             WHERE pound_date <![CDATA[ >= ]]> #{startDate}
+               AND pound_date <![CDATA[ <= ]]> #{endDate}
+               AND compute_flag > 0
+            ) c
+        UNION ALL
+        SELECT '干熄焦率',
+               ROUND(SUM(CASE WHEN coke_type = 1 THEN 1 ELSE 0 END) *100/COUNT(*),0)
+        FROM t_production_output_performance_manual_bake
+        WHERE
+                DATE_FORMAT(DATE_ADD(CONCAT(production_date,' ',actual_production_time) , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+          AND DATE_FORMAT(DATE_ADD(CONCAT(production_date,' ',actual_production_time) , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+    </select>
+
+
+    <select id="getCokeTechnologyIndex" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT ROUND(AVG(NULLIF(pre_pressure, 0)), 2)              AS pre_pressure,
+               ROUND(AVG(NULLIF(main_steam_pressure, 0)), 2)       AS main_steam_pressure,
+               ROUND(AVG(NULLIF(main_steam_evaporation, 0)), 2)    AS main_steam_evaporation,
+               ROUND(AVG(NULLIF(exhaust_temp, 0)), 2)              AS exhaust_temp,
+               ROUND(AVG(NULLIF(t5_temp, 0)), 2)                   AS t5_temp,
+               ROUND(AVG(NULLIF(t6_temp, 0)), 2)                   AS t6_temp,
+               ROUND(AVG(NULLIF(air_volume, 0)), 2)                AS air_volume,
+               ROUND(AVG(NULLIF(gas_co, 0)), 2)                    AS gas_co,
+               ROUND(AVG(NULLIF(one_outlet_temp, 0)), 2)           AS one_outlet_temp,
+               ROUND(AVG(NULLIF(two_outlet_temp, 0)), 2)           AS two_outlet_temp,
+               ROUND(AVG(NULLIF(deaerator_temp, 0)), 2)            AS deaerator_temp,
+               ROUND(AVG(NULLIF(main_steam_temp, 0)), 2)           AS main_steam_temp,
+               ROUND(AVG(NULLIF(power_main_steam_temp, 0)), 2)     AS power_main_steam_temp,
+               ROUND(AVG(NULLIF(power_main_steam_pressure, 0)), 2) AS power_main_steam_pressure
+        FROM t_production_report_craft_cdq_process
+        WHERE
+            DATE_FORMAT(DATE_ADD(time, INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+          AND DATE_FORMAT(DATE_ADD(time , INTERVAL 4 HOUR), '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+    </select>
+    <select id="getCostMonthPlan" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            cost_date           AS costDate,
+            raw_materials       AS rawMaterials,
+            fuel_power          AS fuelPower,
+            salary,
+            manufacturing_costs AS manufacturingCosts,
+            total_cost          AS totalCost
+        FROM t_production_display_board_monthly_goal
+        WHERE cost_date = DATE_FORMAT(STR_TO_DATE(#{startDate}, '%Y-%m-%d'), '%Y%m')
+    </select>
+    <select id="getCostDayTotal" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(cost_date, '%Y-%m-%d') AS costDate,
+            raw_materials                      AS rawMaterials,
+            fuel_power                         AS fuelPower,
+            salary                             AS salary,
+            manufacturing_costs                AS manufacturingCosts,
+            sub_by_product                     AS subByProduct
+        FROM t_production_display_board
+        WHERE DATE_FORMAT(cost_date, '%Y-%m-%d') = #{endDate}
+    </select>
+    <select id="getCostDayTotalLimit" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(cost_date, '%Y-%m-%d') AS costDate,
+            raw_materials                      AS rawMaterials,
+            fuel_power                         AS fuelPower,
+            salary                             AS salary,
+            manufacturing_costs                AS manufacturingCosts,
+            sub_by_product                     AS subByProduct
+        FROM t_production_display_board
+        WHERE 1=1
+        ORDER BY cost_date DESC LIMIT 1
+    </select>
+    <select id="getCostDayCost" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(a.cost_date, '%Y-%m-%d') AS costDate,
+            a.raw_materials_day                  AS rawMaterials,
+            a.fuel_power_day                     AS fuelPower,
+            a.salary_day                         AS salary,
+            a.manufacturing_costs_day            AS manufacturingCosts,
+            ROUND(a.total_cost_day,2)            AS totalCost,
+            a.sub_by_product_day                AS subByProduct,
+            ROUND(b.total_cost,2)            AS planData
+        FROM t_production_display_board a
+                 LEFT JOIN t_production_display_board_monthly_goal b
+                           ON DATE_FORMAT(a.cost_date, '%Y%m') = b.cost_date
+        WHERE DATE_FORMAT(a.cost_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{startDate}
+          AND DATE_FORMAT(a.cost_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{endDate}
+        ORDER BY costDate DESC
     </select>
 
 </mapper>

@@ -15,8 +15,8 @@
             <result property="actualProductionTime" column="actual_production_time" jdbcType="TIME"/>
             <result property="cokeCurrent" column="coke_current" jdbcType="DECIMAL"/>
             <result property="cokeType" column="coke_type" jdbcType="SMALLINT"/>
-            <result property="planningRunCycle" column="planning_run_cycle" jdbcType="DECIMAL"/>
-            <result property="actualRunCycle" column="actual_run_cycle" jdbcType="DECIMAL"/>
+            <result property="planningRunCycle" column="planning_run_cycle" jdbcType="VARCHAR"/>
+            <result property="actualRunCycle" column="actual_run_cycle" jdbcType="VARCHAR"/>
             <result property="singleHoleProduction" column="single_hole_production" jdbcType="DECIMAL"/>
             <result property="coalPlanNumber" column="coal_plan_number" jdbcType="VARCHAR"/>
             <result property="materialsCode" column="materials_code" jdbcType="VARCHAR"/>
@@ -36,7 +36,7 @@
         create_time
     </sql>
 
-    <select id="getProductionOutputPerformanceManualBakePageData" parameterType="com.jlkj.product.oi.dto.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeVO">
+    <select id="getProductionOutputPerformanceManualBakePageData" parameterType="com.jlkj.product.oi.dto.productionoutputperformancemanualbake.InsertProductionOutputPerformanceManualBakeDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeVO">
         select a.id,
                a.shift_name,
                a.class_name,
@@ -50,7 +50,7 @@
                    else DATE_FORMAT(a.planning_production_time, '%H:%i:%s') end as planning_production_time,
                case
                    when ISNULL(a.actual_production_time) then ''
-                   else DATE_FORMAT(a.actual_production_time, '%H:%i:%s') end   as actual_production_time,
+                   else concat(DATE_FORMAT(a.production_date, '%Y-%m-%d'), ' ', DATE_FORMAT(a.actual_production_time, '%H:%i:%s')) end   as actual_production_time,
                a.coke_current,
                a.coke_type,
                a.planning_run_cycle,
@@ -65,15 +65,44 @@
                b.coal_current,
                b.Loading_coal as loading_coal,
                a.materials_name,
-               b.coal_tower_number
-        from product_oi_output_performance_manual_bake a
-        INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+               b.coal_tower_number,
+               case
+                   when ISNULL(c.planning_load_coal_time) then ''
+                   else DATE_FORMAT(c.planning_load_coal_time, '%H:%i:%s') end as next_planning_load_coal_time,
+               case
+                   when ISNULL(c.actual_load_coal_time) then ''
+                   else DATE_FORMAT(c.actual_load_coal_time, '%H:%i:%s') end   as next_actual_load_coal_time,
+               c.coal_current as next_coal_current,
+               c.Loading_coal as next_loading_coal,
+               c.coal_tower_number as next_coal_tower_number,
+               case
+                   when ISNULL(a.actual_production_end_time) then ''
+                   else DATE_FORMAT(a.actual_production_end_time, '%Y-%m-%d %H:%i:%s') end as actual_production_end_time
+        from t_production_output_performance_manual_bake a
+                 INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 LEFT JOIN t_production_output_performance_manual_coal c ON a.next_coal_record_id = c.id
         where (#{condition.shiftName} = '' or a.shift_name = #{condition.shiftName})
-        and (#{condition.className} = '' or a.class_name = #{condition.className})
-        and (#{condition.cokeOvenNumber} = 0 or a.coke_oven_number = #{condition.cokeOvenNumber})
-        and (#{condition.carbonizationChamberNumber} = 0 or a.carbonization_chamber_number = #{condition.carbonizationChamberNumber})
-        and (#{condition.startDate} = '' or a.production_date &gt;= case when #{condition.startDate} = '' then null else #{condition.startDate} end)
-        and (#{condition.endDate} = '' or a.production_date &lt;= case when #{condition.endDate} = '' then null else #{condition.endDate} end)
+          and (#{condition.className} = '' or a.class_name = #{condition.className})
+          and (#{condition.cokeOvenNumber} = 0 or a.coke_oven_number = #{condition.cokeOvenNumber})
+          and (#{condition.carbonizationChamberNumber} = 0 or a.carbonization_chamber_number = #{condition.carbonizationChamberNumber})
+          and (#{condition.startDate} = '' or a.production_date &gt;= case when #{condition.startDate} = '' then null else #{condition.startDate} end)
+          and (#{condition.endDate} = '' or a.production_date &lt;= case when #{condition.endDate} = '' then null else #{condition.endDate} end)
         order by ${condition.order} ${condition.orderby}
+    </select>
+
+    <select id="getCurrentCokeLevelCodeData" parameterType="com.jlkj.product.oi.dto.productionoutputperformancemanualbake.InsertProductionOutputPerformanceManualBakeDTO" resultType="com.jlkj.product.oi.vo.productionoutputperformancemanualbake.CurrentCokeLevelCodeVO">
+        select a.coal_level_materials_code as coke_level_materials_code,e.materials_name as coke_level_materials_name,c.plan_number,a.id,d.start_time as coal_detail_start_time
+        from t_production_configure_coal_species_performance a
+                 INNER JOIN t_production_configure_coal_species_performance_detail d ON a.id = d.main_id
+                 INNER JOIN (
+            select max(b.start_time) as start_time
+            from t_production_configure_coal_species_performance a
+                     INNER JOIN t_production_configure_coal_species_performance_detail b ON a.id = b.main_id,
+                 (select convert(dict_value,SIGNED) as dict_value from t_sys_dict_data where dict_label='倒推时间') as b
+            where b.start_time &lt;= date_add(STR_TO_DATE(concat(#{productionDate},' ',#{actualProductionTime}), '%Y-%m-%d %H:%i:%s'), interval -1 * b.dict_value hour)
+        ) as b ON d.start_time = b.start_time
+                 INNER JOIN t_production_plan_config_coke c ON a.plan_id = c.id and c.plan_state != 1
+        INNER JOIN t_materials_code e ON a.coal_level_materials_code = e.materials_code and e.delete_flag = 0
+        group by a.coal_level_materials_code,e.materials_name,c.plan_number,a.id,d.start_time
     </select>
 </mapper>

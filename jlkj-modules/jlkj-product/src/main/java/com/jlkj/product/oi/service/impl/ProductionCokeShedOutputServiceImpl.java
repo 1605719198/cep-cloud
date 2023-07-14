@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.productioncokeshedoutput.*;
@@ -60,6 +60,11 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
     @Resource
     private MaterialsCategoryService materialsCategoryService;
 
+    /**
+     * 焦棚产量维护-查询-分页
+     * @param pageProductionCokeShedOutputDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionCokeShedOutputVO> getProductionCokeShedOutputPageData(PageProductionCokeShedOutputDTO pageProductionCokeShedOutputDTO) {
@@ -67,16 +72,20 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
         return getBaseMapper().getProductionCokeShedOutputPageData(page, pageProductionCokeShedOutputDTO);
     }
 
+    /**
+     * 焦棚产量维护-新增
+     * @param insertProductionCokeShedOutputDTO 新增dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object insertProductionCokeShedOutputData(InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO) {
+    public void insertProductionCokeShedOutputData(InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO) {
         List<ProductionCokeShedOutput> list = list(new QueryWrapper<ProductionCokeShedOutput>().lambda()
                 .eq(ProductionCokeShedOutput::getAccountDate, insertProductionCokeShedOutputDTO.getAccountDate())
                 .eq(ProductionCokeShedOutput::getMaterialsCode, insertProductionCokeShedOutputDTO.getMaterialsCode())
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return AjaxResult.error("焦棚产量已存在");
+            throw new ServiceException("焦棚产量已存在");
         }
         ProductionCokeShedOutput productionCokeShedOutput = new ProductionCokeShedOutput();
         productionCokeShedOutput.setId(IdUtil.randomUUID());
@@ -140,12 +149,15 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
             materialsCokeDayStock.setCreateTime(new Date());
             materialsCokeDayStockService.save(materialsCokeDayStock);
         }
-        return AjaxResult.success("焦棚产量增加成功");
     }
 
+    /**
+     * 焦棚产量维护-修改
+     * @param updateProductionCokeShedOutputDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateProductionCokeShedOutputData(UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO) {
+    public void updateProductionCokeShedOutputData(UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO) {
         ProductionCokeShedOutput productionCokeShedOutput = getById(updateProductionCokeShedOutputDTO.getId());
         if (null != productionCokeShedOutput) {
             List<ProductionCokeShedOutput> list = list(new QueryWrapper<ProductionCokeShedOutput>().lambda()
@@ -155,11 +167,11 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
                     .last(CommonConstant.LIMIT_ONE_ROW)
             );
             if (list.size() > 0) {
-                return AjaxResult.error("焦棚产量已存在");
+                throw new ServiceException("焦棚产量已存在");
             }
             String status = "1";
             if(status.equals(productionCokeShedOutput.getThrowState())) {
-                return AjaxResult.error("不能修改已抛送的焦棚产量记录");
+                throw new ServiceException("不能修改已抛送的焦棚产量记录");
             }
             List<MaterialsCokeStock> materialsCokeStockList = materialsCokeStockService.list(new QueryWrapper<MaterialsCokeStock>().lambda()
                     .eq(MaterialsCokeStock::getMaterialsId, productionCokeShedOutput.getMaterialsCode())
@@ -216,23 +228,25 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
             productionCokeShedOutput.setModifyUserName(updateProductionCokeShedOutputDTO.getModifyUserName());
             productionCokeShedOutput.setModifyTime(new Date());
             updateById(productionCokeShedOutput);
-            return AjaxResult.success("焦棚产量修改成功");
         }
         else {
-            return AjaxResult.error("焦棚产量不存在");
+            throw new ServiceException("焦棚产量不存在");
         }
     }
 
+    /**
+     * 焦棚产量维护-抛送ERP
+     * @param confirmProductionCokeShedOutputDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object confirmProductionCokeShedOutputData(ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO) {
+    public void confirmProductionCokeShedOutputData(ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO) {
         List<ProductionCokeShedOutput> list = list(new QueryWrapper<ProductionCokeShedOutput>().lambda()
                 .eq(ProductionCokeShedOutput::getAccountDate, confirmProductionCokeShedOutputDTO.getAccountDate())
         );
         if (list.size() > 0) {
             sendQueueMessage(list);
         }
-        return AjaxResult.success("焦棚产量报文抛送成功");
     }
 
     private String getSeqNo(Integer no) {
@@ -269,14 +283,18 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
         }
     }
 
+    /**
+     * 焦棚产量维护-删除
+     * @param deleteProductionCokeShedOutputDTO 删除dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteProductionCokeShedOutputData(DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO) {
+    public void deleteProductionCokeShedOutputData(DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO) {
         ProductionCokeShedOutput productionCokeShedOutput = getById(deleteProductionCokeShedOutputDTO.getId());
         if (null != productionCokeShedOutput) {
             String status = "1";
             if(status.equals(productionCokeShedOutput.getThrowState())) {
-                return AjaxResult.error("不能删除已抛送的焦棚产量记录");
+                throw new ServiceException("不能删除已抛送的焦棚产量记录");
             }
             List<MaterialsCokeStock> materialsCokeStockList = materialsCokeStockService.list(new QueryWrapper<MaterialsCokeStock>().lambda()
                     .eq(MaterialsCokeStock::getMaterialsId, productionCokeShedOutput.getMaterialsCode())
@@ -326,10 +344,9 @@ public class ProductionCokeShedOutputServiceImpl extends ServiceImpl<ProductionC
                 materialsCokeDayStockService.save(materialsCokeDayStock);
             }
             removeById(productionCokeShedOutput);
-            return AjaxResult.success("焦棚产量删除成功");
         }
         else {
-            return AjaxResult.error("焦棚产量不存在或已被删除");
+            throw new ServiceException("焦棚产量不存在或已被删除");
         }
     }
 }

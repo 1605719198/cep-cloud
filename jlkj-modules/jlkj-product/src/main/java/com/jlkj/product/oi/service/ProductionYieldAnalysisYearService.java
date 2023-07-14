@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务接口-产量分析年表
- * @author sudeyou
- * @since 2022-07-18 15:47:11
- */
+*@description: 服务接口-产量分析年表
+*@Author: 265823
+*@date: 2023/7/11 14:22
+*/
 public interface ProductionYieldAnalysisYearService extends IService<ProductionYieldAnalysisYear> {
 
     /**

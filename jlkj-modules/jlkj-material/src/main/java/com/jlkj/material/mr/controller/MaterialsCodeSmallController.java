@@ -136,7 +136,10 @@ public class MaterialsCodeSmallController {
     }
 
 
-
+    /**
+     * 物料小煤种-下拉列表
+     * @return
+     */
     @Operation(summary = "物料小煤种-下拉列表",
             parameters = {},
             responses = {
@@ -150,9 +153,8 @@ public class MaterialsCodeSmallController {
     )
     @Log(title = "物料小煤种-下拉列表", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getMaterialsCodeSmallDic", method = RequestMethod.GET)
-    public Object getMaterialsCodeSmallDic() {
-        List<Map<String, Object>> list = materialsCodeSmallService.getMaterialsCodeSmallDic();
-        return AjaxResult.success(list);
+    public AjaxResult getMaterialsCodeSmallDic() {
+        return AjaxResult.success(materialsCodeSmallService.getMaterialsCodeSmallDic());
     }
 }
 

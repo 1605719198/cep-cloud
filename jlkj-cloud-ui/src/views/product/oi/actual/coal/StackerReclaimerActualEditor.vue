@@ -95,7 +95,7 @@ import {
   updateProductionStackerReclaimerPerformance,
   getUserSchedulingInfo,
 } from '@/api/production/oi/actual/coal/StackerReclaimerPerformanceApi'
-
+import { getHumanresourceSchedule } from '@/api/sys/index'
 export default {
   name: 'StackerReclaimerActualEditor',
   props: ['data', 'isAdd'],
@@ -217,23 +217,33 @@ export default {
     },
     //获取班别班次
     getUserSchedulingInfo() {
+      // let params = {
+      //   jobNumber: this.$store.state.user.userInfo.userName,
+      //   dueAttendanceTimeWork: this.formData.start_time,
+      // }
+      // getUserSchedulingInfo(params).then(
+      //   (res) => {
+      //     if (res.code === 200) {
+      //       if (res != null) {
+      //         this.formData.class_name = res.classType
+      //         this.formData.shift_name = res.shift
+      //       }
+      //     }
+      //   },
+      //   (err) => {
+      //     window.console.log(err)
+      //   }
+      // )
       let params = {
-        jobNumber: this.$store.state.user.userInfo.userName,
-        dueAttendanceTimeWork: this.formData.start_time,
+        start_time: this.formData.start_time,
       }
-      getUserSchedulingInfo(params).then(
-        (res) => {
-          if (res.code === 200) {
-            if (res != null) {
-              this.formData.class_name = res.classType
-              this.formData.shift_name = res.shift
-            }
-          }
-        },
-        (err) => {
-          window.console.log(err)
+      getHumanresourceSchedule(params).then((res) => {
+        console.log(res, '班组信息')
+        if (res.data.code == 0) {
+          this.formData.shift_name = res.data.data[0].shift_no
+          this.formData.class_name = res.data.data[0].class_name
         }
-      )
+      })
     },
 
     //通过班次code找名称   通过名称找code

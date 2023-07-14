@@ -2,6 +2,7 @@ package com.jlkj.product.oi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.product.oi.domain.ProductionCoalWarehouseStock;
+import com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,5 +16,5 @@ public interface ProductionCoalWarehouseStockService extends IService<Production
      * 上煤仓余量-物料看板-图表
      * @return
      */
-    List<Map<String, String>> getMaterialsCoalWarehouseStock();
+    List<Map<String, String>> getMaterialsCoalWarehouseStock(GetDataBoardDTO dto);
 }

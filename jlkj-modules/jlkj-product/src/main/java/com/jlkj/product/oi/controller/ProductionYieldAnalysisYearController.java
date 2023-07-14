@@ -26,10 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-产量分析日表
- * @author sudeyou
- * @since 2022-07-15 14:27:41
- */
+*@description: 控制器-产量分析日表
+*@Author: 265823
+*@date: 2023/7/11 14:21
+*/
 @Tag(name = "产量分析年表")
 @RestController
 @RequestMapping("/yield")
@@ -42,6 +42,11 @@ public class ProductionYieldAnalysisYearController {
     @Resource
     private ProductionYieldAnalysisYearService productionYieldAnalysisYearService;
 
+    /**
+     * 生产管理-产量跟踪-查询-年
+     * @param listProductionYieldAnalysisYearDTO
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-查询-年",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -59,14 +64,14 @@ public class ProductionYieldAnalysisYearController {
     )
     @Log(title = "生产管理-产量跟踪-查询-年",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisYear", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysisYear(@Validated @ParamModel ListProductionYieldAnalysisYearDTO listProductionYieldAnalysisYearDTO) {
+    public AjaxResult getProductionYieldAnalysisYear(@Validated @ParamModel ListProductionYieldAnalysisYearDTO listProductionYieldAnalysisYearDTO) {
         log.info("params => " + listProductionYieldAnalysisYearDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisYearDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisYearDTO);
-        return productionYieldAnalysisYearService.getProductionYieldAnalysisYearList(listProductionYieldAnalysisYearDTO);
+        return AjaxResult.success(productionYieldAnalysisYearService.getProductionYieldAnalysisYearList(listProductionYieldAnalysisYearDTO));
     }
 
 }

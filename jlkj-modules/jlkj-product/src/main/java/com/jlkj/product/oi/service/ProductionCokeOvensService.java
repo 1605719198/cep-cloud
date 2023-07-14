@@ -27,28 +27,24 @@ public interface ProductionCokeOvensService extends IService<ProductionCokeOvens
     /**
      * 每日推焦炉数维护-新增
      * @param insertProductionCokeOvensDTO 新增dto
-     * @return 执行结果
      */
-    Object insertProductionCokeOvensData(InsertProductionCokeOvensDTO insertProductionCokeOvensDTO);
+    void insertProductionCokeOvensData(InsertProductionCokeOvensDTO insertProductionCokeOvensDTO);
 
     /**
      * 每日推焦炉数维护-修改
      * @param updateProductionCokeOvensDTO 修改dto
-     * @return 执行结果
      */
-    Object updateProductionCokeOvensData(UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO);
+    void updateProductionCokeOvensData(UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO);
 
     /**
      * 每日推焦炉数维护-确认
-     * @return 执行结果
      */
-    Object confirmProductionCokeOvensData();
+    void confirmProductionCokeOvensData();
 
     /**
      * 每日推焦炉数维护-删除
      * @param deleteProductionCokeOvensDTO 删除dto
-     * @return 执行结果
      */
-    Object deleteProductionCokeOvensData(DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO);
+    void deleteProductionCokeOvensData(DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO);
 }
 

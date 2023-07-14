@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务接口-产量分析月表
- * @author sudeyou
- * @since 2022-07-15 14:27:41
- */
+*@description: 服务接口-产量分析月表
+*@Author: 265823
+*@date: 2023/7/11 14:18
+*/
 public interface ProductionYieldAnalysisMonthService extends IService<ProductionYieldAnalysisMonth> {
 
     /**

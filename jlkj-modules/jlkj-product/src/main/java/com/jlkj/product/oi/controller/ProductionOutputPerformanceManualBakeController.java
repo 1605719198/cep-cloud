@@ -31,11 +31,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-生产管理-炼焦实绩-出炉实绩-手动出炉
- *
- * @author sudeyou
- * @since 2022-12-28 13:35:48
- */
+*@description: 控制器-生产管理-炼焦实绩-出炉实绩-手动出炉
+*@Author: 265823
+*@date: 2023/7/10 17:01
+*/
 @Tag(name = "生产管理-炼焦实绩-出炉实绩-手动出炉")
 @RestController
 @RequestMapping("/productionoutputperformancemanualbake")
@@ -48,6 +47,11 @@ public class ProductionOutputPerformanceManualBakeController {
     @Resource
     private ProductionOutputPerformanceManualBakeService productionOutputPerformanceManualBakeService;
 
+    /**
+     * 生产管理-炼焦实绩-出炉实绩-手动出炉-查询-分页
+     * @param pageProductionOutputPerformanceManualBakeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-炼焦实绩-出炉实绩-手动出炉-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -62,7 +66,7 @@ public class ProductionOutputPerformanceManualBakeController {
     )
     @Log(title = "生产管理-炼焦实绩-出炉实绩-手动出炉-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionOutputPerformanceManualBakePage", method = RequestMethod.GET)
-    public Object getProductionOutputPerformanceManualBakePageData(@Validated @ParamModel PageProductionOutputPerformanceManualBakeDTO pageProductionOutputPerformanceManualBakeDTO) {
+    public AjaxResult getProductionOutputPerformanceManualBakePageData(@Validated @ParamModel PageProductionOutputPerformanceManualBakeDTO pageProductionOutputPerformanceManualBakeDTO) {
         log.info("params => " + pageProductionOutputPerformanceManualBakeDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionOutputPerformanceManualBakeDTO);
         if (!"".equals(errorMsg)) {
@@ -72,6 +76,10 @@ public class ProductionOutputPerformanceManualBakeController {
         return AjaxResult.success(productionOutputPerformanceManualBakeService.getProductionOutputPerformanceManualBakePageData(pageProductionOutputPerformanceManualBakeDTO));
     }
 
+    /**
+     * 生产管理-炼焦实绩-出炉实绩-手动出炉-新增
+     * @param insertProductionOutputPerformanceManualBakeDTO
+     */
     @Operation(summary = "生产管理-炼焦实绩-出炉实绩-手动出炉-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -84,12 +92,16 @@ public class ProductionOutputPerformanceManualBakeController {
     )
     @Log(title = "生产管理-炼焦实绩-出炉实绩-手动出炉-新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/insertProductionOutputPerformanceManualBake", method = RequestMethod.POST, produces = "application/json")
-    public Object insertProductionOutputPerformanceManualBakeData(@Valid @RequestBody InsertProductionOutputPerformanceManualBakeDTO insertProductionOutputPerformanceManualBakeDTO) {
+    public void insertProductionOutputPerformanceManualBakeData(@Valid @RequestBody InsertProductionOutputPerformanceManualBakeDTO insertProductionOutputPerformanceManualBakeDTO) {
         log.info("params => " + insertProductionOutputPerformanceManualBakeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertProductionOutputPerformanceManualBakeDTO);
-        return productionOutputPerformanceManualBakeService.insertProductionOutputPerformanceManualBakeData(insertProductionOutputPerformanceManualBakeDTO);
+        productionOutputPerformanceManualBakeService.insertProductionOutputPerformanceManualBakeData(insertProductionOutputPerformanceManualBakeDTO);
     }
 
+    /**
+     * 生产管理-炼焦实绩-出炉实绩-手动出炉-删除
+     * @param deleteProductionOutputPerformanceManualBakeDTO
+     */
     @Operation(summary = "生产管理-炼焦实绩-出炉实绩-手动出炉-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -102,9 +114,9 @@ public class ProductionOutputPerformanceManualBakeController {
     )
     @Log(title = "生产管理-炼焦实绩-出炉实绩-手动出炉-删除",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteProductionOutputPerformanceManualBake", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteProductionOutputPerformanceManualBakeData(@Valid @RequestBody DeleteProductionOutputPerformanceManualBakeDTO deleteProductionOutputPerformanceManualBakeDTO) {
+    public void deleteProductionOutputPerformanceManualBakeData(@Valid @RequestBody DeleteProductionOutputPerformanceManualBakeDTO deleteProductionOutputPerformanceManualBakeDTO) {
         log.info("params => " + deleteProductionOutputPerformanceManualBakeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionOutputPerformanceManualBakeDTO);
-        return productionOutputPerformanceManualBakeService.deleteProductionOutputPerformanceManualBakeData(deleteProductionOutputPerformanceManualBakeDTO);
+        productionOutputPerformanceManualBakeService.deleteProductionOutputPerformanceManualBakeData(deleteProductionOutputPerformanceManualBakeDTO);
     }
 }

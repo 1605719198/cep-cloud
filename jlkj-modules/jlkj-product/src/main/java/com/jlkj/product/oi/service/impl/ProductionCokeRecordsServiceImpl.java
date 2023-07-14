@@ -29,6 +29,13 @@ public class ProductionCokeRecordsServiceImpl extends ServiceImpl<ProductionCoke
     implements ProductionCokeRecordsService {
 
 
+    /**
+     * 焦炭产量记录查询
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public IPage<Map<String, Object>> get(GetProductionCoefficientRecordDTO dto) {
         Date start = DateUtil.parse(StrUtil.isEmpty(dto.getStartTime()) ? "1790-01-01" : dto.getStartTime() + " 00:00:00");
         Date end = DateUtil.parse(StrUtil.isEmpty(dto.getEndTime()) ? "1790-01-01" : dto.getEndTime() + " 23:59:59");
@@ -42,6 +49,12 @@ public class ProductionCokeRecordsServiceImpl extends ServiceImpl<ProductionCoke
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         return pageMaps(page, queryWrapper);
     }
+
+    /**
+     * 首页-焦碳比例
+     * @param listHomeCokeProportionDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListHomeCokeProportionVO> getHomeCokeProportionListData(ListHomeCokeProportionDTO listHomeCokeProportionDTO) {

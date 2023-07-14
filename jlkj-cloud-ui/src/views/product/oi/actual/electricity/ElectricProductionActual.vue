@@ -82,9 +82,9 @@
         columns: [
           // { label: '编号', prop: "编号", sortable: true, minWidth: '100px' },
           {label: '时间', prop: "e_count_date", sortable: true, minWidth: '80px'},
-          {label: '类型', prop: "energy_code_name", sortable: true, minWidth: '80px'},
-          {label: '汽轮机号', prop: "turbine_no", sortable: true, minWidth: '80px'},
-          {label: '产量(Kw·h)', prop: "qty", sortable: true, minWidth: '150px'},
+          {label: '类型', prop: "type", sortable: true, minWidth: '80px'},
+          {label: '发电机组', prop: "generator_no", sortable: true, minWidth: '80px'},
+          {label: '产量(万Kw·h)', prop: "qty", sortable: true, minWidth: '150px'},
         ],
         tableData: [],
       }
@@ -123,7 +123,7 @@
         // console.log(column, "column")
         if (column.order === null) {
           //默认
-          this.page.order = "stat_time";
+          this.page.order = "e_count_date";
           this.page.orderby = "desc";
         } else {
           //选中项

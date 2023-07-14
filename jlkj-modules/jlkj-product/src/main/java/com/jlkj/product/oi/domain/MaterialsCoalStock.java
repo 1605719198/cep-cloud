@@ -78,6 +78,12 @@ public class MaterialsCoalStock implements Serializable {
      */
     private Date clearName;
 
+    /** 物料小煤种代码 */
+    private String materialsSmallCode ;
+
+    /** 物料小煤种简称 */
+    private String materialsSmallName ;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

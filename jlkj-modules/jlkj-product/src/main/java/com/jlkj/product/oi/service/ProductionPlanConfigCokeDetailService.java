@@ -2,6 +2,7 @@ package com.jlkj.product.oi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionPlanConfigCokeDetail;
 import com.jlkj.product.oi.dto.productionplanconfigcokedetail.*;
 import com.jlkj.product.oi.vo.productionplanconfigcokedetail.InfoProductionPlanConfigCokeDetailByWarehouseNumberVO;
@@ -9,9 +10,10 @@ import com.jlkj.product.oi.vo.productionplanconfigcokedetail.InfoProductionPlanC
 import java.util.Map;
 
 /**
- * 服务接口-配煤计划配煤记录
- * @author sudeyou
- */
+*@description: 服务接口-配煤计划配煤记录
+*@Author: 265823
+*@date: 2023/7/11 8:10
+*/
 public interface ProductionPlanConfigCokeDetailService extends IService<ProductionPlanConfigCokeDetail> {
 
     /**
@@ -24,23 +26,20 @@ public interface ProductionPlanConfigCokeDetailService extends IService<Producti
     /**
      * 新增-配煤计划配煤记录
      * @param addProductionPlanConfigCokeDetailDTO 新增dto
-     * @return 执行结果
      */
-    Object addData(AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO);
+    AjaxResult addData(AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO);
 
     /**
      * 修改-配煤计划配煤记录
      * @param updateProductionPlanConfigCokeDetailDTO 修改dto
-     * @return 执行结果
      */
-    Object updateData(UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO);
+    AjaxResult updateData(UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO);
 
     /**
      * 删除-配煤计划配煤记录
      * @param deleteProductionPlanConfigCokeDetailDTO 删除dto
-     * @return 执行结果
      */
-    Object deleteData(DeleteProductionPlanConfigCokeDetailDTO deleteProductionPlanConfigCokeDetailDTO);
+    void deleteData(DeleteProductionPlanConfigCokeDetailDTO deleteProductionPlanConfigCokeDetailDTO);
     /**
      * 删除-配煤计划配煤记录(指定计划)
      * @param planId 计划id

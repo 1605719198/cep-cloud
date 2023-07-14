@@ -39,10 +39,10 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 
 /**
- * @author yzl
- * @Description 日志项名称
- * @create 2022-09-28 10:27:05.808763
- */
+*@description: 日志项名称
+*@Author: 265823
+*@date: 2023/7/10 16:04
+*/
 @Tag(name = "日志项名称")
 @RestController
 @RequestMapping("/productionLogsName")
@@ -53,6 +53,11 @@ public class ProductionLogsNameController {
     @Autowired
     ProductionLogsNameService productionLogsNameService;
 
+    /**
+     * 查询日志项名称
+     * @param pageProductionLogsNameDTO
+     * @return
+     */
     @Operation(summary = "查询日志项名称",
             parameters = {
                     @Parameter(name = "current", description = "页码-从1开始"),
@@ -81,17 +86,20 @@ public class ProductionLogsNameController {
     )
     @Log(title = "查询日志项名称",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Object list(@Validated @ParamModel PageProductionLogsNameDTO pageProductionLogsNameDTO) {
+    public AjaxResult list(@Validated @ParamModel PageProductionLogsNameDTO pageProductionLogsNameDTO) {
         log.info("params => " + pageProductionLogsNameDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionLogsNameDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionLogsNameDTO);
-        IPage<Map<String, String>> list = productionLogsNameService.getListPage(pageProductionLogsNameDTO);
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionLogsNameService.getListPage(pageProductionLogsNameDTO));
     }
 
+    /**
+     * 新增
+     * @param addProductionLogsNameDTO
+     */
     @Operation(summary = "新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -111,23 +119,17 @@ public class ProductionLogsNameController {
     )
     @Log(title = "新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
-    public Object save(@Valid @RequestBody AddProductionLogsNameDTO addProductionLogsNameDTO) {
+    public void save(@Valid @RequestBody AddProductionLogsNameDTO addProductionLogsNameDTO) {
         log.info("params => " + addProductionLogsNameDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addProductionLogsNameDTO);
-        ProductionLogsName productionLogsName = new ProductionLogsName();
-        productionLogsName.setId(IdUtil.randomUUID());
-        productionLogsName.setLogsName(addProductionLogsNameDTO.getLogsName());
-        productionLogsName.setCreateUserId(addProductionLogsNameDTO.getCreateUserId());
-        productionLogsName.setCreateUserName(addProductionLogsNameDTO.getCreateUserName());
-        productionLogsName.setCreateTime(new Date());
-        productionLogsName.setModifyUserId(addProductionLogsNameDTO.getCreateUserId());
-        productionLogsName.setModifyUserName(addProductionLogsNameDTO.getCreateUserName());
-        productionLogsName.setModifyTime(new Date());
-        productionLogsNameService.save(productionLogsName);
-        return AjaxResult.success("日志项名称增加成功");
+        productionLogsNameService.saveCustom(addProductionLogsNameDTO);
     }
 
 
+    /**
+     * 修改
+     * @param updateProductionLogsNameDTO
+     */
     @Operation(summary = "修改",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -143,26 +145,18 @@ public class ProductionLogsNameController {
                     @ApiResponse(responseCode = "406", description = "校验失败内容")
             }
     )
-
     @Log(title = "修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@Valid @RequestBody UpdateProductionLogsNameDTO updateProductionLogsNameDTO) {
+    public void update(@Valid @RequestBody UpdateProductionLogsNameDTO updateProductionLogsNameDTO) {
         log.info("params => " + updateProductionLogsNameDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionLogsNameDTO);
-        ProductionLogsName productionLogsName = productionLogsNameService.getById(updateProductionLogsNameDTO.getId());
-        if (null != productionLogsName) {
-            productionLogsName.setLogsName(updateProductionLogsNameDTO.getLogsName());
-
-            productionLogsName.setModifyUserId(updateProductionLogsNameDTO.getModifyUserId());
-            productionLogsName.setModifyUserName(updateProductionLogsNameDTO.getModifyUserName());
-            productionLogsName.setModifyTime(new Date());
-            productionLogsNameService.updateById(productionLogsName);
-            return AjaxResult.success("日志项名称修改成功");
-        } else {
-            return AjaxResult.error("日志项名称不存在");
-        }
+        productionLogsNameService.updateCustom(updateProductionLogsNameDTO);
     }
 
+    /**
+     * 删除日志项名称
+     * @param deleteProductionLogsNameDTO
+     */
     @Operation(summary = "删除日志项名称",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -177,18 +171,16 @@ public class ProductionLogsNameController {
     )
     @Log(title = "删除日志项名称",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
-    public Object delete(@Valid @RequestBody DeleteProductionLogsNameDTO deleteProductionLogsNameDTO) {
+    public void delete(@Valid @RequestBody DeleteProductionLogsNameDTO deleteProductionLogsNameDTO) {
         log.info("params => " + deleteProductionLogsNameDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionLogsNameDTO);
-        ProductionLogsName productionLogsName = productionLogsNameService.getById(deleteProductionLogsNameDTO.getId());
-        if (null != productionLogsName) {
-            productionLogsNameService.removeById(productionLogsName);
-            return AjaxResult.success("日志项名称删除成功");
-        } else {
-            return AjaxResult.error("日志项名称不存在或已被删除");
-        }
+        productionLogsNameService.delete(deleteProductionLogsNameDTO);
     }
 
+    /**
+     * 查询日志项名称
+     * @return
+     */
     @Operation(summary = "查询日志项名称",
             parameters = {},
             responses = {
@@ -203,7 +195,7 @@ public class ProductionLogsNameController {
     )
     @Log(title = "查询日志项名称",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
-    public Object selectAll() {
+    public AjaxResult selectAll() {
         QueryWrapper<ProductionLogsName> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id, logs_name name");
         List<Map<String, Object>> list = productionLogsNameService.listMaps(queryWrapper);

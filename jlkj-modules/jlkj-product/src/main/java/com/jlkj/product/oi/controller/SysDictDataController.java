@@ -1,10 +1,10 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.product.oi.dto.sysdictdata.ListSysDictDataDTO;
 import com.jlkj.product.oi.service.SysDictDataService;
 import com.jlkj.product.oi.vo.sysdictdata.ListSysDictDataVO;
@@ -27,11 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-字典数据表
- *
- * @author sudeyou
- * @since 2022-11-02 09:46:29
- */
+*@description: 控制器-字典数据表
+*@Author: 265823
+*@date: 2023/7/11 15:50
+*/
 @Tag(name = "字典数据表")
 @RestController
 @RequestMapping("/sysdictdata")
@@ -44,6 +43,11 @@ public class SysDictDataController {
     @Resource
     private SysDictDataService sysDictDataService;
 
+    /**
+     * 获取字典数据列表
+     * @param listSysDictDataDTO
+     * @return
+     */
     @Operation(summary = "获取字典数据列表",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -58,7 +62,7 @@ public class SysDictDataController {
     )
     @Log(title = "获取字典数据列表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getSysDictDataList", method = RequestMethod.GET)
-    public Object getSysDictDataListData(@Validated @ParamModel ListSysDictDataDTO listSysDictDataDTO) {
+    public AjaxResult getSysDictDataListData(@Validated @ParamModel ListSysDictDataDTO listSysDictDataDTO) {
         log.info("params => " + listSysDictDataDTO);
         String errorMsg = ValidUtil.checkValid(listSysDictDataDTO);
         if (!"".equals(errorMsg)) {

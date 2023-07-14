@@ -1,6 +1,5 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
@@ -11,7 +10,6 @@ import com.jlkj.product.oi.dto.productioncokeovenparameterstandard.PageProductio
 import com.jlkj.product.oi.dto.productioncokeovenparameterstandard.UpdateProductionCokeOvenParameterStandardDTO;
 import com.jlkj.product.oi.dto.productionparametertargetitem.DeleteProductionParameterTargetItemDTO;
 import com.jlkj.product.oi.service.ProductionCokeOvenParameterStandardService;
-import com.jlkj.product.oi.service.impl.ProductionCokeOvenParameterStandardServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,15 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author sdy
- * @Description
- * @create 2022-04-19 8:45
- */
+*@description: 参数维护-K值标准
+*@Author: 265823
+*@date: 2023/7/10 13:05
+*/
 @Tag(name = "参数维护-K值标准")
 @RestController
 @RequestMapping("/plan")
@@ -51,8 +48,13 @@ public class ProductionCokeOvenParameterStandardController {
     ProductionCokeOvenParameterStandardService productionCokeOvenParameterStandardService;
 
     @Autowired
-    ProductionCokeOvenParameterStandardServiceImpl cokeOvenParameterStandardService;
+    ProductionCokeOvenParameterStandardService cokeOvenParameterStandardService;
 
+    /**
+     * 查询K值标准
+     * @param pageProductionCokeOvenParameterStandardDTO
+     * @return
+     */
     @Operation(summary = "查询K值标准",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -90,17 +92,21 @@ public class ProductionCokeOvenParameterStandardController {
 
     @Log(title = "查询K值标准",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listCokeOvenParameterStandards", method = RequestMethod.GET)
-    public Object listCokeOvenParameterStandards(@Validated @ParamModel PageProductionCokeOvenParameterStandardDTO pageProductionCokeOvenParameterStandardDTO) {
+    public AjaxResult listCokeOvenParameterStandards(@Validated @ParamModel PageProductionCokeOvenParameterStandardDTO pageProductionCokeOvenParameterStandardDTO) {
         log.info("params => " + pageProductionCokeOvenParameterStandardDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCokeOvenParameterStandardDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionCokeOvenParameterStandardDTO);
-        IPage<Map<String, String>> list = productionCokeOvenParameterStandardService.getListPage(pageProductionCokeOvenParameterStandardDTO);
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionCokeOvenParameterStandardService.getListPage(pageProductionCokeOvenParameterStandardDTO));
     }
 
+    /**
+     * 新增K值标准
+     * @param addProductionCokeOvenParameterStandardDTO
+     * @return
+     */
     @Operation(summary = "新增K值标准",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -127,12 +133,17 @@ public class ProductionCokeOvenParameterStandardController {
     )
     @Log(title = "新增K值标准",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/saveCokeOvenParameterStandard", method = RequestMethod.POST, produces = "application/json")
-    public Object saveCokeOvenParameterStandard(@Valid @RequestBody AddProductionCokeOvenParameterStandardDTO addProductionCokeOvenParameterStandardDTO) {
+    public void saveCokeOvenParameterStandard(@Valid @RequestBody AddProductionCokeOvenParameterStandardDTO addProductionCokeOvenParameterStandardDTO) {
         log.info("params => " + addProductionCokeOvenParameterStandardDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addProductionCokeOvenParameterStandardDTO);
-        return cokeOvenParameterStandardService.save(addProductionCokeOvenParameterStandardDTO);
+        cokeOvenParameterStandardService.saveCustom(addProductionCokeOvenParameterStandardDTO);
     }
 
+    /**
+     * 修改K值标准
+     * @param updateProductionCokeOvenParameterStandardDTO
+     * @return
+     */
     @Operation(summary = "修改K值标准",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -160,12 +171,17 @@ public class ProductionCokeOvenParameterStandardController {
     )
     @Log(title = "修改K值标准",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateCokeOvenParameterStandard", method = RequestMethod.POST, produces = "application/json")
-    public Object updateCokeOvenParameterStandard(@Valid @RequestBody UpdateProductionCokeOvenParameterStandardDTO updateProductionCokeOvenParameterStandardDTO) {
+    public void updateCokeOvenParameterStandard(@Valid @RequestBody UpdateProductionCokeOvenParameterStandardDTO updateProductionCokeOvenParameterStandardDTO) {
         log.info("params => " + updateProductionCokeOvenParameterStandardDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionCokeOvenParameterStandardDTO);
-        return cokeOvenParameterStandardService.update(updateProductionCokeOvenParameterStandardDTO);
+        cokeOvenParameterStandardService.updateCustom(updateProductionCokeOvenParameterStandardDTO);
     }
 
+    /**
+     * 删除k值标准
+     * @param deleteProductionParameterTargetItemDTO
+     * @return
+     */
     @Operation(summary = "删除K值标准",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -183,9 +199,9 @@ public class ProductionCokeOvenParameterStandardController {
     )
     @Log(title = "删除K值标准",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteCokeOvenParameterStandard", method = RequestMethod.POST, produces = "application/json")
-    public Object deleteCokeOvenParameterStandard(@Valid @RequestBody DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
+    public void deleteCokeOvenParameterStandard(@Valid @RequestBody DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
         log.info("params => " + deleteProductionParameterTargetItemDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionParameterTargetItemDTO);
-        return cokeOvenParameterStandardService.delete(deleteProductionParameterTargetItemDTO);
+        cokeOvenParameterStandardService.delete(deleteProductionParameterTargetItemDTO);
     }
 }

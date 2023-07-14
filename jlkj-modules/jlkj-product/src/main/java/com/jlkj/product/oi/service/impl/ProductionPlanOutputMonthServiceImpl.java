@@ -6,12 +6,13 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
 import com.jlkj.product.oi.dto.productionplanoutputmonth.ListProductionPlanOutputMonthTargetItemDTO;
 import com.jlkj.product.oi.dto.productionplantarget.*;
 import com.jlkj.product.oi.mapper.ProductionParameterTargetItemMapper;
+import com.jlkj.product.oi.mapper.ProductionPlanOutputDateMapper;
 import com.jlkj.product.oi.mapper.ProductionPlanOutputMonthMapper;
 import com.jlkj.product.oi.service.ChangeLogService;
 import com.jlkj.product.oi.service.ProductionPlanOutputMonthService;
@@ -28,9 +29,10 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static com.jlkj.product.oi.constants.RedissonUtil.getLock;
 import static com.jlkj.product.oi.constants.DateConstants.MONTHS;
+import static com.jlkj.product.oi.constants.RedissonUtil.getLock;
 
 /**
  * @author zyf
@@ -47,8 +49,8 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     @Autowired
     ProductionPlanOutputYearServiceImpl planOutputYearService;
 
-    @Autowired
-    ProductionPlanOutputDateServiceImpl planOutputDateService;
+    @Resource
+    ProductionPlanOutputDateMapper dateMapper;
 
     @Autowired
     ProductionPlanRepairServiceImpl planRepairService;
@@ -73,8 +75,7 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     }
 
     @Resource
-    @Lazy
-    com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl productionParameterTargetItemService;
+    ProductionParameterTargetItemMapper itemMapper;
 
     @Resource
     ChangeLogService changeLogService;
@@ -93,12 +94,14 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     /**
      * 查询月产量计划
      * @param dto
-     * @param itemlist
      * @return
      */
     @Transactional(readOnly = true)
     @Override
-    public Object get(GetProductionPlanMonthDTO dto, List<ProductionParameterTargetItem> itemlist) {
+    public List<Map<String, String>> get(GetProductionPlanMonthDTO dto) {
+        List<ProductionParameterTargetItem> itemlist =
+                itemMapper.selectList(new QueryWrapper<ProductionParameterTargetItem>().lambda()
+                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_month, ");
         for (ProductionParameterTargetItem item : itemlist) {
@@ -114,18 +117,20 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         sqlString.append(dto.getPlanYear());
         sqlString.append(" group by plan_month order by plan_year desc, plan_month asc");
         List<Map<String, String>> targetList = getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
     /**
      * 查询单条月生产产量计划
      * @param dto
-     * @param itemlist
      * @return
      */
     @Transactional(readOnly = true)
     @Override
-    public Object getOneCustom(GetProductionPlanOneMonthDTO dto, List<ProductionParameterTargetItem> itemlist) {
+    public List<Map<String, String>> getOneCustom(GetProductionPlanOneMonthDTO dto) {
+        List<ProductionParameterTargetItem> itemlist =
+                itemMapper.selectList(new QueryWrapper<ProductionParameterTargetItem>().lambda()
+                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_month, ");
         for (ProductionParameterTargetItem item : itemlist) {
@@ -141,17 +146,16 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             sqlString.append(" group by plan_month");
         }
         List<Map<String, String>> targetList = getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
     /**
      * 修改月产量计划
      * @param dto
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object updateCustom(UpdateProductionPlanMonthDTO dto) {
+    public void updateCustom(UpdateProductionPlanMonthDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("MonthProductionTargetPlan", dto.getPlanYear(), dto.getPlanMonth()));
         rLock.lock();
         try {
@@ -159,7 +163,7 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             List<ProductionPlanOutputMonth> monthList = list(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
                     .eq(ProductionPlanOutputMonth::getPlanYear, dto.getPlanYear())
                     .eq(ProductionPlanOutputMonth::getPlanMonth, dto.getPlanMonth()));
-            List<ProductionPlanOutputDate> dayList = planOutputDateService.list(new QueryWrapper<ProductionPlanOutputDate>().lambda()
+            List<ProductionPlanOutputDate> dayList = dateMapper.selectList(new QueryWrapper<ProductionPlanOutputDate>().lambda()
                     .eq(ProductionPlanOutputDate::getPlanYear, dto.getPlanYear())
                     .eq(ProductionPlanOutputDate::getPlanMonth, dto.getPlanMonth()));
             List<ProductionYieldAnalysisMonth> monthAnaList = yieldAnalysisMonthService.list(new QueryWrapper<ProductionYieldAnalysisMonth>().lambda()
@@ -169,13 +173,13 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
                     .eq(ProductionYieldAnalysisDate::getYear, dto.getPlanYear())
                     .eq(ProductionYieldAnalysisDate::getMonth, dto.getPlanMonth()));
             if (monthList.size() < 1) {
-                return AjaxResult.error("当月计划不存在或已删除");
+                throw new ServiceException("当月计划不存在或已删除");
             }
             if (dayList.size() < 1) {
-                return AjaxResult.error("当月的日计划不存在或已删除");
+                throw new ServiceException("当月的日计划不存在或已删除");
             }
             if (DateUtil.year(now) >= dto.getPlanYear() && (DateUtil.month(now) >= dto.getPlanMonth())) {
-                return AjaxResult.error("当月和当月之前的计划不能被修改");
+                throw new ServiceException("当月和当月之前的计划不能被修改");
             }
 
             saveUpdateLog(dto, monthList);
@@ -190,14 +194,12 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
                     })
                     .list();
             if (repairs.size() > 0) {
-                List<ProductionPlanOutputDate> dateRelationRepairlist = planOutputDateService.getBaseMapper()
-                        .getOutputDateWithMonthRelationRepair(dto.getPlanYear(), dto.getPlanMonth());
+                List<ProductionPlanOutputDate> dateRelationRepairlist = dateMapper.getOutputDateWithMonthRelationRepair(dto.getPlanYear(), dto.getPlanMonth());
                 for (ProductionPlanOutputDate planOutputDate : dateRelationRepairlist) {
                     planOutputDate.setTargetItemOutput(new BigDecimal("0.000"));
+                    dateMapper.updateById(planOutputDate);
                 }
-                planOutputDateService.updateBatchById(dateRelationRepairlist);
-                List<ProductionYieldAnalysisDate> dateAnaRelationRepairlist = planOutputDateService.getBaseMapper()
-                        .getAnaDateWithMonthRelationRepair(dto.getPlanYear(), dto.getPlanMonth());
+                List<ProductionYieldAnalysisDate> dateAnaRelationRepairlist = dateMapper.getAnaDateWithMonthRelationRepair(dto.getPlanYear(), dto.getPlanMonth());
                 for (ProductionYieldAnalysisDate planAnaDate : dateAnaRelationRepairlist) {
                     planAnaDate.setProductionPlan(new BigDecimal("0.000"));
                 }
@@ -205,11 +207,10 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             }
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
     private void batch(UpdateProductionPlanMonthDTO dto, Date now,
@@ -261,7 +262,9 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             }
         }
         updateBatchById(monthList, monthList.size());
-        planOutputDateService.updateBatchById(dayList, dayList.size());
+        for (ProductionPlanOutputDate plan : dayList) {
+            dateMapper.updateById(plan);
+        }
         yieldAnalysisMonthService.updateBatchById(monthAnaList);
         yieldAnalysisDateService.updateBatchById(dayAnaList);
     }
@@ -270,7 +273,7 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
         StringBuilder content = new StringBuilder();
         content.append("新增：" + "[计划年度：").append(productionPlanYearDTO.getPlanYear()).append("],");
         for (int y = 0; y < productionPlanYearDTO.getTargetItems().size(); y++) {
-            ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(productionPlanYearDTO.getTargetItems().get(y).getId());
+            ProductionParameterTargetItem productionParameterTargetItem = itemMapper.selectById(productionPlanYearDTO.getTargetItems().get(y).getId());
             if (ObjectUtil.isNotNull(productionParameterTargetItem)) {
                 content.append("[").append(productionParameterTargetItem.getTargetItemName()).append("：").append(productionPlanYearDTO.getTargetItems().get(y).getValue().stripTrailingZeros().toPlainString()).append("],");
             }
@@ -292,7 +295,7 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             for (int i = 0; i < updateProductionPlanMonthDTO.getTargetItems().size(); i++) {
                 if (updateProductionPlanMonthDTO.getTargetItems().get(i).getId().equals(plan.getTargetItemId())) {
                     if (plan.getTargetItemOutput().compareTo(updateProductionPlanMonthDTO.getTargetItems().get(i).getValue()) != 0) {
-                        ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(updateProductionPlanMonthDTO.getTargetItems().get(i).getId());
+                        ProductionParameterTargetItem productionParameterTargetItem = itemMapper.selectById(updateProductionPlanMonthDTO.getTargetItems().get(i).getId());
                         if (ObjectUtil.isNotNull(productionParameterTargetItem)) {
                             content.append("[").append(productionParameterTargetItem.getTargetItemName()).append("：")
                                     .append(plan.getTargetItemOutput().stripTrailingZeros().toPlainString()).append("->")
@@ -317,11 +320,10 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
     /**
      * 新增年生产产量计划
      * @param productionPlanYearDTO
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object saveCustom(AddProductionPlanYearDTO productionPlanYearDTO) {
+    public void saveCustom(AddProductionPlanYearDTO productionPlanYearDTO) {
         RLock rLock = redissonClient.getLock(getLock("saveYearProductionOutputPlan", productionPlanYearDTO.getPlanYear()));
         rLock.lock();
         try {
@@ -335,12 +337,12 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             List<ProductionPlanOutputYear> plans = planOutputYearService.list(new QueryWrapper<ProductionPlanOutputYear>().lambda()
                     .eq(ProductionPlanOutputYear::getPlanYear, productionPlanYearDTO.getPlanYear()));
             if (plans.size() > 0) {
-                return AjaxResult.error("当年产量计划已存在");
+                throw new ServiceException("当年产量计划已存在");
             }
             List<ProductionPlanTargetYear> targetPlans = planTargetYearService.list(new QueryWrapper<ProductionPlanTargetYear>().lambda()
                     .eq(ProductionPlanTargetYear::getPlanYear, productionPlanYearDTO.getPlanYear()));
             if (targetPlans.size() < 1) {
-                return AjaxResult.error("当年指标计划不存在");
+                throw new ServiceException("当年指标计划不存在");
             }
             saveNewLog(productionPlanYearDTO);
             BigDecimal lengthOfYear = new BigDecimal(DateUtil.lengthOfYear(productionPlanYearDTO.getPlanYear()));
@@ -359,14 +361,12 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
                     })
                     .list();
             if (repairs.size() > 0) {
-                List<ProductionPlanOutputDate> dateRelationRepairlist = planOutputDateService.getBaseMapper()
-                        .getOutputDateRelationRepair(productionPlanYearDTO.getPlanYear());
+                List<ProductionPlanOutputDate> dateRelationRepairlist = dateMapper.getOutputDateRelationRepair(productionPlanYearDTO.getPlanYear());
                 for (ProductionPlanOutputDate planOutputDate : dateRelationRepairlist) {
                     planOutputDate.setTargetItemOutput(new BigDecimal("0.000"));
+                    dateMapper.updateById(planOutputDate);
                 }
-                planOutputDateService.updateBatchById(dateRelationRepairlist);
-                List<ProductionYieldAnalysisDate> dateAnaRelationRepairlist = planOutputDateService.getBaseMapper()
-                        .getAnaDateRelationRepair(productionPlanYearDTO.getPlanYear());
+                List<ProductionYieldAnalysisDate> dateAnaRelationRepairlist = dateMapper.getAnaDateRelationRepair(productionPlanYearDTO.getPlanYear());
                 for (ProductionYieldAnalysisDate planAnaDate : dateAnaRelationRepairlist) {
                     planAnaDate.setProductionPlan(new BigDecimal("0.000"));
                 }
@@ -374,11 +374,10 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
             }
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
     /**
@@ -387,21 +386,21 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public AjaxResult delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
+    public void delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
         List<ProductionPlanOutputYear> yearList = planOutputYearService.list(new QueryWrapper<ProductionPlanOutputYear>().lambda()
                 .eq(ProductionPlanOutputYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
         if (yearList.size() < 1) {
+            throw new ServiceException("当前年份计划不存在");
 //            ResultCode.EXISTSORNOT
-            return AjaxResult.error("当前年份计划不存在");
         }
         if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
-            return AjaxResult.error("往年计划不能删除");
+            throw new ServiceException("往年计划不能删除");
         }
 
         StringBuilder content = new StringBuilder();
         content.append("删除：" + "[计划年度：").append(deleteProductionPlanYearDTO.getPlanYear()).append("],");
         for (ProductionPlanOutputYear year: yearList) {
-            ProductionParameterTargetItem productionParameterTargetItem = productionParameterTargetItemService.getById(year.getTargetItemId());
+            ProductionParameterTargetItem productionParameterTargetItem = itemMapper.selectById(year.getTargetItemId());
             if (ObjectUtil.isNotNull(productionParameterTargetItem)) {
                 content.append("[").append(productionParameterTargetItem.getTargetItemName()).append("：").append(year.getTargetItemOutput().stripTrailingZeros().toPlainString()).append("],");
             }
@@ -416,18 +415,18 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
 
         List<ProductionPlanOutputMonth> monthList = getBaseMapper().selectList(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
                 .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        List<ProductionPlanOutputDate> dateList = planOutputDateService.list(new QueryWrapper<ProductionPlanOutputDate>().lambda()
+        List<ProductionPlanOutputDate> dateList = dateMapper.selectList(new QueryWrapper<ProductionPlanOutputDate>().lambda()
                 .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        planOutputDateService.removeBatchByIds(dateList, dateList.size());
+        List<String> collect = dateList.stream().map(item -> item.getId()).collect(Collectors.toList());
+        dateMapper.deleteBatchIds(collect);
         getBaseMapper().deleteBatchIds(monthList);
         planOutputYearService.removeBatchByIds(yearList, yearList.size());
         yieldAnalysisYearService.remove(new LambdaQueryWrapper<ProductionYieldAnalysisYear>()
                 .eq(ProductionYieldAnalysisYear::getYear, deleteProductionPlanYearDTO.getPlanYear()));
         getBaseMapper().delete(new LambdaQueryWrapper<ProductionPlanOutputMonth>()
                 .eq(ProductionPlanOutputMonth::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        planOutputDateService.remove(new LambdaQueryWrapper<ProductionPlanOutputDate>()
+        dateMapper.delete(new LambdaQueryWrapper<ProductionPlanOutputDate>()
                 .eq(ProductionPlanOutputDate::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
-        return AjaxResult.success();
     }
 
     private void batchs(AddProductionPlanYearDTO productionPlanYearDTO, Date now, List<ProductionPlanOutputYear> yearList, BigDecimal lengthOfYear) {
@@ -478,8 +477,8 @@ public class ProductionPlanOutputMonthServiceImpl extends ServiceImpl<Production
                     planOutputDate.setModifyUserName(productionPlanYearDTO.getUserName());
                     planOutputDate.setModifyTime(now);
                     dayList.add(planOutputDate);
+                    dateMapper.insert(planOutputDate);
                 }
-                planOutputDateService.saveBatch(dayList, dayList.size());
             }
             saveBatch(monthList, monthList.size());
         }

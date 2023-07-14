@@ -1,13 +1,13 @@
 package com.jlkj.product.oi.controller;
 
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanOneMonthDTO;
 import com.jlkj.product.oi.dto.productionplantarget.UpdateProductionPlanMonthDTO;
 import com.jlkj.product.oi.service.ProductionPlanPowerGenerationYearService;
-import com.jlkj.product.oi.service.impl.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,9 +15,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,11 +26,11 @@ import javax.validation.Valid;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
-/**
- * @author zyf
- * @Description
- * @create 2022-04-29 14:02
- */
+/**月发电计划
+*@description:
+*@Author: 265823
+*@date: 2023/7/7 15:01
+*/
 @Tag(name = "月发电计划")
 @RestController
 @RequestMapping("/plan")
@@ -45,6 +43,11 @@ public class ProductionPlanPowerGenerationMonthController {
     @Autowired
     ProductionPlanPowerGenerationYearService planPowerGenerationYearService;
 
+    /**
+     * 查询月发电计划
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询月发电计划",
             parameters = {
                     @Parameter(name = "planYear", description = "计划年度")
@@ -56,12 +59,17 @@ public class ProductionPlanPowerGenerationMonthController {
     )
     @Log(title = "查询日发电计划",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listMonthPowerGenerationTargetPlans", method = RequestMethod.GET)
-    public Object get(@Valid GetProductionPlanMonthDTO dto) {
+    public AjaxResult get(@Valid GetProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return planPowerGenerationYearService.get(dto);
+        return AjaxResult.success(planPowerGenerationYearService.get(dto));
     }
 
+    /**
+     * 查询单条月发电计划
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询单条月发电计划",
             parameters = {
                     @Parameter(name = "planYear", description = "计划年度"),
@@ -74,12 +82,16 @@ public class ProductionPlanPowerGenerationMonthController {
     )
     @Log(title = "查询单条月发电计划",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getMonthPowerGenerationTargetPlan", method = RequestMethod.GET)
-    public Object getOne(@Valid GetProductionPlanOneMonthDTO dto) {
+    public AjaxResult getOne(@Valid GetProductionPlanOneMonthDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return planPowerGenerationYearService.getOneCustom(dto);
+        return AjaxResult.success(planPowerGenerationYearService.getOneCustom(dto));
     }
 
+    /**
+     * 修改月发电计划
+     * @param dto
+     */
     @Operation(summary = "修改月发电计划",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -101,9 +113,9 @@ public class ProductionPlanPowerGenerationMonthController {
     )
     @Log(title = "修改月发电计划",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateMonthPowerGenerationTargetPlan", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@Valid @RequestBody UpdateProductionPlanMonthDTO dto) {
+    public void update(@Valid @RequestBody UpdateProductionPlanMonthDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return planPowerGenerationYearService.updateCustom(dto);
+        planPowerGenerationYearService.updateCustom(dto);
     }
 }

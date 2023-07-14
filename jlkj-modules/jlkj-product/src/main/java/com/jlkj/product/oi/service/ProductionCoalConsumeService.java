@@ -7,11 +7,10 @@ import com.jlkj.product.oi.dto.productioncoalconsume.*;
 import com.jlkj.product.oi.vo.productioncoalconsume.PageProductionCoalConsumeVO;
 
 /**
- * 服务接口-炼焦煤消耗维护
- *
- * @author sudeyou
- * @since 2022-11-03 17:10:54
- */
+*@description: 服务接口-炼焦煤消耗维护
+*@Author: 265823
+*@date: 2023/7/10 11:15
+*/
 public interface ProductionCoalConsumeService extends IService<ProductionCoalConsume> {
 
     /**
@@ -26,27 +25,27 @@ public interface ProductionCoalConsumeService extends IService<ProductionCoalCon
      * @param insertProductionCoalConsumeDTO 新增dto
      * @return 执行结果
      */
-    Object insertProductionCoalConsumeData(InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO);
+    void insertProductionCoalConsumeData(InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO);
 
     /**
      * 炼焦煤消耗维护-修改
      * @param updateProductionCoalConsumeDTO 修改dto
      * @return 执行结果
      */
-    Object updateProductionCoalConsumeData(UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO);
+    void updateProductionCoalConsumeData(UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO);
 
     /**
      * 炼焦煤消耗维护-确认
      * @param confirmProductionCoalConsumeDTO 修改dto
      * @return 执行结果
      */
-    Object confirmProductionCoalConsumeData(ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO);
+    void confirmProductionCoalConsumeData(ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO);
 
     /**
      * 炼焦煤消耗维护-删除
      * @param deleteProductionCoalConsumeDTO 删除dto
      * @return 执行结果
      */
-    Object deleteProductionCoalConsumeData(DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO);
+    void deleteProductionCoalConsumeData(DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO);
 }
 

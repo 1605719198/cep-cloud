@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.domain.ProductionPlanPowerGenerationDate;
 import com.jlkj.product.oi.domain.ProductionPlanPowerGenerationMonth;
@@ -29,13 +29,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.jlkj.product.oi.constants.RedissonUtil.getLock;
 import static com.jlkj.product.oi.constants.DateConstants.MONTHS;
+import static com.jlkj.product.oi.constants.RedissonUtil.getLock;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_plan_power_generation_year(计划管理--发电年指标计划)】的数据库操作Service实现
-* @createDate 2022-04-29 13:46:55
+*@description: 针对表【product_oi_plan_power_generation_year(计划管理--发电年指标计划)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/11 8:30
 */
 @Service
 public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<ProductionPlanPowerGenerationYearMapper, ProductionPlanPowerGenerationYear>
@@ -74,7 +74,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
      */
     @Transactional(readOnly = true)
     @Override
-    public Object get(GetProductionPlanMonthDTO dto) {
+    public List<Map<String, String>> get(GetProductionPlanMonthDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 2));
@@ -93,7 +93,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         sqlString.append(dto.getPlanYear());
         sqlString.append(" group by plan_month order by plan_year desc, plan_month asc");
         List<Map<String, String>> targetList = planPowerGenerationMonthService.getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
      */
     @Transactional(readOnly = true)
     @Override
-    public Object getOneCustom(GetProductionPlanOneMonthDTO dto) {
+    public List<Map<String, String>> getOneCustom(GetProductionPlanOneMonthDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 2));
@@ -124,7 +124,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         sqlString.append(dto.getPlanMonth());
         sqlString.append(" group by plan_month");
         List<Map<String, String>> targetList = planPowerGenerationMonthService.getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
     /**
@@ -134,7 +134,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
      */
     @Transactional(readOnly = true)
     @Override
-    public Object getDate(GetProductionPlanDayDTO dto) {
+    public List<Map<String, String>> getDate(GetProductionPlanDayDTO dto) {
         List<ProductionParameterTargetItem> itemlist =
                 productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                         .eq(ProductionParameterTargetItem::getTargetItemTypeId, 2));
@@ -155,7 +155,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         sqlString.append(dto.getPlanMonth());
         sqlString.append(" group by plan_date order by plan_year desc, plan_month asc, plan_date desc");
         List<Map<String, String>> targetList = planPowerGenerationDateService.getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
     private void saveNewLog(AddProductionPowerPlanYearDTO addProductionPowerPlanYearDTO) {
@@ -209,11 +209,10 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
     /**
      * 新增年发电计划
      * @param productionPlanYearDTO
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object saveCustom(AddProductionPowerPlanYearDTO productionPlanYearDTO) {
+    public void saveCustom(AddProductionPowerPlanYearDTO productionPlanYearDTO) {
         RLock rLock = redissonClient.getLock(getLock("ProductionPlanPowerGenerationYear", productionPlanYearDTO.getPlanYear()));
         rLock.lock();
         try {
@@ -221,7 +220,7 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
             List<ProductionPlanPowerGenerationYear> plans = list(new QueryWrapper<ProductionPlanPowerGenerationYear>().lambda()
                     .eq(ProductionPlanPowerGenerationYear::getPlanYear, productionPlanYearDTO.getPlanYear()));
             if (plans.size() > 0) {
-                return AjaxResult.error("当年发电计划已存在");
+                throw new ServiceException("当年发电计划已存在");
             }
 
             BigDecimal lengthOfYear = new BigDecimal(DateUtil.lengthOfYear(productionPlanYearDTO.getPlanYear()));
@@ -287,11 +286,10 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
             saveBatch(yearList, yearList.size());
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
     /**
@@ -300,14 +298,14 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public AjaxResult delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
+    public void delete(DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
         List<ProductionPlanPowerGenerationYear> yearList = getBaseMapper().selectList(new QueryWrapper<ProductionPlanPowerGenerationYear>().lambda()
                 .eq(ProductionPlanPowerGenerationYear::getPlanYear, deleteProductionPlanYearDTO.getPlanYear()));
         if (yearList.size() < 1) {
-            return AjaxResult.error("当前年份计划不存在");
+            throw new ServiceException("当前年份计划不存在");
         }
         if (deleteProductionPlanYearDTO.getPlanYear() <= DateUtil.year(DateUtil.date())) {
-            return AjaxResult.error("往年计划不能删除");
+            throw new ServiceException("往年计划不能删除");
         }
 
         StringBuilder content = new StringBuilder();
@@ -335,17 +333,15 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
         planPowerGenerationDateService.removeBatchByIds(dateList, dateList.size());
         planPowerGenerationMonthService.removeBatchByIds(monthList, monthList.size());
         getBaseMapper().deleteBatchIds(yearList);
-        return AjaxResult.success();
     }
 
     /**
      * 修改月发电计划
      * @param dto
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object updateCustom(UpdateProductionPlanMonthDTO dto) {
+    public void updateCustom(UpdateProductionPlanMonthDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("ProductionPlanPowerGenerationMonth", dto.getPlanYear(), dto.getPlanMonth()));
         rLock.lock();
         try {
@@ -357,13 +353,13 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
                     .eq(ProductionPlanPowerGenerationDate::getPlanYear, dto.getPlanYear())
                     .eq(ProductionPlanPowerGenerationDate::getPlanMonth, dto.getPlanMonth()));
             if (monthList.size() < 1) {
-                return AjaxResult.error("当月计划不存在或已删除");
+                throw new ServiceException("当月计划不存在或已删除");
             }
             if (dayList.size() < 1) {
-                return AjaxResult.error("当月的日计划不存在或已删除");
+                throw new ServiceException("当月的日计划不存在或已删除");
             }
             if (DateUtil.year(now) >= dto.getPlanYear() && (DateUtil.month(now) >= dto.getPlanMonth())) {
-                return AjaxResult.error("当月和当月之前的计划不能被修改");
+                throw new ServiceException("当月和当月之前的计划不能被修改");
             }
             saveUpdateLog(dto, monthList);
             for (ProductionPlanPowerGenerationMonth plan : monthList) {
@@ -398,11 +394,10 @@ public class ProductionPlanPowerGenerationYearServiceImpl extends ServiceImpl<Pr
             planPowerGenerationDateService.updateBatchById(dayList, dayList.size());
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 }
 

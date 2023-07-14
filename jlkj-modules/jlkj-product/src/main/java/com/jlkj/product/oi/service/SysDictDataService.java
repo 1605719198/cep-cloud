@@ -8,11 +8,10 @@ import com.jlkj.product.oi.vo.sysdictdata.ListSysDictDataVO;
 import java.util.List;
 
 /**
- * 服务接口-字典数据表
- *
- * @author sudeyou
- * @since 2022-11-02 09:46:29
- */
+*@description: 服务接口-字典数据表
+*@Author: 265823
+*@date: 2023/7/11 15:51
+*/
 public interface SysDictDataService extends IService<SysDictData> {
 
     /**

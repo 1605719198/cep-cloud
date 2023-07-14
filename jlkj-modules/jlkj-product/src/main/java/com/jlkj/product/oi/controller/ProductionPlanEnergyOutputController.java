@@ -1,5 +1,6 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionplanenergyoutput.GetProductionPlanEnergyOutputDTO;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +22,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author yzl
- * @Description 发电产量
- * @create 2022年9月6日 09:13:04
- */
+*@description: 发电产量
+*@Author: 265823
+*@date: 2023/7/7 15:39
+*/
 @Tag(name = "发电产量")
 @RestController
 @RequestMapping("/plan")
@@ -39,6 +39,11 @@ public class ProductionPlanEnergyOutputController {
     ProductionPlanEnergyOutputService productionPlanEnergyOutputService;
 
 
+    /**
+     * 查询发电产量
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询发电产量",
             parameters = {
                     @Parameter(name = "planYear", description = "计划年度yyyy"),
@@ -56,10 +61,10 @@ public class ProductionPlanEnergyOutputController {
     @Log(title = "查询发电产量",businessType = BusinessType.OTHER)
     @Transactional(readOnly = true)
     @RequestMapping(value = "/listEnergyOutputPlans", method = RequestMethod.GET)
-    public Object get(@Valid GetProductionPlanEnergyOutputDTO dto) {
+    public AjaxResult get(@Valid GetProductionPlanEnergyOutputDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionPlanEnergyOutputService.getPageData(dto);
+        return AjaxResult.success(productionPlanEnergyOutputService.getPageData(dto));
     }
 
 }

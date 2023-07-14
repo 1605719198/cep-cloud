@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" :placeholder="placeholder" ref="selectTree"
+  <el-select v-model="value" :placeholder="placeholder" ref="selectTree" size="small"
              :clearable="isClearable" :filterable="isFilterable" :filter-method="searchTree">
     <el-option class="selectTreeOption" :value="selectForm.value" :label="selectForm.label">
       <template v-if="isIcon">

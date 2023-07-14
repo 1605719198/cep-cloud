@@ -9,9 +9,10 @@ import com.jlkj.product.oi.vo.productionplanconfigcoke.PlanNumberVO;
 import java.util.Map;
 
 /**
- * 服务接口-配煤计划主记录
- * @author sudeyou
- */
+*@description: 服务接口-配煤计划主记录
+*@Author: 265823
+*@date: 2023/7/11 8:04
+*/
 public interface ProductionPlanConfigCokeService extends IService<ProductionPlanConfigCoke> {
 
     /**
@@ -24,30 +25,26 @@ public interface ProductionPlanConfigCokeService extends IService<ProductionPlan
     /**
      * 新增-配煤计划主记录
      * @param addProductionPlanConfigCokeDTO 新增dto
-     * @return 执行结果
      */
-    Object addData(AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO);
+    void addData(AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO);
 
     /**
      * 修改-配煤计划主记录
      * @param updateProductionPlanConfigCokeDTO 修改dto
-     * @return 执行结果
      */
-    Object updateData(UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO);
+    void updateData(UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO);
 
     /**
      * 删除-配煤计划主记录
      * @param deleteProductionPlanConfigCokeDTO 删除dto
-     * @return 执行结果
      */
-    Object deleteData(DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO);
+    void deleteData(DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO);
 
     /**
      * 确认-配煤计划主记录
      * @param confirmProductionPlanConfigCokeDTO 修改dto
-     * @return 执行结果
      */
-    Object confirmData(ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO);
+    void confirmData(ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO);
 
     /**
      * 配煤计划主记录-计划编号
@@ -57,9 +54,8 @@ public interface ProductionPlanConfigCokeService extends IService<ProductionPlan
     /**
      * 手动切配煤计划-配煤计划主记录
      * @param dto dto
-     * @return 执行结果
      */
-    Object changeProductionPlanCfgCokeConfirm(ChangeProductionPlanCfgCokeDTO dto);
+    void changeProductionPlanCfgCokeConfirm(ChangeProductionPlanCfgCokeDTO dto);
 
 }
 

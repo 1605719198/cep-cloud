@@ -7,10 +7,10 @@ import com.jlkj.product.oi.dto.productionoutputperformancetemperature.PageProduc
 import com.jlkj.product.oi.vo.productionoutputperformancetemperature.PageProductionOutputPerformanceTemperatureVO;
 
 /**
- * 服务接口-出炉实绩测温记录
- * @author sudeyou
- * @since 2022-08-11 14:06:15
- */
+*@description: 服务接口-出炉实绩测温记录
+*@Author: 265823
+*@date: 2023/7/10 17:07
+*/
 public interface ProductionOutputPerformanceTemperatureService extends IService<ProductionOutputPerformanceTemperature> {
 
     /**

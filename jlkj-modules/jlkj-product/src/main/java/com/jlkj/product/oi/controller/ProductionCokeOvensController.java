@@ -32,11 +32,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-每日推焦炉数维护
- *
- * @author sudeyou
- * @since 2022-10-18 14:50:42
- */
+*@description: 控制器-每日推焦炉数维护
+*@Author: 265823
+*@date: 2023/7/10 13:14
+*/
 @Tag(name = "每日推焦炉数维护")
 @RestController
 @RequestMapping("/productioncokeovens")
@@ -49,6 +48,11 @@ public class ProductionCokeOvensController {
     @Resource
     private ProductionCokeOvensService productionCokeOvensService;
 
+    /**
+     * 每日推焦炉数维护-查询-分页
+     * @param pageProductionCokeOvensDTO
+     * @return
+     */
     @Operation(summary = "每日推焦炉数维护-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -63,7 +67,7 @@ public class ProductionCokeOvensController {
     )
     @Log(title = "每日推焦炉数维护-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionCokeOvensPage", method = RequestMethod.GET)
-    public Object getProductionCokeOvensPageData(@Validated @ParamModel PageProductionCokeOvensDTO pageProductionCokeOvensDTO) {
+    public AjaxResult getProductionCokeOvensPageData(@Validated @ParamModel PageProductionCokeOvensDTO pageProductionCokeOvensDTO) {
         log.info("params => " + pageProductionCokeOvensDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCokeOvensDTO);
         if (!"".equals(errorMsg)) {
@@ -73,6 +77,10 @@ public class ProductionCokeOvensController {
         return AjaxResult.success(productionCokeOvensService.getProductionCokeOvensPageData(pageProductionCokeOvensDTO));
     }
 
+    /**
+     * 每日推焦炉数维护-新增
+     * @param insertProductionCokeOvensDTO
+     */
     @Operation(summary = "每日推焦炉数维护-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -85,12 +93,16 @@ public class ProductionCokeOvensController {
     )
     @Log(title = "每日推焦炉数维护-新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/insertProductionCokeOvens", method = RequestMethod.POST, produces = "application/json")
-    public Object insertProductionCokeOvensData(@Valid @RequestBody InsertProductionCokeOvensDTO insertProductionCokeOvensDTO) {
+    public void insertProductionCokeOvensData(@Valid @RequestBody InsertProductionCokeOvensDTO insertProductionCokeOvensDTO) {
         log.info("params => " + insertProductionCokeOvensDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertProductionCokeOvensDTO);
-        return productionCokeOvensService.insertProductionCokeOvensData(insertProductionCokeOvensDTO);
+        productionCokeOvensService.insertProductionCokeOvensData(insertProductionCokeOvensDTO);
     }
 
+    /**
+     * 每日推焦炉数维护-修改
+     * @param updateProductionCokeOvensDTO
+     */
     @Operation(summary = "每日推焦炉数维护-修改",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -103,12 +115,15 @@ public class ProductionCokeOvensController {
     )
     @Log(title = "每日推焦炉数维护-修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionCokeOvens", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateProductionCokeOvensData(@Valid @RequestBody UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO) {
+    public void updateProductionCokeOvensData(@Valid @RequestBody UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO) {
         log.info("params => " + updateProductionCokeOvensDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionCokeOvensDTO);
-        return productionCokeOvensService.updateProductionCokeOvensData(updateProductionCokeOvensDTO);
+        productionCokeOvensService.updateProductionCokeOvensData(updateProductionCokeOvensDTO);
     }
 
+    /**
+     * 每日推焦炉数维护-抛送ERP
+     */
     @Operation(summary = "每日推焦炉数维护-抛送ERP",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -121,10 +136,14 @@ public class ProductionCokeOvensController {
     )
     @Log(title = "每日推焦炉数维护-抛送ERP",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/confirmProductionCokeOvens", method = RequestMethod.POST, produces = "application/json")
-    public Object confirmProductionCokeOvensData() {
-        return productionCokeOvensService.confirmProductionCokeOvensData();
+    public void confirmProductionCokeOvensData() {
+        productionCokeOvensService.confirmProductionCokeOvensData();
     }
 
+    /**
+     * 每日推焦炉数维护-删除
+     * @param deleteProductionCokeOvensDTO
+     */
     @Operation(summary = "每日推焦炉数维护-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -137,10 +156,10 @@ public class ProductionCokeOvensController {
     )
     @Log(title = "每日推焦炉数维护-删除",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteProductionCokeOvens", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteProductionCokeOvensData(@Valid @RequestBody DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO) {
+    public void deleteProductionCokeOvensData(@Valid @RequestBody DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO) {
         log.info("params => " + deleteProductionCokeOvensDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionCokeOvensDTO);
-        return productionCokeOvensService.deleteProductionCokeOvensData(deleteProductionCokeOvensDTO);
+        productionCokeOvensService.deleteProductionCokeOvensData(deleteProductionCokeOvensDTO);
     }
 }
 

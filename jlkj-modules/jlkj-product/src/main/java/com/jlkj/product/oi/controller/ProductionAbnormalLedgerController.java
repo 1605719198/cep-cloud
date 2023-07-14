@@ -1,6 +1,5 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -8,7 +7,7 @@ import com.jlkj.product.oi.dto.productionabnormalledger.AddProductionAbnormalLed
 import com.jlkj.product.oi.dto.productionabnormalledger.DelProductionAbnormalLedgerDTO;
 import com.jlkj.product.oi.dto.productionabnormalledger.GetProductionAbnormalLedgerDTO;
 import com.jlkj.product.oi.dto.productionabnormalledger.UpdateProductionAbnormalLedgerDTO;
-import com.jlkj.product.oi.service.impl.ProductionAbnormalLedgerServiceImpl;
+import com.jlkj.product.oi.service.ProductionAbnormalLedgerService;
 import com.jlkj.product.oi.swaggerdto.ProductionAbnormalLedgerSwagger;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,15 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-05-12 8:31
- */
+*@description: 生产异常台账
+*@Author: 265823
+*@date: 2023/7/10 10:50
+*/
 @Tag(name = "生产异常台账")
 @RestController
 @RequestMapping("/actualPerformance")
@@ -50,8 +47,13 @@ public class ProductionAbnormalLedgerController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionAbnormalLedgerServiceImpl abnormalLedgerService;
+    ProductionAbnormalLedgerService abnormalLedgerService;
 
+    /**
+     * 生产异常查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "生产异常查询",
             parameters = {
                     @Parameter(name = "departmentName", description = "主体单位（模糊匹配）"),
@@ -69,16 +71,18 @@ public class ProductionAbnormalLedgerController {
             }
     )
     @Log(title = "生产异常查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getProductionAbnormalLedger", method = RequestMethod.GET)
-    public Object get(@Valid GetProductionAbnormalLedgerDTO dto) {
+    public AjaxResult get(@Valid GetProductionAbnormalLedgerDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-
-        IPage<Map<String, Object>> list = abnormalLedgerService.get(dto);
-        return AjaxResult.success(list);
+        return AjaxResult.success(abnormalLedgerService.get(dto));
     }
 
+    /**
+     * 生产异常台账新增
+     * @param dto
+     * @return
+     */
     @Operation(summary = "生产异常台账新增",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -104,14 +108,18 @@ public class ProductionAbnormalLedgerController {
             }
     )
     @Log(title = "生产异常台账新增",businessType = BusinessType.INSERT)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/addProductionAbnormalLedger", method = RequestMethod.POST, produces = "application/json")
-    public Object save(@Valid @RequestBody AddProductionAbnormalLedgerDTO dto) {
+    public void save(@Valid @RequestBody AddProductionAbnormalLedgerDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return abnormalLedgerService.save(dto);
+        abnormalLedgerService.saveCustom(dto);
     }
 
+    /**
+     * 生产异常台账修改
+     * @param dto
+     * @return
+     */
     @Operation(summary = "生产异常台账修改",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -138,14 +146,18 @@ public class ProductionAbnormalLedgerController {
             }
     )
     @Log(title = "生产异常台账修改",businessType = BusinessType.UPDATE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/updateProductionAbnormalLedger", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@Valid @RequestBody UpdateProductionAbnormalLedgerDTO dto) {
+    public void update(@Valid @RequestBody UpdateProductionAbnormalLedgerDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return abnormalLedgerService.update(dto);
+        abnormalLedgerService.updateCustom(dto);
     }
 
+    /**
+     * 生产异常台账删除
+     * @param dto
+     * @return
+     */
     @Operation(summary = "生产异常台账删除",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -160,11 +172,10 @@ public class ProductionAbnormalLedgerController {
             }
     )
     @Log(title = "生产异常台账删除",businessType = BusinessType.DELETE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/delProductionAbnormalLedger", method = RequestMethod.POST, produces = "application/json")
-    public Object delete(@Valid @RequestBody DelProductionAbnormalLedgerDTO dto) {
+    public void delete(@Valid @RequestBody DelProductionAbnormalLedgerDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return abnormalLedgerService.delete(dto);
+        abnormalLedgerService.delete(dto);
     }
 }

@@ -3,28 +3,32 @@
     <el-col :span="24" style="padding:0 10px">
       <div class="coke_header">
         <el-row>
-          <el-col :span="7">
+          <el-col :span="4">
             <div class="coke_header_title">炼焦实绩</div>
           </el-col>
-          <el-col :span="11">
-            <div style="text-align: center; min-width: 650px">
+          <el-col :span="16">
+            <div style="text-align: center; min-width: 850px">
               <el-radio-group v-model="tabPosition">
+                <el-radio-button label="TJJH">推焦计划</el-radio-button>
                 <el-radio-button label="CLSJ">出炉实绩</el-radio-button>
                 <el-radio-button label="JTCC">焦炭出厂实绩</el-radio-button>
                 <el-radio-button label="CWJL">出炉实绩测温记录</el-radio-button>
                 <el-radio-button label="JLXS">焦炉系数记录</el-radio-button>
+<!--                <el-radio-button label="JJSJ">接焦实绩</el-radio-button>-->
                 <el-radio-button label="JYCL">焦炭产量记录</el-radio-button>
-                <el-radio-button label="JTFXCL">焦炭分项产量</el-radio-button>
+<!--                <el-radio-button label="JTFXCL">焦炭分项产量</el-radio-button>-->
               </el-radio-group>
             </div>
           </el-col>
         </el-row>
       </div>
       <div class="coke_main">
+        <CokePushingPlan v-if="tabPosition==='TJJH'" />
         <outFurnaceActual v-if="tabPosition==='CLSJ'" />
         <CokeOutFactoryActual v-else-if="tabPosition==='JTCC'" />
         <OutActualTemparetureRecord v-else-if="tabPosition==='CWJL'" />
         <CokeCoefficientRecord v-else-if="tabPosition==='JLXS'" />
+<!--        <CokeJointActual v-else-if="tabPosition==='JJSJ'"/>-->
         <CokeYieldRecord v-else-if="tabPosition==='JYCL'" />
         <CokeItemYield v-else-if="tabPosition === 'JTFXCL'" />
         <div v-else></div>
@@ -41,6 +45,8 @@ import OutActualTemparetureRecord from "./coke/OutActualTemparetureRecord";
 import CokeCoefficientRecord from "./coke/CokeCoefficientRecord";
 import CokeYieldRecord from "./coke/CokeYieldRecord";
 import CokeItemYield from "@/views/product/oi/actual/coke/CokeItemYield";
+import CokePushingPlan from '@/views/product/oi/actual/coke/cokePushingPlan'
+// import CokeJointActual from '@/views/production/actual/coke/cokeJointActual'
 export default {
   name: "coke",
   components: {
@@ -50,11 +56,13 @@ export default {
     OutActualTemparetureRecord,
     CokeCoefficientRecord,
     CokeYieldRecord,
-    CokeItemYield
+    CokeItemYield,
+    CokePushingPlan,
+    // CokeJointActual
   },
   data() {
     return {
-      tabPosition: 'CLSJ'
+      tabPosition: 'TJJH'
     };
   },
   computed: {

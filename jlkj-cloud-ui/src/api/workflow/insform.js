@@ -25,3 +25,12 @@ export function saveInstanceForm(data) {
     data: data
   })
 }
+
+// 新保存流程表单信息
+export function saveInstanceFormNew(data) {
+  return request({
+    url: '/flowable/workflow/instanceform/saveFormList',
+    method: 'post',
+    data: data
+  })
+}

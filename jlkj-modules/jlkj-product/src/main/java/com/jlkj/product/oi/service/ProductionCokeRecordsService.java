@@ -1,11 +1,14 @@
 package com.jlkj.product.oi.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.product.oi.domain.ProductionCokeRecords;
+import com.jlkj.product.oi.dto.productioncoefficientrecord.GetProductionCoefficientRecordDTO;
 import com.jlkj.product.oi.dto.productioncokerecords.ListHomeCokeProportionDTO;
 import com.jlkj.product.oi.vo.productioncokerecords.ListHomeCokeProportionVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author zyf
@@ -21,4 +24,10 @@ public interface ProductionCokeRecordsService extends IService<ProductionCokeRec
      */
     List<ListHomeCokeProportionVO> getHomeCokeProportionListData(ListHomeCokeProportionDTO listHomeCokeProportionDTO);
 
+    /**
+     * 焦炭产量记录查询
+     * @param dto
+     * @return
+     */
+    IPage<Map<String, Object>> get(GetProductionCoefficientRecordDTO dto);
 }

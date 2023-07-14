@@ -112,14 +112,12 @@ export default {
         req('post', 'changeProductionPlanCfgCokeConfirm', {
           id: row.id, receive_user_id: this.$store.getters.userInfo.userId, receive_user_name: this.$store.getters.userInfo.userName,
         }).then(res => {
-          if (res.code == 200) {
-            this.$message({
-              type: "success", message: "操作成功！", duration: 1000,
-              onClose: () => {
-                this.$emit('submitSave')
-              }
-            });
-          }
+          this.$message({
+            type: "success", message: "操作成功！", duration: 1000,
+            onClose: () => {
+              this.$emit('submitSave')
+            }
+          });
         }, error => {
           window.console.log(error);
         });
