@@ -830,6 +830,7 @@ export default {
       if (e === 0) {
         this.form.createBy = this.user.empNo
         this.form.createTime = getDateTime(0)
+        this.form.updateTime = getDateTime(0)
         this.form.effectDate = getDateTime(1)
         this.form.versionNo = 1
         this.form.ifCompany = 0

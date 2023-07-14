@@ -2,6 +2,7 @@ package com.jlkj.human.hd.mapper;
 
 import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author 266861
  * @date 2023-04-06
  */
+@Repository
 public interface ShiftCodeMapper 
 {
     /**

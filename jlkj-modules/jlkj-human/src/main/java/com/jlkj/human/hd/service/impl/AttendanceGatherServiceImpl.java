@@ -12,6 +12,7 @@ import com.jlkj.human.hd.domain.AttendanceGather;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
 import com.jlkj.human.hd.mapper.AttendanceGatherMapper;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
+import com.jlkj.human.hd.service.IShiftCodeService;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
@@ -45,6 +46,9 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
 
     @Resource
     private IPersonnelService iPersonnelService;
+
+    @Resource
+    private IShiftCodeService shiftCodeService;
 
 //    @Resource
 //    OverTimeServiceImpl overTimeService;
@@ -451,7 +455,12 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
             return 0;
         }else{
             System.out.println(newDataList);
-            return attendanceGatherMapper.batchSummaryData(newDataList);
+            int result = 0;
+            for(AttendanceGather gather : newDataList){
+                result+=attendanceGatherMapper.insertAttendanceGather(gather);
+            }
+//            return attendanceGatherMapper.batchSummaryData(newDataList);
+            return result;
         }
     }
 
@@ -484,6 +493,11 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
         List<Personnel> personnelList = personnelInfoDTO.getPersonnelList();
         if (personnelList.size() != 0) {
             Personnel personnel = personnelList.get(0);
+            // 是否在职
+            String isWork = "1";
+            if(!isWork.equals(personnel.getStatus())){
+                attendanceGather.setResvAttr2a(isWork);
+            }
             attendanceGather.setCompId(personnel.getCompId());
             attendanceGather.setEmpId(personnel.getId());
             attendanceGather.setEmpName(personnel.getFullName());
@@ -491,6 +505,11 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 attendanceGather.setPostId(personnel.getPostId().toString());
             }
             attendanceGather.setPostName(personnel.getPostName());
+            attendanceGather.setCreator("定时出勤汇总");
+            attendanceGather.setCreateDate(new Date());
+            //数据来源：系统0，导入1
+            String fromSystem = "0";
+            attendanceGather.setDatafrom(fromSystem);
         }
         return attendanceGather;
     }

@@ -3,7 +3,6 @@ package com.jlkj.human.hd.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.human.hd.domain.AttendanceGather;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -30,6 +29,14 @@ public interface AttendanceGatherMapper extends BaseMapper<AttendanceGather> {
     public List<AttendanceGatherDTO> selectCompJoinList(AttendanceGatherDTO attendanceGatherDTO);
 
     /**
+     * 新增月出勤统计汇总
+     *
+     * @param attendanceGather 月出勤统计汇总
+     * @return 结果
+     */
+    public int insertAttendanceGather(AttendanceGather attendanceGather);
+
+    /**
      * 查询定时出勤汇总的人员
      *
      * @param attendanceGather 查询参数
@@ -47,7 +54,7 @@ public interface AttendanceGatherMapper extends BaseMapper<AttendanceGather> {
      * @author 266861
      * @Date 2023/7/13 10:15
      **/
-    public int batchSummaryData(@RequestBody List<AttendanceGather> list);
+    public int batchSummaryData( List<AttendanceGather> list);
 
 }
 

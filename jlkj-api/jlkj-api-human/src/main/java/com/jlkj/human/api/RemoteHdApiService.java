@@ -29,9 +29,9 @@ public interface RemoteHdApiService {
     /**
      * 月度存班
      * @param source 请求来源
-     * @return 定时排班结果
+     * @return 月度存班结果
      * @author 266861
-     * @date 2023/7/4 9:40
+     * @date 2023/7/7 10:42
      **/
     @GetMapping("/saveTime/scheduledZeroing")
     public AjaxResult scheduledZeroing(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
