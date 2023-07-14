@@ -180,76 +180,107 @@
                ifnull(max(a.historical_maximum),0) as historical_maximum,
                ifnull(max(a.historical_minimum),0) as historical_minimum
         from (
-            select
-                a.`year`,
-                a.`month`,
-                a.target_item_name,
-                a.target_item_output,
-                a.target_item_output_real,
-                a.average_last_year,
-                a.same_time_last_year,
-                a.historical_maximum,
-                a.historical_minimum
-            from product_oi_real_output_month a
-            where a.`year` = #{condition.year}
-            and (#{condition.month} = 0 or a.`month` = #{condition.month})
-            and (#{condition.targetItemName} = '' or a.target_item_name like concat('%',#{condition.targetItemName},'%'))
-            union all
-            select year(a.production_date)     as year,
-                   month(a.production_date)    as month,
-                   '全焦'                       as target_item_name,
-                   0                           as target_item_output,
-                   round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real,
-                   0 as average_last_year,
-                   0 as same_time_last_year,
-                   0 as historical_maximum,
-                   0 as historical_minimum
-            from product_oi_output_performance_manual_bake a
-            INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
-            where year(a.production_date) = #{condition.year}
-            group by year, month
-            union all
-            select a.year,
-                   a.month,
-                   '冶金焦' as target_item_name,
-                   0 as target_item_output,
-                   round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real,
-                   0 as average_last_year,
-                   0 as same_time_last_year,
-                   0 as historical_maximum,
-                   0 as historical_minimum
-            from (
-                select year(a.production_date)     as year,
-                       month(a.production_date)    as month,
-                       sum(a.single_hole_production) as target_item_output_real
-                from product_oi_output_performance_manual_bake a
-                         INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
-                where year(a.production_date) = #{condition.year}
-                group by year, month
-            ) as a
-            LEFT JOIN (
-                select year,month,
-                       sum(production_performance_jd) as nutCoOutput,
-                       sum(production_performance_jf) as coFinesOutput
-                from (
-                         select year(car_send_date) as year,
-                                month(car_send_date) as month,
-
-                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
-                                0 as production_performance_jf
-                         from logistics_wv_trans_actual_nut a
-                         group by year,month
-                         union all
-                         select year(car_send_date) as year,
-                                month(car_send_date) as month,
-                                0 as production_performance_jd,
-                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                         from logistics_wv_trans_actual_fines a
-                         group by year,month
+                 select
+                     a.`year`,
+                     a.`month`,
+                     a.target_item_name,
+                     a.target_item_output,
+                     a.target_item_output_real,
+                     a.average_last_year,
+                     a.same_time_last_year,
+                     a.historical_maximum,
+                     a.historical_minimum
+                 from t_production_real_output_month a
+                 where a.`year` = #{condition.year}
+                   and (#{condition.month} = 0 or a.`month` = #{condition.month})
+                   and (#{condition.targetItemName} = '' or a.target_item_name like concat('%',#{condition.targetItemName},'%'))
+                 union all
+                 select year(a.production_date)     as year,
+                     month(a.production_date)    as month,
+                     '全焦'                       as target_item_name,
+                     0                           as target_item_output,
+                     round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real,
+                     0 as average_last_year,
+                     0 as same_time_last_year,
+                     0 as historical_maximum,
+                     0 as historical_minimum
+                 from t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 where year(a.production_date) = #{condition.year}
+                 group by year, month
+                 union all
+                 select a.year,
+                     a.month,
+                     '冶金焦' as target_item_name,
+                     0 as target_item_output,
+                     round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output_real,
+                     0 as average_last_year,
+                     0 as same_time_last_year,
+                     0 as historical_maximum,
+                     0 as historical_minimum
+                 from (
+                     select year(a.production_date)     as year,
+                     month(a.production_date)    as month,
+                     sum(a.single_hole_production) as target_item_output_real
+                     from t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     where year(a.production_date) = #{condition.year}
+                     group by year, month
                      ) as a
-                group by year,month
-            ) b ON a.year = b.year and a.month = b.month
-        ) as a
+                     LEFT JOIN (
+                     select year,month,
+                     sum(production_performance_jd) as nutCoOutput,
+                     sum(production_performance_jf) as coFinesOutput
+                     from (
+                     select year(car_send_date) as year,
+                     month(car_send_date) as month,
+
+                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                     0 as production_performance_jf
+                     from t_logistics_trans_actual_nut a
+                     group by year,month
+                     union all
+                     select year(car_send_date) as year,
+                     month(car_send_date) as month,
+                     0 as production_performance_jd,
+                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                     from t_logistics_trans_actual_fines a
+                     group by year,month
+                     ) as a
+                     group by year,month
+                     ) b ON a.year = b.year and a.month = b.month
+                 UNION ALL
+                 SELECT
+                     a.year,
+                     a.month,
+                     '蒸汽' as target_item_name,
+                     0 as target_item_output,
+                     round(qty / target_item_output_real * 100, 3) as target_item_output_real,
+                     0 as average_last_year,
+                     0 as same_time_last_year,
+                     0 as historical_maximum,
+                     0 as historical_minimum
+                 FROM (
+                     SELECT year(a.production_date)     as year,
+                     month(a.production_date)    as month,
+                     round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real
+                     FROM t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     WHERE YEAR(a.production_date) = #{condition.year}
+                     GROUP BY year, month
+                     ) a
+                     INNER JOIN (
+                     SELECT
+                     YEAR(e_count_date_class) AS year,
+                     MONTH(e_count_date_class) AS month,
+                     IFNULL(SUM(pro_con_qty), 0) AS qty
+                     FROM v_energy_consume_output
+                     WHERE
+                     dict_value = '超高压蒸汽'
+                     AND YEAR(e_count_date_class) = #{condition.year}
+                     GROUP BY year, month
+                     ) c ON a.year = c.year AND a.month = c.month
+             ) as a
         where (#{condition.targetItemName} = '' or a.target_item_name like concat('%',#{condition.targetItemName},'%'))
         group by a.`year`,
                  a.`month`,
@@ -261,56 +292,81 @@
         select a.`month`,
                max(target_item_output) as target_item_output
         from (
-            select
-                a.`month`,
-                ifnull(a.target_item_output_real,0) as target_item_output
-            from product_oi_real_output_month a
-            where a.`year` = #{year}
-            and (#{targetItemName} = '' or a.target_item_name like concat('%',#{targetItemName},'%'))
-            union all
-            select month(a.production_date)    as month,
-                   round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output
-            from product_oi_output_performance_manual_bake a
-            INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
-            where year(a.production_date) = #{year}
-              and #{targetItemName} = '全焦'
-            group by month
-            union all
-            select a.month,
-                   round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output
-            from (
+                 select
+                     a.`month`,
+                     ifnull(a.target_item_output_real,0) as target_item_output
+                 from t_production_real_output_month a
+                 where a.`year` = #{year}
+                   and (#{targetItemName} = '' or a.target_item_name like concat('%',#{targetItemName},'%'))
+                 union all
+                 select month(a.production_date)    as month,
+                     round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output
+                 from t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                 where year(a.production_date) = #{year}
+                   and #{targetItemName} = '全焦'
+                 group by month
+                 union all
+                 select a.month,
+                     round((a.target_item_output_real - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) / a.target_item_output_real * 100,3) as target_item_output
+                 from (
                      select year(a.production_date)     as year,
-                            month(a.production_date)    as month,
-                            sum(a.single_hole_production) as target_item_output_real
-                     from product_oi_output_performance_manual_bake a
-                              INNER JOIN product_oi_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     month(a.production_date)    as month,
+                     sum(a.single_hole_production) as target_item_output_real
+                     from t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
                      where year(a.production_date) = #{year}
-                       and #{targetItemName} = '冶金焦'
+                     and #{targetItemName} = '冶金焦'
                      group by year, month
-            ) as a
-            LEFT JOIN (
-                select year,month,
-                       sum(production_performance_jd) as nutCoOutput,
-                       sum(production_performance_jf) as coFinesOutput
-                from (
-                         select year(car_send_date) as year,
-                                month(car_send_date) as month,
-
-                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
-                                0 as production_performance_jf
-                         from logistics_wv_trans_actual_nut a
-                         group by year,month
-                         union all
-                         select year(car_send_date) as year,
-                                month(car_send_date) as month,
-                                0 as production_performance_jd,
-                                sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                         from logistics_wv_trans_actual_fines a
-                         group by year,month
                      ) as a
-                group by year,month
-            ) b ON a.year = b.year and a.month = b.month
-        ) as a
+                     LEFT JOIN (
+                     select year,month,
+                     sum(production_performance_jd) as nutCoOutput,
+                     sum(production_performance_jf) as coFinesOutput
+                     from (
+                     select year(car_send_date) as year,
+                     month(car_send_date) as month,
+
+                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                     0 as production_performance_jf
+                     from t_logistics_trans_actual_nut a
+                     group by year,month
+                     union all
+                     select year(car_send_date) as year,
+                     month(car_send_date) as month,
+                     0 as production_performance_jd,
+                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                     from t_logistics_trans_actual_fines a
+                     group by year,month
+                     ) as a
+                     group by year,month
+                     ) b ON a.year = b.year and a.month = b.month
+                 UNION ALL
+                 SELECT
+                     a.month,
+                     round(qty / target_item_output_real * 100, 3) as target_item_output_real
+                 FROM (
+                     SELECT year(a.production_date)     as year,
+                     month(a.production_date)    as month,
+                     round(sum(a.single_hole_production) / sum(b.loading_coal) * 100,3) as target_item_output_real
+                     FROM t_production_output_performance_manual_bake a
+                     INNER JOIN t_production_output_performance_manual_coal b ON a.coal_record_id = b.id
+                     WHERE YEAR(a.production_date) = #{year}
+                     GROUP BY year, month
+                     ) a
+                     INNER JOIN (
+                     SELECT
+                     YEAR(e_count_date_class) AS year,
+                     MONTH(e_count_date_class) AS month,
+                     IFNULL(SUM(pro_con_qty), 0) AS qty
+                     FROM v_energy_consume_output
+                     WHERE
+                     dict_value = '超高压蒸汽'
+                     AND YEAR(e_count_date_class) = #{year}
+                     GROUP BY year, month
+                     ) c ON a.year = c.year AND a.month = c.month
+                 WHERE #{targetItemName} = '蒸汽'
+             ) as a
         group by a.`month`
         order by a.`month`
     </select>

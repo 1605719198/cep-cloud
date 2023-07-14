@@ -53,6 +53,18 @@
                 </el-select>
               </div>
             </div>
+        <div class="el-form-item el-form-item--small">
+          <div class="el-form-item__content">
+            <el-date-picker v-model="query.start_create_time"  type="datetime" placeholder="选择开始创建时间"
+                            value-format="yyyy-MM-dd HH:mm:ss" />
+          </div>
+        </div>
+        <div class="el-form-item el-form-item--small">
+          <div class="el-form-item__content">
+            <el-date-picker v-model="query.end_create_time" type="datetime"  placeholder="选择结束创建时间"
+                            value-format="yyyy-MM-dd HH:mm:ss" />
+          </div>
+        </div>
 
             <div class="el-form-item__content"
                  style="margin-left: 0px;">
@@ -189,6 +201,8 @@ export default {
         endTime: '',
         classType: '',
         shiftName: '',
+        start_create_time: '',
+        end_create_time: '',
       },
       table: {
         border: true,
@@ -278,7 +292,9 @@ export default {
         startTime: '',
         endTime: '',
         classType: '',
-        shiftName: ''
+        shiftName: '',
+        start_create_time: '',
+        end_create_time: '',
       }
       this.handleQuery();
     },
@@ -321,6 +337,8 @@ export default {
         "className": query.classType,
         "startTime": query.startTime === "" ? "" : query.startTime,
         "endTime": query.endTime === "" ? "" : query.endTime,
+        "start_create_time": query.start_create_time === "" ? "" : query.start_create_time,
+        "end_create_time": query.end_create_time === "" ? "" : query.end_create_time,
         "current": page.currentPage,
         "size": page.pageSize,
         "order": page.order,

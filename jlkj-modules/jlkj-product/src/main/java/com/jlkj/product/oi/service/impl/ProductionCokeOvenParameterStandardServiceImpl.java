@@ -4,7 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.ProductionCokeOvenParameterStandard;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
 import com.jlkj.product.oi.dto.productioncokeovenparameterstandard.AddProductionCokeOvenParameterStandardDTO;
@@ -33,6 +33,11 @@ public class ProductionCokeOvenParameterStandardServiceImpl extends ServiceImpl<
     @Resource
     ChangeLogService changeLogService;
 
+    /**
+     * K值标准查询
+     * @param pageProductionCokeOvenParameterStandardDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, String>> getListPage(PageProductionCokeOvenParameterStandardDTO pageProductionCokeOvenParameterStandardDTO) {
@@ -40,8 +45,14 @@ public class ProductionCokeOvenParameterStandardServiceImpl extends ServiceImpl<
         return getBaseMapper().getListPage(page, pageProductionCokeOvenParameterStandardDTO);
     }
 
+    /**
+     * 新增K值标准
+     * @param addProductionCokeOvenParameterStandardDTO
+     * @return
+     */
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object save(AddProductionCokeOvenParameterStandardDTO addProductionCokeOvenParameterStandardDTO) {
+    public void saveCustom(AddProductionCokeOvenParameterStandardDTO addProductionCokeOvenParameterStandardDTO) {
         ProductionCokeOvenParameterStandard productionCokeOvenParameterStandard = new ProductionCokeOvenParameterStandard();
         productionCokeOvenParameterStandard.setId(IdUtil.randomUUID());
         productionCokeOvenParameterStandard.setStandardCoalLoading(addProductionCokeOvenParameterStandardDTO.getStandardCoalLoading());
@@ -76,12 +87,15 @@ public class ProductionCokeOvenParameterStandardServiceImpl extends ServiceImpl<
         insertChangeLogDTO.setCreateUserId(addProductionCokeOvenParameterStandardDTO.getCreateUserId());
         insertChangeLogDTO.setCreateUserName(addProductionCokeOvenParameterStandardDTO.getCreateUserName());
         changeLogService.insertChangeLogData(insertChangeLogDTO);
-
-        return AjaxResult.success("K值标准增加成功");
     }
 
+    /**
+     * 修改K值标准
+     * @param updateProductionCokeOvenParameterStandardDTO
+     */
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object update(UpdateProductionCokeOvenParameterStandardDTO updateProductionCokeOvenParameterStandardDTO) {
+    public void updateCustom(UpdateProductionCokeOvenParameterStandardDTO updateProductionCokeOvenParameterStandardDTO) {
         ProductionCokeOvenParameterStandard productionCokeOvenParameterStandard = getById(updateProductionCokeOvenParameterStandardDTO.getId());
         if (null != productionCokeOvenParameterStandard) {
             StringBuilder content = new StringBuilder();
@@ -131,14 +145,19 @@ public class ProductionCokeOvenParameterStandardServiceImpl extends ServiceImpl<
             productionCokeOvenParameterStandard.setModifyUserName(updateProductionCokeOvenParameterStandardDTO.getModifyUserName());
             productionCokeOvenParameterStandard.setModifyTime(new Date());
             updateById(productionCokeOvenParameterStandard);
-            return AjaxResult.success("K值标准修改成功");
         }
         else {
-            return AjaxResult.error("K值标准不存在");
+            throw new ServiceException("K值标准不存在");
         }
     }
 
-    public Object delete(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
+    /**
+     * 删除k值标准
+     * @param deleteProductionParameterTargetItemDTO
+     * @return
+     */
+    @Override
+    public void delete(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
         ProductionCokeOvenParameterStandard productionCokeOvenParameterStandard = getById(deleteProductionParameterTargetItemDTO.getId());
         if (null != productionCokeOvenParameterStandard) {
 
@@ -160,10 +179,9 @@ public class ProductionCokeOvenParameterStandardServiceImpl extends ServiceImpl<
             changeLogService.insertChangeLogData(insertChangeLogDTO);
 
             removeById(productionCokeOvenParameterStandard);
-            return AjaxResult.success("K值标准删除成功");
         }
         else {
-            return AjaxResult.error("K值标准不存在或已被删除");
+            throw new ServiceException("K值标准不存在或已被删除");
         }
     }
 }

@@ -94,7 +94,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-right"
-                @click="handleUpdate(scope.row)"
+                @click="handleSend(scope.row)"
                 v-hasPermi="['human:comptime:edit']"
               >送出</el-button>
               <el-button
@@ -124,80 +124,87 @@
         />
 
         <!-- 添加或修改补休记录对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
-          <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="工号" prop="empNo">
-                  <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
-                  </el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="申请人姓名" prop="empName">
-                  {{form.empName}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="申请人岗位名称" prop="postName">
-                  {{form.postName}}
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="16">
-                <el-form-item label="补休开始日期" prop="workOvertimeDate">
-                  <el-date-picker
-                    v-model="form.workOvertimeDate"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    type="datetimerange"
-                    range-separator="~"
-                    start-placeholder="补休开始时间"
-                    end-placeholder="补休结束时间"
-                    :default-time="['08:00:00', '17:00:00']"
-                    @change="dateFormat1">
-                  </el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="补休小时数" prop="compHours">
-                  <el-input v-model="form.compHours" placeholder="请输入补休小时数" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="存班小时数" prop="saveHours">
-                  {{form.saveHours}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="16">
-                <el-form-item label="辅助说明" prop="description">
-                  <el-input v-model="form.description" maxlength="500" show-word-limit type="textarea" placeholder="请输入内容" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="审核状态" prop="status">
-                  {{form.status}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="输入人" prop="creator">
-                  {{form.creator}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="输入日期" prop="createDate">
-                  {{form.createDate}}
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+        <el-dialog :title="title" :visible.sync="open" width="1500px" append-to-body>
+          <el-tabs :value="procData.processed === true ? 'approval' : 'form'" style="height:500px;overflow: auto" >
+            <el-tab-pane label="表单信息" name="form">
+              <el-form ref="form" :model="form" :rules="rules" :key="key" label-width="110px">
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="工号" prop="empNo">
+                      <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true">
+                        <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="申请人姓名" prop="empName">
+                      {{form.empName}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="申请人岗位名称" prop="postName">
+                      {{form.postName}}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="16">
+                    <el-form-item label="补休开始日期" prop="workOvertimeDate">
+                      <el-date-picker
+                        v-model="form.workOvertimeDate"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        type="datetimerange"
+                        range-separator="~"
+                        start-placeholder="补休开始时间"
+                        end-placeholder="补休结束时间"
+                        :default-time="['08:00:00', '17:00:00']"
+                        @change="dateFormat1">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="补休小时数" prop="compHours">
+                      <el-input v-model="form.compHours" placeholder="请输入补休小时数" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="存班小时数" prop="saveHours">
+                      {{form.saveHours}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="16">
+                    <el-form-item label="辅助说明" prop="description">
+                      <el-input v-model="form.description" maxlength="500" show-word-limit type="textarea" placeholder="请输入内容" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="审核状态" prop="status">
+                      {{form.status}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="输入人" prop="creator">
+                      {{form.creator}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="输入日期" prop="createDate">
+                      {{form.createDate}}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="流程信息" name="approval" v-if="open">
+              <flow-detail :procData="procData" @reject="reject"></flow-detail>
+            </el-tab-pane>
+          </el-tabs>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button type="primary" @click="submitForm" v-if="form.status !== '审核中'">确 定</el-button>
             <el-button @click="cancel">取 消</el-button>
           </div>
         </el-dialog>
@@ -240,7 +247,14 @@
 </template>
 
 <script>
-import { listComptime, getComptime, delComptime, addComptime, updateComptime } from "@/api/human/hd/comptime";
+import {
+  listComptime,
+  getComptime,
+  delComptime,
+  addComptime,
+  updateComptime,
+  sendComptime
+} from "@/api/human/hd/comptime";
 import {getToken} from "@/utils/auth";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {queryNewPostNameAndChangeDetail} from "@/api/human/hm/employeeTurnover";
@@ -248,10 +262,14 @@ import selectUser from "@/views/components/human/selectUser/selectUser";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo";
 import {validateNumber} from "@/utils/jlkj";
 import '@/assets/styles/humanStyles.scss';
+import flowDetail from "@/views/components/flowable/detail";
+import {getFromByInsId, getTaskByFormId, saveInstanceFormNew} from "@/api/workflow/insform";
+import {listDeploy} from "@/api/workflow/deploy";
+import {startProcessOverride} from "@/api/workflow/process";
 
 export default {
   name: "Comptime",
-  components: {selectUser,DictTagHuman},
+  components: {selectUser,DictTagHuman,flowDetail},
   data() {
     return {
       // 遮罩层
@@ -278,7 +296,8 @@ export default {
         empNo: null,
         workOvertimeDate: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        processName: '人事模块补休流程'
       },
       // 表单参数
       form: {},
@@ -312,15 +331,81 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/human/comptime/importData"
       },
-      compHours: 0
+      compHours: 0,
+      processForm:{},
+      // 流程相关数据
+      procData: {
+        // 流程部署id
+        procDefId: undefined,
+        // 流程实例id
+        procInsId: undefined,
+        // 是否待办人
+        processed: false,
+      },
+      key: 0
     };
   },
   created() {
+    this.initTaskParam();
     selectCompany().then(res => {
       this.companyName = res.data
     })
   },
   methods: {
+    /** 初始化流程参数 */
+    initTaskParam() {
+      // taskFlag === 'skip' 赋值
+      if (this.$route.query.taskFlag === 'skip') {
+        // 是否通过跳转进入页面
+        this.taskFlag = this.$route.query && this.$route.query.taskFlag
+        // 流程部署id
+        this.procData.procDefId  = this.$route.query && this.$route.query.procDefId
+        // 流程实例id
+        this.procData.procInsId = this.$route.query && this.$route.query.procInsId
+        // 是否待办任务
+        this.procData.processed = this.$route.query && eval(this.$route.query.processed || false)
+        // 跳转过来直接打开dialog
+        this.openDialog()
+      }
+    },
+    /** 拒绝任务后回调方法 */
+    reject(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 3 => 拒绝
+      this.form.status = val.type
+      sendComptime(this.form).then(response => {
+        this.$modal.msgSuccess("送出成功");
+        this.getList();
+      });
+    },
+    /** 审批通过且最后节点执行方法 */
+    complete(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 2 => 审批通过且流程结束
+      this.form.status = val.type
+      sendComptime(this.form).then(response => {
+        this.$modal.msgSuccess("送出成功");
+        this.getList();
+      });
+    },
+    // 我的流程跳转至画面，自动打开dialog
+    openDialog() {
+      // 切换当前状态为审核状态，不允许修改数据
+      // 根据流程实例id查询form表单id
+      const params = {insId:this.procData.procInsId}
+      getFromByInsId(params).then(res => {
+        // 根据id查询form表单数据
+        getComptime(res.data.formId).then(res1 => {
+          this.form = res1.data;
+          this.form.compId = this.queryParams.compId;
+          this.procData.formData = this.form
+          this.open = true;
+          this.title = "查看流程详情";
+        })
+      })
+    },
     /** 查询补休记录列表 */
     getList() {
       this.loading = true;
@@ -334,9 +419,16 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+      this.$router.push({ path: '/human/hd/hd5/comptime' })
     },
     // 表单重置
     reset() {
+      this.procData = {
+        procDefId: undefined,
+        procInsId: undefined,
+        processed: false,
+        formData: {}
+      }
       this.form = {
         id: null,
         compId: null,
@@ -390,6 +482,19 @@ export default {
         this.open = true;
         this.title = "修改补休资料";
       });
+      // 如果不是从我的流程或待办任务跳转，则带formid查询
+      // if (!(this.taskFlag === 'skip')) {
+      // 根据表单id获取是否有绑定启动流程
+      getTaskByFormId(id).then(res => {
+        if (res.data !== undefined) {
+          this.procData.procDefId = res.data.deployId
+          this.procData.procInsId = res.data.instanceId
+          this.procData.formData = this.form
+          this.key = Math.random();
+        }
+        this.open = true;
+        this.title = "修改补休资料";
+      })
     },
     /** 提交按钮 */
     submitForm() {
@@ -489,6 +594,39 @@ export default {
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();
+    },
+    handleSend(row){
+      this.processForm = {
+        formId: row.id,
+        deployId: undefined,
+        routerPath: this.$route.path
+      }
+      /** 绑定表单流程 */
+      listDeploy(this.queryParams).then(response => {
+        this.processForm.deployId = response.rows[0].definitionId;
+        saveInstanceFormNew(this.processForm).then(res => {
+          const variables = row;
+          // 设定流程变量参数 -- 天数
+          variables.days = this.getTravelDays();
+          // 启动流程并将表单数据加入流程变量
+          startProcessOverride(JSON.stringify(variables)).then(res => {
+            if (res.code === 200) {
+              this.form.status = '审核中'
+              this.form.id = row.id
+              sendComptime(this.form).then(response => {
+                this.$modal.msgSuccess("送出成功");
+                this.getList();
+              });
+            }
+          })
+        })
+      });
+    },
+    getTravelDays(){
+      if( this.form.startDate && this.form.endDate){
+        return Math.floor((new Date(this.form.endDate).getTime()-new Date(this.form.startDate).getTime())/(24*3600*1000)) + 1
+      }
+      return '';
     },
   }
 };

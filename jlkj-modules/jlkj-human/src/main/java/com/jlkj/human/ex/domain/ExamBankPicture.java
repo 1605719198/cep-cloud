@@ -2,6 +2,7 @@ package com.jlkj.human.ex.domain;
 
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,13 +12,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author qnsdt
  * @date 2022-12-22
  */
+@Data
 public class ExamBankPicture extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 图片序号 */
-    @Excel(name = "图片序号")
-    private Long photoId;
+    private String photoId;
 
     /** 图片代码 */
     @Excel(name = "图片代码")
@@ -43,92 +44,83 @@ public class ExamBankPicture extends BaseEntity
     @Excel(name = "状态")
     private Long status;
 
-    public void setPhotoId(Long photoId) 
+    public void setPhotoId(String photoId)
     {
         this.photoId = photoId;
     }
 
-    public Long getPhotoId() 
+    public String getPhotoId()
     {
         return photoId;
     }
-    public void setPhotoCode(String photoCode) 
+    public void setPhotoCode(String photoCode)
     {
         this.photoCode = photoCode;
     }
 
-    public String getPhotoCode() 
+    public String getPhotoCode()
     {
         return photoCode;
     }
-    public void setPhotoPath(String photoPath) 
+    public void setPhotoPath(String photoPath)
     {
         this.photoPath = photoPath;
     }
 
-    public String getPhotoPath() 
+    public String getPhotoPath()
     {
         return photoPath;
     }
-    public void setPhotoUrl(String photoUrl) 
+    public void setPhotoUrl(String photoUrl)
     {
         this.photoUrl = photoUrl;
     }
 
-    public String getPhotoUrl() 
+    public String getPhotoUrl()
     {
         return photoUrl;
     }
-    public void setFileName(String fileName) 
+    public void setFileName(String fileName)
     {
         this.fileName = fileName;
     }
 
-    public String getFileName() 
+    public String getFileName()
     {
         return fileName;
     }
-    public void setOriginalName(String originalName) 
+    public void setOriginalName(String originalName)
     {
         this.originalName = originalName;
     }
 
-    public String getOriginalName() 
+    public String getOriginalName()
     {
         return originalName;
     }
-    public void setStatus(Long status) 
+    public void setStatus(Long status)
     {
         this.status = status;
     }
 
-    public Long getStatus() 
+    public Long getStatus()
     {
         return status;
     }
 
-    
-    public ExamBankPicture(String photoCode, String photoPath, String photoUrl, String fileName, String originalName) {
-		super();
-		this.photoCode = photoCode;
-		this.photoPath = photoPath;
-		this.photoUrl = photoUrl;
-		this.fileName = fileName;
-		this.originalName = originalName;
-	}
-
-	@Override
+    @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("photoId", getPhotoId())
-            .append("photoCode", getPhotoCode())
-            .append("photoPath", getPhotoPath())
-            .append("photoUrl", getPhotoUrl())
-            .append("fileName", getFileName())
-            .append("originalName", getOriginalName())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("status", getStatus())
-            .toString();
+                .append("photoId", getPhotoId())
+                .append("photoCode", getPhotoCode())
+                .append("photoPath", getPhotoPath())
+                .append("photoUrl", getPhotoUrl())
+                .append("fileName", getFileName())
+                .append("originalName", getOriginalName())
+                .append("status", getStatus())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("remark", getRemark())
+                .toString();
     }
 }

@@ -9,8 +9,11 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
 import com.jlkj.product.oi.dto.productionplantarget.DeleteProductionPlanYearDTO;
+import com.jlkj.product.oi.mapper.ProductionParameterTargetItemMapper;
 import com.jlkj.product.oi.mapper.ProductionPlanOutputYearMapper;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
 import com.jlkj.product.oi.service.ProductionPlanOutputYearService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_plan_output_year(计划管理--年产量计划)】的数据库操作Service实现
-* @createDate 2022-04-21 14:46:03
+*@description: 针对表【product_oi_plan_output_year(计划管理--年产量计划)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/11 8:26
 */
 @Service
 public class ProductionPlanOutputYearServiceImpl extends ServiceImpl<ProductionPlanOutputYearMapper, ProductionPlanOutputYear>
     implements ProductionPlanOutputYearService {
+    @Autowired
+    ProductionParameterTargetItemMapper itemMapper;
 
     public List<Map<String, String>> getColToRowList(String sql) {
         return getBaseMapper().getList(sql);
@@ -32,12 +37,14 @@ public class ProductionPlanOutputYearServiceImpl extends ServiceImpl<ProductionP
 
     /**
      * 年产量计划查询
-     * @param itemlist
      * @return
      */
     @Transactional(readOnly = true)
     @Override
-    public Object get(List<ProductionParameterTargetItem> itemlist) {
+    public List<Map<String, String>> get() {
+        List<ProductionParameterTargetItem> itemlist =
+                itemMapper.selectList(new QueryWrapper<ProductionParameterTargetItem>().lambda()
+                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_year, ");
         for (ProductionParameterTargetItem item : itemlist) {
@@ -51,7 +58,7 @@ public class ProductionPlanOutputYearServiceImpl extends ServiceImpl<ProductionP
         sqlString.append(" from product_oi_plan_output_year group by plan_year order by plan_year desc");
         List<Map<String, String>> targetList = getColToRowList(sqlString.toString());
 
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 
 }

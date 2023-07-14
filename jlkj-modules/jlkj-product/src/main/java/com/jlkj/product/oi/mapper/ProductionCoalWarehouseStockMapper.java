@@ -2,6 +2,7 @@ package com.jlkj.product.oi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.product.oi.domain.ProductionCoalWarehouseStock;
+import com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO;
 import org.apache.ibatis.annotations.MapKey;
 
 import java.util.List;
@@ -15,10 +16,11 @@ public interface ProductionCoalWarehouseStockMapper extends BaseMapper<Productio
 
     /**
      * 上煤仓余量-物料看板-图表
+     * @param dto dto
      * @return
      */
     @MapKey("id")
-    List<Map<String, String>> getMaterialsCoalWarehouseStock();
+    List<Map<String, String>> getMaterialsCoalWarehouseStock(GetDataBoardDTO dto);
 
 }
 

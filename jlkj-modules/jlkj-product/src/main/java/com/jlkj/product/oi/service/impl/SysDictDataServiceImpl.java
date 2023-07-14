@@ -12,15 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 服务实现-字典数据表
- *
- * @author sudeyou
- * @since 2022-11-02 09:46:29
- */
+*@description: 服务实现-字典数据表
+*@Author: 265823
+*@date: 2023/7/11 15:51
+*/
 @Service
 public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData>
     implements SysDictDataService {
 
+    /**
+     * 获取字典数据列表
+     * @param listSysDictDataDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListSysDictDataVO> getSysDictDataListData(ListSysDictDataDTO listSysDictDataDTO) {

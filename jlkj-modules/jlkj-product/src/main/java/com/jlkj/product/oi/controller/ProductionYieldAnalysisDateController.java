@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.home.HomeDTO;
@@ -31,10 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-产量分析日表
- * @author sudeyou
- * @since 2022-07-15 14:27:41
- */
+*@description: 控制器-产量分析日表
+*@Author: 265823
+*@date: 2023/7/11 13:57
+*/
 @Tag(name = "产量分析日表")
 @RestController
 @RequestMapping("/yield")
@@ -47,6 +47,11 @@ public class ProductionYieldAnalysisDateController {
     @Resource
     private ProductionYieldAnalysisDateService productionYieldAnalysisDateService;
 
+    /**
+     * 生产管理-产量跟踪-查询-日
+     * @param listProductionYieldAnalysisDateDTO
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-查询-日",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -66,16 +71,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-产量跟踪-查询-日",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisDate", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysis(@Validated @ParamModel ListProductionYieldAnalysisDateDTO listProductionYieldAnalysisDateDTO) {
+    public AjaxResult getProductionYieldAnalysis(@Validated @ParamModel ListProductionYieldAnalysisDateDTO listProductionYieldAnalysisDateDTO) {
         log.info("params => " + listProductionYieldAnalysisDateDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisDateDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisDateDTO);
-        return productionYieldAnalysisDateService.getProductionYieldAnalysisDateList(listProductionYieldAnalysisDateDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionYieldAnalysisDateList(listProductionYieldAnalysisDateDTO));
     }
 
+    /**
+     * 生产管理-产量跟踪-图表-物料名称(日)
+     * @param listProductionYieldAnalysisDateMaterialDTO
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-图表-物料名称(日)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -90,15 +100,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-产量跟踪-图表-物料名称(日)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisDateChart", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysisChartDate(@Validated @ParamModel ListProductionYieldAnalysisDateMaterialDTO listProductionYieldAnalysisDateMaterialDTO) {
+    public AjaxResult getProductionYieldAnalysisChartDate(@Validated @ParamModel ListProductionYieldAnalysisDateMaterialDTO listProductionYieldAnalysisDateMaterialDTO) {
         log.info("params => " + listProductionYieldAnalysisDateMaterialDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisDateMaterialDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisDateMaterialDTO);
-        return productionYieldAnalysisDateService.getProductionYieldAnalysisChartDate(listProductionYieldAnalysisDateMaterialDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionYieldAnalysisChartDate(listProductionYieldAnalysisDateMaterialDTO));
     }
+
+    /**
+     * 生产管理-首页-焦碳计划实绩图表
+     * @param homeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-首页-焦碳计划实绩图表",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -113,16 +129,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-首页-焦碳计划实绩图表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionHomeYieldChart", method = RequestMethod.GET)
-    public Object getProductionHomeYieldChartData(@Validated @ParamModel HomeDTO homeDTO) {
+    public AjaxResult getProductionHomeYieldChartData(@Validated @ParamModel HomeDTO homeDTO) {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
-        return productionYieldAnalysisDateService.getProductionHomeYieldChartData(homeDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionHomeYieldChartData(homeDTO));
     }
 
+    /**
+     * 生产管理-首页-焦碳计划实绩统计
+     * @param homeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-首页-焦碳计划实绩统计",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -137,16 +158,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-首页-焦碳计划实绩统计",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionHomeYieldStatistics", method = RequestMethod.GET)
-    public Object getProductionHomeYieldStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
+    public AjaxResult getProductionHomeYieldStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
-        return productionYieldAnalysisDateService.getProductionHomeYieldStatisticsData(homeDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionHomeYieldStatisticsData(homeDTO));
     }
 
+    /**
+     * 生产管理-首页-发电计划实绩统计
+     * @param homeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-首页-发电计划实绩统计",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -161,16 +187,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-首页-发电计划实绩统计",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionHomePowerStatistics", method = RequestMethod.GET)
-    public Object getProductionHomePowerStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
+    public AjaxResult getProductionHomePowerStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
-        return productionYieldAnalysisDateService.getProductionHomePowerStatisticsData(homeDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionHomePowerStatisticsData(homeDTO));
     }
 
+    /**
+     * 生产管理-首页-发电仪表图表
+     * @param homeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-首页-发电仪表图表",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -185,16 +216,21 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-首页-发电仪表图表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionHomePowerMeterChart", method = RequestMethod.GET)
-    public Object getProductionHomePowerMeterChartData(@Validated @ParamModel HomeDTO homeDTO) {
+    public AjaxResult getProductionHomePowerMeterChartData(@Validated @ParamModel HomeDTO homeDTO) {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
-        return productionYieldAnalysisDateService.getProductionHomePowerMeterChartData(homeDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionHomePowerMeterChartData(homeDTO));
     }
 
+    /**
+     * 生产管理-首页-统计
+     * @param homeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-首页-统计",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -209,16 +245,20 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-首页-统计",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionHomeStatistics", method = RequestMethod.GET)
-    public Object getProductionHomeStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
+    public AjaxResult getProductionHomeStatisticsData(@Validated @ParamModel HomeDTO homeDTO) {
         log.info("params => " + homeDTO);
         String errorMsg = ValidUtil.checkValid(homeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, homeDTO);
-        return productionYieldAnalysisDateService.getProductionHomeStatisticsData(homeDTO);
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionHomeStatisticsData(homeDTO));
     }
 
+    /**
+     * 生产管理-产量跟踪-查询-获取动态列表
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-查询-获取动态列表",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -236,8 +276,8 @@ public class ProductionYieldAnalysisDateController {
     )
     @Log(title = "生产管理-产量跟踪-查询-获取动态列表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisColList", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysisColList() {
-        return productionYieldAnalysisDateService.getProductionYieldAnalysisColList();
+    public AjaxResult getProductionYieldAnalysisColList() {
+        return AjaxResult.success(productionYieldAnalysisDateService.getProductionYieldAnalysisColList());
     }
 }
 

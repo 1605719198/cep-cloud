@@ -1,19 +1,19 @@
 package com.jlkj.product.oi.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.AddProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.DeleteProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.PageProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.UpdateProductionParameterTargetItemDTO;
+import com.jlkj.product.oi.dto.productionparametertargetitem.*;
 import com.jlkj.product.oi.mapper.ProductionParameterTargetItemMapper;
+import com.jlkj.product.oi.mapper.ProductionPlanOutputDateMapper;
+import com.jlkj.product.oi.mapper.ProductionPlanOutputMonthMapper;
 import com.jlkj.product.oi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_parameter_target_item(生产参数--指标项维护)】的数据库操作Service实现
-* @createDate 2022-04-21 14:46:03
+*@description: 针对表【product_oi_parameter_target_item(生产参数--指标项维护)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/10 17:15
 */
 @Service
 public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<ProductionParameterTargetItemMapper, ProductionParameterTargetItem>
@@ -45,11 +45,11 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
     @Autowired
     ProductionPlanOutputYearService productionPlanOutputYearService;
 
-    @Autowired
-    ProductionPlanOutputMonthService productionPlanOutputMonthService;
+    @Resource
+    ProductionPlanOutputMonthMapper monthMapper;
 
-    @Autowired
-    ProductionPlanOutputDateService productionPlanOutputDateService;
+    @Resource
+    ProductionPlanOutputDateMapper dateMapper;
 
     @Resource
     ChangeLogService changeLogService;
@@ -69,18 +69,17 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
     /**
      * 新增指标项
      * @param addProductionParameterTargetItemDTO
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO) {
+    public void addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO) {
         List<ProductionParameterTargetItem> list = list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
                 .eq(ProductionParameterTargetItem::getTargetItemTypeId, addProductionParameterTargetItemDTO.getTargetItemTypeId())
                 .eq(ProductionParameterTargetItem::getTargetItemName, addProductionParameterTargetItemDTO.getTargetItemName())
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return AjaxResult.error("指标项已存在");
+            throw new ServiceException("指标项已存在");
         }
         ProductionParameterTargetItem productionParameterTargetItem = new ProductionParameterTargetItem();
         productionParameterTargetItem.setId(IdUtil.randomUUID());
@@ -113,8 +112,6 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
         insertChangeLogDTO.setCreateUserId(addProductionParameterTargetItemDTO.getCreateUserId());
         insertChangeLogDTO.setCreateUserName(addProductionParameterTargetItemDTO.getCreateUserName());
         changeLogService.insertChangeLogData(insertChangeLogDTO);
-
-        return AjaxResult.success("指标项增加成功");
     }
 
     /**
@@ -124,7 +121,7 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO) {
+    public void editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO) {
         ProductionParameterTargetItem productionParameterTargetItem = getById(updateProductionParameterTargetItemDTO.getId());
         if (null != productionParameterTargetItem) {
             List<ProductionParameterTargetItem> list = list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
@@ -135,7 +132,7 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
             );
             if (list.size() == 0) {
                 if (!productionParameterTargetItem.getCalcUnitId().equals(updateProductionParameterTargetItemDTO.getCalcUnitId()) && hasUsed(updateProductionParameterTargetItemDTO.getId())) {
-                    return AjaxResult.error("该指标项已经使用，不允许修改计算单位");
+                    throw new ServiceException("该指标项已经使用，不允许修改计算单位");
                 }
 
                 StringBuilder content = new StringBuilder();
@@ -176,30 +173,27 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
                 productionParameterTargetItem.setModifyUserName(updateProductionParameterTargetItemDTO.getModifyUserName());
                 productionParameterTargetItem.setModifyTime(new Date());
                 updateById(productionParameterTargetItem);
-
-                return AjaxResult.success("指标项修改成功");
             }
             else {
-                return AjaxResult.error("指标项已存在");
+                throw new ServiceException("指标项已存在");
             }
         }
         else {
-            return AjaxResult.error("指标项不存在");
+            throw new ServiceException("指标项不存在");
         }
     }
 
     /**
      * 删除指标项
      * @param deleteProductionParameterTargetItemDTO
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Object delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
+    public void delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
         ProductionParameterTargetItem productionParameterTargetItem = getById(deleteProductionParameterTargetItemDTO.getId());
         if (null != productionParameterTargetItem) {
             if (hasUsed(deleteProductionParameterTargetItemDTO.getId())) {
-                return AjaxResult.error("该指标项已经使用，不允许删除");
+                throw new ServiceException("该指标项已经使用，不允许删除");
             }
 
             String content = "删除：" +
@@ -217,12 +211,24 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
             changeLogService.insertChangeLogData(insertChangeLogDTO);
 
             removeById(productionParameterTargetItem);
-            return AjaxResult.success("指标项删除成功");
         }
         else {
-            return AjaxResult.error("指标项不存在或已被删除");
+            throw new ServiceException("指标项不存在或已被删除");
         }
     }
+
+    /**
+     * 获取指标项列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public List<ProductionParameterTargetItem> getList(GetProductionParameterTargetItemDTO dto) {
+        LambdaQueryWrapper<ProductionParameterTargetItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(dto.getTargetItemTypeId() != 0, ProductionParameterTargetItem::getTargetItemTypeId, dto.getTargetItemTypeId());
+        return getBaseMapper().selectList(wrapper);
+    }
+
 
     public boolean hasUsed(String targetItemId) {
         if(productionPlanTargetYearService.list(new QueryWrapper<ProductionPlanTargetYear>().lambda()
@@ -250,13 +256,13 @@ public class ProductionParameterTargetItemServiceImpl extends ServiceImpl<Produc
         ).size() > 0) {
             return true;
         }
-        if(productionPlanOutputMonthService.list(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
+        if(monthMapper.selectList(new QueryWrapper<ProductionPlanOutputMonth>().lambda()
                 .eq(ProductionPlanOutputMonth::getTargetItemId, targetItemId)
                 .last(CommonConstant.LIMIT_ONE_ROW)
         ).size() > 0) {
             return true;
         }
-        if(productionPlanOutputDateService.list(new QueryWrapper<ProductionPlanOutputDate>().lambda()
+        if(dateMapper.selectList(new QueryWrapper<ProductionPlanOutputDate>().lambda()
                 .eq(ProductionPlanOutputDate::getTargetItemId, targetItemId)
                 .last(CommonConstant.LIMIT_ONE_ROW)
         ).size() > 0) {

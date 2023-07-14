@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2023-03-03
  */
 @RestController
-@RequestMapping("/onlineexam/userscore")
+@RequestMapping("/userscore")
 public class ExamUserScoreController extends BaseController
 {
     @Autowired
@@ -31,7 +31,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 查询考试成绩列表
      */
-    @RequiresPermissions("onlineexam:userscore:list")
+    @RequiresPermissions("human:userscore:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamUserScore examUserScore)
     {
@@ -43,7 +43,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 导出考试成绩列表
      */
-    @RequiresPermissions("onlineexam:userscore:export")
+    @RequiresPermissions("human:userscore:export")
     @Log(title = "考试成绩", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamUserScore examUserScore)
@@ -56,7 +56,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 获取考试成绩详细信息
      */
-    @RequiresPermissions("onlineexam:userscore:query")
+    @RequiresPermissions("human:userscore:query")
     @GetMapping(value = "/{examCode}")
     public AjaxResult getInfo(@PathVariable("examCode") String examCode)
     {
@@ -66,7 +66,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 新增考试成绩
      */
-    @RequiresPermissions("onlineexam:userscore:add")
+    @RequiresPermissions("human:userscore:add")
     @Log(title = "考试成绩", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamUserScore examUserScore)
@@ -86,7 +86,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 修改考试成绩
      */
-    @RequiresPermissions("@ss.hasPermi('onlineexam:userscore:edit')")
+    @RequiresPermissions("human:userscore:edit")
     @Log(title = "考试成绩", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamUserScore examUserScore)
@@ -97,7 +97,7 @@ public class ExamUserScoreController extends BaseController
     /**
      * 删除考试成绩
      */
-    @RequiresPermissions("@ss.hasPermi('onlineexam:userscore:remove')")
+    @RequiresPermissions("human:userscore:remove")
     @Log(title = "考试成绩", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{examCodes}")
     public AjaxResult remove(@PathVariable String[] examCodes)

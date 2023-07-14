@@ -19,23 +19,18 @@
 
     <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionsteamyieldperformance.ProductionSteamYieldPerformanceDTO" resultType="java.util.Map">
         SELECT
-            a.equipment_no,
-            a.cost_center,
-            a.engy_id,
-            a.io_type_id,
-            a.engy_type,
-            a.charge_cost_center,
-            a.qty,
-            DATE_FORMAT(STR_TO_DATE(e_count_date, '%Y%m%d'), '%Y-%m-%d') AS e_count_date,
-            b.energy_code_name
-        FROM v_energy_board_ems_data a
-        LEFT JOIN v_energy_board_code b ON a.engy_type = b.VIEW_CODE AND a.engy_id = b.energy_code
-        WHERE a.engy_type IN (SELECT dict_value FROM sys_dict_data WHERE dict_type = 'product_energy_type' AND dict_label = '蒸气' )
+        DATE_FORMAT(e_count_date_class,'%Y-%m-%d') AS e_count_date,
+        dict_value AS type,
+        dict_label AS boiler_no,
+        ROUND(IFNULL(pro_con_qty, 0),2) AS qty
+        FROM v_energy_consume_output
+        WHERE
+        dict_value = '超高压蒸汽'
         <if test="condition.startDate != null and condition.startDate != ''">
-            and STR_TO_DATE(e_count_date, '%Y%m%d') &gt;= #{condition.startDate}
+            AND e_count_date_class <![CDATA[ >= ]]> #{condition.startDate}
         </if>
         <if test="condition.endDate != null and condition.endDate != ''">
-            and STR_TO_DATE(e_count_date, '%Y%m%d') &lt;= #{condition.endDate}
+            AND e_count_date_class <![CDATA[ <= ]]> #{condition.endDate}
         </if>
         order by ${condition.order} ${condition.orderby}
     </select>

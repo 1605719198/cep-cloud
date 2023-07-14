@@ -14,14 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 /**
- * 服务实现-焦炭出厂实绩
- * @author sudeyou
- * @since 2022-08-11 14:02:21
- */
+*@description: 服务实现-焦炭出厂实绩
+*@Author: 265823
+*@date: 2023/7/10 11:34
+*/
 @Service
 public class ProductionCokeFactoryPerformanceServiceImpl extends ServiceImpl<ProductionCokeFactoryPerformanceMapper, ProductionCokeFactoryPerformance>
     implements ProductionCokeFactoryPerformanceService {
 
+    /**
+     * 焦炭出厂实绩-查询-分页
+     * @param pageProductionCokeFactoryPerformanceDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionCokeFactoryPerformanceVO> getProductionCokeFactoryPerformancePageData(PageProductionCokeFactoryPerformanceDTO pageProductionCokeFactoryPerformanceDTO) {

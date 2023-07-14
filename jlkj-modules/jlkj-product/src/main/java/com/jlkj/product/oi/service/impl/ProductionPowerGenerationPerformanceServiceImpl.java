@@ -12,14 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 服务实现-发电实绩
- * @author sudeyou
- * @since 2022-09-01 09:44:19
- */
+*@description: 服务实现-发电实绩
+*@Author: 265823
+*@date: 2023/7/11 8:56
+*/
 @Service
 public class ProductionPowerGenerationPerformanceServiceImpl extends ServiceImpl<ProductionPowerGenerationPerformanceMapper, ProductionPowerGenerationPerformance>
     implements ProductionPowerGenerationPerformanceService {
 
+    /**
+     * 首页-发电量
+     * @param listHomeProductionPowerGenerationYieldDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListHomeProductionPowerGenerationYieldVO> getHomeProductionPowerGenerationYieldListData(ListHomeProductionPowerGenerationYieldDTO listHomeProductionPowerGenerationYieldDTO) {

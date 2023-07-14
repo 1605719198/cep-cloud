@@ -1,13 +1,12 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionhandoverstockverify.PageProductionHandoverStockVerifyDTO;
 import com.jlkj.product.oi.dto.productionhandoverstockverify.UpdateProductionHandoverStockVerifyDTO;
-import com.jlkj.product.oi.service.impl.ProductionHandoverStockVerifyServiceImpl;
+import com.jlkj.product.oi.service.ProductionHandoverStockVerifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -25,16 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 
 /**
- * @author yzl
- * @Description 交班仓存核验
- * @create
- */
+*@description: 交班仓存核验
+*@Author: 265823
+*@date: 2023/7/10 14:51
+*/
 @Tag(name = "交班仓存核验")
 @RestController
 @RequestMapping("/productionHandoverStockVerify")
@@ -43,8 +41,13 @@ public class ProductionHandoverStockVerifyController {
     @Autowired
     HttpServletRequest httpServletRequest;
     @Autowired
-    ProductionHandoverStockVerifyServiceImpl productionHandoverStockVerifyService;
+    ProductionHandoverStockVerifyService productionHandoverStockVerifyService;
 
+    /**
+     * 查询交班仓存核验
+     * @param pageProductionHandoverStockVerifyDTO
+     * @return
+     */
     @Operation(summary = "查询交班仓存核验",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -69,13 +72,16 @@ public class ProductionHandoverStockVerifyController {
     )
     @Log(title = "查询交班仓存核验",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Object list(@Validated @ParamModel PageProductionHandoverStockVerifyDTO pageProductionHandoverStockVerifyDTO) {
+    public AjaxResult list(@Validated @ParamModel PageProductionHandoverStockVerifyDTO pageProductionHandoverStockVerifyDTO) {
         log.info("params => " + pageProductionHandoverStockVerifyDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionHandoverStockVerifyDTO);
-        IPage<Map<String, String>> list = productionHandoverStockVerifyService.getListPage(pageProductionHandoverStockVerifyDTO);
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionHandoverStockVerifyService.getListPage(pageProductionHandoverStockVerifyDTO));
     }
 
+    /**
+     * 修改
+     * @param dto
+     */
     @Operation(summary = "修改",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -125,10 +131,10 @@ public class ProductionHandoverStockVerifyController {
 
     @Log(title = "修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@Valid @RequestBody UpdateProductionHandoverStockVerifyDTO dto) {
+    public void update(@Valid @RequestBody UpdateProductionHandoverStockVerifyDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionHandoverStockVerifyService.update(dto);
+        productionHandoverStockVerifyService.updateCustom(dto);
     }
 
 

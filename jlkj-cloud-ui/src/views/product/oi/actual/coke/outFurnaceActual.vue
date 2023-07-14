@@ -196,8 +196,8 @@ export default {
                 pageSize: 20,
                 currentPage: 1,
                 total: 1,
-                order: 'production_date desc,actual_production_time desc',
-                orderby: '',
+                order: 'actual_production_time',
+                orderby: 'desc',
             },
             classTypeOptions: [],
             shiftOptions: [],
@@ -287,18 +287,57 @@ export default {
                     sortable: true,
                     minWidth: '150px',
                 },
-                {
-                    label: '实绩推焦时间',
-                    prop: 'actual_production_time',
-                    sortable: true,
-                    minWidth: '150px',
-                },
+                // {
+                //     label: '实绩推焦时间',
+                //     prop: 'actual_production_time',
+                //     sortable: true,
+                //     minWidth: '150px',
+                // },
+              {
+                label: '实绩推焦开始时间',
+                prop: 'actual_production_time',
+                sortable: true,
+                minWidth: '150px',
+              },
+              {
+                label: '实绩推焦结束时间',
+                prop: 'actual_production_end_time',
+                sortable: true,
+                minWidth: '150px',
+              },
                 {
                     label: '储煤塔号',
                     prop: 'coal_tower_number',
                     sortable: true,
                     minWidth: '150px',
                 },
+              {
+                label: '本炉对应装煤量(t)',
+                prop: 'loading_coal',
+                sortable: true,
+                minWidth: '150px',
+                formatter(row) {
+                  return (row.loading_coal / 1000).toFixed(2)
+                },
+              },
+              {
+                label: '单孔产量(t)',
+                prop: 'single_hole_production',
+                sortable: true,
+                minWidth: '110px',
+                formatter(row) {
+                  return (row.single_hole_production / 1000).toFixed(3)
+                },
+              },
+              {
+                label: '出炉后装煤重量',
+                prop: 'next_loading_coal',
+                sortable: true,
+                minWidth: '150px',
+                formatter(row) {
+                  return (row.next_loading_coal / 1000).toFixed(3)
+                },
+              },
                 {
                     label: '推焦电流',
                     prop: 'coke_current',
@@ -312,14 +351,21 @@ export default {
                     minWidth: '150px',
                 },
                 {
-                    label: '实际装煤时间',
-                    prop: 'actual_load_coal_time',
+                    label: '出炉后装煤时间',
+                    prop: 'next_actual_load_coal_time',
                     sortable: true,
                     minWidth: '150px',
+                    formatter(row) {
+                      return (
+                        row.production_date +
+                        ' ' +
+                        row.next_actual_load_coal_time
+                      )
+                    },
                 },
                 {
                     label: '装煤电流',
-                    prop: 'coal_current',
+                    prop: 'next_coal_current',
                     sortable: true,
                     minWidth: '100px',
                 },
@@ -334,24 +380,6 @@ export default {
                     prop: 'actual_run_cycle',
                     sortable: true,
                     minWidth: '150px',
-                },
-                {
-                    label: '单孔产量(t)',
-                    prop: 'single_hole_production',
-                    sortable: true,
-                    minWidth: '110px',
-                    formatter(row) {
-                        return (row.single_hole_production / 1000).toFixed(3)
-                    },
-                },
-                {
-                    label: '装煤量(t)',
-                    prop: 'loading_coal',
-                    sortable: true,
-                    minWidth: '95px',
-                    formatter(row) {
-                        return (row.loading_coal / 1000).toFixed(2)
-                    },
                 },
             ],
             tableData: [],
@@ -443,7 +471,7 @@ export default {
             // console.log(column, "column")
             if (column.order === null) {
                 //默认
-                this.page.order = 'production_date'
+                this.page.order = 'actual_production_time'
                 this.page.orderby = 'desc'
             } else {
                 //选中项

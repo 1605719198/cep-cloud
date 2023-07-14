@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-产量分析年表
- * @author sudeyou
- * @since 2022-07-18 15:47:11
- */
+*@description: 服务实现-产量分析年表
+*@Author: 265823
+*@date: 2023/7/11 14:23
+*/
 @Service
 public class ProductionYieldAnalysisYearServiceImpl extends ServiceImpl<ProductionYieldAnalysisYearMapper, ProductionYieldAnalysisYear>
     implements ProductionYieldAnalysisYearService {
@@ -25,6 +25,11 @@ public class ProductionYieldAnalysisYearServiceImpl extends ServiceImpl<Producti
     @Resource
     private ProductionYieldAnalysisDateMapper productionYieldAnalysisDateMapper;
 
+    /**
+     * 服务接口-产量分析年表
+     * @param listProductionYieldAnalysisYearDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductionYieldAnalysisYearList(ListProductionYieldAnalysisYearDTO listProductionYieldAnalysisYearDTO) {

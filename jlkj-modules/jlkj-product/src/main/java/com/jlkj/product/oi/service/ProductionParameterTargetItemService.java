@@ -3,17 +3,15 @@ package com.jlkj.product.oi.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
-import com.jlkj.product.oi.dto.productionparametertargetitem.AddProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.DeleteProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.PageProductionParameterTargetItemDTO;
-import com.jlkj.product.oi.dto.productionparametertargetitem.UpdateProductionParameterTargetItemDTO;
+import com.jlkj.product.oi.dto.productionparametertargetitem.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_parameter_target_item(生产参数--指标项维护)】的数据库操作Service
-* @createDate 2022-04-21 14:46:03
+*@description: 针对表【product_oi_parameter_target_item(生产参数--指标项维护)】的数据库操作Service
+*@Author: 265823
+*@date: 2023/7/10 17:14
 */
 public interface ProductionParameterTargetItemService extends IService<ProductionParameterTargetItem> {
 
@@ -27,21 +25,26 @@ public interface ProductionParameterTargetItemService extends IService<Productio
     /**
      * 新增指标项
      * @param addProductionParameterTargetItemDTO
-     * @return
      */
-    Object addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO);
+    void addProductionTargetItem(AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO);
 
     /**
      * 修改指标项
      * @param updateProductionParameterTargetItemDTO
-     * @return
      */
-    Object editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO);
+    void editProductionTargetItem(UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO);
 
     /**
      * 删除指标项
      * @param deleteProductionParameterTargetItemDTO
+     */
+    void delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO);
+
+    /**
+     * 获取指标项列表
+     * @param productionParameterTargetItemDTO
      * @return
      */
-    Object delProductionTargetItem(DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO);
+    List<ProductionParameterTargetItem> getList(GetProductionParameterTargetItemDTO productionParameterTargetItemDTO);
+
 }

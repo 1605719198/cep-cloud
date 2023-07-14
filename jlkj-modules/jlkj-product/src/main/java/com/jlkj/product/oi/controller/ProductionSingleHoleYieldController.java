@@ -1,16 +1,15 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionsingleholeyield.AddProductionSingleHoleYieldDTO;
 import com.jlkj.product.oi.dto.productionsingleholeyield.DeleteProductionSingleHoleYieldDTO;
 import com.jlkj.product.oi.dto.productionsingleholeyield.PageProductionSingleHoleYieldDTO;
 import com.jlkj.product.oi.dto.productionsingleholeyield.UpdateProductionSingleHoleYieldDTO;
-import com.jlkj.product.oi.service.impl.ProductionSingleHoleYieldServiceImpl;
+import com.jlkj.product.oi.service.ProductionSingleHoleYieldService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -28,15 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author sdy
- * @Description
- * @create 2022-04-19 8:45
- */
+*@description: 参数维护-焦炉单孔产量
+*@Author: 265823
+*@date: 2023/7/11 11:30
+*/
 @Tag(name = "参数维护-焦炉单孔产量")
 @RestController
 @RequestMapping("/plan")
@@ -47,8 +45,13 @@ public class ProductionSingleHoleYieldController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionSingleHoleYieldServiceImpl productionSingleHoleYieldService;
+    ProductionSingleHoleYieldService productionSingleHoleYieldService;
 
+    /**
+     * 查询焦炉单孔产量
+     * @param pageProductionSingleHoleYieldDTO
+     * @return
+     */
     @Operation(summary = "查询焦炉单孔产量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -79,17 +82,20 @@ public class ProductionSingleHoleYieldController {
 
     @Log(title = "查询焦炉单孔产量",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listProductionSingleHoleYield", method = RequestMethod.GET)
-    public Object listProductionSingleHoleYield(@Validated @ParamModel PageProductionSingleHoleYieldDTO pageProductionSingleHoleYieldDTO) {
+    public AjaxResult listProductionSingleHoleYield(@Validated @ParamModel PageProductionSingleHoleYieldDTO pageProductionSingleHoleYieldDTO) {
         log.info("params => " + pageProductionSingleHoleYieldDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionSingleHoleYieldDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionSingleHoleYieldDTO);
-        IPage<Map<String, String>> list = productionSingleHoleYieldService.getListPage(pageProductionSingleHoleYieldDTO);
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionSingleHoleYieldService.getListPage(pageProductionSingleHoleYieldDTO));
     }
 
+    /**
+     * 新增焦炉单孔产量
+     * @param addProductionSingleHoleYieldDTO
+     */
     @Operation(summary = "新增焦炉单孔产量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -109,12 +115,16 @@ public class ProductionSingleHoleYieldController {
     )
     @Log(title = "新增焦炉单孔产量",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/addProductionSingleHoleYield", method = RequestMethod.POST, produces = "application/json")
-    public Object addProductionSingleHoleYield(@Valid @RequestBody AddProductionSingleHoleYieldDTO addProductionSingleHoleYieldDTO) {
+    public void addProductionSingleHoleYield(@Valid @RequestBody AddProductionSingleHoleYieldDTO addProductionSingleHoleYieldDTO) {
         log.info("params => " + addProductionSingleHoleYieldDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addProductionSingleHoleYieldDTO);
-        return productionSingleHoleYieldService.addProductionSingleHoleYield(addProductionSingleHoleYieldDTO);
+        productionSingleHoleYieldService.addProductionSingleHoleYield(addProductionSingleHoleYieldDTO);
     }
 
+    /**
+     * 修改焦炉单孔产量
+     * @param updateProductionSingleHoleYieldDTO
+     */
     @Operation(summary = "修改焦炉单孔产量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -135,12 +145,17 @@ public class ProductionSingleHoleYieldController {
     )
     @Log(title = "修改焦炉单孔产量",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/editProductionSingleHoleYield", method = RequestMethod.POST, produces = "application/json")
-    public Object editProductionSingleHoleYield(@Valid @RequestBody UpdateProductionSingleHoleYieldDTO updateProductionSingleHoleYieldDTO) {
+    public void editProductionSingleHoleYield(@Valid @RequestBody UpdateProductionSingleHoleYieldDTO updateProductionSingleHoleYieldDTO) {
         log.info("params => " + updateProductionSingleHoleYieldDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionSingleHoleYieldDTO);
-        return productionSingleHoleYieldService.editProductionSingleHoleYield(updateProductionSingleHoleYieldDTO);
+        productionSingleHoleYieldService.editProductionSingleHoleYield(updateProductionSingleHoleYieldDTO);
     }
 
+    /**
+     * 删除焦炉单孔产量
+     * @param deleteProductionSingleHoleYieldDTO
+     * @return
+     */
     @Operation(summary = "删除焦炉单孔产量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -158,9 +173,9 @@ public class ProductionSingleHoleYieldController {
     )
     @Log(title = "删除焦炉单孔产量",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delProductionSingleHoleYield", method = RequestMethod.POST, produces = "application/json")
-    public Object delProductionSingleHoleYield(@Valid @RequestBody DeleteProductionSingleHoleYieldDTO deleteProductionSingleHoleYieldDTO) {
+    public void delProductionSingleHoleYield(@Valid @RequestBody DeleteProductionSingleHoleYieldDTO deleteProductionSingleHoleYieldDTO) {
         log.info("params => " + deleteProductionSingleHoleYieldDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionSingleHoleYieldDTO);
-        return productionSingleHoleYieldService.delProductionSingleHoleYield(deleteProductionSingleHoleYieldDTO);
+        productionSingleHoleYieldService.delProductionSingleHoleYield(deleteProductionSingleHoleYieldDTO);
     }
 }

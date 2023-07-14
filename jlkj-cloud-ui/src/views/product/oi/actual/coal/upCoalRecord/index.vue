@@ -11,12 +11,15 @@
                         range-separator="至"
                         start-placeholder="上煤开始时间"
                         end-placeholder="上煤结束时间"
-                        value-format="yyyy-MM-dd">
+                        value-format="yyyy-MM-dd"
+        size="small">
         </el-date-picker>
       </el-form-item>
       <el-form-item prop="shiftName" label="班次">
         <el-select placeholder="选择班次"
                    v-model="query.shiftName"
+                   size="small"
+                   style="width: 150px"
                    clearable
                    :popper-append-to-body="false"
                    class="customSelectStyle">
@@ -30,6 +33,8 @@
       <el-form-item prop="className" label="班别">
         <el-select placeholder="选择班别"
                    v-model="query.className"
+                   size="small"
+                   style="width: 150px"
                    clearable
                    :popper-append-to-body="false"
                    class="customSelectStyle">
@@ -46,6 +51,8 @@
                    v-model="query.cokeMaterialsCode"
                    clearable
                    filterable
+                   size="small"
+                   style="width: 150px"
                    placeholder="选择煤的料号名称">
           <el-option v-for="item in gradeOptions"
                      :key="item.id"
@@ -174,9 +181,8 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.create_user_id == userId"
                        size="mini"
-                       plain
                        icon="el-icon-delete"
-                       type="danger"
+                       type="text"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
@@ -380,13 +386,11 @@ export default {
             delete_user_name: this.$store.getters.userInfo.nickName,
           }).then(
             (res) => {
-              if (res.code === 200) {
                 this.onLoad()
                 this.$message({
                   type: 'success',
-                  message: res.msg,
+                  message: "删除成功",
                 })
-              }
             },
             (error) => {
               window.console.log(error)

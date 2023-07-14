@@ -42,3 +42,12 @@ export function delComptime(id) {
     method: 'delete'
   })
 }
+
+// 送出补休数据
+export function sendComptime(data) {
+  return request({
+    url: '/human/comptime/sendComptime',
+    method: 'post',
+    data: data
+  })
+}

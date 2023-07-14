@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionReportLiftingCostsMapper">
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionreportliftingcosts.PageProductionReportLiftingCostsDTO" resultType="java.util.Map">
+        SELECT
+        a.id,
+        DATE_FORMAT(statistics_date,'%Y-%m-%d') AS statistics_date,
+        area_name,
+        car_type,
+        dict_label,
+        tonnes,
+        day_cost,
+        car_time,
+        a.create_user_id,
+        a.create_user_name,
+        DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        a.modify_user_id,
+        a.modify_user_name,
+        DATE_FORMAT(a.modify_time,'%Y-%m-%d %H:%i:%s') AS modify_time
+        FROM t_production_report_lifting_costs a
+        LEFT JOIN t_sys_dict_data b ON a.car_type=b.dict_value AND dict_type = 'report_car_type'
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and statistics_date &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and statistics_date &lt;= #{condition.endTime}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+</mapper>
+

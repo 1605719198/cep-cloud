@@ -5,17 +5,16 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.HumanresourceOrganization;
 import com.jlkj.product.oi.domain.ProductionPlanRepair;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
-import com.jlkj.product.oi.dto.productionplanrepair.AddProductionPlanRepairDTO;
-import com.jlkj.product.oi.dto.productionplanrepair.PageProductionPlanRepairDTO;
-import com.jlkj.product.oi.dto.productionplanrepair.UpdateProductionPlanRepairDTO;
+import com.jlkj.product.oi.dto.productionplanrepair.*;
 import com.jlkj.product.oi.mapper.ProductionPlanRepairMapper;
 import com.jlkj.product.oi.service.ChangeLogService;
 import com.jlkj.product.oi.service.HumanresourceOrganizationService;
 import com.jlkj.product.oi.service.ProductionPlanRepairService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,9 +24,9 @@ import java.util.Date;
 import java.util.Map;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_plan_repair(计划管理--维修计划)】的数据库操作Service实现
-* @createDate 2022-04-28 13:43:40
+*@description: 针对表【product_oi_plan_repair(计划管理--维修计划)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/11 8:37
 */
 @Service
 public class ProductionPlanRepairServiceImpl extends ServiceImpl<ProductionPlanRepairMapper, ProductionPlanRepair>
@@ -39,6 +38,11 @@ public class ProductionPlanRepairServiceImpl extends ServiceImpl<ProductionPlanR
     @Resource
     HumanresourceOrganizationService humanresourceOrganizationService;
 
+    /**
+     * 分页列表查询
+     * @param pageProductionPlanRepairDTO 查询条件dto
+     * @return
+     */
     @Override
     public IPage<Map<String, String>> getListPage(PageProductionPlanRepairDTO pageProductionPlanRepairDTO) {
         Page<Map<String, String>> page = new Page<>(pageProductionPlanRepairDTO.getCurrent(), pageProductionPlanRepairDTO.getSize());
@@ -137,40 +141,34 @@ public class ProductionPlanRepairServiceImpl extends ServiceImpl<ProductionPlanR
         }
     }
 
-    public Object insert(AddProductionPlanRepairDTO addProductionPlanRepairDTO) {
+    /**
+     * 新增
+     * @param addProductionPlanRepairDTO
+     */
+    @Override
+    public void insert(AddProductionPlanRepairDTO addProductionPlanRepairDTO) {
         ProductionPlanRepair productionPlanRepair = new ProductionPlanRepair();
+        BeanUtils.copyProperties(addProductionPlanRepairDTO,productionPlanRepair);
         productionPlanRepair.setId(IdUtil.randomUUID());
-        productionPlanRepair.setPlanCode(addProductionPlanRepairDTO.getPlanCode());
-        productionPlanRepair.setDepartmentId(addProductionPlanRepairDTO.getDepartmentId());
-        productionPlanRepair.setRepairTypeId(addProductionPlanRepairDTO.getRepairTypeId());
-        productionPlanRepair.setPersonMainLiableId(addProductionPlanRepairDTO.getPersonMainLiableId());
-        productionPlanRepair.setPersonMainLiableName(addProductionPlanRepairDTO.getPersonMainLiableName());
-        productionPlanRepair.setPersonProfessionLiableId(addProductionPlanRepairDTO.getPersonProfessionLiableId());
-        productionPlanRepair.setPersonProfessionLiableName(addProductionPlanRepairDTO.getPersonProfessionLiableName());
-        productionPlanRepair.setEquipmentNumber(addProductionPlanRepairDTO.getEquipmentNumber());
-        productionPlanRepair.setEquipmentName(addProductionPlanRepairDTO.getEquipmentName());
         productionPlanRepair.setPlanStartDate(DateUtil.parseDate(addProductionPlanRepairDTO.getPlanStartDate()));
         productionPlanRepair.setPlanEndDate(DateUtil.parseDate(addProductionPlanRepairDTO.getPlanEndDate()));
-        productionPlanRepair.setRepairContent(addProductionPlanRepairDTO.getRepairContent());
-        productionPlanRepair.setIsAffectOutput(addProductionPlanRepairDTO.getIsAffectOutput());
-        productionPlanRepair.setRemindDays(addProductionPlanRepairDTO.getRemindDays());
         productionPlanRepair.setPlanState(0);
-        productionPlanRepair.setCreateUserId(addProductionPlanRepairDTO.getCreateUserId());
-        productionPlanRepair.setCreateUserName(addProductionPlanRepairDTO.getCreateUserName());
         productionPlanRepair.setCreateTime(new Date());
-        productionPlanRepair.setModifyUserId(addProductionPlanRepairDTO.getCreateUserId());
-        productionPlanRepair.setModifyUserName(addProductionPlanRepairDTO.getCreateUserName());
         productionPlanRepair.setModifyTime(new Date());
         save(productionPlanRepair);
         saveNewLog(addProductionPlanRepairDTO);
-        return AjaxResult.success("设备维修计划增加成功");
     }
 
-    public Object update(@Valid @RequestBody UpdateProductionPlanRepairDTO updateProductionPlanRepairDTO) {
+    /**
+     * 修改
+     * @param updateProductionPlanRepairDTO
+     */
+    @Override
+    public void updateCustom(@Valid @RequestBody UpdateProductionPlanRepairDTO updateProductionPlanRepairDTO) {
         ProductionPlanRepair productionPlanRepair = getById(updateProductionPlanRepairDTO.getId());
         if (null != productionPlanRepair) {
             if (DateUtil.compare(new Date(), productionPlanRepair.getPlanStartDate()) > 0 || productionPlanRepair.getPlanState() == 1) {
-                return AjaxResult.error("计划已经开始或完成，不能修改");
+                throw new ServiceException("计划已经开始或完成，不能修改");
             }
             saveUpdateLog(updateProductionPlanRepairDTO, productionPlanRepair);
             productionPlanRepair.setDepartmentId(updateProductionPlanRepairDTO.getDepartmentId());
@@ -190,10 +188,79 @@ public class ProductionPlanRepairServiceImpl extends ServiceImpl<ProductionPlanR
             productionPlanRepair.setModifyUserName(updateProductionPlanRepairDTO.getModifyUserName());
             productionPlanRepair.setModifyTime(new Date());
             updateById(productionPlanRepair);
-            return AjaxResult.success("设备维修计划修改成功");
         }
         else {
-            return AjaxResult.error("设备维修计划不存在");
+            throw new ServiceException("设备维修计划不存在");
+        }
+    }
+
+    /**
+     * 删除
+     * @param deleteProductionPlanRepairDTO
+     */
+    @Override
+    public void delete(DeleteProductionPlanRepairDTO deleteProductionPlanRepairDTO) {
+        ProductionPlanRepair productionPlanRepair = getBaseMapper().selectById(deleteProductionPlanRepairDTO.getId());
+        if (null != productionPlanRepair) {
+            if (DateUtil.compare(new Date(), productionPlanRepair.getPlanStartDate()) > 0 || productionPlanRepair.getPlanState() == 1) {
+                throw new ServiceException("计划已经开始或完成，不能删除");
+            }
+            HumanresourceOrganization humanresourceOrganization = humanresourceOrganizationService.getById(productionPlanRepair.getDepartmentId());
+            String repairTypeName = productionPlanRepair.getRepairTypeId() == 1 ? "大修" :
+            productionPlanRepair.getRepairTypeId() == 2 ? "中修" :
+            productionPlanRepair.getRepairTypeId() == 3 ? "小修" :
+            productionPlanRepair.getRepairTypeId() == 4 ? "临修" :
+            productionPlanRepair.getRepairTypeId() == 5 ? "设备消缺" :
+            productionPlanRepair.getRepairTypeId() == 6 ? "工艺技改" :
+            productionPlanRepair.getRepairTypeId() == 7 ? "零星修缮" :
+            productionPlanRepair.getRepairTypeId() == 8 ? "环保项目" : "";
+            StringBuilder content = new StringBuilder();
+            content.append("删除：" + "[计划编号：").append(productionPlanRepair.getPlanCode()).append("],")
+                    .append("[开始时间：").append(productionPlanRepair.getPlanStartDate()).append("],")
+                    .append("[部门：").append(humanresourceOrganization.getOrganizationName()).append("]")
+                    .append("[结束时间：").append(productionPlanRepair.getPlanEndDate()).append("]")
+                    .append("[设备名称：").append(productionPlanRepair.getEquipmentName()).append("]")
+                    .append("[主体责任人：").append(productionPlanRepair.getPersonMainLiableName()).append("]")
+                    .append("[维修类型：").append(repairTypeName).append("]")
+                    .append("[专业责任人：").append(productionPlanRepair.getPersonProfessionLiableName()).append("]")
+                    .append("[维修内容：").append(productionPlanRepair.getRepairContent()).append("]")
+                    .append("[影响产量：").append(productionPlanRepair.getIsAffectOutput() == 1 ? "影响" : "未影响").append("]")
+                    .append("[预提醒天数：").append(productionPlanRepair.getRemindDays()).append("]");
+            InsertChangeLogDTO insertChangeLogDTO = new InsertChangeLogDTO();
+            insertChangeLogDTO.setModuleName("生产管理");
+            insertChangeLogDTO.setFunctionName("生产计划->维修计划");
+            insertChangeLogDTO.setContent(content.toString());
+            insertChangeLogDTO.setCreateUserId(deleteProductionPlanRepairDTO.getDeleteUserId());
+            insertChangeLogDTO.setCreateUserName(deleteProductionPlanRepairDTO.getDeleteUserName());
+            changeLogService.insertChangeLogData(insertChangeLogDTO);
+            getBaseMapper().deleteById(productionPlanRepair);
+        }
+        else {
+            throw new ServiceException("设备维修计划不存在或已被删除");
+        }
+    }
+
+    /**
+     * 完成操作
+     * @param finishedProductionPlanRepairDTO
+     */
+    @Override
+    public void completeOpa(FinishedProductionPlanRepairDTO finishedProductionPlanRepairDTO) {
+        ProductionPlanRepair productionPlanRepair = baseMapper.selectById(finishedProductionPlanRepairDTO.getId());
+        if (null != productionPlanRepair) {
+            if (productionPlanRepair.getPlanState() == 1) {
+                throw new ServiceException("计划已完成，不能操作");
+            }
+            productionPlanRepair.setPlanState(1);
+            productionPlanRepair.setRealStartDate(DateUtil.parseDate(finishedProductionPlanRepairDTO.getRealStartDate()));
+            productionPlanRepair.setRealEndDate(DateUtil.parseDate(finishedProductionPlanRepairDTO.getRealEndDate()));
+            productionPlanRepair.setCompleteUserId(finishedProductionPlanRepairDTO.getCompleteUserId());
+            productionPlanRepair.setCompleteUserName(finishedProductionPlanRepairDTO.getCompleteUserName());
+            productionPlanRepair.setRemark(finishedProductionPlanRepairDTO.getRemark());
+            baseMapper.updateById(productionPlanRepair);
+        }
+        else {
+            throw new ServiceException("设备维修计划不存在");
         }
     }
 }

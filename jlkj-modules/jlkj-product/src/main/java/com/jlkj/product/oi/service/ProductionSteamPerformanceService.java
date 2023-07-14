@@ -8,10 +8,10 @@ import com.jlkj.product.oi.vo.productionsteamperformance.ListHomeProductionSteam
 import java.util.List;
 
 /**
- * 服务接口-蒸汽实绩
- * @author sudeyou
- * @since 2022-09-01 09:40:55
- */
+*@description: 服务接口-蒸汽实绩
+*@Author: 265823
+*@date: 2023/7/11 13:49
+*/
 public interface ProductionSteamPerformanceService extends IService<ProductionSteamPerformance> {
 
     /**

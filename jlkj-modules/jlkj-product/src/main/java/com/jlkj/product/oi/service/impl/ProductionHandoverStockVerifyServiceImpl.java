@@ -3,7 +3,7 @@ package com.jlkj.product.oi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.ProductionHandoverStockVerify;
 import com.jlkj.product.oi.dto.productionhandoverstockverify.PageProductionHandoverStockVerifyDTO;
 import com.jlkj.product.oi.dto.productionhandoverstockverify.UpdateProductionHandoverStockVerifyDTO;
@@ -17,21 +17,31 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author yzl
- * @Description 交班仓存核验
- * @create 2022年7月26日 08:48:35
- */
+*@description: 交班仓存核验
+*@Author: 265823
+*@date: 2023/7/10 14:53
+*/
 @Service
 @Slf4j
 public class ProductionHandoverStockVerifyServiceImpl extends ServiceImpl<ProductionHandoverStockVerifyMapper, ProductionHandoverStockVerify>
         implements ProductionHandoverStockVerifyService {
+    /**
+     * 查询交班仓存核验
+     * @param pageProductionHandoverStockVerifyDTO 查询条件dto
+     * @return
+     */
     @Override
     public IPage<Map<String, String>> getListPage(PageProductionHandoverStockVerifyDTO pageProductionHandoverStockVerifyDTO) {
         Page<Map<String, String>> page = new Page<>(pageProductionHandoverStockVerifyDTO.getCurrent(), pageProductionHandoverStockVerifyDTO.getSize());
         return getBaseMapper().getListPage(page, pageProductionHandoverStockVerifyDTO);
     }
 
-    public Object update(UpdateProductionHandoverStockVerifyDTO dto) {
+    /**
+     * 修改
+     * @param dto
+     */
+    @Override
+    public void updateCustom(UpdateProductionHandoverStockVerifyDTO dto) {
         ProductionHandoverStockVerify productionHandoverStockVerify = getById(dto.getId());
         if (null != productionHandoverStockVerify) {
             productionHandoverStockVerify.setCoalBlendingLevel1(dto.getCoalBlendingLevel1());
@@ -79,9 +89,8 @@ public class ProductionHandoverStockVerifyServiceImpl extends ServiceImpl<Produc
             productionHandoverStockVerify.setModifyUserName(dto.getModifyUserName());
             productionHandoverStockVerify.setModifyTime(new Date());
             updateById(productionHandoverStockVerify);
-            return AjaxResult.success("交班仓存核验修改成功");
         } else {
-            return AjaxResult.error("交班仓存核验不存在");
+            throw new ServiceException("交班仓存核验不存在");
         }
     }
 }

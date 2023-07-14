@@ -8,7 +8,6 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productioncoalconsume.*;
 import com.jlkj.product.oi.service.ProductionCoalConsumeService;
 import com.jlkj.product.oi.vo.productioncoalconsume.PageProductionCoalConsumeVO;
-import com.jlkj.product.oi.service.ProductionCoalConsumeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -30,11 +29,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-炼焦煤消耗维护
- *
- * @author sudeyou
- * @since 2022-11-03 17:10:54
- */
+*@description: 控制器-炼焦煤消耗维护
+*@Author: 265823
+*@date: 2023/7/10 11:14
+*/
 @Tag(name = "炼焦煤消耗维护")
 @RestController
 @RequestMapping("/productioncoalconsume")
@@ -47,6 +45,11 @@ public class ProductionCoalConsumeController {
     @Resource
     private ProductionCoalConsumeService productionCoalConsumeService;
 
+    /**
+     * 炼焦煤消耗维护-查询-分页
+     * @param pageProductionCoalConsumeDTO
+     * @return
+     */
     @Operation(summary = "炼焦煤消耗维护-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -61,7 +64,7 @@ public class ProductionCoalConsumeController {
     )
     @Log(title = "炼焦煤消耗维护-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionCoalConsumePage", method = RequestMethod.GET)
-    public Object getProductionCoalConsumePageData(@Validated @ParamModel PageProductionCoalConsumeDTO pageProductionCoalConsumeDTO) {
+    public AjaxResult getProductionCoalConsumePageData(@Validated @ParamModel PageProductionCoalConsumeDTO pageProductionCoalConsumeDTO) {
         log.info("params => " + pageProductionCoalConsumeDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCoalConsumeDTO);
         if (!"".equals(errorMsg)) {
@@ -71,6 +74,11 @@ public class ProductionCoalConsumeController {
         return AjaxResult.success(productionCoalConsumeService.getProductionCoalConsumePageData(pageProductionCoalConsumeDTO));
     }
 
+    /**
+     * 炼焦煤消耗维护-新增
+     * @param insertProductionCoalConsumeDTO
+     * @return
+     */
     @Operation(summary = "炼焦煤消耗维护-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -83,12 +91,17 @@ public class ProductionCoalConsumeController {
     )
     @Log(title = "炼焦煤消耗维护-新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/insertProductionCoalConsume", method = RequestMethod.POST, produces = "application/json")
-    public Object insertProductionCoalConsumeData(@Valid @RequestBody InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO) {
+    public void insertProductionCoalConsumeData(@Valid @RequestBody InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO) {
         log.info("params => " + insertProductionCoalConsumeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertProductionCoalConsumeDTO);
-        return productionCoalConsumeService.insertProductionCoalConsumeData(insertProductionCoalConsumeDTO);
+        productionCoalConsumeService.insertProductionCoalConsumeData(insertProductionCoalConsumeDTO);
     }
 
+    /**
+     * 炼焦煤消耗维护-修改
+     * @param updateProductionCoalConsumeDTO
+     * @return
+     */
     @Operation(summary = "炼焦煤消耗维护-修改",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -101,12 +114,17 @@ public class ProductionCoalConsumeController {
     )
     @Log(title = "炼焦煤消耗维护-修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionCoalConsume", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateProductionCoalConsumeData(@Valid @RequestBody UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO) {
+    public void updateProductionCoalConsumeData(@Valid @RequestBody UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO) {
         log.info("params => " + updateProductionCoalConsumeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionCoalConsumeDTO);
-        return productionCoalConsumeService.updateProductionCoalConsumeData(updateProductionCoalConsumeDTO);
+        productionCoalConsumeService.updateProductionCoalConsumeData(updateProductionCoalConsumeDTO);
     }
 
+    /**
+     * 炼焦煤消耗维护-抛送ERP
+     * @param confirmProductionCoalConsumeDTO
+     * @return
+     */
     @Operation(summary = "炼焦煤消耗维护-抛送ERP",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -119,12 +137,17 @@ public class ProductionCoalConsumeController {
     )
     @Log(title = "炼焦煤消耗维护-抛送ERP",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/confirmProductionCoalConsume", method = RequestMethod.PUT, produces = "application/json")
-    public Object confirmProductionCoalConsume(@Valid @RequestBody ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO) {
+    public void confirmProductionCoalConsume(@Valid @RequestBody ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO) {
         log.info("params => " + confirmProductionCoalConsumeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, confirmProductionCoalConsumeDTO);
-        return productionCoalConsumeService.confirmProductionCoalConsumeData(confirmProductionCoalConsumeDTO);
+        productionCoalConsumeService.confirmProductionCoalConsumeData(confirmProductionCoalConsumeDTO);
     }
 
+    /**
+     * 炼焦煤消耗维护-删除
+     * @param deleteProductionCoalConsumeDTO
+     * @return
+     */
     @Operation(summary = "炼焦煤消耗维护-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -137,10 +160,10 @@ public class ProductionCoalConsumeController {
     )
     @Log(title = "炼焦煤消耗维护-删除",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteProductionCoalConsume", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteProductionCoalConsumeData(@Valid @RequestBody DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO) {
+    public void deleteProductionCoalConsumeData(@Valid @RequestBody DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO) {
         log.info("params => " + deleteProductionCoalConsumeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionCoalConsumeDTO);
-        return productionCoalConsumeService.deleteProductionCoalConsumeData(deleteProductionCoalConsumeDTO);
+        productionCoalConsumeService.deleteProductionCoalConsumeData(deleteProductionCoalConsumeDTO);
     }
 }
 

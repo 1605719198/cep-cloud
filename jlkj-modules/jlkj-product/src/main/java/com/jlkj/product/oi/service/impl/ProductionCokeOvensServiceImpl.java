@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.ProductionCokeOvens;
 import com.jlkj.product.oi.domain.ProductionInformationConfiguration;
@@ -62,6 +62,11 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
     @Resource
     private LogisticsFeignService logisticsFeignService;
 
+    /**
+     * 每日推焦炉数维护-查询-分页
+     * @param pageProductionCokeOvensDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionCokeOvensVO> getProductionCokeOvensPageData(PageProductionCokeOvensDTO pageProductionCokeOvensDTO) {
@@ -69,15 +74,20 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
         return getBaseMapper().getProductionCokeOvensPageData(page, pageProductionCokeOvensDTO);
     }
 
+    /**
+     * 每日推焦炉数维护-新增
+     * @param insertProductionCokeOvensDTO 新增dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object insertProductionCokeOvensData(InsertProductionCokeOvensDTO insertProductionCokeOvensDTO) {
+    public void insertProductionCokeOvensData(InsertProductionCokeOvensDTO insertProductionCokeOvensDTO) {
         List<ProductionCokeOvens> list = list(new QueryWrapper<ProductionCokeOvens>().lambda()
                 .eq(ProductionCokeOvens::getAccountDate, insertProductionCokeOvensDTO.getAccountDate())
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return AjaxResult.error("每日推焦炉数已存在");
+            throw new ServiceException("每日推焦炉数已存在");
         }
         BigDecimal drySingleHoleWeight = new BigDecimal(0);
         BigDecimal wetSingleHoleWeight = new BigDecimal(0);
@@ -109,12 +119,16 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
         productionCokeOvens.setModifyUserName(insertProductionCokeOvensDTO.getCreateUserName());
         productionCokeOvens.setModifyTime(new Date());
         save(productionCokeOvens);
-        return AjaxResult.success("每日推焦炉数增加成功");
     }
 
+    /**
+     * 每日推焦炉数维护-修改
+     * @param updateProductionCokeOvensDTO 修改dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateProductionCokeOvensData(UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO) {
+    public void updateProductionCokeOvensData(UpdateProductionCokeOvensDTO updateProductionCokeOvensDTO) {
         ProductionCokeOvens productionCokeOvens = getById(updateProductionCokeOvensDTO.getId());
         if (null != productionCokeOvens) {
             List<ProductionCokeOvens> list = list(new QueryWrapper<ProductionCokeOvens>().lambda()
@@ -123,7 +137,7 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
                     .last(CommonConstant.LIMIT_ONE_ROW)
             );
             if (list.size() > 0) {
-                return AjaxResult.error("每日推焦炉数已存在");
+                throw new ServiceException("每日推焦炉数已存在");
             }
             BigDecimal drySingleHoleWeight = new BigDecimal(0);
             BigDecimal wetSingleHoleWeight = new BigDecimal(0);
@@ -149,21 +163,23 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
             productionCokeOvens.setModifyUserName(updateProductionCokeOvensDTO.getModifyUserName());
             productionCokeOvens.setModifyTime(new Date());
             updateById(productionCokeOvens);
-            return AjaxResult.success("每日推焦炉数修改成功");
         }
         else {
-            return AjaxResult.error("每日推焦炉数不存在");
+            throw new ServiceException("每日推焦炉数不存在");
         }
     }
 
+
+    /**
+     * 每日推焦炉数维护-确认
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object confirmProductionCokeOvensData() {
+    public void confirmProductionCokeOvensData() {
         List<ListProductionCokeOvensAccountVO> list = getBaseMapper().getProductionCokeOvensAccountListData();
         if (list.size() > 0) {
             sendQueueMessage(list);
         }
-        return AjaxResult.success("报文抛送成功");
     }
 
     private String getSeqNo(Integer no) {
@@ -235,59 +251,77 @@ public class ProductionCokeOvensServiceImpl extends ServiceImpl<ProductionCokeOv
             qrtzJobMessageHistory.setDescriptionContent("");
             qrtzJobMessageHistory.setSendType((short)1);
             qrtzJobMessageHistoryService.save(qrtzJobMessageHistory);
+            sendNutCoAndCoFinesData(productionCokeOvensAccountVO);
             sendCoalData();
         }
     }
 
     private void sendCoalData() {
-        String waterRate = "-1";
-///        CoalWaterRateVO coalWaterRateVO = getBaseMapper().getCoalWaterRateData();
-///        if(null != coalWaterRateVO) {
-///            waterRate = coalWaterRateVO.getMt();
-///        }
-        int no = 1;
+        int no = 10;
         List<ListProductionCoalConsumeVO> listProductionCoalConsume = getBaseMapper().getProductionCoalConsumeListData();
         for (ListProductionCoalConsumeVO productionCoalConsume: listProductionCoalConsume) {
-            Map<String, Object> outCoalMap = new HashMap<>(1);
-            outCoalMap.put("class", "com.icsc.me.link.mejc150Api");
-            outCoalMap.put("messageId", "ME58");
-            outCoalMap.put("actionCode", "N");
-            outCoalMap.put("dataSource", "cep");
-            outCoalMap.put("data", logisticsFeignService.getLogisticsMrPlan(
-                    DateUtil.format(DateUtil.date(), "yyyyMMdd"),
-                    productionCoalConsume.getQty(),
-                    "41",
-                    DateUtil.format(DateUtil.date(), "yyyyMMddHHmm") + getSeqNo(no),
-                    new BigDecimal(waterRate),
-                    productionCoalConsume.getCoalMaterialsCode(),
-                    "carrierType_C_" + productionCoalConsume.getCokeMaterialsCode(),
-                    "clent-test"
-            ));
-            log.info("send mq message:{}:{} => {}", MATERIAL_EXCHANGE, COAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(outCoalMap));
-            rabbitTemplate.convertAndSend(MATERIAL_EXCHANGE, COAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(outCoalMap));
-            QrtzJobMessageHistory qrtzJobMessageHistory = new QrtzJobMessageHistory();
-            qrtzJobMessageHistory.setId(IdUtil.randomUUID());
-            qrtzJobMessageHistory.setJobId("com.jljl.system.job.ProductionCokeOvensJob");
-            qrtzJobMessageHistory.setQueueId("cep.erp.me.me58");
-            qrtzJobMessageHistory.setSendTime(new Date());
-            qrtzJobMessageHistory.setMessageContent(JSONObject.toJSONString(outCoalMap));
-            qrtzJobMessageHistory.setDescriptionContent("");
-            qrtzJobMessageHistory.setSendType((short)1);
-            qrtzJobMessageHistoryService.save(qrtzJobMessageHistory);
+            sendMe58QueueMessage(no, productionCoalConsume.getQty(), productionCoalConsume.getCoalMaterialsCode(), productionCoalConsume.getCokeMaterialsCode(), "-1", "41");
             no++;
         }
     }
+    private void sendMe58QueueMessage(int no, BigDecimal qty, String coalMaterialsCode, String cokeMaterialsCode, String waterRate, String purposeId) {
+        Map<String, Object> outCoalMap = new HashMap<>(1);
+        outCoalMap.put("class", "com.icsc.me.link.mejc150Api");
+        outCoalMap.put("messageId", "ME58");
+        outCoalMap.put("actionCode", "N");
+        outCoalMap.put("dataSource", "cep");
+        outCoalMap.put("data", logisticsFeignService.getLogisticsMrPlan(
+                DateUtil.format(DateUtil.date(), "yyyyMMdd"),
+                qty,
+                purposeId,
+                DateUtil.format(DateUtil.date(), "yyyyMMddHHmm") + getSeqNo(no),
+                new BigDecimal(waterRate),
+                coalMaterialsCode,
+                "carrierType_C_" + cokeMaterialsCode,
+                "client-test"
+        ));
+        log.info("send mq message:{}:{} => {}", MATERIAL_EXCHANGE, COAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(outCoalMap));
+        rabbitTemplate.convertAndSend(MATERIAL_EXCHANGE, COAL_CONSUMPTION_ROUTE_KEY, JSONObject.toJSONString(outCoalMap));
+        QrtzJobMessageHistory qrtzJobMessageHistory = new QrtzJobMessageHistory();
+        qrtzJobMessageHistory.setId(IdUtil.randomUUID());
+        qrtzJobMessageHistory.setJobId("com.jljl.system.job.ProductionCokeOvensJob");
+        qrtzJobMessageHistory.setQueueId("cep.erp.me.me58");
+        qrtzJobMessageHistory.setSendTime(new Date());
+        qrtzJobMessageHistory.setMessageContent(JSONObject.toJSONString(outCoalMap));
+        qrtzJobMessageHistory.setDescriptionContent("");
+        qrtzJobMessageHistory.setSendType((short)1);
+        qrtzJobMessageHistoryService.save(qrtzJobMessageHistory);
+    }
+    private void sendNutCoAndCoFinesData(ListProductionCokeOvensAccountVO productionCokeOvensAccountVO) {
+        String waterRate = "0";
+        String purposeId = "19";
+        String nutCoMaterialCode = "0150301";
+        String coFinesMaterialCode = "0150201";
+        String cdqMaterialCode = "0150401";
+        sendMe58QueueMessage(1, productionCokeOvensAccountVO.getNutCoOutputA(), nutCoMaterialCode, "0150104", waterRate, purposeId);
+        sendMe58QueueMessage(2, productionCokeOvensAccountVO.getNutCoOutputB(), nutCoMaterialCode, "0150105", waterRate, purposeId);
+        sendMe58QueueMessage(3, productionCokeOvensAccountVO.getNutCoOutputC(), nutCoMaterialCode, "0150106", waterRate, purposeId);
+        sendMe58QueueMessage(4, productionCokeOvensAccountVO.getCoFinesOutputA(), coFinesMaterialCode, "0150104", waterRate, purposeId);
+        sendMe58QueueMessage(5, productionCokeOvensAccountVO.getCoFinesOutputB(), coFinesMaterialCode, "0150105", waterRate, purposeId);
+        sendMe58QueueMessage(6, productionCokeOvensAccountVO.getCoFinesOutputC(), coFinesMaterialCode, "0150106", waterRate, purposeId);
+        sendMe58QueueMessage(7, productionCokeOvensAccountVO.getCdqOutputA(), cdqMaterialCode, "0150104", waterRate, purposeId);
+        sendMe58QueueMessage(8, productionCokeOvensAccountVO.getCdqOutputB(), cdqMaterialCode, "0150105", waterRate, purposeId);
+        sendMe58QueueMessage(9, productionCokeOvensAccountVO.getCdqOutputC(), cdqMaterialCode, "0150106", waterRate, purposeId);
 
+    }
+    /**
+     * 每日推焦炉数维护-删除
+     * @param deleteProductionCokeOvensDTO 删除dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteProductionCokeOvensData(DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO) {
+    public void deleteProductionCokeOvensData(DeleteProductionCokeOvensDTO deleteProductionCokeOvensDTO) {
         ProductionCokeOvens productionCokeOvens = getById(deleteProductionCokeOvensDTO.getId());
         if (null != productionCokeOvens) {
             removeById(productionCokeOvens);
-            return AjaxResult.success("每日推焦炉数删除成功");
         }
         else {
-            return AjaxResult.error("每日推焦炉数不存在或已被删除");
+            throw new ServiceException("每日推焦炉数不存在或已被删除");
         }
     }
 }

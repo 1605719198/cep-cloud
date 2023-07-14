@@ -435,9 +435,9 @@ export default {
     getCoalBlendingList() {
       getPlanConfigCoke().then((res) => {
         // console.log(res.data, "获取配煤计划下拉")
-        if (res.data.code == 0) {
+        if (res.code == 200) {
           let options = []
-          res.data.data.forEach((item) => {
+          res.data.forEach((item) => {
             let state =
               item.plan_state == 1
                 ? '未确认'
@@ -488,13 +488,13 @@ export default {
     //获取配合配煤计划信息
     getCoalPlanInformation(Number) {
       const params = {
-        warehouse_number: Number,
-        plan_id: this.form.config_coke_plan_id,
+        warehouseNumber: Number,
+        planId: this.form.config_coke_plan_id,
       }
       getProductionPlanConfigCokeDetailInfoByWarehouseNumber(params).then(
         (res) => {
           // console.log(res, '获取配合配煤计划信息')
-          let data = res.data.data
+          let data = res.data
           if (data) {
             // this.form.config_coke_plan_id = data.plan_id
             // this.form.config_coke_plan_number = data.plan_number
@@ -524,7 +524,7 @@ export default {
       // console.log(val, 'val')
       getHumanresourceSchedule({ startTime: val }).then((res) => {
         // console.log(res, '班组信息')
-        if (res.data.code == 0) {
+        if (res.code == 200) {
           this.teamData = res.data.data[0]
         }
         // console.log(this.teamData, ' this.teamData ')
@@ -594,13 +594,11 @@ export default {
               this.submitLoading = true
               insertProductionConveyingCoalRecord(this.form).then(
                 (res) => {
-                  if (res.data.code === '0') {
                     this.$message({
                       type: 'success',
-                      message: res.msg,
+                      message: '新增成功',
                     })
                     this.$emit('submitSave', res.msg)
-                  }
                   this.submitLoading = false
                 },
                 (error) => {

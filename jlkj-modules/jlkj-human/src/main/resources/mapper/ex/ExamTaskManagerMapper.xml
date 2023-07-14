@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             create_time,
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            (select nvl(max(exam_id),0) + 1  from human_ex_task_manager),
+            (select ifnull(max(exam_id),0) + 1  from human_ex_task_manager),
             <if test="examCode != null and examCode != ''">#{examCode},</if>
             <if test="examName != null and examName != ''">#{examName},</if>
             <if test="examDescribe != null">#{examDescribe},</if>

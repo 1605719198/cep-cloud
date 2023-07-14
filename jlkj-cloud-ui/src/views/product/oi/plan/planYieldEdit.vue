@@ -100,6 +100,7 @@ export default {
       form: { planYear: '', planMonth: '', planYield: 0, },
       rules: {
         planYear: [{ required: true, message: '请输入年份', trigger: 'blur' },],
+        planYield: [{ required: true, message: '请输入计划产量', trigger: 'blur' },],
       },
       tableData: [],
       yieldList: {},
@@ -114,7 +115,9 @@ export default {
   created () {
     let that = this;
     let table = [];
-    this.form = { ...this.data };
+    this.form = { ...this.data,...this.form };
+    console.log(this.form)
+    // this.form.planYield = 0
     let month = this.data.plan_month;
     if (this.type === 'edit') {
       this.form.planYear = this.query.planYear;
@@ -173,14 +176,12 @@ export default {
               userId: this.$store.state.user.userInfo.userName,
               userName: this.$store.state.user.userInfo.nickName,
             }).then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: "success", message: "操作成功！", duration: 1000,
-                  onClose: () => {
-                    this.$emit('submitSave', res.msg)
-                  }
-                });
-              }
+              this.$message({
+                type: "success", message: "新增成功！", duration: 1000,
+                onClose: () => {
+                  this.$emit('submitSave', res.msg)
+                }
+              });
               this.submitLoading = false;
             }, error => {
               this.submitLoading = false;
@@ -194,14 +195,12 @@ export default {
               userId: this.$store.state.user.userInfo.userName,
               userName: this.$store.state.user.userInfo.nickName,
             }).then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: "success", message: "操作成功！", duration: 1000,
-                  onClose: () => {
-                    this.$emit('submitSave', res.msg)
-                  }
-                });
-              }
+              this.$message({
+                type: "success", message: "修改成功！", duration: 1000,
+                onClose: () => {
+                  this.$emit('submitSave', res.msg)
+                }
+              });
               this.submitLoading = false;
             }, error => {
               this.submitLoading = false;

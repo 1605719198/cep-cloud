@@ -3,7 +3,6 @@ package com.jlkj.product.oi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionRealOutputMonth;
 import com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO;
 import com.jlkj.product.oi.dto.productionrealoutputmonth.ListProductionRealOutputMonthRangeDTO;
@@ -18,19 +17,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-生产管理-月产量
- * @author sudeyou
- * @since 2022-07-13 14:18:51
- */
+*@description: 服务实现-生产管理-月产量
+*@Author: 265823
+*@date: 2023/7/11 11:26
+*/
 @Service
 public class ProductionRealOutputMonthServiceImpl extends ServiceImpl<ProductionRealOutputMonthMapper, ProductionRealOutputMonth>
     implements ProductionRealOutputMonthService {
 
+    /**
+     * 查询-分页-生产管理-统计分析-指标跟踪(月)
+     * @param pageProductionRealOutputMonthDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionRealOutputMonthVO> getPageData(PageProductionRealOutputMonthDTO pageProductionRealOutputMonthDTO) {
@@ -38,21 +43,35 @@ public class ProductionRealOutputMonthServiceImpl extends ServiceImpl<Production
         return getBaseMapper().getPageData(page, pageProductionRealOutputMonthDTO);
     }
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(月实际)
+     * @param listProductionRealOutputMonthTargetItemDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionRealOutputMonthTargetItemVO> getProductionRealOutputMonthTargetItemChartData(ListProductionRealOutputMonthTargetItemDTO listProductionRealOutputMonthTargetItemDTO) {
         return getBaseMapper().getProductionRealOutputMonthTargetItemChartData(listProductionRealOutputMonthTargetItemDTO);
     }
 
+    /**
+     * 生产管理-指标跟踪-图表-日期(同环比)
+     * @param listProductionRealOutputMonthRangeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionRealOutputMonthRangeVO> getProductionRealOutputMonthRangeChartData(ListProductionRealOutputMonthRangeDTO listProductionRealOutputMonthRangeDTO) {
         return getBaseMapper().getProductionRealOutputMonthRangeChartData(listProductionRealOutputMonthRangeDTO);
     }
 
+    /**
+     * 生产管理-统计分析-指标分析-月产量指标跟踪-更新统计数据
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateProductionRealOutputMonthStatisticsData() {
+    public void updateProductionRealOutputMonthStatisticsData() {
         String qj = "全焦";
         String yjj = "冶金焦";
         Map<String, Object> qjMinMax = getBaseMapper().getMonthQjMinMax();
@@ -112,18 +131,44 @@ public class ProductionRealOutputMonthServiceImpl extends ServiceImpl<Production
             }
             updateById(productionRealOutputMonth);
         }
-        return AjaxResult.success("操作成功");
     }
 
 
-
-
-
+    /**
+     * 首页-焦炭产量-收率对比
+     * @param dto dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
-    public List<Map<String, Object>> getProductivityAnalys(GetCokePlanPerformanceDTO dto) {
-        return getBaseMapper().getProductivityAnalys(dto);
+    public Map<String, Object> getProductivityAnalys(GetCokePlanPerformanceDTO dto) {
+        Map<String, Object> res = new HashMap<>(4);
+        List<Object> date = new ArrayList<>();
+        List<Object> cokeAllPlan = new ArrayList<>();
+        List<Object> cokeAllReal = new ArrayList<>();
+        List<Object> cokePlan = new ArrayList<>();
+        List<Object> cokeReal = new ArrayList<>();
+        List<Map<String, Object>> productivityAnalys = getBaseMapper().getProductivityAnalys(dto);
+        for (Map<String, Object> map : productivityAnalys) {
+            date.add(map.get("plan_date"));
+            cokeAllPlan.add(map.get("coke_all_plan"));
+            cokeAllReal.add(map.get("coke_all_real"));
+            cokePlan.add(map.get("coke_plan"));
+            cokeReal.add(map.get("coke_real"));
+        }
+        res.put("date", date);
+        res.put("coke_all_plan", cokeAllPlan);
+        res.put("coke_all_real", cokeAllReal);
+        res.put("coke_plan", cokePlan);
+        res.put("coke_real", cokeReal);
+        return res;
     }
+
+    /**
+     * 焦炭产量-详情-收率对比-详情
+     * @param dto dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductivityAnalysInfo(GetCokePlanPerformanceDTO dto) {

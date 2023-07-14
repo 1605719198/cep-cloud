@@ -98,14 +98,12 @@
               complete_user_id: this.$store.getters.userInfo.userId,
               complete_user_name: this.$store.getters.userInfo.nickName,
             }).then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: "success", message: "操作成功！", duration: 1000,
-                  onClose: () => {
-                    this.$emit('submitSave', res.msg)
-                  }
-                });
-              }
+              this.$message({
+                type: "success", message: "操作成功！", duration: 1000,
+                onClose: () => {
+                  this.$emit('submitSave', res.msg)
+                }
+              });
             }, error => {
               window.console.log(error);
             });

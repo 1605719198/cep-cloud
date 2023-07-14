@@ -144,8 +144,246 @@
         GROUP BY date,energy_code_name
     </select>
 
+    <select id="getDate" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="string">
+        SELECT a.date
+        FROM (
+                 SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date
+                 FROM (
+                     SELECT @row := @row + 1 as xx FROM
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+                     (SELECT @row := -1) r) se
+                 WHERE DATE_ADD(#{start_time}
+                     , interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+             ) AS a
+    </select>
+
+    <select id="getCokeEnergyConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            '水' AS type,
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '水消耗'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,e_count_date_class
+        UNION ALL
+        SELECT
+            '电' AS type,
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '耗电量'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,e_count_date_class
+        UNION ALL
+        SELECT
+            '蒸气' AS type,
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '低压蒸汽'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,e_count_date_class
+    </select>
+
+    <select id="getSteamPerformance" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            dict_label AS type,
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '超高压蒸汽'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,dict_label,e_count_date_class
+        ORDER BY e_count_date_class,dict_label
+    </select>
+    <select id="getSteamTotalOutput" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '超高压蒸汽'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,e_count_date_class
+    </select>
+
+    <select id="getWaterConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            dict_label AS type,
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '水消耗'
+          AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+          AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+        GROUP BY dict_value,dict_label,e_count_date_class
+    </select>
+
+    <select id="getPowerGeneration" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            planyear_month_day as date,
+            plan_value*10000 AS plan_value,
+            IFNULL(pro_con_qty,0) AS pro_con_qty
+        FROM
+            t_energy_day_plan_output a
+            LEFT JOIN (
+            SELECT
+            e_count_date_class AS e_count_date,
+            ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+            FROM v_energy_consume_output
+            WHERE
+            dict_value = '发电量'
+            AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+            AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+            GROUP BY dict_value,e_count_date_class
+            ) b ON a.planyear_month_day = e_count_date
+        WHERE
+            planyear_month_day<![CDATA[ >= ]]> #{start_time}
+          AND planyear_month_day <![CDATA[ <= ]]> #{end_time}
+          AND memo = '100MW发电'
+        ORDER BY planyear_month_day
+    </select>
 
 
+    <select id="getPowerGenerationDayAnalysis" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            type,
+            SUM(CASE date WHEN '峰' THEN pro_con_qty ELSE 0 END) AS feng,
+            SUM(CASE date WHEN '谷' THEN pro_con_qty ELSE 0 END) AS gu,
+            SUM(CASE date WHEN '平' THEN pro_con_qty ELSE 0 END) AS ping
+        FROM (
+                 SELECT
+                     dict_label AS type,
+                     remark AS date,
+							ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+                 FROM v_energy_consume_output
+                 WHERE
+                     dict_value = '峰谷平电量'
+                   AND io_type_id ='C'
+                   AND e_count_date_class = #{start_time}
+                 GROUP BY dict_label,remark
+             ) a
+        GROUP BY type
+    </select>
+
+
+    <select id="getPowerGenerationDayAnalysisByConsume" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT
+            type,
+            SUM(CASE date WHEN '峰' THEN pro_con_qty ELSE 0 END) AS feng,
+            SUM(CASE date WHEN '谷' THEN pro_con_qty ELSE 0 END) AS gu,
+            SUM(CASE date WHEN '平' THEN pro_con_qty ELSE 0 END) AS ping
+        FROM (
+                 SELECT
+                     '发电量' AS type,
+                     remark AS date,
+							ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+                 FROM v_energy_consume_output
+                 WHERE
+                     dict_value = '峰谷平电量'
+                   AND io_type_id ='C'
+                   AND e_count_date_class = #{start_time}
+                 GROUP BY remark
+                 UNION ALL
+                 SELECT
+                     '耗电量' AS type,
+                     remark AS date,
+                     ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+                 FROM v_energy_consume_output
+                 WHERE
+                     dict_value = '峰谷平电量'
+                   AND io_type_id ='S'
+                   AND e_count_date_class = #{start_time}
+                 GROUP BY remark
+
+             ) a
+        GROUP BY type
+    </select>
+
+
+
+
+    <select id="getGridConnectionElectricityQuantity" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date,IFNULL(b.pro_con_qty,0) AS fd_qty,IFNULL(c.pro_con_qty,0) AS hd_qty
+        FROM (
+                 SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date
+                 FROM (
+                     SELECT @row := @row + 1 as xx FROM
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+                     (SELECT @row := -1) r) se
+                 WHERE DATE_ADD(#{start_time}
+                     , interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+             ) AS a
+                 LEFT JOIN (
+            SELECT
+                e_count_date_class AS e_count_date,
+                ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+            FROM v_energy_consume_output
+            WHERE
+                dict_value = '发电量'
+              AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+              AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+            GROUP BY dict_value,e_count_date_class
+        ) b ON b.e_count_date = a.date
+                 LEFT JOIN (
+            SELECT
+                e_count_date_class AS e_count_date,
+                ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+            FROM v_energy_consume_output
+            WHERE
+                dict_value = '耗电量'
+              AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+              AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+            GROUP BY dict_value,e_count_date_class
+        ) c ON c.e_count_date=a.date
+    </select>
+
+
+
+
+    <select id="getSteamConsumption" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT a.date,IFNULL(b.pro_con_qty,0) AS pro_con_qty
+        FROM (
+                 SELECT DATE_FORMAT(DATE_ADD(#{start_time}, interval xx DAY), '%Y-%m-%d') AS date
+                 FROM (
+                     SELECT @row := @row + 1 as xx FROM
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t,
+                     (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) t2,
+                     (SELECT @row := -1) r) se
+                 WHERE DATE_ADD(#{start_time}, interval xx DAY) <![CDATA[ <= ]]> #{end_time}
+             ) AS a
+                 LEFT JOIN (
+            SELECT
+                e_count_date_class AS e_count_date,
+                ROUND(SUM(IFNULL(pro_con_qty, 0)),2) AS pro_con_qty
+            FROM v_energy_consume_output
+            WHERE
+                dict_value = '超高压蒸汽'
+              AND e_count_date_class <![CDATA[ >= ]]> #{start_time}
+              AND e_count_date_class <![CDATA[ <= ]]> #{end_time}
+            GROUP BY dict_value,e_count_date_class
+        ) b ON b.e_count_date = a.date
+    </select>
+    <select id="getSteamConsumptionByDay" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
+        SELECT '1#机组' type, SUM(pro_con_qty) AS pro_con_qty
+        FROM v_energy_consume_output
+        WHERE
+            dict_value = '超高压蒸汽'
+          AND e_count_date_class = #{start_time}
+    </select>
 
 
 </mapper>

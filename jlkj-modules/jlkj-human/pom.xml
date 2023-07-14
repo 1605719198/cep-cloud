@@ -113,7 +113,10 @@
             <groupId>com.jlkj</groupId>
             <artifactId>jlkj-api-finance</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.jlkj</groupId>
+            <artifactId>jlkj-api-system</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

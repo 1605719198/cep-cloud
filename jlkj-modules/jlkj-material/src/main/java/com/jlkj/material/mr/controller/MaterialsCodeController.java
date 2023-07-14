@@ -166,6 +166,10 @@ public class MaterialsCodeController {
     }
 
 
+    /**
+     * 查询-列表-物料代码-下拉-焦
+     * @return
+     */
     @Operation(summary = "查询-列表-物料代码-下拉-焦",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -183,8 +187,8 @@ public class MaterialsCodeController {
     )
     @Log(title = "查询-列表-物料代码-下拉-焦", businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listMaterialsBoxJ", method = RequestMethod.GET)
-    public Object getListBoxDataJ() {
-        return materialsCodeService.getListBoxDataJ();
+    public AjaxResult getListBoxDataJ() {
+        return AjaxResult.success(materialsCodeService.getListBoxDataJ());
     }
 
     @Operation(summary = "新增-物料代码维护",

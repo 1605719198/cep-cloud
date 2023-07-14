@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.domain.R;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.ConvertUtil;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.constants.CommonConstant;
@@ -37,9 +37,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-配煤计划主记录
- * @author sudeyou
- */
+*@description: 服务实现-配煤计划主记录
+*@Author: 265823
+*@date: 2023/7/11 8:05
+*/
 @Service
 public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionPlanConfigCokeMapper, ProductionPlanConfigCoke>
     implements ProductionPlanConfigCokeService {
@@ -56,6 +57,11 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
 
     private static final String SUCCESS = "200";
 
+    /**
+     * 查询-分页-配煤计划主记录
+     * @param pageProductionPlanConfigCokeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, String>> getPageData(PageProductionPlanConfigCokeDTO pageProductionPlanConfigCokeDTO) {
@@ -63,15 +69,19 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         return getBaseMapper().getPageData(page, pageProductionPlanConfigCokeDTO);
     }
 
+    /**
+     * 新增-配煤计划主记录
+     * @param addProductionPlanConfigCokeDTO 新增dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object addData(AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO) {
+    public void addData(AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO) {
         List<ProductionPlanConfigCoke> list = list(new QueryWrapper<ProductionPlanConfigCoke>().lambda()
                 .eq(ProductionPlanConfigCoke::getPlanNumber, addProductionPlanConfigCokeDTO.getPlanNumber())
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return AjaxResult.error("计划编号已存在");
+            throw new ServiceException("计划编号已存在");
         }
         BigDecimal proportion = new BigDecimal(0);
         for (AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO : addProductionPlanConfigCokeDTO.getDetailList()) {
@@ -79,7 +89,7 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         }
         int num = 100;
         if (proportion.compareTo(new BigDecimal(num)) != 0) {
-            return AjaxResult.error("配煤比总计必须为100");
+            throw new ServiceException("配煤比总计必须为100");
         }
         MaterialsCode materialsCode = materialsCodeService.getById(addProductionPlanConfigCokeDTO.getMaterialId());
         ProductionPlanConfigCoke productionPlanConfigCoke = new ProductionPlanConfigCoke();
@@ -103,15 +113,9 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
             AjaxResult result = (AjaxResult)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
             if (!SUCCESS.equals(result.get("code").toString())) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return result;
             }
         }
-
         saveNewLog(addProductionPlanConfigCokeDTO);
-
-        Map<String, Object> outData = new HashMap<>(1);
-        outData.put("id", productionPlanConfigCoke.getId());
-        return AjaxResult.success("配煤计划主记录增加成功", outData);
     }
 
     private void saveNewLog(AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO) {
@@ -191,9 +195,13 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         }
     }
 
+    /**
+     * 修改-配煤计划主记录
+     * @param updateProductionPlanConfigCokeDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateData(UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO) {
+    public void updateData(UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO) {
         ProductionPlanConfigCoke productionPlanConfigCoke = getById(updateProductionPlanConfigCokeDTO.getId());
         if (null != productionPlanConfigCoke) {
             List<ProductionPlanConfigCoke> list = list(new QueryWrapper<ProductionPlanConfigCoke>().lambda()
@@ -203,7 +211,7 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
             );
             if (list.size() == 0) {
                 if (productionPlanConfigCoke.getPlanState() != 1) {
-                    return AjaxResult.error("只能修改未确认的记录");
+                    throw new ServiceException("只能修改未确认的记录");
                 }
                 BigDecimal proportion = new BigDecimal(0);
                 for (UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO : updateProductionPlanConfigCokeDTO.getDetailList()) {
@@ -213,7 +221,7 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                 }
                 int num = 100;
                 if (proportion.compareTo(new BigDecimal(num)) != 0) {
-                    return AjaxResult.error("配煤比总计必须为100");
+                    throw new ServiceException("配煤比总计必须为100");
                 }
                 MaterialsCode materialsCode = materialsCodeService.getById(updateProductionPlanConfigCokeDTO.getMaterialId());
                 saveUpdateLog(updateProductionPlanConfigCokeDTO, productionPlanConfigCoke);
@@ -236,7 +244,6 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                         AjaxResult result = (AjaxResult)productionPlanConfigCokeDetailService.addData(addProductionPlanConfigCokeDetailDTO);
                         if (!SUCCESS.equals(result.get("code").toString())) {
                             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                            return result;
                         }
                     }
                     else {
@@ -247,29 +254,31 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
                             AjaxResult result = (AjaxResult) productionPlanConfigCokeDetailService.updateData(updateProductionPlanConfigCokeDetailDTO);
                             if (!SUCCESS.equals(result.get("code").toString())) {
                                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                                return result;
                             }
                         }
                     }
                 }
-                return AjaxResult.success("配煤计划主记录修改成功");
             }
             else {
-                return AjaxResult.error("计划编号已存在");
+                throw new ServiceException("计划编号已存在");
             }
         }
         else {
-            return AjaxResult.error("配煤计划主记录不存在");
+            throw new ServiceException("配煤计划主记录不存在");
         }
     }
 
+    /**
+     * 删除-配煤计划主记录
+     * @param deleteProductionPlanConfigCokeDTO 删除dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteData(DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO) {
+    public void deleteData(DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO) {
         ProductionPlanConfigCoke productionPlanConfigCoke = getById(deleteProductionPlanConfigCokeDTO.getId());
         if (null != productionPlanConfigCoke) {
             if (productionPlanConfigCoke.getPlanState() != 1) {
-                return AjaxResult.error("只能删除未确认的记录");
+                throw new ServiceException("只能删除未确认的记录");
             }
 
             List<ProductionPlanConfigCokeDetail> detailList = productionPlanConfigCokeDetailService.list(new QueryWrapper<ProductionPlanConfigCokeDetail>().lambda()
@@ -298,37 +307,43 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
 
             productionPlanConfigCokeDetailService.deleteDataByPlanId(productionPlanConfigCoke.getId());
             removeById(productionPlanConfigCoke);
-            return AjaxResult.success("配煤计划主记录删除成功");
         }
         else {
-            return AjaxResult.error("配煤计划主记录不存在或已被删除");
+            throw new ServiceException("配煤计划主记录不存在或已被删除");
         }
     }
 
+    /**
+     * 确认-配煤计划主记录
+     * @param confirmProductionPlanConfigCokeDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object confirmData(ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO) {
+    public void confirmData(ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO) {
         ProductionPlanConfigCoke productionPlanConfigCoke = getById(confirmProductionPlanConfigCokeDTO.getId());
         if (null != productionPlanConfigCoke) {
             if (productionPlanConfigCoke.getPlanState() != 1) {
-                return AjaxResult.error("只能对未确认的记录进行确认操作");
+                throw new ServiceException("只能对未确认的记录进行确认操作");
             }
             productionPlanConfigCoke.setPlanState(2);
             productionPlanConfigCoke.setReceiveUserId(confirmProductionPlanConfigCokeDTO.getReceiveUserId());
             productionPlanConfigCoke.setReceiveUserName(confirmProductionPlanConfigCokeDTO.getReceiveUserName());
             productionPlanConfigCoke.setReceiveTime(new Date());
             updateById(productionPlanConfigCoke);
-            return AjaxResult.success("配煤计划主记录确认成功");
         }
         else {
-            return AjaxResult.error("配煤计划主记录不存在");
+            throw new ServiceException("配煤计划主记录不存在");
         }
     }
 
+    /**
+     * 配煤计划主记录-计划编号
+     * @return
+     */
     @Override
     public PlanNumberVO getPlanCodeData() {
         PlanNumberVO planNumberVO = new PlanNumberVO();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
         Date date=new Date();
         StringBuilder sb = new StringBuilder();
         sb.append(sdf.format(date));
@@ -346,9 +361,14 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
         }
         return planNumberVO;
     }
+
+    /**
+     * 手动切配煤计划-配煤计划主记录
+     * @param dto dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object changeProductionPlanCfgCokeConfirm(ChangeProductionPlanCfgCokeDTO dto) {
+    public void changeProductionPlanCfgCokeConfirm(ChangeProductionPlanCfgCokeDTO dto) {
         ProductionPlanConfigCoke productionPlanConfigCoke = getById(dto.getId());
         if (null != productionPlanConfigCoke) {
             List<ProductionPlanConfigCoke> list = list(new QueryWrapper<ProductionPlanConfigCoke>().lambda()
@@ -365,10 +385,9 @@ public class ProductionPlanConfigCokeServiceImpl extends ServiceImpl<ProductionP
             productionPlanConfigCoke.setPlanState(3);
             productionPlanConfigCoke.setPlanStartTime(date);
             updateById(productionPlanConfigCoke);
-            return AjaxResult.success("认切换配煤计划成功");
         }
         else {
-            return AjaxResult.error("切换的配煤计划主记录不存在");
+            throw new ServiceException("切换的配煤计划主记录不存在");
         }
     }
 }

@@ -131,106 +131,113 @@
         />
 
         <!-- 添加或修改加班记录对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
-          <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="工号" prop="empNo">
-                  <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
-                  </el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="姓名" prop="empName">
-                  {{form.empName}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="岗位" prop="postName">
-                  {{form.postName}}
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="16">
-                <el-form-item label="加班日期" prop="workOvertimeDate1">
-                  <el-date-picker
-                    v-model="form.workOvertimeDate1"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    type="datetimerange"
-                    range-separator="~"
-                    start-placeholder="加班开始时间"
-                    end-placeholder="加班结束时间"
-                    :default-time="['08:00:00', '17:00:00']"
-                    @change="dateFormat1">
-                  </el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="加班时数" prop="overtimeHours">
-                  <el-input v-model="form.overtimeHours" placeholder="请输入加班时数" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="加班类别" prop="overtimeTypeId">
-                  <el-select v-model="form.overtimeTypeId" style="width: 100%">
-                    <el-option
-                      v-for="dict in attendenceOptions.OvertimeType"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="加班原因" prop="overtimeReaId">
-                  <el-select v-model="form.overtimeReaId" style="width: 100%">
-                    <el-option
-                      v-for="dict in attendenceOptions.OvertimeReason"
-                      :key="dict.dicNo"
-                      :label="dict.dicName"
-                      :value="dict.dicNo"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="辅助说明" prop="description">
-                  <el-input v-model="form.description" autosize type="textarea" placeholder="请输入辅助说明" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="刷卡时间" prop="cardTime">
-                  {{form.cardTime}}
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="审核状态" prop="status">
-                  {{form.status}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="输入人" prop="creator">
-                  {{form.creator}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="输入日期" prop="createDate">
-                  {{form.createDate}}
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+        <el-dialog :title="title" :visible.sync="open" width="1500px" append-to-body>
+          <el-tabs :value="procData.processed === true ? 'approval' : 'form'" style="height:500px;overflow: auto" >
+            <el-tab-pane label="表单信息" name="form">
+              <el-form ref="form" :model="form" :rules="rules" :key="key" label-width="110px">
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="工号" prop="empNo">
+                      <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true">
+                        <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="姓名" prop="empName">
+                      {{form.empName}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="岗位" prop="postName">
+                      {{form.postName}}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="16">
+                    <el-form-item label="加班日期" prop="workOvertimeDate1">
+                      <el-date-picker
+                        v-model="form.workOvertimeDate1"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        type="datetimerange"
+                        range-separator="~"
+                        start-placeholder="加班开始时间"
+                        end-placeholder="加班结束时间"
+                        :default-time="['08:00:00', '17:00:00']"
+                        @change="dateFormat1">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="加班时数" prop="overtimeHours">
+                      <el-input v-model="form.overtimeHours" placeholder="请输入加班时数" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="加班类别" prop="overtimeTypeId">
+                      <el-select v-model="form.overtimeTypeId" style="width: 100%">
+                        <el-option
+                          v-for="dict in attendenceOptions.OvertimeType"
+                          :key="dict.dicNo"
+                          :label="dict.dicName"
+                          :value="dict.dicNo"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="加班原因" prop="overtimeReaId">
+                      <el-select v-model="form.overtimeReaId" style="width: 100%">
+                        <el-option
+                          v-for="dict in attendenceOptions.OvertimeReason"
+                          :key="dict.dicNo"
+                          :label="dict.dicName"
+                          :value="dict.dicNo"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="辅助说明" prop="description">
+                      <el-input v-model="form.description" autosize type="textarea" placeholder="请输入辅助说明" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="刷卡时间" prop="cardTime">
+                      {{form.cardTime}}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="审核状态" prop="status">
+                      {{form.status}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="输入人" prop="creator">
+                      {{form.creator}}
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="输入日期" prop="createDate">
+                      {{form.createDate}}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="流程信息" name="approval" v-if="open">
+              <flow-detail :procData="procData" @reject="reject"></flow-detail>
+            </el-tab-pane>
+          </el-tabs>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm" :disabled="form.cardTime==null">确 定</el-button>
+            <el-button type="primary" @click="submitForm" v-if="form.status !== '审核中'" :disabled="form.cardTime==null">确 定</el-button>
             <el-button @click="cancel">取 消</el-button>
           </div>
         </el-dialog>
@@ -274,7 +281,14 @@
 </template>
 
 <script>
-import { listOvertimeRecord, getOvertimeRecord, delOvertimeRecord, addOvertimeRecord, updateOvertimeRecord } from "@/api/human/hd/overtimeRecord";
+import {
+  listOvertimeRecord,
+  getOvertimeRecord,
+  delOvertimeRecord,
+  addOvertimeRecord,
+  updateOvertimeRecord,
+  sendOvertimeRecord
+} from "@/api/human/hd/overtimeRecord";
 import {selectCompany} from "@/api/human/hp/deptMaintenance";
 import {validateNumber} from "@/utils/jlkj";
 import selectUser from "@/views/components/human/selectUser/selectUser";
@@ -285,10 +299,14 @@ import {listOvertimeWorksetting} from "@/api/human/hd/overtimeWorksetting";
 import {getAttendenceOptions} from "@/api/human/hd/attendenceBasis";
 import {listCardRecord} from "@/api/human/hd/cardRecord";
 import '@/assets/styles/humanStyles.scss';
+import {getFromByInsId, getTaskByFormId, saveInstanceFormNew} from "@/api/workflow/insform";
+import {listDeploy} from "@/api/workflow/deploy";
+import {startProcessOverride} from "@/api/workflow/process";
+import flowDetail from "@/views/components/flowable/detail";
 
 export default {
   name: "OvertimeRecord",
-  components: {selectUser,DictTagHuman},
+  components: {selectUser,DictTagHuman,flowDetail},
   data() {
     return {
       // 遮罩层
@@ -315,7 +333,8 @@ export default {
         empNo: null,
         workOvertimeDate: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        processName: '人事模块加班流程'
       },
       // 表单参数
       form: {
@@ -371,10 +390,22 @@ export default {
       //出勤选单选项列表
       attendenceOptions: {},
       // 加班时数校验值
-      overtimeHours: 0
+      overtimeHours: 0,
+      processForm:{},
+      // 流程相关数据
+      procData: {
+        // 流程部署id
+        procDefId: undefined,
+        // 流程实例id
+        procInsId: undefined,
+        // 是否待办人
+        processed: false,
+      },
+      key: 0
     };
   },
   created() {
+    this.initTaskParam();
     selectCompany().then(res => {
       this.companyName = res.data
     })
@@ -384,6 +415,64 @@ export default {
     })
   },
   methods: {
+    /** 初始化流程参数 */
+    initTaskParam() {
+      // taskFlag === 'skip' 赋值
+      if (this.$route.query.taskFlag === 'skip') {
+        // 是否通过跳转进入页面
+        this.taskFlag = this.$route.query && this.$route.query.taskFlag
+        // 流程部署id
+        this.procData.procDefId  = this.$route.query && this.$route.query.procDefId
+        // 流程实例id
+        this.procData.procInsId = this.$route.query && this.$route.query.procInsId
+        // 是否待办任务
+        this.procData.processed = this.$route.query && eval(this.$route.query.processed || false)
+        // 跳转过来直接打开dialog
+        this.openDialog()
+      }
+    },
+    /** 拒绝任务后回调方法 */
+    reject(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 3 => 拒绝
+      this.form.status = val.type
+      sendOvertimeRecord(this.form).then(response => {
+        this.$modal.msgSuccess("送出成功");
+        this.getList();
+      });
+    },
+    /** 审批通过且最后节点执行方法 */
+    complete(val) {
+      this.reset()
+      this.form = val.formData
+      // 任务被拒绝后更改状态为 2 => 审批通过且流程结束
+      this.form.status = val.type
+      sendOvertimeRecord(this.form).then(response => {
+        this.$modal.msgSuccess("送出成功");
+        this.getList();
+      });
+    },
+    // 我的流程跳转至画面，自动打开dialog
+    openDialog() {
+      // 切换当前状态为审核状态，不允许修改数据
+      // 根据流程实例id查询form表单id
+      const params = {insId:this.procData.procInsId}
+      getFromByInsId(params).then(res => {
+        // 根据id查询form表单数据
+        getOvertimeRecord(res.data.formId).then(res1 => {
+          this.form = res1.data;
+          this.form.workOvertimeDate1 = res1.data.workOvertimeDate
+          listCardRecord(this.form).then(response => {
+            this.form.cardTime = response.rows[0].cardTime
+          });
+          this.form.compId = this.queryParams.compId;
+          this.procData.formData = this.form
+          this.open = true;
+          this.title = "查看流程详情";
+        })
+      })
+    },
     /** 查询加班记录列表 */
     getList() {
       this.loading = true;
@@ -397,9 +486,16 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+      this.$router.push({ path: '/human/hd/hd5/overtimeRecord' })
     },
     // 表单重置
     reset() {
+      this.procData = {
+        procDefId: undefined,
+        procInsId: undefined,
+        processed: false,
+        formData: {}
+      }
       this.form = {
         id: null,
         compId: null,
@@ -465,31 +561,52 @@ export default {
         this.open = true;
         this.title = "修改加班记录";
       });
+      // 如果不是从我的流程或待办任务跳转，则带formid查询
+      // if (!(this.taskFlag === 'skip')) {
+      // 根据表单id获取是否有绑定启动流程
+      getTaskByFormId(id).then(res => {
+        if (res.data !== undefined) {
+          this.procData.procDefId = res.data.deployId
+          this.procData.procInsId = res.data.instanceId
+          this.procData.formData = this.form
+          this.key = Math.random();
+        }
+        this.open = true;
+        this.title = "修改加班记录";
+      })
     },
     handleUpdate2(row){
-      //获得form表单
-      this.reset();
-      const id = row.id
-      getOvertimeRecord(id).then(response => {
-        this.form = response.data;
-        //修改审核状态
-        this.form.status = '审核中';
-        this.form.startTime = this.form.workOvertimeDate1[0]
-        this.form.endTime = this.form.workOvertimeDate1[1]
-        updateOvertimeRecord(this.form).then(response => {
-          this.$modal.msgSuccess("修改状态成功");
-          this.getList();
-        });
+      this.processForm = {
+        formId: row.id,
+        deployId: undefined,
+        routerPath: this.$route.path
+      }
+      /** 绑定表单流程 */
+      listDeploy(this.queryParams).then(response => {
+        this.processForm.deployId = response.rows[0].definitionId;
+        saveInstanceFormNew(this.processForm).then(res => {
+          const variables = row;
+          // 设定流程变量参数 -- 天数
+          variables.days = this.getTravelDays();
+          // 启动流程并将表单数据加入流程变量
+          startProcessOverride(JSON.stringify(variables)).then(res => {
+            if (res.code === 200) {
+              this.form.status = '审核中'
+              this.form.id = row.id
+              sendOvertimeRecord(this.form).then(response => {
+                this.$modal.msgSuccess("送出成功");
+                this.getList();
+              });
+            }
+          })
+        })
       });
-      //打开流程页面
-      this.$router.push({
-        path: '/workflow/process/start/' + "7f6e6d8a-ed60-11ed-903b-d8bbc1268fdd",
-        query: {
-          definitionId:
- "Process_1682316272459:4:802b06cd-ed60-11ed-903b-d8bbc1268fdd",
-          dataForm:this.form,
-        }
-      })
+    },
+    getTravelDays(){
+      if( this.form.startDate && this.form.endDate){
+        return Math.floor((new Date(this.form.endDate).getTime()-new Date(this.form.startDate).getTime())/(24*3600*1000)) + 1
+      }
+      return '';
     },
     /**  取消流程申请 */
     handleUpdate3(row){
@@ -541,8 +658,6 @@ export default {
             if (this.form.overtimeHours < this.oveUnit) {
               this.$modal.msgError("加班时数小于加班最小单位");
             } else {
-              console.log(this.form.overtimeHours);
-              console.log(this.overtimeHours);
               if (this.form.overtimeHours == this.overtimeHours){
                 this.form.compId = this.queryParams.compId
                 addOvertimeRecord(this.form).then(response => {

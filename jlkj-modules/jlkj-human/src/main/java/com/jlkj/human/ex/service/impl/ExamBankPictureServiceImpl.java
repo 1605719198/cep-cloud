@@ -1,11 +1,18 @@
 package com.jlkj.human.ex.service.impl;
 
-import com.jlkj.common.core.utils.DateUtils;
+import cn.hutool.core.util.ObjectUtil;
+import com.jlkj.common.core.domain.R;
+import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.core.utils.file.FileTypeUtils;
 import com.jlkj.human.ex.domain.ExamBankPicture;
 import com.jlkj.human.ex.mapper.ExamBankPictureMapper;
 import com.jlkj.human.ex.service.IExamBankPictureService;
+import com.jlkj.system.api.RemoteFileService;
+import com.jlkj.system.api.domain.SysFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +27,9 @@ public class ExamBankPictureServiceImpl implements IExamBankPictureService
 {
     @Autowired
     private ExamBankPictureMapper examBankPictureMapper;
+
+    @Autowired
+    private RemoteFileService remoteFileService;
 
     /**
      * 查询题库图片
@@ -54,7 +64,31 @@ public class ExamBankPictureServiceImpl implements IExamBankPictureService
     @Override
     public int insertExamBankPicture(ExamBankPicture examBankPicture)
     {
-        examBankPicture.setCreateTime(DateUtils.getNowDate());
+        return examBankPictureMapper.insertExamBankPicture(examBankPicture);
+    }
+    @Override
+    public int insertExamBankPicture(String bankCode, MultipartFile file){
+        // 取得文件扩展名
+        String extension = FileTypeUtils.getExtension(file);
+        // 取得原始文件名
+        String originalFile = file.getOriginalFilename();
+
+        R<SysFile> fileResult = remoteFileService.upload(file);
+        if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData())) {
+           new ServiceException("文件服务异常，请联系管理员");
+        }
+        ExamBankPicture examBankPicture = new ExamBankPicture();
+        examBankPicture.setPhotoCode(bankCode);
+        examBankPicture.setPhotoPath(fileResult.getData().getUrl());
+        examBankPicture.setPhotoUrl(fileResult.getData().getUrl());
+        examBankPicture.setFileName(fileResult.getData().getName());
+        examBankPicture.setOriginalName(originalFile);
+
+        ExamBankPicture bankPicture = examBankPictureMapper.selectExamBankPictureById(bankCode);
+        if(!ObjectUtil.isEmpty(bankPicture)){
+            examBankPictureMapper.deleteExamBankPictureById(bankCode);
+        }
+
         return examBankPictureMapper.insertExamBankPicture(examBankPicture);
     }
 

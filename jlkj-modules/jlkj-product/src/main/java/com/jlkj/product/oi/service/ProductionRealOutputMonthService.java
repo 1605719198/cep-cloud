@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务接口-生产管理-月产量
- * @author sudeyou
- * @since 2022-07-13 14:18:51
- */
+*@description: 服务接口-生产管理-月产量
+*@Author: 265823
+*@date: 2023/7/11 11:26
+*/
 public interface ProductionRealOutputMonthService extends IService<ProductionRealOutputMonth> {
 
     /**
@@ -44,9 +44,8 @@ public interface ProductionRealOutputMonthService extends IService<ProductionRea
 
     /**
      * 生产管理-统计分析-指标分析-月产量指标跟踪-更新统计数据
-     * @return 执行结果
      */
-    Object updateProductionRealOutputMonthStatisticsData();
+    void updateProductionRealOutputMonthStatisticsData();
 
 
     /**
@@ -54,7 +53,7 @@ public interface ProductionRealOutputMonthService extends IService<ProductionRea
      * @param dto dto
      * @return 执行结果
      */
-    List<Map<String, Object>> getProductivityAnalys(GetCokePlanPerformanceDTO dto);
+    Map<String, Object> getProductivityAnalys(GetCokePlanPerformanceDTO dto);
 
     /**
      * 首页-焦炭产量-收率对比-详情

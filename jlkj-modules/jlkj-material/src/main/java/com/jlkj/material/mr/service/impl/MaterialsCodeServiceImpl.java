@@ -57,6 +57,10 @@ public class MaterialsCodeServiceImpl extends ServiceImpl<MaterialsCodeMapper, M
         return list;
     }
 
+    /**
+     * 查询-列表-物料代码-下拉-焦
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getListBoxDataJ() {
