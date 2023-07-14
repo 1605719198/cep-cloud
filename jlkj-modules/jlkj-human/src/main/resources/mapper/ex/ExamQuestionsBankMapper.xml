@@ -71,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertExamQuestionsBank" parameterType="ExamQuestionsBank" >
         insert into human_ex_questions_bank
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            bank_id,
             <if test="bankCode != null">bank_code,</if>
             <if test="bankName != null and bankName != ''">bank_name,</if>
             <if test="bankDescribe != null">bank_describe,</if>
@@ -87,6 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            (select ifnull(max(bank_id),0) + 1  from human_ex_questions_bank),
             <if test="bankCode != null">#{bankCode},</if>
             <if test="bankName != null and bankName != ''">#{bankName},</if>
             <if test="bankDescribe != null">#{bankDescribe},</if>
