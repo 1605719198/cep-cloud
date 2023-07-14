@@ -1,6 +1,6 @@
 <template>
   <div >
-    <div v-if= "this.$store.state.exam.showtitle">
+    <div v-if= "this.$store.state.human.showtitle">
       <el-steps  :active="active" simple finish-status="success">
         <el-step title="内 容" icon="el-icon-edit"></el-step>
         <el-step title="组 卷" icon="el-icon-date"></el-step>
@@ -31,11 +31,10 @@
 
 <script>
 import { newGuid } from '@/utils/guidtool'
-import contentEdit from './contentEdit'
-import selectQuestions from './selectQuestions'
 import { saveData } from "@/api/human/ex/examdata";
-import choiceUser from './choiceUser'
-
+import choiceUser from "@/views/human/ex/examtask/choiceUser";
+import contentEdit from "@/views/human/ex/examtask/contentEdit";
+import selectQuestions from "@/views/human/ex/examtask/selectQuestions";
 export default {
   components: {
     choiceUser,

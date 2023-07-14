@@ -140,7 +140,7 @@
 
 <script>
 import examSelect from '@/components/ExamSelect/index';
-import CropperImage from './CropperImage';
+import CropperImage from "@/views/human/ex/examtask/CropperImage";
 import { listQuestionsbankBycode } from "@/api/human/ex/questionsbank";
 import { updateExamtask } from "@/api/human/ex/examtask";
 import { dateRemoveSeconds} from "@/utils/date";

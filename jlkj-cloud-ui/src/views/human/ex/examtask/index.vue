@@ -186,12 +186,11 @@
 <script>
 import {listExamtask, delExamtask, addExamtask, updateExamtask, exportExamtask} from
     "@/api/human/ex/examtask";
-import Edit from './edit'
+import Edit from "@/views/human/ex/examtask/edit";
 import examSelect from '@/components/ExamSelect/index'
-import contentEdit from './contentEdit'
-import selectQuestions from './selectQuestions'
-import choiceUser from './choiceUser'
-
+import selectQuestions from "@/views/human/ex/examtask/selectQuestions";
+import contentEdit from "@/views/human/ex/examtask/contentEdit";
+import choiceUser from "@/views/human/ex/examtask/choiceUser";
 export default {
   name: "Examtask",
   components: {

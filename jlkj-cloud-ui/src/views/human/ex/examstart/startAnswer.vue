@@ -92,9 +92,9 @@
 <script>
 import legendCase from './legendCase'
 import questionNumber from './questionNumber'
-import { getQuestionsData } from "@/api/human/ex/onlineexamdata";
+import { getContent, getQuestionsData } from "@/api/human/ex/onlineexamdata";
 import { getQuestionsList } from "@/api/human/ex/questionslist"
-import { addTaskanswer } from "@/api/human/ex/taskanswer"
+import { addTaskanswer, deleteExamtask } from "@/api/human/ex/taskanswer"
 import { saveFinishanswer } from "@/api/human/ex/finishanswer"
 import { updateStartTime } from "@/api/human/ex/taskperson";
 export default {

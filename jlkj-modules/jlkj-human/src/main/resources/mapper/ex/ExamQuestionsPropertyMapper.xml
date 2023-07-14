@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into human_ex_questions_property
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">bank_code,</if>
+            questions_id,
             <if test="questionsCode != null">questions_code,</if>
             <if test="questionsTitle != null">questions_title,</if>
             <if test="questionsType != null">questions_type,</if>
@@ -60,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">#{bankCode},</if>
+            (select ifnull(max(a.questions_id),0) + 1  from human_ex_questions_property a),
             <if test="questionsCode != null">#{questionsCode},</if>
             <if test="questionsTitle != null">#{questionsTitle},</if>
             <if test="questionsType != null">#{questionsType},</if>

@@ -52,7 +52,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['human:userscore:add']"
+          v-hasPermi="['onlineexam:userscore:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +63,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['human:userscore:edit']"
+          v-hasPermi="['onlineexam:userscore:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -74,7 +74,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['human:userscore:remove']"
+          v-hasPermi="['onlineexam:userscore:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -85,7 +85,7 @@
           size="mini"
 		  :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['human:userscore:export']"
+          v-hasPermi="['onlineexam:userscore:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -118,14 +118,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['human:userscore:edit']"
+            v-hasPermi="['onlineexam:userscore:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['human:userscore:remove']"
+            v-hasPermi="['onlineexam:userscore:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -192,8 +192,7 @@
 </template>
 
 <script>
-import { listUserscore, getUserscore, delUserscore, addUserscore, updateUserscore, exportUserscore } from
-    "@/api/human/ex/userscore";
+import { listUserscore, getUserscore, delUserscore, addUserscore, updateUserscore, exportUserscore } from "@/api/human/ex/userscore";
 
 export default {
   name: "Userscore",
