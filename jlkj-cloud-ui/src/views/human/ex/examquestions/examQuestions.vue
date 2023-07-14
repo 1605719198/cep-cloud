@@ -68,7 +68,7 @@
                 type="text"
                 icon="el-icon-plus"
                 @click="handleAdd()"
-              >增加</el-button>
+              >新增</el-button>
               <el-button v-if = "answerList.indexOf(scope.row) > 1"
                 size="mini"
                 type="text"
@@ -314,7 +314,6 @@ export default {
     handleData () {
       if (this.form.questionsType === 1 || this.form.questionsType === 2) {
         // 是判断题或者说是选择题
-
         this.form.rightAnswer = this.radioValue
         for (let i = 0; i < this.answerList.length; i ++) {
           if (this.answerList[i].optionCode === this.radioValue) {

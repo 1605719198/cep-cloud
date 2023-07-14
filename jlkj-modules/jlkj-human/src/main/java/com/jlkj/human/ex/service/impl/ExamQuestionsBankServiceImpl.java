@@ -1,6 +1,6 @@
 package com.jlkj.human.ex.service.impl;
 
-import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.ex.domain.ExamQuestionsBank;
 import com.jlkj.human.ex.mapper.ExamQuestionsBankMapper;
 import com.jlkj.human.ex.service.IExamQuestionsBankService;
@@ -54,7 +54,7 @@ public class ExamQuestionsBankServiceImpl implements IExamQuestionsBankService
     @Override
     public int insertExamQuestionsBank(ExamQuestionsBank examQuestionsBank)
     {
-        examQuestionsBank.setCreateTime(DateUtils.getNowDate());
+        examQuestionsBank.setBankCode(IdUtils.simpleUUID());
         return examQuestionsBankMapper.insertExamQuestionsBank(examQuestionsBank);
     }
 

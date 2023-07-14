@@ -1,172 +1,158 @@
 <template>
   <div class="app-container">
     <div v-if="editVisible">
-    <el-row :gutter="20">
-      <!--部门数据-->
-      <el-col :span="4" :xs="24">
-        <div class="head-container">
-          <el-input
-            v-model="typeName"
-            placeholder="请输入类型名称"
-            clearable
-            size="small"
-            prefix-icon="el-icon-search"
-            style="margin-bottom: 20px"
-          />
-        </div>
-        <div class="head-container">
-          <el-tree
-            :data="examtypeList"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="tree"
-            default-expand-all
-            @node-click="handleNodeClick"
-          />
-        </div>
-      </el-col>
-      <!--用户数据-->
-      <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="题库名称" prop="bankName">
+      <el-row :gutter="20">
+        <!--部门数据-->
+        <el-col :span="4" :xs="24">
+          <div class="head-container">
             <el-input
-              v-model="queryParams.bankName"
-              placeholder="请输入题库名称"
+              v-model="typeName"
+              placeholder="请输入类型名称"
               clearable
               size="small"
-              @keyup.enter.native="handleQuery"
+              prefix-icon="el-icon-search"
+              style="margin-bottom: 20px"
             />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handleAdd"
-              v-hasPermi="['questions:questionsbank:add']"
-            >新增</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="mini"
-          :loading="exportLoading"
-              @click="handleExport"
-              v-hasPermi="['questions:questionsbank:export']"
-            >导出</el-button>
-          </el-col>
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-        </el-row>
-        <div class="banklist">
-          <div >
-            <ul style="padding: 0">
-              <li style = "list-style-type:none;"
-                v-for="(item,index) in questionsbankList"
-                :key="index"
-                class="new border-1px"
-              >
-              <el-row :gutter="20" :key="index" v-if='index % 2 == 0'>
-                <el-col :span="12" >
-                  <div  class="bank-panel">
-                    <div class = "photo-area">
-                      <img class ="title-photo" :src="hosturl + item.pictureUrl"/>
-                    </div>
-                    <div class = "describe-area">
-                      <div class = "title-area">
-                        <div class="name-text">{{item.bankName}}</div>
-                        <div class="type-text">{{item.typeName}}</div>
-                        <div class = "nickname-text">{{item.createBy}}</div>
-                      </div>
-                      <div class = "data-area">
-                        <div class= "memo-text" >判断题:{{item.judgeNumber}}题 单选题:{{item.radioNumber}}题 多选题:{{item.choiceNumber}}题</div>
-                        <div class = "button-area">
-                          <el-button
-                            size="mini"
-                            type="text"
-                            icon="el-icon-edit"
-                            @click="handleUpdate(item)"
-                            v-hasPermi="['questions:questionsbank:edit']"
-                          >修改</el-button>
-                          <el-button
-                            size="mini"
-                            type="text"
-                            icon="el-icon-delete"
-                            @click="handleDelete(item)"
-                            v-hasPermi="['questions:questionsbank:remove']"
-                          >删除</el-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" v-if="index + 1 < questionsbankList.length" >
-                  <div  class="bank-panel">
-                    <div class = "photo-area">
-                      <img class ="title-photo" :src="hosturl + questionsbankList[index + 1].pictureUrl"/>
-                    </div>
-                    <div class = "describe-area">
-                      <div class = "title-area">
-                        <div class="name-text">{{questionsbankList[index + 1].bankName}}</div>
-                        <div class="type-text">{{questionsbankList[index + 1].typeName}}</div>
-                        <div class = "nickname-text">{{questionsbankList[index + 1].createBy}}</div>
-                      </div>
-                      <div class = "data-area">
-                        <div class= "memo-text" >判断题:{{questionsbankList[index + 1].judgeNumber}}题 单选题:{{questionsbankList[index + 1].radioNumber}}题 多选题:{{questionsbankList[index + 1].choiceNumber}}题</div>
-                        <div class = "button-area">
-                          <el-button
-                            size="mini"
-                            type="text"
-                            icon="el-icon-edit"
-                            @click="handleUpdate(questionsbankList[index + 1])"
-                            v-hasPermi="['questions:questionsbank:edit']"
-                          >修改</el-button>
-                          <el-button
-                            size="mini"
-                            type="text"
-                            icon="el-icon-delete"
-                            @click="handleDelete(questionsbankList[index + 1])"
-                            v-hasPermi="['questions:questionsbank:remove']"
-                          >删除</el-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </el-col>
-              </el-row>
-              </li>
-            </ul>
           </div>
-        </div>
-        <pagination
-          v-show="total>0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getList"
-        />
-      </el-col>
-    </el-row>
+          <div class="head-container">
+            <el-tree
+              :data="examtypeList"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              :filter-node-method="filterNode"
+              ref="tree"
+              default-expand-all
+              @node-click="handleNodeClick"
+            />
+          </div>
+        </el-col>
+        <!--用户数据-->
+        <el-col :span="20" :xs="24">
+          <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+            <el-form-item label="题库名称" prop="bankName">
+              <el-input
+                v-model="queryParams.bankName"
+                placeholder="请输入题库名称"
+                clearable
+                size="small"
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+              <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-form>
+
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+              <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+                         v-hasPermi="['human:questionsbank:add']">新增
+              </el-button>
+            </el-col>
+            <el-col :span="1.5">
+              <el-button type="warning" plain icon="el-icon-download" size="mini" :loading="exportLoading"
+                         @click="handleExport" v-hasPermi="['human:questionsbank:export']">导出
+              </el-button>
+            </el-col>
+            <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+          </el-row>
+          <div class="banklist">
+            <div>
+              <ul style="padding: 0">
+                <li style="list-style-type:none;" v-for="(item,index) in questionsbankList" :key="index"
+                    class="new border-1px">
+                  <el-row :gutter="20" :key="index" v-if='index % 2 == 0'>
+                    <el-col :span="12">
+                      <div class="bank-panel">
+                        <div class="photo-area">
+                          <img class="title-photo" :src="hosturl + item.pictureUrl"/>
+                        </div>
+                        <div class="describe-area">
+                          <div class="title-area">
+                            <div class="name-text">{{ item.bankName }}</div>
+                            <div class="type-text">{{ item.typeName }}</div>
+                            <div class="nickname-text">{{ item.createBy }}</div>
+                          </div>
+                          <div class="data-area">
+                            <div class="memo-text">判断题:{{ item.judgeNumber }}题 单选题:{{ item.radioNumber }}题
+                              多选题:{{ item.choiceNumber }}题
+                            </div>
+                            <div class="button-area">
+                              <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(item)"
+                                         v-hasPermi="['human:questionsbank:edit']">修改
+                              </el-button>
+                              <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(item)"
+                                         v-hasPermi="['human:questionsbank:remove']">删除
+                              </el-button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" v-if="index + 1 < questionsbankList.length">
+                      <div class="bank-panel">
+                        <div class="photo-area">
+                          <img class="title-photo" :src="hosturl + questionsbankList[index + 1].pictureUrl"/>
+                        </div>
+                        <div class="describe-area">
+                          <div class="title-area">
+                            <div class="name-text">{{ questionsbankList[index + 1].bankName }}</div>
+                            <div class="type-text">{{ questionsbankList[index + 1].typeName }}</div>
+                            <div class="nickname-text">{{ questionsbankList[index + 1].createBy }}</div>
+                          </div>
+                          <div class="data-area">
+                            <div class="memo-text">判断题:{{ questionsbankList[index + 1].judgeNumber }}题
+                              单选题:{{ questionsbankList[index + 1].radioNumber }}题
+                              多选题:{{ questionsbankList[index + 1].choiceNumber }}题
+                            </div>
+                            <div class="button-area">
+                              <el-button
+                                size="mini"
+                                type="text"
+                                icon="el-icon-edit"
+                                @click="handleUpdate(questionsbankList[index + 1])"
+                                v-hasPermi="['human:questionsbank:edit']"
+                              >修改
+                              </el-button>
+                              <el-button
+                                size="mini"
+                                type="text"
+                                icon="el-icon-delete"
+                                @click="handleDelete(questionsbankList[index + 1])"
+                                v-hasPermi="['human:questionsbank:remove']"
+                              >删除
+                              </el-button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum"
+                      :limit.sync="queryParams.pageSize" @pagination="getList"/>
+        </el-col>
+      </el-row>
     </div>
-    <div v-else >
-      <detail-edit  ref="editRef" @refreshDataList="editDoneHandle"></detail-edit>
+    <div v-else>
+      <detail-edit ref="editRef" @refreshDataList="editDoneHandle"></detail-edit>
     </div>
   </div>
 </template>
 
 <script>
-import { listQuestionsbank, delQuestionsbank, addQuestionsbank, updateQuestionsbank, exportQuestionsbank } from "@/api/human/ex/questionsbank";
-import { listExamtype, typeTreeSelect} from "@/api/human/ex/examType";
+import {
+  listQuestionsbank,
+  delQuestionsbank,
+  addQuestionsbank,
+  updateQuestionsbank,
+  exportQuestionsbank
+} from "@/api/human/ex/questionsbank";
+import {typeTreeSelect} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import DetailEdit from './detailEdit';
@@ -177,6 +163,7 @@ export default {
     Treeselect,
     DetailEdit
   },
+  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -252,9 +239,6 @@ export default {
   created() {
     this.hosturl = "";
     this.getList();
-    this.getDicts("sys_normal_disable").then(response => {
-      this.statusOptions = response.data;
-    });
   },
   watch: {
     // 根据名称筛选部门树
@@ -300,18 +284,14 @@ export default {
         children: node.children
       };
     },
-	  /** 查询考试分类下拉树结构 */
+    /** 查询考试分类下拉树结构 */
     getTreeselect() {
-      listExamtype().then(response => {
+      listExamType().then(response => {
         this.examtypeOptions = [];
-        const data = { typeId: 0, typeName: '顶级节点', children: [] };
+        const data = {typeId: 0, typeName: '顶级节点', children: []};
         data.children = this.handleTree(response.data, "typeId", "parentId");
         this.examtypeOptions.push(data);
       });
-    },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 取消按钮
     cancel() {
@@ -354,7 +334,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.bankCode)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -371,7 +351,7 @@ export default {
         this.$refs.editRef.init_data(row)
       })
     },
-    editDoneHandle () {
+    editDoneHandle() {
       this.editVisible = true
       this.getList();
     },
@@ -381,15 +361,11 @@ export default {
         if (valid) {
           if (this.form.bankCode != null) {
             updateQuestionsbank(this.form).then(response => {
-              this.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
+              this.$modal.msgSuccess("修改成功");
             });
           } else {
             addQuestionsbank(this.form).then(response => {
-              this.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
+              this.$modal.msgSuccess("新增成功");
             });
           }
         }
@@ -399,128 +375,130 @@ export default {
     handleDelete(row) {
       const bankCodes = row.bankCode || this.ids;
       this.$confirm('是否确认删除题库管理编号为"' + bankCodes + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delQuestionsbank(bankCodes);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delQuestionsbank(bankCodes);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有题库管理数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportQuestionsbank(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportQuestionsbank(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-  .bank-panel {
-    margin: 12px 0px 12px 0px;
-    padding: 8px 0px 1px 0px;
-    display: -webkit-box;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    background-color: #f7f7f7;
-  }
-
-  .photo-area {
-    -webkit-box-align: left;
-    margin-left: 0px;
-  }
-
-  .title-photo {
-    margin-left: 0.6rem;
-    width: 6.25rem;
-    height: 5rem;
-  }
-
-  .describe-area {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-box-align: justify;
-    -webkit-align-items: center;
-    align-items: center;
-    padding-left: 0.8rem;
-  }
-
-.title-area {
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    align-items: left;
-    margin: 2px 0px 10px 0px;
-    padding: -5px 0px 0px 0px;
+.bank-panel {
+  margin: 12px 0px 12px 0px;
+  padding: 8px 0px 1px 0px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #f7f7f7;
 }
 
-  .name-text {
-    -webkit-box-flex: 5;
-    -webkit-box-align: left;
-	  font-size: 1.2 rem;
-	  font-weight: bold;
-  }
+.photo-area {
+  -webkit-box-align: left;
+  margin-left: 0px;
+}
 
-  .type-text{
-    -webkit-box-flex: 1;
-    -webkit-box-align: center;
-    font-size: 13px;
-    align-items: center;
-    text-align: center;
-    margin: 0px 10px 0px 10px;
-    color: #fff;
-    border: 1px solid #7acc9b;
-    background-color: #7acc9b;
-    border-radius: 6px;
-  }
+.title-photo {
+  margin-left: 0.6rem;
+  width: 6.25rem;
+  height: 5rem;
+}
 
-	.nickname-text{
-    -webkit-box-flex: 1;
-    -webkit-box-align: right;
-    font-size: 13 px;
-    color: #8c939d;
-  }
+.describe-area {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: justify;
+  -webkit-align-items: center;
+  align-items: center;
+  padding-left: 0.8rem;
+}
 
-  .data-area {
-     display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-align-items: center;
-    align-items: center;
-    margin-top: 0.6rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+.title-area {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: left;
+  margin: 2px 0px 10px 0px;
+  padding: -5px 0px 0px 0px;
+}
 
-  .memo-text {
-    -webkit-box-flex: 5;
-    -webkit-box-align: center;
-    font-size: 12px;
-    color: #8c939d;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.name-text {
+  -webkit-box-flex: 5;
+  -webkit-box-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 
-  }
+.type-text {
+  -webkit-box-flex: 1;
+  -webkit-box-align: center;
+  font-size: 13px;
+  align-items: center;
+  text-align: center;
+  margin: 0px 10px 0px 10px;
+  color: #fff;
+  border: 1px solid #7acc9b;
+  background-color: #7acc9b;
+  border-radius: 6px;
+}
 
-  .button-area {
-    overflow: hidden;
-    text-align: right;
-    vertical-align: middle;
-  }
+.nickname-text {
+  -webkit-box-flex: 1;
+  -webkit-box-align: right;
+  font-size: 13px;
+  color: #8c939d;
+}
+
+.data-area {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-top: 0.6rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.memo-text {
+  -webkit-box-flex: 5;
+  -webkit-box-align: center;
+  font-size: 12px;
+  color: #8c939d;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+}
+
+.button-area {
+  overflow: hidden;
+  text-align: right;
+  vertical-align: middle;
+}
 </style>

@@ -39,26 +39,30 @@
             plain
             icon="el-icon-zoom-in"
             @click="changeScale(1)"
-          >放大</el-button>
+          >放大
+          </el-button>
           <el-button
             size="mini"
             type="danger"
             plain
             icon="el-icon-zoom-out"
             @click="changeScale(-1)"
-          >缩小</el-button>
+          >缩小
+          </el-button>
           <el-button
             size="mini"
             type="danger"
             plain
             @click="rotateLeft"
-          >↺ 左旋转</el-button>
+          >↺ 左旋转
+          </el-button>
           <el-button
             size="mini"
             type="danger"
             plain
             @click="rotateRight"
-          >↻ 右旋转</el-button>
+          >↻ 右旋转
+          </el-button>
         </div>
         <div class="upload-btn">
           <el-button
@@ -85,15 +89,16 @@
 </template>
 
 <script>
-import { VueCropper } from 'vue-cropper'
-import { uploadPhoto } from "@/api/human/ex/questionsbank";
+import {VueCropper} from 'vue-cropper'
+import {uploadPhoto} from "@/api/human/ex/questionsbank";
+
 export default {
   name: 'CropperImage',
   components: {
     VueCropper
   },
   props: ['Name'],
-  data () {
+  data() {
     return {
       name: this.Name,
       previews: {},
@@ -121,39 +126,39 @@ export default {
         mode: '250px 200px' // 图片默认渲染方式
       },
       rowdata: {},
-      newCode:null,
+      newCode: null,
       filename: null,
       fileurl: ''
     }
   },
-  mounted () {
+  mounted() {
   },
   methods: {
     // 初始化函数
-    doinit (file) {
+    doinit(file) {
       this.selectImg(file)
     },
-    imgLoad (msg) {
+    imgLoad(msg) {
     },
     // 图片缩放
-    changeScale (num) {
+    changeScale(num) {
       num = num || 1
       this.$refs.cropper.changeScale(num)
     },
     // 向左旋转
-    rotateLeft () {
+    rotateLeft() {
       this.$refs.cropper.rotateLeft()
     },
     // 向右旋转
-    rotateRight () {
+    rotateRight() {
       this.$refs.cropper.rotateRight()
     },
     // 实时预览函数
-    realTime (data) {
+    realTime(data) {
       this.previews = data
     },
     // 选择图片
-    selectImg (code, file) {
+    selectImg(code, file) {
       this.newCode = code
       this.filename = file.name
       if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(this.filename)) {
@@ -174,17 +179,17 @@ export default {
       reader.readAsDataURL(file)
     },
     // 上传图片
-    uploadImg (type) {
+    uploadImg(type) {
       const _this = this
       if (type === 'blob') {
         // 获取截图的blob数据
         this.$refs.cropper.getCropBlob(async data => {
           const formData = new FormData()
           formData.append('file', data, _this.filename)
-          uploadPhoto( _this.newCode, formData).then(response => {
-              this.msgSuccess("新增成功");
-              this.open = false;
-              _this.$emit('uploadImgSuccess', response.data)
+          uploadPhoto(_this.newCode, formData).then(response => {
+            this.$modal.msgSuccess("新增成功");
+            this.open = false;
+            _this.$emit('uploadImgSuccess', response.data)
           })
         })
       }
@@ -198,9 +203,11 @@ export default {
   display: flex;
   display: -webkit-flex;
   justify-content: flex-end;
+
   .cropper-box {
     flex: 1;
     width: 100%;
+
     .cropper {
       width: auto;
       height: 300px;
@@ -213,6 +220,7 @@ export default {
     display: flex;
     display: -webkit-flex;
     justify-content: center;
+
     .preview {
       overflow: hidden;
       border: 1px solid #67c23a;
@@ -220,17 +228,20 @@ export default {
     }
   }
 }
+
 .footer-btn {
   margin-top: 30px;
   display: flex;
   display: -webkit-flex;
   justify-content: flex-end;
+
   .scope-btn {
     display: flex;
     display: -webkit-flex;
     justify-content: space-between;
     padding-right: 10px;
   }
+
   .upload-btn {
     flex: 1;
     -webkit-flex: 1;
@@ -238,6 +249,7 @@ export default {
     display: -webkit-flex;
     justify-content: center;
   }
+
   .btn {
     outline: none;
     display: inline-block;
