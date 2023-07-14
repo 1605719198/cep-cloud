@@ -116,7 +116,7 @@ public interface SocialSecurityMapper
 
     /**
      * 新增社保公积金缴费比例数据
-     * @Description 新增社保公积金缴费比例数据
+     *
      * @param version 版本号
      * @param effectDate 生效日期
      * @return 社保公积金缴费比例数据
