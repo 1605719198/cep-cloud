@@ -56,6 +56,31 @@ public interface AttendanceGatherMapper extends BaseMapper<AttendanceGather> {
      **/
     public int batchSummaryData( List<AttendanceGather> list);
 
+    /**
+     * 查询月出勤统计汇总列表
+     *
+     * @param attendanceGather 月出勤统计汇总
+     * @return 月出勤统计汇总集合
+     */
+    public List<AttendanceGather> selectAttendanceGatherList(AttendanceGather attendanceGather);
+
+    /**
+     * 修改月出勤统计汇总
+     *
+     * @param attendanceGather 月出勤统计汇总
+     * @return 结果
+     */
+    public int updateAttendanceGather(AttendanceGather attendanceGather);
+
+    /**
+     * 累加月出勤统计汇总
+     *
+     * @param attendanceGather 月出勤统计汇总
+     * @return 结果
+     */
+    public int addAttendanceGather(AttendanceGather attendanceGather);
+
+
 }
 
 
