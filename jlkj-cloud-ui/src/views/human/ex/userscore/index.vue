@@ -130,7 +130,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import { listUserscore, getUserscore, delUserscore, addUserscore, updateUserscore, exportUserscore } from "@/api/onlineexam/userscore";
+import { listUserscore, getUserscore, delUserscore, addUserscore, updateUserscore, exportUserscore } from "@/api/human/ex/userscore";
 
 export default {
   name: "Userscore",

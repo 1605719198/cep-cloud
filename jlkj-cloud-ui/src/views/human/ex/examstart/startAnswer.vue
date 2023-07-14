@@ -8,19 +8,19 @@
           <div class = "question-number-list">
             <div v-for="(item, index) in judgeQuestionsList" :key="index">
               <question-number :paras = "item" @refreshClick ="clickHandle"></question-number>
-            </div>          
+            </div>
           </div>
           <div class = "legend-case-title">单选题</div>
           <div class = "question-number-list">
             <div v-for="(item, index) in radioQuestionsList" :key="index">
               <question-number :paras = "item" @refreshClick ="clickHandle"></question-number>
-            </div>          
+            </div>
           </div>
           <div class = "legend-case-title">多选题</div>
           <div class = "question-number-list">
             <div v-for="(item, index) in choiceQuestionsList" :key="index">
               <question-number :paras = "item" @refreshClick ="clickHandle"></question-number>
-            </div>          
+            </div>
           </div>
 
         </div>
@@ -41,14 +41,14 @@
                   :value-style="statisticStyle"
                   time-indices
                 >
-                </el-statistic></div>               
+                </el-statistic></div>
           </div>
           <div>
             <div class="question-content" :style = "contentStyle" v-html="questionsContentData.questionsContent" />
           </div>
           <div class="question-option" :style = "optionStyle">
             <template v-if="isRadio">
-              <div 
+              <div
                 v-for="(item, index) in questionsOptionList" :key="index"
               >
                 <span class = "option-code">{{item.optionCode}}</span>
@@ -57,14 +57,14 @@
               </div>
             </template>
             <template v-else>
-              <div 
+              <div
                 v-for="(item, index) in questionsOptionList" :key="index"
               >
                 <span class = "option-code">{{item.optionCode}}</span>
                 <input class="option-radio" type="checkbox" v-model="item.remark" value="item.optionCode" @click ="doChecked(item)"/>
                 <span class="option-text">{{item.optionDescribe}}</span>
               </div>
-            </template>        
+            </template>
           </div>
         </div>
         <div class = "footer-area" >
@@ -82,9 +82,9 @@
               </div>
             </el-col>
           </el-row>
-        </div>        
+        </div>
       </el-col>
-    </el-row>  
+    </el-row>
   </div>
 </template>
 
@@ -92,18 +92,17 @@
 <script>
 import legendCase from './legendCase'
 import questionNumber from './questionNumber'
-import { getContent, getQuestionsData } from "@/api/onlineexam/onlineexamdata";
-import { getQuestionsList } from "@/api/onlineexam/questionslist"
-import { addTaskanswer, deleteExamtask } from "@/api/onlineexam/taskanswer"
-import { saveFinishanswer } from "@/api/onlineexam/finishanswer"
-import { updateStartTime } from "@/api/exam/taskperson";
-import { dateToString , dateTextToDateString, dateRemoveSeconds, dateTextToDatetimeString } from "@/utils/dateUtils";
+import { getContent, getQuestionsData } from "@/api/human/ex/onlineexamdata";
+import { getQuestionsList } from "@/api/human/ex/questionslist"
+import { addTaskanswer, deleteExamtask } from "@/api/human/ex/taskanswer"
+import { saveFinishanswer } from "@/api/human/ex/finishanswer"
+import { updateStartTime } from "@/api/human/ex/taskperson";
 export default {
   name: "startAnswer",
   components: {
     legendCase,
-    questionNumber    
-  },  
+    questionNumber
+  },
   data() {
     return {
       // 查询参数
@@ -210,15 +209,15 @@ export default {
             questionNumber: i + 1,
             isDone: isdone,
             isMark: ismark,
-            currentStyle: currentstyle            
+            currentStyle: currentstyle
           })
         } else if (this.questionsList[i].questionsType === 3) {
           this.choiceQuestionsList.push({
             questionNumber: i + 1,
             isDone: isdone,
             isMark: ismark,
-            currentStyle: currentstyle            
-          })          
+            currentStyle: currentstyle
+          })
         }
       }
     },
@@ -226,7 +225,7 @@ export default {
       const data = {
         examCode: this.examCode,
         userCode: this.$store.state.user.userCode
-      }      
+      }
       updateStartTime(data).then(response => {
       })
     },
@@ -262,7 +261,7 @@ export default {
             const answerItem = this.questionsList[this.currentQuestionsNumber - 1].questionsAnswer.split('')
             for (let i = 0; i < answerItem.length; i ++) {
               for (let j = 0; j < this.questionsOptionList.length; j ++) {
-                if (answerItem[i] === this.questionsOptionList[j].optionCode) {                  
+                if (answerItem[i] === this.questionsOptionList[j].optionCode) {
                   this.questionsOptionList[j].remark = true
                 }
               }
@@ -285,7 +284,7 @@ export default {
         this.questionsList[this.currentQuestionsNumber - 1].isMark = 0
       }
 
-      
+
       this.createQuestionsPanel()
       this.setMrakButton()
     },
@@ -314,8 +313,8 @@ export default {
         this.leftDisabled = true
       } else if (this.leftDisabled) {
         this.leftDisabled = false
-      } 
-      
+      }
+
       if (this.currentQuestionsNumber === this.questionsList.length ) {
         this.rightDisabled = true
       } else if (this.rightDisabled) {
@@ -347,13 +346,13 @@ export default {
       let answerval = ''
       // 处理值
       if (this.questionsContentData.questionsType === 1 || this.questionsContentData.questionsType === 2) {
-        answerval = this.radioValue  
+        answerval = this.radioValue
       } else {
         for (let i = 0; i < this.questionsOptionList.length; i ++) {
           if (this.questionsOptionList[i].remark !== null && this.questionsOptionList[i].remark) {
             answerval += this.questionsOptionList[i].optionCode
           }
-        }  
+        }
       }
       this.questionsList[this.currentQuestionsNumber - 1].questionsAnswer = answerval
       const questionData = this.questionsList[this.currentQuestionsNumber - 1]
@@ -403,15 +402,15 @@ export default {
             this.$store.dispatch("tagsView/delView", this.$route);
             this.$router.go(-1)
           }
-        })        
+        })
       }).catch(() => {
         this.$message.error("提交试卷出错");
       });
-      
+
     },
     doEnd () {
       this.msgSuccess("考试结束");
-    }      
+    }
   }
 };
 </script>
@@ -424,7 +423,7 @@ export default {
 
 .question-title {
   display: flex;
-  justify-content: space-between;  
+  justify-content: space-between;
   line-height: 2.5rem;
   background-color: #efefef;
   padding-left: 0.3rem;
@@ -483,7 +482,7 @@ export default {
   font-size:1.1rem;
 }
 
-.footer-area { 
+.footer-area {
   position: fixed;
   width: 70.2%;
   padding-top: 0.6rem;
@@ -492,7 +491,7 @@ export default {
   padding-bottom: 0.2rem;
   border-radius: 12px;
   box-shadow: 5px 8px 5px #d7d7d7;
-} 
+}
 
 .left-area {
   width: 100%;
@@ -502,7 +501,7 @@ export default {
   box-shadow: 5px 8px 5px #d7d7d7;
 }
 
-.legend-case-title {  
+.legend-case-title {
   line-height: 2.5rem;
   background-color: #a3d3ff;
   font-size: 1rem;
