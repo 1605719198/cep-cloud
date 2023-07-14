@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.ProductionConveyingCoalActual;
 import com.jlkj.product.oi.domain.ProductionConveyingCoalRecord;
@@ -31,11 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-生产实绩-上煤记录
- *
- * @author sudeyou
- * @since 2022-11-17 15:18:05
- */
+*@description: 服务实现-生产实绩-上煤记录
+*@Author: 265823
+*@date: 2023/7/10 14:42
+*/
 @Service
 public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<ProductionConveyingCoalRecordMapper, ProductionConveyingCoalRecord>
     implements ProductionConveyingCoalRecordService {
@@ -50,9 +49,14 @@ public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<Produc
     @Resource
     private ProductionPlanConfigCokeService productionPlanConfigCokeService;
 
+    /**
+     * 生产实绩-上煤记录-新增
+     * @param insertProductionConveyingCoalRecordDTO 新增dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object insertProductionConveyingCoalRecordData(InsertProductionConveyingCoalRecordDTO insertProductionConveyingCoalRecordDTO) {
+    public void insertProductionConveyingCoalRecordData(InsertProductionConveyingCoalRecordDTO insertProductionConveyingCoalRecordDTO) {
         ProductionConveyingCoalRecord lastProductionConveyingCoalRecord = null;
         Map<String, Object> map = getMap(new QueryWrapper<ProductionConveyingCoalRecord>()
                 .select("max(create_time) as create_time")
@@ -99,7 +103,6 @@ public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<Produc
         List<Map<String,Object>> list =getBaseMapper().getQualityTsRecordByTeam(insertProductionConveyingCoalRecordDTO);
         send.setWaterRate(list.size() > 0 ? list.get(0).get("mt").toString() : "-1");
         materialsCoalStockFeignService.materialsCoalStockSend(send,TEMP_TOKEN);
-        return AjaxResult.success("上煤记录增加成功");
     }
     private void updateCoalActual(ProductionConveyingCoalRecord productionConveyingCoalRecord) {
         ProductionConveyingCoalActual productionConveyingCoalActual = productionConveyingCoalActualService.getOne(new QueryWrapper<ProductionConveyingCoalActual>().lambda()
@@ -160,16 +163,20 @@ public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<Produc
         }
     }
 
+    /**
+     * 生产实绩-上煤记录-删除
+     * @param deleteProductionConveyingCoalRecordDTO 删除dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteProductionConveyingCoalRecordData(DeleteProductionConveyingCoalRecordDTO deleteProductionConveyingCoalRecordDTO) {
+    public void deleteProductionConveyingCoalRecordData(DeleteProductionConveyingCoalRecordDTO deleteProductionConveyingCoalRecordDTO) {
         ProductionConveyingCoalRecord productionConveyingCoalRecord = getById(deleteProductionConveyingCoalRecordDTO.getId());
         if (null != productionConveyingCoalRecord) {
             if(productionConveyingCoalRecord.getDataSources() == 1) {
-                return AjaxResult.error("上煤记录为自动采集，不能删除");
+                throw new ServiceException("上煤记录为自动采集，不能删除");
             }
             if(!productionConveyingCoalRecord.getCreateUserId().equals(deleteProductionConveyingCoalRecordDTO.getDeleteUserId())) {
-                return AjaxResult.error("非本人创建的记录，不能删除");
+                throw new ServiceException("非本人创建的记录，不能删除");
             }
 
             ProductionConveyingCoalRecord lastProductionConveyingCoalRecord = null;
@@ -182,7 +189,7 @@ public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<Produc
                         .last(CommonConstant.LIMIT_ONE_ROW));
             }
             if(null != lastProductionConveyingCoalRecord && !lastProductionConveyingCoalRecord.getId().equals(deleteProductionConveyingCoalRecordDTO.getId())) {
-                return AjaxResult.error("只能删除最后一条上煤记录");
+                throw new ServiceException("只能删除最后一条上煤记录");
             }
             List<ProductionConveyingCoalActual> list = productionConveyingCoalActualService.list(new QueryWrapper<ProductionConveyingCoalActual>().lambda()
                     .eq(ProductionConveyingCoalActual::getConfigCokePlanId, productionConveyingCoalRecord.getConfigCokePlanId())
@@ -216,13 +223,17 @@ public class ProductionConveyingCoalRecordServiceImpl extends ServiceImpl<Produc
                 );
             }
             removeById(productionConveyingCoalRecord);
-            return AjaxResult.success("上煤记录删除成功");
         }
         else {
-            return AjaxResult.error("上煤记录不存在或已被删除");
+            throw new ServiceException("上煤记录不存在或已被删除");
         }
     }
 
+    /**
+     * 生产实绩-上煤记录-查询-分页
+     * @param pageProductionConveyingCoalRecordDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionConveyingCoalRecordVO> getProductionConveyingCoalRecordPageData(PageProductionConveyingCoalRecordDTO pageProductionConveyingCoalRecordDTO) {

@@ -35,9 +35,9 @@
 
     <select id="getCokePerformanceAnalys" parameterType="com.jlkj.product.oi.dto.dashboardindex.GetCokePlanPerformanceDTO" resultType="java.util.Map">
         select YEAR(production_date) as year, MONTH(production_date) as month, DAY(production_date) as date, SUM(single_hole_production) as yeild
-        from product_oi_output_performance_manual_bake
-        where DATE_FORMAT(production_date,'%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
-            and DATE_FORMAT(production_date,'%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
+        from t_production_output_performance_manual_bake
+        where DATE_FORMAT(DATE_ADD(production_date,INTERVAL 4 HOUR),'%Y-%m-%d') <![CDATA[ >= ]]> #{start_time}
+          and DATE_FORMAT(DATE_ADD(production_date,INTERVAL 4 HOUR),'%Y-%m-%d') <![CDATA[ <= ]]> #{end_time}
         group by year, month, date
         order by date asc
     </select>

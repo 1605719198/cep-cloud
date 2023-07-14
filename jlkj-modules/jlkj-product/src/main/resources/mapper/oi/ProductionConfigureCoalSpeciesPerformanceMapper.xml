@@ -56,6 +56,8 @@
         and (#{condition.className} = '' or a.class_name like concat(#{condition.className},'%'))
         and (#{condition.startTime} = '' or a.start_time &gt;= case when #{condition.startTime} = '' then null else #{condition.startTime} end)
         and (#{condition.endTime} = '' or a.start_time &lt;= case when #{condition.endTime} = '' then null else #{condition.endTime} end)
+        and (#{condition.startCreateTime} = '' or a.create_time &gt;= case when #{condition.startCreateTime} = '' then null else #{condition.startCreateTime} end)
+        and (#{condition.endCreateTime} = '' or a.create_time &lt;= case when #{condition.endCreateTime} = '' then null else #{condition.endCreateTime} end)
         order by ${condition.order} ${condition.orderby}
     </select>
 
@@ -157,8 +159,8 @@
         SELECT
             DATE_FORMAT(configure_coal_species_date, '%Y-%m') yearMonth,
             plan_number,
-            materials_code AS material_code,
-            coal_type_name AS material_name,
+            materials_small_code AS material_code,
+            materials_small_name AS material_name,
             proportion * coal_tower_weight / 100 /1000 AS weight,
             proportion
         FROM product_oi_plan_config_coke AS a
@@ -183,8 +185,8 @@
         SELECT
         DATE_FORMAT(a.configure_coal_species_date, '%Y-%m') yearMonth,
         plan_number,
-        b.material_code,
-        b.material_name,
+        b.material_small_code,
+        b.material_small_name,
         material_weight / 1000 AS weight,
         material_weight / c.coal_tower_weight * 100 AS proportion
         FROM product_oi_configure_coal_species_performance AS a

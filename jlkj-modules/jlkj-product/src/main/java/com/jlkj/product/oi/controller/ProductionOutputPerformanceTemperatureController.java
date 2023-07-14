@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionoutputperformancetemperature.PageProductionOutputPerformanceTemperatureDTO;
@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-出炉实绩测温记录
- * @author sudeyou
- * @since 2022-08-11 14:06:15
- */
+*@description: 控制器-出炉实绩测温记录
+*@Author: 265823
+*@date: 2023/7/10 17:07
+*/
 @Tag(name = "出炉实绩测温记录")
 @RestController
 @RequestMapping("/plan")
@@ -43,6 +43,11 @@ public class ProductionOutputPerformanceTemperatureController {
     @Resource
     private ProductionOutputPerformanceTemperatureService productionOutputPerformanceTemperatureService;
 
+    /**
+     * 出炉实绩测温记录-查询-分页
+     * @param pageProductionOutputPerformanceTemperatureDTO
+     * @return
+     */
     @Operation(summary = "出炉实绩测温记录-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -57,7 +62,7 @@ public class ProductionOutputPerformanceTemperatureController {
     )
     @Log(title = "出炉实绩测温记录-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionOutputPerformanceTemperaturePage", method = RequestMethod.GET)
-    public Object getProductionOutputPerformanceTemperaturePageData(@Validated @ParamModel PageProductionOutputPerformanceTemperatureDTO pageProductionOutputPerformanceTemperatureDTO) {
+    public AjaxResult getProductionOutputPerformanceTemperaturePageData(@Validated @ParamModel PageProductionOutputPerformanceTemperatureDTO pageProductionOutputPerformanceTemperatureDTO) {
         log.info("params => " + pageProductionOutputPerformanceTemperatureDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionOutputPerformanceTemperatureDTO);
         if (!"".equals(errorMsg)) {

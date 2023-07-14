@@ -65,48 +65,47 @@
     </select>
 
     <select id="getProductionCoalConsumeListData" resultType="com.jlkj.product.oi.vo.productioncokeovens.ListProductionCoalConsumeVO">
-        select
-            a.materials_code as coke_materials_code,
-            case when b.materials_code is not null then b.materials_code when d.materials_code is not null then d.materials_code else '' end as coal_materials_code,
-            case when b.proportion is not null then round(sum(a.single_hole_production * c.single_consumption * b.proportion * 0.01),0) when d.proportion is not null then round(sum(a.single_hole_production * c.single_consumption * d.proportion * 0.01),0) else 0 end as qty
-        from product_oi_output_performance_manual_bake a
-        INNER JOIN (
-            select b.materials_code,a.quenching_method,a.single_consumption
-            from product_oi_information_configuration a
-            INNER JOIN materials_mr_code b ON a.materials_code = b.id
-        ) c ON a.materials_code = c.materials_code and a.coke_type = c.quenching_method, (
-            select a.materials_code,a.materials_name,case when a.coal_tower_weight = 0 then 0 else a.material_weight / a.coal_tower_weight * 100 end as proportion
-            from (
-                select a.material_code as materials_code,a.material_name as materials_name,c.coal_tower_weight,sum(a.material_weight) as material_weight
-                from product_oi_configure_coal_species_performance_detail a
-                INNER JOIN product_oi_configure_coal_species_performance c ON a.main_id = c.id
-                INNER JOIN (
-                    select max(start_time) as start_time
-                    from product_oi_configure_coal_species_performance a,
-                    (select convert(dict_value,SIGNED) as dict_value from sys_dict_data where dict_label='倒推时间') as b
-                    where a.start_time &gt;= concat(DATE_FORMAT(date_add(date_add(now(),interval -1 day), interval -1 * b.dict_value hour),'%Y-%m-%d'),' 20:00:00')
-                    and a.start_time &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
-                ) as b ON c.start_time = b.start_time
-                group by a.material_code,a.material_name,c.coal_tower_weight
-            ) as a
-        ) b, (
-            select b.materials_code,b.materials_name,a.proportion
-            from product_oi_plan_config_coke_detail a
-            INNER JOIN materials_mr_code b ON a.coal_type_id = b.id
-            INNER JOIN (
-                select a.id
-                from product_oi_plan_config_coke a
-                INNER JOIN (
-                    select max(plan_start_time) as plan_start_time from product_oi_plan_config_coke a,
-                    (select convert(dict_value,SIGNED) as dict_value from sys_dict_data where dict_label='倒推时间') as b
-                    where a.plan_start_time &gt;= concat(DATE_FORMAT(date_add(date_add(now(),interval -1 day), interval -1 * b.dict_value hour),'%Y-%m-%d'),' 20:00:00')
-                      and a.plan_start_time &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
-                ) as b ON a.plan_start_time = b.plan_start_time
-            ) c ON a.plan_id = c.id
-        ) d
-        where concat(DATE_FORMAT(production_date,'%Y-%m-%d'),' ',DATE_FORMAT(actual_production_time,'%H:%i:%s')) &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
-          and concat(DATE_FORMAT(production_date,'%Y-%m-%d'),' ',DATE_FORMAT(actual_production_time,'%H:%i:%s')) &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
-        group by a.materials_code,b.materials_code,b.proportion,d.materials_code,d.proportion
+        select coke_materials_code,coal_materials_code,sum(qty) as qty
+        from (
+                 select a.id,a.coke_materials_code,b.coal_materials_code,sum(round(a.coke_weight * b.proportion * 0.01, 0)) as qty
+                 from (
+                          select a.id,a.materials_code as coke_materials_code,b.single_consumption,sum(a.single_hole_production * b.single_consumption) as coke_weight
+                          from t_production_output_performance_manual_bake a
+                                   INNER JOIN (
+                              select b.materials_code,a.quenching_method,a.single_consumption
+                              from t_production_information_configuration a
+                                       INNER JOIN t_materials_code b ON a.materials_code = b.id
+                          ) b ON a.materials_code = b.materials_code and a.coke_type = b.quenching_method
+                          where concat(DATE_FORMAT(a.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(a.actual_production_time,'%H:%i:%s')) &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
+                            and concat(DATE_FORMAT(a.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(a.actual_production_time,'%H:%i:%s')) &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
+                          group by a.id,a.materials_code,b.single_consumption
+                      ) as a
+                          INNER JOIN (
+                     select b.id,b.coke_materials_code,b.coal_materials_code,(b.coal_weight / c.total_coal_weight * 100) as proportion
+                     from (
+                              select b.id,c.coal_level_materials_code as coke_materials_code,a.material_code as coal_materials_code,sum(a.material_weight) as coal_weight
+                              from t_production_configure_coal_species_performance_detail a
+                                       INNER JOIN t_production_configure_coal_species_performance c ON a.main_id = c.id
+                                       INNER JOIN t_production_output_performance_manual_bake b ON a.main_id = b.coal_performance_id and a.start_time = b.coal_detail_start_time
+                              where concat(DATE_FORMAT(b.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(b.actual_production_time,'%H:%i:%s')) &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
+                                and concat(DATE_FORMAT(b.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(b.actual_production_time,'%H:%i:%s')) &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
+                                and a.material_weight > 0
+                              group by b.id,c.coal_level_materials_code,a.material_code
+                          ) as b
+                              INNER JOIN (
+                         select b.id,c.coal_level_materials_code as coke_materials_code,sum(a.material_weight) as total_coal_weight
+                         from t_production_configure_coal_species_performance_detail a
+                                  INNER JOIN t_production_configure_coal_species_performance c ON a.main_id = c.id
+                                  INNER JOIN t_production_output_performance_manual_bake b ON c.id = b.coal_performance_id and a.start_time = b.coal_detail_start_time
+                         where concat(DATE_FORMAT(b.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(b.actual_production_time,'%H:%i:%s')) &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
+                           and concat(DATE_FORMAT(b.production_date,'%Y-%m-%d'),' ',DATE_FORMAT(b.actual_production_time,'%H:%i:%s')) &lt; concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
+                           and a.material_weight > 0
+                         group by b.id,c.coal_level_materials_code
+                     ) as c ON b.id = c.id and b.coke_materials_code = c.coke_materials_code
+                 ) as b ON a.id = b.id and a.coke_materials_code = b.coke_materials_code
+                 group by a.id,a.coke_materials_code,b.coal_materials_code
+             ) as a
+        group by coke_materials_code,coal_materials_code
     </select>
     <select id="getProductionCokeOvensAccountListData" resultType="com.jlkj.product.oi.vo.productioncokeovens.ListProductionCokeOvensAccountVO">
         select *
@@ -126,10 +125,18 @@
                      moistStoveNumberC,
                      ifnull(nutCoOutput, 0) as nutCoOutput,
                      ifnull(coFinesOutput,0) as coFinesOutput,
-                     totalCoOutputA - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputA / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0)) end as ferroCoOutputA,
-                     totalCoOutputB - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputB / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0)) end as ferroCoOutputB,
-                     totalCoOutputC - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputC / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0)) end as ferroCoOutputC
-                 from (
+                     totalCoOutputA - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputA / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0) + ifnull(cdqOutput, 0)) end as ferroCoOutputA,
+                     totalCoOutputB - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputB / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0) + ifnull(cdqOutput, 0)) end as ferroCoOutputB,
+                     totalCoOutputC - case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else (totalCoOutputC / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0) + ifnull(coFinesOutput,0) + ifnull(cdqOutput, 0)) end as ferroCoOutputC,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputA / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0)), 0) end as nutCoOutputA,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputB / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0)), 0) end as nutCoOutputB,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputC / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(nutCoOutput, 0)), 0) end as nutCoOutputC,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputA / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(coFinesOutput, 0)), 0) end as coFinesOutputA,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputB / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(coFinesOutput, 0)), 0) end as coFinesOutputB,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputC / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(coFinesOutput, 0)), 0) end as coFinesOutputC,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputA / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(cdqOutput, 0)), 0) end as cdqOutputA,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputB / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(cdqOutput, 0)), 0) end as cdqOutputB,
+                     case when (totalCoOutputA + totalCoOutputB + totalCoOutputC) = 0 then 0 else round((totalCoOutputC / (totalCoOutputA + totalCoOutputB + totalCoOutputC)) * (ifnull(cdqOutput, 0)), 0) end as cdqOutputC                 from (
                           select DATE_FORMAT(now(),'%Y-%m-%d') as account_date,
                                  count(single_hole_production) as planStoveNumber,
                                  count(single_hole_production) as realStoveNumber,
@@ -142,9 +149,9 @@
                                  sum(case when materials_code = '0150105' and coke_type = 2 then 1 else 0 end) as moistStoveNumberB,
                                  sum(case when materials_code = '0150106' and coke_type = 1 then 1 else 0 end) as dryStoveNumberC,
                                  sum(case when materials_code = '0150106' and coke_type = 2 then 1 else 0 end) as moistStoveNumberC
-                          from product_oi_output_performance_manual_bake
+                          from t_production_output_performance_manual_bake
                           where concat(DATE_FORMAT(production_date,'%Y-%m-%d'),' ',DATE_FORMAT(actual_production_time,'%H:%i:%s')) &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
-                          and concat(DATE_FORMAT(production_date,'%Y-%m-%d'),' ',DATE_FORMAT(actual_production_time,'%H:%i:%s')) &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
+                            and concat(DATE_FORMAT(production_date,'%Y-%m-%d'),' ',DATE_FORMAT(actual_production_time,'%H:%i:%s')) &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
                       ) as a
                           LEFT JOIN
                       (
@@ -152,18 +159,16 @@
                                  sum(production_performance_jd) as nutCoOutput,
                                  sum(production_performance_jf) as coFinesOutput
                           from (
-                              select sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
-                                     0 as production_performance_jf
-                              from logistics_wv_trans_actual_nut a
-                              where a.car_send_date &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
-                                and a.car_send_date &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
-                              union all
-                              select 0 as production_performance_jd,
-                                     sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                              from logistics_wv_trans_actual_fines a
-                              where a.car_send_date &gt;= concat(DATE_FORMAT(date_add(now(), interval -1 day),'%Y-%m-%d'),' 20:00:00')
-                                and a.car_send_date &lt;= concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 20:00:00')
-                          ) as a
+                                   select sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+                                          0 as production_performance_jf
+                                   from t_logistics_trans_actual_nut a
+                                   where a.pound_date = concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 00:00:00')
+                                   union all
+                                   select 0 as production_performance_jd,
+                                          sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+                                   from t_logistics_trans_actual_fines a
+                                   where a.pound_date = concat(DATE_FORMAT(now(),'%Y-%m-%d'),' 00:00:00')
+                               ) as a
                       ) b ON a.account_date = b.account_date
              ) as a,
              (
@@ -178,7 +183,7 @@
                      sum(case when materials_id = '0150201' then inventory else 0 end) as coFinesStore,
                      0 as waterCoFinesStore,
                      0 as sulgaoStore
-                 from materials_mr_coke_stock
+                 from t_materials_coke_stock
              ) as b
     </select>
 </mapper>

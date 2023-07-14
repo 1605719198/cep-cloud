@@ -90,14 +90,14 @@ public class PageProductionOutputPerformanceManualBakeVO {
      */
     @Schema(description = "计划运转周期")
     @JsonProperty("planning_run_cycle")
-    private BigDecimal planningRunCycle;
+    private String planningRunCycle;
 
     /**
      * 实际运转周期
      */
     @Schema(description = "实际运转周期")
     @JsonProperty("actual_run_cycle")
-    private BigDecimal actualRunCycle;
+    private String actualRunCycle;
 
     /**
      * 单孔产量
@@ -148,5 +148,44 @@ public class PageProductionOutputPerformanceManualBakeVO {
     @JsonProperty("coal_tower_number")
     private String coalTowerNumber;
 
+    /**
+     * 出炉后计划装煤时间
+     */
+    @Schema(description = "出炉后计划装煤时间")
+    @JsonProperty("next_planning_load_coal_time")
+    private String nextPlanningLoadCoalTime;
+    /**
+     * 出炉后实际装煤时间
+     */
+    @Schema(description = "出炉后实际装煤时间")
+    @JsonProperty("next_actual_load_coal_time")
+    private String nextActualLoadCoalTime;
+    /**
+     * 出炉后装煤电流
+     */
+    @Schema(description = "出炉后装煤电流")
+    @JsonProperty("next_coal_current")
+    private BigDecimal nextCoalCurrent;
+
+    /**
+     * 出炉后装煤量
+     */
+    @Schema(description = "出炉后装煤量")
+    @JsonProperty("next_loading_coal")
+    private BigDecimal nextLoadingCoal;
+
+    /**
+     * 出炉后储煤塔号
+     */
+    @Schema(description = "出炉后储煤塔号")
+    @JsonProperty("next_coal_tower_number")
+    private String nextCoalTowerNumber;
+
+    /**
+     * 实际推焦时间(结束)
+     */
+    @Schema(description = "实际推焦时间(结束)")
+    @JsonProperty("actual_production_end_time")
+    private String actualProductionEndTime;
 
 }

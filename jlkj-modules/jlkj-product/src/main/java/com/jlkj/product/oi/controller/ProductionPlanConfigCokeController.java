@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionplanconfigcoke.*;
@@ -30,9 +30,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-配煤计划主记录
- * @author sudeyou
- */
+*@description: 控制器-配煤计划主记录
+*@Author: 265823
+*@date: 2023/7/10 8:27
+*/
 @Tag(name = "配煤计划主记录")
 @RestController
 @RequestMapping("/plan")
@@ -45,6 +46,11 @@ public class ProductionPlanConfigCokeController {
     @Resource
     private ProductionPlanConfigCokeService productionPlanConfigCokeService;
 
+    /**
+     * 查询-分页-配煤计划主记录
+     * @param pageProductionPlanConfigCokeDTO
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -84,7 +90,7 @@ public class ProductionPlanConfigCokeController {
 
     @Log(title = "查询-分页-配煤计划主记录",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listProductionCfgCokePlans", method = RequestMethod.GET)
-    public Object getPageData(@Validated @ParamModel PageProductionPlanConfigCokeDTO pageProductionPlanConfigCokeDTO) {
+    public AjaxResult getPageData(@Validated @ParamModel PageProductionPlanConfigCokeDTO pageProductionPlanConfigCokeDTO) {
         log.info("params => " + pageProductionPlanConfigCokeDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionPlanConfigCokeDTO);
         if (!"".equals(errorMsg)) {
@@ -94,6 +100,10 @@ public class ProductionPlanConfigCokeController {
         return AjaxResult.success(productionPlanConfigCokeService.getPageData(pageProductionPlanConfigCokeDTO));
     }
 
+    /**
+     * 新增-配煤计划主记录
+     * @param addProductionPlanConfigCokeDTO
+     */
     @Operation(summary = "新增-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -114,12 +124,16 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "新增-配煤计划主记录",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/addProductionPlanCfgCoke", method = RequestMethod.POST, produces = "application/json")
-    public Object addData(@Valid @RequestBody AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO) {
+    public void addData(@Valid @RequestBody AddProductionPlanConfigCokeDTO addProductionPlanConfigCokeDTO) {
         log.info("params => " + addProductionPlanConfigCokeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addProductionPlanConfigCokeDTO);
-        return productionPlanConfigCokeService.addData(addProductionPlanConfigCokeDTO);
+        productionPlanConfigCokeService.addData(addProductionPlanConfigCokeDTO);
     }
 
+    /**
+     * 修改-配煤计划主记录
+     * @param updateProductionPlanConfigCokeDTO
+     */
     @Operation(summary = "修改-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -141,12 +155,16 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "修改-配煤计划主记录",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/editProductionPlanCfgCoke", method = RequestMethod.POST, produces = "application/json")
-    public Object updateData(@Valid @RequestBody UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO) {
+    public void updateData(@Valid @RequestBody UpdateProductionPlanConfigCokeDTO updateProductionPlanConfigCokeDTO) {
         log.info("params => " + updateProductionPlanConfigCokeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionPlanConfigCokeDTO);
-        return productionPlanConfigCokeService.updateData(updateProductionPlanConfigCokeDTO);
+        productionPlanConfigCokeService.updateData(updateProductionPlanConfigCokeDTO);
     }
 
+    /**
+     * 删除-配煤计划主记录
+     * @param deleteProductionPlanConfigCokeDTO
+     */
     @Operation(summary = "删除-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -164,12 +182,16 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "删除-配煤计划主记录",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delProductionPlanCfgCoke", method = RequestMethod.POST, produces = "application/json")
-    public Object deleteData(@Valid @RequestBody DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO) {
+    public void deleteData(@Valid @RequestBody DeleteProductionPlanConfigCokeDTO deleteProductionPlanConfigCokeDTO) {
         log.info("params => " + deleteProductionPlanConfigCokeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionPlanConfigCokeDTO);
-        return productionPlanConfigCokeService.deleteData(deleteProductionPlanConfigCokeDTO);
+        productionPlanConfigCokeService.deleteData(deleteProductionPlanConfigCokeDTO);
     }
 
+    /**
+     * 确认-配煤计划主记录
+     * @param confirmProductionPlanConfigCokeDTO
+     */
     @Operation(summary = "确认-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -189,12 +211,16 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "确认-配煤计划主记录",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionPlanCfgCokeConfirm", method = RequestMethod.POST, produces = "application/json")
-    public Object confirmData(@Valid @RequestBody ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO) {
+    public void confirmData(@Valid @RequestBody ConfirmProductionPlanConfigCokeDTO confirmProductionPlanConfigCokeDTO) {
         log.info("params => " + confirmProductionPlanConfigCokeDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, confirmProductionPlanConfigCokeDTO);
-        return productionPlanConfigCokeService.confirmData(confirmProductionPlanConfigCokeDTO);
+        productionPlanConfigCokeService.confirmData(confirmProductionPlanConfigCokeDTO);
     }
 
+    /**
+     * 配煤计划主记录-计划编号
+     * @return
+     */
     @Operation(summary = "配煤计划主记录-计划编号",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -209,9 +235,14 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "配煤计划主记录-计划编号",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionPlanConfigCokePlanNumber", method = RequestMethod.GET)
-    public Object getPlanCodeData() {
+    public AjaxResult getPlanCodeData() {
         return AjaxResult.success(productionPlanConfigCokeService.getPlanCodeData());
     }
+
+    /**
+     * 手动切配煤计划-配煤计划主记录
+     * @param dto
+     */
     @Operation(summary = "手动切配煤计划-配煤计划主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -229,9 +260,9 @@ public class ProductionPlanConfigCokeController {
     )
     @Log(title = "手动切配煤计划-配煤计划主记录",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/changeProductionPlanCfgCokeConfirm", method = RequestMethod.POST, produces = "application/json")
-    public Object changeProductionPlanCfgCokeConfirm(@Valid @RequestBody ChangeProductionPlanCfgCokeDTO dto) {
+    public void changeProductionPlanCfgCokeConfirm(@Valid @RequestBody ChangeProductionPlanCfgCokeDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionPlanConfigCokeService.changeProductionPlanCfgCokeConfirm(dto);
+        productionPlanConfigCokeService.changeProductionPlanCfgCokeConfirm(dto);
     }
 }

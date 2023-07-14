@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author yzl
- * @description
- * @createDate 2022年7月20日 08:45:22
- */
+*@description:生产看板
+*@Author: 265823
+*@date: 2023/7/10 10:35
+*/
 public interface ProductionDataBoardService  extends IService<ProductionYieldAnalysisMonth> {
 
     /**
@@ -32,9 +32,6 @@ public interface ProductionDataBoardService  extends IService<ProductionYieldAna
      * @return 数据查询
      */
     List<Map<String, String>> getUpCoalWeightByNowDay(GetUpCoalValueByNowDayDTO dto);
-
-
-
 
     /**
      * 生产看板-今日产量
@@ -71,15 +68,12 @@ public interface ProductionDataBoardService  extends IService<ProductionYieldAna
      */
     Map<String, Object> getTodayCokeSteam(GetDataBoardDTO dto);
 
-
-
-
     /**
      * 首页-焦炭产量-煤种耗煤量
      * @param dto dto
      * @return 数据查询
      */
-    List<Map<String, Object>> getCoalConsumption(GetCokePlanPerformanceDTO dto);
+    Map<String, Object> getCoalConsumption(GetCokePlanPerformanceDTO dto);
 
     /**
      * 首页-焦炭产量-煤种耗煤量-详情
@@ -93,6 +87,33 @@ public interface ProductionDataBoardService  extends IService<ProductionYieldAna
      * @param dto dto
      * @return 数据查询
      */
-    List<Map<String, Object>> getEnergyConsumption(GetCokePlanPerformanceDTO dto);
+    Map<String, Object> getEnergyConsumption(GetCokePlanPerformanceDTO dto);
 
+    /**
+     * 生产看板-焦炉技术指标数据
+     * @param dto
+     * @return
+     */
+    List<Map<String, Object>> getCraftCokeTemp(GetDataBoardDTO dto);
+
+    /**
+     * 生产看板 - 收率
+     * @param dto dto
+     * @return 数据查询
+     */
+    List<Map<String, Object>> getCokeTotalYield(GetDataBoardDTO dto);
+
+    /**
+     * 生产看板 - 干熄焦技术指标
+     * @param dto dto
+     * @return 数据查询
+     */
+    List<Map<String, Object>> getCokeTechnologyIndex(GetDataBoardDTO dto);
+
+    /**
+     * 生产看板 - 财务月日成本
+     * @param dto dto
+     * @return 数据查询
+     */
+    Map<String, Object> getCostStatistics(GetDataBoardDTO dto);
 }

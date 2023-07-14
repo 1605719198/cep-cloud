@@ -9,26 +9,23 @@ import com.jlkj.product.oi.dto.productionconveyingcoalrecord.PageProductionConve
 import com.jlkj.product.oi.vo.productionconveyingcoalrecord.PageProductionConveyingCoalRecordVO;
 
 /**
- * 服务接口-生产实绩-上煤记录
- *
- * @author sudeyou
- * @since 2022-11-17 15:18:05
- */
+*@description: 服务接口-生产实绩-上煤记录
+*@Author: 265823
+*@date: 2023/7/10 14:42
+*/
 public interface ProductionConveyingCoalRecordService extends IService<ProductionConveyingCoalRecord> {
 
     /**
      * 生产实绩-上煤记录-新增
      * @param insertProductionConveyingCoalRecordDTO 新增dto
-     * @return 执行结果
      */
-    Object insertProductionConveyingCoalRecordData(InsertProductionConveyingCoalRecordDTO insertProductionConveyingCoalRecordDTO);
+    void insertProductionConveyingCoalRecordData(InsertProductionConveyingCoalRecordDTO insertProductionConveyingCoalRecordDTO);
 
     /**
      * 生产实绩-上煤记录-删除
      * @param deleteProductionConveyingCoalRecordDTO 删除dto
-     * @return 执行结果
      */
-    Object deleteProductionConveyingCoalRecordData(DeleteProductionConveyingCoalRecordDTO deleteProductionConveyingCoalRecordDTO);
+    void deleteProductionConveyingCoalRecordData(DeleteProductionConveyingCoalRecordDTO deleteProductionConveyingCoalRecordDTO);
 
     /**
      * 生产实绩-上煤记录-查询-分页

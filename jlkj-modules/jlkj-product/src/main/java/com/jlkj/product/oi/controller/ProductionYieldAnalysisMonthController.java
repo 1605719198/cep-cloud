@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionyieldanalysismonth.ListProductionYieldAnalysisMonthDTO;
@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-产量分析月表
- * @author sudeyou
- * @since 2022-07-15 15:04:00
- */
+*@description: 控制器-产量分析月表
+*@Author: 265823
+*@date: 2023/7/11 14:17
+*/
 @Tag(name = "产量分析月表")
 @RestController
 @RequestMapping("/yield")
@@ -45,6 +45,11 @@ public class ProductionYieldAnalysisMonthController {
     @Resource
     private ProductionYieldAnalysisMonthService productionYieldAnalysisMonthService;
 
+    /**
+     * 生产管理-产量跟踪-查询-月
+     * @param listProductionYieldAnalysisMonthDTO
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-查询-月",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -63,16 +68,21 @@ public class ProductionYieldAnalysisMonthController {
     )
     @Log(title = "生产管理-产量跟踪-查询-月",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisMonth", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysisMonth(@Validated @ParamModel ListProductionYieldAnalysisMonthDTO listProductionYieldAnalysisMonthDTO) {
+    public AjaxResult getProductionYieldAnalysisMonth(@Validated @ParamModel ListProductionYieldAnalysisMonthDTO listProductionYieldAnalysisMonthDTO) {
         log.info("params => " + listProductionYieldAnalysisMonthDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisMonthDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisMonthDTO);
-        return productionYieldAnalysisMonthService.getProductionYieldAnalysisMonthList(listProductionYieldAnalysisMonthDTO);
+        return AjaxResult.success(productionYieldAnalysisMonthService.getProductionYieldAnalysisMonthList(listProductionYieldAnalysisMonthDTO));
     }
 
+    /**
+     * 生产管理-产量跟踪-图表-物料名称(月)
+     * @param listProductionYieldAnalysisMonthMaterialDTO
+     * @return
+     */
     @Operation(summary = "生产管理-产量跟踪-图表-物料名称(月)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -87,14 +97,14 @@ public class ProductionYieldAnalysisMonthController {
     )
     @Log(title = "生产管理-产量跟踪-图表-物料名称(月)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionYieldAnalysisMonthChart", method = RequestMethod.GET)
-    public Object getProductionYieldAnalysisChartMonth(@Validated @ParamModel ListProductionYieldAnalysisMonthMaterialDTO listProductionYieldAnalysisMonthMaterialDTO) {
+    public AjaxResult getProductionYieldAnalysisChartMonth(@Validated @ParamModel ListProductionYieldAnalysisMonthMaterialDTO listProductionYieldAnalysisMonthMaterialDTO) {
         log.info("params => " + listProductionYieldAnalysisMonthMaterialDTO);
         String errorMsg = ValidUtil.checkValid(listProductionYieldAnalysisMonthMaterialDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionYieldAnalysisMonthMaterialDTO);
-        return productionYieldAnalysisMonthService.getProductionYieldAnalysisChartMonth(listProductionYieldAnalysisMonthMaterialDTO);
+        return AjaxResult.success(productionYieldAnalysisMonthService.getProductionYieldAnalysisChartMonth(listProductionYieldAnalysisMonthMaterialDTO));
     }
 }
 

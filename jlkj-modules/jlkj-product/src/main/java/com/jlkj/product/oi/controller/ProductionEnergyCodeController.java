@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-05-05 11:12
- */
+*@description: 能源树
+*@Author: 265823
+*@date: 2023/7/10 14:50
+*/
 @Tag(name = "能源树")
 @RestController
 @RequestMapping("/plan")
@@ -33,14 +31,15 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionEnergyCodeController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
     EnergyCodeServiceImpl energyCodeService;
 
+    /**
+     * 查询能源树
+     * @return
+     */
     @Operation(summary = "查询能源树",
             parameters = {
             },
@@ -52,11 +51,9 @@ public class ProductionEnergyCodeController {
     @Log(title = "查询能源树",businessType = BusinessType.OTHER)
     @Transactional(readOnly = true)
     @RequestMapping(value = "/listEnergyCode", method = RequestMethod.GET)
-    public Object get() {
+    public AjaxResult get() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-
-        List<EnergyCode> list = energyCodeService.lambdaQuery().orderByAsc(EnergyCode::getEngyType).list();
-        return AjaxResult.success(list);
+        return AjaxResult.success(energyCodeService.lambdaQuery().orderByAsc(EnergyCode::getEngyType).list());
     }
 }

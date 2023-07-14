@@ -40,6 +40,18 @@ public class PageProductionConfigureCoalSpeciesPerformanceDTO {
     private String endTime;
 
     /**
+     * 创建时间[开始]
+     */
+    @NotNull(message = "开始时间[开始]为必填项")
+    private String startCreateTime;
+
+    /**
+     * 创建时间[结束]
+     */
+    @NotNull(message = "开始时间[结束]为必填项")
+    private String endCreateTime;
+
+    /**
      * 当前页
      */
     @NotNull(message = "当前页current为必填项")

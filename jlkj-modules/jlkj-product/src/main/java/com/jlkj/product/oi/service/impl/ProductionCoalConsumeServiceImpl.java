@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.ProductionCoalConsume;
 import com.jlkj.product.oi.dto.productioncoalconsume.*;
@@ -33,11 +33,10 @@ import static com.jlkj.product.oi.constants.RabbitConstant.MATERIAL_CONSUMPTION_
 import static com.jlkj.product.oi.constants.RabbitConstant.MATERIAL_EXCHANGE;
 
 /**
- * 服务实现-炼焦煤消耗维护
- *
- * @author sudeyou
- * @since 2022-11-03 17:10:54
- */
+*@description: 服务实现-炼焦煤消耗维护
+*@Author: 265823
+*@date: 2023/7/10 11:15
+*/
 @Service
 @Slf4j
 public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoalConsumeMapper, ProductionCoalConsume>
@@ -49,6 +48,11 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
     @Resource
     private RabbitTemplate rabbitTemplate;
 
+    /**
+     * 炼焦煤消耗维护-查询-分页
+     * @param pageProductionCoalConsumeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionCoalConsumeVO> getProductionCoalConsumePageData(PageProductionCoalConsumeDTO pageProductionCoalConsumeDTO) {
@@ -56,16 +60,21 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
         return getBaseMapper().getProductionCoalConsumePageData(page, pageProductionCoalConsumeDTO);
     }
 
+    /**
+     * 炼焦煤消耗维护-新增
+     * @param insertProductionCoalConsumeDTO 新增dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object insertProductionCoalConsumeData(InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO) {
+    public void insertProductionCoalConsumeData(InsertProductionCoalConsumeDTO insertProductionCoalConsumeDTO) {
         List<ProductionCoalConsume> list = list(new QueryWrapper<ProductionCoalConsume>().lambda()
                 .eq(ProductionCoalConsume::getAccountDate, insertProductionCoalConsumeDTO.getAccountDate())
                 .eq(ProductionCoalConsume::getMaterialsCode, insertProductionCoalConsumeDTO.getMaterialsCode())
                 .last(CommonConstant.LIMIT_ONE_ROW)
         );
         if (list.size() > 0) {
-            return AjaxResult.error("炼焦煤消耗已存在");
+            throw new ServiceException("炼焦煤消耗已存在");
         }
         ProductionCoalConsume productionCoalConsume = new ProductionCoalConsume();
         productionCoalConsume.setId(IdUtil.randomUUID());
@@ -81,12 +90,16 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
         productionCoalConsume.setModifyUserName(insertProductionCoalConsumeDTO.getCreateUserName());
         productionCoalConsume.setModifyTime(new Date());
         save(productionCoalConsume);
-        return AjaxResult.success("炼焦煤消耗增加成功");
     }
 
+    /**
+     * 炼焦煤消耗维护-修改
+     * @param updateProductionCoalConsumeDTO 修改dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateProductionCoalConsumeData(UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO) {
+    public void updateProductionCoalConsumeData(UpdateProductionCoalConsumeDTO updateProductionCoalConsumeDTO) {
         ProductionCoalConsume productionCoalConsume = getById(updateProductionCoalConsumeDTO.getId());
         if (null != productionCoalConsume) {
             List<ProductionCoalConsume> list = list(new QueryWrapper<ProductionCoalConsume>().lambda()
@@ -96,7 +109,7 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
                     .last(CommonConstant.LIMIT_ONE_ROW)
             );
             if (list.size() > 0) {
-                return AjaxResult.error("炼焦煤消耗已存在");
+                throw new ServiceException("炼焦煤消耗已存在");
             }
             productionCoalConsume.setAccountDate(DateUtil.parseDate(updateProductionCoalConsumeDTO.getAccountDate()));
             productionCoalConsume.setMaterialsCode(updateProductionCoalConsumeDTO.getMaterialsCode());
@@ -106,23 +119,25 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
             productionCoalConsume.setModifyUserName(updateProductionCoalConsumeDTO.getModifyUserName());
             productionCoalConsume.setModifyTime(new Date());
             updateById(productionCoalConsume);
-            return AjaxResult.success("炼焦煤消耗修改成功");
         }
         else {
-            return AjaxResult.error( "炼焦煤消耗不存在");
+            throw new ServiceException("炼焦煤消耗不存在");
         }
     }
 
+    /**
+     * 炼焦煤消耗维护-确认
+     * @param confirmProductionCoalConsumeDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object confirmProductionCoalConsumeData(ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO) {
+    public void confirmProductionCoalConsumeData(ConfirmProductionCoalConsumeDTO confirmProductionCoalConsumeDTO) {
         List<ProductionCoalConsume> list = list(new QueryWrapper<ProductionCoalConsume>().lambda()
                 .eq(ProductionCoalConsume::getAccountDate, confirmProductionCoalConsumeDTO.getAccountDate())
         );
         if (list.size() > 0) {
             sendQueueMessage(list);
         }
-        return AjaxResult.success("炼焦煤消耗报文抛送成功");
     }
 
     private String getSeqNo(Integer no) {
@@ -192,16 +207,20 @@ public class ProductionCoalConsumeServiceImpl extends ServiceImpl<ProductionCoal
         }
     }
 
+    /**
+     * 炼焦煤消耗维护-删除
+     * @param deleteProductionCoalConsumeDTO 删除dto
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteProductionCoalConsumeData(DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO) {
+    public void deleteProductionCoalConsumeData(DeleteProductionCoalConsumeDTO deleteProductionCoalConsumeDTO) {
         ProductionCoalConsume productionCoalConsume = getById(deleteProductionCoalConsumeDTO.getId());
         if (null != productionCoalConsume) {
             removeById(productionCoalConsume);
-            return AjaxResult.success("炼焦煤消耗删除成功");
         }
         else {
-            return AjaxResult.error("炼焦煤消耗不存在或已被删除");
+            throw new ServiceException("炼焦煤消耗不存在或已被删除");
         }
     }
 }

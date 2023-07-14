@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionrealoutputmonth.ListProductionRealOutputMonthRangeDTO;
@@ -31,10 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-生产管理-月产量
- * @author sudeyou
- * @since 2022-07-13 14:18:51
- */
+*@description: 控制器-生产管理-月产量
+*@Author: 265823
+*@date: 2023/7/11 11:25
+*/
 @Tag(name = "生产管理-月产量")
 @RestController
 @RequestMapping("/real")
@@ -47,6 +47,11 @@ public class ProductionRealOutputMonthController {
     @Resource
     private ProductionRealOutputMonthService productionRealOutputMonthService;
 
+    /**
+     * 查询-分页-生产管理-统计分析-指标跟踪(月)
+     * @param pageProductionRealOutputMonthDTO
+     * @return
+     */
     @Operation(summary = "查询-分页-生产管理-统计分析-指标跟踪(月)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -61,7 +66,7 @@ public class ProductionRealOutputMonthController {
     )
     @Log(title = "查询-分页-生产管理-统计分析-指标跟踪(月)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getPageProductionRealOutputMonth", method = RequestMethod.GET)
-    public Object getPageData(@Validated @ParamModel PageProductionRealOutputMonthDTO pageProductionRealOutputMonthDTO) {
+    public AjaxResult getPageData(@Validated @ParamModel PageProductionRealOutputMonthDTO pageProductionRealOutputMonthDTO) {
         log.info("params => " + pageProductionRealOutputMonthDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionRealOutputMonthDTO);
         if (!"".equals(errorMsg)) {
@@ -71,6 +76,11 @@ public class ProductionRealOutputMonthController {
         return AjaxResult.success(productionRealOutputMonthService.getPageData(pageProductionRealOutputMonthDTO));
     }
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(月实际)
+     * @param listProductionRealOutputMonthTargetItemDTO
+     * @return
+     */
     @Operation(summary = "生产管理-指标跟踪-图表-指标项(月实际)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -85,16 +95,21 @@ public class ProductionRealOutputMonthController {
     )
     @Log(title = "生产管理-指标跟踪-图表-指标项(月实际)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionRealOutputMonthTargetItemChart", method = RequestMethod.GET)
-    public Object getProductionRealOutpumonthTargetItemChartData(@Validated @ParamModel ListProductionRealOutputMonthTargetItemDTO listProductionRealOutputMonthTargetItemDTO) {
+    public AjaxResult getProductionRealOutpumonthTargetItemChartData(@Validated @ParamModel ListProductionRealOutputMonthTargetItemDTO listProductionRealOutputMonthTargetItemDTO) {
         log.info("params => " + listProductionRealOutputMonthTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(listProductionRealOutputMonthTargetItemDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionRealOutputMonthTargetItemDTO);
-        return productionRealOutputMonthService.getProductionRealOutputMonthTargetItemChartData(listProductionRealOutputMonthTargetItemDTO);
+        return AjaxResult.success(productionRealOutputMonthService.getProductionRealOutputMonthTargetItemChartData(listProductionRealOutputMonthTargetItemDTO));
     }
 
+    /**
+     * 生产管理-指标跟踪-图表-日期(同环比)
+     * @param listProductionRealOutputMonthRangeDTO
+     * @return
+     */
     @Operation(summary = "生产管理-指标跟踪-图表-日期(同环比)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -109,16 +124,19 @@ public class ProductionRealOutputMonthController {
     )
     @Log(title = "生产管理-指标跟踪-图表-日期(同环比)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionRealOutputMonthRangeChart", method = RequestMethod.GET)
-    public Object getProductionRealOutpumonthRangeChartData(@Validated @ParamModel ListProductionRealOutputMonthRangeDTO listProductionRealOutputMonthRangeDTO) {
+    public AjaxResult getProductionRealOutpumonthRangeChartData(@Validated @ParamModel ListProductionRealOutputMonthRangeDTO listProductionRealOutputMonthRangeDTO) {
         log.info("params => " + listProductionRealOutputMonthRangeDTO);
         String errorMsg = ValidUtil.checkValid(listProductionRealOutputMonthRangeDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionRealOutputMonthRangeDTO);
-        return productionRealOutputMonthService.getProductionRealOutputMonthRangeChartData(listProductionRealOutputMonthRangeDTO);
+        return AjaxResult.success(productionRealOutputMonthService.getProductionRealOutputMonthRangeChartData(listProductionRealOutputMonthRangeDTO));
     }
 
+    /**
+     * 生产管理-统计分析-指标分析-月产量指标跟踪-更新统计数据
+     */
     @Operation(summary = "生产管理-统计分析-指标分析-月产量指标跟踪-更新统计数据",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -131,8 +149,8 @@ public class ProductionRealOutputMonthController {
     )
     @Log(title = "生产管理-统计分析-指标分析-月产量指标跟踪-更新统计数据",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionRealOutputMonthStatistics", method = RequestMethod.POST, produces = "application/json")
-    public Object updateProductionRealOutputMonthStatisticsData() {
-        return productionRealOutputMonthService.updateProductionRealOutputMonthStatisticsData();
+    public void updateProductionRealOutputMonthStatisticsData() {
+        productionRealOutputMonthService.updateProductionRealOutputMonthStatisticsData();
     }
 }
 

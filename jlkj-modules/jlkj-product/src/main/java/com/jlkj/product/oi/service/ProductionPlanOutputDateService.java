@@ -8,11 +8,12 @@ import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanDayDTO;
 import com.jlkj.product.oi.vo.productionplanoutputdate.ListProductionPlanOutputDateTargetItemVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_plan_output_date(计划管理--日产量计划表)】的数据库操作Service
-* @createDate 2022-04-21 14:46:03
+*@description: 针对表【product_oi_plan_output_date(计划管理--日产量计划表)】的数据库操作Service
+*@Author: 265823
+*@date: 2023/7/11 8:20
 */
 public interface ProductionPlanOutputDateService extends IService<ProductionPlanOutputDate> {
 
@@ -26,8 +27,7 @@ public interface ProductionPlanOutputDateService extends IService<ProductionPlan
     /**
      * 查询日生产产量计划
      * @param dto
-     * @param itemlist
      * @return
      */
-    Object get(GetProductionPlanDayDTO dto, List<ProductionParameterTargetItem> itemlist);
+    List<Map<String, String>> get(GetProductionPlanDayDTO dto);
 }

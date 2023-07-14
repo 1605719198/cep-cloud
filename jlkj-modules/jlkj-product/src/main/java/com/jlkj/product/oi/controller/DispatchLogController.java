@@ -28,9 +28,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-调度日志
- * @author sudeyou
- */
+*@description: 控制器-调度日志
+*@Author: 265823
+*@date: 2023/7/10 10:34
+*/
 @Tag(name = "调度日志")
 @RestController
 @RequestMapping("/dispathLog")
@@ -43,6 +44,11 @@ public class DispatchLogController {
     @Resource
     private DispatchLogService dispatchLogService;
 
+    /**
+     * 查询-分页-调度日志
+     * @param pageDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "查询-分页-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -82,7 +88,7 @@ public class DispatchLogController {
 
     @Log(title = "查询-分页-调度日志",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getDataDispathLogs", method = RequestMethod.GET)
-    public Object getPageData(@Validated @ParamModel PageDispatchLogDTO pageDispatchLogDTO) {
+    public AjaxResult getPageData(@Validated @ParamModel PageDispatchLogDTO pageDispatchLogDTO) {
         log.info("params => " + pageDispatchLogDTO);
         String errorMsg = ValidUtil.checkValid(pageDispatchLogDTO);
         if (!"".equals(errorMsg)) {
@@ -92,6 +98,11 @@ public class DispatchLogController {
         return AjaxResult.success(dispatchLogService.getPageData(pageDispatchLogDTO));
     }
 
+    /**
+     * 新增-调度日志
+     * @param addDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "新增-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -114,12 +125,17 @@ public class DispatchLogController {
     )
     @Log(title = "新增-调度日志",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/saveDispathLog", method = RequestMethod.POST, produces = "application/json")
-    public Object addData(@Valid @RequestBody AddDispatchLogDTO addDispatchLogDTO) {
+    public void addData(@Valid @RequestBody AddDispatchLogDTO addDispatchLogDTO) {
         log.info("params => " + addDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addDispatchLogDTO);
-        return dispatchLogService.addData(addDispatchLogDTO);
+        dispatchLogService.addData(addDispatchLogDTO);
     }
 
+    /**
+     * 修改-调度日志
+     * @param updateDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "修改-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -141,12 +157,17 @@ public class DispatchLogController {
     )
     @Log(title = "修改-调度日志",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateDispathLog", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateData(@Valid @RequestBody UpdateDispatchLogDTO updateDispatchLogDTO) {
+    public void updateData(@Valid @RequestBody UpdateDispatchLogDTO updateDispatchLogDTO) {
         log.info("params => " + updateDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateDispatchLogDTO);
-        return dispatchLogService.updateData(updateDispatchLogDTO);
+        dispatchLogService.updateData(updateDispatchLogDTO);
     }
 
+    /**
+     * 删除-调度日志
+     * @param deleteDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "删除-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -164,12 +185,17 @@ public class DispatchLogController {
     )
     @Log(title = "删除-调度日志",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteDispathLog", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteData(@Valid @RequestBody DeleteDispatchLogDTO deleteDispatchLogDTO) {
+    public void deleteData(@Valid @RequestBody DeleteDispatchLogDTO deleteDispatchLogDTO) {
         log.info("params => " + deleteDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteDispatchLogDTO);
-        return dispatchLogService.deleteData(deleteDispatchLogDTO);
+        dispatchLogService.deleteData(deleteDispatchLogDTO);
     }
 
+    /**
+     * 指令下发-调度日志
+     * @param sendDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "指令下发-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -187,12 +213,17 @@ public class DispatchLogController {
     )
     @Log(title = "指令下发-调度日志",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/sendDispathLog", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateSendData(@Valid @RequestBody SendDispatchLogDTO sendDispatchLogDTO) {
+    public void updateSendData(@Valid @RequestBody SendDispatchLogDTO sendDispatchLogDTO) {
         log.info("params => " + sendDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, sendDispatchLogDTO);
-        return dispatchLogService.updateSendData(sendDispatchLogDTO);
+        dispatchLogService.updateSendData(sendDispatchLogDTO);
     }
 
+    /**
+     * 处理结果反馈-调度日志
+     * @param feedbackDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "处理结果反馈-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -212,12 +243,17 @@ public class DispatchLogController {
     )
     @Log(title = "处理结果反馈-调度日志",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/feedbackDispathLog", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateFeedbackData(@Valid @RequestBody FeedbackDispatchLogDTO feedbackDispatchLogDTO) {
+    public void updateFeedbackData(@Valid @RequestBody FeedbackDispatchLogDTO feedbackDispatchLogDTO) {
         log.info("params => " + feedbackDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, feedbackDispatchLogDTO);
-        return dispatchLogService.updateFeedbackData(feedbackDispatchLogDTO);
+        dispatchLogService.updateFeedbackData(feedbackDispatchLogDTO);
     }
 
+    /**
+     * 完成确认-调度日志
+     * @param completeDispatchLogDTO
+     * @return
+     */
     @Operation(summary = "完成确认-调度日志",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -235,10 +271,10 @@ public class DispatchLogController {
     )
     @Log(title = "完成确认-调度日志",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateDispathLogState", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateCompleteData(@Valid @RequestBody CompleteDispatchLogDTO completeDispatchLogDTO) {
+    public void updateCompleteData(@Valid @RequestBody CompleteDispatchLogDTO completeDispatchLogDTO) {
         log.info("params => " + completeDispatchLogDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, completeDispatchLogDTO);
-        return dispatchLogService.updateCompleteData(completeDispatchLogDTO);
+        dispatchLogService.updateCompleteData(completeDispatchLogDTO);
     }
 }
 

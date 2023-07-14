@@ -4,14 +4,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.product.oi.domain.ProductionHandoverStockVerify;
 import com.jlkj.product.oi.dto.productionhandoverstockverify.PageProductionHandoverStockVerifyDTO;
+import com.jlkj.product.oi.dto.productionhandoverstockverify.UpdateProductionHandoverStockVerifyDTO;
 
 import java.util.Map;
 
 /**
- * @author yzl
- * @Description 交班仓存核验
- * @create 2022年7月26日 08:48:35
- */
+*@description: 交班仓存核验
+*@Author: 265823
+*@date: 2023/7/10 14:53
+*/
 public interface ProductionHandoverStockVerifyService extends IService<ProductionHandoverStockVerify> {
     /**
      * 查询
@@ -19,4 +20,10 @@ public interface ProductionHandoverStockVerifyService extends IService<Productio
      * @return 分页列表
      */
     IPage<Map<String, String>> getListPage(PageProductionHandoverStockVerifyDTO pageProductionHandoverStockVerifyDTO);
+
+    /**
+     * 修改
+     * @param dto
+     */
+    void updateCustom(UpdateProductionHandoverStockVerifyDTO dto);
 }

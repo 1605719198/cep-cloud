@@ -1,19 +1,15 @@
 package com.jlkj.product.oi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.domain.MaterialsCode;
-import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.dto.productionparametertargetitem.*;
-import com.jlkj.product.oi.service.*;
-import com.jlkj.product.oi.service.impl.MaterialsCodeServiceImpl;
-import com.jlkj.product.oi.service.impl.ProductionParameterTargetItemServiceImpl;
+import com.jlkj.product.oi.service.MaterialsCodeService;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,16 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-04-19 8:45
- */
+*@description: 参数维护-指标项
+*@Author: 265823
+*@date: 2023/7/10 8:24
+*/
 @Tag(name = "参数维护-指标项")
 @RestController
 @RequestMapping("/plan")
@@ -54,9 +48,14 @@ public class ProductionParameterTargetItemController {
     ProductionParameterTargetItemService productionParameterTargetItemService;
 
     @Autowired
-    MaterialsCodeServiceImpl materialsCodeService;
+    MaterialsCodeService materialsCodeService;
 
 
+    /**
+     * 获取指标项列表
+     * @param productionParameterTargetItemDTO
+     * @return
+     */
     @Operation(summary = "获取指标项列表",
             parameters = {
                     @Parameter(name = "targetItemTypeId", description = "指标类型id  0:全部；1:焦化；2：发电"),
@@ -68,15 +67,17 @@ public class ProductionParameterTargetItemController {
     )
     @Log(title = "获取指标项列表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionTargetItem", method = RequestMethod.GET)
-    public Object getSysRoleList(@Valid GetProductionParameterTargetItemDTO productionParameterTargetItemDTO) {
+    public AjaxResult getSysRoleList(@Valid GetProductionParameterTargetItemDTO productionParameterTargetItemDTO) {
         log.info("params => " + productionParameterTargetItemDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, productionParameterTargetItemDTO);
-        List<ProductionParameterTargetItem> list =
-                productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
-                        .eq(productionParameterTargetItemDTO.getTargetItemTypeId() != 0, ProductionParameterTargetItem::getTargetItemTypeId, productionParameterTargetItemDTO.getTargetItemTypeId()));
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionParameterTargetItemService.getList(productionParameterTargetItemDTO));
     }
 
+    /**
+     * 查询指标项
+     * @param pageProductionParameterTargetItemDTO
+     * @return
+     */
     @Operation(summary = "查询指标项",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -115,17 +116,20 @@ public class ProductionParameterTargetItemController {
 
     @Log(title = "查询指标项",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listProductionTargetItem", method = RequestMethod.GET)
-    public Object listProductionTargetItem(@Validated @ParamModel PageProductionParameterTargetItemDTO pageProductionParameterTargetItemDTO) {
+    public AjaxResult listProductionTargetItem(@Validated @ParamModel PageProductionParameterTargetItemDTO pageProductionParameterTargetItemDTO) {
         log.info("params => " + pageProductionParameterTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionParameterTargetItemDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionParameterTargetItemDTO);
-        IPage<Map<String, String>> list = productionParameterTargetItemService.getListPage(pageProductionParameterTargetItemDTO);
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionParameterTargetItemService.getListPage(pageProductionParameterTargetItemDTO));
     }
 
+    /**
+     * 新增指标项
+     * @param addProductionParameterTargetItemDTO
+     */
     @Operation(summary = "新增指标项",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -150,12 +154,16 @@ public class ProductionParameterTargetItemController {
     )
     @Log(title = "新增指标项",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/addProductionTargetItem", method = RequestMethod.POST, produces = "application/json")
-    public Object addProductionTargetItem(@Valid @RequestBody AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO) {
+    public void addProductionTargetItem(@Valid @RequestBody AddProductionParameterTargetItemDTO addProductionParameterTargetItemDTO) {
         log.info("params => " + addProductionParameterTargetItemDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, addProductionParameterTargetItemDTO);
-        return productionParameterTargetItemService.addProductionTargetItem(addProductionParameterTargetItemDTO);
+        productionParameterTargetItemService.addProductionTargetItem(addProductionParameterTargetItemDTO);
     }
 
+    /**
+     * 修改指标项
+     * @param updateProductionParameterTargetItemDTO
+     */
     @Operation(summary = "修改指标项",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -181,12 +189,16 @@ public class ProductionParameterTargetItemController {
     )
     @Log(title = "修改指标项",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/editProductionTargetItem", method = RequestMethod.POST, produces = "application/json")
-    public Object editProductionTargetItem(@Valid @RequestBody UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO) {
+    public void editProductionTargetItem(@Valid @RequestBody UpdateProductionParameterTargetItemDTO updateProductionParameterTargetItemDTO) {
         log.info("params => " + updateProductionParameterTargetItemDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionParameterTargetItemDTO);
-        return productionParameterTargetItemService.editProductionTargetItem(updateProductionParameterTargetItemDTO);
+        productionParameterTargetItemService.editProductionTargetItem(updateProductionParameterTargetItemDTO);
     }
 
+    /**
+     * 删除指标项
+     * @param deleteProductionParameterTargetItemDTO
+     */
     @Operation(summary = "删除指标项",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -204,13 +216,16 @@ public class ProductionParameterTargetItemController {
     )
     @Log(title = "删除指标项",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/delProductionTargetItem", method = RequestMethod.POST, produces = "application/json")
-    public Object delProductionTargetItem(@Valid @RequestBody DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
+    public void delProductionTargetItem(@Valid @RequestBody DeleteProductionParameterTargetItemDTO deleteProductionParameterTargetItemDTO) {
         log.info("params => " + deleteProductionParameterTargetItemDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionParameterTargetItemDTO);
-        return productionParameterTargetItemService.delProductionTargetItem(deleteProductionParameterTargetItemDTO);
+        productionParameterTargetItemService.delProductionTargetItem(deleteProductionParameterTargetItemDTO);
     }
 
-
+    /**
+     * 查询物料代码
+     * @return
+     */
     @Operation(summary = "查询物料代码",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -239,13 +254,10 @@ public class ProductionParameterTargetItemController {
 
     @Log(title = "查询物料代码",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listMaterialCode", method = RequestMethod.GET)
-    public Object listProductionTargetItem() {
+    public AjaxResult listProductionTargetItem() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        List<Map<String, Object>> list = materialsCodeService.listMaps(new LambdaQueryWrapper<MaterialsCode>()
-                .eq(MaterialsCode::getDeleteFlag, 0));
-        return AjaxResult.success(list);
+        return AjaxResult.success(materialsCodeService.listMaps(new LambdaQueryWrapper<MaterialsCode>().eq(MaterialsCode::getDeleteFlag, 0)));
     }
-
 
 }

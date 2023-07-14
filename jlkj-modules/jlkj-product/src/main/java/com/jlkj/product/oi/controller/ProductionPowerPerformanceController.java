@@ -1,12 +1,11 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productioncoefficientrecord.GetProductionCoefficientRecordDTO;
-import com.jlkj.product.oi.service.impl.ProductionPowerPerformanceServiceImpl;
+import com.jlkj.product.oi.service.ProductionPowerPerformanceService;
 import com.jlkj.product.oi.swaggerdto.ProductionPowerPerformanceSwagger;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,22 +15,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-08-11 14:59
- */
+*@description: 发电量实绩
+*@Author: 265823
+*@date: 2023/7/11 8:56
+*/
 @Tag(name = "发电量实绩")
 @RestController
 @RequestMapping("/powerPerformance")
@@ -42,8 +39,13 @@ public class ProductionPowerPerformanceController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionPowerPerformanceServiceImpl powerPerformanceService;
+    ProductionPowerPerformanceService powerPerformanceService;
 
+    /**
+     * 发电量实绩查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "发电量实绩查询",
             parameters = {
                     @Parameter(name = "start_time", description = "开始时间"),
@@ -62,13 +64,10 @@ public class ProductionPowerPerformanceController {
             }
     )
     @Log(title = "发电量实绩查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getProductionPowerPerformance", method = RequestMethod.GET)
-    public Object get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
+    public AjaxResult get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-
-        IPage<Map<String, Object>> list = powerPerformanceService.get(dto);
-        return AjaxResult.success(list);
+        return AjaxResult.success(powerPerformanceService.get(dto));
     }
 }

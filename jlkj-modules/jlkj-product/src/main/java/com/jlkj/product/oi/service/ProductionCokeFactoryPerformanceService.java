@@ -7,10 +7,10 @@ import com.jlkj.product.oi.dto.productioncokefactoryperformance.PageProductionCo
 import com.jlkj.product.oi.vo.productioncokefactoryperformance.PageProductionCokeFactoryPerformanceVO;
 
 /**
- * 服务接口-焦炭出厂实绩
- * @author sudeyou
- * @since 2022-08-11 14:02:21
- */
+*@description: 服务接口-焦炭出厂实绩
+*@Author: 265823
+*@date: 2023/7/10 11:34
+*/
 public interface ProductionCokeFactoryPerformanceService extends IService<ProductionCokeFactoryPerformance> {
 
     /**

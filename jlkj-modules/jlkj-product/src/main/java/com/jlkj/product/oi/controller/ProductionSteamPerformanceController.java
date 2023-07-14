@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionsteamperformance.ListHomeProductionSteamPerformanceYieldDTO;
@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-蒸汽实绩
- * @author sudeyou
- * @since 2022-09-01 09:40:55
- */
+*@description: 控制器-蒸汽实绩
+*@Author: 265823
+*@date: 2023/7/11 13:48
+*/
 @Tag(name = "蒸汽实绩")
 @RestController
 @RequestMapping("/productionsteamperformance")
@@ -43,6 +43,11 @@ public class ProductionSteamPerformanceController {
     @Resource
     private ProductionSteamPerformanceService productionSteamPerformanceService;
 
+    /**
+     * 首页-蒸汽产量
+     * @param listHomeProductionSteamPerformanceYieldDTO
+     * @return
+     */
     @Operation(summary = "首页-蒸汽产量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -57,14 +62,14 @@ public class ProductionSteamPerformanceController {
     )
     @Log(title = "首页-蒸汽产量",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getHomeProductionSteamPerformanceYieldList", method = RequestMethod.GET)
-    public Object getHomeProductionSteamPerformanceYieldListData(@Validated @ParamModel ListHomeProductionSteamPerformanceYieldDTO listHomeProductionSteamPerformanceYieldDTO) {
+    public AjaxResult getHomeProductionSteamPerformanceYieldListData(@Validated @ParamModel ListHomeProductionSteamPerformanceYieldDTO listHomeProductionSteamPerformanceYieldDTO) {
         log.info("params => " + listHomeProductionSteamPerformanceYieldDTO);
         String errorMsg = ValidUtil.checkValid(listHomeProductionSteamPerformanceYieldDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listHomeProductionSteamPerformanceYieldDTO);
-        return productionSteamPerformanceService.getHomeProductionSteamPerformanceYieldListData(listHomeProductionSteamPerformanceYieldDTO);
+        return AjaxResult.success(productionSteamPerformanceService.getHomeProductionSteamPerformanceYieldListData(listHomeProductionSteamPerformanceYieldDTO));
     }
 }
 

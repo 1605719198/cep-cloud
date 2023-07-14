@@ -14,15 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 /**
- * 服务实现-生产实绩-上煤实绩
- *
- * @author sudeyou
- * @since 2022-11-18 09:39:27
- */
+*@description: 服务实现-生产实绩-上煤实绩
+*@Author: 265823
+*@date: 2023/7/10 14:33
+*/
 @Service
 public class ProductionConveyingCoalActualServiceImpl extends ServiceImpl<ProductionConveyingCoalActualMapper, ProductionConveyingCoalActual>
     implements ProductionConveyingCoalActualService {
 
+    /**
+     * 生产实绩-上煤实绩-查询-分页
+     * @param pageProductionConveyingCoalActualDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionConveyingCoalActualVO> getProductionConveyingCoalActualPageData(PageProductionConveyingCoalActualDTO pageProductionConveyingCoalActualDTO) {

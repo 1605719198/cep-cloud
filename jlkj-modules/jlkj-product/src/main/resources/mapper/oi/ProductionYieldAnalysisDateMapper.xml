@@ -32,7 +32,25 @@
     <select id="getProductionYieldAnalysisDateList" parameterType="com.jlkj.product.oi.dto.productionyieldanalysisdate.ListProductionYieldAnalysisDateDTO" resultType="java.util.Map">
         select year,month,date ${colsMax} from(
             select year,month,date ${cols}
-            from product_oi_yield_analysis_date
+            from (
+            SELECT
+            YEAR(e_count_date_class) AS year,
+            MONTH(e_count_date_class) AS month,
+            DAY(e_count_date_class) AS date,
+            '' as materials_id,
+            '蒸汽' as materials_name,
+            0 as production_plan,
+            (IFNULL(SUM(pro_con_qty), 0) * 1000) AS production_performance
+            FROM v_energy_consume_output
+            WHERE
+            dict_value = '超高压蒸汽'
+            AND  YEAR(e_count_date_class) = #{year}
+            AND  MONTH(e_count_date_class)= #{month}
+            GROUP BY year, month, date
+            ) as a
+            union all
+            select year,month,date ${cols}
+            from t_production_yield_analysis_date
             where year = #{year}
             and month = #{month}
             and materials_name != '干熄焦'
@@ -40,70 +58,70 @@
             union all
             select year,month,date ${cols}
             from (
-                select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
-                       case when coke_type = 1 then '0000000001' else '0000000002' end as materials_id,
-                       case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
-                from product_oi_output_performance_manual_bake
-                group by year,month,date,coke_type
+            select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
+            case when coke_type = 1 then '0000000001' else '0000000002' end as materials_id,
+            case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
+            from t_production_output_performance_manual_bake
+            group by year,month,date,coke_type
             ) as a
             where year = #{year}
             and month = #{month}
             union all
             select year, month, date ${cols}
             from (select year(production_date)       as year,
-                         month(production_date)      as month,
-                         day(production_date)      as date,
-                         0                           as production_plan,
-                         sum(single_hole_production) as production_performance,
-                         #{qjItemId}                 as materials_id,
-                         '全焦'                        as materials_name
-                  from product_oi_output_performance_manual_bake
-                  group by year, month, date) as a
+            month(production_date)      as month,
+            day(production_date)      as date,
+            0                           as production_plan,
+            sum(single_hole_production) as production_performance,
+            #{qjItemId}                 as materials_id,
+            '全焦'                        as materials_name
+            from t_production_output_performance_manual_bake
+            group by year, month, date) as a
             where year = #{year}
-              and month = #{month}
+            and month = #{month}
             union all
             select year, month, date ${cols}
             from (select a.year,
-                         a.month,
-                         a.date,
-                         0 as production_plan,
-                         (a.production_performance - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) as production_performance,
-                         #{yjjItemId} as materials_id,
-                         '冶金焦' as materials_name
-                  from (select year(production_date)       as year,
-                               month(production_date)      as month,
-                               day(production_date)      as date,
-                               sum(single_hole_production) as production_performance
-                        from product_oi_output_performance_manual_bake
-                        group by year, month, date
-                       ) as a
-                           LEFT JOIN (
-                      select year,month,date,
-                             sum(production_performance_jd) as nutCoOutput,
-                             sum(production_performance_jf) as coFinesOutput
-                      from (
-                               select year(car_send_date) as year,
-                                      month(car_send_date) as month,
-                                      day(car_send_date)      as date,
-                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
-                                      0 as production_performance_jf
-                               from logistics_wv_trans_actual_nut a
-                               group by year,month,date
-                               union all
-                               select year(car_send_date) as year,
-                                      month(car_send_date) as month,
-                                      day(car_send_date)      as date,
-                                      0 as production_performance_jd,
-                                      sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
-                               from logistics_wv_trans_actual_fines a
-                               group by year,month,date
-                           ) as a
-                      group by year,month,date
-                  ) b ON a.year = b.year and a.month = b.month and a.date = b.date
-                 ) as a
+            a.month,
+            a.date,
+            0 as production_plan,
+            (a.production_performance - ifnull(b.nutCoOutput,0) - ifnull(coFinesOutput,0)) as production_performance,
+            #{yjjItemId} as materials_id,
+            '冶金焦' as materials_name
+            from (select year(production_date)       as year,
+            month(production_date)      as month,
+            day(production_date)      as date,
+            sum(single_hole_production) as production_performance
+            from t_production_output_performance_manual_bake
+            group by year, month, date
+            ) as a
+            LEFT JOIN (
+            select year,month,date,
+            sum(production_performance_jd) as nutCoOutput,
+            sum(production_performance_jf) as coFinesOutput
+            from (
+            select year(car_send_date) as year,
+            month(car_send_date) as month,
+            day(car_send_date)      as date,
+            sum(ifnull(a.complete_pound_num,0)) as production_performance_jd,
+            0 as production_performance_jf
+            from t_logistics_trans_actual_nut a
+            group by year,month,date
+            union all
+            select year(car_send_date) as year,
+            month(car_send_date) as month,
+            day(car_send_date)      as date,
+            0 as production_performance_jd,
+            sum(ifnull(a.complete_pound_num,0)) as production_performance_jf
+            from t_logistics_trans_actual_fines a
+            group by year,month,date
+            ) as a
+            group by year,month,date
+            ) b ON a.year = b.year and a.month = b.month and a.date = b.date
+            ) as a
             where year = #{year}
-              and month = #{month}
-         ) as a group by year,month,date
+            and month = #{month}
+            ) as a group by year,month,date
         order by year,month,date
     </select>
 
@@ -111,83 +129,106 @@
         select a.`date`,
                max(ifnull(a.production_plan,0))        as production_plan,
                max(ifnull(a.production_performance,0)) as production_performance
-        from (select
-            a.`date`,
-            a.production_plan,
-            a.production_performance
-        from product_oi_yield_analysis_date a
-        where a.`year` = #{year}
-          and a.`month` = #{month}
-          and materials_name != '干熄焦'
+        from (
+                 select
+                     a.`date`,
+                     a.production_plan,
+                     a.production_performance
+                 from (
+                          SELECT
+                              YEAR(e_count_date_class) AS year,
+                              MONTH(e_count_date_class) AS month,
+                              DAY(e_count_date_class) AS date,
+                              '' as materials_id,
+                              '蒸汽' as materials_name,
+                              0 as production_plan,
+                              (IFNULL(SUM(pro_con_qty), 0) * 1000) AS production_performance
+                          FROM v_energy_consume_output
+                          WHERE
+                              #{materialsName} = '蒸汽'
+                            and  dict_value = '超高压蒸汽'
+                            AND  YEAR(e_count_date_class) = #{year}
+                            AND  MONTH(e_count_date_class)= #{month}
+                          GROUP BY year, month, date
+                      ) as a
+                 union all
+                 select
+                     a.`date`,
+                     a.production_plan,
+                     a.production_performance
+                 from t_production_yield_analysis_date a
+                 where a.`year` = #{year}
+                   and a.`month` = #{month}
+                   and materials_name != '干熄焦'
           and materials_name != '湿熄焦'
         and a.materials_name = #{materialsName}
-        union all
-        select a.`date`,
-               a.production_plan,
-               a.production_performance
-        from (
-                 select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
-                        case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
-                 from product_oi_output_performance_manual_bake
-                 group by year,month,date,coke_type
-        ) as a
-        where year = #{year}
-          and month = #{month}
-          and a.materials_name = #{materialsName}
-        union all
-        select a.`date`,
-               a.production_plan,
-               a.production_performance
-        from (select year(production_date)       as year,
+                 union all
+                 select a.`date`,
+                     a.production_plan,
+                     a.production_performance
+                 from (
+                     select year(production_date) as year,month(production_date) as month,day(production_date) as date,0 as production_plan,sum(single_hole_production) as production_performance,
+                     case when coke_type = 1 then '干熄焦' else '湿熄焦' end as materials_name
+                     from t_production_output_performance_manual_bake
+                     group by year,month,date,coke_type
+                     ) as a
+                 where year = #{year}
+                   and month = #{month}
+                   and a.materials_name = #{materialsName}
+                 union all
+                 select a.`date`,
+                     a.production_plan,
+                     a.production_performance
+                 from (select year(production_date)       as year,
                      month(production_date)      as month,
                      day(production_date)        as date,
                      0                           as production_plan,
                      sum(single_hole_production) as production_performance
-              from product_oi_output_performance_manual_bake
-              where #{materialsName} = '全焦'
-              group by year, month,date) as a
-        where year = #{year}
-          and month = #{month}
-        union all
-        select a.`date`,
-               a.production_plan,
-               a.production_performance
-        from (select a.year,
+                     from t_production_output_performance_manual_bake
+                     where #{materialsName} = '全焦'
+                     group by year, month,date) as a
+                 where year = #{year}
+                   and month = #{month}
+                 union all
+                 select a.`date`,
+                     a.production_plan,
+                     a.production_performance
+                 from (select a.year,
                      a.month,
                      a.`date`,
                      0                          as production_plan,
                      (a.production_performance - ifnull(b.nutCoOutput, 0) - ifnull(coFinesOutput, 0)) as production_performance
-              from (select year(production_date)       as year,
-                           month(production_date)      as month,
-                           day(production_date)        as date,
-                           sum(single_hole_production) as production_performance
-                    from product_oi_output_performance_manual_bake
-                    where #{materialsName} = '冶金焦'
-                    group by year, month, date) as a
-                       LEFT JOIN (select year,
-                                         month,
-                                         date,
-                                         sum(production_performance_jd) as nutCoOutput,
-                                         sum(production_performance_jf) as coFinesOutput
-                                  from (select year(car_send_date)                  as year,
-                                               month(car_send_date)                 as month,
-                                               day(car_send_date)      as date,
-                                               sum(ifnull(a.complete_pound_num, 0)) as production_performance_jd,
-                                               0                                    as production_performance_jf
-                                        from logistics_wv_trans_actual_nut a
-                                        group by year, month,date
-                                        union all
-                                        select year(car_send_date)                  as year,
-                                               month(car_send_date)                 as month,
-                                               day(car_send_date)      as date,
-                                               0                                    as production_performance_jd,
-                                               sum(ifnull(a.complete_pound_num, 0)) as production_performance_jf
-                                        from logistics_wv_trans_actual_fines a
-                                        group by year, month,date) as a
-                                  group by year, month,date) b ON a.year = b.year and a.month = b.month and a.date = b.date) as a
-        where year = #{year}
-          and month = #{month}
-        ) as a
+                     from (select year(production_date)       as year,
+                     month(production_date)      as month,
+                     day(production_date)        as date,
+                     sum(single_hole_production) as production_performance
+                     from t_production_output_performance_manual_bake
+                     where #{materialsName} = '冶金焦'
+                     group by year, month, date) as a
+                     LEFT JOIN (select year,
+                     month,
+                     date,
+                     sum(production_performance_jd) as nutCoOutput,
+                     sum(production_performance_jf) as coFinesOutput
+                     from (select year(car_send_date)                  as year,
+                     month(car_send_date)                 as month,
+                     day(car_send_date)      as date,
+                     sum(ifnull(a.complete_pound_num, 0)) as production_performance_jd,
+                     0                                    as production_performance_jf
+                     from t_logistics_trans_actual_nut a
+                     group by year, month,date
+                     union all
+                     select year(car_send_date)                  as year,
+                     month(car_send_date)                 as month,
+                     day(car_send_date)      as date,
+                     0                                    as production_performance_jd,
+                     sum(ifnull(a.complete_pound_num, 0)) as production_performance_jf
+                     from t_logistics_trans_actual_fines a
+                     group by year, month,date) as a
+                     group by year, month,date) b ON a.year = b.year and a.month = b.month and a.date = b.date) as a
+                 where year = #{year}
+                   and month = #{month}
+             ) as a
         group by a.`date`
         order by a.`date`
     </select>

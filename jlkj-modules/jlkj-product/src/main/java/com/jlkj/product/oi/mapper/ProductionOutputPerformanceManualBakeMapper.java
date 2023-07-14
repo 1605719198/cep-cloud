@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jlkj.product.oi.domain.ProductionOutputPerformanceManualBake;
+import com.jlkj.product.oi.dto.productionoutputperformancemanualbake.InsertProductionOutputPerformanceManualBakeDTO;
 import com.jlkj.product.oi.dto.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeDTO;
+import com.jlkj.product.oi.vo.productionoutputperformancemanualbake.CurrentCokeLevelCodeVO;
 import com.jlkj.product.oi.vo.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeVO;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +27,12 @@ public interface ProductionOutputPerformanceManualBakeMapper extends BaseMapper<
      */
     @MapKey("id")
     IPage<PageProductionOutputPerformanceManualBakeVO> getProductionOutputPerformanceManualBakePageData(Page<?> page,@Param("condition") PageProductionOutputPerformanceManualBakeDTO condition);
+
+    /**
+     * 生产管理-炼焦实绩-出炉实绩-手动出炉-新增
+     * @return
+     */
+    @MapKey("id")
+    CurrentCokeLevelCodeVO getCurrentCokeLevelCodeData(InsertProductionOutputPerformanceManualBakeDTO insertProductionOutputPerformanceManualBakeDTO);
+
 }

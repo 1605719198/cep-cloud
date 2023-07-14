@@ -25,7 +25,7 @@ public class ProductionOutputPerformanceManualBake implements Serializable {
     private String id;
 
     /**
-     * 装煤记录编号
+     * 本炉对应装煤记录编号
      */
     private String coalRecordId;
 
@@ -77,12 +77,12 @@ public class ProductionOutputPerformanceManualBake implements Serializable {
     /**
      * 计划运转周期
      */
-    private BigDecimal planningRunCycle;
+    private String planningRunCycle;
 
     /**
      * 实际运转周期
      */
-    private BigDecimal actualRunCycle;
+    private String actualRunCycle;
 
     /**
      * 单孔产量
@@ -123,6 +123,15 @@ public class ProductionOutputPerformanceManualBake implements Serializable {
      * 配煤实绩主记录id
      */
     private String coalPerformanceId;
+
+    /**
+     * 出炉后装煤记录编号
+     */
+    private String nextCoalRecordId;
+    /**
+     * 配煤实绩明细开始时间
+     */
+    private Date coalDetailStartTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

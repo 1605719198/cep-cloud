@@ -176,5 +176,58 @@ public class ListProductionCokeOvensAccountVO {
      */
     @Schema(description = "湿熄炉数（二级）")
     private BigDecimal moistStoveNumberC;
+
+    /**
+     * 产量焦丁（一级）
+     */
+    @Schema(description = "产量焦丁（一级）")
+    private BigDecimal nutCoOutputA;
+
+    /**
+     * 产量焦丁（准一级）
+     */
+    @Schema(description = "产量焦丁（准一级）")
+    private BigDecimal nutCoOutputB;
+
+    /**
+     * 产量焦丁（二级）
+     */
+    @Schema(description = "产量焦丁（二级）")
+    private BigDecimal nutCoOutputC;
+
+    /**
+     * 产量焦粉（一级）
+     */
+    @Schema(description = "产量焦粉（一级）")
+    private BigDecimal coFinesOutputA;
+
+    /**
+     * 产量焦粉（准一级）
+     */
+    @Schema(description = "产量焦粉（准一级）")
+    private BigDecimal coFinesOutputB;
+
+    /**
+     * 产量焦粉（二级）
+     */
+    @Schema(description = "产量焦粉（二级）")
+    private BigDecimal coFinesOutputC;
+    /**
+     * 产量CDQ粉（一级）
+     */
+    @Schema(description = "产量CDQ粉（一级）")
+    private BigDecimal cdqOutputA;
+
+    /**
+     * 产量CDQ粉（准一级）
+     */
+    @Schema(description = "产量CDQ粉（准一级）")
+    private BigDecimal cdqOutputB;
+
+    /**
+     * 产量CDQ粉（二级）
+     */
+    @Schema(description = "产量CDQ粉（二级）")
+    private BigDecimal cdqOutputC;
 }
 

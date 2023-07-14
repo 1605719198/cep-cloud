@@ -14,14 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 /**
- * 服务实现-出炉实绩测温记录
- * @author sudeyou
- * @since 2022-08-11 14:06:15
- */
+*@description: 服务实现-出炉实绩测温记录
+*@Author: 265823
+*@date: 2023/7/10 17:08
+*/
 @Service
 public class ProductionOutputPerformanceTemperatureServiceImpl extends ServiceImpl<ProductionOutputPerformanceTemperatureMapper, ProductionOutputPerformanceTemperature>
     implements ProductionOutputPerformanceTemperatureService {
 
+    /**
+     * 出炉实绩测温记录-查询-分页
+     * @param pageProductionOutputPerformanceTemperatureDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionOutputPerformanceTemperatureVO> getProductionOutputPerformanceTemperaturePageData(PageProductionOutputPerformanceTemperatureDTO pageProductionOutputPerformanceTemperatureDTO) {

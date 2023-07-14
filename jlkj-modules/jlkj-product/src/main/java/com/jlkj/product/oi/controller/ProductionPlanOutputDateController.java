@@ -33,10 +33,10 @@ import java.util.List;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-04-26 10:35
- */
+*@description: 日产量计划
+*@Author: 265823
+*@date: 2023/7/10 8:18
+*/
 @Tag(name = "日产量计划")
 @RestController
 @RequestMapping("/plan")
@@ -47,11 +47,13 @@ public class ProductionPlanOutputDateController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionParameterTargetItemService productionParameterTargetItemService;
-
-    @Autowired
     ProductionPlanOutputDateService planOutputDateService;
 
+    /**
+     * 查询日生产产量计划
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询日生产产量计划",
             parameters = {
                     @Parameter(name = "planYear", description = "计划年度"),
@@ -64,15 +66,17 @@ public class ProductionPlanOutputDateController {
     )
     @Log(title = "查询日生产产量计划",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listDateProductionOutputPlans", method = RequestMethod.GET)
-    public Object get(@Valid GetProductionPlanDayDTO dto) {
+    public AjaxResult get(@Valid GetProductionPlanDayDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        List<ProductionParameterTargetItem> itemlist =
-                productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
-                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
-        return planOutputDateService.get(dto, itemlist);
+        return AjaxResult.success(planOutputDateService.get(dto));
     }
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(日计划)
+     * @param listProductionPlanOutputDateTargetItemDTO
+     * @return
+     */
     @Operation(summary = "生产管理-指标跟踪-图表-指标项(日计划)",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -87,13 +91,13 @@ public class ProductionPlanOutputDateController {
     )
     @Log(title = "生产管理-指标跟踪-图表-指标项(日计划)",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionPlanOutputDateTargetItemChart", method = RequestMethod.GET)
-    public Object getProductionPlanOutputDateTargetItemChartData(@Validated @ParamModel ListProductionPlanOutputDateTargetItemDTO listProductionPlanOutputDateTargetItemDTO) {
+    public AjaxResult getProductionPlanOutputDateTargetItemChartData(@Validated @ParamModel ListProductionPlanOutputDateTargetItemDTO listProductionPlanOutputDateTargetItemDTO) {
         log.info("params => " + listProductionPlanOutputDateTargetItemDTO);
         String errorMsg = ValidUtil.checkValid(listProductionPlanOutputDateTargetItemDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listProductionPlanOutputDateTargetItemDTO);
-        return planOutputDateService.getProductionPlanOutputDateTargetItemChartData(listProductionPlanOutputDateTargetItemDTO);
+        return AjaxResult.success(planOutputDateService.getProductionPlanOutputDateTargetItemChartData(listProductionPlanOutputDateTargetItemDTO));
     }
 }

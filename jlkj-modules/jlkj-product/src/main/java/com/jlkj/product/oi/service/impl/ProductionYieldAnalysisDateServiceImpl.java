@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-产量分析日表
- * @author sudeyou
- * @since 2022-07-15 14:27:41
- */
+*@description: 服务实现-产量分析日表
+*@Author: 265823
+*@date: 2023/7/11 13:58
+*/
 @Service
 public class ProductionYieldAnalysisDateServiceImpl extends ServiceImpl<ProductionYieldAnalysisDateMapper, ProductionYieldAnalysisDate>
     implements ProductionYieldAnalysisDateService {
@@ -28,6 +28,11 @@ public class ProductionYieldAnalysisDateServiceImpl extends ServiceImpl<Producti
     @Resource
     private ProductionYieldAnalysisDateMapper productionYieldAnalysisDateMapper;
 
+    /**
+     * 生产管理-产量跟踪-查询(日)
+     * @param listProductionYieldAnalysisDateDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductionYieldAnalysisDateList(ListProductionYieldAnalysisDateDTO listProductionYieldAnalysisDateDTO) {
@@ -54,42 +59,76 @@ public class ProductionYieldAnalysisDateServiceImpl extends ServiceImpl<Producti
         return getBaseMapper().getProductionYieldAnalysisDateList(listProductionYieldAnalysisDateDTO);
     }
 
+    /**
+     * 生产管理-产量跟踪-图表-物料名称(日)
+     * @param listProductionYieldAnalysisDateMaterialDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionYieldAnalysisDateMaterialVO> getProductionYieldAnalysisChartDate(ListProductionYieldAnalysisDateMaterialDTO listProductionYieldAnalysisDateMaterialDTO) {
         return getBaseMapper().getProductionYieldAnalysisChartDate(listProductionYieldAnalysisDateMaterialDTO);
     }
 
+    /**
+     * 生产管理-首页-焦碳计划实绩图表
+     * @param homeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListYieldChartVO> getProductionHomeYieldChartData(HomeDTO homeDTO) {
         return getBaseMapper().getProductionHomeYieldChartData(homeDTO);
     }
 
+    /**
+     * 生产管理-首页-焦碳计划实绩统计
+     * @param homeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public InfoYieldStatisticsVO getProductionHomeYieldStatisticsData(HomeDTO homeDTO) {
         return getBaseMapper().getProductionHomeYieldStatisticsData(homeDTO);
     }
 
+    /**
+     * 生产管理-首页-发电计划实绩统计
+     * @param homeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public InfoPowerStatisticsVO getProductionHomePowerStatisticsData(HomeDTO homeDTO) {
         return getBaseMapper().getProductionHomePowerStatisticsData(homeDTO);
     }
 
+    /**
+     * 生产管理-首页-发电仪表图表
+     * @param homeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListPowerMeterChartVO> getProductionHomePowerMeterChartData(HomeDTO homeDTO) {
         return getBaseMapper().getProductionHomePowerMeterChartData(homeDTO);
     }
 
+    /**
+     * 生产管理-首页-统计
+     * @param homeDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public InfoStatisticsVO getProductionHomeStatisticsData(HomeDTO homeDTO) {
         return getBaseMapper().getProductionHomeStatisticsData(homeDTO);
     }
 
+    /**
+     * 生产管理-产量跟踪-查询-获取动态列表
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductionYieldAnalysisColList() {

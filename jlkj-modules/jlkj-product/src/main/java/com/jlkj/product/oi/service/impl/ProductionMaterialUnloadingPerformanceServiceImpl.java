@@ -9,11 +9,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.product.oi.domain.MaterialsCoalDayStock;
-import com.jlkj.product.oi.domain.MaterialsCoalStock;
-import com.jlkj.product.oi.domain.MaterialsCode;
-import com.jlkj.product.oi.domain.ProductionMaterialUnloadingPerformance;
+import com.jlkj.common.core.exception.ServiceException;
+import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.changelog.InsertChangeLogDTO;
 import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.AddProductionMaterialUnloadingPerformanceDTO;
 import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.GetProductionMaterialUnloadingPerformanceDTO;
@@ -23,11 +20,13 @@ import com.jlkj.product.oi.mapper.MaterialsCoalStockMapper;
 import com.jlkj.product.oi.mapper.ProductionMaterialUnloadingPerformanceMapper;
 import com.jlkj.product.oi.service.ChangeLogService;
 import com.jlkj.product.oi.service.MaterialsCoalDayStockService;
+import com.jlkj.product.oi.service.MaterialsCodeSmallService;
 import com.jlkj.product.oi.service.ProductionMaterialUnloadingPerformanceService;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -37,9 +36,9 @@ import java.util.*;
 import static com.jlkj.product.oi.constants.RedissonUtil.getLock;
 
 /**
-* @author zyf
-* @description 针对表【product_oi_material_unloading_performance(物料卸车实绩)】的数据库操作Service实现
-* @createDate 2022-05-10 08:43:09
+*@description: 针对表【product_oi_material_unloading_performance(物料卸车实绩)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/10 16:51
 */
 @Service
 public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceImpl<ProductionMaterialUnloadingPerformanceMapper, ProductionMaterialUnloadingPerformance>
@@ -59,9 +58,16 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
 
     @Resource
     private MaterialsCoalDayStockService materialsCoalDayStockService;
-
-
-    public Object get(GetProductionMaterialUnloadingPerformanceDTO dto) {
+    @Resource
+    private MaterialsCodeSmallService materialsCodeSmallService;
+    /**
+     * 物料卸货实绩查询
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public IPage<Map<String, Object>> get(GetProductionMaterialUnloadingPerformanceDTO dto) {
         Date start = DateUtil.parse(StrUtil.isEmpty(dto.getUnloadingStart()) ? "1790-01-01" : dto.getUnloadingStart() + " 00:00:00");
         Date end = DateUtil.parse(StrUtil.isEmpty(dto.getUnloadingEnd()) ? "1790-01-01" : dto.getUnloadingEnd() + " 23:59:59");
         QueryWrapper<ProductionMaterialUnloadingPerformance> queryWrapper = new QueryWrapper<>();
@@ -73,14 +79,21 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
                 .eq(!StrUtil.isEmpty(dto.getClassName()), ProductionMaterialUnloadingPerformance::getClassName, dto.getClassName())
                 .eq(!StrUtil.isEmpty(dto.getShippingMethod()), ProductionMaterialUnloadingPerformance::getShippingMethod, dto.getShippingMethod())
                 .eq(!StrUtil.isEmpty(dto.getMaterialCode()), ProductionMaterialUnloadingPerformance::getMaterialCode, dto.getMaterialCode())
+                .like(!StrUtil.isEmpty(dto.getSupplierName()), ProductionMaterialUnloadingPerformance::getSupplierName, dto.getSupplierName())
                 .isNull(dto.getIsDone() == 1, ProductionMaterialUnloadingPerformance::getUnloadingTime)
                 .isNotNull(dto.getIsDone() == 2, ProductionMaterialUnloadingPerformance::getUnloadingTime);
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         IPage<Map<String, Object>> list = pageMaps(page, queryWrapper);
-        return AjaxResult.success(list);
+        return list;
     }
 
-    public Object save(AddProductionMaterialUnloadingPerformanceDTO dto) {
+    /**
+     * 物料卸货实绩新增
+     * @param dto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveCustom(AddProductionMaterialUnloadingPerformanceDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("saveMaterialUnloadingPerformance", dto.getPlanId()));
         rLock.lock();
         try {
@@ -92,8 +105,12 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
             unloadingPerformance.setId(IdUtil.randomUUID());
             unloadingPerformance.setPlanId(dto.getPlanId());
             unloadingPerformance.setPlanDate(DateUtil.parse(dto.getPlanDate()));
+            //0609新增 start
+            unloadingPerformance.setSupplierNumber(dto.getSupplierNumber());
             unloadingPerformance.setSupplierName(dto.getSupplierName());
-            unloadingPerformance.setShippingMethod(dto.getShippingMethod());
+            unloadingPerformance.setFromCode(dto.getFromCode());
+            unloadingPerformance.setFromDecs(dto.getFromDecs());
+            ////0609新增 end            unloadingPerformance.setShippingMethod(dto.getShippingMethod());
             unloadingPerformance.setVehicleNumber(dto.getVehicleNumber());
             if (materialsCode != null) {
                 unloadingPerformance.setMaterialNumber(materialsCode.getId());
@@ -105,26 +122,46 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
             save(unloadingPerformance);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
-    public Object update(UpdateProductionMaterialUnloadingPerformanceDTO dto) {
+    /**
+     * 物料卸货实绩修改
+     * @param dto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateCustom(UpdateProductionMaterialUnloadingPerformanceDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("updateMaterialUnloadingPerformance", dto.getId()));
         rLock.lock();
         try {
             Date now = DateUtil.date();
             ProductionMaterialUnloadingPerformance unloadingPerformance = getById(dto.getId());
+            Date unloadingTime = unloadingPerformance.getUnloadingTime();
+            String storageSpacesId = unloadingPerformance.getStorageMaintainId();
+
             boolean noTime = false;
             if (unloadingPerformance == null) {
-                return AjaxResult.error("当前卸车记录不存在或已删除");
+                throw new ServiceException("当前卸车记录不存在或已删除");
             }
             if (Objects.isNull(unloadingPerformance.getUnloadingTime())) {
                 noTime = true;
             }
+            List<MaterialsCodeSmall> codes =materialsCodeSmallService.list(new LambdaQueryWrapper<MaterialsCodeSmall>()
+                    .eq(MaterialsCodeSmall::getVendorNo, unloadingPerformance.getSupplierNumber())
+                    .eq(MaterialsCodeSmall::getMaterialsCode, unloadingPerformance.getMaterialCode())
+                    .eq(MaterialsCodeSmall::getSendVendorNo, unloadingPerformance.getFromCode())
+                    .eq(MaterialsCodeSmall::getDeleteFlag, 0)
+            );
+            if (codes.size() == 0) {
+                throw new ServiceException("当前卸车记录信息未能匹配到对应的小煤种信息");
+            }
+            String materialsSmallCode = codes.get(0).getMaterialsSmallCode();
+            String materialsSmallName = codes.get(0).getMaterialsSmallName();
+
             StringBuilder content = new StringBuilder();
             if (!(null != unloadingPerformance.getUnloadingTime() ?  DateUtil.formatDateTime(unloadingPerformance.getUnloadingTime()) : "").equals(dto.getUnloadingTime())) {
                 content.append("[卸车时间：").append(null != unloadingPerformance.getUnloadingTime() ?  DateUtil.formatDateTime(unloadingPerformance.getUnloadingTime()) : "").append("->").append(dto.getUnloadingTime()).append("]");
@@ -157,54 +194,66 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
             updateById(unloadingPerformance);
             if (noTime) {
                 MaterialsCoalStock materialsCoalStock = coalStockMapper.selectOne(new LambdaQueryWrapper<MaterialsCoalStock>()
-                        .eq(MaterialsCoalStock::getMaterialsId, unloadingPerformance.getMaterialCode()));
+                        .eq(MaterialsCoalStock::getMaterialsSmallCode, materialsSmallCode));
                 BigDecimal stock = materialsCoalStock.getInventory().add(unloadingPerformance.getMaterialWeight());
                 materialsCoalStock.setInventory(stock);
                 coalStockMapper.updateById(materialsCoalStock);
                 List<MaterialsCoalDayStock> materialsCoalDayStockList = materialsCoalDayStockService.list(new QueryWrapper<MaterialsCoalDayStock>().lambda()
-                        .eq(MaterialsCoalDayStock::getStatDate, DateUtil.today())
-                        .eq(MaterialsCoalDayStock::getMaterialsId, unloadingPerformance.getMaterialCode())
+                        .eq(MaterialsCoalDayStock::getStatDate, dto.getUnloadingTime().substring(0, 10))
+                        .eq(MaterialsCoalDayStock::getMaterialsSmallCode, materialsSmallCode)
                 );
                 MaterialsCoalDayStock materialsCoalDayStock;
-                if(materialsCoalDayStockList.size() > 0) {
+                if (materialsCoalDayStockList.size() > 0) {
                     materialsCoalDayStock = materialsCoalDayStockList.get(0);
                     materialsCoalDayStock.setInventory(materialsCoalDayStock.getInventory().add(unloadingPerformance.getMaterialWeight()));
                     materialsCoalDayStockService.updateById(materialsCoalDayStock);
                 }
-                else {
-                    materialsCoalDayStock = new MaterialsCoalDayStock();
-                    materialsCoalDayStock.setId(IdUtil.randomUUID());
-                    materialsCoalDayStock.setMaterialsId(materialsCoalStock.getMaterialsId());
-                    materialsCoalDayStock.setMaterialsName(materialsCoalStock.getMaterialsName());
-                    materialsCoalDayStock.setCategoryId(materialsCoalStock.getCategoryId());
-                    materialsCoalDayStock.setCategoryName(materialsCoalStock.getCategoryName());
-                    materialsCoalDayStock.setStorageSpacesId(materialsCoalStock.getStorageSpacesId());
-                    materialsCoalDayStock.setStorageSpacesName(materialsCoalStock.getStorageSpacesName());
-                    materialsCoalDayStock.setTodayUnloadedWeight(new BigDecimal("0"));
-                    materialsCoalDayStock.setTodayLoadingWeight(new BigDecimal("0"));
-                    materialsCoalDayStock.setInventory(materialsCoalStock.getInventory());
-                    materialsCoalDayStock.setStatDate(new Date());
-                    materialsCoalDayStock.setCreateTime(new Date());
-                    materialsCoalDayStockService.save(materialsCoalDayStock);
+            }else {
+                if (!DateUtil.formatDate(unloadingTime).equals(dto.getUnloadingTime().substring(0,10))) {
+
+                    List<MaterialsCoalDayStock> materialsCoalDayStockList = materialsCoalDayStockService.list(new QueryWrapper<MaterialsCoalDayStock>().lambda()
+                            .eq(MaterialsCoalDayStock::getStatDate, dto.getUnloadingTime().substring(0,10))
+                            .eq(MaterialsCoalDayStock::getMaterialsSmallCode, materialsSmallCode)
+                    );
+                    MaterialsCoalDayStock materialsCoalDayStock;
+                    if (materialsCoalDayStockList.size() > 0) {
+                        materialsCoalDayStock = materialsCoalDayStockList.get(0);
+                        materialsCoalDayStock.setInventory(materialsCoalDayStock.getInventory().add(unloadingPerformance.getMaterialWeight()));
+                        materialsCoalDayStockService.updateById(materialsCoalDayStock);
+                    }
+
+                    List<MaterialsCoalDayStock> materialsCoalDayStockOldList = materialsCoalDayStockService.list(new QueryWrapper<MaterialsCoalDayStock>().lambda()
+                            .eq(MaterialsCoalDayStock::getStatDate, DateUtil.formatDate(unloadingTime))
+                            .eq(MaterialsCoalDayStock::getMaterialsSmallCode, materialsSmallCode)
+                    );
+                    MaterialsCoalDayStock materialsCoalDayOldStock;
+                    materialsCoalDayOldStock = materialsCoalDayStockOldList.get(0);
+                    materialsCoalDayOldStock.setInventory(materialsCoalDayOldStock.getInventory().subtract(unloadingPerformance.getMaterialWeight()));
+                    materialsCoalDayStockService.updateById(materialsCoalDayOldStock);
                 }
             }
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
-    public Object updateMaterialUnloadingPerformanceWeight(UpdateProductionMaterialUnloadingPerformanceWeightDTO dto) {
+    /**
+     * 物料卸货实绩修改重量
+     * @param dto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateMaterialUnloadingPerformanceWeight(UpdateProductionMaterialUnloadingPerformanceWeightDTO dto) {
         RLock rLock = redissonClient.getLock(getLock("updateMaterialUnloadingPerformanceWeight", dto.getPlanListNo()));
         rLock.lock();
         try {
             ProductionMaterialUnloadingPerformance unloadingPerformance = lambdaQuery()
                     .eq(ProductionMaterialUnloadingPerformance::getPlanId, dto.getPlanListNo()).one();
             if (unloadingPerformance == null) {
-                return AjaxResult.error("当前卸车记录不存在或已删除");
+                throw new ServiceException("当前卸车记录不存在或已删除");
             }
             unloadingPerformance.setStorageSpacesId(dto.getStgNo());
             unloadingPerformance.setStorageSpacesName(dto.getStgName());
@@ -213,20 +262,24 @@ public class ProductionMaterialUnloadingPerformanceServiceImpl extends ServiceIm
             updateById(unloadingPerformance);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(e.getMessage());
+            throw new ServiceException(e.getMessage());
         } finally {
             rLock.unlock();
         }
-        return AjaxResult.success();
     }
 
-    public Object del(AddProductionMaterialUnloadingPerformanceDTO dto) {
+    /**
+     * 物料卸货实绩删除重量
+     * @param dto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void del(AddProductionMaterialUnloadingPerformanceDTO dto) {
         ProductionMaterialUnloadingPerformance unloadingPerformance = getOne(new LambdaQueryWrapper<ProductionMaterialUnloadingPerformance>()
                 .eq(ProductionMaterialUnloadingPerformance::getPlanId, dto.getPlanId()));
         if (ObjectUtil.isNotNull(unloadingPerformance)) {
             removeById(unloadingPerformance);
         }
-        return AjaxResult.success();
     }
 }
 

@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-焦炭出厂实绩
- * @author sudeyou
- * @since 2022-08-11 14:02:21
- */
+*@description: 控制器-焦炭出厂实绩
+*@Author: 265823
+*@date: 2023/7/10 11:33
+*/
 @Tag(name = "焦炭出厂实绩")
 @RestController
 @RequestMapping("/plan")
@@ -43,6 +43,11 @@ public class ProductionCokeFactoryPerformanceController {
     @Resource
     private ProductionCokeFactoryPerformanceService productionCokeFactoryPerformanceService;
 
+    /**
+     * 焦炭出厂实绩-查询-分页
+     * @param pageProductionCokeFactoryPerformanceDTO
+     * @return
+     */
     @Operation(summary = "焦炭出厂实绩-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -57,7 +62,7 @@ public class ProductionCokeFactoryPerformanceController {
     )
     @Log(title = "焦炭出厂实绩-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionCokeFactoryPerformancePage", method = RequestMethod.GET)
-    public Object getProductionCokeFactoryPerformancePageData(@Validated @ParamModel PageProductionCokeFactoryPerformanceDTO pageProductionCokeFactoryPerformanceDTO) {
+    public AjaxResult getProductionCokeFactoryPerformancePageData(@Validated @ParamModel PageProductionCokeFactoryPerformanceDTO pageProductionCokeFactoryPerformanceDTO) {
         log.info("params => " + pageProductionCokeFactoryPerformanceDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCokeFactoryPerformanceDTO);
         if (!"".equals(errorMsg)) {

@@ -11,10 +11,10 @@ import com.jlkj.product.oi.vo.productionrealoutputmonth.PageProductionRealOutput
 import java.util.List;
 
 /**
- * 服务接口-生产管理-日产量
- * @author sudeyou
- * @since 2022-07-13 14:48:56
- */
+*@description: 服务接口-生产管理-日产量
+*@Author: 265823
+*@date: 2023/7/11 11:12
+*/
 public interface ProductionRealOutputDateService extends IService<ProductionRealOutputDate> {
 
     /**
@@ -33,8 +33,7 @@ public interface ProductionRealOutputDateService extends IService<ProductionReal
 
     /**
      * 生产管理-统计分析-指标分析-日产量指标跟踪-更新统计数据
-     * @return 执行结果
      */
-    Object updateProductionRealOutputDateStatisticsData();
+    void updateProductionRealOutputDateStatisticsData();
 }
 
