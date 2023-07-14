@@ -3,13 +3,16 @@ package com.jlkj.human.hd.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.BeanCopyUtils;
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.AttendanceGather;
+import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import com.jlkj.human.hd.mapper.AttendanceGatherMapper;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
 import com.jlkj.human.hd.service.IShiftCodeService;
@@ -24,10 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validator;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author HuangBing
@@ -451,13 +451,13 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 }
             }
         }
-        if(newDataList.size()==0){
+        if (newDataList.size() == 0) {
             return 0;
-        }else{
+        } else {
             System.out.println(newDataList);
             int result = 0;
-            for(AttendanceGather gather : newDataList){
-                result+=attendanceGatherMapper.insertAttendanceGather(gather);
+            for (AttendanceGather gather : newDataList) {
+                result += attendanceGatherMapper.insertAttendanceGather(gather);
             }
 //            return attendanceGatherMapper.batchSummaryData(newDataList);
             return result;
@@ -491,11 +491,12 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
     public AttendanceGather setData(AttendanceGather attendanceGather) {
         HumanresourcePersonnelInfoDTO personnelInfoDTO = iPersonnelService.selectPersonnelInfo(attendanceGather.getEmpNo());
         List<Personnel> personnelList = personnelInfoDTO.getPersonnelList();
+        // 人员基本信息数据
         if (personnelList.size() != 0) {
             Personnel personnel = personnelList.get(0);
             // 是否在职
             String isWork = "1";
-            if(!isWork.equals(personnel.getStatus())){
+            if (!isWork.equals(personnel.getStatus())) {
                 attendanceGather.setResvAttr2a(isWork);
             }
             attendanceGather.setCompId(personnel.getCompId());
@@ -505,12 +506,27 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 attendanceGather.setPostId(personnel.getPostId().toString());
             }
             attendanceGather.setPostName(personnel.getPostName());
-            attendanceGather.setCreator("定时出勤汇总");
-            attendanceGather.setCreateDate(new Date());
-            //数据来源：系统0，导入1
-            String fromSystem = "0";
-            attendanceGather.setDatafrom(fromSystem);
         }
+        // 应出勤数据
+        Date date = new Date();
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date);
+        // 设置为上一个月
+        calendar1.set(Calendar.MONTH, calendar1.get(Calendar.MONTH) - 1);
+        date = calendar1.getTime();
+        PersonShiftCodeDTO shiftCodeDTO = new PersonShiftCodeDTO();
+        shiftCodeDTO.setStartDate(DateUtils.getFirstOfMonth(date));
+        shiftCodeDTO.setEndDate(DateUtils.getLastOfMonth(date));
+        shiftCodeDTO.setEmpId(attendanceGather.getEmpNo());
+        shiftCodeDTO.setCompId(attendanceGather.getCompId());
+        List<ShiftCode> shiftCodes = shiftCodeService.selectShiftCodeByPerson(shiftCodeDTO);
+
+
+        attendanceGather.setCreator("定时出勤汇总");
+        attendanceGather.setCreateDate(new Date());
+        //数据来源：系统0，导入1
+        String fromSystem = "0";
+        attendanceGather.setDatafrom(fromSystem);
         return attendanceGather;
     }
 }

@@ -36,17 +36,17 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-form-item label="上班打卡有效时间(分钟)" prop="onDutyTime">
-            <el-input  type="number" v-model="form.onDutyTime" placeholder="请输入上班打卡有效时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.onDutyTime" placeholder="请输入上班打卡有效时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="下班打卡有效时间(分钟)" prop="offDutyTime">
-            <el-input  type="number" v-model="form.offDutyTime" placeholder="请输入下班打卡有效时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.offDutyTime" placeholder="请输入下班打卡有效时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="迟到时间(分钟)" prop="lateTime" label-width="120px">
-            <el-input  type="number" v-model="form.lateTime" placeholder="请输入迟到时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.lateTime" placeholder="请输入迟到时间" class="inputWidth" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -54,17 +54,17 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-form-item label="上午下班打卡结束时间(分钟)" prop="offDutyAm">
-            <el-input  type="number" v-model="form.offDutyAm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.offDutyAm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="下午上班打卡开始时间(分钟)" prop="onDutyPm">
-            <el-input  type="number" v-model="form.onDutyPm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.onDutyPm" placeholder="请输入下午上班打卡开始时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="早退时间(分钟)" prop="leaTime" label-width="120px">
-            <el-input  type="number" v-model="form.leaTime" placeholder="请输入早退时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.leaTime" placeholder="请输入早退时间" class="inputWidth" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -72,17 +72,17 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-form-item label="打卡间隔时间(分钟)" prop="spaceTime">
-            <el-input  type="number" v-model="form.spaceTime" placeholder="请输入打卡间隔时间" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.spaceTime" placeholder="请输入打卡间隔时间" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="往前审核天数(天)" prop="beforeCheckDays">
-            <el-input  type="number" v-model="form.beforeCheckDays" placeholder="请输入往前审核天数" class="inputWidth" />
+            <el-input  type="number" v-model.number="form.beforeCheckDays" placeholder="请输入往前审核天数" class="inputWidth" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="缓冲时间(分钟)" prop="delayTime" label-width="120px">
-            <el-input  type="number" v-model="form.delayTime" placeholder="请输入缓冲时间" class="inputWidth"/>
+            <el-input  type="number" v-model.number="form.delayTime" placeholder="请输入缓冲时间" class="inputWidth"/>
           </el-form-item>
         </el-col>
 
