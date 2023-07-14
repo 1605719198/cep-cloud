@@ -7,6 +7,7 @@ import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.flow.workflow.domain.SysInstanceForm;
+import com.jlkj.flow.workflow.service.IWfDeployService;
 import com.jlkj.flow.workflow.service.SysInstanceFormService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -31,6 +33,8 @@ public class WfSysInstanceFormController extends BaseController {
 
     @Autowired
     private SysInstanceFormService instanceFormService;
+    @Resource
+    private IWfDeployService iWfDeployService;
 
     /**
      * 根据流程实例获取绑定表单信息
@@ -75,4 +79,23 @@ public class WfSysInstanceFormController extends BaseController {
         return AjaxResult.success("保存成功！");
     }
 
+    /**
+     * 绑定表单和流程
+     * @param sysInstanceForm
+     * @return
+     */
+    @PostMapping("/saveFormList")
+    public AjaxResult saveInstanceFormNew(@RequestBody SysInstanceForm sysInstanceForm) {
+        log.info("接收到流程表单信息数据=》"+sysInstanceForm);
+        SysInstanceForm instanceForm = instanceFormService.lambdaQuery()
+                .eq(SysInstanceForm::getFormId,sysInstanceForm.getFormId())
+                .one();
+        if (StringUtils.isNotNull(instanceForm)) {
+            instanceForm.setDeployId(sysInstanceForm.getDeployId());
+            instanceFormService.updateById(instanceForm);
+        } else {
+            instanceFormService.save(sysInstanceForm);
+        }
+        return AjaxResult.success("保存成功！");
+    }
 }

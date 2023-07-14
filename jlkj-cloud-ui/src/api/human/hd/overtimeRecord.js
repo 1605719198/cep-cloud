@@ -26,6 +26,15 @@ export function addOvertimeRecord(data) {
   })
 }
 
+// 送出加班数据
+export function sendOvertimeRecord(data) {
+  return request({
+    url: '/human/overtimeRecord/sendOvertimeRecord',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改加班记录
 export function updateOvertimeRecord(data) {
   return request({
