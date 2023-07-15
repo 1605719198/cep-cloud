@@ -413,13 +413,13 @@ export default {
         if (valid) {
           if (this.form.examCode != null) {
             updateExamtask(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addExamtask(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -438,7 +438,7 @@ export default {
         return delExamtask(examCodes);
       }).then(() => {
         this.getList();
-        this.msgSuccess("删除成功");
+        this.$modal.msgSuccess("删除成功");
       }).catch(() => {
       });
     },
