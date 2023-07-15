@@ -257,12 +257,10 @@ export default {
       this.$emit('refreshData')
     },
     checkData () {
-      debugger
       if (this.form.questionsType === undefined || this.form.questionsType === null) {
         this.$message.error('未选择题目类型')
         return false
       }
-
       if (this.form.questionsTitle === undefined || this.form.questionsTitle === null) {
         this.$message.error('未填写试题题目')
         return false
@@ -278,7 +276,6 @@ export default {
         this.$message.error('复杂度需要维护')
         return false
       }
-
       // 循环判断题目项目内容
       for (let i = 0; i < this.answerList.length; i ++) {
         if (this.answerList[i].optionDescribe === null) {
@@ -286,7 +283,6 @@ export default {
           return false
         }
       }
-
       // 判断正确答案是否填入
       if (this.form.questionsType === 1 || this.form.questionsType === 2) {
         // 是判断题或者说是选择题
@@ -352,11 +348,11 @@ export default {
         this.form.answerList = this.answerList
         if (this.isNew) {
           addExamquestions(this.form).then(response => {
-            this.msgSuccess("保存成功");
+            this.$modal.msgSuccess("保存成功");
           });
         } else {
           updateExamquestions(this.form).then(response => {
-            this.msgSuccess("修改成功");
+            this.$modal.msgSuccess("修改成功");
           });
         }
       }
@@ -421,6 +417,7 @@ export default {
       for (let i = 0; i < this.answerList.length; i ++) {
         if (this.answerList[i].optionDescribe === null) {
           this.$message.error('题目选项描述不能为空')
+
           return
         }
       }
