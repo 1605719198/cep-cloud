@@ -98,7 +98,6 @@
       getMaterialsCodeSmallDic().then(res => {
         this.selectSmallCoalType = res.data.data;//表格数据
       }, error => {
-        window.console.log(error);
       });
     },
     computed: {
@@ -117,7 +116,6 @@
           })
         }, error => {
           this.table.loading = false;
-          window.console.log(error);
         });
         listMaterialsBoxM().then((res) => {
           let options = []
@@ -153,7 +151,6 @@
               this.submitLoading = false;
             }, error => {
               this.submitLoading = false;
-              window.console.log(error);
             });
           }
         });

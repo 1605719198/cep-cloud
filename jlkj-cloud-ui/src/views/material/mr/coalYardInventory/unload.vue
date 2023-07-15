@@ -68,7 +68,6 @@ export default {
           },
           (error) => {
             this.table.loading = false
-            window.console.log(error)
           }
         )
       },
@@ -96,7 +95,7 @@ export default {
         }
         this.onLoad()
       },
-    },
+    }
   }
 </script>
 

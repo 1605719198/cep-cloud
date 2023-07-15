@@ -53,7 +53,6 @@
         >导出</el-button>
       </el-form-item>
     </el-form>
-
     <el-table v-loading="loading" :data="baseList" @selection-change="handleSelectionChange">
       <el-table-column label="厂商编码" align="center" prop="manufacturerId" />
       <el-table-column label="中文名称" align="center" prop="manufacturerChineseName"  :show-overflow-tooltip='true'/>
@@ -61,7 +60,6 @@
       <el-table-column label="厂商简称" align="center" prop="manufacturerShortName" />
       <el-table-column label="状态" align="center" prop="status" />
     </el-table>
-
     <pagination
       v-show="total>0"
       :total="total"
@@ -133,7 +131,6 @@ export default {
     },
     //查询日期切换事件
     dutyDateChange(val) {
-      console.log(val);
       if (val!=null){
         this.queryParams.startDate = val[0]
         this.queryParams.endDate = val[1]
@@ -141,17 +138,14 @@ export default {
         this.queryParams.startDate = ''
         this.queryParams.endDate = ''
       }
-
     },
     /** 查询销售管理-厂商基本资料列表 */
     getList() {
       this.loading = true;
-
       if (this.queryParams.originalManufacturerChineseName=="N"||this.queryParams.originalManufacturerChineseName==""){
         this.queryParams.originalManufacturerChineseName =''
       }
       listBase(this.queryParams).then(response => {
-
         this.baseList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -244,41 +238,8 @@ export default {
         this.title = "修改销售管理-厂商基本资料";
       });
     },
-/*    /!** 提交按钮 *!/
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.id != null) {
-            updateBase(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addBase(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },*/
-    /** 删除按钮操作 */
-/*    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除销售管理-厂商基本资料编号为"' + ids + '"的数据项？').then(function() {
-        return delBase(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },*/
     /** 导出按钮操作 */
     handleExport() {
- /*     this.download('system/base/export', {
-        ...this.queryParams
-      }, `base_${new Date().getTime()}.xlsx`)*/
     }
   }
 };

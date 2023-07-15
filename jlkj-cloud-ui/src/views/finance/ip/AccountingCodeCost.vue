@@ -527,7 +527,6 @@ export default {
             this.financeattritestList[i].accountItemAttriValue = response.data.resultList1[i].accountItemAttriValue;
           }
           this.financeattritestListKey += 1;
-          console.log(this.financeattritestList);
         })
       })
 
@@ -553,15 +552,10 @@ export default {
           this.financeattritestListKey += 1;
         })
       })
-
-    },
-
+    }
   }
 }
-
 </script>
-
-
 <style lang="scss" scoped>
 .small-width {
   width: 150px;

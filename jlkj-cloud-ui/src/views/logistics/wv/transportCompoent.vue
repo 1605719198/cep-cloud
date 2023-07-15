@@ -91,7 +91,6 @@ export default {
 
   created() {
     this.handleQuery();
-    console.log(this.id);
   },
   watch: {
     id: {
@@ -114,7 +113,6 @@ export default {
     //查询
     handleQuery() {
       queryTransportActual(this.id).then((res) => {
-        console.log(this.id);
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
         this.queryParams.pageSize = res.data.data.size;

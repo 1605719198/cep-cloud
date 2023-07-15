@@ -85,7 +85,6 @@ export default {
       this.groupAcctIds = selection.map(item => item.groupAcctId);
       this.checkedList.splice(0,this.checkedList.length);
       selection.map((item) => this.checkedList.push(item));
-      console.log("checkedList======>",this.checkedList,typeof this.checkedList)
     },
 
     // 查询表数据
@@ -117,8 +116,6 @@ export default {
       let item = {"groupAcctId":"group_acct_id","groupAcctCode":"group_acct_code"};
       list.push(item)
       let info = {"companyId":this.companyId,"checkedList":this.checkedList};
-      console.log("JSON.stringify(info)====",JSON.stringify(info))
-      console.log("info===",info,typeof info)
       addBatchAcctcodeCorp(info).then(res => {
         this.$modal.msgSuccess(res.msg);
         if (res.code === 200) {

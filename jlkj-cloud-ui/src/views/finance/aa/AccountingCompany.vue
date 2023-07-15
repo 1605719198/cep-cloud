@@ -196,7 +196,6 @@ export default {
     },
     /** 查询测试列表 */
     getList () {
-      console.log(1111)
       this.loading = false;
       listFinancetest(this.queryParams).then(response => {
         if (response.data == null) {

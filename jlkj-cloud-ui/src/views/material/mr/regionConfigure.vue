@@ -196,10 +196,8 @@
             this.list = [...list];
             this.form.count = this.list.length;
           }, error => {
-            window.console.log(error);
           });
         }, error => {
-          window.console.log(error);
         });
       });
     },
@@ -288,7 +286,6 @@
             this.submitLoading = false;
           }, error => {
             this.submitLoading = false;
-            window.console.log(error);
           });
         }
       },
@@ -305,7 +302,6 @@
         }).then(res => {
           this.history_list = res.data.records;
         }, error => {
-          window.console.log(error);
         });
       },
       // 删除
@@ -325,24 +321,11 @@
                 onClose: () => {
                   this.isSiloArea = false;
                   that.list.splice(index, 1);
-                  // that.list[index] ={
-                  //   id: '',
-                  //   componentKey: index * 10000,
-                  //   color_value: '',
-                  //   storage_spaces_id: row.id,
-                  //   storage_spaces_name: row.storage_spaces_name,
-                  //   location: [that.form.silo_length, that.form.silo_length],
-                  //   start_location: that.form.silo_length,
-                  //   end_location: that.form.silo_length,
-                  //   materials_id: '',
-                  //   options: row.option,
-                  // };
                   this.isSiloArea = true;
                 }
               });
             }
           }, error => {
-            window.console.log(error);
           });
         }).catch(() => {
           this.$message({type: 'info', message: '已取消删除'});
@@ -351,7 +334,6 @@
     },
   }
 </script>
-
 
 <style scoped>
   .title {

@@ -157,15 +157,13 @@ export default {
       this.getList()
     },
     update_data (row) {
-      this.isUpdate = true
-      this.examData = row
-      console.log('row:' + JSON.stringify(row))
-      this.bankCodes = []
-      this.bankCodes = row.examBank
-
-      this.queryParams.bankCodes = this.bankCodes
-      this.getList()
-      this.getselectList()
+      this.isUpdate = true;
+      this.examData = row;
+      this.bankCodes = [];
+      this.bankCodes = row.examBank;
+      this.queryParams.bankCodes = this.bankCodes;
+      this.getList();
+      this.getselectList();
     },
     getList() {
       this.loading = true;
@@ -173,12 +171,12 @@ export default {
         this.examquestionsList = response.rows;
         this.total = response.total;
         this.loading = false;
-        this.setChoice()
+        this.setChoice();
       });
     },
     getselectList () {
       chiceListQuestions(this.examData.examCode).then(response => {
-        this.saveList = response.data
+        this.saveList = response.data;
       });
     },
     // 试题类型字典翻译
@@ -249,43 +247,43 @@ export default {
          return
       }
       // 第一遍循环置状态
-      let is_find = false
+      let is_find = false;
       for (let i = 0; i < this.examquestionsList.length; i ++) {
-        is_find = false
+        is_find = false;
         if (this.choiceQuestions !== null || this.choiceQuestions.length > 0) {
           for (let j = 0; j < this.choiceQuestions.length; j ++) {
             if (this.examquestionsList[i].questionsId === this.choiceQuestions[j].questionsId) {
-              is_find = true
+              is_find = true;
             }
           }
         }
 
         if (is_find) {
-          this.examquestionsList[i].remark = 'T'
+          this.examquestionsList[i].remark = 'T';
         } else {
-          this.examquestionsList[i].remark = 'F'
+          this.examquestionsList[i].remark = 'F';
         }
       }
 
       // 第二遍循环操作缓存列表数据
       if (this.saveList === null) {
-        this.saveList = []
+        this.saveList = [];
       }
 
       for (let i = 0; i < this.examquestionsList.length; i ++) {
-        is_find = false
-        let order_id = -1
+        is_find = false;
+        let order_id = -1;
         for (let j = 0; j < this.saveList.length; j ++) {
             if (this.examquestionsList[i].questionsId === this.saveList[j].questionsId) {
-              is_find = true
-              order_id = j
+              is_find = true;
+              order_id = j;
             }
         }
 
         if (this.examquestionsList[i].remark === 'T' && !is_find) {
-          this.saveList.push(this.examquestionsList[i])
+          this.saveList.push(this.examquestionsList[i]);
         } else if (this.examquestionsList[i].remark === 'F' && is_find) {
-          this.saveList.splice(order_id,1)
+          this.saveList.splice(order_id,1);
         }
       }
     },
@@ -335,22 +333,20 @@ export default {
         for (let j = 0; j < this.saveList.length; j ++ ) {
           if (this.examquestionsList[i].questionsId === this.saveList[j].questionsId) {
             this.$nextTick(() => {
-              this.$refs.multipleTable.toggleRowSelection(this.examquestionsList[i], true)
+              this.$refs.multipleTable.toggleRowSelection(this.examquestionsList[i], true);
             })
-            break
+            break;
           }
         }
       }
     },
     getData() {
       this.getSelect()
-      return this.saveList
+      return this.saveList;
     }
   }
 };
 </script>
-
-
 <style scoped lang="scss">
 .button-panel {
   padding-bottom: 1.6rem;

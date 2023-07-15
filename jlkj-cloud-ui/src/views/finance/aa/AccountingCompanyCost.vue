@@ -222,7 +222,6 @@ export default {
             // this.ruleForm.updateUser  = this.userInfo.jobNumber
             // this.ruleForm.updateUserName  = this.userInfo.userName
             updateFinancetest(this.ruleForm).then(response => {
-              console.log(response.data.data);
               if (response.data.data) {
                 this.$message({
                   type: 'success',

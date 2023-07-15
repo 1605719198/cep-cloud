@@ -347,7 +347,6 @@ export default {
     },
     //查询日期切换事件
     dutyDateChange(val) {
-      console.log(val);
       if (val!=null){
         this.queryParams.startDate = val[0]
         this.queryParams.endDate = val[1]

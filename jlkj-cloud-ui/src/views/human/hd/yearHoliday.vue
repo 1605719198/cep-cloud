@@ -307,8 +307,6 @@ export default {
     yeared(){
       var years = new Date().getFullYear()
       this.nowtime = years
-      console.log(years)
-      console.log(this.nowtime)
     },
     // 取消按钮
     cancel() {

@@ -354,7 +354,6 @@ export default {
           addExamquestions(this.form).then(response => {
             this.msgSuccess("保存成功");
           });
-          console.log('清除数据')
         } else {
           updateExamquestions(this.form).then(response => {
             this.msgSuccess("修改成功");
@@ -419,14 +418,12 @@ export default {
         this.$message.error('题目选项不能超过10项')
         return
       }
-
       for (let i = 0; i < this.answerList.length; i ++) {
         if (this.answerList[i].optionDescribe === null) {
           this.$message.error('题目选项描述不能为空')
           return
         }
       }
-
       const answerData = {
         questionsCode : this.form.questionsCode,
         orderId: this.answerList.length + 1,
@@ -434,9 +431,7 @@ export default {
         isRight: 1,
         optionDescribe: null
       }
-
       this.answerList.push(answerData)
-
     },
     handleDelete (row) {
       this.answerList.splice(this.answerList.indexOf(row), 1)
@@ -460,15 +455,12 @@ export default {
 .form-panel {
   margin:  20px 0px 20px 15px;
 }
-
 .rate-area {
   padding: 8px 0px 0px 0px;
 }
-
 .table-panel {
   margin:  0px 0px 20px 0px;
 }
-
 .option-title {
     text-align: right;
     vertical-align: middle;
@@ -481,8 +473,6 @@ export default {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-
-
 .ueditor-title {
     font-size: 14px;
     color: #606266;
@@ -490,11 +480,9 @@ export default {
     line-height: 18px;
     padding: 0 0 10px 0px;
 }
-
 .ueditor-area {
  margin:  0px 0px 10px 0px;
 }
-
 .star-text {
     color: #ff4949;
     margin-right: 4px;

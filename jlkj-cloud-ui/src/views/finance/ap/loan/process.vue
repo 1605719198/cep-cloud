@@ -15,14 +15,9 @@ export default {
   props: ['billNo'],
   mounted() {
     this.$watch('billNo', function (newVal) {
-      console.log(newVal+'billNo');
-
     })
-
   },
   created() {
-
-
   },
   methods: {}
 };

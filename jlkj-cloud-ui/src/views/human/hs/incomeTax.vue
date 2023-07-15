@@ -305,7 +305,6 @@ export default {
     },
     //获取公司列表
     getVersionList() {
-      console.log("ddddd",this.queryParams.compId)
       selectVersion(this.queryParams.compId).then(response => {
         this.versionList = response.data
       })
@@ -461,7 +460,6 @@ export default {
         this.incometaxDetailListList = incometaxDetailListList.filter(function (item) {
           return checkedincometaxDetail.indexOf(item.index) == -1
         });
-        console.log("删除后incometaxDetailListList", this.incometaxDetailListList)
       }
     },
 

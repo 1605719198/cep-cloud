@@ -407,7 +407,6 @@ export default {
         if (this.checkedTCapitalDetail.length == 0) {
           this.$modal.msgError("请先选择要删除的现金流量代码数据");
         } else {
-          console.log(this.checkedTCapitalDetail);
           const tCodeList = this.form.tCodeList;
           const checkedTCapitalDetail = this.checkedTCapitalDetail;
           this.form.tCodeList = tCodeList.filter(function (item) {
@@ -432,7 +431,6 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.checkedTCapitalDetail = selection.map(item => item.index)
-      console.log(this.checkedTCapitalDetail);
       this.codeList = selection
     },
     /** 新增按钮操作 */

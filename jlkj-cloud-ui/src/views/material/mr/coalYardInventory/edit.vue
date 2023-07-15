@@ -126,7 +126,6 @@ export default {
             this.submitLoading = false
           }, error => {
             this.submitLoading = false
-            window.console.log(error);
           });
         }
       });

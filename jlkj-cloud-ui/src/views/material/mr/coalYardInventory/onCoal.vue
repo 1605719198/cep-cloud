@@ -59,7 +59,6 @@
           this.table.loading = false;
         }, error => {
           this.table.loading = false;
-          window.console.log(error);
         });
       },
       // 分页-每页多少条

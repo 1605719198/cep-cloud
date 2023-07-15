@@ -801,17 +801,12 @@ export default {
         this.form.empNo = val
         this.form.empName = userName
         queryInfo(this.form).then(res => {
-          console.log(res.data[0].departmentName)
           this.form.deptName = res.data[0].departmentName
         })
       }else if(this.tagsrc=='agent'){
         this.form.agentNo = val
         this.form.agentName = userName
-        console.log(this.form.agentName)
       }
-      // queryNewPostNameAndChangeDetail(this.form).then(res => {
-      //   this.form.postName = res.data.list1[0].newPostName
-      // })
     },
     getTravelDays(){
       if( this.form.startDate && this.form.endDate){

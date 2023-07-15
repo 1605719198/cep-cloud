@@ -362,7 +362,6 @@ export default {
     },
     /** 获取会计科目 */
     getAccountCodeData(val) {
-      console.log("val====>",val)
       if (this.tagSrc === 'drCodeClick') {
         this.form.acctCoded = val[0].acctCode
         this.form.acctNamed = val[0].acctName
@@ -577,6 +576,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>

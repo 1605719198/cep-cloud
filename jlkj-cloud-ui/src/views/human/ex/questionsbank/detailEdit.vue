@@ -198,7 +198,6 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["dataForm"].validate(valid => {
-        console.log("000000")
         if (valid) {
           if (!this.isNew) {
             updateQuestionsbank(this.dataForm).then(response => {

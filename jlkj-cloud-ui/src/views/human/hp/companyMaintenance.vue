@@ -676,7 +676,6 @@ export default {
       } else {
         this.treeandtable = false
       }
-      // this.getList();
     }
   },
   created() {
@@ -743,9 +742,6 @@ export default {
     },
     /** 转换部门数据结构 */
     normalizer(node) {
-      // if (node.children && !node.children.length) {
-      //   delete node.children;
-      // }
       return {
         id: node.id,
         label: node.label,
@@ -760,8 +756,6 @@ export default {
         this.form.phone = val[0].phonenumber
         this.form.email = val[0].email
       }
-      //   this.form.jobNumber = val[0].userName
-      //   this.form.jobName = val[0].nickName
     },
     /** 上级部门切换事件 */
     deptChange(val) {
@@ -770,8 +764,6 @@ export default {
     },
     // 筛选节点
     filterNode(value, data) {
-      // this.collapseAll(this.deptOptions)
-      console.log(data.label3)
       return (data.label4 <= value) && (data.label3 == 1)
     },
     //折叠节点

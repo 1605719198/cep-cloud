@@ -189,7 +189,6 @@ export default {
     }
     queryEngyIds().then(response => {
       this.optionsEngyIdStart = response.data;
-      // console.log(this.optionsEngyIdStart);
       this.loading = false
     })
     this.getMaterialsOptions()
@@ -253,15 +252,6 @@ export default {
     changeName2(name) {
       this.form.charge_cost_center_name = name
     },
-    //限制方法
-    // changeInput(name) {
-    //   if (name == 'single_consumption') {
-    //     this.form[name] = this.form[name].replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')
-    //   } else {
-    //     //限制正整数
-    //     this.form[name] = this.form[name].replace(/[^\d]/g, "")
-    //   }
-    // },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -277,10 +267,8 @@ export default {
               this.submitLoading = false
             }, error => {
               this.submitLoading = false
-              window.console.log(error);
             });
           } else {
-            // this.form.update_user = this.$store.getters.userInfo.userId;
             this.form.update_user_name = this.userInfo.userName;
             this.submitLoading = true
             updateEnergyInformationConfiguration(this.form).then(res => {
@@ -291,7 +279,6 @@ export default {
               this.submitLoading = false
             }, error => {
               this.submitLoading = false
-              window.console.log(error);
             });
           }
 

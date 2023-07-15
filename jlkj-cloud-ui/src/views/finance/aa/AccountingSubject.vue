@@ -654,7 +654,6 @@ export default {
       this.queryParam.accountCodeX = data.accountCode
       this.accountCodeX = data.accountCode
       this.costCodeLevelCode = data.costCodeLevelCode
-      console.log(data.children)
       if (data.children === null) {
         this.costAccount = true
         this.pagingYN = true

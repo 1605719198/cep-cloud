@@ -506,7 +506,6 @@ export default {
           });
         }
       }, error =>{
-        window.console.log(error);
       })
     },
 
@@ -532,7 +531,6 @@ export default {
           });
         }
       }, error =>{
-        window.console.log(error);
       })
     },
 
@@ -556,7 +554,6 @@ export default {
           });
         }
       }, err => {
-        window.console.log(err);
       });
     },
 
@@ -580,7 +577,6 @@ export default {
           });
         }
       }, err => {
-        window.console.log(err);
       });
     }
 

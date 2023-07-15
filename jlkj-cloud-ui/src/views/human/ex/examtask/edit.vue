@@ -114,7 +114,6 @@ export default {
           }
         )
       }
-
       let groupSaveList = []
       for (let i = 0; i < this.groupList.length; i ++) {
         groupSaveList.push (
@@ -172,13 +171,10 @@ export default {
 
     },
     editDoneHandle () {
-      console.log('editDoneHandle')
     },
     questionsDoneHandle () {
-      console.log('questionsDoneHandle')
     },
     groupDoneHandle () {
-      console.log('groupDoneHandle')
     },
     goBack () {
       this.$emit('refreshEdit')

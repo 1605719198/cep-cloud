@@ -180,7 +180,6 @@ export default {
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
         const newLine = {
           creator: this.nickName,
           creatorId: this.$store.state.user.name,

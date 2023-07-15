@@ -84,7 +84,6 @@ export default {
         this.tableData = data.records;//表格数据
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
 
     },

@@ -30,11 +30,8 @@
       <div slot="footer" class="dialog-footer" style="padding:20px 0 0 0;">
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="submitForm">确 定</el-button>
-
       </div>
       <FinanceCostAllTree :getTreeCost="getTreeCost" :productCodeTree="productCodeTree"  ref="productCodeTree" @closeFinanceCodeDialog="closeFinanceCodeDialog" ></FinanceCostAllTree>
-      <!--    <FinanceAccountingTree :getTreeAccounting="getTreeAccounting" :visible.sync="productAccountTree" v-if="productAccountTree"  ref="productAccountTree"></FinanceAccountingTree>-->
-
       <FinanceAccountingAllTree :getTreeAccounting="getTreeAccounting" :productAccountTree="productAccountTree" ref="productAccountTree" @closeFinanceAccountDialog="closeFinanceAccountDialog"></FinanceAccountingAllTree>
     </el-dialog>
   </div>
@@ -120,7 +117,6 @@ export default {
 
     },
     submitForm() {
-      console.log(this.accountform);
       this.$emit('account',this.accountform)
       this.open = false;
       this.accountform = {}
@@ -158,13 +154,8 @@ export default {
     closeFinanceCodeDialog(data){
       this.accountform.accountIdIdex = data.idTypeStus
       this.accountform.accountRefnoIndex = data.refTypeStus
-      console.log(data);
       this.productCodeTree=false;
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

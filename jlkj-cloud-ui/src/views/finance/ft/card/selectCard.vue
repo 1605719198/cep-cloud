@@ -98,7 +98,6 @@ export default {
       this.assetIds = selection.map(item => item.assetId);
       this.checkedList.splice(0,this.checkedList.length);
       selection.map((item) => this.checkedList.push(item));
-      console.log("itemNos======>",this.assetNos.join(","))
     },
 
     // 查询表数据
@@ -135,11 +134,8 @@ export default {
       this.checkedList.forEach(value =>
         value.companyId = this.companyId,
       );
-     // alert(this.checkedList);
-      console.log("this.checkedList=======>",this.checkedList)
       this.$emit('chooseData',this.checkedList);
       this.visible = false;
-
     }
   }
 };

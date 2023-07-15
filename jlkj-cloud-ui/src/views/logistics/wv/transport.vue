@@ -128,7 +128,6 @@ export default {
     // 选择日期区间
     dateChange (value) {
       this.queryParams.dateRange = value;
-      console.log(value);
     },
 
     //查询

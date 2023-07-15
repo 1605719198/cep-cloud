@@ -94,7 +94,6 @@
         this.updateTreeData(res.data);
       }, error => {
         this.loading = false;
-        window.console.log(error);
       });
     },
     updated: function () {
