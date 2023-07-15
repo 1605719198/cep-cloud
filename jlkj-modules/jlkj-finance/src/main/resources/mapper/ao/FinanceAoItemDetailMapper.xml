@@ -131,4 +131,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{itemNo}
         </foreach>
     </select>
+
+    <update id="updateCheckUnique" parameterType="String">
+        update finance_ao_item_detail set item_no=item_no  where item_no = #{itemNo} and detail_no = #{detailNo}
+    </update>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.jlkj.finance.ao.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 报支管理-报支类别集团设定明细档Service业务层处理
@@ -20,6 +22,7 @@ import java.util.List;
 @Service
 public class FinanceAoItemDetailServiceImpl implements IFinanceAoItemDetailService
 {
+    public static ReentrantLock lock = new ReentrantLock(true);
     @Autowired
     private FinanceAoItemDetailMapper financeAoItemDetailMapper;
 
@@ -56,11 +59,21 @@ public class FinanceAoItemDetailServiceImpl implements IFinanceAoItemDetailServi
     @Override
     public int insertFinanceAoItemDetail(FinanceAoItemDetail financeAoItemDetail)
     {
-        financeAoItemDetail.setId(IdUtils.simpleUUID());
-        financeAoItemDetail.setCreateBy(SecurityUtils.getUsername());
-        financeAoItemDetail.setCreateName(SecurityUtils.getNickName());
-        financeAoItemDetail.setCreateTime(DateUtils.getNowDate());
-        return financeAoItemDetailMapper.insertFinanceAoItemDetail(financeAoItemDetail);
+        // 加锁放并发新增导致流水号重复
+        lock.lock();
+        try{
+            int count = financeAoItemDetailMapper.updateCheckUnique(financeAoItemDetail.getItemNo(),financeAoItemDetail.getDetailNo());
+            if(count!=0){
+                throw new ServiceException("细项编码："+financeAoItemDetail.getDetailNo()+"已经存在，不可重复新增！");
+            }
+            financeAoItemDetail.setId(IdUtils.simpleUUID());
+            financeAoItemDetail.setCreateBy(SecurityUtils.getUsername());
+            financeAoItemDetail.setCreateName(SecurityUtils.getNickName());
+            financeAoItemDetail.setCreateTime(DateUtils.getNowDate());
+            return financeAoItemDetailMapper.insertFinanceAoItemDetail(financeAoItemDetail);
+        }finally {
+            lock.unlock();
+        }
     }
 
     /**

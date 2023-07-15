@@ -1,6 +1,7 @@
 package com.jlkj.finance.ao.mapper;
 
 import com.jlkj.finance.ao.domain.FinanceAoItemDetail;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -69,4 +70,13 @@ public interface FinanceAoItemDetailMapper
      * @return
      */
     public List<FinanceAoItemDetail> selectItemDetailsByNos(String[] itemNos);
+
+
+    /**
+     * 检核数据唯一性
+     * @param itemNo
+     * @param detailNo
+     * @return
+     */
+    public int updateCheckUnique(@Param("itemNo") String itemNo, @Param("detailNo")String detailNo);
 }
