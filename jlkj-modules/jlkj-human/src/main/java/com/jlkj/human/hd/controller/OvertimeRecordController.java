@@ -207,4 +207,25 @@ public class OvertimeRecordController extends BaseController {
         ExcelUtil<OvertimeRecord> util = new ExcelUtil<OvertimeRecord>(OvertimeRecord.class);
         util.importTemplateExcel(response, "加班数据");
     }
+
+    /**
+     * 送出加班数据
+     * @author HuangBing
+     * @date 2023-7-10
+     * @param overtimeRecord 表格数据
+     * @return 确认结果
+     */
+    @Operation(summary = "送出加班数据")
+    @PostMapping("/sendOvertimeRecord")
+    @Log(title = "送出加班数据", businessType = BusinessType.OTHER)
+    public Object sendOvertimeRecord(@RequestBody OvertimeRecord overtimeRecord) {
+        boolean update = iOvertimeRecordService.lambdaUpdate()
+                .set(OvertimeRecord::getStatus, overtimeRecord.getStatus())
+                .eq(OvertimeRecord::getId, overtimeRecord.getId()).update();
+        if (update){
+            return AjaxResult.success("送出成功");
+        } else {
+            return AjaxResult.error("送出失败");
+        }
+    }
 }

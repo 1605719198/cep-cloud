@@ -138,7 +138,6 @@
       },
       // 排序
       handleSort(column) {
-        // console.log(column, "column")
         if (column.order === null) {
           //默认
           this.page.order = "create_time";
@@ -162,7 +161,6 @@
         this.dialog.type = type
         this.dialog.title = '编辑物料代码'
         this.dialog.data = row;
-        // console.log(row, "row")
         this.dialog.visible = true;
       },
       // 删除

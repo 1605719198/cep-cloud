@@ -630,7 +630,6 @@ export default {
     // 状态修改
     handleStatusChange(row) {
       debugger
-      console.log("row====>",row)
       let text = row.disabledCode === "Y" ? "启用" : "停用";
       this.$modal.confirm('确认要' + text + '吗？').then(function () {
         return changeStatus(row.groupAcctId, row.disabledCode);

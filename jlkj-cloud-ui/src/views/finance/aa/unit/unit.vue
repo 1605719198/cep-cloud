@@ -223,7 +223,6 @@ export default {
     /** 查询计量单位维护列表 */
     getCompanyList() {
       select1().then(response => {
-        console.log(response);
         this.baseUnitIdList = response;
       });
     },

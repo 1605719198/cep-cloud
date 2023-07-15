@@ -84,7 +84,6 @@ export default {
         this.tableData = data.records;//表格数据
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
 
     },
@@ -100,7 +99,6 @@ export default {
     },
     // 排序
     handleSort (column) {
-      // console.log(column, "column")
       if (column.order === null) {
         //默认
         this.page.order = "modify_time";

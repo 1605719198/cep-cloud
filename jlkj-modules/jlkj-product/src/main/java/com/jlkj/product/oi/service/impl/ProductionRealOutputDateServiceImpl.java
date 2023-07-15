@@ -3,7 +3,6 @@ package com.jlkj.product.oi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionRealOutputDate;
 import com.jlkj.product.oi.dto.productionrealoutputdate.ListProductionRealOutputDateTargetItemDTO;
 import com.jlkj.product.oi.dto.productionrealoutputdate.PageProductionRealOutputDateDTO;
@@ -28,12 +27,22 @@ import java.util.Map;
 public class ProductionRealOutputDateServiceImpl extends ServiceImpl<ProductionRealOutputDateMapper, ProductionRealOutputDate>
     implements ProductionRealOutputDateService {
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(日实际)
+     * @param listProductionRealOutputDateTargetItemDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionRealOutputDateTargetItemVO> getProductionRealOutputDateTargetItemChartData(ListProductionRealOutputDateTargetItemDTO listProductionRealOutputDateTargetItemDTO) {
         return getBaseMapper().getProductionRealOutputDateTargetItemChartData(listProductionRealOutputDateTargetItemDTO);
     }
 
+    /**
+     * 查询-分页-生产管理-统计分析-指标跟踪(日)
+     * @param pageProductionRealOutputDateDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<PageProductionRealOutputMonthVO> getPageData(PageProductionRealOutputDateDTO pageProductionRealOutputDateDTO) {
@@ -41,9 +50,12 @@ public class ProductionRealOutputDateServiceImpl extends ServiceImpl<ProductionR
         return getBaseMapper().getPageData(page, pageProductionRealOutputDateDTO);
     }
 
+    /**
+     * 生产管理-统计分析-指标分析-日产量指标跟踪-更新统计数据
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateProductionRealOutputDateStatisticsData() {
+    public void updateProductionRealOutputDateStatisticsData() {
         String qj = "全焦";
         String yjj = "冶金焦";
         Map<String, Object> qjMinMax = getBaseMapper().getDateQjMinMax();
@@ -105,7 +117,6 @@ public class ProductionRealOutputDateServiceImpl extends ServiceImpl<ProductionR
             }
             updateById(productionRealOutputDate);
         }
-        return AjaxResult.success("操作成功");
     }
 }
 

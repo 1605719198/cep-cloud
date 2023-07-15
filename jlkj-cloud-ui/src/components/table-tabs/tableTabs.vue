@@ -39,7 +39,6 @@ export default {
     ...mapGetters(["userInfo"]),
   },
   created () {
-    // console.log(this.userInfo)
   },
   methods: {
     handleChange (val) {

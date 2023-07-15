@@ -29,9 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-配煤实绩主记录
- * @author sudeyou
- */
+*@description: 控制器-配煤实绩主记录
+*@Author: 265823
+*@date: 2023/7/10 14:21
+*/
 @Tag(name = "配煤实绩主记录")
 @RestController
 @RequestMapping("/performance")
@@ -44,6 +45,11 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     @Resource
     private ProductionConfigureCoalSpeciesPerformanceService productionConfigureCoalSpeciesPerformanceService;
 
+    /**
+     * 查询-分页-配煤实绩主记录
+     * @param pageProductionConfigureCoalSpeciesPerformanceDTO
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤实绩主记录",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -84,7 +90,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
 
     @Log(title = "查询-分页-配煤实绩主记录",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listConfigureCoalSpeciesPerformance", method = RequestMethod.GET)
-    public Object getPageData(@Validated @ParamModel PageProductionConfigureCoalSpeciesPerformanceDTO pageProductionConfigureCoalSpeciesPerformanceDTO) {
+    public AjaxResult getPageData(@Validated @ParamModel PageProductionConfigureCoalSpeciesPerformanceDTO pageProductionConfigureCoalSpeciesPerformanceDTO) {
         log.info("params => " + pageProductionConfigureCoalSpeciesPerformanceDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionConfigureCoalSpeciesPerformanceDTO);
         if (!"".equals(errorMsg)) {
@@ -93,8 +99,11 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionConfigureCoalSpeciesPerformanceDTO);
         return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getPageData(pageProductionConfigureCoalSpeciesPerformanceDTO));
     }
-
-
+    /**
+     * 查询-分页-配煤分析
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤分析",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -123,7 +132,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     )
     @Log(title = "查询-分页-配煤分析",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listConfigureCoalSpeciesAnalysis", method = RequestMethod.GET)
-    public Object listConfigureCoalSpeciesAnalysis(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisDTO dto) {
+    public AjaxResult listConfigureCoalSpeciesAnalysis(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
@@ -133,7 +142,11 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysis(dto));
     }
 
-
+    /**
+     * 查询-分页-配煤分析-图表-年
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤分析-图表-年",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -157,7 +170,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     )
     @Log(title = "查询-分页-配煤分析-图表-年",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listConfigureCoalSpeciesAnalysisChartByYear", method = RequestMethod.GET)
-    public Object listConfigureCoalSpeciesAnalysisChartByYear(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
+    public AjaxResult listConfigureCoalSpeciesAnalysisChartByYear(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
@@ -167,6 +180,11 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByYear(dto));
     }
 
+    /**
+     * 查询-分页-配煤分析-图表-月
+     * @param dto
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤分析-图表-月",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -192,7 +210,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     )
     @Log(title = "查询-分页-配煤分析-图表-月",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listConfigureCoalSpeciesAnalysisChartByMonth", method = RequestMethod.GET)
-    public Object listConfigureCoalSpeciesAnalysisChartByMonth(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
+    public AjaxResult listConfigureCoalSpeciesAnalysisChartByMonth(@Validated @ParamModel PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
         log.info("params => " + dto);
         String errorMsg = ValidUtil.checkValid(dto);
         if (!"".equals(errorMsg)) {
@@ -202,7 +220,11 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
         return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisChartByMonth(dto));
     }
 
-
+    /**
+     * 统计分析-配煤比分析-图表
+     * @param dto
+     * @return
+     */
     @Operation(summary = "统计分析-配煤比分析-图表",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -221,7 +243,7 @@ public class ProductionConfigureCoalSpeciesPerformanceController {
     )
     @Log(title = "统计分析-配煤比分析-图表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getConfigureCoalSpeciesAnalysisStatistics", method = RequestMethod.GET)
-    public Object getConfigureCoalSpeciesAnalysisStatistics(@Validated @ParamModel PageConfigureCoalSpeciesAnalysisStatisticsDTO dto) {
+    public AjaxResult getConfigureCoalSpeciesAnalysisStatistics(@Validated @ParamModel PageConfigureCoalSpeciesAnalysisStatisticsDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
         return AjaxResult.success(productionConfigureCoalSpeciesPerformanceService.getConfigureCoalSpeciesAnalysisStatistics(dto));

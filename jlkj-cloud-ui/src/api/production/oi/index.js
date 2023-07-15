@@ -44,7 +44,7 @@ export const getProductionHomeStatistics = (params) => {
 // 生产管理-生产看板-今日产量
 export const getTodayYield = (params) => {
   return request({
-    url: '/product//plan/dataBoard/getTodayYield',
+    url: '/product/plan/dataBoard/getTodayYield',
     method: 'get',
     params:params
   })
@@ -53,7 +53,7 @@ export const getTodayYield = (params) => {
 // 生产管理-生产看板-总耗用量
 export const getTodayConsumption = (params) => {
   return request({
-    url: '/product//plan/dataBoard/getTodayConsumption',
+    url: '/product/plan/dataBoard/getTodayConsumption',
     method: 'get',
     params:params
   })
@@ -62,7 +62,7 @@ export const getTodayConsumption = (params) => {
 // 生产管理-生产看板-焦棚库存量
 export const getTodayCokeStock = (params) => {
   return request({
-    url: '/product//plan/dataBoard/getTodayCokeStock',
+    url: '/product/plan/dataBoard/getTodayCokeStock',
     method: 'get',
     params:params
   })
@@ -71,7 +71,7 @@ export const getTodayCokeStock = (params) => {
 // 生产管理-生产看板-焦炭发运量
 export const getTodayCokeShipment = (params) => {
   return request({
-    url: '/product//plan/dataBoard/getTodayCokeShipment',
+    url: '/product/plan/dataBoard/getTodayCokeShipment',
     method: 'get',
     params:params
   })
@@ -80,12 +80,36 @@ export const getTodayCokeShipment = (params) => {
 // 生产管理-生产看板-蒸汽产量
 export const getTodayCokeSteam = (params) => {
   return request({
-    url: '/product//plan/dataBoard/getTodayCokeSteam',
+    url: '/product/plan/dataBoard/getTodayCokeSteam',
     method: 'get',
     params:params
   })
 };
+//生产管理-生产看板-焦炉技术指标数据
+export const getCraftCokeTemp = (params) => {
+  return request({
+    url: '/product/plan/dataBoard/getCraftCokeTemp',
+    method: 'get',
+    params: params
+  })
+};
+//生产看板-收率
+export const getCokeTotalYield = (params) => {
+  return request({
+    url: '/product/plan/dataBoard/getCokeTotalYield',
+    method: 'get',
+    params: params
+  })
+};
 
+//生产看板- 干熄焦技术指标
+export const getCokeTechnologyIndex = (params) => {
+  return request({
+    url: '/product/plan/dataBoard/getCokeTechnologyIndex',
+    method: 'get',
+    params: params
+  })
+};
 
 
 

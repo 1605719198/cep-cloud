@@ -1,8 +1,10 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
+import com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO;
 import com.jlkj.product.oi.service.ProductionCoalWarehouseStockService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,17 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 
 /**
- * @author yzl
- * @Description 配煤仓存量
- * @create 2022-12-08 14:32:11.532028
- */
+*@description: 配煤仓存量
+*@Author: 265823
+*@date: 2023/7/10 11:29
+*/
 @Tag(name = "配煤仓存量")
 @RestController
 @RequestMapping("/productionCoalWarehouseStock")
@@ -37,6 +38,10 @@ public class ProductionCoalWarehouseStockController {
     @Autowired
     ProductionCoalWarehouseStockService productionCoalWarehouseStockService;
 
+    /**
+     * 上煤仓余量-物料看板-图表
+     * @return
+     */
     @Operation(summary = "上煤仓余量-物料看板-图表",
             parameters = {},
             responses = {
@@ -53,11 +58,10 @@ public class ProductionCoalWarehouseStockController {
     )
     @Log(title = "上煤仓余量-物料看板-图表",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getMaterialsCoalWarehouseStock", method = RequestMethod.GET)
-    public Object getMaterialsCoalWarehouseStock() {
+    public AjaxResult getMaterialsCoalWarehouseStock(@Valid @ParamModel GetDataBoardDTO dto) {
         log.info("params => ");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        List<Map<String, String>> list = productionCoalWarehouseStockService.getMaterialsCoalWarehouseStock();
-        return AjaxResult.success(list);
+        return AjaxResult.success(productionCoalWarehouseStockService.getMaterialsCoalWarehouseStock(dto));
     }
 
 }

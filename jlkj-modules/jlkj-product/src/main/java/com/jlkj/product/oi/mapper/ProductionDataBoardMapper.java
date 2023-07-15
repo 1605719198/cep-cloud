@@ -137,4 +137,54 @@ public interface ProductionDataBoardMapper extends BaseMapper<ProductionYieldAna
     @MapKey("id")
     List<Map<String, Object>> getEnergyConsumption(GetCokePlanPerformanceDTO dto);
 
+    /**
+     * 生产看板-焦炉技术指标数据
+     * @param dto
+     * @return
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCraftCokeTemp(GetDataBoardDTO dto);
+    /**
+     * 生产看板 - 收率
+     * @param dto dto
+     * @return 数据查询
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCokeTotalYield(GetDataBoardDTO dto);
+
+    /**
+     * 生产看板 - 干熄焦技术指标
+     * @param dto dto
+     * @return 数据查询
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCokeTechnologyIndex(GetDataBoardDTO dto);
+    /**
+     * 生产看板 - 财务月计划成本
+     * @param dto dto
+     * @return 数据查询
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCostMonthPlan(GetDataBoardDTO dto);
+    /**
+     * 生产看板 - 财务月日实绩成本-累计成本
+     * @param dto dto
+     * @return 数据查询
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCostDayTotal(GetDataBoardDTO dto);
+    /**
+     * 生产看板 - 财务月日实绩成本-当日成本
+     * @param dto dto
+     * @return 数据查询
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCostDayCost(GetDataBoardDTO dto);
+    /**
+     * 生产看板 - 财务月日实绩成本-累计成本
+     * @param dto
+     * @return
+     */
+    @MapKey("id")
+    List<Map<String, Object>> getCostDayTotalLimit(GetDataBoardDTO dto);
 }

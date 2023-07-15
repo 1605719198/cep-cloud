@@ -64,7 +64,6 @@ export default {
       this.itemNos = selection.map(item => item.itemNo);
       this.checkedList.splice(0,this.checkedList.length);
       selection.map((item) => this.checkedList.push(item));
-      console.log("itemNos======>",this.itemNos.join(","))
     },
 
     // 查询表数据
@@ -93,7 +92,6 @@ export default {
         return;
       }
       this.checkedList.forEach(value => value.companyId = this.companyId);
-      console.log("this.checkedList=======>",this.checkedList)
       addBatchData(this.checkedList).then(res => {
         this.$modal.msgSuccess(res.msg);
         if (res.code === 200) {

@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" :placeholder="placeholder" ref="selectTree"
+  <el-select v-model="value" :placeholder="placeholder" ref="selectTree" size="small"
              :clearable="isClearable" :filterable="isFilterable" :filter-method="searchTree">
     <el-option class="selectTreeOption" :value="selectForm.value" :label="selectForm.label">
       <template v-if="isIcon">
@@ -94,7 +94,6 @@
         this.updateTreeData(res.data);
       }, error => {
         this.loading = false;
-        window.console.log(error);
       });
     },
     updated: function () {

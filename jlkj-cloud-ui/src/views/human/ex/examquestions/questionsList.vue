@@ -86,14 +86,14 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['questions:examquestions:edit']"
+              v-hasPermi="['human:examquestions:edit']"
             >修改</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['questions:examquestions:remove']"
+              v-hasPermi="['human:examquestions:remove']"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -213,7 +213,6 @@ export default {
       this.loading = true;
       listQuestionsproperty(this.queryParams).then(response => {
         this.examquestionsList = response.rows;
-        // console.log('this.examquestionsList:' + JSON.stringify(this.examquestionsList))
         this.total = response.total;
         this.loading = false;
       });
@@ -308,13 +307,13 @@ export default {
         if (valid) {
           if (this.form.questionsCode != null) {
             updateExamquestions(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addExamquestions(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });

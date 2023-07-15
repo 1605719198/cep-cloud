@@ -308,7 +308,7 @@
     <select id="selectSummaryEmp" parameterType="com.jlkj.human.hd.domain.AttendanceGather" resultMap="AttendanceGatherResult">
         SELECT DISTINCT(g.emp_id), g.emp_no, g.emp_name, g.comp_id FROM human_hd_attendance_gather g
         LEFT JOIN human_hm_personnel_info p on g.emp_id = p.id
-        WHERE p.status = 1 AND g.emp_id NOT IN (SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = IF(#{month}=12,#{year}+1,#{year}) AND month = if(#{month}=12,1,#{month}+1)) AND g.emp_id IN(SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = #{year} AND month = #{month})
+        WHERE p.status = 1 AND g.emp_id NOT IN (SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = #{year} AND month = #{month}) AND g.emp_id IN(SELECT DISTINCT(emp_id) FROM human_hd_attendance_gather WHERE year = IF(#{month}=1,#{year}-1,#{year}) AND month = if(#{month}=1,12,#{month}-1))
     </select>
 
     <insert id="batchSummaryData" parameterType="java.util.List">
@@ -317,4 +317,153 @@
             (#{item.uuid}, #{item.year}, #{item.month}, #{item.dueAttDuty}, #{item.dueAttDay}, #{item.dueAttHou}, #{item.shoAttDuty}, #{item.shoAttDay}, #{item.shoAttHou}, #{item.actAttDuty}, #{item.actAttDay}, #{item.actAttHou}, #{item.updDueAttDuty}, #{item.updDueAttDay}, #{item.updDueAttHou}, #{item.updShoAttDuty},  #{item.updShoAttDay}, #{item.updShoAttHou}, #{item.updActAttDuty}, #{item.updActAttDay}, #{item.updActAttHou} #{item.lateNum}, #{item.leaNum}, #{item.truDuty}, #{item.truDay}, #{item.truHou}, #{item.befEntDuty}, #{item.befEntDay}, #{item.befEntHou}, #{item.aftEntDuty}, #{item.aftEntDay}, #{item.aftEntHou}, #{item.bigNig}, #{item.smaNig}, #{item.savHou}, #{item.dueResHou}, #{item.resHou}, #{item.empId}, #{item.empNo}, #{item.empName}, #{item.postId}, #{item.postName}, #{item.compId}, #{item.creator}, #{item.creatorId}, #{item.createDate}, #{item.resvAttr1a}, #{item.datafrom}, #{item.resvAttr3a}, #{item.resvAttr4a}, #{item.resvAttr5a}, #{item.resvAttr6a}, #{item.resvAttr7a}, #{item.resvAttr8a}, #{item.resvAttr9a}, #{item.resvAttr10a}, #{item.overTimeHou}, #{item.holDuty}, #{item.holDay}, #{item.holHou}, #{item.bigSmaNig})
         </foreach>
     </insert>
+
+    <sql id="selectAttendanceGatherVo">
+        select uuid, year, month, due_att_duty, due_att_day, due_att_hou, sho_att_duty, sho_att_day, sho_att_hou, act_att_duty, act_att_day, act_att_hou, upd_due_att_duty, upd_due_att_day, upd_due_att_hou, upd_sho_att_duty, upd_sho_att_day, upd_sho_att_hou, upd_act_att_duty, upd_act_att_day, upd_act_att_hou, late_num, lea_num, tru_duty, tru_day, tru_hou, bef_ent_duty, bef_ent_day, bef_ent_hou, aft_ent_duty, aft_ent_day, aft_ent_hou, big_nig, sma_nig, sav_hou, due_res_hou, res_hou, emp_id, emp_no, emp_name, post_id, post_name, comp_id, creator, creator_id, create_date, resv_attr1A, resv_attr2A, datafrom, resv_attr3A, resv_attr4A, resv_attr5A, resv_attr6A, resv_attr7A, resv_attr8A, resv_attr9A, resv_attr10A, over_time_hou, rest_hou, hol_duty, hol_day, hol_hou, big_sma_nig from human_hd_attendance_gather
+    </sql>
+
+    <select id="selectAttendanceGatherList" parameterType="AttendanceGather" resultMap="AttendanceGatherResult">
+        <include refid="selectAttendanceGatherVo"/>
+        <where>
+            <if test="year != null "> and year = #{year}</if>
+            <if test="month != null "> and month = #{month}</if>
+            <if test="empId != null  and empId != ''"> and emp_id = #{empId}</if>
+            <if test="empNo != null  and empNo != ''"> and emp_no = #{empNo}</if>
+            <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+        </where>
+    </select>
+
+    <update id="updateAttendanceGather" parameterType="AttendanceGather">
+        update human_hd_attendance_gather
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="year != null">year = #{year},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="dueAttDuty != null">due_att_duty = #{dueAttDuty},</if>
+            <if test="dueAttDay != null">due_att_day = #{dueAttDay},</if>
+            <if test="dueAttHou != null">due_att_hou = #{dueAttHou},</if>
+            <if test="shoAttDuty != null">sho_att_duty = #{shoAttDuty},</if>
+            <if test="shoAttDay != null">sho_att_day = #{shoAttDay},</if>
+            <if test="shoAttHou != null">sho_att_hou = #{shoAttHou},</if>
+            <if test="actAttDuty != null">act_att_duty = #{actAttDuty},</if>
+            <if test="actAttDay != null">act_att_day = #{actAttDay},</if>
+            <if test="actAttHou != null">act_att_hou = #{actAttHou},</if>
+            <if test="updDueAttDuty != null">upd_due_att_duty = #{updDueAttDuty},</if>
+            <if test="updDueAttDay != null">upd_due_att_day = #{updDueAttDay},</if>
+            <if test="updDueAttHou != null">upd_due_att_hou = #{updDueAttHou},</if>
+            <if test="updShoAttDuty != null">upd_sho_att_duty = #{updShoAttDuty},</if>
+            <if test="updShoAttDay != null">upd_sho_att_day = #{updShoAttDay},</if>
+            <if test="updShoAttHou != null">upd_sho_att_hou = #{updShoAttHou},</if>
+            <if test="updActAttDuty != null">upd_act_att_duty = #{updActAttDuty},</if>
+            <if test="updActAttDay != null">upd_act_att_day = #{updActAttDay},</if>
+            <if test="updActAttHou != null">upd_act_att_hou = #{updActAttHou},</if>
+            <if test="lateNum != null">late_num = #{lateNum},</if>
+            <if test="leaNum != null">lea_num = #{leaNum},</if>
+            <if test="truDuty != null">tru_duty = #{truDuty},</if>
+            <if test="truDay != null">tru_day = #{truDay},</if>
+            <if test="truHou != null">tru_hou = #{truHou},</if>
+            <if test="befEntDuty != null">bef_ent_duty = #{befEntDuty},</if>
+            <if test="befEntDay != null">bef_ent_day = #{befEntDay},</if>
+            <if test="befEntHou != null">bef_ent_hou = #{befEntHou},</if>
+            <if test="aftEntDuty != null">aft_ent_duty = #{aftEntDuty},</if>
+            <if test="aftEntDay != null">aft_ent_day = #{aftEntDay},</if>
+            <if test="aftEntHou != null">aft_ent_hou = #{aftEntHou},</if>
+            <if test="bigNig != null">big_nig = #{bigNig},</if>
+            <if test="smaNig != null">sma_nig = #{smaNig},</if>
+            <if test="savHou != null">sav_hou = #{savHou},</if>
+            <if test="dueResHou != null">due_res_hou = #{dueResHou},</if>
+            <if test="resHou != null">res_hou = #{resHou},</if>
+            <if test="empId != null">emp_id = #{empId},</if>
+            <if test="empNo != null">emp_no = #{empNo},</if>
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="resvAttr1a != null">resv_attr1A = #{resvAttr1a},</if>
+            <if test="resvAttr2a != null">resv_attr2A = #{resvAttr2a},</if>
+            <if test="datafrom != null">datafrom = #{datafrom},</if>
+            <if test="resvAttr3a != null">resv_attr3A = #{resvAttr3a},</if>
+            <if test="resvAttr4a != null">resv_attr4A = #{resvAttr4a},</if>
+            <if test="resvAttr5a != null">resv_attr5A = #{resvAttr5a},</if>
+            <if test="resvAttr6a != null">resv_attr6A = #{resvAttr6a},</if>
+            <if test="resvAttr7a != null">resv_attr7A = #{resvAttr7a},</if>
+            <if test="resvAttr8a != null">resv_attr8A = #{resvAttr8a},</if>
+            <if test="resvAttr9a != null">resv_attr9A = #{resvAttr9a},</if>
+            <if test="resvAttr10a != null">resv_attr10A = #{resvAttr10a},</if>
+            <if test="overTimeHou != null">over_time_hou = #{overTimeHou},</if>
+            <if test="restHou != null">rest_hou = #{restHou},</if>
+            <if test="holDuty != null">hol_duty = #{holDuty},</if>
+            <if test="holDay != null">hol_day = #{holDay},</if>
+            <if test="holHou != null">hol_hou = #{holHou},</if>
+            <if test="bigSmaNig != null">big_sma_nig = #{bigSmaNig},</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <update id="addAttendanceGather" parameterType="AttendanceGather">
+        update human_hd_attendance_gather
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dueAttDuty != null">due_att_duty = due_att_duty+#{dueAttDuty},</if>
+            <if test="dueAttDay != null">due_att_day = due_att_day+#{dueAttDay},</if>
+            <if test="dueAttHou != null">due_att_hou = due_att_hou+#{dueAttHou},</if>
+            <if test="shoAttDuty != null">sho_att_duty = sho_att_duty+#{shoAttDuty},</if>
+            <if test="shoAttDay != null">sho_att_day = sho_att_day+#{shoAttDay},</if>
+            <if test="shoAttHou != null">sho_att_hou = sho_att_hou+#{shoAttHou},</if>
+            <if test="actAttDuty != null">act_att_duty = act_att_duty+#{actAttDuty},</if>
+            <if test="actAttDay != null">act_att_day = act_att_day+#{actAttDay},</if>
+            <if test="actAttHou != null">act_att_hou = act_att_hou+#{actAttHou},</if>
+            <if test="updDueAttDuty != null">upd_due_att_duty = upd_due_att_duty+#{updDueAttDuty},</if>
+            <if test="updDueAttDay != null">upd_due_att_day = upd_due_att_day+#{updDueAttDay},</if>
+            <if test="updDueAttHou != null">upd_due_att_hou = upd_due_att_hou+#{updDueAttHou},</if>
+            <if test="updShoAttDuty != null">upd_sho_att_duty = upd_sho_att_duty+#{updShoAttDuty},</if>
+            <if test="updShoAttDay != null">upd_sho_att_day = upd_sho_att_day+#{updShoAttDay},</if>
+            <if test="updShoAttHou != null">upd_sho_att_hou = upd_sho_att_hou+#{updShoAttHou},</if>
+            <if test="updActAttDuty != null">upd_act_att_duty = upd_act_att_duty+#{updActAttDuty},</if>
+            <if test="updActAttDay != null">upd_act_att_day = upd_act_att_day+#{updActAttDay},</if>
+            <if test="updActAttHou != null">upd_act_att_hou = upd_act_att_hou+#{updActAttHou},</if>
+            <if test="lateNum != null">late_num = late_num+#{lateNum},</if>
+            <if test="leaNum != null">lea_num = lea_num+#{leaNum},</if>
+            <if test="truDuty != null">tru_duty = tru_duty+#{truDuty},</if>
+            <if test="truDay != null">tru_day = tru_day+#{truDay},</if>
+            <if test="truHou != null">tru_hou = tru_hou+#{truHou},</if>
+            <if test="befEntDuty != null">bef_ent_duty = bef_ent_duty+#{befEntDuty},</if>
+            <if test="befEntDay != null">bef_ent_day = bef_ent_day+#{befEntDay},</if>
+            <if test="befEntHou != null">bef_ent_hou = bef_ent_hou+#{befEntHou},</if>
+            <if test="aftEntDuty != null">aft_ent_duty = aft_ent_duty+#{aftEntDuty},</if>
+            <if test="aftEntDay != null">aft_ent_day = aft_ent_day+#{aftEntDay},</if>
+            <if test="aftEntHou != null">aft_ent_hou = aft_ent_hou+#{aftEntHou},</if>
+            <if test="bigNig != null">big_nig = big_nig+#{bigNig},</if>
+            <if test="smaNig != null">sma_nig = sma_nig+#{smaNig},</if>
+            <if test="savHou != null">sav_hou = sav_hou+#{savHou},</if>
+            <if test="dueResHou != null">due_res_hou = due_res_hou+#{dueResHou},</if>
+            <if test="resHou != null">res_hou = res_hou+#{resHou},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="resvAttr1a != null">resv_attr1A = #{resvAttr1a},</if>
+            <if test="resvAttr2a != null">resv_attr2A = #{resvAttr2a},</if>
+            <if test="datafrom != null">datafrom = #{datafrom},</if>
+            <if test="resvAttr3a != null">resv_attr3A = #{resvAttr3a},</if>
+            <if test="resvAttr4a != null">resv_attr4A = #{resvAttr4a},</if>
+            <if test="resvAttr5a != null">resv_attr5A = #{resvAttr5a},</if>
+            <if test="resvAttr6a != null">resv_attr6A = #{resvAttr6a},</if>
+            <if test="resvAttr7a != null">resv_attr7A = #{resvAttr7a},</if>
+            <if test="resvAttr8a != null">resv_attr8A = #{resvAttr8a},</if>
+            <if test="resvAttr9a != null">resv_attr9A = #{resvAttr9a},</if>
+            <if test="resvAttr10a != null">resv_attr10A = #{resvAttr10a},</if>
+            <if test="overTimeHou != null">over_time_hou = #{overTimeHou},</if>
+            <if test="restHou != null">rest_hou = #{restHou},</if>
+            <if test="holDuty != null">hol_duty = #{holDuty},</if>
+            <if test="holDay != null">hol_day = #{holDay},</if>
+            <if test="holHou != null">hol_hou = #{holHou},</if>
+            <if test="bigSmaNig != null">big_sma_nig = #{bigSmaNig},</if>
+        </trim>
+        WHERE year = #{year} AND month = #{month} AND emp_id = #{empId}
+    </update>
+
+
+
+
 </mapper>

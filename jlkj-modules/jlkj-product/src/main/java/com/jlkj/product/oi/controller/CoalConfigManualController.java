@@ -1,9 +1,10 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.coalconfigmanual.*;
-import com.jlkj.product.oi.service.impl.ProductionCoalTowerStockServiceImpl;
+import com.jlkj.product.oi.service.ProductionCoalTowerStockService;
 import com.jlkj.product.oi.swaggerdto.ProductionCoalTowerBlendedCoalRecordSwagger;
 import com.jlkj.product.oi.swaggerdto.ProductionCoalTowerStockSwagger;
 import com.jlkj.product.oi.swaggerdto.ProductionCoalWarehouseBlendedCoalRecordSwagger;
@@ -16,9 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +27,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-12-06 10:47
- */
+*@description: 手动配煤
+*@Author: 265823
+*@date: 2023/7/10 8:52
+*/
 @Tag(name = "手动配煤")
 @RestController
 @RequestMapping("/manual_config")
@@ -39,14 +38,15 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class CoalConfigManualController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionCoalTowerStockServiceImpl coalTowerStockService;
+    ProductionCoalTowerStockService coalTowerStockService;
 
+    /**
+     * 手动配煤-储煤塔列表查询
+     * @return
+     */
     @Operation(summary = "手动配煤-储煤塔列表查询",
             parameters = {
 
@@ -58,14 +58,18 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-储煤塔列表查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getTowerList", method = RequestMethod.GET)
-    public Object getList() {
+    public AjaxResult getList() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return coalTowerStockService.getTowerList();
+        return AjaxResult.success(coalTowerStockService.getTowerList());
     }
 
+    /**
+     * 手动配煤-储煤塔配煤详细列表查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "手动配煤-储煤塔配煤详细列表查询",
             parameters = {
 
@@ -83,14 +87,18 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-储煤塔配煤详细列表查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getTowerBlendDetailList", method = RequestMethod.GET)
-    public Object getTowerBlendDetailList(@Validated GetPageDTO dto) {
+    public AjaxResult getTowerBlendDetailList(@Validated GetPageDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return coalTowerStockService.getTowerBlendDetailList(dto);
+        return AjaxResult.success(coalTowerStockService.getTowerBlendDetailList(dto));
     }
 
+    /**
+     * 手动配煤-储煤塔配煤记录对应详细配煤仓配煤列表查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "手动配煤-储煤塔配煤记录对应详细配煤仓配煤列表查询",
             parameters = {
 
@@ -104,14 +112,18 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-储煤塔配煤记录对应详细配煤仓配煤列表查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getBlendWareDetailList", method = RequestMethod.GET)
-    public Object getBlendWareDetailList(@Validated GetWareHouseDTO dto) {
+    public AjaxResult getBlendWareDetailList(@Validated GetWareHouseDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return coalTowerStockService.getBlendWareDetailList(dto);
+        return AjaxResult.success(coalTowerStockService.getBlendWareDetailList(dto));
     }
 
+    /**
+     * 手动配煤-根据配煤开始时间，查询前置数据
+     * @param dto
+     * @return
+     */
     @Operation(summary = "手动配煤-根据配煤开始时间，查询前置数据",
             parameters = {
                     @Parameter(name = "start_time", description = "开始时间"),
@@ -148,14 +160,18 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-根据配煤开始时间，查询前置数据",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getLastConfigPlan", method = RequestMethod.GET)
-    public Object get(@Valid GetDTO dto) {
+    public AjaxResult get(@Valid GetDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return coalTowerStockService.getLastConfigPlan(dto);
+        return AjaxResult.success(coalTowerStockService.getLastConfigPlan(dto));
     }
 
+    /**
+     * 手动配煤-新增
+     * @param dto
+     * @return
+     */
     @Operation(summary = "手动配煤-新增",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -197,14 +213,18 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-新增",businessType = BusinessType.INSERT)
-    @Transactional(rollbackFor = Exception.class)
     @PostMapping(value = "/addManualConfigCoal", produces = "application/json")
-    public Object save(@Valid @RequestBody SaveOrUpdateManualDTO dto) {
+    public void save(@Valid @RequestBody SaveOrUpdateManualDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return coalTowerStockService.save(dto);
+        coalTowerStockService.saveCustom(dto);
     }
 
+    /**
+     * 手动配煤-删除
+     * @param dto
+     * @return
+     */
     @Operation(summary = "手动配煤-删除",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -221,14 +241,17 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "手动配煤-删除",businessType = BusinessType.DELETE)
-    @Transactional(rollbackFor = Exception.class)
     @PostMapping(value = "/delManualConfigCoal", produces = "application/json")
-    public Object delete(@Valid @RequestBody DelDTO dto) {
+    public void delete(@Valid @RequestBody DelDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return coalTowerStockService.del(dto);
+        coalTowerStockService.del(dto);
     }
 
+    /**
+     * 获取配煤计划状态2或3列表
+     * @return
+     */
     @Operation(summary = "获取配煤计划状态2或3列表",
             parameters = {
             },
@@ -240,11 +263,10 @@ public class CoalConfigManualController {
             }
     )
     @Log(title = "获取配煤计划状态2或3列表",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @GetMapping(value = "/getPlanConfigCoke")
-    public Object getPlanConfigCoke() {
+    public AjaxResult getPlanConfigCoke() {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        return coalTowerStockService.getPlanConfigCoke();
+        return AjaxResult.success(coalTowerStockService.getPlanConfigCoke());
     }
 }

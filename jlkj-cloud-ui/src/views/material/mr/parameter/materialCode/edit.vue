@@ -88,7 +88,6 @@ export default {
     getStorageOptions () {
       const param = {}
       listMaterialsCategoryBox(param).then((res) => {
-        // console.log(res)
         res.data.forEach(item => {
           let i = {
             id: item.id,

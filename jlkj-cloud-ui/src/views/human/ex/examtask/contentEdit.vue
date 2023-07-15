@@ -6,7 +6,7 @@
           <el-button
             @click="onClose"
             plain
-            icon="el-icon-delete"
+            icon="el-icon-refresh-left"
             size="mini"
           >返回</el-button>
           <el-button
@@ -140,7 +140,7 @@
 
 <script>
 import examSelect from '@/components/ExamSelect/index';
-import CropperImage from './CropperImage';
+import CropperImage from "@/views/human/ex/examtask/CropperImage";
 import { listQuestionsbankBycode } from "@/api/human/ex/questionsbank";
 import { updateExamtask } from "@/api/human/ex/examtask";
 import { dateRemoveSeconds} from "@/utils/date";

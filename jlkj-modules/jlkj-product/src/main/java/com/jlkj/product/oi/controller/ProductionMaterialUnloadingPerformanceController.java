@@ -1,5 +1,6 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
@@ -7,9 +8,7 @@ import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.AddProduct
 import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.GetProductionMaterialUnloadingPerformanceDTO;
 import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.UpdateProductionMaterialUnloadingPerformanceDTO;
 import com.jlkj.product.oi.dto.productionmaterialunloadingperformance.UpdateProductionMaterialUnloadingPerformanceWeightDTO;
-import com.jlkj.product.oi.domain.*;
-import com.jlkj.product.oi.service.impl.MaterialsCodeServiceImpl;
-import com.jlkj.product.oi.service.impl.ProductionMaterialUnloadingPerformanceServiceImpl;
+import com.jlkj.product.oi.service.ProductionMaterialUnloadingPerformanceService;
 import com.jlkj.product.oi.swaggerdto.ProductionMaterialUnloadingPerformanceSwagger;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,9 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +30,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-05-10 8:46
- */
+*@description: 卸车实绩
+*@Author: 265823
+*@date: 2023/7/10 16:48
+*/
 @Tag(name = "卸车实绩")
 @RestController
 @RequestMapping("/performance")
@@ -44,17 +41,16 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionMaterialUnloadingPerformanceController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionMaterialUnloadingPerformanceServiceImpl materialUnloadingPerformanceService;
+    ProductionMaterialUnloadingPerformanceService materialUnloadingPerformanceService;
 
-    @Autowired
-    MaterialsCodeServiceImpl materialsCodeService;
-
+    /**
+     * 物料卸货实绩查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "物料卸货实绩查询",
             parameters = {
                     @Parameter(name = "shift_name", description = "班次"),
@@ -77,14 +73,17 @@ public class ProductionMaterialUnloadingPerformanceController {
             }
     )
     @Log(title = "物料卸货实绩查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listMaterialUnloadingPerformance", method = RequestMethod.GET)
-    public Object get(@Valid @ParamModel GetProductionMaterialUnloadingPerformanceDTO dto) {
+    public AjaxResult get(@Valid @ParamModel GetProductionMaterialUnloadingPerformanceDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return materialUnloadingPerformanceService.get(dto);
+        return AjaxResult.success(materialUnloadingPerformanceService.get(dto));
     }
 
+    /**
+     * 物料卸货实绩新增
+     * @param dto
+     */
     @Operation(summary = "物料卸货实绩新增",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -104,7 +103,9 @@ public class ProductionMaterialUnloadingPerformanceController {
                             @ExampleObject(name = "className", description = "班别"),
                             @ExampleObject(name = "unloadingTime", description = "卸车时间"),
                             @ExampleObject(name = "createUserId", description = "创建人编号"),
-                            @ExampleObject(name = "createUserNname", description = "创建人姓名")
+                            @ExampleObject(name = "createUserNname", description = "创建人姓名"),
+                            @ExampleObject(name = "fromCode", description = "来源地代码"),
+                            @ExampleObject(name = "fromDecs", description = "来源地名称")
                     })
             }),
             responses = {
@@ -115,14 +116,18 @@ public class ProductionMaterialUnloadingPerformanceController {
             }
     )
     @Log(title = "物料卸货实绩新增",businessType = BusinessType.INSERT)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/saveMaterialUnloadingPerformance", method = RequestMethod.POST, produces = "application/json")
-    public Object save(@Valid @RequestBody AddProductionMaterialUnloadingPerformanceDTO dto) {
+    public void save(@Valid @RequestBody AddProductionMaterialUnloadingPerformanceDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return materialUnloadingPerformanceService.save(dto);
+        materialUnloadingPerformanceService.saveCustom(dto);
     }
 
+    /**
+     * 物料卸货实绩新增
+     * @param dto
+     * @return
+     */
     @Operation(summary = "物料卸货实绩修改",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -142,14 +147,17 @@ public class ProductionMaterialUnloadingPerformanceController {
             }
     )
     @Log(title = "物料卸货实绩修改",businessType = BusinessType.UPDATE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/updateMaterialUnloadingPerformance", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@Valid @RequestBody UpdateProductionMaterialUnloadingPerformanceDTO dto) {
+    public void update(@Valid @RequestBody UpdateProductionMaterialUnloadingPerformanceDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return materialUnloadingPerformanceService.update(dto);
+        materialUnloadingPerformanceService.updateCustom(dto);
     }
 
+    /**
+     * 物料卸货实绩修改重量
+     * @param dto
+     */
     @Operation(summary = "物料卸货实绩修改重量",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -170,20 +178,22 @@ public class ProductionMaterialUnloadingPerformanceController {
             }
     )
     @Log(title = "物料卸货实绩修改重量",businessType = BusinessType.UPDATE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/updateMaterialUnloadingPerformanceWeight", method = RequestMethod.POST, produces = "application/json")
-    public Object updateMaterialUnloadingPerformanceWeight(@Valid @RequestBody UpdateProductionMaterialUnloadingPerformanceWeightDTO dto) {
+    public void updateMaterialUnloadingPerformanceWeight(@Valid @RequestBody UpdateProductionMaterialUnloadingPerformanceWeightDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return materialUnloadingPerformanceService.updateMaterialUnloadingPerformanceWeight(dto);
+        materialUnloadingPerformanceService.updateMaterialUnloadingPerformanceWeight(dto);
     }
 
+    /**
+     * 物料卸货实绩删除重量
+     * @param dto
+     */
     @Log(title = "物料卸货实绩删除重量",businessType = BusinessType.DELETE)
-    @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/delMaterialUnloadingPerformance", method = RequestMethod.POST, produces = "application/json")
-    public Object del(@Valid @RequestBody AddProductionMaterialUnloadingPerformanceDTO dto) {
+    public void del(@Valid @RequestBody AddProductionMaterialUnloadingPerformanceDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return materialUnloadingPerformanceService.del(dto);
+        materialUnloadingPerformanceService.del(dto);
     }
 }

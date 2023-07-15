@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.product.oi.domain.ProductionCokeItemYieldEntity;
 import com.jlkj.product.oi.domain.ProductionMaterialsCokeStock;
 import com.jlkj.product.oi.dto.productioncokeitemyield.CokeItemYieldInsertDTO;
@@ -16,6 +16,7 @@ import com.jlkj.product.oi.dto.productioncokeitemyield.CokeItemYieldUpdateDTO;
 import com.jlkj.product.oi.mapper.ProductionCokeItemYieldMapper;
 import com.jlkj.product.oi.service.ProductionCokeItemYieldService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,15 +26,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author zzh
- * @datetime 2022/9/9 13:52
- * @description 煤焦分项产量服务的实现类
- */
-
+*@description: 煤焦分项产量服务的实现类
+*@Author: 265823
+*@date: 2023/7/10 11:37
+*/
 @Service
 public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCokeItemYieldMapper, ProductionCokeItemYieldEntity> implements ProductionCokeItemYieldService {
 
 
+    /**
+     * 焦炭分项产量-查询
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public IPage<Map<String, Object>> getCokeItemYieldList(CokeItemYieldQueryDTO dto) {
         Date startDate = DateUtil.parseDate(StrUtil.isEmpty(dto.getStartTime()) ? "1790-01-01" : dto.getStartTime()).setField(Calendar.HOUR_OF_DAY, 0).setField(Calendar.MINUTE, 0).setField(Calendar.SECOND, 0);
         Date endDate = DateUtil.parseDate(StrUtil.isEmpty(dto.getEndTime()) ? "1790-01-01" : dto.getEndTime()).setField(Calendar.HOUR_OF_DAY, 23).setField(Calendar.MINUTE, 59).setField(Calendar.SECOND, 59);
@@ -46,29 +53,41 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         return pageMaps(page, queryWrapper);
     }
+
+    /**
+     * 焦炭分项产量-查询2
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public IPage<Map<String, Object>> getCokeItemYieldList2(CokeItemYieldQueryDTO dto) {
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         return getBaseMapper().getCokeItemYieldList2(page, dto);
     }
 
-
-    public Object insertCokeItemYield(CokeItemYieldInsertDTO dto) {
+    /**
+     * 焦炭分项产量-新增
+     * @param dto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void insertCokeItemYield(CokeItemYieldInsertDTO dto) {
         /**
          * 1. 按照时间在product_oi_coke_records表中查找所在时间段都产了什么焦炭
          * 2. 如果是只有一种焦炭,直接在t_materials_coke_stock表中减掉焦粉焦粒的重量,
          *    如果是多种焦炭,在t_materials_coke_stock表中分别找出每个焦炭对应的重量, 计算出每个焦炭的重量比例, 分别减掉 比例×焦粉焦粒的重量
          */
-
         List<Object> productionCokeRecordsName = getBaseMapper().getProductionCokeMaterialsNameByTime(dto.getTime());
         if (productionCokeRecordsName == null || productionCokeRecordsName.size() == 0) {
-            return AjaxResult.error("当前时间段没有焦炭记录");
+            throw new ServiceException("当前时间段没有焦炭记录");
         }
 
         if (productionCokeRecordsName.size() == 1) {
             //如果查找到的焦炭产量记录只有一种焦炭的话, 直接在焦炭库存表中找到该焦炭的总库存, 减去焦丁焦末总量
             ProductionMaterialsCokeStock cokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(productionCokeRecordsName.get(0).toString());
             if (cokeStock == null) {
-                return AjaxResult.error("在库存中没找名为" + productionCokeRecordsName.get(0).toString() + "的焦炭");
+                throw new ServiceException("在库存中没找名为" + productionCokeRecordsName.get(0).toString() + "的焦炭");
             }
             //用原库存 - 焦丁焦末的重量
             BigDecimal inventory = cokeStock.getInventory();
@@ -128,10 +147,16 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
                 }
             }
         }
-        return AjaxResult.success("保存成功");
     }
 
-    public Object updateCokeItemYield(CokeItemYieldUpdateDTO dto) {
+    /**
+     * 焦炭分项产量-修改
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateCokeItemYield(CokeItemYieldUpdateDTO dto) {
         /**
          *
          * 0. 判断
@@ -157,7 +182,7 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
             //找到旧的焦丁焦末, 把产量减回去
             ProductionMaterialsCokeStock oldCokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(dto.getOldMaterialsName());
             if (oldCokeStock == null) {
-                return AjaxResult.error("库存中为找到" + dto.getOldMaterialsName());
+                throw new ServiceException("库存中未找到" + dto.getOldMaterialsName());
             }
             oldCokeStock.setInventory(oldCokeStock.getInventory().subtract(jDYield));
             getBaseMapper().updateMaterialsCokeStockById(oldCokeStock);
@@ -165,20 +190,20 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
             //找到新的焦丁焦末, 把产量加上
             ProductionMaterialsCokeStock newCokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(dto.getMaterialsName());
             if (newCokeStock == null) {
-                return AjaxResult.error("库存中为找到" + dto.getOldMaterialsName());
+                throw new ServiceException("库存中未找到" + dto.getOldMaterialsName());
             }
             newCokeStock.setInventory(newCokeStock.getInventory().add(jDYield));
             getBaseMapper().updateMaterialsCokeStockById(newCokeStock);
         } else {
             List<Object> oldProductionCokeRecordsName = getBaseMapper().getProductionCokeMaterialsNameByTime(dto.getOldTime());
             if (oldProductionCokeRecordsName == null || oldProductionCokeRecordsName.size() == 0) {
-                return AjaxResult.error("当前时间段没有焦炭记录");
+                throw new ServiceException("当前时间段没有焦炭记录");
             }
             if (oldProductionCokeRecordsName.size() == 1) {
                 //如果查找到的焦炭产量记录只有一种焦炭的话, 直接在焦炭库存表中找到该焦炭的总库存, 减去焦丁焦末总量
                 ProductionMaterialsCokeStock oldCokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(oldProductionCokeRecordsName.get(0).toString());
                 if (oldCokeStock == null) {
-                    return AjaxResult.error("在库存中没找名为" + oldProductionCokeRecordsName.get(0).toString() + "的焦炭");
+                    throw new ServiceException("在库存中没找名为" + oldProductionCokeRecordsName.get(0).toString() + "的焦炭");
                 }
                 //用原库存 + 修改之前的值
                 BigDecimal inventory = oldCokeStock.getInventory();
@@ -219,13 +244,13 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
             //用新的值从新对库存进行修改
             List<Object> newProductionCokeRecordsName = getBaseMapper().getProductionCokeMaterialsNameByTime(dto.getTime());
             if (newProductionCokeRecordsName == null || newProductionCokeRecordsName.size() == 0) {
-                return AjaxResult.error("当前时间段没有焦炭记录");
+                throw new ServiceException("当前时间段没有焦炭记录");
             }
             if (newProductionCokeRecordsName.size() == 1) {
                 //如果查找到的焦炭产量记录只有一种焦炭的话, 直接在焦炭库存表中找到该焦炭的总库存, 减去焦丁焦末总量
                 ProductionMaterialsCokeStock newCokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(newProductionCokeRecordsName.get(0).toString());
                 if (newCokeStock == null) {
-                    return AjaxResult.error("在库存中没找名为" + newProductionCokeRecordsName.get(0).toString() + "的焦炭");
+                    throw new ServiceException("在库存中没找名为" + newProductionCokeRecordsName.get(0).toString() + "的焦炭");
                 }
                 //用原库存 - 焦丁焦末的重量
                 BigDecimal inventory = newCokeStock.getInventory();
@@ -271,13 +296,19 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
             entity.setMaterialsCode(dto.getMaterialsCode());
             entity.setYield(dto.getYield());
             updateById(entity);
-            return AjaxResult.success("修改成功");
         } else {
-            return AjaxResult.error("数据不存在");
+            throw new ServiceException("数据不存在");
         }
     }
 
-    public Object deleteCokeItemYield(String id) {
+    /**
+     * 焦炭分项产量-删除
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteCokeItemYield(String id) {
         ProductionCokeItemYieldEntity entity = getById(id);
         if (entity != null) {
             List<Object> oldProductionCokeRecordsName = getBaseMapper().getProductionCokeMaterialsNameByTime(entity.getCreateTime());
@@ -285,7 +316,7 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
                 //如果查找到的焦炭产量记录只有一种焦炭的话, 直接在焦炭库存表中找到该焦炭的总库存, 减去焦丁焦末总量
                 ProductionMaterialsCokeStock oldCokeStock = getBaseMapper().getMaterialsCokeStockOneByMaterialName(oldProductionCokeRecordsName.get(0).toString());
                 if (oldCokeStock == null) {
-                    return AjaxResult.error("在库存中没找名为" + oldProductionCokeRecordsName.get(0).toString() + "的焦炭");
+                    throw new ServiceException("在库存中没找名为" + oldProductionCokeRecordsName.get(0).toString() + "的焦炭");
                 }
                 //用原库存 + 修改之前的值
                 BigDecimal inventory = oldCokeStock.getInventory();
@@ -324,9 +355,8 @@ public class ProductionCokeItemYieldServiceImpl extends ServiceImpl<ProductionCo
                 }
             }
             removeById(entity);
-            return AjaxResult.success("删除成功");
         } else {
-            return AjaxResult.error("数据不存在");
+            throw new ServiceException("数据不存在");
         }
 
     }

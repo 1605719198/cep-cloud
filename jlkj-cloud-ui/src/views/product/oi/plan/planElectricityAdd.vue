@@ -118,14 +118,12 @@ export default {
                 userId: this.$store.state.user.userInfo.userName,
                 userName: this.$store.state.user.userInfo.nickName,
               }).then(res => {
-                if (res.code === 200) {
-                  this.$message({
-                    type: "success", message: "操作成功！", duration: 1000,
-                    onClose: () => {
-                      this.$emit('submitSave', res.msg)
-                    }
-                  });
-                }
+                this.$message({
+                  type: "success", message: "新增成功！", duration: 1000,
+                  onClose: () => {
+                    this.$emit('submitSave', res.msg)
+                  }
+                });
                 this.submitLoading = false;
               }, error => {
                 this.submitLoading = false;
@@ -139,14 +137,12 @@ export default {
                 userId: this.$store.state.user.userInfo.userName,
                 userName: this.$store.state.user.userInfo.nickName,
               }).then(res => {
-                if (res.code === 200) {
-                  this.$message({
-                    type: "success", message: "操作成功！", duration: 1000,
-                    onClose: () => {
-                      this.$emit('submitSave', res.msg)
-                    }
-                  });
-                }
+                this.$message({
+                  type: "success", message: "修改成功！", duration: 1000,
+                  onClose: () => {
+                    this.$emit('submitSave', res.msg)
+                  }
+                });
                 this.submitLoading = false;
               }, error => {
                 this.submitLoading = false;

@@ -9,11 +9,10 @@ import com.jlkj.product.oi.dto.productionoutputperformancemanualbake.PageProduct
 import com.jlkj.product.oi.vo.productionoutputperformancemanualbake.PageProductionOutputPerformanceManualBakeVO;
 
 /**
- * 服务接口-生产管理-炼焦实绩-出炉实绩-手动出炉
- *
- * @author sudeyou
- * @since 2022-12-28 13:35:48
- */
+*@description: 服务接口-生产管理-炼焦实绩-出炉实绩-手动出炉
+*@Author: 265823
+*@date: 2023/7/10 17:02
+*/
 public interface ProductionOutputPerformanceManualBakeService extends IService<ProductionOutputPerformanceManualBake> {
 
     /**
@@ -26,15 +25,14 @@ public interface ProductionOutputPerformanceManualBakeService extends IService<P
     /**
      * 生产管理-炼焦实绩-出炉实绩-手动出炉-新增
      * @param insertProductionOutputPerformanceManualBakeDTO 新增dto
-     * @return 执行结果
      */
-    Object insertProductionOutputPerformanceManualBakeData(InsertProductionOutputPerformanceManualBakeDTO insertProductionOutputPerformanceManualBakeDTO);
+    void insertProductionOutputPerformanceManualBakeData(InsertProductionOutputPerformanceManualBakeDTO insertProductionOutputPerformanceManualBakeDTO);
 
     /**
      * 生产管理-炼焦实绩-出炉实绩-手动出炉-删除
      * @param deleteProductionOutputPerformanceManualBakeDTO 删除dto
      * @return 执行结果
      */
-    Object deleteProductionOutputPerformanceManualBakeData(DeleteProductionOutputPerformanceManualBakeDTO deleteProductionOutputPerformanceManualBakeDTO);
+    void deleteProductionOutputPerformanceManualBakeData(DeleteProductionOutputPerformanceManualBakeDTO deleteProductionOutputPerformanceManualBakeDTO);
 
 }

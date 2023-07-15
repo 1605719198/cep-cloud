@@ -620,7 +620,6 @@ export default {
     getOrgPersonForm(node, id, name) {
       this.form.deptN0Name = node + "_" + name
       this.form.deptNo = node
-      console.log(this.form.deptN0Name);
     },
     /** 查询预算设置列表 */
     getList() {
@@ -704,7 +703,6 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      console.log(selection);
       this.form.deleteList = selection
       this.deleteList= selection
 
@@ -715,7 +713,6 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      console.log(this.queryParams.yarMonth.substring(5, 7));
       this.open = true;
       this.companyIdTagIF=false;
         this.companyIdIF=true;
@@ -955,15 +952,11 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
       if (row.id!=null){
        this.deleteList[0]=row
-
       }
-      console.log(this.deleteList);
       const row1 =  this.deleteList
       const ids = row.deptNo || this.ids;
-      console.log(row1);
       this.$modal.confirm('是否确认删除预算设置编号为"' + ids + '"的数据项？').then(function () {
         return delBudget(row1);
       }).then(() => {
@@ -994,7 +987,6 @@ export default {
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      console.log(response + "上传成功");
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();

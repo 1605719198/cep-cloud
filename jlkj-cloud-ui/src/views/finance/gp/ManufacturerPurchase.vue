@@ -297,7 +297,6 @@ export default {
     /** 提交按钮 */
     submitForm(formName) {
       this.mpForm.financeGpPurchaseLinkList = this.tfinanceGpPurchaseLinkList;
-      console.log(this.mpForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.mpForm.manufacturerChineseName =   this.manufacturerChineseName
@@ -366,14 +365,10 @@ export default {
         if ( response.data.financeGpPurchaseLinkList!=null){
           this.tfinanceGpPurchaseLinkList = response.data.financeGpPurchaseLinkList
         }
-        console.log(this.mpForm.billAddress);
         if (this.mpForm.billAddress == ""){
           this.mpForm.billAddress =  this.billAddress
         }
-
-
       });
-
     },
     /** 厂商采购关系联系人添加按钮操作 */
     handleAddFinanceGpPurchaseLink() {

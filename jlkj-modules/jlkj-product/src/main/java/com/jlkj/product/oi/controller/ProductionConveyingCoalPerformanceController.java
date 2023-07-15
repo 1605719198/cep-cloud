@@ -1,10 +1,13 @@
 package com.jlkj.product.oi.controller;
 
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionconveyingcoalperformance.GetProductionConveyingCoalPerformanceDTO;
 import com.jlkj.product.oi.dto.productionconveyingcoalperformance.GetProductionStackerReclaimerPerformanceDTO;
+import com.jlkj.product.oi.service.ProductionConveyingCoalPerformanceService;
+import com.jlkj.product.oi.service.ProductionStackerReclaimerPerformanceService;
 import com.jlkj.product.oi.service.impl.ProductionConveyingCoalPerformanceServiceImpl;
 import com.jlkj.product.oi.service.impl.ProductionStackerReclaimerPerformanceServiceImpl;
 import com.jlkj.product.oi.swaggerdto.ProductionConveyingCoalPerformanceSwagger;
@@ -29,10 +32,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-05-11 9:39
- */
+*@description: 上煤实绩
+*@Author: 265823
+*@date: 2023/7/10 14:36
+*/
 @Tag(name = "上煤实绩")
 @RestController
 @RequestMapping("/performance")
@@ -40,17 +43,19 @@ import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 public class ProductionConveyingCoalPerformanceController {
 
     @Autowired
-    RedissonClient redissonClient;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionConveyingCoalPerformanceServiceImpl conveyingCoalPerformanceService;
+    ProductionConveyingCoalPerformanceService conveyingCoalPerformanceService;
 
     @Autowired
-    ProductionStackerReclaimerPerformanceServiceImpl stackerReclaimerPerformanceService;
+    ProductionStackerReclaimerPerformanceService stackerReclaimerPerformanceService;
 
+    /**
+     * 上料实绩查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "上料实绩查询",
             parameters = {
                     @Parameter(name = "shift_name", description = "班次"),
@@ -70,14 +75,18 @@ public class ProductionConveyingCoalPerformanceController {
             }
     )
     @Log(title = "上料实绩查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listMaterialLoadingPerformance", method = RequestMethod.GET)
-    public Object get(@Valid @ParamModel GetProductionConveyingCoalPerformanceDTO dto) {
+    public AjaxResult get(@Valid @ParamModel GetProductionConveyingCoalPerformanceDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return conveyingCoalPerformanceService.get(dto);
+        return AjaxResult.success(conveyingCoalPerformanceService.get(dto));
     }
 
+    /**
+     * 堆取料机实绩查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "堆取料机实绩查询",
             parameters = {
                     @Parameter(name = "shift_name", description = "班次"),
@@ -97,11 +106,10 @@ public class ProductionConveyingCoalPerformanceController {
             }
     )
     @Log(title = "堆取料机实绩查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/listStackerReclaimerPerformance", method = RequestMethod.GET)
-    public Object getStackerReclaimerPerformance(@Valid @ParamModel GetProductionStackerReclaimerPerformanceDTO dto) {
+    public AjaxResult getStackerReclaimerPerformance(@Valid @ParamModel GetProductionStackerReclaimerPerformanceDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return stackerReclaimerPerformanceService.getStackerReclaimerPerformance(dto);
+        return AjaxResult.success(stackerReclaimerPerformanceService.getStackerReclaimerPerformance(dto));
     }
 }

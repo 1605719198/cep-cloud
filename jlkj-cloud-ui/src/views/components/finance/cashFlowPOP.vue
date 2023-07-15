@@ -171,7 +171,6 @@ export default {
     },
     handleSelectCoder(){
 
-      console.log(this.codeList.length);
       if (this.codeList.length>1){
         this.$modal.msgError("只能选择一笔数据");
         return;
@@ -299,7 +298,6 @@ export default {
     handleSelectionChange(selection) {
       this.codeList=selection
       this.compIdList=  this.codeList[0]
-      console.log(this.compIdList);
       this.checkedTCapitalDetail = selection.map(item => item.index)
       this.codeList = selection
     },

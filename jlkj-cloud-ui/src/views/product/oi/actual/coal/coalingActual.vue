@@ -189,7 +189,12 @@
               {{ (scope.row.coke_weight / 1000).toFixed(3) }}
             </template>
           </el-table-column>
-          <el-table-column label="创建人姓名"
+          <el-table-column label="最后更新时间"
+                           minWidth="150"
+                           align="left"
+                           prop="modify_time"
+                           sortable />
+<!--          <el-table-column label="创建人姓名"
                            minWidth="150"
                            align="left"
                            prop="create_user_name" />
@@ -197,7 +202,7 @@
                            minWidth="150"
                            align="left"
                            prop="create_time"
-                           sortable />
+                           sortable />-->
         </el-table>
         <div style="margin-top: 10px;float: right;padding:25px 0 20px 20px ;"
              class="avue-crud__pagination">

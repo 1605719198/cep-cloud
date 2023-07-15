@@ -282,14 +282,12 @@ export default {
     //载入数据
     onLoad() {
       this.table.loading = true;//加载状态
-      console.log("111",345)
       listBasis(this.queryParams).then(response => {
         this.total = response.total;
         this.tableData = response.rows;//表格数据
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
     },
     /** 添加下级操作 */

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.constants.CommonConstant;
 import com.jlkj.product.oi.domain.ProductionPlanConfigCoke;
@@ -24,9 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务实现-配煤计划配煤记录
- * @author sudeyou
- */
+*@description: 服务实现-配煤计划配煤记录
+*@Author: 265823
+*@date: 2023/7/11 8:10
+*/
 @Service
 public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<ProductionPlanConfigCokeDetailMapper, ProductionPlanConfigCokeDetail>
     implements ProductionPlanConfigCokeDetailService {
@@ -35,6 +37,11 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
     @Resource
     private ProductionPlanConfigCokeService productionPlanConfigCokeService;
 
+    /**
+     * 查询-分页-配煤计划配煤记录
+     * @param pageProductionPlanConfigCokeDetailDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, String>> getPageData(PageProductionPlanConfigCokeDetailDTO pageProductionPlanConfigCokeDetailDTO) {
@@ -42,9 +49,13 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
         return getBaseMapper().getPageData(page, pageProductionPlanConfigCokeDetailDTO);
     }
 
+    /**
+     * 新增-配煤计划配煤记录
+     * @param addProductionPlanConfigCokeDetailDTO 新增dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object addData(AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO) {
+    public AjaxResult addData(AddProductionPlanConfigCokeDetailDTO addProductionPlanConfigCokeDetailDTO) {
         List<ProductionPlanConfigCokeDetail> list = list(new QueryWrapper<ProductionPlanConfigCokeDetail>().lambda()
                 .eq(ProductionPlanConfigCokeDetail::getPlanId, addProductionPlanConfigCokeDetailDTO.getPlanId())
                 .eq(ProductionPlanConfigCokeDetail::getWarehouseNumber, addProductionPlanConfigCokeDetailDTO.getWarehouseNumber())
@@ -77,12 +88,16 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
         productionPlanConfigCokeDetail.setModifyUserName(addProductionPlanConfigCokeDetailDTO.getCreateUserName());
         productionPlanConfigCokeDetail.setModifyTime(new Date());
         save(productionPlanConfigCokeDetail);
-        return AjaxResult.success("配煤计划配煤记录增加成功");
+        return AjaxResult.success("配煤计划保存成功！");
     }
 
+    /**
+     * 修改-配煤计划配煤记录
+     * @param updateProductionPlanConfigCokeDetailDTO 修改dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object updateData(UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO) {
+    public AjaxResult updateData(UpdateProductionPlanConfigCokeDetailDTO updateProductionPlanConfigCokeDetailDTO) {
         ProductionPlanConfigCokeDetail productionPlanConfigCokeDetail = getById(updateProductionPlanConfigCokeDetailDTO.getId());
         if (null != productionPlanConfigCokeDetail) {
             List<ProductionPlanConfigCokeDetail> list = list(new QueryWrapper<ProductionPlanConfigCokeDetail>().lambda()
@@ -113,7 +128,6 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
                 productionPlanConfigCokeDetail.setModifyUserName(updateProductionPlanConfigCokeDetailDTO.getModifyUserName());
                 productionPlanConfigCokeDetail.setModifyTime(new Date());
                 updateById(productionPlanConfigCokeDetail);
-                return AjaxResult.success("配煤计划配煤记录修改成功");
             }
             else {
                 return AjaxResult.error("配煤计划配煤记录已存在");
@@ -122,25 +136,29 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
         else {
             return AjaxResult.error("配煤计划配煤记录不存在");
         }
+        return AjaxResult.success("配煤计划配煤记录修改成功");
     }
 
+    /**
+     * 删除-配煤计划配煤记录
+     * @param deleteProductionPlanConfigCokeDetailDTO 删除dto
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Object deleteData(DeleteProductionPlanConfigCokeDetailDTO deleteProductionPlanConfigCokeDetailDTO) {
+    public void deleteData(DeleteProductionPlanConfigCokeDetailDTO deleteProductionPlanConfigCokeDetailDTO) {
         ProductionPlanConfigCokeDetail productionPlanConfigCokeDetail = getById(deleteProductionPlanConfigCokeDetailDTO.getId());
         if (null != productionPlanConfigCokeDetail) {
             ProductionPlanConfigCoke productionPlanConfigCoke = productionPlanConfigCokeService.getById(productionPlanConfigCokeDetail.getPlanId());
             if (null == productionPlanConfigCoke) {
-                return AjaxResult.error("配煤计划主记录不存在");
+                throw new ServiceException("配煤计划主记录不存在");
             }
             if (productionPlanConfigCoke.getPlanState() != 1) {
-                return AjaxResult.error("只能删除未确认的记录");
+                throw new ServiceException("只能删除未确认的记录");
             }
             removeById(productionPlanConfigCokeDetail);
-            return AjaxResult.success("配煤计划配煤记录删除成功");
         }
         else {
-            return AjaxResult.error("配煤计划配煤记录不存在或已被删除");
+            throw new ServiceException("配煤计划配煤记录不存在或已被删除");
         }
     }
 
@@ -152,6 +170,11 @@ public class ProductionPlanConfigCokeDetailServiceImpl extends ServiceImpl<Produ
         return true;
     }
 
+    /**
+     * 获取配煤仓配煤计划信息
+     * @param infoProductionPlanConfigCokeDetailByWarehouseNumberDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public InfoProductionPlanConfigCokeDetailByWarehouseNumberVO getProductionPlanConfigCokeDetailInfoByWarehouseNumberData(InfoProductionPlanConfigCokeDetailByWarehouseNumberDTO infoProductionPlanConfigCokeDetailByWarehouseNumberDTO) {

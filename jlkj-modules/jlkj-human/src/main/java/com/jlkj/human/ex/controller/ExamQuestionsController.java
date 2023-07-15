@@ -28,7 +28,7 @@ import java.util.List;
  * 考试题目Controller
  * 
  * @author qnsdt
- * @date 2022-12-28
+ * @Date:  2022-12-28
  */
 @RestController
 @RequestMapping("/examquestions")
@@ -52,7 +52,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 查询考试题目列表
      */
-    @RequiresPermissions("questions:examquestions:list")
+    @RequiresPermissions("human:examquestions:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamQuestions examQuestions)
     {
@@ -64,7 +64,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 导出考试题目列表
      */
-    @RequiresPermissions("questions:examquestions:export")
+    @RequiresPermissions("human:examquestions:export")
     @Log(title = "考试题目", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamQuestions examQuestions)
@@ -77,7 +77,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 获取考试题目详细信息
      */
-    @RequiresPermissions("questions:examquestions:query")
+    @RequiresPermissions("human:examquestions:query")
     @GetMapping(value = "/{questionsCode}")
     public AjaxResult getInfo(@PathVariable("questionsCode") String questionsCode)
     {
@@ -87,7 +87,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 新增考试题目
      */
-    @RequiresPermissions("questions:examquestions:add")
+    @RequiresPermissions("human:examquestions:add")
     @Log(title = "考试题目", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ExamQuestions examQuestions)
@@ -125,7 +125,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 修改考试题目
      */
-    @RequiresPermissions("questions:examquestions:edit")
+    @RequiresPermissions("human:examquestions:edit")
     @Log(title = "考试题目", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult edit(@RequestBody ExamQuestions examQuestions)
@@ -157,7 +157,7 @@ public class ExamQuestionsController extends BaseController
     /**
      * 删除考试题目
      */
-    @RequiresPermissions("questions:examquestions:remove")
+    @RequiresPermissions("human:examquestions:remove")
     @Log(title = "考试题目", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{questionsCodes}")
     public AjaxResult remove(@PathVariable String[] questionsCodes)

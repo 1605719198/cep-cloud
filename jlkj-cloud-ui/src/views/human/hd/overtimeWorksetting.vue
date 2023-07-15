@@ -73,17 +73,17 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="月最大加班小时数（单位：小时）" prop="monthOve">
-              <el-input type="number" v-model="form.monthOve"  />
+              <el-input type="number" v-model.number="form.monthOve"  />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="月最大剩余存班小时数（单位：小时）" prop="resvAttr3">
-              <el-input type="number" v-model="form.resvAttr3"  />
+              <el-input type="number" v-model.number="form.resvAttr3"  />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="月最大可送出异常次数" prop="resvAttr1">
-              <el-input type="number" v-model="form.resvAttr1"  />
+              <el-input type="number" v-model.number="form.resvAttr1"  />
             </el-form-item>
           </el-col>
         </el-row>
@@ -92,17 +92,17 @@
 
           <el-col :span="8">
             <el-form-item label="补休最小单位（单位：小时）" prop="holUnit">
-              <el-input type="number" v-model="form.holUnit"  />
+              <el-input type="number" v-model.number="form.holUnit"  />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="补休的最小班次数" prop="resvAttr2" >
-              <el-input type="number" v-model="form.resvAttr2"  />
+              <el-input type="number" v-model.number="form.resvAttr2"  />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="加班最小单位（单位：小时）" prop="oveUnit">
-              <el-input type="number" v-model="form.oveUnit"  />
+              <el-input type="number" v-model.number="form.oveUnit"  />
             </el-form-item>
           </el-col>
         </el-row>

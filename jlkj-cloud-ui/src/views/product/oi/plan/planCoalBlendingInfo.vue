@@ -21,7 +21,11 @@
         <el-table v-loading="table.loading" :data="tableData" stripe style="width: 100%">
           <el-table-column prop="warehouse_number" width="100" label="配煤仓号"/>
           <el-table-column prop="coal_type_name" label="煤种"/>
-          <el-table-column prop="materials_small_name" label="小煤种"/>
+          <el-table-column prop="materials_small_name" label="小煤种">
+            <template slot-scope="scope">
+              <span>{{scope.row.materials_small_name+'_'+scope.row.materials_small_code}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="proportion" width="150" sortable label="配置比例 %"/>
         </el-table>
       </div>

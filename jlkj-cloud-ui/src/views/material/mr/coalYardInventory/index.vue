@@ -303,7 +303,6 @@ export default {
     getCategoryOptions () {
       const param = {}
       listMaterialsCategoryBox(param).then((res) => {
-        // console.log(res)
         let options = []
         res.data.forEach(item => {
           let i = {
@@ -319,7 +318,6 @@ export default {
     getMaterialsOptions () {
       const param = {}
       listMaterialsBoxM(param).then((res) => {
-        // console.log(res)
         let options = []
         res.forEach(item => {
           let i = {
@@ -335,7 +333,6 @@ export default {
     getSpacesOptions () {
       const param = {}
       listMaterialsStorageSpacesBox(param).then((res) => {
-        // console.log(res)
         let options = []
         res.forEach(item => {
           let i = {
@@ -374,7 +371,6 @@ export default {
         this.tableData = data.records;//表格数据
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
     },
     // 分页-每页多少条

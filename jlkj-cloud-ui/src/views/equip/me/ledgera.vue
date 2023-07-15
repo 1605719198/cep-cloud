@@ -1077,7 +1077,6 @@ export default {
     },
     // 导出方法
     handleExport () {
-      console.log("导出")
     },
     // 多选框选中数据
     handleSelectionChange (selection) {
@@ -1280,9 +1279,6 @@ export default {
 </script>
 
 <style scoped>
-/*.el-input {*/
-/*  width: auto !important;*/
-/*}*/
 .avue-crud .el-date-editor.el-input {
   width: auto !important;
 }

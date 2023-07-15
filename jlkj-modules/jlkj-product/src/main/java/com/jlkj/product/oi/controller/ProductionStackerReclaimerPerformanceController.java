@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionstackerreclaimerperformance.DeleteProductionStackerReclaimerPerformanceDTO;
@@ -32,11 +32,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-物料管理-堆取料机实绩
- *
- * @author sudeyou
- * @since 2022-11-09 16:08:57
- */
+*@description: 控制器-物料管理-堆取料机实绩
+*@Author: 265823
+*@date: 2023/7/11 11:36
+*/
 @Tag(name = "物料管理-堆取料机实绩")
 @RestController
 @RequestMapping("/productionstackerreclaimerperformance")
@@ -49,6 +48,10 @@ public class ProductionStackerReclaimerPerformanceController {
     @Resource
     private ProductionStackerReclaimerPerformanceService productionStackerReclaimerPerformanceService;
 
+    /**
+     * 堆取料机实绩-新增
+     * @param insertProductionStackerReclaimerPerformanceDTO
+     */
     @Operation(summary = "堆取料机实绩-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -61,12 +64,16 @@ public class ProductionStackerReclaimerPerformanceController {
     )
     @Log(title = "堆取料机实绩-新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/insertProductionStackerReclaimerPerformance", method = RequestMethod.POST, produces = "application/json")
-    public Object insertProductionStackerReclaimerPerformanceData(@Valid @RequestBody InsertProductionStackerReclaimerPerformanceDTO insertProductionStackerReclaimerPerformanceDTO) {
+    public void insertProductionStackerReclaimerPerformanceData(@Valid @RequestBody InsertProductionStackerReclaimerPerformanceDTO insertProductionStackerReclaimerPerformanceDTO) {
         log.info("params => " + insertProductionStackerReclaimerPerformanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertProductionStackerReclaimerPerformanceDTO);
-        return productionStackerReclaimerPerformanceService.insertProductionStackerReclaimerPerformanceData(insertProductionStackerReclaimerPerformanceDTO);
+        productionStackerReclaimerPerformanceService.insertProductionStackerReclaimerPerformanceData(insertProductionStackerReclaimerPerformanceDTO);
     }
 
+    /**
+     * 堆取料机实绩-修改
+     * @param updateProductionStackerReclaimerPerformanceDTO
+     */
     @Operation(summary = "堆取料机实绩-修改",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -79,12 +86,16 @@ public class ProductionStackerReclaimerPerformanceController {
     )
     @Log(title = "堆取料机实绩-修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionStackerReclaimerPerformance", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateProductionStackerReclaimerPerformanceData(@Valid @RequestBody UpdateProductionStackerReclaimerPerformanceDTO updateProductionStackerReclaimerPerformanceDTO) {
+    public void updateProductionStackerReclaimerPerformanceData(@Valid @RequestBody UpdateProductionStackerReclaimerPerformanceDTO updateProductionStackerReclaimerPerformanceDTO) {
         log.info("params => " + updateProductionStackerReclaimerPerformanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionStackerReclaimerPerformanceDTO);
-        return productionStackerReclaimerPerformanceService.updateProductionStackerReclaimerPerformanceData(updateProductionStackerReclaimerPerformanceDTO);
+        productionStackerReclaimerPerformanceService.updateProductionStackerReclaimerPerformanceData(updateProductionStackerReclaimerPerformanceDTO);
     }
 
+    /**
+     * 堆取料机实绩-删除
+     * @param deleteProductionStackerReclaimerPerformanceDTO
+     */
     @Operation(summary = "堆取料机实绩-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -97,12 +108,17 @@ public class ProductionStackerReclaimerPerformanceController {
     )
     @Log(title = "堆取料机实绩-删除",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteProductionStackerReclaimerPerformance", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteProductionStackerReclaimerPerformanceData(@Valid @RequestBody DeleteProductionStackerReclaimerPerformanceDTO deleteProductionStackerReclaimerPerformanceDTO) {
+    public void deleteProductionStackerReclaimerPerformanceData(@Valid @RequestBody DeleteProductionStackerReclaimerPerformanceDTO deleteProductionStackerReclaimerPerformanceDTO) {
         log.info("params => " + deleteProductionStackerReclaimerPerformanceDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionStackerReclaimerPerformanceDTO);
-        return productionStackerReclaimerPerformanceService.deleteProductionStackerReclaimerPerformanceData(deleteProductionStackerReclaimerPerformanceDTO);
+        productionStackerReclaimerPerformanceService.deleteProductionStackerReclaimerPerformanceData(deleteProductionStackerReclaimerPerformanceDTO);
     }
 
+    /**
+     * 获取排班信息
+     * @param infoSchedulingDTO
+     * @return
+     */
     @Operation(summary = "获取排班信息",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -117,7 +133,7 @@ public class ProductionStackerReclaimerPerformanceController {
     )
     @Log(title = "获取排班信息",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getUserSchedulingInfo", method = RequestMethod.GET)
-    public Object getUserSchedulingInfoData(@Validated @ParamModel InfoSchedulingDTO infoSchedulingDTO) {
+    public AjaxResult getUserSchedulingInfoData(@Validated @ParamModel InfoSchedulingDTO infoSchedulingDTO) {
         log.info("params => " + infoSchedulingDTO);
         String errorMsg = ValidUtil.checkValid(infoSchedulingDTO);
         if (!"".equals(errorMsg)) {

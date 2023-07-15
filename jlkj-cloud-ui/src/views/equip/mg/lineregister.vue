@@ -319,7 +319,6 @@ export default {
     },
     // 导出
     handleExport () {
-      console.log("导出")
     },
     //批量删除参数
     handleSelectionChange (selection) {

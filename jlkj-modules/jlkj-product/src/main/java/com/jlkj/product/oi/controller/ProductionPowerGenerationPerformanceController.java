@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionpowergenerationperformance.ListHomeProductionPowerGenerationYieldDTO;
@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-发电实绩
- * @author sudeyou
- * @since 2022-09-01 09:44:19
- */
+*@description: 发电实绩
+*@Author: 265823
+*@date: 2023/7/11 8:54
+*/
 @Tag(name = "发电实绩")
 @RestController
 @RequestMapping("/productionpowergenerationperformance")
@@ -43,6 +43,11 @@ public class ProductionPowerGenerationPerformanceController {
     @Resource
     private ProductionPowerGenerationPerformanceService productionPowerGenerationPerformanceService;
 
+    /**
+     * 首页-发电量
+     * @param listHomeProductionPowerGenerationYieldDTO
+     * @return
+     */
     @Operation(summary = "首页-发电量",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -57,14 +62,14 @@ public class ProductionPowerGenerationPerformanceController {
     )
     @Log(title = "首页-发电量",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getHomeProductionPowerGenerationYieldList", method = RequestMethod.GET)
-    public Object getHomeProductionPowerGenerationYieldListData(@Validated @ParamModel ListHomeProductionPowerGenerationYieldDTO listHomeProductionPowerGenerationYieldDTO) {
+    public AjaxResult getHomeProductionPowerGenerationYieldListData(@Validated @ParamModel ListHomeProductionPowerGenerationYieldDTO listHomeProductionPowerGenerationYieldDTO) {
         log.info("params => " + listHomeProductionPowerGenerationYieldDTO);
         String errorMsg = ValidUtil.checkValid(listHomeProductionPowerGenerationYieldDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listHomeProductionPowerGenerationYieldDTO);
-        return productionPowerGenerationPerformanceService.getHomeProductionPowerGenerationYieldListData(listHomeProductionPowerGenerationYieldDTO);
+        return AjaxResult.success(productionPowerGenerationPerformanceService.getHomeProductionPowerGenerationYieldListData(listHomeProductionPowerGenerationYieldDTO));
     }
 }
 

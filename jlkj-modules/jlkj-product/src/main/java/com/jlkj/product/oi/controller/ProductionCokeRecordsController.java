@@ -1,6 +1,5 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.resp.ValidUtil;
 import com.jlkj.common.datascope.annotation.ParamModel;
@@ -9,9 +8,10 @@ import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productioncoefficientrecord.GetProductionCoefficientRecordDTO;
 import com.jlkj.product.oi.dto.productioncokerecords.ListHomeCokeProportionDTO;
 import com.jlkj.product.oi.service.ProductionCokeRecordsService;
-import com.jlkj.product.oi.service.impl.ProductionCokeRecordsServiceImpl;
 import com.jlkj.product.oi.swaggerdto.ProductionCokeRecordsSwagger;
 import com.jlkj.product.oi.vo.productioncokerecords.ListHomeCokeProportionVO;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import io.lettuce.core.output.ValueValueListOutput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,15 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-08-11 13:54
- */
+*@description: 焦炭产量记录
+*@Author: 265823
+*@date: 2023/7/10 14:12
+*/
 @Tag(name = " 焦炭产量记录")
 @RestController
 @RequestMapping("/cokeRecords")
@@ -49,11 +47,16 @@ public class ProductionCokeRecordsController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionCokeRecordsServiceImpl cokeRecordsService;
+    ProductionCokeRecordsService cokeRecordsService;
 
     @Resource
     ProductionCokeRecordsService productionCokeRecordsService;
 
+    /**
+     * 焦炭产量记录查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "焦炭产量记录查询",
             parameters = {
                     @Parameter(name = "start_time", description = "开始时间"),
@@ -72,16 +75,18 @@ public class ProductionCokeRecordsController {
             }
     )
     @Log(title = "焦炭产量记录查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getProductionCokeRecords", method = RequestMethod.GET)
-    public Object get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
+    public AjaxResult get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-
-        IPage<Map<String, Object>> list = cokeRecordsService.get(dto);
-        return AjaxResult.success(list);
+        return AjaxResult.success(cokeRecordsService.get(dto));
     }
 
+    /**
+     * 首页-焦碳比例
+     * @param listHomeCokeProportionDTO
+     * @return
+     */
     @Operation(summary = "首页-焦碳比例",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -96,13 +101,13 @@ public class ProductionCokeRecordsController {
     )
     @Log(title = "首页-焦碳比例",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getHomeCokeProportionList", method = RequestMethod.GET)
-    public Object getHomeCokeProportionListData(@Validated @ParamModel ListHomeCokeProportionDTO listHomeCokeProportionDTO) {
+    public AjaxResult getHomeCokeProportionListData(@Validated @ParamModel ListHomeCokeProportionDTO listHomeCokeProportionDTO) {
         log.info("params => " + listHomeCokeProportionDTO);
         String errorMsg = ValidUtil.checkValid(listHomeCokeProportionDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, listHomeCokeProportionDTO);
-        return productionCokeRecordsService.getHomeCokeProportionListData(listHomeCokeProportionDTO);
+        return AjaxResult.success(productionCokeRecordsService.getHomeCokeProportionListData(listHomeCokeProportionDTO));
     }
 }

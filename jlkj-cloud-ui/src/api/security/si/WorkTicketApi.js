@@ -68,7 +68,6 @@ export const hoistingInfo = (id) => {
 
 //获取吊装作业票编号
 export const getHoistingWorkTicketCode = () => {
-  console.log("调用了api")
   return request({
     url: '/safety/safe/job/hoisting/code',
     method: 'get'

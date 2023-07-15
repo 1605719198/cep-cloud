@@ -212,14 +212,11 @@ export default {
   mounted() {
     this.$watch('bankNo', function (newVal) {
       this.queryParams.branchNo = newVal;
-      console.log(newVal+"bankNo");
       this.getList();
     })
     this.$watch('applyId', function (newVal) {
-      console.log(newVal+"applyId");
     })
     this.$watch('bankchnName', function (newVal) {
-      console.log(newVal+"bankchnName");
       this.queryParams.branchchnname = newVal;
       this.getList();
       this.bankchnName=newVal
@@ -238,7 +235,6 @@ export default {
     /** 查询金融机构管理分行列表 */
     getList() {
       this.loading = true;
-      console.log(this.queryParams);
       listBranch(this.queryParams).then(response => {
         this.branchList = response.rows;
         this.total = response.total;

@@ -192,7 +192,6 @@ export default {
         const re = /^day.*/;
         const rsCheck = re.test(i);
         if(rsCheck){
-          // console.log(JSON.stringify(column))
           if(row[i]==='00'&&column.property===i){
             return "color:red"
           }

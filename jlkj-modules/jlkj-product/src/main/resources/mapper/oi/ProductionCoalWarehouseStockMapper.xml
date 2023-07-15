@@ -2,12 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jlkj.product.oi.mapper.ProductionCoalWarehouseStockMapper">
 
-    <select id="getMaterialsCoalWarehouseStock" resultType="java.util.Map">
-        SELECT coal_warehouse_number,
-               SUM(coal_surplus)/1000   AS coal_surplus,
-               SUM(material_level) AS material_level
-        FROM product_oi_coal_warehouse_stock
-        GROUP BY coal_warehouse_number
+    <select id="getMaterialsCoalWarehouseStock" parameterType="com.jlkj.product.oi.dto.productiondataboard.GetDataBoardDTO" resultType="java.util.Map">
+        SELECT
+            IFNULL(coal_bunker1,0) AS coal_bunker1,
+            IFNULL(coal_bunker2,0) AS coal_bunker2,
+            IFNULL(coal_bunker3,0) AS coal_bunker3,
+            IFNULL(coal_bunker4,0) AS coal_bunker4,
+            IFNULL(coal_bunker5,0) AS coal_bunker5,
+            IFNULL(coal_bunker6,0) AS coal_bunker6,
+            IFNULL(coal_bunker7,0) AS coal_bunker7,
+            IFNULL(coal_bunker8,0) AS coal_bunker8,
+            IFNULL(coal_bunker9,0) AS coal_bunker9,
+            IFNULL(coal_bunker10,0) AS coal_bunker10
+        FROM
+            t_materials_coal_level
+        WHERE
+                create_time = (SELECT MAX(create_time) FROM t_materials_coal_level WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = #{startDate})
     </select>
 
 </mapper>

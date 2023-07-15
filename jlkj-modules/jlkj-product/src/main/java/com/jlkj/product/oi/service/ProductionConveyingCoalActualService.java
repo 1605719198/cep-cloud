@@ -7,11 +7,10 @@ import com.jlkj.product.oi.dto.productionconveyingcoalactual.PageProductionConve
 import com.jlkj.product.oi.vo.productionconveyingcoalactual.PageProductionConveyingCoalActualVO;
 
 /**
- * 服务接口-生产实绩-上煤实绩
- *
- * @author sudeyou
- * @since 2022-11-18 09:39:27
- */
+*@description: 服务接口-生产实绩-上煤实绩
+*@Author: 265823
+*@date: 2023/7/10 14:33
+*/
 public interface ProductionConveyingCoalActualService extends IService<ProductionConveyingCoalActual> {
     /**
      * 生产实绩-上煤实绩-查询-分页

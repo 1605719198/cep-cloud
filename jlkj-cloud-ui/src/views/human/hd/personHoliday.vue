@@ -600,14 +600,11 @@ export default {
       }
       getShiftCodeByPerson(params).then(response => {
         this.shiftCodeData = response.rows
-        console.log('员工排班数据')
         this.shiftCodeData.forEach((value) => {
-          console.log('时间：' + value.createDate + ' 编码：' + value.shiftCode)
         })
         let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (24 * 60 * 60 * 1000)
         //请假跨天数
         let conDays = Math.floor(days) + 1
-        // console.log('请假跨天数：' + conDays)
         this.conDays = conDays
         if (response.total !== (conDays + 1)) {
           this.$modal.msgError('请假时间段内有未排班天数')
@@ -707,7 +704,6 @@ export default {
           shiftCodeData: firstData
         }
         firstMinute = this.computeDayMinute(JSON.stringify(obj))
-        console.log('请假前一天请假时间分钟数：' + firstMinute)
         personMinute += firstMinute
         if (firstData.description === 'N') {
           leastMinute = this.holidaySetting.minUnitDay
@@ -720,10 +716,7 @@ export default {
         if (firstMinute % leastMinute !== 0) {
           this.errorData.ifError = true
           this.errorData.errorMsg = ('前一天请假时间不合规范')
-          console.log('前一天请假时间不合规范')
         } else {
-          console.log('前一天请假时间符合规范')
-          console.log('前一天请假班次：' + firstDay)
         }
       }
       //第一天请假时间计算
@@ -771,7 +764,6 @@ export default {
             }
             startMinute = this.computeDayMinute(JSON.stringify(obj))
           }
-          console.log('第一天请假时间分钟数：' + startMinute)
           personMinute += startMinute
         } else {
           //不跨天
@@ -797,7 +789,6 @@ export default {
                 shiftCodeData: startData
               }
               startMinute = this.computeDayMinute(JSON.stringify(obj))
-              console.log('第一天请假时间分钟数：' + startMinute)
               personMinute += startMinute
             }
           } else {
@@ -818,7 +809,6 @@ export default {
                 shiftCodeData: startData
               }
               startMinute = this.computeDayMinute(JSON.stringify(obj))
-              console.log('第一天请假时间分钟数：' + startMinute)
               personMinute += startMinute
             }
           }
@@ -834,10 +824,7 @@ export default {
         if (startMinute % leastMinute !== 0) {
           this.errorData.ifError = true
           this.errorData.errorMsg = '第一天请假时间不合规范'
-          console.log('第一天请假时间不合规范')
         } else {
-          console.log('第一天请假时间符合规范')
-          console.log('第一天请假班次：' + startDay)
         }
       }
       if (lastData !== null) {
@@ -856,7 +843,6 @@ export default {
           //倒数第二天实际请假差值时间
           lastMinute = this.computeDayMinute(JSON.stringify(obj))
           let realLastMinute = (parseInt(lastData.conHour) * 60 + parseInt(lastData.conMin)) - lastMinute
-          console.log('倒数第二天请假分钟为：' + realLastMinute)
           personMinute -= lastMinute
           if (lastData.description === 'N') {
             leastMinute = this.holidaySetting.minUnitDay
@@ -869,10 +855,6 @@ export default {
           if (realLastMinute % leastMinute !== 0) {
             this.errorData.ifError = true
             this.errorData.errorMsg = '倒数第二天请假时间不合规范'
-            console.log('倒数第二天请假时间不合规范')
-          } else {
-            console.log('倒数第二天请假时间符合规范')
-            console.log('倒数第二天请假班次：' + (1 - lastDay))
           }
         }
       }
@@ -909,7 +891,6 @@ export default {
             shiftCodeData: endData
           }
           endMinute = this.computeDayMinute(JSON.stringify(obj))
-          console.log('最后一天请假分钟为：' + endMinute)
           personMinute += endMinute
           if (endData.description === 'N') {
             leastMinute = this.holidaySetting.minUnitDay
@@ -922,14 +903,9 @@ export default {
           if (endMinute % leastMinute !== 0) {
             this.errorData.ifError = true
             this.errorData.errorMsg = '最后一天请假时间不合规范'
-            console.log('最后一天请假时间不合规范')
-          } else {
-            console.log('最后一天请假时间符合规范')
-            console.log('最后一天请假班次：' + endDay)
           }
         } else {
           endMinute = 0
-          console.log('最后一天请假分钟为：' + endMinute)
           if (endData.description === 'N') {
             leastMinute = this.holidaySetting.minUnitDay
           } else {
@@ -941,32 +917,22 @@ export default {
           if (endMinute % leastMinute !== 0) {
             this.errorData.ifError = true
             this.errorData.errorMsg = '最后一天请假时间不合规范'
-            console.log('最后一天请假时间不合规范')
-          } else {
-            console.log('最后一天请假时间符合规范')
-            console.log('最后一天请假班次：' + endDay)
           }
         }
       }
-      console.log('员工请假总分钟数：' + personMinute)
-      console.log('员工请假总天/班次数：' + conDay)
       if (!this.ifPreData) {
-        console.log('统计数据为：' + JSON.stringify(this.statisticsData))
         if (this.errorData.ifError === false && personMinute !== 0) {
-          console.log('请假时间符合要求')
           this.form.leaveShifts = conDay
           this.form.leaveHours = personMinute / 60
           //提交前假别数据处理
           this.preSubmit()
           return true
         } else {
-          console.log('请假时间不符合要求')
           this.$modal.msgError(this.errorData.errorMsg)
           this.form.leaveShifts = null
           return false
         }
       } else {
-        console.log('原请假统计数据为' + JSON.stringify(this.preData))
         this.ifPreData = false
         if (this.ifDelete) {
           this.saveMonthData(-1)
@@ -995,7 +961,6 @@ export default {
           this.disposeYearHomeHoliday(2)
         })
       } else {
-        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
         this.form.remainingDays = null
         this.form.yearDays = null
         this.submitForm()
@@ -1010,7 +975,6 @@ export default {
       if (e === 1) {
         //探亲假
         for (let i = 0; i < this.homeLeaveHoliday.length; i++) {
-          console.log(this.homeLeaveHoliday[i].year + '探亲假共有' + this.homeLeaveHoliday[i].dueHomeDays + '天已休' + this.homeLeaveHoliday[i].restHomeDays + '天')
           if (parseInt(this.homeLeaveHoliday[i].year) === new Date().getFullYear()) {
             this.form.remainingDays = this.homeLeaveHoliday[i].preHomeDays
             this.form.yearDays = this.homeLeaveHoliday[i].restHomeDays
@@ -1038,7 +1002,6 @@ export default {
       } else {
         //年休假
         for (let i = 0; i < this.yearHoliday.length; i++) {
-          console.log(this.yearHoliday[i].year + '年休假共有' + this.yearHoliday[i].preYearDays + '天已休' + this.yearHoliday[i].restDays + '天')
           if (parseInt(this.yearHoliday[i].year) === new Date().getFullYear()) {
             this.form.remainingDays = this.yearHoliday[i].preYearDays - this.yearHoliday[i].restDays
             this.form.yearDays = this.yearHoliday[i].restDays
@@ -1065,7 +1028,6 @@ export default {
       this.holidayYeaHomeData.enough = enough
       this.holidayYeaHomeData.number = number
       if (e === 1) {
-        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
         if (!this.holidayYeaHomeData.enough) {
           this.$modal.msgError('探亲假天数不足')
         } else if (this.statisticsData.yearData.length !== this.holidayYeaHomeData.number) {
@@ -1092,7 +1054,6 @@ export default {
           this.submitForm()
         }
       } else {
-        console.log('修改后的统计数据为：' + JSON.stringify(this.statisticsData))
         if (!this.holidayYeaHomeData.enough) {
           this.$modal.msgError('年休假天数不足')
         } else if (this.statisticsData.yearData.length !== this.holidayYeaHomeData.number) {
@@ -1325,7 +1286,6 @@ export default {
           value.dataFrom = 0
         })
         addOverTime(this.statisticsData.monthData).then(response => {
-          console.log('加班汇总数据更新成功')
         })
       } else {
         this.preData.monthData.forEach((value) => {
@@ -1342,7 +1302,6 @@ export default {
           this.getList()
         })
         addOverTime(this.preData.monthData).then(response => {
-          console.log('加班汇总数据回退成功')
         })
         if (this.form.leaTypeId === '07') {
           this.preData.yearData.forEach((value) => {
@@ -1355,7 +1314,6 @@ export default {
             }
             // 修改探亲假数据
             updateHolidayByEmp(param).then(response => {
-              console.log('探亲假数据回退成功')
             })
           })
         } else if (this.form.leaTypeId === '09') {
@@ -1367,7 +1325,6 @@ export default {
             }
             //修改年休假数据
             updateYearHolidayByEmp(param).then(response => {
-              console.log('年休假数据回退成功')
             })
           })
         }

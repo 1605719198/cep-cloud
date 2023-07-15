@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 服务接口-配煤实绩主记录
- * @author sudeyou
- */
+*@description: 服务接口-配煤实绩主记录
+*@Author: 265823
+*@date: 2023/7/10 14:21
+*/
 public interface ProductionConfigureCoalSpeciesPerformanceService extends IService<ProductionConfigureCoalSpeciesPerformance> {
 
     /**
@@ -48,6 +49,6 @@ public interface ProductionConfigureCoalSpeciesPerformanceService extends IServi
      * @param dto 查询条件dto
      * @return 数据
      */
-    Object getConfigureCoalSpeciesAnalysisStatistics(PageConfigureCoalSpeciesAnalysisStatisticsDTO dto);
+    Map<String, Object> getConfigureCoalSpeciesAnalysisStatistics(PageConfigureCoalSpeciesAnalysisStatisticsDTO dto);
 }
 

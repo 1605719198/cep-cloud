@@ -98,19 +98,15 @@
       getMaterialsCodeSmallDic().then(res => {
         this.selectSmallCoalType = res.data.data;//表格数据
       }, error => {
-        window.console.log(error);
       });
     },
     computed: {
     },
     methods: {
-
       //获取类别名称
       onLoad() {
         //   this.table.loading = true;//加载状态
-
         listMaterialsCategoryBox().then(res => {
-          // console.log(res)
           this.options = []
           let data = res
           data.map(i => {
@@ -118,15 +114,10 @@
               this.options.push(i)
             }
           })
-          // console.log(this.options)
         }, error => {
           this.table.loading = false;
-          window.console.log(error);
         });
-
-
         listMaterialsBoxM().then((res) => {
-          // console.log(res)
           let options = []
           res.forEach(item => {
             let i = {
@@ -137,7 +128,6 @@
             options.push(i)
           });
           this.materialsOptions = options
-          // console.log(this.materialsOptions);
         })
       },
       //  限制只有两位小数的正整数
@@ -146,7 +136,6 @@
         this.form.inventory = this.form.inventory.replace(/^\./g, ""); //验证第一个字符是数字而不是.
         this.form.inventory = this.form.inventory.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的.
         this.form.inventory = this.form.inventory.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");//只允许输入一个小数点
-        // this.form.inventory = this.form.inventory.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -158,12 +147,10 @@
               if (res.code == 200) {
                 this.$message({type: "success", message: res.msg});
                 this.$emit('submitSave', res.msg)
-                // console.log(this.form)
               }
               this.submitLoading = false;
             }, error => {
               this.submitLoading = false;
-              window.console.log(error);
             });
           }
         });
@@ -172,20 +159,17 @@
         this.$emit('close')
       },
       changeSlider(val) {
-        // console.log(e);
         this.options.find((item) => {
           if (item.category_name === val) {
             this.dd = item.id;
           }
         });
-        // console.log(this.dd)
         this.pp = []
         for (var j = 0; j < this.materialsOptions.length; j++) {
           if (this.dd == this.materialsOptions[j].category_id) {
             this.pp.push(this.materialsOptions[j])
           }
         }
-        // console.log(this.form.storage_spaces_name)
       },
       change(val) {
         this.storageSpacesOptions.find((item) => {
@@ -193,11 +177,9 @@
             this.form.storage_spaces_id = item.id;
           }
         })
-        // console.log(this.form.storageSpacesId)
       },
       select(val) {
         this.pp.find((item) => {
-          // console.log(item)
           if (item.name === val) {
             this.form.materials_id = item.id;
           }

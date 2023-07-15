@@ -207,4 +207,25 @@ public class ComptimeController extends BaseController {
         ExcelUtil<Comptime> util = new ExcelUtil<Comptime>(Comptime.class);
         util.importTemplateExcel(response, "补休数据");
     }
+
+    /**
+     * 送出补休数据
+     * @author HuangBing
+     * @date 2023-7-10
+     * @param comptime 表格数据
+     * @return 确认结果
+     */
+    @Operation(summary = "送出补休数据")
+    @PostMapping("/sendComptime")
+    @Log(title = "送出补休数据", businessType = BusinessType.OTHER)
+    public Object sendComptime(@RequestBody Comptime comptime) {
+        boolean update = iComptimeService.lambdaUpdate()
+                .set(Comptime::getStatus, comptime.getStatus())
+                .eq(Comptime::getId, comptime.getId()).update();
+        if (update){
+            return AjaxResult.success("送出成功");
+        } else {
+            return AjaxResult.error("送出失败");
+        }
+    }
 }

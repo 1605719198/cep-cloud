@@ -210,14 +210,11 @@ export default {
   props: ['nodeNo','nodeName','companyId'],
   mounted() {
     this.$watch('nodeNo', function (newVal) {
-
       this.queryParams.leafId = newVal;
        this.leafId = newVal
-      console.log(this.leafId);
       this.getList();
     })
     this.$watch('nodeName', function (newVal) {
-
       this.queryParams.nodeName = newVal;
       this.getList();
     })
@@ -317,8 +314,6 @@ export default {
         if (valid) {
           this.form.companyId = this.companyid
           this.form.leafId = this.leafId
-          console.log(this.leafId);
-          console.log( this.form.leafId);
            if (this.form.id != null) {
             updateBase(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

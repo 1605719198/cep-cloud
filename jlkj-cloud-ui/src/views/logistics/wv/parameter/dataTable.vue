@@ -340,7 +340,6 @@ export default {
       this.reset();
       const dictCode = row.dictCode || this.ids
       getDataById(dictCode).then(response => {
-        console.log(response)
         this.form = response.data;
         this.open = true;
         this.title = "修改字典数据";

@@ -68,7 +68,7 @@
                 type="text"
                 icon="el-icon-plus"
                 @click="handleAdd()"
-              >增加</el-button>
+              >新增</el-button>
               <el-button v-if = "answerList.indexOf(scope.row) > 1"
                 size="mini"
                 type="text"
@@ -253,21 +253,14 @@ export default {
         this.checkItem = this.form.rightAnswer.split(",")
       }
     },
-    // getContent() {
-    //   getQuestionscontent(this.form.questionsCode).then(response => {
-    //     this.textValue = response.data.questionsContent
-    //   });
-    // },
     onClose () {
       this.$emit('refreshData')
     },
     checkData () {
-      debugger
       if (this.form.questionsType === undefined || this.form.questionsType === null) {
         this.$message.error('未选择题目类型')
         return false
       }
-
       if (this.form.questionsTitle === undefined || this.form.questionsTitle === null) {
         this.$message.error('未填写试题题目')
         return false
@@ -283,7 +276,6 @@ export default {
         this.$message.error('复杂度需要维护')
         return false
       }
-
       // 循环判断题目项目内容
       for (let i = 0; i < this.answerList.length; i ++) {
         if (this.answerList[i].optionDescribe === null) {
@@ -291,7 +283,6 @@ export default {
           return false
         }
       }
-
       // 判断正确答案是否填入
       if (this.form.questionsType === 1 || this.form.questionsType === 2) {
         // 是判断题或者说是选择题
@@ -314,7 +305,6 @@ export default {
     handleData () {
       if (this.form.questionsType === 1 || this.form.questionsType === 2) {
         // 是判断题或者说是选择题
-
         this.form.rightAnswer = this.radioValue
         for (let i = 0; i < this.answerList.length; i ++) {
           if (this.answerList[i].optionCode === this.radioValue) {
@@ -358,12 +348,11 @@ export default {
         this.form.answerList = this.answerList
         if (this.isNew) {
           addExamquestions(this.form).then(response => {
-            this.msgSuccess("保存成功");
+            this.$modal.msgSuccess("保存成功");
           });
-          console.log('清除数据')
         } else {
           updateExamquestions(this.form).then(response => {
-            this.msgSuccess("修改成功");
+            this.$modal.msgSuccess("修改成功");
           });
         }
       }
@@ -425,14 +414,13 @@ export default {
         this.$message.error('题目选项不能超过10项')
         return
       }
-
       for (let i = 0; i < this.answerList.length; i ++) {
         if (this.answerList[i].optionDescribe === null) {
           this.$message.error('题目选项描述不能为空')
+
           return
         }
       }
-
       const answerData = {
         questionsCode : this.form.questionsCode,
         orderId: this.answerList.length + 1,
@@ -440,9 +428,7 @@ export default {
         isRight: 1,
         optionDescribe: null
       }
-
       this.answerList.push(answerData)
-
     },
     handleDelete (row) {
       this.answerList.splice(this.answerList.indexOf(row), 1)
@@ -466,15 +452,12 @@ export default {
 .form-panel {
   margin:  20px 0px 20px 15px;
 }
-
 .rate-area {
   padding: 8px 0px 0px 0px;
 }
-
 .table-panel {
   margin:  0px 0px 20px 0px;
 }
-
 .option-title {
     text-align: right;
     vertical-align: middle;
@@ -487,8 +470,6 @@ export default {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-
-
 .ueditor-title {
     font-size: 14px;
     color: #606266;
@@ -496,11 +477,9 @@ export default {
     line-height: 18px;
     padding: 0 0 10px 0px;
 }
-
 .ueditor-area {
  margin:  0px 0px 10px 0px;
 }
-
 .star-text {
     color: #ff4949;
     margin-right: 4px;

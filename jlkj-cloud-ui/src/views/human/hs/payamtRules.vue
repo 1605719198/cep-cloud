@@ -209,7 +209,6 @@ export default {
 
     //初始化数据
     initData(){
-      console.log("user",this.user)
       this.user.empNo = this.$store.state.user.userInfo.userName;
       this.user.empId = this.$store.state.user.userInfo.userId;
       this.user.empName = this.$store.state.user.userInfo.nickName;

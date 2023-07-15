@@ -264,13 +264,9 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-
       this.multipleSelection = selection;
-      console.log(selection.length)
-
       this.single = selection.length!==1
       this.multiple = !selection.length
-      console.log(this.ids)
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -359,8 +355,6 @@ export default {
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
-
         const newLine = {
           creator: this.nickName,
           creatorId: this.$store.state.user.name,

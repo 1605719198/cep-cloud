@@ -389,6 +389,21 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 获取某年第一天日期
+     *
+     * @param year 年份
+     * @return 某年第一天日期
+     * @author 266861
+     * @Date 2023/7/6 9:44
+     **/
+    public static Date getFirstOfYear(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        return calendar.getTime();
+    }
+
+    /**
      * 获取某年最后一天日期
      *
      * @param year 年份
@@ -405,19 +420,40 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取某年第一天日期
+     * 获取某月第一天
      *
-     * @param year 年份
-     * @return 某年第一天日期
+     * @param date 日期
+     * @return 某月第一天日期
      * @author 266861
-     * @Date 2023/7/6 9:44
+     * @Date 2023/7/14 10:10
      **/
-    public static Date getFirstOfYear(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.set(Calendar.YEAR, year);
-        return calendar.getTime();
+    public static Date getFirstOfMonth(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        //获得本月第一天
+        calendar.add(Calendar.MONTH, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return dateTime(YYYY_MM_DD,toShortDateString(calendar.getTime()));
     }
+
+    /**
+     * 获取某月最后一天
+     *
+     * @param date 日期
+     * @return 某月最后一天日期
+     * @author 266861
+     * @Date 2023/7/14 10:10
+     **/
+    public static Date getLastOfMonth(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        //获得本月第一天
+        calendar.add(Calendar.MONTH, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return dateTime(YYYY_MM_DD,toShortDateString(calendar.getTime()));
+    }
+
+
     /**
      * 字符串  yyyy-MM-dd HH:mm:ss
      * @Author: 111191

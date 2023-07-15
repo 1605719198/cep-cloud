@@ -165,14 +165,6 @@ export default {
           window.bpmnInstances.elementRegistry.find(el => el.type === "bpmn:Collaboration");
       }
       if (!activatedElement) return;
-      // console.log(`
-      //         ----------
-      // select element changed:
-      //           id:  ${activatedElement.id}
-      //         type:  ${activatedElement.businessObject.$type}
-      //         ----------
-      //         `);
-      // console.log("businessObject: ", activatedElement.businessObject);
       window.bpmnInstances.bpmnElement = activatedElement;
       this.bpmnElement = activatedElement;
       this.elementId = activatedElement.id;

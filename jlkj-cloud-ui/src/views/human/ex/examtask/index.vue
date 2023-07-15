@@ -3,35 +3,20 @@
     <div v-if="showUi === 1">
       <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="考试名称" prop="examName">
-          <el-input
-            v-model="queryParams.examName"
-            placeholder="请输入考试名称"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-          />
+          <el-input v-model="queryParams.examName" placeholder="请输入考试名称"
+                    clearable size="small" @keyup.enter.native="handleQuery"/>
         </el-form-item>
         <el-form-item label="组卷方式" prop="buildType">
           <el-select v-model="queryParams.buildType" placeholder="请选择组卷方式" clearable size="small">
-            <el-option
-              v-for="dict in buildTypeOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            />
+            <el-option v-for="dict in buildTypeOptions" :key="dict.dictValue" :label="dict.dictLabel"
+                       :value="dict.dictValue"/>
           </el-select>
         </el-form-item>
         <el-form-item label="考试时间">
-          <el-date-picker
-            v-model="daterangeDate"
-            size="small"
-            style="width: 240px"
-            value-format="yyyy-MM-dd"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
+          <el-date-picker v-model="daterangeDate"
+                          size="small" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
+                          range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -47,8 +32,9 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['exam:examtask:add']"
-          >新增</el-button>
+            v-hasPermi="['human:examtask:add']"
+          >新增
+          </el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -56,110 +42,115 @@
             plain
             icon="el-icon-download"
             size="mini"
-        :loading="exportLoading"
+            :loading="exportLoading"
             @click="handleExport"
-            v-hasPermi="['exam:examtask:export']"
-          >导出</el-button>
+            v-hasPermi="['human:examtask:export']"
+          >导出
+          </el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
-      <div >
+      <div>
         <ul style="padding: 0">
-          <li style = "list-style-type:none;"
-            v-for="(item,index) in examtaskList"
-            :key="index"
-            class="new border-1px"
-          >
+          <li style="list-style-type:none;" v-for="(item,index) in examtaskList" :key="index" class="new border-1px">
             <el-row :gutter="20" :key="index" v-if='index % 2 == 0'>
-              <el-col :span="12" >
-                <div  class="bank-panel">
-                  <div class = "photo-area">
-                    <img class ="title-photo" :src="hosturl + item.pictureUrl"/>
+              <el-col :span="12">
+                <div class="bank-panel">
+                  <div class="photo-area">
+                    <img class="title-photo" :src="hosturl + item.pictureUrl"/>
                   </div>
-                  <div class = "describe-area">
-                    <div class = "title-area">
-                      <div class="name-text">{{item.examName}}</div>
-                      <div class="type-text">{{showLabel(item.buildType)}}</div>
-                      <div class = "nickname-text">{{ parseTime(item.startTime, '{y}-{m}-{d}') }}</div>
+                  <div class="describe-area">
+                    <div class="title-area">
+                      <div class="name-text">{{ item.examName }}</div>
+                      <div class="type-text">{{ showLabel(item.buildType) }}</div>
+                      <div class="nickname-text">{{ parseTime(item.startTime, '{y}-{m}-{d}') }}</div>
                     </div>
-                    <div class = "data-area">
-                      <div class= "memo-text" >{{item.examDescribe}}</div>
-                      <div class = "button-area">
+                    <div class="data-area">
+                      <div class="memo-text">{{ item.examDescribe }}</div>
+                      <div class="button-area">
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-edit"
                           @click="handleUpdateContent(item)"
                           v-hasPermi="['human:examtask:edit']"
-                        >内容</el-button>
+                        >内容
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-date"
                           @click="handleUpdateQuestions(item)"
                           v-hasPermi="['human:examtask:edit']"
-                        >组卷</el-button>
+                        >组卷
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-user"
                           @click="handleUpdateUsers(item)"
                           v-hasPermi="['human:examtask:edit']"
-                        >选人</el-button>
+                        >选人
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-delete"
                           @click="handleDelete(item)"
                           v-hasPermi="['human:examtask:remove']"
-                        >删除</el-button>
+                        >删除
+                        </el-button>
                       </div>
                     </div>
                   </div>
                 </div>
               </el-col>
-              <el-col :span="12" v-if="index + 1 < examtaskList.length" >
-                <div  class="bank-panel">
-                  <div class = "photo-area">
-                    <img class ="title-photo" :src="hosturl + examtaskList[index + 1].pictureUrl"/>
+              <el-col :span="12" v-if="index + 1 < examtaskList.length">
+                <div class="bank-panel">
+                  <div class="photo-area">
+                    <img class="title-photo" :src="hosturl + examtaskList[index + 1].pictureUrl"/>
                   </div>
-                  <div class = "describe-area">
-                    <div class = "title-area">
-                      <div class="name-text">{{examtaskList[index + 1].examName}}</div>
-                      <div class="type-text">{{showLabel(examtaskList[index + 1].buildType)}}</div>
-                      <div class = "nickname-text">{{parseTime(examtaskList[index + 1].startTime, '{y}-{m}-{d}')}}</div>
+                  <div class="describe-area">
+                    <div class="title-area">
+                      <div class="name-text">{{ examtaskList[index + 1].examName }}</div>
+                      <div class="type-text">{{ showLabel(examtaskList[index + 1].buildType) }}</div>
+                      <div class="nickname-text">{{ parseTime(examtaskList[index + 1].startTime, '{y}-{m}-{d}') }}</div>
                     </div>
-                    <div class = "data-area">
-                      <div class= "memo-text" >{{examtaskList[index + 1].examDescribe}}</div>
-                      <div class = "button-area">
+                    <div class="data-area">
+                      <div class="memo-text">{{ examtaskList[index + 1].examDescribe }}</div>
+                      <div class="button-area">
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-edit"
                           @click="handleUpdateContent(examtaskList[index + 1])"
                           v-hasPermi="['human:examtask:edit']"
-                        >内容</el-button>
+                        >内容
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-date"
                           @click="handleUpdateQuestions(examtaskList[index + 1])"
                           v-hasPermi="['human:examtask:edit']"
-                        >组卷</el-button>
+                        >组卷
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-user"
                           @click="handleUpdateUsers(examtaskList[index + 1])"
                           v-hasPermi="['human:examtask:edit']"
-                        >选人</el-button>
+                        >选人
+                        </el-button>
                         <el-button
                           size="mini"
                           type="text"
                           icon="el-icon-delete"
                           @click="handleDelete(examtaskList[index + 1])"
                           v-hasPermi="['human:examtask:remove']"
-                        >删除</el-button>
+                        >删除
+                        </el-button>
                       </div>
                     </div>
                   </div>
@@ -177,30 +168,29 @@
         @pagination="getList"
       />
     </div>
-    <div v-else-if= "showUi === 2">
-      <edit  ref="editRef" @refreshEdit="editDoneHandle"></edit>
+    <div v-else-if="showUi === 2">
+      <edit ref="editRef" @refreshEdit="editDoneHandle"></edit>
     </div>
-    <div v-else-if= "showUi === 3">
-      <content-edit ref="contentRef" @refreshContent ="contentDoneHandle"></content-edit>
+    <div v-else-if="showUi === 3">
+      <content-edit ref="contentRef" @refreshContent="contentDoneHandle"></content-edit>
     </div>
-    <div v-else-if= "showUi === 4">
-      <select-questions ref="questionsRef" @refreshQuestions ="questionsDoneHandle"></select-questions>
+    <div v-else-if="showUi === 4">
+      <select-questions ref="questionsRef" @refreshQuestions="questionsDoneHandle"></select-questions>
     </div>
-    <div v-else-if= "showUi === 5">
-      <choice-user ref="groupRef" @refreshGroup ="groupDoneHandle"></choice-user>
+    <div v-else-if="showUi === 5">
+      <choice-user ref="groupRef" @refreshGroup="groupDoneHandle"></choice-user>
     </div>
   </div>
 </template>
 
 <script>
-import { listExamtask, delExamtask, addExamtask, updateExamtask, exportExamtask } from
+import {listExamtask, delExamtask, addExamtask, updateExamtask, exportExamtask} from
     "@/api/human/ex/examtask";
-import Edit from './edit'
+import Edit from "@/views/human/ex/examtask/edit";
 import examSelect from '@/components/ExamSelect/index'
-import contentEdit from './contentEdit'
-import selectQuestions from './selectQuestions'
-import choiceUser from './choiceUser'
-
+import selectQuestions from "@/views/human/ex/examtask/selectQuestions";
+import contentEdit from "@/views/human/ex/examtask/contentEdit";
+import choiceUser from "@/views/human/ex/examtask/choiceUser";
 export default {
   name: "Examtask",
   components: {
@@ -276,13 +266,13 @@ export default {
       // 表单校验
       rules: {
         examCode: [
-          { required: true, message: "考试代码不能为空", trigger: "blur" }
+          {required: true, message: "考试代码不能为空", trigger: "blur"}
         ],
         examName: [
-          { required: true, message: "考试名称不能为空", trigger: "blur" }
+          {required: true, message: "考试名称不能为空", trigger: "blur"}
         ],
         buildType: [
-          { required: true, message: "组卷方式不能为空", trigger: "change" }
+          {required: true, message: "组卷方式不能为空", trigger: "change"}
         ],
       },
       hosturl: '',
@@ -370,17 +360,17 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.examCode)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.showUi = 2
       this.$nextTick(() => {
-       this.$refs.editRef.init_data(null)
+        this.$refs.editRef.init_data(null)
       })
     },
-    editDoneHandle () {
+    editDoneHandle() {
       this.showUi = 1
       this.getList()
     },
@@ -405,15 +395,15 @@ export default {
         this.$refs.groupRef.update_data(row)
       })
     },
-    contentDoneHandle () {
+    contentDoneHandle() {
       this.getList()
       this.showUi = 1
     },
-    questionsDoneHandle () {
+    questionsDoneHandle() {
       this.getList()
       this.showUi = 1
     },
-    groupDoneHandle () {
+    groupDoneHandle() {
       this.getList()
       this.showUi = 1
     },
@@ -423,13 +413,13 @@ export default {
         if (valid) {
           if (this.form.examCode != null) {
             updateExamtask(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addExamtask(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -441,129 +431,131 @@ export default {
     handleDelete(row) {
       const examCodes = row.examCode || this.ids;
       this.$confirm('是否确认删除创建考试编号为"' + examCodes + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delExamtask(examCodes);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delExamtask(examCodes);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有创建考试数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportExamtask(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportExamtask(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-  .bank-panel {
-    margin: 12px 0px 12px 0px;
-    padding: 8px 0px 1px 0px;
-    display: -webkit-box;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    background-color: #f7f7f7;
-  }
-
-  .photo-area {
-    -webkit-box-align: left;
-    margin-left: 0 px;
-  }
-
-  .title-photo {
-    margin-left: 0.6rem;
-    width: 6.25rem;
-    height: 5rem;
-  }
-
-  .describe-area {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-box-align: justify;
-    -webkit-align-items: center;
-    align-items: center;
-    padding-left: 0.8rem;
-  }
-
-.title-area {
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    align-items: left;
-    margin: 2px 0px 10px 0px;
-    padding: -5px 0px 0px 0px;
+.bank-panel {
+  margin: 12px 0px 12px 0px;
+  padding: 8px 0px 1px 0px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #f7f7f7;
 }
 
-  .name-text {
-    -webkit-box-flex: 5;
-    -webkit-box-align: left;
-	  font-size: 1.2 rem;
-	  font-weight: bold;
-  }
+.photo-area {
+  -webkit-box-align: left;
+  margin-left: 0px;
+}
 
-  .type-text{
-    -webkit-box-flex: 1;
-    -webkit-box-align: center;
-    font-size: 13px;
-    align-items: center;
-    text-align: center;
-    margin: 0px 10px 0px 10px;
-    color: #fff;
-    border: 1px solid #7acc9b;
-    background-color: #7acc9b;
-    border-radius: 6px;
-  }
+.title-photo {
+  margin-left: 0.6rem;
+  width: 6.25rem;
+  height: 5rem;
+}
 
-	.nickname-text{
-    -webkit-box-flex: 1;
-    -webkit-box-align: right;
-    font-size: 12 px;
-    color: #8c939d;
-  }
+.describe-area {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: justify;
+  -webkit-align-items: center;
+  align-items: center;
+  padding-left: 0.8rem;
+}
 
-  .data-area {
-     display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-align-items: center;
-    align-items: center;
-    margin-top: 0.6rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+.title-area {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: left;
+  margin: 2px 0px 10px 0px;
+  padding: -5px 0px 0px 0px;
+}
 
-  .memo-text {
-    -webkit-box-flex: 5;
-    -webkit-box-align: center;
-    font-size: 12px;
-    color: #8c939d;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.name-text {
+  -webkit-box-flex: 5;
+  -webkit-box-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 
-  }
+.type-text {
+  -webkit-box-flex: 1;
+  -webkit-box-align: center;
+  font-size: 13px;
+  align-items: center;
+  text-align: center;
+  margin: 0px 10px 0px 10px;
+  color: #fff;
+  border: 1px solid #7acc9b;
+  background-color: #7acc9b;
+  border-radius: 6px;
+}
 
-  .button-area {
-    overflow: hidden;
-    text-align: right;
-    vertical-align: middle;
-  }
+.nickname-text {
+  -webkit-box-flex: 1;
+  -webkit-box-align: right;
+  font-size: 12px;
+  color: #8c939d;
+}
+
+.data-area {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-top: 0.6rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.memo-text {
+  -webkit-box-flex: 5;
+  -webkit-box-align: center;
+  font-size: 12px;
+  color: #8c939d;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+}
+
+.button-area {
+  overflow: hidden;
+  text-align: right;
+  vertical-align: middle;
+}
 </style>
 

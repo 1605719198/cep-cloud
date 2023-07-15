@@ -270,14 +270,12 @@ export default {
       });
     },
     getAcctCodeCorpPop(val){
-      console.log(val);
       this.form.acctId= val[0].acctId
       this.form.drAcctCode= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;
       this.form.calTypeCodeb = val[0].calTypeCodeb;
     },
     getAcctCodeCorpPop1(val){
-      console.log(val);
       // this.form.acctId= val[0].acctId
       this.form.crAcctCode= val[0].acctName
       this.form.calTypeCodec = val[0].calTypeCodec;

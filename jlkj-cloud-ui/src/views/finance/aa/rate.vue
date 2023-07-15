@@ -275,7 +275,6 @@ export default {
     },
     getCompanyList() {
       selectCrcy().then(response => {
-        console.log(response);
         this.ratecrcyList = response;
       });
     },

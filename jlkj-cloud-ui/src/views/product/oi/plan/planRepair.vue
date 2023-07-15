@@ -3,10 +3,12 @@
     <el-form :model="query" ref="query" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="计划日期" prop="planDate">
             <el-date-picker v-model="planDate"
+                            size="small"
                             type="daterange"
                             start-placeholder="计划开始日期"
                             range-separator="-"
-                            end-placeholder="计划结束日期" />
+                            end-placeholder="计划结束日期"
+                            style="width: 250px"/>
           </el-form-item>
           <el-form-item label="部门" prop="departmentId">
           <selectDeptUserTree v-model="query.departmentId"
@@ -20,12 +22,14 @@
           </el-form-item>
           <el-form-item label="设备" prop="equipmentName">
             <el-input readonly="readonly"
+                      size="small"
                       v-model="query.equipmentName"
                       @click.native="treeOpen=true"
                       placeholder="请选择设备" />
           </el-form-item>
           <el-form-item label="维修内容" prop="repairContent">
             <el-input type="text"
+                      size="small"
                       :rows="5"
                       placeholder="请输入维修内容"
                       v-model="query.repairContent" />
@@ -33,8 +37,10 @@
           <el-form-item label="完成状态"
                         prop="planState">
             <el-select v-model="query.planState"
+                       size="small"
                        placeholder="计划完成状态"
-                       clearable>
+                       clearable
+                        style="width: 150px;">
               <el-option v-for="item in selectStates"
                          :key="item.value"
                          :label="item.label"
@@ -220,13 +226,13 @@ export default {
       repairTypeList: ['', '大修', '中修', '小修', '临修', '设备消缺', '工艺技改', '零星修缮', '环保项目'],
       columns: [
         // {label: '编号', prop: "repairPlanNumber", sortable: true, type: 'year', minWidth: '80px'},
-        { label: '部门 ', prop: "organization_name", sortable: true, minWidth: '180px' },
+        { label: '部门 ', prop: "organization_name", sortable: true, minWidth: '200px' },
         {
           label: '维修类型 ', prop: "repair_type_id", sortable: true, minWidth: '100px', formatter (row) {
             return ['', '大修', '中修', '小修', '临修', '设备消缺', '工艺技改', '零星修缮', '环保项目'][row.repair_type_id];
           }
         },
-        { label: '设备名称 ', prop: "equipment_name", sortable: true, minWidth: '100px' },
+        { label: '设备名称 ', prop: "equipment_name", sortable: true, minWidth: '120px' },
         { label: '计划执行状态 ', prop: "plan_state", sortable: true, minWidth: '130px' },
         {
           label: '是否影响产量 ',
@@ -346,14 +352,12 @@ export default {
           deleteUserId: this.$store.state.user.userInfo.userName,
           deleteUserName: this.$store.state.user.userInfo.nickName,
         }).then(res => {
-          if (res.code == 200) {
             this.$message({
-              type: "success", message: "操作成功！", duration: 1000,
+              type: "success", message: "删除成功！", duration: 1000,
               onClose: () => {
                 this.onLoad();
               }
             });
-          }
         }, error => {
           window.console.log(error);
         });
@@ -365,6 +369,7 @@ export default {
     submitSave () {
       this.openDialog.open = false;
       this.openDialog.data = {};
+      this.tableData = []
       this.onLoad();
     },
     getDept (obj) {

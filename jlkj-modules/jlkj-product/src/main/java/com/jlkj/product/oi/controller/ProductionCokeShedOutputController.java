@@ -29,11 +29,10 @@ import javax.validation.Valid;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-焦棚产量维护
- *
- * @author sudeyou
- * @since 2022-10-18 14:57:19
- */
+*@description: 焦棚产量维护
+*@Author: 265823
+*@date: 2023/7/10 14:15
+*/
 @Tag(name = "焦棚产量维护")
 @RestController
 @RequestMapping("/productioncokeshedoutput")
@@ -46,6 +45,11 @@ public class ProductionCokeShedOutputController {
     @Resource
     private ProductionCokeShedOutputService productionCokeShedOutputService;
 
+    /**
+     * 焦棚产量维护-查询-分页
+     * @param pageProductionCokeShedOutputDTO
+     * @return
+     */
     @Operation(summary = "焦棚产量维护-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -60,7 +64,7 @@ public class ProductionCokeShedOutputController {
     )
     @Log(title = "焦棚产量维护-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionCokeShedOutputPage", method = RequestMethod.GET)
-    public Object getProductionCokeShedOutputPageData(@Validated @ParamModel PageProductionCokeShedOutputDTO pageProductionCokeShedOutputDTO) {
+    public AjaxResult getProductionCokeShedOutputPageData(@Validated @ParamModel PageProductionCokeShedOutputDTO pageProductionCokeShedOutputDTO) {
         log.info("params => " + pageProductionCokeShedOutputDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionCokeShedOutputDTO);
         if (!"".equals(errorMsg)) {
@@ -70,6 +74,10 @@ public class ProductionCokeShedOutputController {
         return AjaxResult.success(productionCokeShedOutputService.getProductionCokeShedOutputPageData(pageProductionCokeShedOutputDTO));
     }
 
+    /**
+     * 焦棚产量维护-新增
+     * @param insertProductionCokeShedOutputDTO
+     */
     @Operation(summary = "焦棚产量维护-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -82,12 +90,16 @@ public class ProductionCokeShedOutputController {
     )
     @Log(title = "焦棚产量维护-新增",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/insertProductionCokeShedOutput", method = RequestMethod.POST, produces = "application/json")
-    public Object insertProductionCokeShedOutputData(@Valid @RequestBody InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO) {
+    public void insertProductionCokeShedOutputData(@Valid @RequestBody InsertProductionCokeShedOutputDTO insertProductionCokeShedOutputDTO) {
         log.info("params => " + insertProductionCokeShedOutputDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, insertProductionCokeShedOutputDTO);
-        return productionCokeShedOutputService.insertProductionCokeShedOutputData(insertProductionCokeShedOutputDTO);
+        productionCokeShedOutputService.insertProductionCokeShedOutputData(insertProductionCokeShedOutputDTO);
     }
 
+    /**
+     * 焦棚产量维护-修改
+     * @param updateProductionCokeShedOutputDTO
+     */
     @Operation(summary = "焦棚产量维护-修改",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -100,12 +112,16 @@ public class ProductionCokeShedOutputController {
     )
     @Log(title = "焦棚产量维护-修改",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/updateProductionCokeShedOutput", method = RequestMethod.PUT, produces = "application/json")
-    public Object updateProductionCokeShedOutputData(@Valid @RequestBody UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO) {
+    public void updateProductionCokeShedOutputData(@Valid @RequestBody UpdateProductionCokeShedOutputDTO updateProductionCokeShedOutputDTO) {
         log.info("params => " + updateProductionCokeShedOutputDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, updateProductionCokeShedOutputDTO);
-        return productionCokeShedOutputService.updateProductionCokeShedOutputData(updateProductionCokeShedOutputDTO);
+        productionCokeShedOutputService.updateProductionCokeShedOutputData(updateProductionCokeShedOutputDTO);
     }
 
+    /**
+     * 焦棚产量维护-抛送ERP
+     * @param confirmProductionCokeShedOutputDTO
+     */
     @Operation(summary = "焦棚产量维护-抛送ERP",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -118,12 +134,16 @@ public class ProductionCokeShedOutputController {
     )
     @Log(title = "焦棚产量维护-抛送ERP",businessType = BusinessType.UPDATE)
     @RequestMapping(value = "/confirmProductionCokeShedOutput", method = RequestMethod.PUT, produces = "application/json")
-    public Object confirmProductionCokeShedOutputData(@Valid @RequestBody ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO) {
+    public void confirmProductionCokeShedOutputData(@Valid @RequestBody ConfirmProductionCokeShedOutputDTO confirmProductionCokeShedOutputDTO) {
         log.info("params => " + confirmProductionCokeShedOutputDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, confirmProductionCokeShedOutputDTO);
-        return productionCokeShedOutputService.confirmProductionCokeShedOutputData(confirmProductionCokeShedOutputDTO);
+        productionCokeShedOutputService.confirmProductionCokeShedOutputData(confirmProductionCokeShedOutputDTO);
     }
 
+    /**
+     * 焦棚产量维护-删除
+     * @param deleteProductionCokeShedOutputDTO
+     */
     @Operation(summary = "焦棚产量维护-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token")
@@ -136,10 +156,10 @@ public class ProductionCokeShedOutputController {
     )
     @Log(title = "焦棚产量维护-删除",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteProductionCokeShedOutput", method = RequestMethod.DELETE, produces = "application/json")
-    public Object deleteProductionCokeShedOutputData(@Valid @RequestBody DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO) {
+    public void deleteProductionCokeShedOutputData(@Valid @RequestBody DeleteProductionCokeShedOutputDTO deleteProductionCokeShedOutputDTO) {
         log.info("params => " + deleteProductionCokeShedOutputDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionCokeShedOutputDTO);
-        return productionCokeShedOutputService.deleteProductionCokeShedOutputData(deleteProductionCokeShedOutputDTO);
+        productionCokeShedOutputService.deleteProductionCokeShedOutputData(deleteProductionCokeShedOutputDTO);
     }
 }
 

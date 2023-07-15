@@ -38,7 +38,6 @@ export default {
     handleClick(tab, event) {
       if (this.applyIdIf!=false){
         this.activeName =tab.name
-        console.log(this.activeName+"shou");
         if(tab.name=='third'||    this.activeName=='third'){
           this.$refs.detail.detailGet()
         }

@@ -7,7 +7,7 @@ import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformancedetail.PageProductionConfigureCoalSpeciesPerformanceDetailDTO;
 import com.jlkj.product.oi.dto.productionconfigurecoalspeciesperformancedetail.SaveOrUpdateDTO;
-import com.jlkj.product.oi.service.impl.ProductionConfigureCoalSpeciesPerformanceDetailServiceImpl;
+import com.jlkj.product.oi.service.ProductionConfigureCoalSpeciesPerformanceDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-配煤实绩明细
- *
- * @author sudeyou
- */
+*@description: 控制器-配煤实绩明细
+*@Author: 265823
+*@date: 2023/7/10 14:26
+*/
 @Tag(name = "配煤实绩明细")
 @RestController
 @RequestMapping("/performance")
@@ -39,8 +39,13 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailController {
     private HttpServletRequest httpServletRequest;
 
     @Resource
-    private ProductionConfigureCoalSpeciesPerformanceDetailServiceImpl productionConfigureCoalSpeciesPerformanceDetailService;
+    private ProductionConfigureCoalSpeciesPerformanceDetailService service;
 
+    /**
+     * 查询-分页-配煤实绩明细
+     * @param pageProductionConfigureCoalSpeciesPerformanceDetailDTO
+     * @return
+     */
     @Operation(summary = "查询-分页-配煤实绩明细",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -82,16 +87,20 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailController {
 
     @Log(title = "查询-分页-配煤实绩明细",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listConfigureCoalSpeciesPerformanceDetail", method = RequestMethod.GET)
-    public Object getPageData(@Validated @ParamModel PageProductionConfigureCoalSpeciesPerformanceDetailDTO pageProductionConfigureCoalSpeciesPerformanceDetailDTO) {
+    public AjaxResult getPageData(@Validated @ParamModel PageProductionConfigureCoalSpeciesPerformanceDetailDTO pageProductionConfigureCoalSpeciesPerformanceDetailDTO) {
         log.info("params => " + pageProductionConfigureCoalSpeciesPerformanceDetailDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionConfigureCoalSpeciesPerformanceDetailDTO);
         if (!"".equals(errorMsg)) {
             return AjaxResult.error(errorMsg);
         }
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, pageProductionConfigureCoalSpeciesPerformanceDetailDTO);
-        return AjaxResult.success(productionConfigureCoalSpeciesPerformanceDetailService.getPageData(pageProductionConfigureCoalSpeciesPerformanceDetailDTO));
+        return AjaxResult.success(service.getPageData(pageProductionConfigureCoalSpeciesPerformanceDetailDTO));
     }
 
+    /**
+     * 配煤实绩明细-新增
+     * @param dto
+     */
     @Operation(summary = "配煤实绩明细-新增",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -117,13 +126,16 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailController {
     )
     @Log(title = "配煤实绩明细-新增",businessType = BusinessType.INSERT)
     @PostMapping(value = "/save")
-    public Object save(@Validated @RequestBody SaveOrUpdateDTO dto) {
+    public void save(@Validated @RequestBody SaveOrUpdateDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionConfigureCoalSpeciesPerformanceDetailService.save(dto);
+        service.saveCustom(dto);
     }
 
-
+    /**
+     * 配煤实绩明细-修改
+     * @param dto
+     */
     @Operation(summary = "配煤实绩明细-修改",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -146,13 +158,16 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailController {
     )
     @Log(title = "配煤实绩明细-修改",businessType = BusinessType.UPDATE)
     @PutMapping(value = "/update")
-    public Object update(@Validated @RequestBody SaveOrUpdateDTO dto) {
+    public void update(@Validated @RequestBody SaveOrUpdateDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionConfigureCoalSpeciesPerformanceDetailService.update(dto);
+        service.updateCustom(dto);
     }
 
-
+    /**
+     * 配煤实绩明细-删除
+     * @param dto
+     */
     @Operation(summary = "配煤实绩明细-删除",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -166,10 +181,10 @@ public class ProductionConfigureCoalSpeciesPerformanceDetailController {
     )
     @Log(title = "配煤实绩明细-删除",businessType = BusinessType.DELETE)
     @DeleteMapping(value = "/del")
-    public Object del(@Validated @RequestBody SaveOrUpdateDTO dto) {
+    public void del(@Validated @RequestBody SaveOrUpdateDTO dto) {
         log.info("params => " + dto);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-        return productionConfigureCoalSpeciesPerformanceDetailService.del(dto);
+        service.del(dto);
     }
 }
 

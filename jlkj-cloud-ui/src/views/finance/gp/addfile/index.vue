@@ -366,12 +366,10 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row.filetype);
       this.reset();
       this.imageList = []
       this.fileUrlList = []
       const uuid = row.uuid || this.ids
-      console.log(row);
       getAddfile(uuid).then(response => {
         this.form = response.data;
         this.open = true;
@@ -381,11 +379,9 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
-
         this.form.fileUrl = this.imageList.toString()
         if (valid) {
           if (this.form.uuid != null) {
-            console.log(this.form);
             updateAddfile(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -443,12 +439,9 @@ export default {
 
     // 上传成功回调
     handleUploadSuccess(res, file) {
-      console.log(res);
       if (res.code === 200) {
         this.imageList.push( res.data.url)
         this.fileUrlId = res.data.id
-        console.log(res.data.id);
-        console.log(this.imageList);
         this.uploadList.push({name: res.data.url, url: this.baseUrl + res.data.url});
         this.uploadedSuccessfully();
       } else {

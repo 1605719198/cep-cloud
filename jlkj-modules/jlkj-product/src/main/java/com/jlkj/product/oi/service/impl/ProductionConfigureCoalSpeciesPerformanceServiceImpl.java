@@ -35,6 +35,11 @@ public class ProductionConfigureCoalSpeciesPerformanceServiceImpl extends Servic
     public static final List<Integer> MONTH_DAY31 = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
     public static final List<Integer> MONTH_DAY30 = Arrays.asList(4, 6, 9, 11);
 
+    /**
+     * 查询-分页-配煤实绩主记录
+     * @param pageProductionConfigureCoalSpeciesPerformanceDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, String>> getPageData(PageProductionConfigureCoalSpeciesPerformanceDTO pageProductionConfigureCoalSpeciesPerformanceDTO) {
@@ -42,6 +47,11 @@ public class ProductionConfigureCoalSpeciesPerformanceServiceImpl extends Servic
         return getBaseMapper().getPageData(page, pageProductionConfigureCoalSpeciesPerformanceDTO);
     }
 
+    /**
+     * 查询-分页-配煤分析
+     * @param dto 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public IPage<Map<String, Object>> getConfigureCoalSpeciesAnalysis(PageProductionConfigureCoalSpeciesAnalysisDTO dto) {
@@ -49,6 +59,11 @@ public class ProductionConfigureCoalSpeciesPerformanceServiceImpl extends Servic
         return getBaseMapper().getConfigureCoalSpeciesAnalysis(page, dto);
     }
 
+    /**
+     * 查询-分页-配煤分析-图表-年
+     * @param dto 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getConfigureCoalSpeciesAnalysisChartByYear(PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
@@ -75,6 +90,11 @@ public class ProductionConfigureCoalSpeciesPerformanceServiceImpl extends Servic
         return row;
     }
 
+    /**
+     * 查询-分页-配煤分析-图表-月
+     * @param dto 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getConfigureCoalSpeciesAnalysisChartByMonth(PageProductionConfigureCoalSpeciesAnalysisChartDTO dto) {
@@ -111,9 +131,14 @@ public class ProductionConfigureCoalSpeciesPerformanceServiceImpl extends Servic
         return row;
     }
 
+    /**
+     * 统计分析-配煤比分析-图表
+     * @param dto 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
-    public Object getConfigureCoalSpeciesAnalysisStatistics(PageConfigureCoalSpeciesAnalysisStatisticsDTO dto) {
+    public Map<String, Object> getConfigureCoalSpeciesAnalysisStatistics(PageConfigureCoalSpeciesAnalysisStatisticsDTO dto) {
         Map<String, Object> row = new HashMap<>(4);
         List<Map<String, Object>> plan = getBaseMapper().getConfigureCoalSpeciesAnalysisStatisticsPlan(dto);
         List<Map<String, Object>> performance = getBaseMapper().getConfigureCoalSpeciesAnalysisStatisticsPerformance(dto);

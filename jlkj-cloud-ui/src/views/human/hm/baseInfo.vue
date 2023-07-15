@@ -179,7 +179,6 @@ export default {
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
     },
     // 分页-每页多少条
@@ -219,7 +218,6 @@ export default {
           this.tableData = []
           this.$message({type: 'success', message: res.msg});
         }, error => {
-          window.console.log(error);
         });
       }).catch(() => {
         this.$message({type: 'info', message: '已取消删除'});

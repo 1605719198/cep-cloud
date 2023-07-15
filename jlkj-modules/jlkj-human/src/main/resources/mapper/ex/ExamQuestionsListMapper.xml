@@ -23,17 +23,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsListVo">
-	 select rownum, bank_code, bank_name, questions_id, questions_code, questions_title, questions_type, questions_score, rate_number, right_answer, answer_analyse, status, create_by, create_dept, create_time from
-	 (
-		select a.bank_code, b.bank_name, a.questions_id, a.questions_code, substr(a.questions_title,1,50) as questions_title, a.questions_type, a.questions_score, a.rate_number, a.right_answer, a.answer_analyse, a.status, a.create_by, a.create_dept, a.create_time from exam_questions_property a
-		left join exam_questions_bank b on b.bank_code = a.bank_code
-		order by a.questions_type, a.bank_code, a.questions_id        	
-	 ) 
+    select (@rowNum := @rowNum + 1), b.bank_code, b.bank_name, b.questions_id, b.questions_code, b.questions_title, b.questions_type,
+    b. questions_score, b.rate_number, b.right_answer, b.answer_analyse, b.status, b.create_by, b.create_dept, b.create_time from
+      (SELECT @rowNum := 0) r,  (   select a.bank_code, b.bank_name, a.questions_id, a.questions_code, substr(a.questions_title,1,50) as questions_title,
+     a.questions_type, a.questions_score, a.rate_number, a.right_answer, a.answer_analyse, a.status, a.create_by, a.create_dept, a.create_time
+     from human_ex_questions_property a   left join human_ex_questions_bank b on b.bank_code = a.bank_code   order by a.questions_type, a.bank_code,
+      a.questions_id )  b
     </sql>
 
     <select id="selectExamQuestionsList" parameterType="String" resultMap="ExamQuestionsListResult">
         <include refid="selectExamQuestionsListVo"/>
-        where bank_code in 
+        where b.bank_code in
         <foreach item="bankCode" collection="array" open="(" separator="," close=")">
             #{bankCode}
         </foreach>  
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectExamQuestionsListVo"/>
         where questions_code in
 		(
-		select questions_code from exam_task_questions where exam_code = #{examCode}
+		select a.questions_code from human_ex_task_questions a where a.exam_code = #{examCode}
 		)  
     </select>
     

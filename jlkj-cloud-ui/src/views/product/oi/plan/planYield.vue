@@ -3,6 +3,7 @@
     <el-form :model="query" ref="query" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="计划年份" prop="planYear">
         <el-date-picker v-model="query.planYear"
+                        size="small"
                         type="year"
                         placeholder="计划年份"
                         value-format="yyyy"
@@ -11,6 +12,7 @@
       <el-form-item label="计划月份" prop="planMonth">
         <el-date-picker v-model="query.planMonth"
                         type="month"
+                        size="small"
                         placeholder="计划月份"
                         format="MM"
                         value-format="M" />
@@ -269,14 +271,12 @@ export default {
           deleteUserId: this.$store.state.user.userInfo.userName,
           deleteUserName: this.$store.state.user.userInfo.nickName,
         }).then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: "success", message: "操作成功！", duration: 1000,
-              onClose: () => {
-                this.onLoad();
-              }
-            });
-          }
+          this.$message({
+            type: "success", message: "删除成功！", duration: 1000,
+            onClose: () => {
+              this.onLoad();
+            }
+          });
         }, error => {
           window.console.log(error);
         });

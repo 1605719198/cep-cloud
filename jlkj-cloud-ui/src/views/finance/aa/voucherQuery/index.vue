@@ -235,7 +235,6 @@ export default {
     },
     /** 更多条件弹窗*/
     getVoucherNo(val) {
-      console.log(val.status);
       this.queryParams=val
       this.getListDetailList()
     },

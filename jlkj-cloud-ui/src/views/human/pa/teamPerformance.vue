@@ -424,7 +424,6 @@ export default {
 
       for (let i = 0; i < this.colFields.length; i++) {
         for (let j = 0; j < this.keyWorkItemsList.length; j++) {
-          // console.log("i=" + i + " j=" + j);
           // i 表示列 j表示行
           if (j === 0) {
             if (this.spanArr[j * this.colFields.length + i].rowspan === 0) {

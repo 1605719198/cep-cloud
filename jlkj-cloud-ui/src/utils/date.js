@@ -21,10 +21,11 @@ export const calcDate = (date1, date2) => {
     seconds: seconds,
   }
 }
+
 /**
  * 日期格式化
  */
-export function dateFormat (date, format) {
+export function dateFormat(date, format) {
   format = format || 'yyyy-MM-dd hh:mm:ss';
   if (date !== 'Invalid Date') {
     let o = {
@@ -49,7 +50,7 @@ export function dateFormat (date, format) {
 }
 
 //显示时间格式
-export function showDateFormat (time, type) {
+export function showDateFormat(time, type) {
   var date = new Date(time);
   var year = date.getFullYear();
   /* 在日期格式中，月份是从0开始的，因此要加0
@@ -67,8 +68,9 @@ export function showDateFormat (time, type) {
     return hours + " : " + minutes + " : " + seconds;
   }
 }
+
 //获取一个月有多少天
-export function getDays (year, month) {
+export function getDays(year, month) {
   // console.log(year, month)
   let days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   if ((year % 4 === 0) && (year % 100 !== 0 || year % 400 === 0)) {
@@ -118,7 +120,7 @@ export function dateTextToDateString(text) {
   var second = date.getSeconds();//秒
   return year + "-" +
     ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
-    (day > 9 ? day : ("0" + day)) ;
+    (day > 9 ? day : ("0" + day));
 }
 
 export function dateTextToDatetimeString(text) {
@@ -133,7 +135,7 @@ export function dateTextToDatetimeString(text) {
     ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
     (day > 9 ? day : ("0" + day)) + " " +
     (hours > 9 ? hours : ("0" + hours)) + ":" +
-    (min > 9 ? min : ("0" + min)) ;
+    (min > 9 ? min : ("0" + min));
 }
 
 export function dateRemoveSeconds(date) {
@@ -147,5 +149,6 @@ export function dateRemoveSeconds(date) {
     ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
     (day > 9 ? day : ("0" + day)) + " " +
     (hours > 9 ? hours : ("0" + hours)) + ":" +
-    (min > 9 ? min : ("0" + min)) + ":00" ;
+    (min > 9 ? min : ("0" + min)) + ":00";
 }
+

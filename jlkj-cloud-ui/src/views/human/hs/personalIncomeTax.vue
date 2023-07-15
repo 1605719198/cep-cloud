@@ -185,7 +185,6 @@ export default {
     },
     //获取类别列表
     getVersionList() {
-      console.log("ddddd",this.queryParams.type)
       selectVersion(this.queryParams.type).then(response => {
         this.versionList = response.data
       })

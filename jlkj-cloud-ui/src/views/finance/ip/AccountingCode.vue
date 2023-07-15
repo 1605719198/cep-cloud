@@ -277,7 +277,6 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate (row) {
-      console.log(row)
       this.CostCenterCostVisible = true
       this.$nextTick(() => {
         this.$refs.addOrUpdate.Update(row.accountItemCode, row.id)
@@ -330,9 +329,6 @@ export default {
   color: #337ab7;
   cursor: pointer;
 }
-/*.avue-crud .el-date-editor.el-input {*/
-/*  width: auto !important;*/
-/*}*/
 .plan_header {
   background-color: #f9f9f9;
   height: 50px;

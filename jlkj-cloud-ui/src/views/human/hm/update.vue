@@ -111,7 +111,6 @@ export default {
               this.submitLoading = false
             }, error => {
               this.submitLoading = false
-              window.console.log(error);
             });
           } else {
             this.submitLoading = true
@@ -123,7 +122,6 @@ export default {
               this.submitLoading = false
             }, error => {
               this.submitLoading = false
-              window.console.log(error);
             });
           }
 

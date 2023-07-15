@@ -1,6 +1,8 @@
 package com.jlkj.human.ex.service.impl;
 
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.ex.domain.ExamType;
 import com.jlkj.human.ex.domain.TypeTreeSelect;
 import com.jlkj.human.ex.mapper.ExamTypeMapper;
@@ -58,6 +60,8 @@ public class ExamTypeServiceImpl implements IExamTypeService
     @Override
     public int insertExamType(ExamType examType)
     {
+        examType.setCreateBy(SecurityUtils.getUsername());
+        examType.setCreateTime(DateUtils.getNowDate());
         return examTypeMapper.insertExamType(examType);
     }
 

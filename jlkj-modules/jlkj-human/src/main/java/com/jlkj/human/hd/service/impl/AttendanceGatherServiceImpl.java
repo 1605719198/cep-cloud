@@ -3,16 +3,22 @@ package com.jlkj.human.hd.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.BeanCopyUtils;
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.human.hd.domain.AttendanceGather;
+import com.jlkj.human.hd.domain.SaveTime;
+import com.jlkj.human.hd.domain.ShiftCode;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
+import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import com.jlkj.human.hd.mapper.AttendanceGatherMapper;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
+import com.jlkj.human.hd.service.ISaveTimeService;
 import com.jlkj.human.hd.service.IShiftCodeService;
+import com.jlkj.human.hm.domain.Leave;
 import com.jlkj.human.hm.domain.Personnel;
 import com.jlkj.human.hm.dto.HumanresourcePersonnelInfoDTO;
 import com.jlkj.human.hm.service.IPersonnelService;
@@ -24,10 +30,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validator;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * @author HuangBing
@@ -49,6 +53,9 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
 
     @Resource
     private IShiftCodeService shiftCodeService;
+
+    @Resource
+    private ISaveTimeService saveTimeService;
 
 //    @Resource
 //    OverTimeServiceImpl overTimeService;
@@ -400,8 +407,8 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
      **/
     @Override
     public int attendanceSummary() {
-        long[] quarter = {3, 6, 9, 12};
-        long lastMonth = 12;
+        long[] quarter = {1,4,7,10};
+        long lastMonth = 1;
         Date nowDate = new Date();
         long nowYear = Long.parseLong(String.format("%tY", nowDate));
         long nowMonth = Long.parseLong(String.format("%tm", nowDate));
@@ -419,47 +426,68 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
             BeanCopyUtils.copy(emp, newMonthData);
             newMonthData.setYear(year);
             newMonthData.setMonth(month);
-            newMonthData = summaryData(newMonthData, nowYear, nowMonth);
+            newMonthData = summaryData(newMonthData, year, month);
             newDataList.add(newMonthData);
+
+            // 季度数据处理
+            long quaMonth;
+            if (month < 4) {
+                quaMonth = 13;
+            } else if (month < 7) {
+                quaMonth = 14;
+            } else if (month < 10) {
+                quaMonth = 15;
+            } else {
+                quaMonth = 16;
+            }
+            long yearMonth = 17;
             if (Arrays.binarySearch(quarter, month) > 0) {
-//                    long quaMonth ;
-//                    if(month<4){
-//                        quaMonth = 13;
-//                    }else if(month<7){
-//                        quaMonth = 14;
-//                    }else if(month<10){
-//                        quaMonth = 15;
-//                    }else{
-//                        quaMonth = 16;
-//                    }
-//                    //执行季度结转
-//                    SaveTime newQuarterData = new SaveTime();
-//                    BeanCopyUtils.copy(emp,newQuarterData);
-//                    newQuarterData.setYear(year);
-//                    newQuarterData.setMonth(quaMonth);
-//                    newQuarterData = scheduleData(newQuarterData,isTranQua,nowYear,quaMonth+1);
-//                    newDataList.add(newQuarterData);
+                //执行季度新增
+                AttendanceGather newQuarterData = new AttendanceGather();
+                BeanCopyUtils.copy(newMonthData, newQuarterData);
+                newQuarterData.setYear(year);
+                newQuarterData.setMonth(quaMonth);
+                newQuarterData.setUuid(IdUtils.simpleUUID());
+                newDataList.add(newQuarterData);
                 if (month == lastMonth) {
-//                        long yearMonth = 17;
-//                        //执行年度结转
-//                        SaveTime newYearData = new SaveTime();
-//                        BeanCopyUtils.copy(emp,newYearData);
-//                        newYearData.setYear(year);
-//                        newYearData.setMonth(yearMonth);
-//                        newYearData = scheduleData(newYearData,isTranYear,nowYear,yearMonth);
-//                        newDataList.add(newYearData);
+                    //执行年度新增
+                    AttendanceGather newYearData = new AttendanceGather();
+                    BeanCopyUtils.copy(newMonthData, newYearData);
+                    newYearData.setYear(year);
+                    newYearData.setMonth(yearMonth);
+                    newYearData.setUuid(IdUtils.simpleUUID());
+                    newDataList.add(newYearData);
+                } else {
+                    //执行年度累加
+                    AttendanceGather newYearData = new AttendanceGather();
+                    BeanCopyUtils.copy(newMonthData, newQuarterData);
+                    newQuarterData.setYear(year);
+                    newQuarterData.setMonth(yearMonth);
+                    attendanceGatherMapper.addAttendanceGather(newQuarterData);
                 }
+            } else {
+                //执行季度累加
+                AttendanceGather newQuarterData = new AttendanceGather();
+                BeanCopyUtils.copy(newMonthData, newQuarterData);
+                newQuarterData.setYear(year);
+                newQuarterData.setMonth(quaMonth);
+                attendanceGatherMapper.addAttendanceGather(newQuarterData);
+                //执行年度累加
+                AttendanceGather newYearData = new AttendanceGather();
+                BeanCopyUtils.copy(newMonthData, newQuarterData);
+                newQuarterData.setYear(year);
+                newQuarterData.setMonth(yearMonth);
+                attendanceGatherMapper.addAttendanceGather(newQuarterData);
             }
         }
-        if(newDataList.size()==0){
+        if (newDataList.size() == 0) {
             return 0;
-        }else{
+        } else {
             System.out.println(newDataList);
             int result = 0;
-            for(AttendanceGather gather : newDataList){
-                result+=attendanceGatherMapper.insertAttendanceGather(gather);
+            for (AttendanceGather gather : newDataList) {
+                result += attendanceGatherMapper.insertAttendanceGather(gather);
             }
-//            return attendanceGatherMapper.batchSummaryData(newDataList);
             return result;
         }
     }
@@ -475,7 +503,12 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
      * @Date 2023/7/12 9:35
      **/
     public AttendanceGather summaryData(AttendanceGather newData, long year, long month) {
+        //数据来源：系统0，导入1
+        String fromSystem = "0";
+        newData.setDatafrom(fromSystem);
         newData = setData(newData);
+        newData.setCreator("定时出勤汇总");
+        newData.setCreateDate(new Date());
         newData.setUuid(IdUtils.simpleUUID());
         newData.setYear(year);
         newData.setMonth(month);
@@ -491,12 +524,18 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
     public AttendanceGather setData(AttendanceGather attendanceGather) {
         HumanresourcePersonnelInfoDTO personnelInfoDTO = iPersonnelService.selectPersonnelInfo(attendanceGather.getEmpNo());
         List<Personnel> personnelList = personnelInfoDTO.getPersonnelList();
+        List<Leave> leaveList = personnelInfoDTO.getLeaveList();
+        Date befWorkDay = null, aftWorkDay = null;
+        // 人员基本信息数据
         if (personnelList.size() != 0) {
             Personnel personnel = personnelList.get(0);
             // 是否在职
             String isWork = "1";
-            if(!isWork.equals(personnel.getStatus())){
+            String afterWork = "0";
+            if (!isWork.equals(personnel.getStatus())) {
                 attendanceGather.setResvAttr2a(isWork);
+            } else {
+                attendanceGather.setResvAttr2a(afterWork);
             }
             attendanceGather.setCompId(personnel.getCompId());
             attendanceGather.setEmpId(personnel.getId());
@@ -505,12 +544,77 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 attendanceGather.setPostId(personnel.getPostId().toString());
             }
             attendanceGather.setPostName(personnel.getPostName());
-            attendanceGather.setCreator("定时出勤汇总");
-            attendanceGather.setCreateDate(new Date());
-            //数据来源：系统0，导入1
-            String fromSystem = "0";
-            attendanceGather.setDatafrom(fromSystem);
+            //入企时间
+            befWorkDay = personnel.getEntryDate();
         }
+        if (leaveList.size() != 0) {
+            //离职日期
+            aftWorkDay = leaveList.get(0).getLeaveEffectDate();
+        }
+        // 应出勤数据
+        Date date = new Date();
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date);
+        // 设置为上一个月
+        calendar1.set(Calendar.MONTH, calendar1.get(Calendar.MONTH) - 1);
+        date = calendar1.getTime();
+        PersonShiftCodeDTO shiftCodeDTO = new PersonShiftCodeDTO();
+        shiftCodeDTO.setStartDate(DateUtils.getFirstOfMonth(date));
+        shiftCodeDTO.setEndDate(DateUtils.getLastOfMonth(date));
+        shiftCodeDTO.setEmpId(attendanceGather.getEmpNo());
+        shiftCodeDTO.setCompId(attendanceGather.getCompId());
+        List<ShiftCode> shiftCodes = shiftCodeService.selectShiftCodeByPerson(shiftCodeDTO);
+        //应出勤班次，小时数
+        double dueAttDuty = 0, dueAttHou = 0;
+        //大夜班小夜班数
+        long bigNig = 0, smaNig = 0;
+        // 月内入企前班次数，小时数，月内离职后班次数，小时数
+        double befEntDuty = 0, befEntHou = 0, aftEntDuty = 0, aftEntHou = 0;
+        String bigNigStr = "1", smaNigStr = "2";
+        for (ShiftCode shiftCode : shiftCodes) {
+            double hour = Double.parseDouble(shiftCode.getConHour());
+            double min = Double.parseDouble(shiftCode.getConMin());
+            if (hour != 0 || min != 0) {
+                dueAttDuty++;
+                dueAttHou += hour + (min / 60);
+                if (StringUtils.isNotNull(befWorkDay) && shiftCode.getCreateDate().getTime() < befWorkDay.getTime()) {
+                    befEntDuty++;
+                    befEntHou += hour + (min / 60);
+                }
+                if (StringUtils.isNotNull(aftWorkDay) && shiftCode.getCreateDate().getTime() > aftWorkDay.getTime()) {
+                    aftEntDuty++;
+                    aftEntHou += hour + (min / 60);
+                }
+            }
+            if (bigNigStr.equals(shiftCode.getBigSmaNight())) {
+                bigNig++;
+            } else if (smaNigStr.equals(shiftCode.getBigSmaNight())) {
+                smaNig++;
+            }
+        }
+        // 存班小时数，待补休小时数，实际补休小时数
+        double savHou = 0, dueResHou = 0, resHou = 0;
+        SaveTime saveTimeParam = new SaveTime();
+        BeanCopyUtils.copy(attendanceGather, saveTimeParam);
+        try {
+            SaveTime saveTime = saveTimeService.selectSaveTimeList(saveTimeParam).get(0);
+            savHou = Double.parseDouble(saveTime.getSaveHours());
+            dueResHou = Double.parseDouble(saveTime.getOvertimeHours());
+            resHou = Double.parseDouble(saveTime.getCompHours());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        attendanceGather.setSavHou(BigDecimal.valueOf(savHou));
+        attendanceGather.setDueResHou(BigDecimal.valueOf(dueResHou));
+        attendanceGather.setResHou(BigDecimal.valueOf(resHou));
+        attendanceGather.setBigNig(bigNig);
+        attendanceGather.setSmaNig(smaNig);
+        attendanceGather.setDueAttDuty(BigDecimal.valueOf(dueAttDuty));
+        attendanceGather.setDueAttHou(BigDecimal.valueOf(dueAttHou));
+        attendanceGather.setBefEntDuty(BigDecimal.valueOf(befEntDuty));
+        attendanceGather.setBefEntHou(BigDecimal.valueOf(befEntHou));
+        attendanceGather.setAftEntDuty(BigDecimal.valueOf(aftEntDuty));
+        attendanceGather.setAftEntHou(BigDecimal.valueOf(aftEntHou));
         return attendanceGather;
     }
 }

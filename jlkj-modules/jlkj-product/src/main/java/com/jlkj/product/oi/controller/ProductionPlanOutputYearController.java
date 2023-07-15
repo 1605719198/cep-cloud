@@ -1,9 +1,8 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.productionplantarget.AddProductionPlanYearDTO;
 import com.jlkj.product.oi.dto.productionplantarget.DeleteProductionPlanYearDTO;
 import com.jlkj.product.oi.service.*;
@@ -19,18 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-04-26 10:33
- */
+*@description: 年产量计划
+*@Author: 265823
+*@date: 2023/7/7 15:50
+*/
 @Tag(name = "年产量计划")
 @RestController
 @RequestMapping("/plan")
@@ -55,9 +52,10 @@ public class ProductionPlanOutputYearController {
     @Autowired
     ProductionYieldAnalysisYearService yieldAnalysisYearService;
 
-    @Resource
-    ChangeLogService changeLogService;
-
+    /**
+     * 年产量计划查询
+     * @return
+     */
     @Operation(summary = "年产量计划查询",
             parameters = {
             },
@@ -68,15 +66,16 @@ public class ProductionPlanOutputYearController {
     )
     @Log(title = "年产量计划查询",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listYearProductionOutputPlans", method = RequestMethod.GET)
-    public Object get() {
+    public AjaxResult get() {
         log.info("params => listYearProductionOutputPlans");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        List<ProductionParameterTargetItem> itemlist =
-                productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
-                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
-        return planOutputYearService.get(itemlist);
+        return AjaxResult.success(planOutputYearService.get());
     }
 
+    /**
+     * 新增年生产产量计划
+     * @param productionPlanYearDTO
+     */
     @Operation(summary = "新增年生产产量计划",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -97,12 +96,16 @@ public class ProductionPlanOutputYearController {
     )
     @Log(title = "新增年生产产量计划",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/saveYearProductionOutputPlan", method = RequestMethod.POST, produces = "application/json")
-    public Object save(@Valid @RequestBody AddProductionPlanYearDTO productionPlanYearDTO) {
+    public void save(@Valid @RequestBody AddProductionPlanYearDTO productionPlanYearDTO) {
         log.info("params => " + productionPlanYearDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, productionPlanYearDTO);
-        return planOutputMonthService.saveCustom(productionPlanYearDTO);
+        planOutputMonthService.saveCustom(productionPlanYearDTO);
     }
 
+    /**
+     * 删除年计划
+     * @param deleteProductionPlanYearDTO
+     */
     @Operation(summary = "删除年计划",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -118,9 +121,9 @@ public class ProductionPlanOutputYearController {
     )
     @Log(title = "删除年计划",businessType = BusinessType.DELETE)
     @RequestMapping(value = "/deleteYearProductionOutputPlan", method = RequestMethod.POST, produces = "application/json")
-    public Object delete(@Valid @RequestBody DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
+    public void delete(@Valid @RequestBody DeleteProductionPlanYearDTO deleteProductionPlanYearDTO) {
         log.info("params => " + deleteProductionPlanYearDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, deleteProductionPlanYearDTO);
-        return planOutputMonthService.delete(deleteProductionPlanYearDTO);
+        planOutputMonthService.delete(deleteProductionPlanYearDTO);
     }
 }

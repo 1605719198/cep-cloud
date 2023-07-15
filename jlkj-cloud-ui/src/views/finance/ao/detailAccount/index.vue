@@ -1319,8 +1319,6 @@ export default {
       this.repaymentIf=false;
       this.loading = true;
       detailList(this.queryParams).then(response => {
-        console.log(this.tableColumnsInput);
-
         this.tableColumnsInput = response.rows;
         this.tableColumnsInput = this.tableColumnsInput.map(item => {
           switch (item.billType) {
@@ -1331,7 +1329,6 @@ export default {
           return item;
         })
         if (this.tableColumnsInput.length>0){
-          console.log(this.tableColumnsInput[0].processingStatus);
             if ( this.tableColumnsInput[0].processingStatus =='N'){
               this.activeName="first"
             }else {
@@ -1350,7 +1347,6 @@ export default {
         listDetailAccount( this.borrowingForm).then(response => {
           if ( response.rows.length == 0){
             getLoanADetailAccount(this.borrowingForm).then(response => {
-              console.log(response.data.acctCode);
               let itemAccount= {
                 indexAccount: 1,
                 id: null,
@@ -1406,7 +1402,6 @@ export default {
         getFormLoan( this.reimbursementForm).then(response => {
           this.reimbursementForm.loanList = response.data;
           listDetailAccount( this.reimbursementForm).then(response => {
-            console.log(response.rows.length+"++++++++++++++++++");
             if ( response.rows.length == 0){
               this.detailAccountList=[]
               let item = {
@@ -1592,7 +1587,6 @@ export default {
         if (valid) {
           this.borrowingForm.detailAccountLoanList = this.detailAccountLoanList;
           this.borrowingForm.detailAccountLoanList[0].drCr='D'
-          console.log(this.borrowingForm.detailAccountLoanList[0].id);
           if (this.borrowingForm.detailAccountLoanList[0].id != null) {
             updateDetailAccount(this.borrowingForm).then(response => {
               if (!this.valString){

@@ -317,7 +317,6 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      console.log("row.id",row,id)
       getCrcy(id).then(response => {
         this.form = response.data;
         this.open = true;

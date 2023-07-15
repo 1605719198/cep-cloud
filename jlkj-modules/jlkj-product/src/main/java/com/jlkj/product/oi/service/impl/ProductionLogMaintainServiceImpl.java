@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.product.oi.domain.ProductionLogMaintain;
 import com.jlkj.product.oi.dto.logmaintain.GetDto;
 import com.jlkj.product.oi.dto.logmaintain.SaveOrUpdateDTO;
@@ -20,27 +19,39 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author zyf
- * @description 针对表【product_oi_log_maintain(生产管理-日志维护)】的数据库操作Service实现
- * @createDate 2022-10-10 09:12:16
- */
+*@description: 针对表【product_oi_log_maintain(生产管理-日志维护)】的数据库操作Service实现
+*@Author: 265823
+*@date: 2023/7/10 15:09
+*/
 @Service
 public class ProductionLogMaintainServiceImpl extends ServiceImpl<ProductionLogMaintainMapper, ProductionLogMaintain>
         implements ProductionLogMaintainService {
 
-    public Object get(GetDto dto) {
+    /**
+     * 日志查询
+     * @param dto
+     * @return
+     */
+    @Override
+    public Page<Map<String, Object>> get(GetDto dto) {
         Page<Map<String, Object>> page = new Page<>(dto.getCurrent(), dto.getSize());
         Date start = DateUtil.parse(StrUtil.isEmpty(dto.getStartTime()) ? "1790-01-01" : dto.getStartTime() + " 00:00:00");
         Date end = DateUtil.parse(StrUtil.isEmpty(dto.getEndTime()) ? "1790-01-01" : dto.getEndTime() + " 23:59:59");
-        return pageMaps(page, new QueryWrapper<ProductionLogMaintain>()
+        Page<Map<String, Object>> mapPage = pageMaps(page, new QueryWrapper<ProductionLogMaintain>()
                 .orderBy(true, "asc".equals(dto.getOrderby()), dto.getOrder())
                 .lambda()
                 .ge(ObjectUtil.isNotEmpty(dto.getStartTime()), ProductionLogMaintain::getCreateTime, start)
                 .le(ObjectUtil.isNotEmpty(dto.getEndTime()), ProductionLogMaintain::getCreateTime, end)
                 .eq(ObjectUtil.isNotEmpty(dto.getItemId()), ProductionLogMaintain::getItemId, dto.getItemId()));
+        return mapPage;
     }
 
-    public Object save(SaveOrUpdateDTO dto) {
+    /**
+     * 日志新增
+     * @param dto
+     */
+    @Override
+    public void saveCustom(SaveOrUpdateDTO dto) {
         ProductionLogMaintain entity = new ProductionLogMaintain();
         entity.setId(IdUtil.randomUUID());
         entity.setItemId(dto.getItemId());
@@ -53,10 +64,14 @@ public class ProductionLogMaintainServiceImpl extends ServiceImpl<ProductionLogM
         entity.setModifyUserId(dto.getUserId());
         entity.setModifyUserName(dto.getUserName());
         save(entity);
-        return AjaxResult.success();
     }
 
-    public Object update(SaveOrUpdateDTO dto) {
+    /**
+     * 日志修改
+     * @param dto
+     */
+    @Override
+    public void updateCustom(SaveOrUpdateDTO dto) {
         ProductionLogMaintain entity = getOne(new LambdaQueryWrapper<ProductionLogMaintain>()
                 .eq(ProductionLogMaintain::getId, dto.getId()));
         entity.setItemId(dto.getItemId());
@@ -67,12 +82,15 @@ public class ProductionLogMaintainServiceImpl extends ServiceImpl<ProductionLogM
         entity.setModifyUserId(dto.getUserId());
         entity.setModifyUserName(dto.getUserName());
         updateById(entity);
-        return AjaxResult.success();
     }
 
-    public Object del(SaveOrUpdateDTO dto) {
+    /**
+     * 日志删除
+     * @param dto
+     */
+    @Override
+    public void del(SaveOrUpdateDTO dto) {
         removeById(dto.getId());
-        return AjaxResult.success();
     }
 }
 

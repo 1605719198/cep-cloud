@@ -38,8 +38,8 @@
               <el-table-column prop="equipmentType" label="设备类型" sortable minWidth="150"/>
               <el-table-column fixed="right" label="操作" width="150" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini" plain icon="el-icon-circle-plus" type="primary"
-                             @click="handleAdd(scope.$index, scope.row)">添加
+                  <el-button size="mini" icon="el-icon-thumb" type="text"
+                             @click="handleAdd(scope.$index, scope.row)">选择
                   </el-button>
                 </template>
               </el-table-column>
@@ -155,14 +155,12 @@
           firstResponsiblePerson:'',
         };
         getEquipmentAccountByParams(queryParams).then(res => {
-          console.log(res);
           this.tableDataloading = false;
           let data = res.data;//表格相关数据
           this.page.total = data.total;//数据总数
           this.tableData = data.list;//表格数据
         }, error => {
           this.tableDataloading = false;
-          window.console.log(error);
         });
       },
       //关键字过滤
@@ -172,7 +170,6 @@
       },
       //点击节点方法
       handleNodeClick(data) {
-        console.log(data)
         this.equipmentLocation = data.id;
         this.onLoad()
       },
@@ -183,7 +180,6 @@
       },
       //添加人员
       handleAdd(index, row) {
-        console.log(index, row);
         //发送给父组件（单选方法）
         this.$emit('single-select', row)
         this.dialogVisible = false
@@ -200,7 +196,6 @@
       },
       // 排序
       handleSort(column) {
-        // console.log(column, "column")
         if (column.order === null) {
           //默认
           this.page.order = "id";

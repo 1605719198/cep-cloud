@@ -360,7 +360,6 @@ export default {
     },
     // 导出方法
     handleExport () {
-      console.log("导出")
     },
     // 多选框选中数据
     handleSelectionChange (selection) {

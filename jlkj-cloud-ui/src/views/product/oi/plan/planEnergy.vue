@@ -4,21 +4,27 @@
       <el-form-item label="计划年份" prop="planYear" >
         <el-date-picker v-model="query.planYear"
                         type="year"
+                        size="small"
                         placeholder="计划年份"
-                        value-format="yyyy" />
+                        value-format="yyyy"
+        style="width: 200px"/>
       </el-form-item>
       <el-form-item label="计划月份" prop="planMonth">
         <el-date-picker v-model="query.planMonth"
                         type="month"
+                        size="small"
                         placeholder="计划月份"
                         value-format="MM"
-                        format="M" />
+                        format="M"
+                        style="width: 200px"/>
       </el-form-item>
       <el-form-item label="能源介质" prop="energyCode">
         <el-select v-model="query.energyCode"
                    placeholder="选择能源介质"
                    v-loading="table.selectLoading"
-                   clearable>
+                   size="small"
+                   clearable
+                   style="width: 200px">
           <el-option v-for="item in options"
                      :key="item.value"
                      :label="item.label"
@@ -26,14 +32,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="类型" prop="types">
-        <el-select v-model="query.types" placeholder="选择类型" clearable>
+        <el-select v-model="query.types" placeholder="选择类型" clearable size="small" style="width: 200px">
           <el-option label="耗用量" value="耗用量" />
           <el-option label="耗产量" value="耗产量" />
           <el-option label="回收量" value="回收量" />
         </el-select>
       </el-form-item>
       <el-form-item label="作业区" prop="factoryArea">
-        <el-select v-model="query.factoryArea" placeholder="选择作业区" clearable>
+        <el-select v-model="query.factoryArea" placeholder="选择作业区" clearable size="small">
           <el-option label="焦化厂_炼焦作业区" value="焦化厂_炼焦作业区" />
           <el-option label="焦化厂_化产作业区" value="焦化厂_化产作业区" />
           <el-option label="焦化厂_备煤作业区" value="焦化厂_备煤作业区" />
@@ -113,7 +119,7 @@ export default {
   methods: {
     //查询
     handleQuery () {
-      this.page.current = 1;
+      // this.page.current = 1;
       let params = {
         planYear: this.query.planYear === null ? "" : this.query.planYear,
         planMonth: this.query.planMonth === null ? "" : this.query.planMonth,
@@ -146,7 +152,7 @@ export default {
       // })
       selectEnergyTree().then(response => {
         this.table.selectLoading = false;
-        let dataArray = response.data;
+        let dataArray = response;
         for (let i = 0; i < dataArray.length; i++) {
           if (dataArray[i].column4.length === 6 && dataArray[i].serial_no) {
             this.options.push({ "value": dataArray[i].node_name, "label": dataArray[i].node_name });

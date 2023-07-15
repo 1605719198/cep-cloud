@@ -238,7 +238,6 @@ export default {
   created() {
     this.queryParams.companyId = this.$route.params.companyId;
     this.queryParams.dictName = this.$route.params.dictName;
-    console.log(this.queryParams);
     this.getCompanyList();
     this.getList();
   },

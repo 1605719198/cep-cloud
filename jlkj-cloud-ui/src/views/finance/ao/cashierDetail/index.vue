@@ -1310,7 +1310,6 @@ export default {
           return item;
         })
         if (this.tableColumnsInput.length>0){
-          console.log(this.tableColumnsInput[0].processingStatus);
           if ( this.tableColumnsInput[0].processingStatus =='N'){
             this.activeName="first"
           }else {
@@ -1421,7 +1420,6 @@ export default {
       getRepayment(val.billId).then(response => {
         this.repaymentForm = response.data;
         listCashierDetail( this.repaymentForm).then(response => {
-          console.log(response);
           if ( response.rows.length == 0){
             this.detailRepaymentAccountList=[]
             let itemRepayment= {
@@ -1606,7 +1604,6 @@ export default {
         if (valid) {
           this.borrowingForm.detailAccountLoanList = this.detailAccountLoanList;
           this.borrowingForm.detailAccountLoanList[0].drCr='D'
-          console.log(this.borrowingForm.detailAccountLoanList[0].id);
           if (this.borrowingForm.detailAccountLoanList[0].id != null) {
             updateDetailCashier(this.borrowingForm).then(response => {
               if (!this.valString){

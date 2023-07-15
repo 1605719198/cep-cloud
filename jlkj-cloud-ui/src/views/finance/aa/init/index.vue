@@ -283,11 +283,9 @@ export default {
         ...this.queryParams
       }, `init_${new Date().getTime()}.xlsx`)
     },
-
     /** 导入按钮操作 */
     handleImport() {
       this.upload.title = "期初数据导入";
-      console.log(this.queryParams.companyId);
       if (!this.queryParams.companyId) {
         this.$message.error('公司不能为空');
         return
@@ -309,8 +307,6 @@ export default {
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
       this.initList = response.data
-      console.log(response.data);
-
       if (  this.initList.length>0 ){
         this.$modal.msgError("上传文件失败，请重试");
       }else {
@@ -319,10 +315,6 @@ export default {
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-/*      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-        response.msg + "</div>", "导入结果",
-        {dangerouslyUseHTMLString: true});*/
-
     },
     // 提交上传文件
     submitFileForm() {

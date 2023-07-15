@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionReportOilConsumeMapper">
+
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productionreportoilconsume.PageProductionReportOilConsumeDTO" resultType="java.util.Map">
+        SELECT
+        id,
+        DATE_FORMAT(consume_date,'%Y-%m-%d') AS consume_date,
+        device_name,
+        oil_type,
+        daily_consumption,
+        create_user_id,
+        create_user_name,
+        DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        modify_user_id,
+        modify_user_name,
+        DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') AS modify_time
+        FROM t_production_report_oil_consume
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and consume_date &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and consume_date &lt;= #{condition.endTime}
+            </if>
+            <if test="condition.deviceName != null and condition.deviceName != ''">
+                and device_name = #{condition.deviceName}
+            </if>
+            <if test="condition.oilType != null and condition.oilType != ''">
+                and oil_type = #{condition.oilType}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+
+
+</mapper>
+

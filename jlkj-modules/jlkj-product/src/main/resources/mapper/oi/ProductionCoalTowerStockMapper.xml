@@ -17,6 +17,6 @@
     </sql>
 
     <select id="getWaterRate" parameterType="map" resultType="map">
-        SELECT mt FROM `v_quality_ts_record` WHERE shift = #{shift} and coalType = 'F' and send_date = #{date} ORDER BY send_time DESC
+        SELECT mt FROM `v_quality_ts_record` WHERE coalType = 'F' and send_date &lt;= #{date} ORDER BY send_time DESC  LIMIT 1
     </select>
 </mapper>

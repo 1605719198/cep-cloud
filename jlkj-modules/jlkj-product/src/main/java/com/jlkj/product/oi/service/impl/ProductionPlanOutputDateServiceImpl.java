@@ -1,5 +1,6 @@
 package com.jlkj.product.oi.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.web.domain.AjaxResult;
@@ -7,7 +8,9 @@ import com.jlkj.product.oi.domain.ProductionParameterTargetItem;
 import com.jlkj.product.oi.domain.ProductionPlanOutputDate;
 import com.jlkj.product.oi.dto.productionplanoutputdate.ListProductionPlanOutputDateTargetItemDTO;
 import com.jlkj.product.oi.dto.productionplantarget.GetProductionPlanDayDTO;
+import com.jlkj.product.oi.mapper.ProductionParameterTargetItemMapper;
 import com.jlkj.product.oi.mapper.ProductionPlanOutputDateMapper;
+import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
 import com.jlkj.product.oi.service.ProductionPlanOutputDateService;
 import com.jlkj.product.oi.vo.productionplanoutputdate.ListProductionPlanOutputDateTargetItemVO;
 import org.redisson.api.RedissonClient;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +31,20 @@ import java.util.Map;
 public class ProductionPlanOutputDateServiceImpl extends ServiceImpl<ProductionPlanOutputDateMapper, ProductionPlanOutputDate>
     implements ProductionPlanOutputDateService {
 
+    @Autowired
+    ProductionParameterTargetItemService productionParameterTargetItemService;
+    @Resource
+    ProductionParameterTargetItemMapper itemMapper;
+
     public List<Map<String, String>> getColToRowList(String sql) {
         return getBaseMapper().getList(sql);
     };
 
+    /**
+     * 生产管理-指标跟踪-图表-指标项(日计划)
+     * @param listProductionPlanOutputDateTargetItemDTO 查询条件dto
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ListProductionPlanOutputDateTargetItemVO> getProductionPlanOutputDateTargetItemChartData(ListProductionPlanOutputDateTargetItemDTO listProductionPlanOutputDateTargetItemDTO) {
@@ -40,12 +54,14 @@ public class ProductionPlanOutputDateServiceImpl extends ServiceImpl<ProductionP
     /**
      * 查询日生产产量计划
      * @param dto
-     * @param itemlist
      * @return
      */
     @Transactional(readOnly = true)
     @Override
-    public Object get(GetProductionPlanDayDTO dto, List<ProductionParameterTargetItem> itemlist) {
+    public List<Map<String, String>> get(GetProductionPlanDayDTO dto) {
+        List<ProductionParameterTargetItem> itemlist =
+                itemMapper.selectList(new QueryWrapper<ProductionParameterTargetItem>().lambda()
+                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
         StringBuilder sqlString = new StringBuilder();
         sqlString.append("select plan_date, ");
         for (ProductionParameterTargetItem item : itemlist) {
@@ -63,7 +79,7 @@ public class ProductionPlanOutputDateServiceImpl extends ServiceImpl<ProductionP
         sqlString.append(dto.getPlanMonth());
         sqlString.append(" group by plan_date order by plan_year desc, plan_month asc, plan_date desc");
         List<Map<String, String>> targetList = getColToRowList(sqlString.toString());
-        return AjaxResult.success(targetList);
+        return targetList;
     }
 }
 

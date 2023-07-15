@@ -10,11 +10,10 @@ import com.jlkj.product.oi.dto.productioninformationconfiguration.UpdateProducti
 import com.jlkj.product.oi.vo.productioninformationconfiguration.PageProductionInformationConfigurationVO;
 
 /**
- * 服务接口-生产信息配置
- *
- * @author sudeyou
- * @since 2022-10-18 14:47:44
- */
+*@description: 服务接口-生产信息配置
+*@Author: 265823
+*@date: 2023/7/10 14:58
+*/
 public interface ProductionInformationConfigurationService extends IService<ProductionInformationConfiguration> {
 
     /**
@@ -29,20 +28,20 @@ public interface ProductionInformationConfigurationService extends IService<Prod
      * @param insertProductionInformationConfigurationDTO 新增dto
      * @return 执行结果
      */
-    Object insertProductionInformationConfigurationData(InsertProductionInformationConfigurationDTO insertProductionInformationConfigurationDTO);
+    void insertProductionInformationConfigurationData(InsertProductionInformationConfigurationDTO insertProductionInformationConfigurationDTO);
 
     /**
      * 生产信息配置-修改
      * @param updateProductionInformationConfigurationDTO 修改dto
      * @return 执行结果
      */
-    Object updateProductionInformationConfigurationData(UpdateProductionInformationConfigurationDTO updateProductionInformationConfigurationDTO);
+    void updateProductionInformationConfigurationData(UpdateProductionInformationConfigurationDTO updateProductionInformationConfigurationDTO);
 
     /**
      * 生产信息配置-删除
      * @param deleteProductionInformationConfigurationDTO 删除dto
      * @return 执行结果
      */
-    Object deleteProductionInformationConfigurationData(DeleteProductionInformationConfigurationDTO deleteProductionInformationConfigurationDTO);
+    void deleteProductionInformationConfigurationData(DeleteProductionInformationConfigurationDTO deleteProductionInformationConfigurationDTO);
 }
 

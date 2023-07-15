@@ -111,14 +111,12 @@ export default {
     onLoad() {
       this.table.loading = true;//加载状态
       getEnergyInformationConfigurationPage(this.page, this.query).then(res => {
-        console.log(res)
         this.table.loading = false;
         let data = res.data;//表格相关数据
         this.page.total = data.total;//数据总数
         this.tableData = data.records;//表格数据
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
     },
     // 分页-每页多少条
@@ -184,7 +182,6 @@ export default {
           this.onLoad();
           this.$message({ type: 'success', message: res.msg });
         }, error => {
-          window.console.log(error);
         });
       }).catch(() => {
         this.$message({ type: 'info', message: '已取消删除' });

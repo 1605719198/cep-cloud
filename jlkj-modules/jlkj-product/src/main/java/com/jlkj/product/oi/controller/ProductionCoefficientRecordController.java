@@ -1,12 +1,11 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productioncoefficientrecord.GetProductionCoefficientRecordDTO;
-import com.jlkj.product.oi.service.impl.ProductionCoefficientRecordServiceImpl;
+import com.jlkj.product.oi.service.ProductionCoefficientRecordService;
 import com.jlkj.product.oi.swaggerdto.ProductionCoefficientRecordSwagger;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,22 +15,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-08-11 13:54
- */
+*@description: 焦炉系数记录
+*@Author: 265823
+*@date: 2023/7/10 11:30
+*/
 @Tag(name = "焦炉系数记录")
 @RestController
 @RequestMapping("/coefficientRecord")
@@ -42,8 +39,13 @@ public class ProductionCoefficientRecordController {
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    ProductionCoefficientRecordServiceImpl coefficientRecordService;
+    ProductionCoefficientRecordService coefficientRecordService;
 
+    /**
+     * 焦炉系数记录查询
+     * @param dto
+     * @return
+     */
     @Operation(summary = "焦炉系数记录查询",
             parameters = {
                     @Parameter(name = "start_time", description = "开始时间"),
@@ -62,13 +64,10 @@ public class ProductionCoefficientRecordController {
             }
     )
     @Log(title = "焦炉系数记录查询",businessType = BusinessType.OTHER)
-    @Transactional(readOnly = true)
     @RequestMapping(value = "/getProductionCoefficientRecord", method = RequestMethod.GET)
-    public Object get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
+    public AjaxResult get(@Valid @ParamModel GetProductionCoefficientRecordDTO dto) {
         log.info("params => " + "");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, dto);
-
-        IPage<Map<String, Object>> list = coefficientRecordService.get(dto);
-        return AjaxResult.success(list);
+        return AjaxResult.success(coefficientRecordService.get(dto));
     }
 }

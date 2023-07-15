@@ -209,7 +209,6 @@ export default {
     /** 查询厂商基本资料列表 */
     getList() {
       queryAll(this.queryParams).then(response => {
-        console.log(response);
         this.loading = false;
         if (response == null) {
           this.base1List = []
@@ -265,7 +264,6 @@ export default {
       this.ids = selection.map(item => item.manufacturerId)
       this.manufacturerChineseName = selection[0].manufacturerChineseName.toString();
       this.taxNo = selection[0].taxNo.toString();
-      console.log(this.taxNo);
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },

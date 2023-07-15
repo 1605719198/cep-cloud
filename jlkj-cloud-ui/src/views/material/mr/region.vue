@@ -171,13 +171,11 @@ import { listMaterialsSiloArea, listSilosBox } from "@/api/material/mr/region";
             }
           });
           let max = [that.data1.length, that.data2.length, that.data3.length, that.data4.length];
-          console.log(max)
           max.sort(function (a, b) {
             return a - b
           });
           that.count = max[max.length - 1];
         }, error => {
-          window.console.log(error);
         });
       },
       submitSave() {

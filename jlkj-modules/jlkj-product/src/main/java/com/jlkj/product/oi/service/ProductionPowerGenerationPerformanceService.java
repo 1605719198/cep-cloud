@@ -8,10 +8,10 @@ import com.jlkj.product.oi.vo.productionpowergenerationperformance.ListHomeProdu
 import java.util.List;
 
 /**
- * 服务接口-发电实绩
- * @author sudeyou
- * @since 2022-09-01 09:44:19
- */
+*@description: 服务接口-发电实绩
+*@Author: 265823
+*@date: 2023/7/11 8:55
+*/
 public interface ProductionPowerGenerationPerformanceService extends IService<ProductionPowerGenerationPerformance> {
 
     /**

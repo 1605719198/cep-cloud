@@ -11,6 +11,7 @@ import com.jlkj.product.oi.dto.productioncoefficientrecord.GetProductionCoeffici
 import com.jlkj.product.oi.mapper.ProductionCoefficientRecordMapper;
 import com.jlkj.product.oi.service.ProductionCoefficientRecordService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Map;
@@ -24,7 +25,13 @@ import java.util.Map;
 public class ProductionCoefficientRecordServiceImpl extends ServiceImpl<ProductionCoefficientRecordMapper, ProductionCoefficientRecord>
     implements ProductionCoefficientRecordService {
 
-
+    /**
+     * 焦炉系数记录查询
+     * @param dto
+     * @return
+     */
+    @Transactional(readOnly = true)
+    @Override
     public IPage<Map<String, Object>> get(GetProductionCoefficientRecordDTO dto) {
         Date start = DateUtil.parse(StrUtil.isEmpty(dto.getStartTime()) ? "1790-01-01" : dto.getStartTime() + " 00:00:00");
         Date end = DateUtil.parse(StrUtil.isEmpty(dto.getEndTime()) ? "1790-01-01" : dto.getEndTime() + " 23:59:59");

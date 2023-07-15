@@ -1,8 +1,8 @@
 package com.jlkj.product.oi.controller;
 
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.core.web.resp.ValidUtil;
+import com.jlkj.common.datascope.annotation.ParamModel;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.product.oi.dto.productionconveyingcoalactual.PageProductionConveyingCoalActualDTO;
@@ -27,11 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * 控制器-生产实绩-上煤实绩
- *
- * @author sudeyou
- * @since 2022-11-22 11:20:46
- */
+*@description: 控制器-生产实绩-上煤实绩
+*@Author: 265823
+*@date: 2023/7/10 14:32
+*/
 @Tag(name = "生产实绩-上煤实绩")
 @RestController
 @RequestMapping("/productionconveyingcoalactual")
@@ -44,6 +43,11 @@ public class ProductionConveyingCoalActualController {
     @Resource
     private ProductionConveyingCoalActualService productionConveyingCoalActualService;
 
+    /**
+     * 生产实绩-上煤实绩-查询-分页
+     * @param pageProductionConveyingCoalActualDTO
+     * @return
+     */
     @Operation(summary = "生产实绩-上煤实绩-查询-分页",
             parameters = {
                     @Parameter(name = "token", in = ParameterIn.HEADER, description = "token"),
@@ -58,7 +62,7 @@ public class ProductionConveyingCoalActualController {
     )
     @Log(title = "生产实绩-上煤实绩-查询-分页",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/getProductionConveyingCoalActualPage", method = RequestMethod.GET)
-    public Object getProductionConveyingCoalActualPageData(@Validated @ParamModel PageProductionConveyingCoalActualDTO pageProductionConveyingCoalActualDTO) {
+    public AjaxResult getProductionConveyingCoalActualPageData(@Validated @ParamModel PageProductionConveyingCoalActualDTO pageProductionConveyingCoalActualDTO) {
         log.info("params => " + pageProductionConveyingCoalActualDTO);
         String errorMsg = ValidUtil.checkValid(pageProductionConveyingCoalActualDTO);
         if (!"".equals(errorMsg)) {

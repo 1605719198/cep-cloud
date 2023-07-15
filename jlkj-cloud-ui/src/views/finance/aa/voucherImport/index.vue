@@ -232,7 +232,6 @@ export default {
     /** 导入按钮操作 */
     handleImport() {
       this.upload.title = "凭证数据导入";
-      console.log(this.queryParams.companyId);
       if(!this.queryParams.companyId){
         this.$message.error('公司不能为空');
         return
@@ -252,7 +251,6 @@ export default {
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      console.log(response+"上传成功");
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();

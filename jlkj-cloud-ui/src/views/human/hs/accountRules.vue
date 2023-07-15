@@ -241,7 +241,6 @@ export default {
     },
     //初始化数据
     initData(){
-     console.log("user",this.user)
       this.user.empNo = this.$store.state.user.userInfo.userName;
       this.user.empId = this.$store.state.user.userInfo.userId;
       this.user.empName = this.$store.state.user.userInfo.nickName;
@@ -386,7 +385,6 @@ export default {
         this.total = response.total;
         this.tableData = response.rows;//表格数据
         this.table.loading = false;
-        console.log("table",  this.tableData)
         if(this.tableData.length==0){
           const newLine = {
             creator: this.nickName,

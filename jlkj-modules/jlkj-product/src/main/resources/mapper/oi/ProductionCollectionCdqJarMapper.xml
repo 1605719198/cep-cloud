@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.product.oi.mapper.ProductionCollectionCdqJarMapper">
+
+    <select id="getListPage" parameterType="com.jlkj.product.oi.dto.productioncollectioncdqjar.PageProductionCollectionCdqJarDTO" resultType="java.util.Map">
+        SELECT
+        a.id,
+        DATE_FORMAT(a.collection_time,'%Y-%m-%d %H:%i:%s') AS collection_time,
+        ROUND(process_weight,2) AS process_weight,
+        ROUND(tank_weight,2) AS tank_weight,
+        ROUND(coke_weight,2) AS coke_weight
+        FROM
+        t_production_collection_cdq_jar a
+        <where>
+            <if test="condition.startTime != null and condition.startTime != ''">
+                and collection_time &gt;= #{condition.startTime}
+            </if>
+            <if test="condition.endTime != null and condition.endTime != ''">
+                and collection_time &lt;= #{condition.endTime}
+            </if>
+        </where>
+        order by ${condition.order} ${condition.orderby}
+    </select>
+</mapper>
+

@@ -1,9 +1,8 @@
 package com.jlkj.product.oi.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
-import com.jlkj.product.oi.domain.*;
 import com.jlkj.product.oi.dto.productionplantarget.AddProductionPlanYearDTO;
 import com.jlkj.product.oi.dto.productionplantarget.DeleteProductionPlanYearDTO;
 import com.jlkj.product.oi.service.ProductionParameterTargetItemService;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,15 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.jlkj.product.oi.constants.SysLogConstant.SYS_LOG_PARAM_KEY;
 
 /**
- * @author zyf
- * @Description
- * @create 2022-04-19 8:41
- */
+*@description: 年指标计划
+*@Author: 265823
+*@date: 2023/7/7 14:39
+*/
 @Tag(name = "年指标计划")
 @RestController
 @RequestMapping("/plan")
@@ -47,7 +44,10 @@ public class ProductionPlanTargetYearController {
     @Autowired
     ProductionParameterTargetItemService productionParameterTargetItemService;
 
-
+    /**
+     * 年指标计划查询
+     * @return
+     */
     @Operation(summary = "年指标计划查询",
             parameters = {
             },
@@ -58,15 +58,16 @@ public class ProductionPlanTargetYearController {
     )
     @Log(title = "年指标计划查询",businessType = BusinessType.OTHER)
     @RequestMapping(value = "/listYearProductionTargetPlans", method = RequestMethod.GET)
-    public Object get() {
+    public AjaxResult get() {
         log.info("params => listYearProductionTargetPlans");
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, "");
-        List<ProductionParameterTargetItem> itemlist =
-                productionParameterTargetItemService.list(new QueryWrapper<ProductionParameterTargetItem>().lambda()
-                        .eq(ProductionParameterTargetItem::getTargetItemTypeId, 1));
-        return planTargetYearService.get(itemlist);
+        return AjaxResult.success(planTargetYearService.getList());
     }
 
+    /**
+     * 新增年生产指标计划
+     * @param productionPlanTargetYearDTO
+     */
     @Operation(summary = "新增年生产指标计划",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {
@@ -87,12 +88,16 @@ public class ProductionPlanTargetYearController {
     )
     @Log(title = "新增年生产指标计划",businessType = BusinessType.INSERT)
     @RequestMapping(value = "/saveYearProductionTargetPlan", method = RequestMethod.POST, produces = "application/json")
-    public Object save(@Valid @RequestBody AddProductionPlanYearDTO productionPlanTargetYearDTO) {
+    public void save(@Valid @RequestBody AddProductionPlanYearDTO productionPlanTargetYearDTO) {
         log.info("params => " + productionPlanTargetYearDTO);
         httpServletRequest.setAttribute(SYS_LOG_PARAM_KEY, productionPlanTargetYearDTO);
-        return planTargetYearService.saveBy(productionPlanTargetYearDTO);
+        planTargetYearService.saveBy(productionPlanTargetYearDTO);
     }
 
+    /**
+     * 删除年计划
+     * @param deleteProductionPlanYearDTO
+     */
     @Operation(summary = "删除年计划",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
                     @Content(examples = {

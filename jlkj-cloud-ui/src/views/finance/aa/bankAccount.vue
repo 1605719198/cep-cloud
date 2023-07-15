@@ -331,18 +331,13 @@ export default {
       });
     },
     getAcctCodeCorpPop(val){
-      console.log(val);
       this.form.acctId= val[0].acctId
       this.form.acctCode= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;
       this.form.calTypeCodeb = val[0].calTypeCodeb;
     },
     getBankPop(val){
-      console.log(val);
-      // this.form.acctId= val[0].acctId
       this.form.branchNo= val[0].bankchnName
-      // this.form.calTypeCodea = val[0].calTypeCodea;
-      // this.form.calTypeCodeb = val[0].calTypeCodeb;
     },
     // 取消按钮
     cancel() {

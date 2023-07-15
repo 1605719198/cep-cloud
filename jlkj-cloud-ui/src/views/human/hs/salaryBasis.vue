@@ -302,7 +302,6 @@ export default {
         this.table.loading = false;
       }, error => {
         this.table.loading = false;
-        window.console.log(error);
       });
     },
     /** 添加下级操作 */

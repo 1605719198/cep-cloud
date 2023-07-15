@@ -380,7 +380,6 @@ export default {
     accounting() {
       this.finaccounting = true;
       this.attributeTable = false
-
     },
     //属性资料按钮
     attributeData() {
@@ -402,7 +401,6 @@ export default {
         this.financeattritestList.push(this.dict.type.finance_producttype_name[i])
         this.financeattritestListDialog.push(this.dict.type.finance_producttype_name[i])
       }
-
     },
 
     /** 删除按钮操作 */
@@ -451,14 +449,12 @@ export default {
             updateFinancetest(this.ruleForm).then(response => {
               this.pagedata.propertydata = this.financeattritestListDialog;
               this.pagedata.productCode = response.data.data[0].productCode
-              console.log(this.pagedata);
               updateFinanceattri(this.pagedata).then(response => {
                 this.statusText = response.statusText
               })
               this.pagedatatest.propertydata = this.financeAccountListDialog
               this.pagedatatest.productCode = response.data.data[0].productCode
               this.pagedatatest.costCode = this.costCodeAccount
-              console.log(this.pagedatatest);
               updateAccount(this.pagedatatest).then(response => {
                 this.statusTextUpdate = response.statusText
               })
@@ -475,9 +471,7 @@ export default {
           } else {
             this.ruleForm.compId = 'J00'
             this.lisetloading = false
-
             addFinancetest(this.ruleForm).then(response => {
-              console.log(response.data.data);
               this.pagedataAdd.propertydata = this.financeattritestList;
               this.pagedataAdd.productCode = response.data.data[0].productCode
               this.pagedataAdd.compId =response.data.data[0].compId
@@ -487,7 +481,6 @@ export default {
               this.pagedataAddFinance.propertydata = this.financeAccountList
               this.pagedataAddFinance.productCode = response.data.data[0].productCode
               this.pagedataAddFinance.compId = response.data.data[0].compId
-              console.log(this.pagedataAddFinance);
               addFinanceAccount(this.pagedataAddFinance).then(response => {
                 this.statusTextAddFinanceattri = response.statusText
               })
