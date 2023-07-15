@@ -52,7 +52,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['onlineexam:userscore:add']"
+          v-hasPermi="['human:userscore:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +63,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['onlineexam:userscore:edit']"
+          v-hasPermi="['human:userscore:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -74,7 +74,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['onlineexam:userscore:remove']"
+          v-hasPermi="['human:userscore:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -83,9 +83,9 @@
           plain
           icon="el-icon-download"
           size="mini"
-		  :loading="exportLoading"
+          :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['onlineexam:userscore:export']"
+          v-hasPermi="['human:userscore:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -118,14 +118,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['onlineexam:userscore:edit']"
+            v-hasPermi="['human:userscore:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['onlineexam:userscore:remove']"
+            v-hasPermi="['human:userscore:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -192,7 +192,14 @@
 </template>
 
 <script>
-import { listUserscore, getUserscore, delUserscore, addUserscore, updateUserscore, exportUserscore } from "@/api/human/ex/userscore";
+import {
+  addUserscore,
+  delUserscore,
+  exportUserscore,
+  getUserscore,
+  listUserscore,
+  updateUserscore
+} from "@/api/human/ex/userscore";
 
 export default {
   name: "Userscore",
