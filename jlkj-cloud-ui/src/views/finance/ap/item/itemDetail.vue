@@ -264,21 +264,6 @@ export default {
   },
   props: ['applyId','itemNo','itemName'],
   mounted() {
-    // this.$watch('itemNo', function (newVal) {
-    //   this.queryParams.itemNo = newVal;
-    //   console.log(newVal+"itemNo");
-    //   this.getList();
-    // })
-    // this.$watch('applyId', function (newVal) {
-    //   console.log(newVal+"applyId");
-    // })
-    // this.$watch('itemName', function (newVal) {
-    //   console.log(newVal+"itemName");
-    //   this.queryParams.itemName = newVal;
-    //   this.getList();
-    //   this.itemName=newVal
-    //   this.itemName = newVal
-    // })
   },
   created() {
     this.getList();
@@ -294,15 +279,12 @@ export default {
       });
     },
     getAcctCodeCorpPop(val){
-      console.log(val);
       this.form.acctId= val[0].acctId
       this.form.drAcctCode= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;
       this.form.calTypeCodeb = val[0].calTypeCodeb;
     },
     getAcctCodeCorpPop1(val){
-      console.log(val);
-      // this.form.acctId= val[0].acctId
       this.form.crAcctCode= val[0].acctName
       this.form.calTypeCodec = val[0].calTypeCodec;
       this.form.calTypeCoded = val[0].calTypeCoded;

@@ -196,11 +196,9 @@ export default {
   mounted() {
     this.$watch('unitName', function (newVal) {
       this.queryParams.unitName = newVal;
-      console.log(newVal+"unitName");
       this.getList();
     })
     this.$watch('unitId', function (newVal) {
-      console.log(newVal+"unitId");
       this.unitId = newVal
     })
   },
@@ -222,7 +220,6 @@ export default {
 
     getCompanyList() {
       select1().then(response => {
-        console.log(response);
         this.baseUnitIdList = response;
       });
     },

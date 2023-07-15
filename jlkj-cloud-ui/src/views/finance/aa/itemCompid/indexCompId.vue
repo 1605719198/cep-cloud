@@ -183,18 +183,15 @@ export default {
   props: ['cashFlowCode','cashFlowName','id'],
   mounted() {
     this.$watch('cashFlowCode', function (newVal) {
-      console.log(newVal+'code');
       this.queryParams.cashFlowCode = newVal;
       this.form.cashFlowCode = newVal
       this.getList();
     })
     this.$watch('id', function (newVal) {
-      console.log(newVal+'id');
       this.queryParams.cashFlowId = newVal;
       this.form.cashFlowId = newVal
     })
     this.$watch('cashFlowName', function (newVal) {
-      console.log(newVal+'name');
       this.queryParams.cashFlowName = newVal;
       this.getList();
     })

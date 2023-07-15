@@ -13,7 +13,6 @@ export function treeDataformat (a, idStr, pidStr, childrenStr) {
       !hashVP[children] && (hashVP[children] = []);
       //设置flag  参数控制可以选中的节点
       aVal.flag = 'indep'
-      // console.log(aVal, "aVal")
       hashVP[children].push(aVal);
     } else {
       var data = aVal;
@@ -26,7 +25,6 @@ export function treeDataformat (a, idStr, pidStr, childrenStr) {
 //图片上传 需要的数据格式 （传给后台做回显）
 //serveAddress 服务器地址（传过来的全局变量）
 export function getUrlArray (fileList, serveAddress) {
-  // console.log(fileList)
   let urlArray = []
   fileList.forEach((item) => {
     // urlArray.push(item.response.data.id)
@@ -42,6 +40,5 @@ export function getUrlArray (fileList, serveAddress) {
       })
     }
   })
-  // console.log(urlArray, "urlArray")
   return urlArray
 }

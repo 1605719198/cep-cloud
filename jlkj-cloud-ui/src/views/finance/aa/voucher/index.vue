@@ -453,7 +453,6 @@ export default {
     /** 项目1点击事件 */
     inputCalNamea(val) {
      this.indexRow= val.index
-      console.log(this.calTypeCodea);
      if(!! val.calTypeCodea){
        this.queryParams.calTypeCode =  val.calTypeCodea
      }else {

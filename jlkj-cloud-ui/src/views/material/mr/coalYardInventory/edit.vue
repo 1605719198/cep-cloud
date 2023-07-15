@@ -118,9 +118,7 @@ export default {
           this.form.modify_user_id = this.$store.getters.userInfo.userId;
           this.form.modify_user_name = this.$store.getters.userInfo.nickName;
           this.submitLoading = true
-          // this.$emit('submitSave')
           adjust(this.form).then(res => {
-            // console.log(res);
             if (res.code == 200) {
               this.$message({ type: "success", message: res.msg });
               this.$emit('submitSave', res.msg)

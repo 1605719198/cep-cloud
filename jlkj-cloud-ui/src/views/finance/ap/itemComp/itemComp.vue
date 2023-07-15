@@ -221,7 +221,6 @@ export default {
       });
     },
     getAcctCodeCorpPop(val){
-      console.log(val);
       this.form.acctId= val[0].acctId
       this.form.crAcctCode= val[0].acctName
       this.form.calTypeCodea = val[0].calTypeCodea;

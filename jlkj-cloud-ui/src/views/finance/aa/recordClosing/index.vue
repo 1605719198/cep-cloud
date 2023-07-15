@@ -175,7 +175,6 @@ export default {
           this.form.companyId = this.queryParams.companyId
           this.form.acctPeriod = this.queryParams.acctPeriod
           addClosingExecute(this.form).then(response => {
-            console.log(response);
             if (!!response.data[0].desc){
               this.$message.error(response.data[0].desc);
               return

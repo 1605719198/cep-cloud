@@ -76,7 +76,6 @@ export default {
     })
      },
     handleNodeClick(data) {
-      console.log(data);
       if (data.children === null){
         this.getTreeCost(data)
       }

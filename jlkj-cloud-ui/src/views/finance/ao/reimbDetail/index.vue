@@ -280,7 +280,6 @@ export default {
       this.loading = true;
       listReimbDetail(this.queryParams).then(response => {
         this.reimbDetailList = response.rows;
-        console.log("reimbDetailList===>",this.reimbDetailList)
         this.total = response.total;
         this.loading = false;
       });

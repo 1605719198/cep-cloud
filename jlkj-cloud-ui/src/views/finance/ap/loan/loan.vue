@@ -874,15 +874,6 @@ export default {
         this.form.financeApLoanDetailList = financeApLoanDetailList.filter(function(item) {
           return checkedFinanceApLoanDetail.indexOf(item.index) == -1
         });
-        /*     const checkedFinanceApLoanDetail = this.checkedFinanceApLoanDetail;
-             checkedFinanceApLoanDetail.forEach(item => {
-               console.log(item-1);
-               delete this.form.financeApLoanDetailList.splice(item-1, 1);
-             })*/
-/*        this.$nextTick(()=>{
-          this.$refs.form.financeApLoanDetailList.resetField();
-        })*/
-         console.log(this.form.financeApLoanDetailList);
         this.indexKey+=1;
       }
     },

@@ -71,7 +71,6 @@ export default {
   methods: {
     handleChange (val) {
       this.tabPosition = val
-      // console.log(val,this.tabPosition,"val")
     }
   }
 }

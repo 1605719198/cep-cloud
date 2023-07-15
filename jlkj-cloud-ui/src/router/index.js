@@ -92,7 +92,6 @@ export const constantRoutes = [
     path: '/equip/achieve/responsibilitySharing',
     component: Layout,
     hidden: true,
-    // permissions: ['system:dict:list'],
     children: [
       {
         breadcrumb: true,

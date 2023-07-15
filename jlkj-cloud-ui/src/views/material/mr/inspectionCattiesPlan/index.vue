@@ -169,7 +169,6 @@ export default {
     },
     // 排序
     handleSort (column) {
-      // console.log(column, "column")
       if (column.order === null) {
         //默认
         this.page.order = "issue_date";
@@ -184,7 +183,6 @@ export default {
     //查询
     handleQuery () {
       this.page.current = 1;
-      // console.log(this.query.issueDate)
       this.onLoad();
     },
     // 重置

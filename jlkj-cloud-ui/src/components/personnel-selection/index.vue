@@ -271,7 +271,6 @@ export default {
     if (this.personList.length != 0 && this.isMultiple) {
       this.teamData = this.personList
     }
-    // console.log(this.user_ids, "this.user_ids")
   },
   methods: {
     //获取部门树
@@ -289,16 +288,13 @@ export default {
         let data = res.data;//表格相关数据
         this.page.total = data.total;//数据总数
         this.tableData = data.records;//表格数据
-        // console.log(this.tableData)
       }, error => {
         this.tableDataloading = false
-        window.console.log(error);
       });
     },
     //获取班组成员列表
     getTeamData (params) {
       getUserListByUserIds(params).then(res => {
-        // console.log(res)
         this.teamData = res.data.data
       })
     },
@@ -309,17 +305,14 @@ export default {
     },
     //点击节点方法
     handleNodeClick (data) {
-      // console.log(data);
       this.department_id = data.domain.id
       this.onLoad()
     },
     //选中复选框的方法
     handleCheck (data, checkeData) {
-      console.log(data, checkeData);
     },
     //查询机构人员列表方法
     handleQuery () {
-      // console.log(this.query)
       //点搜索页码应该重置，不然除了第一页搜不到人（要求的）
       this.page = {
         size: 10,
@@ -332,7 +325,6 @@ export default {
     },
     //添加人员
     handleAdd (index, row) {
-      // console.log(index, row)
       if (this.isMultiple) {
         if (this.teamData.length > 0) {
           //相同人员限制
@@ -362,7 +354,6 @@ export default {
     },
     //删除人员
     handleDelete (index, row) {
-      // console.log(index, row)
       this.teamData.splice(index, 1)
     },
     //确定弹窗的方法
@@ -384,7 +375,6 @@ export default {
     },
     // 排序
     handleSort (column) {
-      // console.log(column, "column")
       if (column.order === null) {
         //默认
         this.page.order = "id";

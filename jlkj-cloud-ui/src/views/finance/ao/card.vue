@@ -169,7 +169,6 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          console.log(this.form)
           addCard(this.form).then(response => {
             this.$modal.msgSuccess("保存成功");
           });
@@ -242,8 +241,6 @@ export default {
     // 截图框移动回调函数
     cropMoving(data) {
       // 截图框的左上角 x，y和右下角坐标x，y
-      // let cropAxis = [data.axis.x1, data.axis.y1, data.axis.x2, data.axis.y2]
-      // console.log(cropAxis)
     },
     finish() {
       // 获取截图的 blob 数据
@@ -259,7 +256,6 @@ export default {
           const {status, data} = res
           if (status === 200) {
             this.dialogVisible = false
-            console.log(res);
             if(data.code == 500){
               this.$message.error("识别失败，请重试");
             }else {
@@ -270,10 +266,6 @@ export default {
           }
         })
       })
-      // 获取截图的 base64 数据
-      // this.$refs.cropper.getCropData(data => {
-      //     console.log(data)
-      // })
     },
   }
 };

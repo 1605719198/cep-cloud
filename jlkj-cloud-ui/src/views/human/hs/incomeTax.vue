@@ -282,7 +282,6 @@ export default {
     //查询薪资选单
     getDisc(){
       this.salaryOptionType.compId = this.queryParams.compId;
-     // console.log("salaryOptionTyp", this.salaryOptionType.compId)
       getSalaryOptions(this.salaryOptionType).then(response=>{
         this.salaryOptions = response.data;
       })

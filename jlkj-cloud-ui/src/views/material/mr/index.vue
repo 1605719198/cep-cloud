@@ -458,14 +458,12 @@ export default {
         citySearch.getLocalCity(function (status, result) {
           if (status === 'complete' && result.info === 'OK') {
             // 查询成功，result即为当前所在城市信息
-            // console.log(result)
             //加载天气查询插件
             AMap.plugin('AMap.Weather', function () {
               //创建天气查询实例
               var weather = new AMap.Weather();
               //执行实时天气信息查询
               weather.getLive(result.city, function (err, data) {
-                // console.log(err, data);
                 _this.city = data.city
                 _this.humidity = data.humidity + '%'
                 _this.weather = data.weather

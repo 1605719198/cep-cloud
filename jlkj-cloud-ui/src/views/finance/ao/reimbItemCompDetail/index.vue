@@ -273,7 +273,6 @@ export default {
     },
     /** 获取会计科目 */
     getAccountCodeData(val) {
-      console.log("val====>",val)
       if (this.tagSrc === 'drCodeClick') {
         this.form.drAcctCode = val[0].acctCode
         this.form.drAcctName = val[0].acctName
@@ -291,7 +290,6 @@ export default {
       this.loading = true;
       listReimbItemCompDetail(this.queryParams).then(response => {
         this.reimbDetailList = response.rows;
-        console.log("reimbDetailList===>",this.reimbDetailList)
         this.total = response.total;
         this.loading = false;
       });

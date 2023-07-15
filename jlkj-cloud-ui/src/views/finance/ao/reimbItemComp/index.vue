@@ -225,7 +225,6 @@ export default {
     },
     /** 打开授权用户表弹窗 */
     openSelectCode(row) {
-      console.log("row=====>",row)
       if (row.status == '1') {
         this.$modal.msgError("禁用状态不可设置细项!");
         return;

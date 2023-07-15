@@ -69,7 +69,6 @@ export default Vue.extend({
     //监听用户的值
     value: {
       handler (newValue) {
-        // console.log(newValue)
         this.html = newValue
       },
       //立即监听
@@ -120,25 +119,21 @@ export default Vue.extend({
             // timeout: 5 * 1000, // 5 秒,
             //自定义插入图片
             // customInsert (res, insertFn) {
-            //   console.log(res)
             // }
 
             // 自定义上传(只有用wangEditor自己的上传才可以用上面的上传配置)
             //因为这个框架用了mock.js拦截了wangEditor的请求（需要改mock.js包里的文件）所以用了自动以的方法上传图片
             async customUpload (file, insertFn) {
               // file 即选中的文件
-              // console.log(file)
               //转成formData对象传过去
               let formData = new FormData()
               formData.append('file', file)
               upload(formData).then(res => {
-                // console.log(res)
                 // 自己实现上传，并得到图片 url alt href
                 //拼接图片地址
                 // let url = `http://192.168.105.249:12888/${res.data.data.relativePath}`
                 let url = globalVariable.serveAddress + res.data.data.relativePath
                 let alt = res.data.data.fileName
-                // console.log(url, "url")
                 // 最后插入图片
                 insertFn(url, alt)
               })
@@ -156,10 +151,7 @@ export default Vue.extend({
     },
     //改变富文本回调
     onChange (editor) {
-      // console.log('onChange', editor.children)
       //查看工具栏的默认配置
-      // console.log(DomEditor.getToolbar(editor))
-      // console.log(this.html, "html")
       this.$emit("change", this.html); // 将内容同步到父组件中(用v-model拿值就不用这个方法了)
     },
   },

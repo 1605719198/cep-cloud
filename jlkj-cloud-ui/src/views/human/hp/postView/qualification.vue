@@ -128,37 +128,6 @@ export default {
     init(form) {
       this.form=form;
       this.visible = true;
-      // queryRelations(id).then(response => {
-      //   this.relationsForm = response.data
-      //   this.flagForm={}
-      //   this.relationsForm.map(item => {
-      //     if (item.relation === "FC") {
-      //       this.flagForm.FC = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.queryFc.initFc(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "MP"){
-      //       this.flagForm.MP = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.queryMp.initMP(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "ST"){
-      //       this.flagForm.ST = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.querySt.initSt(id,manufacturerChineseName)
-      //       })
-      //     }else if (item.relation === "SO"){
-      //       this.flagForm.SO = item.relation
-      //       this.$nextTick(() => {
-      //         this.$refs.querySo.initSo(id,manufacturerChineseName)
-      //       })
-      //     }
-      //   })
-      // });
-      // getBase1(id).then(response => {
-      //   this.dataForm = response.data
-      //   console.log(response.data);
-      // });
     },
   }
 }

@@ -207,7 +207,7 @@ import {querySo,updateManufacturerBasicSo} from "@/api/finance/gp/base1";
 import {validateContacts} from "../../../utils/jlkj";
 
 export default {
-  name: "ddd",
+  name: "Customer",
   dicts: ['gp_customer_bill', 'gp_customer_delivery', 'gp_customer_payway',
     'gp_customer_paycondition', 'gp_customer_payday', 'gp_customer_closedate', 'gp_credit_type'],
   data() {

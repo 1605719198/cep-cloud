@@ -678,7 +678,6 @@ export default {
         let days = (new Date(getDateTime(1, endDate)) - new Date(getDateTime(1, startDate))) / (24 * 60 * 60 * 1000)
         //请假跨天数
         let conDays = Math.floor(days) + 1
-        // console.log('请假跨天数：' + conDays)
         this.conDays = conDays
         if (response.total !== (conDays + 1)) {
           this.$modal.msgError('请假时间段内有未排班天数')

@@ -84,7 +84,6 @@ export default {
       },
       // 排序
       handleSort(column) {
-        // console.log(column, "column")
         if (column.order === null) {
           //默认
           this.page.order = 'unloading_time'
