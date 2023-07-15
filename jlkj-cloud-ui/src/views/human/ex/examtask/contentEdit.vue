@@ -6,7 +6,7 @@
           <el-button
             @click="onClose"
             plain
-            icon="el-icon-delete"
+            icon="el-icon-refresh-left"
             size="mini"
           >返回</el-button>
           <el-button
