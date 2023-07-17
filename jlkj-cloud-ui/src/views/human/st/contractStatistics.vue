@@ -246,7 +246,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      window.open('http://10.32.157.51:9205/ureport/preview?_u=file: 劳动合同统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&relStatus='+this.queryParams.relStatus+'&sourceOfEmployees='+this.queryParams.sourceOfEmployees+'&postTypeId='+this.queryParams.postTypeId+'&postSequenceId='+this.queryParams.postSequenceId, '_blank');
+      window.open('http://10.32.157.51:9205/ureport/preview?_u=file:劳动合同统计表.ureport.xml&compId='+this.queryParams.compId+'&date1='+this.queryParams.date1+'&date2='+this.queryParams.date2+'&relStatus='+this.queryParams.relStatus+'&sourceOfEmployees='+this.queryParams.sourceOfEmployees+'&postTypeId='+this.queryParams.postTypeId+'&postSequenceId='+this.queryParams.postSequenceId, '_blank');
     }
   }
 };
