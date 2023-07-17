@@ -101,36 +101,36 @@
 
     <!-- 添加或修改考试人员对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="750px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="dataForm" :key="key" :model="dataForm" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="考试代码" prop="examCode">
-              <el-input v-model="form.examCode" placeholder="请输入考试代码"/>
+              <el-input v-model="dataForm.examCode" placeholder="请输入考试代码"/>
             </el-form-item>
             <el-form-item label="开始时间" prop="startTime">
-              <el-time-picker v-model="form.startTime" clearable value-format="HH:mm"
-                              placeholder="开始时间"></el-time-picker>
+              <el-date-picker v-model="dataForm.startTime" clearable type="datetime"
+                              placeholder="开始时间"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="试题编号" prop="taskCode">
-              <el-input v-model="form.taskCode" placeholder="请输入试题编号"/>
+              <el-input v-model="dataForm.taskCode" placeholder="请输入试题编号"/>
             </el-form-item>
             <el-form-item label="结束时间" prop="endTime">
-              <el-time-picker v-model="form.endTime" clearable value-format="HH:mm"
-                              placeholder="结束时间"></el-time-picker>
+              <el-date-picker v-model="dataForm.endTime" clearable type="datetime"
+                              placeholder="结束时间"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="人员工号" prop="userCode">
-              <el-input v-model="form.userCode" placeholder="请输入工号" disabled>
-                <el-button slot="append" icon="el-icon-search" @click="inputClick"></el-button>
+              <el-input v-model="dataForm.userCode" placeholder="请输入工号" :disabled="true">
+                <el-button slot="append" icon="el-icon-search" @click="inputClick2"></el-button>
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="状态" prop="status">
-              <el-radio-group v-model="form.status" size="mini">
+              <el-radio-group v-model="dataForm.status" size="mini">
                 <el-radio-button label="0">待开考</el-radio-button>
                 <el-radio-button label="1">考试中</el-radio-button>
                 <el-radio-button label="2">已交卷</el-radio-button>
@@ -145,6 +145,7 @@
       </div>
     </el-dialog>
     <select-user ref="select" @ok="getJobNumber"/>
+    <select-user ref="select2" @getMore="getMore"/>
   </div>
 </template>
 
@@ -171,6 +172,7 @@ export default {
       exportLoading: false,
       // 选中数组
       ids: [],
+      key: 0,
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -194,8 +196,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+
       // 表单参数
-      form: {
+      dataForm: {
         userCode: undefined,
         status: "待开考"
       },
@@ -224,15 +227,36 @@ export default {
         this.loading = false;
       });
     },
-    /** 工号点击事件 */
+    /** 工号点击事件（查询条件） */
     inputClick() {
       this.$refs.select.show();
     },
-    /** 获取工号 */
+    /** 工号点击事件（查询条件） */
+    inputClick2() {
+      const queryParam = {
+        isMore: true,
+        compID: '',
+        keywords: '',
+        pageNum: 1,
+        pageSize: 10
+      }
+      this.$refs.select2.show(queryParam);
+    },
+    /** 获取工号 （查询条件）*/
     getJobNumber(val, userName) {
       this.queryParams.userCode = val;
-      this.form.userCode = val;
-      console.log(this.form.userCode)
+    },
+    /** 获取工号 callback 函数 （新增、修改画面） */
+    getMore(val) {
+      let users = '';
+      if (val != null) {
+        val.forEach((item, index, val) => {
+          users += item.empNo + ',';
+        })
+      }
+      this.dataForm.userCode = users.substring(0, users.lastIndexOf(','));
+      console.log(this.dataForm)
+      this.key = Math.random();
     },
     // 考试代码字典翻译
     examCodeFormat(row, column) {
@@ -245,11 +269,11 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
+      this.dataForm = {
         examCode: null,
         examPerson: null
       };
-      this.resetForm("form");
+      this.resetForm("dataForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -278,23 +302,23 @@ export default {
       this.reset();
       const examCode = row.examCode || this.ids
       getTaskperson(examCode).then(response => {
-        this.form = response.data;
+        this.dataForm = response.data;
         this.open = true;
         this.title = "修改考试人员";
       });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          if (this.form.examCode != null) {
-            updateTaskperson(this.form).then(response => {
+          if (this.dataForm.examCode != null) {
+            updateTaskperson(this.dataForm).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addTaskperson(this.form).then(response => {
+            addTaskperson(this.dataForm).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
