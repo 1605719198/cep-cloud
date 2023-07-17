@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.ex.mapper.ExamGroupPersonMapper">
+    
+    <resultMap type="ExamGroupPerson" id="ExamGroupPersonResult">
+        <result property="groupCode"    column="group_code"    />
+        <result property="personCode"    column="person_code"    />
+        <result property="orderId"    column="order_id"    />
+    </resultMap>
+
+    <sql id="selectExamGroupPersonVo">
+        select group_code, person_code, order_id from human_ex_group_person
+    </sql>
+
+    <select id="selectExamGroupPersonList" parameterType="ExamGroupPerson" resultMap="ExamGroupPersonResult">
+        <include refid="selectExamGroupPersonVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectExamGroupPersonById" parameterType="String" resultMap="ExamGroupPersonResult">
+        <include refid="selectExamGroupPersonVo"/>
+        where group_code = #{groupCode}
+    </select>
+        
+    <insert id="insertExamGroupPerson" parameterType="ExamGroupPerson" >
+        insert into human_ex_group_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupCode != null and groupCode != ''">group_code,</if>
+            <if test="personCode != null and personCode != ''">person_code,</if>
+            order_id,
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupCode != null and groupCode != ''">#{groupCode},</if>
+            <if test="personCode != null and personCode != ''">#{personCode},</if>
+            (select nvl(max(order_id),0) + 1 from human_ex_group_person where group_code = #{groupCode}),
+         </trim>
+    </insert>
+
+    <update id="updateExamGroupPerson" parameterType="ExamGroupPerson">
+        update human_ex_group_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personCode != null and personCode != ''">person_code = #{personCode},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+        </trim>
+        where group_code = #{groupCode}
+    </update>
+
+    <delete id="deleteExamGroupPersonById" parameterType="String">
+        delete from human_ex_group_person where group_code = #{groupCode}
+    </delete>
+
+    <delete id="deleteExamGroupPersonByIds" parameterType="String">
+        delete from human_ex_group_person where group_code in 
+        <foreach item="groupCode" collection="array" open="(" separator="," close=")">
+            #{groupCode}
+        </foreach>
+    </delete>
+</mapper>

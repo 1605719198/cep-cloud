@@ -10,9 +10,9 @@ export function listTaskperson(query) {
 }
 
 // 查询考试人员详细
-export function getTaskperson(examCode) {
+export function getTaskperson(humanCode) {
   return request({
-    url: '/human/taskperson/' + examCode,
+    url: '/human/taskperson/' + humanCode,
     method: 'get'
   })
 }
@@ -44,9 +44,9 @@ export function updateStartTime(data) {
   })
 }
 // 删除考试人员
-export function delTaskperson(examCode) {
+export function delTaskperson(humanCode) {
   return request({
-    url: '/human/taskperson/delete/' + examCode,
+    url: '/human/taskperson/delete/' + humanCode,
     method: 'get'
   })
 }

@@ -19,7 +19,7 @@ import java.util.List;
  * @date 2023-02-10
  */
 @RestController
-@RequestMapping("/exam/taskgroup")
+@RequestMapping("/taskgroup")
 public class ExamTaskGroupController extends BaseController
 {
     @Autowired

@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamFinishAnswerVo">
-        select exam_code, user_code, questions_code, right_answer, exam_score, questions_answer, questions_score from exam_finish_answer
+        select exam_code, user_code, questions_code, right_answer, exam_score, questions_answer, questions_score from human_ex_finish_answer
     </sql>
 
     <select id="selectExamFinishAnswerList" parameterType="ExamFinishAnswer" resultMap="ExamFinishAnswerResult">
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamFinishAnswer" parameterType="ExamFinishAnswer" >
-        insert into exam_finish_answer
+        insert into human_ex_finish_answer
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="examCode != null">exam_code,</if>
             <if test="userCode != null">user_code,</if>
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <insert id="intoExamFinishAnswer" parameterType="ExamFinishAnswer" >
-        insert into exam_finish_answer 
+        insert into human_ex_finish_answer 
 		select exam_code,user_code,questions_code,case when right_answer = questions_answer then questions_score else 0  end exam_score,right_answer,questions_answer,questions_score from
 		(
 		select a.exam_code, a.user_code, a.questions_code, REPLACE(b.right_answer, ',', '') as right_answer,a.questions_answer,b.questions_score from exam_task_answer  a
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
     
     <update id="updateExamFinishAnswer" parameterType="ExamFinishAnswer">
-        update exam_finish_answer
+        update human_ex_finish_answer
         <trim prefix="SET" suffixOverrides=",">
             <if test="examCode != null">#{examCode},</if>
             <if test="userCode != null">user_code = #{userCode},</if>
@@ -77,15 +77,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamFinishAnswerById" parameterType="String">
-        delete from exam_finish_answer where exam_code = #{examCode}
+        delete from human_ex_finish_answer where exam_code = #{examCode}
     </delete>
 
     <delete id="deleteExamFinishAnswer" parameterType="ExamFinishAnswer">
-        delete from exam_finish_answer where exam_code = #{examCode} and user_code = #{userCode}
+        delete from human_ex_finish_answer where exam_code = #{examCode} and user_code = #{userCode}
     </delete>
 
     <delete id="deleteExamFinishAnswerByIds" parameterType="String">
-        delete from exam_finish_answer where exam_code in 
+        delete from human_ex_finish_answer where exam_code in 
         <foreach item="examCode" collection="array" open="(" separator="," close=")">
             #{examCode}
         </foreach>

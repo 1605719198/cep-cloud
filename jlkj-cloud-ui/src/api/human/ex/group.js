@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询人员分组列表
 export function listGroup(query) {
   return request({
-    url: '/system/group/list',
+    url: '/human/group/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listGroup(query) {
 // 查询人员分组列表
 export function listChoiceGroup(examCode) {
   return request({
-    url: '/system/group/choicelist/' + examCode,
+    url: '/human/group/choicelist/' + examCode,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function listChoiceGroup(examCode) {
 // 查询人员分组详细
 export function getGroup(groupId) {
   return request({
-    url: '/system/group/' + groupId,
+    url: '/human/group/' + groupId,
     method: 'get'
   })
 }
@@ -28,7 +28,7 @@ export function getGroup(groupId) {
 // 新增人员分组
 export function addGroup(data) {
   return request({
-    url: '/system/group',
+    url: '/human/group',
     method: 'post',
     data: data
   })
@@ -37,7 +37,7 @@ export function addGroup(data) {
 // 修改人员分组
 export function updateGroup(data) {
   return request({
-    url: '/system/group',
+    url: '/human/group',
     method: 'put',
     data: data
   })
@@ -46,7 +46,7 @@ export function updateGroup(data) {
 // 删除人员分组
 export function delGroup(groupId) {
   return request({
-    url: '/system/group/' + groupId,
+    url: '/human/group/' + groupId,
     method: 'delete'
   })
 }
@@ -54,7 +54,7 @@ export function delGroup(groupId) {
 // 导出人员分组
 export function exportGroup(query) {
   return request({
-    url: '/system/group/export',
+    url: '/human/group/export',
     method: 'get',
     params: query
   })
