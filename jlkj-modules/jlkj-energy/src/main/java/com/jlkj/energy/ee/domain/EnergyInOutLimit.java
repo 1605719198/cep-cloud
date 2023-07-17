@@ -100,8 +100,8 @@ public class EnergyInOutLimit implements Serializable {
     /**
      * 创建人
      */
-    @JsonProperty("create_user")
-    private String createUser;
+    @JsonProperty("create_by")
+    private String createBy;
 
     /**
      * 创建时间
@@ -112,8 +112,8 @@ public class EnergyInOutLimit implements Serializable {
     /**
      * 修改人
      */
-    @JsonProperty("update_user")
-    private String updateUser;
+    @JsonProperty("update_by")
+    private String updateBy;
 
     /**
      * 修改时间
