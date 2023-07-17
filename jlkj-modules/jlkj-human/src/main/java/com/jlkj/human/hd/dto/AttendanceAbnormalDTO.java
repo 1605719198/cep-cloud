@@ -168,6 +168,11 @@ public class AttendanceAbnormalDTO implements Serializable {
      */
     private BigDecimal truHou;
 
+    /**
+     * 查询出勤异常表接口传入时间参数
+     */
+    private String incomingTime;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
