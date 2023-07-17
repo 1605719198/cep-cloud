@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * @author Liukuiyan
- * @description 针对表【v_energy_board_view1】的数据库操作Service实现
+ * 针对表【v_energy_board_view1】的数据库操作Service实现
  * @createDate 2023-02-16 14:50:28
  */
 @Service
@@ -27,10 +27,10 @@ public class EnergyBoardView1ServiceImpl extends ServiceImpl<EnergyBoardView1Map
     /**
      * 能源看板数据查询
      *
-     * @param dto
+     * @param dto GetDashBoardEnergyDTO
      * @return Map<Object>
      * @author Liukuiyan
-     * @Date 上午 11:05:28 2023年6月29日, 0029
+     * @date 上午 11:05:28 2023年6月29日, 0029
      */
     @Override
     public Map<String, Object> getEngyTopAnalys(GetDashBoardEnergyDTO dto) {
@@ -47,7 +47,7 @@ public class EnergyBoardView1ServiceImpl extends ServiceImpl<EnergyBoardView1Map
     /**
      * @return Map<Object>
      * @author Liukuiyan
-     * @Date 上午 11:13:46 2023年6月29日, 0029
+     * @date 上午 11:13:46 2023年6月29日, 0029
      */
     public Map<String, Object> getEngyTopAnalys() {
         Map<String, Object> returnList = new HashMap<>(1);
@@ -86,28 +86,27 @@ public class EnergyBoardView1ServiceImpl extends ServiceImpl<EnergyBoardView1Map
     }
 
     /**
-     * @param dto
+     * 取得下部分析数据
+     * @param dto GetDashBoardEnergyDTO
      * @return List<Map < Object>>
      * @author Liukuiyan
-     * @Date 上午 11:14:06 2023年6月29日, 0029
+     * @date 上午 11:14:06 2023年6月29日, 0029
      */
     public List<Map<String, Object>> getEngyBottomAnalys(GetDashBoardEnergyDTO dto) {
-        List<Map<String, Object>> energyBoardView2 = baseMapper.getEngyBottomAnalys(dto);
-        return energyBoardView2;
+        return baseMapper.getEngyBottomAnalys(dto);
     }
-   /**
-    * @description TODO
-    * @author: Liukuiyan
-    * @date: 2023年6月29日, 0029 下午 12:16:46
-    * @param: dto
-    * @return: java.util.List<java.lang.Object>
-    * @throws:
-   */
+    /**
+     * 取得右下方分析数据
+     * @author 265800
+     * @date 2023/7/12 10:52
+     * @param dto GetDashBoardEnergyDTO
+     * @return java.util.List<java.lang.Object>
+     */
     public List<Object> getEngyBottomRightAnalys(GetDashBoardEnergyDTO dto) {
         List<Map<String, Object>> energyBoardView2 = baseMapper.getEngyBottomAnalys(dto);
-        List<Object> returnList = new ArrayList();
+        ArrayList<Object> returnList = new ArrayList<>();
         energyBoardView2.forEach(item -> {
-            List data = new ArrayList();
+            List<Object> data = new ArrayList<>();
             data.add(item.get(Constants.STR_COUNT_DATE));
             data.add(item.get(Constants.STR_TYPENAME));
             data.add(item.get(Constants.STR_QTY).toString());

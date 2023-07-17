@@ -106,12 +106,15 @@ export default {
         pageSize: 10,
         keywords: '',
         departmentId: undefined,
-        compId: undefined
+        compId: undefined,
+        isMore: false
       },
       //公司数据
       companyList:[],
       //是否展示树和表
       treeAndTable:true,
+      //多选用户列表
+      selectUser: []
     };
   },
   created() {
@@ -169,6 +172,15 @@ export default {
       this.userName = selection.map(item => item.fullName);
       this.compId = selection.map(item => item.compId);
       this.empId = selection.map(item => item.empId);
+      this.selectUser = []
+      for (let i = 0; i < selection.length; i++) {
+        const form = {
+          empNo: selection[i].empNo,
+          fullName: selection[i].fullName,
+          compId: selection[i].compId
+        }
+        this.selectUser.push(form)
+      }
     },
     // 查询表数据
     getList() {
@@ -192,17 +204,21 @@ export default {
       const userName = this.userName.join(",");
       const compId = this.compId.join(",");
       const id = this.empId.join(",");
-      if (userIds == "") {
-        this.$modal.msgError("请选择要分配的用户");
-        return;
+      if (this.queryParams.isMore === true) {
+        this.$emit("getMore", this.selectUser);
+      } else {
+        if (userIds == "") {
+          this.$modal.msgError("请选择要分配的用户");
+          return;
+        }
+        if (this.userIds.length > 1) {
+          this.$modal.msgError("只能选择一笔数据");
+          return;
+        }
+        this.$refs.table.clearSelection();
+        this.visible = false;
+        this.$emit("ok", userIds, userName, compId, id);
       }
-      if (this.userIds.length > 1) {
-        this.$modal.msgError("只能选择一笔数据");
-        return;
-      }
-      this.$refs.table.clearSelection();
-      this.visible = false;
-      this.$emit("ok", userIds, userName, compId, id);
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {

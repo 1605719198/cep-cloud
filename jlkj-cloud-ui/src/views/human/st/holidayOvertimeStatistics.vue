@@ -185,8 +185,12 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      if(this.queryParams.extraWorkBegin===null||this.queryParams.extraWorkBegin===''){
+        this.$modal.msgError("请输入日期")
+      }else{
+        this.queryParams.pageNum = 1;
+        this.getList();
+      }
     },
     /** 导出按钮操作 */
     handleExport() {

@@ -484,6 +484,7 @@ export default {
 
       this.event.buttonLoading = true;
       updateHoistingWorkTicket(params).then(response => {
+        debugger
         this.event.buttonLoading = false;
         if (response.msg === '吊装安全作业证保存成功') {
           this.$EventBus.$emit('event-refresh-lifting-work-ticket-list-data', "");

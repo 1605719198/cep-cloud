@@ -182,4 +182,31 @@ public interface SafeJobHoistingService extends IService<SafeSiJobHoisting> {
      * @return 结果
      */
     Object updateSafeJobHoistingJobCode(Map<String, Object> params);
+
+    /**
+     * 吊装安全作业证-新增
+     * @author 265800
+     * @date 2023/7/12 15:37
+     * @param params 请求参数
+     * @return java.lang.Object
+     */
+    Object insertSafeJobHoistingData(Map<String, Object> params);
+
+    /**
+     * 吊装安全作业证-修改
+     * @author 265800
+     * @date 2023/7/13 8:41
+     * @param params 请求参数
+     * @return java.lang.Object
+     */
+    Object updateSafeJobHoistingData(Map<String, Object> params);
+
+    /**
+     * 吊装安全作业证-批量保存作业人员
+     * @author 265800
+     * @date 2023/7/13 8:54
+     * @param params 请求参数
+     * @return java.lang.Object
+     */
+    Object batchSaveSafeJobHoistingPerson(Map<String, Object> params);
 }

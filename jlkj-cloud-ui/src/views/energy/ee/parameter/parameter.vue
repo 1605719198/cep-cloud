@@ -53,7 +53,6 @@ export default {
 <style scoped>
 .titleClass {
   height: 70px;
-  margin-top: -70px;
   text-align: center;
   line-height: 70px;
   font-size: 20px;

@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobApprovalRecord;
 import com.jlkj.safety.si.entity.SafeSiJobHoisting;
 import com.jlkj.safety.si.entity.SafeSiJobHoistingApproval;
@@ -13,6 +14,7 @@ import com.jlkj.safety.si.service.SafeJobApprovalRecordService;
 import com.jlkj.safety.si.service.SafeJobHoistingApprovalService;
 import com.jlkj.safety.si.service.SafeJobHoistingService;
 import com.jlkj.safety.si.utils.ResponseUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +36,18 @@ import static com.jlkj.safety.si.constants.Constant.*;
 @Service
 public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoistingApprovalMapper, SafeSiJobHoistingApproval> implements SafeJobHoistingApprovalService {
     @Resource
+    @Lazy
     SafeJobHoistingService safeJobHoistingService;
     @Resource
     SafeJobApprovalRecordService safeJobApprovalRecordService;
 
+    /**
+     * 吊装安全作业证-审批记录修改
+     * @author 265800
+     * @date 2023/7/13 13:47
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobHoistingApproval(Map<String, Object> params) {
@@ -49,23 +59,30 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
             safeSiJobHoistingApproval.setPickPersonName(params.get("pick_person_name").toString());
             safeSiJobHoistingApproval.setPickTime(DateUtil.parseLocalDateTime(DateUtil.now()));
             if (updateById(safeSiJobHoistingApproval)) {
-                return ResponseUtil.toResult(params, "设置审批人成功");
+                return AjaxResult.success("设置审批人成功");
             } else {
-                return ResponseUtil.toError(params, "设置审批人失败");
+                return AjaxResult.error("设置审批人失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 吊装安全作业证-审批记录确认
+     * @author 265800
+     * @date 2023/7/13 14:39
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobHoistingApproval(Map<String, Object> params) {
         SafeSiJobHoistingApproval safeSiJobHoistingApproval = getById(params.get("id").toString());
         if (null != safeSiJobHoistingApproval) {
             if (safeSiJobHoistingApproval.getConfirmTime() == null) {
-                return ResponseUtil.toError(params, "该审批记录未确认，请先确认");
+                return AjaxResult.error("该审批记录未确认，请先确认", params);
             }
             Map<String, Object> lastApproval = null;
             Map<String, Object> lastApproval2 = null;
@@ -77,7 +94,7 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
                     .lt("sort", safeSiJobHoistingApproval.getSort())
                     .orderByDesc("sort");
             if (listMaps(queryWrapperNoApproval).size() > 0) {
-                return ResponseUtil.toError(params, "上步审批未完成");
+                return AjaxResult.error("上步审批未完成", params);
             }
             QueryWrapper<SafeSiJobHoistingApproval> queryWrapper = new QueryWrapper<>();
             queryWrapper
@@ -96,7 +113,7 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
                 }
             }
             if ((lastApproval == null) || (lastApproval2 == null) || (firstApproval == null)) {
-                return ResponseUtil.toError(params, "审批列表数据不完整");
+                return AjaxResult.error("审批列表数据不完整", params);
             }
             SafeSiJobHoisting safeSiJobHoisting = safeJobHoistingService.getById(safeSiJobHoistingApproval.getJobId());
             if (safeSiJobHoistingApproval.getId().equals(lastApproval.get(ID).toString()) && safeSiJobHoisting.getStatus() < STATUS_FINISH) {
@@ -120,16 +137,23 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
                 }
                 //更新吊装作业审批记录
                 this.confirmReturnAddOne(params);
-                return ResponseUtil.toResult(params, "审批成功");
+                return AjaxResult.success("审批成功");
             } else {
-                return ResponseUtil.toError(params, "审批失败");
+                return AjaxResult.error("审批失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 吊装安全作业证-审批记录确认时间
+     * @author 265800
+     * @date 2023/7/13 14:40
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobHoistingApprovalTime(Map<String, Object> params) {
@@ -137,16 +161,23 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
         if (null != safeSiJobHoistingApproval) {
             safeSiJobHoistingApproval.setConfirmTime(DateUtil.parseLocalDateTime(DateUtil.now()));
             if (updateById(safeSiJobHoistingApproval)) {
-                return ResponseUtil.toResult(params, "确认成功");
+                return AjaxResult.success("确认成功");
             } else {
-                return ResponseUtil.toError(params, "确认失败");
+                return AjaxResult.error("确认失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 吊装安全作业证-审批记录新增
+     * @author 265800
+     * @date 2023/7/13 14:40
+     * @param params
+     * @return boolean
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean insertSafeJobHoistingApprovals(Map<String, Object> params) {
@@ -165,6 +196,13 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
         return save(safeSiJobHoistingApproval);
     }
 
+    /**
+     * 吊装安全作业证-审批退回
+     * @author 265800
+     * @date 2023/7/13 14:41
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobHoistingApprovalReturn(Map<String, Object> params) {
@@ -205,32 +243,35 @@ public class SafeJobHoistingApprovalServiceImpl extends ServiceImpl<SafeJobHoist
                 safeJobApprovalRecord.setIsPass(0);
                 safeJobApprovalRecord.setContent(params.get("content").toString());
                 safeJobApprovalRecordService.save(safeJobApprovalRecord);
-                return ResponseUtil.toResult(params, "审批退回成功");
+                return AjaxResult.success("审批退回成功");
             } else {
-                return ResponseUtil.toError(params, "作业票不存在");
+                return AjaxResult.error("作业票不存在", params);
             }
         } else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
     /**
      * 审批历史记录添加
+     * @author 265800
+     * @date 2023/7/13 14:41
      * @param params
+     * @return void
      */
     private void confirmReturnAddOne(Map<String, Object> params) {
-                    SafeSiJobHoistingApproval approval = getById(params.get("id").toString());
-                    SafeJobApprovalRecord safeJobApprovalRecord = new SafeJobApprovalRecord();
-                    safeJobApprovalRecord.setId(IdUtil.randomUUID());
-                    safeJobApprovalRecord.setJobId(approval.getJobId());
-                    safeJobApprovalRecord.setJobType(1);
-                    safeJobApprovalRecord.setSort(approval.getSort());
-                    safeJobApprovalRecord.setApprovalName(approval.getApprovalName());
-                    safeJobApprovalRecord.setApprovalPersonId(approval.getApprovalPersonId());
-                    safeJobApprovalRecord.setApprovalPersonName(approval.getApprovalPersonName());
-                    safeJobApprovalRecord.setApprovalTime(approval.getApprovalTime());
-                    safeJobApprovalRecord.setIsPass(1);
-                    safeJobApprovalRecord.setContent(approval.getContent());
-                    safeJobApprovalRecordService.save(safeJobApprovalRecord);
+        SafeSiJobHoistingApproval approval = getById(params.get("id").toString());
+        SafeJobApprovalRecord safeJobApprovalRecord = new SafeJobApprovalRecord();
+        safeJobApprovalRecord.setId(IdUtil.randomUUID());
+        safeJobApprovalRecord.setJobId(approval.getJobId());
+        safeJobApprovalRecord.setJobType(1);
+        safeJobApprovalRecord.setSort(approval.getSort());
+        safeJobApprovalRecord.setApprovalName(approval.getApprovalName());
+        safeJobApprovalRecord.setApprovalPersonId(approval.getApprovalPersonId());
+        safeJobApprovalRecord.setApprovalPersonName(approval.getApprovalPersonName());
+        safeJobApprovalRecord.setApprovalTime(approval.getApprovalTime());
+        safeJobApprovalRecord.setIsPass(1);
+        safeJobApprovalRecord.setContent(approval.getContent());
+        safeJobApprovalRecordService.save(safeJobApprovalRecord);
     }
 }
