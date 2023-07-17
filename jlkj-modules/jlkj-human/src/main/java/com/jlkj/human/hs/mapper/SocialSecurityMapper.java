@@ -119,6 +119,7 @@ public interface SocialSecurityMapper
      *
      * @param version 版本号
      * @param effectDate 生效日期
+     * @param payAreaId 缴费地区
      * @return 社保公积金缴费比例数据
      * @author 267383
      * @Date 2023/6/26 15:35
