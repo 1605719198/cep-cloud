@@ -133,7 +133,7 @@
               <el-radio-group v-model="dataForm.status" size="mini">
                 <el-radio-button label="0">待开考</el-radio-button>
                 <el-radio-button label="1">考试中</el-radio-button>
-                <el-radio-button label="2">已交卷</el-radio-button>
+                <el-radio-button label="2">已结束</el-radio-button>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -172,6 +172,7 @@ export default {
       exportLoading: false,
       // 选中数组
       ids: [],
+      // 表单不刷新问题
       key: 0,
       // 非单个禁用
       single: true,
@@ -196,11 +197,10 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
-
       // 表单参数
       dataForm: {
         userCode: undefined,
-        status: "待开考"
+        status: undefined
       },
       updatePop: true,
       // 表单校验
@@ -250,12 +250,11 @@ export default {
     getMore(val) {
       let users = '';
       if (val != null) {
-        val.forEach((item, index, val) => {
+        val.forEach((item) => {
           users += item.empNo + ',';
         })
       }
       this.dataForm.userCode = users.substring(0, users.lastIndexOf(','));
-      console.log(this.dataForm)
       this.key = Math.random();
     },
     // 考试代码字典翻译
@@ -271,7 +270,12 @@ export default {
     reset() {
       this.dataForm = {
         examCode: null,
-        examPerson: null
+        examPerson: null,
+        userCode: null,
+        status: null,
+        taskCode: null,
+        startTime: null,
+        endTime: null
       };
       this.resetForm("dataForm");
     },
@@ -296,6 +300,7 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加考试人员";
+      this.dataForm.status = 0;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
