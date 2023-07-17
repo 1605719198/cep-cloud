@@ -1,10 +1,12 @@
 package com.jlkj.finance.ft.mapper;
 
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jlkj.finance.ft.domain.FinanceFtChange;
 import com.jlkj.finance.ft.domain.FinanceFtChangeDetail;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 资产变动单主档Mapper接口
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @date 2023-07-04
  */
 @Repository
-public interface FinanceFtChangeMapper 
+public interface FinanceFtChangeMapper extends BaseMapper<FinanceFtChange>
 {
     
     /**

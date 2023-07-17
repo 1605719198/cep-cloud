@@ -2,6 +2,8 @@ package com.jlkj.finance.ft.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.finance.ft.domain.FinanceFtAcctDetail;
 import com.jlkj.finance.ft.mapper.FinanceFtAcctDetailMapper;
 import com.jlkj.finance.ft.service.IFinanceFtAcctDetailService;
@@ -61,7 +63,10 @@ public class FinanceFtAcctDetailServiceImpl extends ServiceImpl<FinanceFtAcctDet
     @Override
     public int insertFinanceFtAcctDetail(FinanceFtAcctDetail financeFtAcctDetail)
     {
+        financeFtAcctDetail.setUuid(IdUtils.fastSimpleUUID());
         financeFtAcctDetail.setCreateTime(DateUtils.getNowDate());
+        financeFtAcctDetail.setCreateBy(SecurityUtils.getUsername());
+        financeFtAcctDetail.setCreateName(SecurityUtils.getNickName());
         return financeFtAcctDetailMapper.insertFinanceFtAcctDetail(financeFtAcctDetail);
     }
 
@@ -77,6 +82,8 @@ public class FinanceFtAcctDetailServiceImpl extends ServiceImpl<FinanceFtAcctDet
     public int updateFinanceFtAcctDetail(FinanceFtAcctDetail financeFtAcctDetail)
     {
         financeFtAcctDetail.setUpdateTime(DateUtils.getNowDate());
+        financeFtAcctDetail.setUpdateBy(SecurityUtils.getUsername());
+        financeFtAcctDetail.setUpdateName(SecurityUtils.getNickName());
         return financeFtAcctDetailMapper.updateFinanceFtAcctDetail(financeFtAcctDetail);
     }
 
