@@ -610,7 +610,7 @@ public class SafeJobHoistingServiceImpl extends ServiceImpl<SafeJobHoistingMappe
         try {
             Map<String, Object> objectMap = (Map<String, Object>) updateSafeJobHoisting(params);
             int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
+            if (code == 200) {
                 msg = updateSafeJobHoistingCore(params);
             } else {
                 msg = objectMap.get("msg").toString();

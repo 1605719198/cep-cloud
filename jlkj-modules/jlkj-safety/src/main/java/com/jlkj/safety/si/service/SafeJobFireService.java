@@ -218,4 +218,39 @@ public interface SafeJobFireService extends IService<SafeSiJobFire> {
      */
     Object updateSafeJobFireJobCode(Map<String, Object> params);
 
+    /**
+     * 动火作业证-新增
+     * @author 265800
+     * @date 2023/7/14 9:15
+     * @param params
+     * @return java.lang.Object
+     */
+    Object insertSafeJobFireData(Map<String, Object> params);
+
+    /**
+     * 动火作业证-修改
+     * @author 265800
+     * @date 2023/7/14 9:15
+     * @param params
+     * @return java.lang.Object
+     */
+    Object updateSafeJobFireData(Map<String, Object> params);
+
+    /**
+     * 动火作业证-批量保存动火人
+     * @author 265800
+     * @date 2023/7/14 9:15
+     * @param params
+     * @return java.lang.Object
+     */
+    Object batchSaveSafeJobPerson(Map<String, Object> params);
+
+    /**
+     * 动火作业证-批量保存动火分析
+     * @author 265800
+     * @date 2023/7/14 9:15
+     * @param params
+     * @return java.lang.Object
+     */
+    Object batchSaveSafeJobAnalysis(Map<String, Object> params);
 }
