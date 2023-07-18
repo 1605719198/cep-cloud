@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jlkj.human.st.mapper.ContractStatisticsMapper">
     
     <resultMap type="ContractStatistics" id="ContractStatisticsResult">
+        <result property="id"    column="id"    />
         <result property="compId"    column="comp_id"    />
         <result property="relStatus"    column="rel_status"    />
         <result property="signDate"    column="sign_date"    />
@@ -26,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectContractStatisticsVo">
-        SELECT comp_id, rel_status, sign_date, start_date, con_peri_id, end_date, version_no, creator_id, create_date, job_number, full_name, post_id, post_name, source_of_employees, post_type_id, post_sequence_id, org_id, ancestors FROM human_hr_contract
+        SELECT id,comp_id, rel_status, sign_date, start_date, con_peri_id, end_date, version_no, creator_id, create_date, job_number, full_name, post_id, post_name, source_of_employees, post_type_id, post_sequence_id, org_id, ancestors FROM human_hr_contract
     </sql>
 
     <select id="selectContractStatisticsList" parameterType="ContractStatistics" resultMap="ContractStatisticsResult">
@@ -42,14 +43,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectContractStatisticsByCompId" parameterType="String" resultMap="ContractStatisticsResult">
+    <select id="selectContractStatisticsById" parameterType="String" resultMap="ContractStatisticsResult">
         <include refid="selectContractStatisticsVo"/>
-        WHERE comp_id = #{compId}
+        WHERE id = #{id}
     </select>
         
     <insert id="insertContractStatistics" parameterType="ContractStatistics">
         INSERT INTO human_hr_contract
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="compId != null">comp_id,</if>
             <if test="relStatus != null">rel_status,</if>
             <if test="signDate != null">sign_date,</if>
@@ -70,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ancestors != null">ancestors,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="compId != null">#{compId},</if>
             <if test="relStatus != null">#{relStatus},</if>
             <if test="signDate != null">#{signDate},</if>
@@ -112,17 +115,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgId != null">org_id = #{orgId},</if>
             <if test="ancestors != null">ancestors = #{ancestors},</if>
         </trim>
-        WHERE comp_id = #{compId}
+        WHERE id = #{id}
     </update>
-
-    <delete id="deleteContractStatisticsByCompId" parameterType="String">
-        DELETE FROM human_hr_contract WHERE comp_id = #{compId}
-    </delete>
-
-    <delete id="deleteContractStatisticsByCompIds" parameterType="String">
-        DELETE FROM human_hr_contract WHERE comp_id IN
-        <foreach item="compId" collection="array" open="(" separator="," close=")">
-            #{compId}
-        </foreach>
-    </delete>
 </mapper>

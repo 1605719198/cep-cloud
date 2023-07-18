@@ -93,4 +93,12 @@ public interface IFinanceAoRepaymentService
      * @return
      */
     public int insertBatchFinanceAoRepayment(List<FinanceAoRepayment> financeAoRepayments);
+
+
+    /**
+     * 成本中心清单查询
+     * @param paramInfo
+     * @return
+     */
+    public List<Map<String,Object>> selectcostCenterList(Map paramInfo);
 }

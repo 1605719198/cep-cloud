@@ -18,6 +18,9 @@ public class ContractStatistics extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    /** 主键 */
+    private String id;
+
     /** 公司 */
     private String compId;
 
@@ -96,6 +99,15 @@ public class ContractStatistics extends BaseEntity
     /** 祖级列表 */
     private String ancestors;
 
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
     public void setCompId(String compId)
     {
         this.compId = compId;
@@ -287,6 +299,7 @@ public class ContractStatistics extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
             .append("compId", getCompId())
             .append("relStatus", getRelStatus())
             .append("signDate", getSignDate())

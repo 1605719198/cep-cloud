@@ -5,13 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jlkj.human.ex.mapper.ExamTaskGroupMapper">
     
     <resultMap type="ExamTaskGroup" id="ExamTaskGroupResult">
+        <result property="id" column="id"/>
         <result property="examCode"    column="exam_code"    />
         <result property="groupCode"    column="group_code"    />
         <result property="orderId"    column="order_id"    />
     </resultMap>
 
     <sql id="selectExamTaskGroupVo">
-        select exam_code, group_code, order_id from exam_task_group
+        select id, exam_code, group_code, order_id
+        from human_ex_task_group
     </sql>
 
     <select id="selectExamTaskGroupList" parameterType="ExamTaskGroup" resultMap="ExamTaskGroupResult">
@@ -26,36 +28,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertExamTaskGroup" parameterType="ExamTaskGroup" >
-        insert into exam_task_group
+        insert into human_ex_task_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="examCode != null and examCode != ''">exam_code,</if>
             <if test="groupCode != null and groupCode != ''">group_code,</if>
-            order_id,
-         </trim>
+            <if test="orderId != null">order_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="examCode != null and examCode != ''">#{examCode},</if>
             <if test="groupCode != null and groupCode != ''">#{groupCode},</if>
-            (select nvl(max(order_id),0) + 1 from exam_task_group where exam_code = #{examCode}),
-         </trim>
+            <if test="orderId != null">#{orderId},</if>
+        </trim>
     </insert>
 
     <update id="updateExamTaskGroup" parameterType="ExamTaskGroup">
-        update exam_task_group
+        update human_ex_task_group
         <trim prefix="SET" suffixOverrides=",">
             <if test="groupCode != null and groupCode != ''">group_code = #{groupCode},</if>
             <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="examCode != null">exam_code = #{examCode},</if>
         </trim>
-        where exam_code = #{examCode}
+        where id = #{id}
     </update>
 
     <delete id="deleteExamTaskGroupById" parameterType="String">
-        delete from exam_task_group where exam_code = #{examCode}
+        delete
+        from human_ex_task_group
+        where id = #{id}
     </delete>
 
     <delete id="deleteExamTaskGroupByIds" parameterType="String">
-        delete from exam_task_group where exam_code in 
-        <foreach item="examCode" collection="array" open="(" separator="," close=")">
-            #{examCode}
+        delete from human_ex_task_group where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 </mapper>

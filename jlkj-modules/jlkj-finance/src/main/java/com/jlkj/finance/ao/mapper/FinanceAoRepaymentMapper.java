@@ -75,7 +75,7 @@ public interface FinanceAoRepaymentMapper
      * @param companyId
      * @return
      */
-    public List<Map<String,String>> selectLoanApply(String companyId);
+    public List<Map<String,String>> selectLoanApply(@Param("companyId") String companyId, @Param("userName") String userName);
 
 
     /**
@@ -95,6 +95,7 @@ public interface FinanceAoRepaymentMapper
     public List<Map<String,Object>> selectRepaymentList(FinanceAoRepayment financeAoRepayment);
 
 
+
     /**
      * 查询最大流水号
      * @param companyId
@@ -110,4 +111,12 @@ public interface FinanceAoRepaymentMapper
      * @return
      */
     public int insertBatch(List<FinanceAoRepayment> financeAoRepayments);
+
+
+    /**
+     * 成本中心清单查询
+     * @param paramInfo
+     * @return
+     */
+    public List<Map<String,Object>> selectcostCenterList(Map paramInfo);
 }

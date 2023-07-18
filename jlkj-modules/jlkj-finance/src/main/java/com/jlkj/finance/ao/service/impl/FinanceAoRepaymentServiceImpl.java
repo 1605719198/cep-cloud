@@ -109,7 +109,7 @@ public class FinanceAoRepaymentServiceImpl implements IFinanceAoRepaymentService
      */
     @Override
     public List<Map<String,String>> selectLoanApply(String companyId){
-        return financeAoRepaymentMapper.selectLoanApply(companyId);
+        return financeAoRepaymentMapper.selectLoanApply(companyId,SecurityUtils.getUsername());
     }
 
 
@@ -165,5 +165,15 @@ public class FinanceAoRepaymentServiceImpl implements IFinanceAoRepaymentService
         }finally {
             lock.unlock();
         }
+    }
+
+    /**
+     * 成本中心清单查询
+     * @param paramInfo
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> selectcostCenterList(Map paramInfo){
+        return financeAoRepaymentMapper.selectcostCenterList(paramInfo);
     }
 }
