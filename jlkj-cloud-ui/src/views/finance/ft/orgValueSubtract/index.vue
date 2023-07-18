@@ -84,7 +84,7 @@
       <el-table-column label="变动方式" align="center" prop="changeWay" :formatter="changeWayFormat"/>
       <el-table-column label="资产编码" align="center" prop="subAssetNo" />
       <el-table-column label="资产名称" align="center" prop="subAssetName" />
-      <el-table-column label="减少金额" align="center" prop="subChangePrice" >
+      <el-table-column label="减少金额" align="center" prop="subChangePrice" ></el-table-column>
       <el-table-column label="申请人" align="center" prop="applyUser" :formatter="userFormat" sortable/>
       <el-table-column label="变动日期" align="center" prop="changeDate" width="180" sortable>
         <template slot-scope="scope">
