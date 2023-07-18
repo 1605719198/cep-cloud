@@ -41,9 +41,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFinanceAoExpenseBillsVo"/>
         <where>  
             <if test="companyId != null  and companyId != ''"> AND company_id = #{companyId}</if>
+            <if test="billType != null  and billType != ''"> AND bill_type = #{billType}</if>
             <if test="billUser != null  and billUser != ''"> AND bill_user = #{billUser}</if>
             <if test="status != null "> AND status = #{status}</if>
-            <if test="billDate != null "> AND bill_date = #{billDate}</if>
+            <if test="params.beginDate != null and params.beginDate != ''"> and bill_date BETWEEN #{params.beginDate} AND #{params.endDate} </if>
             <if test="saleName != null  and saleName != ''"> AND sale_name = #{saleName}</if>
         </where>
     </select>
