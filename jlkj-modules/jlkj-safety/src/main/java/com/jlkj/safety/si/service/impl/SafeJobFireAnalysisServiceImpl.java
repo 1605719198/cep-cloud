@@ -39,6 +39,13 @@ public class SafeJobFireAnalysisServiceImpl extends ServiceImpl<SafeJobFireAnaly
         return save(safeSiJobFireAnalysis);
     }
 
+    /**
+     * 删除动火分析
+     * @author 265800
+     * @date 2023/7/14 15:37
+     * @param params
+     * @return boolean
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteSafeJobFireAnalysis(Map<String, Object> params) {

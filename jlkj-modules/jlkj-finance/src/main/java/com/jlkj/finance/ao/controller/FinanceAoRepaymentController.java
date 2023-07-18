@@ -133,4 +133,16 @@ public class FinanceAoRepaymentController extends BaseController
     {
         return toAjax(financeAoRepaymentService.insertBatchFinanceAoRepayment(financeAoRepayments));
     }
+
+    /**
+     * 成本中心清单查询
+     */
+    @PostMapping("/costCenterList")
+    public TableDataInfo selectcostCenterList(@RequestBody Map paramInfo)
+    {
+        startPage();
+        List<Map<String, Object>> list = financeAoRepaymentService.selectcostCenterList(paramInfo);
+        return getDataTable(list);
+    }
+
 }

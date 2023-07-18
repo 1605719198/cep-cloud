@@ -2,10 +2,10 @@ package com.jlkj.safety.si.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeSiJobFireSafetyMeasures;
 import com.jlkj.safety.si.mapper.SafeJobFireSafetyMeasuresMapper;
 import com.jlkj.safety.si.service.SafeJobFireSafetyMeasuresService;
-import com.jlkj.safety.si.utils.ResponseUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +28,13 @@ public class SafeJobFireSafetyMeasuresServiceImpl extends ServiceImpl<SafeJobFir
     @Resource
     private SafeJobFireSafetyMeasuresMapper safeJobFireSafetyMeasuresMapper;
 
+    /**
+     * 安全措施确认
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobFireSafetyMeasures(Map<String, Object> params) {
@@ -38,13 +45,20 @@ public class SafeJobFireSafetyMeasuresServiceImpl extends ServiceImpl<SafeJobFir
         safeSiJobFireSafetyMeasures.setIsConfirm(1);
         safeSiJobFireSafetyMeasures.setConfirmTime(DateUtil.parseLocalDateTime(DateUtil.now()));
         if (updateById(safeSiJobFireSafetyMeasures)) {
-            return ResponseUtil.toResult(params, "安全措施确认成功");
+            return AjaxResult.success("安全措施确认成功");
         }
         else {
-            return ResponseUtil.toError(params, "安全措施确认失败");
+            return AjaxResult.error("安全措施确认失败", params);
         }
     }
 
+    /**
+     * 安全措施取消
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object cancelSafeJobFireSafetyMeasures(Map<String, Object> params) {
@@ -60,17 +74,17 @@ public class SafeJobFireSafetyMeasuresServiceImpl extends ServiceImpl<SafeJobFir
                 safeSiJobFireSafetyMeasures.setIsConfirm(0);
                 safeSiJobFireSafetyMeasures.setConfirmTime(null);
                 if (updateById(safeSiJobFireSafetyMeasures)) {
-                    return ResponseUtil.toResult(params, "安全措施取消成功");
+                    return AjaxResult.success("安全措施取消成功");
                 } else {
-                    return ResponseUtil.toError(params, "安全措施取消失败");
+                    return AjaxResult.error("安全措施取消失败", params);
                 }
             }
             else {
-                return ResponseUtil.toError(params, "获取原始安全措施失败");
+                return AjaxResult.error("获取原始安全措施失败");
             }
         }
         else {
-            return ResponseUtil.toError(params, "安全措施不存在");
+            return AjaxResult.error("安全措施不存在", params);
         }
     }
 }

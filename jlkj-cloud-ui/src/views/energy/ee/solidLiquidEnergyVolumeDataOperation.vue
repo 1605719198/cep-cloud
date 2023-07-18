@@ -31,6 +31,7 @@
                    type="primary"
                    size="mini"
                    icon="el-icon-search" @click="handleQuery('queryForm')">搜索</el-button>
+        <el-button size="mini" icon="el-icon-refresh-left" type="default" @click="handleEmpty">重置</el-button>
         <el-button v-hasPermi="['solid:liquid:query']"
                    size="mini"
                    type="default"
@@ -304,6 +305,22 @@ export default {
     this.getDropDownMenu();
   },
   methods: {
+    // 清空
+    handleEmpty() {
+      this.queryParams= {
+        pageNum: 1,
+        pageSize: 10,
+        engyId: undefined,
+        dateYM: undefined,
+        engyIdStart: undefined,
+        engyIdEnd: undefined,
+        costCenterStart: undefined,
+        engyDateStart: undefined,
+        costCenterEnd: undefined,
+        engyDateEnd: undefined,
+      },
+      this.getList();
+    },
     // 分页数据
     handleSizeChange (newSize) {
       this.queryParams.pageSize = newSize

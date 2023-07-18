@@ -20,11 +20,14 @@
         />
       </el-form-item>
       <el-form-item label="开票日期" prop="billDate">
-        <el-date-picker clearable
-                        v-model="queryParams.billDate"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="请选择开票日期">
+        <el-date-picker
+          clearable
+          v-model="billDates"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -316,6 +319,8 @@ export default {
       activeName: 'first',
       // 会计公司下拉选单
       companyList: [],
+      // 开票日期区间
+      billDates: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -367,6 +372,7 @@ export default {
       this.activeName = tab.name
       if(this.activeName === "second"){
         this.$nextTick(() => {
+          this.queryParams.params = {"beginDate":this.billDates?.[0],"endDate":this.billDates?.[1]};
           this.$refs.expensesList.init(this.queryParams)
         })
       }
@@ -384,6 +390,7 @@ export default {
     getList() {
       this.loading = true;
       this.queryParams.status = '0';
+      this.queryParams.params = {"beginDate":this.billDates?.[0],"endDate":this.billDates?.[1]};
       listExpenseBills(this.queryParams).then(response => {
         this.expenseBillsList = response.rows;
         this.total = response.total;
@@ -437,6 +444,7 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
+      this.billDates = null;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

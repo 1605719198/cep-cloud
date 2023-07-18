@@ -480,11 +480,8 @@ export default {
       params['safe_education_persons_id'] = this.myform.safe_education_persons_id === undefined ? '' : this.myform.safe_education_persons_id;
       params['special_name'] = this.myform.special_name ;
 
-
-
       this.event.buttonLoading = true;
       updateHoistingWorkTicket(params).then(response => {
-        debugger
         this.event.buttonLoading = false;
         if (response.msg === '吊装安全作业证保存成功') {
           this.$EventBus.$emit('event-refresh-lifting-work-ticket-list-data', "");

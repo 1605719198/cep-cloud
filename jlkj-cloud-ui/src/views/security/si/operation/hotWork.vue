@@ -3,24 +3,24 @@
     <div class="avue-crud__search">
       <el-form :inline="true">
             <el-form-item label="计划日期" prop="planDate">
-              <el-date-picker v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
+              <el-date-picker size="small" v-model="planDate" type="daterange" start-placeholder="计划开始日期" range-separator="-"
                               end-placeholder="计划结束日期"/>
             </el-form-item>
             <el-form-item label="状态" prop="status">
-              <el-select v-model="query.status" placeholder="状态" :popper-append-to-body="false" clearable>
+              <el-select size="small" v-model="query.status" placeholder="状态" :popper-append-to-body="false" clearable>
                 <el-option v-for="item in selectJobTicketStatus" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
             </el-form-item>
             <el-form-item label="是否煤气区域" prop="is_gas_area">
-              <el-select v-model="query.is_gas_area" placeholder="是否煤气区域" :popper-append-to-body="false" clearable>
+              <el-select size="small" v-model="query.is_gas_area" placeholder="是否煤气区域" :popper-append-to-body="false" clearable>
                 <el-option label="全部" :value="-1"/>
                 <el-option label="非煤气区域" :value="0"/>
                 <el-option label="煤气区域" :value="1"/>
               </el-select>
             </el-form-item>
             <el-form-item label="作业等级" prop="job_level">
-              <el-select v-model="query.job_level" placeholder="请选择作业等级" :popper-append-to-body="false" clearable>
+              <el-select size="small" v-model="query.job_level" placeholder="请选择作业等级" :popper-append-to-body="false" clearable>
                 <el-option label="特级" value="特级"/>
                 <el-option label="一级" value="一级"/>
                 <el-option label="二级" value="二级"/>
@@ -30,12 +30,12 @@
             <!--              <el-input v-model="query.safe_area_name" placeholder="请输入区域名称" clearable/>-->
             <!--            </el-form-item>-->
             <el-form-item label="区域名称" prop="safe_area_id">
-              <el-select v-model="query.safe_area_id" placeholder="请选择区域名称" filterable clearable>
+              <el-select size="small" v-model="query.safe_area_id" placeholder="请选择区域名称" filterable clearable>
                 <el-option v-for="item in safeAreaOptions" :key="item.id" :label="item.name" :value="item.id"/>
               </el-select>
             </el-form-item>
             <el-form-item label="申请人姓名" prop="apply_person_name">
-              <el-input v-model="query.apply_person_name" @focus="$refs.person.blur(),treeOpen=true" placeholder="请选择申请人姓名" ref="person"
+              <el-input size="small" v-model="query.apply_person_name" @focus="$refs.person.blur(),treeOpen=true" placeholder="请选择申请人姓名" ref="person"
                         clearable @clear="query.apply_person_name = '',query.apply_person_id=''"/>
             </el-form-item>
 
@@ -82,24 +82,24 @@
                              :sortable="column.sortable"
                              :formatter="column.formatter"/>
           </template>
-          <el-table-column fixed="right" label="操作" width="380px">
+          <el-table-column fixed="right" label="操作" width="280px">
             <template slot-scope="scope">
-              <el-button v-hasPermi="['fire_list']" size="mini" plain icon="el-icon-edit" type="primary"
+              <el-button v-hasPermi="['fire_list']" size="mini" icon="el-icon-edit" type="text"
                          @click="handleOpenWindow('edit',scope.$index, scope.row)"> 查看/确定
               </el-button>
-              <el-button v-hasPermi="['fire_list']" size="mini" plain icon="el-icon-delete" type="text"
+              <el-button v-hasPermi="['fire_list']" size="mini" icon="el-icon-delete" type="text"
                          @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.status !== 0">删除
               </el-button>
-              <el-button v-hasPermi="['fire_list']" size="mini" plain icon="el-icon-document-copy" type="primary"
+              <el-button v-hasPermi="['fire_list']" size="mini" icon="el-icon-document-copy" type="text"
                          @click="handleOpenWindow('copy',scope.$index, scope.row)">复制
               </el-button>
-              <el-button v-hasPermi="['fire_list']" size="mini" plain icon="el-icon-printer" type="info"
+              <el-button v-hasPermi="['fire_list']" size="mini" icon="el-icon-printer" type="text"
                          v-if="scope.row.status === 3" @click="handlePrint(scope.row)">打印
               </el-button>
-              <el-button v-hasPermi="['fire_list']" size="mini" plain icon="el-icon-printer" type="info"
+              <el-button v-hasPermi="['fire_list']" size="mini" icon="el-icon-printer" type="text"
                          v-else disabled>打印
               </el-button>
-              <!--              <el-button size="mini" plain icon="el-icon-printer" type="info"-->
+              <!--              <el-button size="mini" icon="el-icon-printer" type="info"-->
               <!--                         @click="handlePrint(scope.$index, scope.row)">打印-->
               <!--              </el-button>-->
             </template>
@@ -112,7 +112,7 @@
                          @current-change="handleCurrentChange"
                          layout="total, sizes, prev, pager, next, jumper"
                          :current-page="page.current"
-                         :page-sizes="[20, 50, 100, 200]"
+                         :page-sizes="[10, 20, 30, 50]"
                          :page-size="page.size"
                          :total="page.total">
           </el-pagination>
@@ -146,6 +146,7 @@
 </template>
 
 <script>
+import '@/assets/styles/dialogStyle.scss';
 import {req} from "@/api/security/si/common";
 import hotWorkInfo from "./hotWorkInfo";
 import {getSafetyArea, hotWorkInfoApi} from "@/api/security/si/WorkTicketApi";
@@ -159,7 +160,7 @@ export default {
     return {
       openDialog: {open: false, type: '', title: '', width: '500px', data: {},},
       treeData: [], treeOpen: false, treeOpenType: '',
-      page: {size: 20, current: 1, total: 1, order: "job_code", orderby: "desc",},
+      page: {size: 10, current: 1, total: 1, order: "job_code", orderby: "desc",},
       query: {
         start_time: '',
         end_time: '',
@@ -231,7 +232,7 @@ export default {
     let toDoId = this.$route.query.toDoId;
     if (toDoId !== undefined && toDoId !== null && toDoId !== ''){
       hotWorkInfoApi(toDoId).then(res => {
-        if (res.data.code === "0"){
+        if (res.code === 200){
           this.handleOpenWindow('edit', 0,res.data.data);
         }
       }, err => {
@@ -327,7 +328,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       }).then(() => {
         req('post', 'fire/delete', {id: row.id}).then((res) => {
-          if (res.data.code === "0") {
+          if (res.code === 200) {
             this.$message({
               type: "success", message: "删除成功！", duration: 1000,
               onClose: () => {

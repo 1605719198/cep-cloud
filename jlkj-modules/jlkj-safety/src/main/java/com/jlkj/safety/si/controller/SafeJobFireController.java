@@ -1,24 +1,14 @@
 package com.jlkj.safety.si.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.safety.si.entity.SafeSiJobFire;
-import com.jlkj.safety.si.entity.SafeSiJobFireApproval;
 import com.jlkj.safety.si.service.*;
-import com.jlkj.safety.si.utils.ResponseUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.jlkj.safety.si.constants.Constant.*;
 
 /**
  * @author su
@@ -35,20 +25,24 @@ public class SafeJobFireController {
     SafeJobFireService safeJobFireService;
 
     @Resource
-    SafeJobFirePersonsService safeJobFirePersonsService;
-
-    @Resource
-    SafeJobFireAnalysisService safeJobFireAnalysisService;
-
-    @Resource
     SafeJobFireApprovalService safeJobFireApprovalService;
 
     @Resource
     SafeJobFireSafetyMeasuresService safeJobFireSafetyMeasuresService;
 
     @Resource
-    SafeJobFireAppendixService safeJobFireAppendixService;
+    SafeJobFireAnalysisService safeJobFireAnalysisService;
 
+    @Resource
+    SafeJobFirePersonsService safeJobFirePersonsService;
+
+    /**
+     * 动火作业证-作业票编号
+     * @author 265800
+     * @date 2023/7/14 9:07
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-作业票编号", notes = "获取最新的作业票编号")
     @ApiResponses(
             @ApiResponse(code = 200, message = "调用成功", response = String.class,
@@ -65,6 +59,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getjobCode(params));
     }
 
+    /**
+     * 动火作业证-详情
+     * @author 265800
+     * @date 2023/7/14 9:07
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-详情", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -116,6 +117,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireInfo(params));
     }
 
+    /**
+     * 动火作业证-动火人列表
+     * @author 265800
+     * @date 2023/7/14 9:08
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-动火人列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -142,6 +150,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFirePersonsList(params));
     }
 
+    /**
+     * 动火作业证-动火分析列表
+     * @author 265800
+     * @date 2023/7/14 9:09
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-动火分析列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -167,6 +182,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireAnalysisList(params));
     }
 
+    /**
+     * 动火作业证-安全措施列表
+     * @author 265800
+     * @date 2023/7/14 9:10
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-安全措施列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -192,6 +214,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireSafetyMeasuresList(params));
     }
 
+    /**
+     * 动火作业证-审批列表
+     * @author 265800
+     * @date 2023/7/14 9:10
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-审批列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -224,6 +253,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireApprovalList(params));
     }
 
+    /**
+     * 动火作业证-查询列表
+     * @author 265800
+     * @date 2023/7/14 9:11
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-查询列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:current", value = "页码-从1开始", required = false, dataTypeClass = String.class),
@@ -288,6 +324,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFirePageList(params));
     }
 
+    /**
+     * 动火作业证-新增
+     * @author 265800
+     * @date 2023/7/14 9:24
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-新增", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:apply_depart_id", value = "申请单位ID", required = false, dataTypeClass = String.class),
@@ -359,130 +402,17 @@ public class SafeJobFireController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object insertSafeJobFire(@RequestBody Map<String, Object> params) {
-        return insertSafeJobFireData(params);
-    }
-    private Object insertSafeJobFireData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "动火作业证保存失败";
-        try {
-            SafeSiJobFire safeSiJobFire = null;
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobFireService.insertSafeJobFire(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                safeSiJobFire = (SafeSiJobFire) objectMap.get("data");
-                msg = insertSafeJobFireCore(safeSiJobFire, params);
-            } else {
-                msg = objectMap.get("msg").toString();
-            }
-            if ("".equals(msg)) {
-                Map<String, Object> outData = new HashMap<>(1);
-                outData.put("id", safeSiJobFire.getId());
-                return AjaxResult.success(ResponseUtil.toResult(params, "动火作业证保存成功", outData));
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseUtil.toError(params, msg);
-        }
+        return safeJobFireService.insertSafeJobFireData(params);
     }
-    private String insertSafeJobFireCore(SafeSiJobFire safeSiJobFire, Map<String, Object> params) {
-        boolean succ;
-        String msg = "";
-        succ = insertSafeJobFirePersons(safeSiJobFire, params);
-        if (!succ) {
-            msg = "动火人添加失败";
-        }
-        if (succ) {
-            succ = insertSafeJobFireAnalysis(safeSiJobFire, params);
-            if (!succ) {
-                msg = "动火分析添加失败";
-            }
-        }
-        if (succ) {
-            succ = insertSafeJobFireApprovals(safeSiJobFire, params);
-            if (!succ) {
-                msg = "审批人员添加失败";
-            }
-        }
-        if (succ) {
-            succ = insertSafeJobFireFile(safeSiJobFire, params);
-            if (!succ) {
-                msg = "附件添加失败";
-            }
-        }
-        if (succ) {
-            Map<String, Object> param = new HashMap<>(1);
-            param.put("id", safeSiJobFire.getId());
-            if (!safeJobFireService.insertSafeJobFireSafetyMeasures(param)) {
-                succ = false;
-                msg = "安全措施初始化失败";
-            }
-        }
-        return msg;
-    }
-    private boolean insertSafeJobFirePersons(SafeSiJobFire safeSiJobFire, Map<String, Object> params) {
-        boolean succ = true;
-        if (!"".equals(params.get(PERSON_LIST).toString())) {
-            List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-            for (int i = 0; i < listPerson.size(); i++) {
-                Map<String, Object> param = listPerson.get(i);
-                param.put("job_id", safeSiJobFire.getId());
-                if (!safeJobFirePersonsService.insertSafeJobFirePersons(param)) {
-                    succ = false;
-                    break;
-                }
-            }
-        }
-        return succ;
-    }
-    private boolean insertSafeJobFireAnalysis(SafeSiJobFire safeSiJobFire, Map<String, Object> params) {
-        boolean succ = true;
-        if (!"".equals(params.get(ANALYSIS_LIST).toString())) {
-            List<Map> listAnalysis =  JSONObject.parseArray(JSONObject.toJSON(params.get(ANALYSIS_LIST)).toString(), Map.class);
-            for (int i = 0; i < listAnalysis.size(); i++) {
-                Map<String, Object> param = listAnalysis.get(i);
-                param.put("job_id", safeSiJobFire.getId());
-                if (!safeJobFireAnalysisService.insertSafeJobFireAnalysis(param)) {
-                    succ = false;
-                    break;
-                }
-            }
-        }
-        return succ;
-    }
-    private boolean insertSafeJobFireApprovals(SafeSiJobFire safeSiJobFire, Map<String, Object> params) {
-        boolean succ = true;
-        if (!"".equals(params.get(APPROVAL_LIST).toString())) {
-            List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
-            for (int i = 0; i < listApproval.size(); i++) {
-                Map<String, Object> param = listApproval.get(i);
-                param.put("job_id", safeSiJobFire.getId());
-                if (!safeJobFireApprovalService.insertSafeJobFireApprovals(param)) {
-                    succ = false;
-                    break;
-                }
-            }
-        }
-        return succ;
-    }
-    private boolean insertSafeJobFireFile(SafeSiJobFire safeSiJobFire, Map<String, Object> params) {
-        boolean succ = true;
-        if (!"".equals(params.get(FILE_LIST).toString())) {
-            List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-            for (int i = 0; i < listFile.size(); i++) {
-                Map<String, Object> param = listFile.get(i);
-                param.put("job_id", safeSiJobFire.getId());
-                if (!safeJobFireAppendixService.insertSafeJobFireFile(param)) {
-                    succ = false;
-                    break;
-                }
-            }
-        }
-        return succ;
-    }
+
+    /**
+     * 动火作业证-修改
+     * @author 265800
+     * @date 2023/7/14 9:24
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-修改", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -549,107 +479,17 @@ public class SafeJobFireController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobFire(@RequestBody Map<String, Object> params) {
-        return updateSafeJobFireData(params);
-    }
-    private Object updateSafeJobFireData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "动火作业证保存失败";
-        try {
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobFireService.updateSafeJobFire(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                msg = updateSafeJobFireCore(params);
-            } else {
-                msg = objectMap.get("msg").toString();
-            }
-            if ("".equals(msg)) {
-                return AjaxResult.success(ResponseUtil.toResult(params, "动火作业证保存成功"));
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseUtil.toError(params, msg);
-        }
-    }
-    private String updateSafeJobFireCore(Map<String, Object> params) {
-        boolean succ = true;
-        String msg = "";
-        Map<String, Object> deleteParam = new HashMap<>(1);
-        deleteParam.put("id", params.get("id").toString());
-        if (!safeJobFireService.deleteSafeJobFirePersons(deleteParam)) {
-            succ = false;
-            msg = "动火人删除失败";
-        }
-        if (succ) {
-            SafeSiJobFire safeSiJobFire = safeJobFireService.getById(params.get("id").toString());
-            safeJobFireApprovalService.remove(new QueryWrapper<SafeSiJobFireApproval>().lambda()
-                    .eq(SafeSiJobFireApproval::getJobId, safeSiJobFire.getId())
-            );
-            succ = insertSafeJobFireApprovals(safeSiJobFire, params);
-            if (!succ) {
-                msg = "审批人员添加失败";
-            }
-        }
-        if (succ) {
-            if (!safeJobFireService.deleteSafeJobFireAnalysis(deleteParam)) {
-                succ = false;
-                msg = "动火分析数据删除失败";
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(PERSON_LIST).toString())) {
-                List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-                for (int i = 0; i < listPerson.size(); i++) {
-                    Map<String, Object> param = listPerson.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobFirePersonsService.insertSafeJobFirePersons(param)) {
-                        succ = false;
-                        msg = "动火人保存失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(ANALYSIS_LIST).toString())) {
-                List<Map> listAnalysis = JSONObject.parseArray(JSONObject.toJSON(params.get(ANALYSIS_LIST)).toString(), Map.class);
-                for (int i = 0; i < listAnalysis.size(); i++) {
-                    Map<String, Object> param = listAnalysis.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobFireAnalysisService.insertSafeJobFireAnalysis(param)) {
-                        succ = false;
-                        msg = "动火分析保存失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            if (!safeJobFireService.deleteSafeJobFireFiles(deleteParam)) {
-                succ = false;
-                msg = "附件删除失败";
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(FILE_LIST).toString())) {
-                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-                for (int i = 0; i < listFile.size(); i++) {
-                    Map<String, Object> param = listFile.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobFireAppendixService.insertSafeJobFireFile(param)) {
-                        succ = false;
-                        msg = "附件添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        return msg;
+        return safeJobFireService.updateSafeJobFireData(params);
     }
 
+    /**
+     * 动火作业证-删除
+     * @author 265800
+     * @date 2023/7/14 9:36
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-删除", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -665,10 +505,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "动火作业证删除失败");
+            return AjaxResult.error("动火作业证删除失败", params);
         }
     }
 
+    /**
+     * 动火作业证-设置审批人
+     * @author 265800
+     * @date 2023/7/14 9:37
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-设置审批人", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -688,10 +535,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "设置审批人失败");
+            return AjaxResult.error("设置审批人失败", params);
         }
     }
 
+    /**
+     * 动火作业证-审批
+     * @author 265800
+     * @date 2023/7/14 9:38
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-审批", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -709,10 +563,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "审批失败");
+            return AjaxResult.error("审批失败", params);
         }
     }
 
+    /**
+     * 动火安全作业证-确认
+     * @author 265800
+     * @date 2023/7/14 9:38
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-确认", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class)
@@ -728,10 +589,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "确认失败");
+            return AjaxResult.error("确认失败", params);
         }
     }
 
+    /**
+     * 动火安全作业证-审批退回
+     * @author 265800
+     * @date 2023/7/14 9:39
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-审批退回", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class)
@@ -747,10 +615,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "确认失败");
+            return AjaxResult.error("确认失败", params);
         }
     }
 
+    /**
+     * 动火作业证-安全措施确认
+     * @author 265800
+     * @date 2023/7/14 9:39
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-安全措施确认", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -769,10 +644,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "安全措施确认失败");
+            return AjaxResult.error("安全措施确认失败", params);
         }
     }
 
+    /**
+     * 动火作业证-新增动火分析
+     * @author 265800
+     * @date 2023/7/14 9:40
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-新增动火分析", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:job_id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -794,17 +676,24 @@ public class SafeJobFireController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobFireAnalysisService.insertSafeJobFireAnalysis(params)) {
-                return ResponseUtil.toResult(params, "动火分析数据保存成功");
+                return AjaxResult.success("动火分析数据保存成功");
             } else {
-                return ResponseUtil.toError(params, "动火分析数据保存失败");
+                return AjaxResult.error("动火分析数据保存失败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "动火分析数据保存失败");
+            return AjaxResult.error("动火分析数据保存失败", params);
         }
     }
 
+    /**
+     * 动火作业证-删除动火分析
+     * @author 265800
+     * @date 2023/7/14 9:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-删除动火分析", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -817,17 +706,24 @@ public class SafeJobFireController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobFireAnalysisService.deleteSafeJobFireAnalysis(params)) {
-                return ResponseUtil.toResult(params, "动火分析数据删除成功");
+                return AjaxResult.success("动火分析数据删除成功");
             } else {
-                return ResponseUtil.toError(params, "动火分析数据保删除败");
+                return AjaxResult.error("动火分析数据保删除败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "动火分析数据删除失败");
+            return AjaxResult.error("动火分析数据删除失败", params);
         }
     }
 
+    /**
+     * 动火作业证-新增动火人
+     * @author 265800
+     * @date 2023/7/14 9:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-新增动火人", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:job_id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -847,17 +743,24 @@ public class SafeJobFireController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobFirePersonsService.insertSafeJobFirePersons(params)) {
-                return ResponseUtil.toResult(params, "动火人保存成功");
+                return AjaxResult.success("动火人保存成功");
             } else {
-                return ResponseUtil.toError(params, "动火人保存失败");
+                return AjaxResult.error("动火人保存失败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "动火人保存失败");
+            return AjaxResult.error("动火人保存失败", params);
         }
     }
 
+    /**
+     * 动火作业证-删除动火人
+     * @author 265800
+     * @date 2023/7/14 9:45
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-删除动火人", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -870,17 +773,24 @@ public class SafeJobFireController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobFirePersonsService.deleteSafeJobFirePersons(params)) {
-                return ResponseUtil.toResult(params, "动火人删除成功");
+                return AjaxResult.success("动火人删除成功");
             } else {
-                return ResponseUtil.toError(params, "动火人删除失败");
+                return AjaxResult.error("动火人删除失败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "动火人删除失败");
+            return AjaxResult.error("动火人删除失败", params);
         }
     }
 
+    /**
+     * 动火作业证-批量保存动火人
+     * @author 265800
+     * @date 2023/7/14 9:45
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-批量保存动火人", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -900,41 +810,16 @@ public class SafeJobFireController {
     @Transactional(rollbackFor = Exception.class)
     public Object batchSaveSafeJobPerson(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "动火人保存失败";
-        try {
-            boolean succ = true;
-            Map<String, Object> deleteParam = new HashMap<>(1);
-            deleteParam.put("id", params.get("id").toString());
-            if (!safeJobFireService.deleteSafeJobFirePersons(deleteParam)) {
-                succ = false;
-                msg = "动火人删除失败";
-            }
-            if (succ) {
-                if (!"".equals(params.get(PERSON_LIST).toString())) {
-                    List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-                    for (int i = 0; i < listPerson.size(); i++) {
-                        Map<String, Object> param = listPerson.get(i);
-                        param.put("job_id", params.get("id").toString());
-                        if (!safeJobFirePersonsService.insertSafeJobFirePersons(param)) {
-                            succ = false;
-                            msg = "动火人保存失败";
-                            break;
-                        }
-                    }
-                }
-            }
-            if (succ) {
-                return ResponseUtil.toResult(params, "动火人保存成功");
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return ResponseUtil.toError(params, msg);
-        }
+        return safeJobFireService.batchSaveSafeJobPerson(params);
     }
 
+    /**
+     * 动火作业证-批量保存动火分析
+     * @author 265800
+     * @date 2023/7/14 9:49
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-批量保存动火分析", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -956,41 +841,16 @@ public class SafeJobFireController {
     @Transactional(rollbackFor = Exception.class)
     public Object batchSaveSafeJobAnalysis(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "动火分析保存失败";
-        try {
-            boolean succ = true;
-            Map<String, Object> deleteParam = new HashMap<>(1);
-            deleteParam.put("id", params.get("id").toString());
-            if (!safeJobFireService.deleteSafeJobFireAnalysis(deleteParam)) {
-                succ = false;
-                msg = "动火分析数据删除失败";
-            }
-            if (succ) {
-                if (!"".equals(params.get(ANALYSIS_LIST).toString())) {
-                    List<Map> listAnalysis = JSONObject.parseArray(JSONObject.toJSON(params.get(ANALYSIS_LIST)).toString(), Map.class);
-                    for (int i = 0; i < listAnalysis.size(); i++) {
-                        Map<String, Object> param = listAnalysis.get(i);
-                        param.put("job_id", params.get("id").toString());
-                        if (!safeJobFireAnalysisService.insertSafeJobFireAnalysis(param)) {
-                            succ = false;
-                            msg = "动火分析保存失败";
-                            break;
-                        }
-                    }
-                }
-            }
-            if (succ) {
-                return ResponseUtil.toResult(params, "动火分析保存成功");
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return ResponseUtil.toError(params, msg);
-        }
+        return safeJobFireService.batchSaveSafeJobAnalysis(params);
     }
 
+    /**
+     * 动火作业证-安全措施取消
+     * @author 265800
+     * @date 2023/7/14 9:58
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火作业证-安全措施取消", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -1006,10 +866,17 @@ public class SafeJobFireController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "安全措施取消失败");
+            return AjaxResult.error("安全措施取消失败", params);
         }
     }
 
+    /**
+     * 动火安全作业证-审批模板列表
+     * @author 265800
+     * @date 2023/7/14 9:59
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-审批模板列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:job_level", value = "作业级别[动火证二级（无煤气）,动火证特、一级（无煤气）,二级动火证流程,特级、一级动火证流程]", required = false, dataTypeClass = String.class),
@@ -1031,6 +898,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireApprovalTemplateList(params));
     }
 
+    /**
+     * 动火安全作业证-附件列表
+     * @author 265800
+     * @date 2023/7/14 10:00
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-附件列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -1051,6 +925,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireFileList(params));
     }
 
+    /**
+     * 动火安全作业证-动火级别模板列表
+     * @author 265800
+     * @date 2023/7/14 10:00
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-动火级别模板列表", notes = "")
     @ApiResponses(
             @ApiResponse(code = 0, message = "调用成功", response = String.class,
@@ -1069,6 +950,13 @@ public class SafeJobFireController {
         return AjaxResult.success(safeJobFireService.getSafeJobFireJobLevelTemplateList(params));
     }
 
+    /**
+     * 动火安全作业证-修改作业证编号
+     * @author 265800
+     * @date 2023/7/14 10:00
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "动火安全作业证-修改作业证编号", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:uuid", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -1081,6 +969,6 @@ public class SafeJobFireController {
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobFireJobCode(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        return  safeJobFireService.updateSafeJobFireJobCode(params);
+        return safeJobFireService.updateSafeJobFireJobCode(params);
     }
 }

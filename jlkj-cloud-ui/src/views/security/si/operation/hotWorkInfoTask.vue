@@ -6,7 +6,7 @@
         <el-table-column prop="sort" label="序号" width="50"/>
         <el-table-column prop="approval_name" label="审批环节"/>
         <el-table-column prop="approval_person_name" label="审批人" width="70"/>
-        <el-table-column prop="is_approval" label="审批状态" width="70">
+        <el-table-column prop="is_approval" label="审批状态" width="80">
           <template slot-scope="scope">
             {{
             scope.row.confirm_time ===''? '未确认':scope.row.is_approval === 0?'未审批':scope.row.is_approval === 1?'已审批':''

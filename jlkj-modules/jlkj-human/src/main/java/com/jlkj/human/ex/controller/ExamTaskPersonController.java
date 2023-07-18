@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * 考试人员Controller
- * 
- * @author qnsdt
- * @date 2023-01-06
+ *
+ * @author 111191
+ * @date 2023-07-16
  */
 @RestController
 @RequestMapping("/taskperson")
@@ -31,7 +31,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 查询考试人员列表
      */
-    @RequiresPermissions("exam:taskperson:list")
+    @RequiresPermissions("human:taskperson:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamTaskPerson examTaskPerson)
     {
@@ -43,7 +43,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 导出考试人员列表
      */
-    @RequiresPermissions("exam:taskperson:export")
+    @RequiresPermissions("human:taskperson:export")
     @Log(title = "考试人员", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamTaskPerson examTaskPerson)
@@ -56,7 +56,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 获取考试人员详细信息
      */
-    @RequiresPermissions("exam:taskperson:query")
+    @RequiresPermissions("human:taskperson:query")
     @GetMapping(value = "/{examCode}")
     public AjaxResult getInfo(@PathVariable("examCode") String examCode)
     {
@@ -66,7 +66,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 新增考试人员
      */
-    @RequiresPermissions("exam:taskperson:add")
+    @RequiresPermissions("human:taskperson:add")
     @Log(title = "考试人员", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ExamTaskPerson examTaskPerson)
@@ -77,7 +77,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 修改考试人员
      */
-    @RequiresPermissions("exam:taskperson:edit")
+    @RequiresPermissions("human:taskperson:edit")
     @Log(title = "考试人员", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult edit(@RequestBody ExamTaskPerson examTaskPerson)
@@ -96,7 +96,7 @@ public class ExamTaskPersonController extends BaseController
     /**
      * 删除考试人员
      */
-    @RequiresPermissions("exam:taskperson:remove")
+    @RequiresPermissions("human:taskperson:remove")
     @Log(title = "考试人员", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{examCodes}")
     public AjaxResult remove(@PathVariable String[] examCodes)

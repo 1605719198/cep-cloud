@@ -7,7 +7,7 @@
           <template v-else>{{scope.row.safety_measures}}</template>
         </template>
       </el-table-column>
-      <el-table-column prop="confirm_time" label="确认时间" width="130px" fixed="right"/>
+      <el-table-column prop="confirm_time" label="确认时间" width="140px" fixed="right"/>
       <el-table-column prop="confirm_person_name" label="确认人" width="100px" fixed="right"/>
       <el-table-column label="确认" width="100px" fixed="right" v-if="data.status === 0">
         <template slot-scope="scope">

@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobApprovalRecord;
 import com.jlkj.safety.si.entity.SafeSiJobFire;
 import com.jlkj.safety.si.entity.SafeSiJobFireApproval;
@@ -39,7 +40,13 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
     @Resource
     SafeJobApprovalRecordService safeJobApprovalRecordService;
 
-
+    /**
+     * 审批记录修改
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobFireApproval(Map<String, Object> params) {
@@ -51,23 +58,30 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
             safeSiJobFireApproval.setPickPersonName(params.get("pick_person_name").toString());
             safeSiJobFireApproval.setPickTime(DateUtil.parseLocalDateTime(DateUtil.now()));
             if (updateById(safeSiJobFireApproval)) {
-                return ResponseUtil.toResult(params, "设置审批人成功");
+                return AjaxResult.success("设置审批人成功");
             } else {
-                return ResponseUtil.toError(params, "设置审批人失败");
+                return AjaxResult.error("设置审批人失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 审批记录确认
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobFireApproval(Map<String, Object> params) {
         SafeSiJobFireApproval safeSiJobFireApproval = getById(params.get("id").toString());
         if (null != safeSiJobFireApproval) {
             if (safeSiJobFireApproval.getConfirmTime() == null) {
-                return ResponseUtil.toError(params, "该审批记录未确认，请先确认");
+                return AjaxResult.error("该审批记录未确认，请先确认", params);
             }
             Map<String, Object> lastApproval = null;
             Map<String, Object> lastApproval2 = null;
@@ -79,7 +93,7 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
                     .lt("sort", safeSiJobFireApproval.getSort())
                     .orderByDesc("sort");
             if (listMaps(queryWrapperNoApproval).size() > 0) {
-                return ResponseUtil.toError(params, "上步审批未完成");
+                return AjaxResult.error("上步审批未完成", params);
             }
             QueryWrapper<SafeSiJobFireApproval> queryWrapper = new QueryWrapper<>();
             queryWrapper
@@ -98,7 +112,7 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
                 }
             }
             if ((lastApproval == null) || (lastApproval2 == null) || (firstApproval == null)) {
-                return ResponseUtil.toError(params, "审批列表数据不完整");
+                return AjaxResult.error("审批列表数据不完整", params);
             }
             SafeSiJobFire safeSiJobFire = safeJobFireService.getById(safeSiJobFireApproval.getJobId());
             if (safeSiJobFireApproval.getId().equals(lastApproval.get(ID).toString()) && safeSiJobFire.getStatus() < STATUS_FINISH) {
@@ -122,16 +136,23 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
                     params.put("id", safeSiJobFire.getId());
                     safeJobFireService.sendSafeJobFireMessageQueue(params);
                 }
-                return ResponseUtil.toResult(params, "审批成功");
+                return AjaxResult.success("审批成功");
             } else {
-                return ResponseUtil.toError(params, "审批失败");
+                return AjaxResult.error("审批失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 审批确认时间
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobFireApprovalTime(Map<String, Object> params) {
@@ -139,16 +160,23 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
         if (null != safeSiJobFireApproval) {
             safeSiJobFireApproval.setConfirmTime(DateUtil.parseLocalDateTime(DateUtil.now()));
             if (updateById(safeSiJobFireApproval)) {
-                return ResponseUtil.toResult(params, "确认成功");
+                return AjaxResult.success("确认成功");
             } else {
-                return ResponseUtil.toError(params, "确认失败");
+                return AjaxResult.error("确认失败", params);
             }
         }
         else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
 
+    /**
+     * 审批新增
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean insertSafeJobFireApprovals(Map<String, Object> params) {
@@ -167,7 +195,13 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
         return save(safeSiJobFireApproval);
     }
 
-
+    /**
+     * 审批退回
+     * @author 265800
+     * @date 2023/7/14 15:25
+     * @param params
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object confirmSafeJobFireApprovalReturn(Map<String, Object> params) {
@@ -208,12 +242,12 @@ public class SafeJobFireApprovalServiceImpl extends ServiceImpl<SafeJobFireAppro
                 safeJobApprovalRecord.setIsPass(0);
                 safeJobApprovalRecord.setContent(params.get("content").toString());
                 safeJobApprovalRecordService.save(safeJobApprovalRecord);
-                return ResponseUtil.toResult(params, "审批退回成功");
+                return AjaxResult.success("审批退回成功");
             } else {
-                return ResponseUtil.toError(params, "作业票不存在");
+                return AjaxResult.error("作业票不存在", params);
             }
         } else {
-            return ResponseUtil.toError(params, "审批记录不存在");
+            return AjaxResult.error("审批记录不存在", params);
         }
     }
     /**

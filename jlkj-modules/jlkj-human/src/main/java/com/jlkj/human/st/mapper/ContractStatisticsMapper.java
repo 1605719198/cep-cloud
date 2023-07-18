@@ -1,7 +1,8 @@
 package com.jlkj.human.st.mapper;
 
-import java.util.List;
 import com.jlkj.human.st.domain.ContractStatistics;
+
+import java.util.List;
 
 /**
  * 劳动合同统计分析Mapper接口
@@ -14,10 +15,10 @@ public interface ContractStatisticsMapper
     /**
      * 查询劳动合同统计分析
      * 
-     * @param compId 劳动合同统计分析主键
+     * @param id 劳动合同统计分析主键
      * @return 劳动合同统计分析
      */
-    public ContractStatistics selectContractStatisticsByCompId(String compId);
+    public ContractStatistics selectContractStatisticsById(String id);
 
     /**
      * 查询劳动合同统计分析列表
@@ -43,19 +44,4 @@ public interface ContractStatisticsMapper
      */
     public int updateContractStatistics(ContractStatistics contractStatistics);
 
-    /**
-     * 删除劳动合同统计分析
-     * 
-     * @param compId 劳动合同统计分析主键
-     * @return 结果
-     */
-    public int deleteContractStatisticsByCompId(String compId);
-
-    /**
-     * 批量删除劳动合同统计分析
-     * 
-     * @param compIds 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteContractStatisticsByCompIds(String[] compIds);
 }

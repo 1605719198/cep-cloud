@@ -124,7 +124,6 @@ export default {
   watch: {
     // 根据名称筛选部门树
     companyId(val) {
-      // this.$refs.tree.filter(val);
       this.queryParams.compId = val;
       this.queryParams.departmentId = null;
       if(val){
@@ -216,9 +215,9 @@ export default {
           return;
         }
         this.$refs.table.clearSelection();
-        this.visible = false;
         this.$emit("ok", userIds, userName, compId, id);
       }
+      this.visible = false;
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {
