@@ -1,11 +1,12 @@
 package com.jlkj.human.st.service.impl;
 
-import java.util.List;
+import com.jlkj.human.st.domain.ContractStatistics;
+import com.jlkj.human.st.mapper.ContractStatisticsMapper;
+import com.jlkj.human.st.service.IContractStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.jlkj.human.st.mapper.ContractStatisticsMapper;
-import com.jlkj.human.st.domain.ContractStatistics;
-import com.jlkj.human.st.service.IContractStatisticsService;
+
+import java.util.List;
 
 /**
  * 劳动合同统计分析Service业务层处理
@@ -25,13 +26,13 @@ public class ContractStatisticsServiceImpl implements IContractStatisticsService
      *
      * @author 267383
      * @date 2023-07-17
-     * @param compId 劳动合同统计分析主键
+     * @param id 劳动合同统计分析主键
      * @return 劳动合同统计分析
      */
     @Override
-    public ContractStatistics selectContractStatisticsByCompId(String compId)
+    public ContractStatistics selectContractStatisticsById(String id)
     {
-        return contractStatisticsMapper.selectContractStatisticsByCompId(compId);
+        return contractStatisticsMapper.selectContractStatisticsById(id);
     }
 
     /**
@@ -76,31 +77,4 @@ public class ContractStatisticsServiceImpl implements IContractStatisticsService
         return contractStatisticsMapper.updateContractStatistics(contractStatistics);
     }
 
-    /**
-     * 批量删除劳动合同统计分析
-     *
-     * @author 267383
-     * @date 2023-07-17
-     * @param compIds 需要删除的劳动合同统计分析主键
-     * @return 结果
-     */
-    @Override
-    public int deleteContractStatisticsByCompIds(String[] compIds)
-    {
-        return contractStatisticsMapper.deleteContractStatisticsByCompIds(compIds);
-    }
-
-    /**
-     * 删除劳动合同统计分析信息
-     *
-     * @author 267383
-     * @date 2023-07-17
-     * @param compId 劳动合同统计分析主键
-     * @return 结果
-     */
-    @Override
-    public int deleteContractStatisticsByCompId(String compId)
-    {
-        return contractStatisticsMapper.deleteContractStatisticsByCompId(compId);
-    }
 }

@@ -10,9 +10,9 @@ export function listContractStatistics(query) {
 }
 
 // 查询劳动合同统计分析详细
-export function getContractStatistics(compId) {
+export function getContractStatistics(id) {
   return request({
-    url: '/human/contractStatistics/' + compId,
+    url: '/human/contractStatistics/' + id,
     method: 'get'
   })
 }
@@ -36,9 +36,9 @@ export function updateContractStatistics(data) {
 }
 
 // 删除劳动合同统计分析
-export function delContractStatistics(compId) {
+export function delContractStatistics(id) {
   return request({
-    url: '/human/contractStatistics/' + compId,
+    url: '/human/contractStatistics/' + id,
     method: 'delete'
   })
 }

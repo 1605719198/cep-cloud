@@ -66,14 +66,14 @@ public class ContractStatisticsController extends BaseController
      * 获取劳动合同统计分析详细信息
      * @author 267383
      * @date 2023-07-17
-     * @param compId
+     * @param id
      * @return
      */
     @RequiresPermissions("human:contractStatistics:query")
-    @GetMapping(value = "/{compId}")
-    public AjaxResult getInfo(@PathVariable("compId") String compId)
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") String id)
     {
-        return success(contractStatisticsService.selectContractStatisticsByCompId(compId));
+        return success(contractStatisticsService.selectContractStatisticsById(id));
     }
 
     /**
@@ -106,18 +106,4 @@ public class ContractStatisticsController extends BaseController
         return toAjax(contractStatisticsService.updateContractStatistics(contractStatistics));
     }
 
-    /**
-     * 删除劳动合同统计分析
-     * @author 267383
-     * @date 2023-07-17
-     * @param compIds
-     * @return
-     */
-    @RequiresPermissions("human:contractStatistics:remove")
-    @Log(title = "劳动合同统计分析", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{compIds}")
-    public AjaxResult remove(@PathVariable String[] compIds)
-    {
-        return toAjax(contractStatisticsService.deleteContractStatisticsByCompIds(compIds));
-    }
 }
