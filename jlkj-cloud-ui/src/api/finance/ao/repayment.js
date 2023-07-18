@@ -71,3 +71,13 @@ export function addRepaymentBatch(data) {
     data: data
   })
 }
+
+// 成本中心清单查询
+export function selectCenterList(query) {
+  return request({
+    url: '/finance/repayment/costCenterList',
+    method: 'post',
+    data: query
+  })
+}
+
