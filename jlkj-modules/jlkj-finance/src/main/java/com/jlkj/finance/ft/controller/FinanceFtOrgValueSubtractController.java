@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,7 +45,7 @@ public class FinanceFtOrgValueSubtractController extends BaseController
     public TableDataInfo list(FinanceFtChange financeFtChange)
     {
         startPage();
-        List<FinanceFtChange> list = financeFtChangeService.selectFinanceFtChangeList(financeFtChange);
+        List<Map<String,Object>> list = financeFtChangeService.selectFinanceFtChangeAndDetailList(financeFtChange);
         return getDataTable(list);
     }
 

@@ -1,12 +1,14 @@
 package com.jlkj.finance.ft.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jlkj.finance.ao.domain.FinanceAoRepayment;
 import com.jlkj.finance.ft.domain.FinanceFtChange;
 import com.jlkj.finance.ft.domain.FinanceFtChangeDetail;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产变动单主档Mapper接口
@@ -108,4 +110,13 @@ public interface FinanceFtChangeMapper extends BaseMapper<FinanceFtChange>
      * @return
      */
     public String selectMaxChangeNo(@Param("companyId") String companyId, @Param("changeNo")String changeNo);
+
+    /**
+    * @Description: 查询资产变动单主档及明细档
+    * @param:[financeFtChange 资产变动单主档]
+    * @return: List<Map<String,Object>>
+    * @Author: 116524_wxj
+    * @Date: 2023/7/17 16:19
+    */
+    public List<Map<String,Object>> selectFinanceFtChangeAndDetailList(FinanceFtChange financeFtChange);
 }

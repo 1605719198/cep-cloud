@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资产变动单主档Service业务层处理
@@ -174,5 +175,19 @@ public class FinanceFtChangeServiceImpl implements IFinanceFtChangeService
         String maxBillNo = financeFtChangeMapper.selectMaxChangeNo(companyId, changeNoStr);
         String seqNo = StringUtils.isEmpty(maxBillNo) ? changeNoInit : String.format("%05d",(Integer.parseInt(maxBillNo.substring(7, 12)) + 1));
         return changeNoStr+seqNo;
+    }
+
+    /**
+     * 查询资产变动单主档列表
+     *
+     * @author jlkj
+     * @date 2023-07-04
+     * @param financeFtChange 资产变动单主档
+     * @return 资产变动单主档
+     */
+    @Override
+    public List<Map<String,Object>> selectFinanceFtChangeAndDetailList(FinanceFtChange financeFtChange)
+    {
+        return financeFtChangeMapper.selectFinanceFtChangeAndDetailList(financeFtChange);
     }
 }

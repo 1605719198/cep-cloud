@@ -82,6 +82,13 @@
       <el-table-column label="单据编号" align="center" prop="changeNo" sortable/>
       <el-table-column label="单据名称" align="center" prop="changeName" :show-overflow-tooltip="true"/>
       <el-table-column label="变动方式" align="center" prop="changeWay" :formatter="changeWayFormat"/>
+      <el-table-column label="资产编码" align="center" prop="subAssetNo" />
+      <el-table-column label="资产名称" align="center" prop="subAssetName" />
+      <el-table-column label="增加金额" align="center" prop="subChangePrice" >
+<!--        <template slot-scope="scope">
+          <span>{{stateFormat(scope.row.subChangePrice) }}</span>
+        </template>-->
+      </el-table-column>
       <el-table-column label="申请人" align="center" prop="applyUser" :formatter="userFormat" sortable/>
       <el-table-column label="变动日期" align="center" prop="changeDate" width="180" sortable>
         <template slot-scope="scope">
@@ -517,7 +524,7 @@ export default {
       const uuid = row.uuid || this.ids
       getOrgValueAdd(uuid).then(response => {
         this.form = response.data;
-        this.financeFtChangeDetailList = response.data.financeFtChangeDetailList;
+        this.form.financeFtChangeDetailList = response.data.financeFtChangeDetailList;
         this.open = true;
         this.title = "修改资产原值增加单";
       });
@@ -526,7 +533,6 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.form.financeFtChangeDetailList = this.financeFtChangeDetailList;
           if (this.form.uuid != null) {
             updateOrgValueAdd(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

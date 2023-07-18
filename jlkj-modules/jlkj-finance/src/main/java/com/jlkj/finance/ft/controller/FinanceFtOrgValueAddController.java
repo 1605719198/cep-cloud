@@ -1,6 +1,7 @@
 package com.jlkj.finance.ft.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jlkj.common.core.utils.DateUtils;
@@ -54,7 +55,7 @@ public class FinanceFtOrgValueAddController extends BaseController
     public TableDataInfo list(FinanceFtChange financeFtChange)
     {
         startPage();
-        List<FinanceFtChange> list = financeFtChangeService.selectFinanceFtChangeList(financeFtChange);
+        List<Map<String,Object>> list = financeFtChangeService.selectFinanceFtChangeAndDetailList(financeFtChange);
         return getDataTable(list);
     }
 

@@ -1,6 +1,8 @@
 package com.jlkj.finance.ft.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.jlkj.finance.ft.domain.FinanceFtChange;
 
 /**
@@ -69,4 +71,13 @@ public interface IFinanceFtChangeService
      * @return 结果
      */
     public int deleteFinanceFtChangeByUuid(String uuid);
+    /**
+     * 查询资产变动单主档列表
+     *
+     * @author jlkj
+     * @date 2023-07-04
+     * @param financeFtChange 资产变动单主档
+     * @return 资产变动单主档集合
+     */
+    public List<Map<String,Object>> selectFinanceFtChangeAndDetailList(FinanceFtChange financeFtChange);
 }

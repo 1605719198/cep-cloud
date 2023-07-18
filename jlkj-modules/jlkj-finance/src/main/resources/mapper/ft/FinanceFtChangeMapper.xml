@@ -137,7 +137,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT JOIN finance_ft_change_detail b ON b.change_id = a.uuid
         WHERE a.uuid = #{uuid}
     </select>
-        
+    <select id="selectFinanceFtChangeAndDetailList" parameterType="String" resultType="map">
+        SELECT a.uuid, a.company_id companyId, a.change_no changeNo, a.change_name changeName, a.change_type changeType, a.change_way changeWay,
+               a.bill_nature billNature, a.change_date changeDate, a.change_desc changeDesc, a.asset_type assetType,
+               a.apply_dept applyDept, a.new_asset_user newAssetUser, a.apply_user applyUser, a.apply_date applyDate, a.status, a.period,
+               a.confirm_user confirmUser, a.confirm_date confirmDate, a.check_user checkUser, a.check_date checkDate, a.create_by createBy,
+               a.create_name createName, a.create_time createTime, a.update_by updateBy, a.update_name updateName, a.update_time updateTime,
+               b.change_price as subChangePrice, b.asset_no as subAssetNo, b.asset_group as subAssetGroup,
+               b.new_asset_group as subNewAssetGroup, b.asset_name as subAssetName, b.new_asset_name as subNewAssetName,
+               b.org_value as subOrgValue, b.get_value as subGetValue,
+               b.accu_depr as subAccuDepr, b.depr_count as subDeprCount, b.new_depr_count as subNewDeprCount, b.dept_no as subDeptNo,
+               b.new_dept_no as subNewDeptNo, b.asset_user as subAssetUser, b.new_asset_user as subNewAssetUser, b.user_dept as subUserDept,
+               b.new_user_dept as subNewUserDept, b.qty as subQty, b.new_qty as subNewQty, b.unit as subUnit, b.new_unit as subNewUnit,
+               b.asset_status as subAssetStatus, b.new_asset_status as subNewAssetStatus,
+               b.split_type as subSplitType, b.split_count as subSplitCount
+        FROM finance_ft_change a
+                 LEFT JOIN finance_ft_change_detail b ON b.change_id = a.uuid
+        <where>
+            <if test="companyId != null  and companyId != ''"> AND a.company_id = #{companyId}</if>
+            <if test="changeType != null  and changeType != ''"> AND a.change_Type  = #{changeType}</if>
+            <if test="changeNo != null  and changeNo != ''"> AND a.change_no LIKE concat('%', #{changeNo}, '%')</if>
+            <if test="params.beginChangeDate != null and params.beginChangeDate != '' and params.endChangeDate != null and params.endChangeDate != ''"> AND a.change_date BETWEEN #{params.beginChangeDate} AND #{params.endChangeDate}</if>
+        </where>
+    </select>
     <insert id="insertFinanceFtChange" parameterType="com.jlkj.finance.ft.domain.FinanceFtChange">
         INSERT INTO finance_ft_change
         <trim prefix="(" suffix=")" suffixOverrides=",">
