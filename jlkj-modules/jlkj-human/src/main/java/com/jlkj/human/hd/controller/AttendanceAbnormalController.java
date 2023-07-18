@@ -149,4 +149,17 @@ public class AttendanceAbnormalController extends BaseController {
                 .apply("date_format (slot_card_offduty,'%Y-%m-%d') <= date_format ({0},'%Y-%m-%d')", attendanceAbnormalDTO.getEndTime()).list();
         return AjaxResult.success("查询成功", getDataTable(list));
     }
+
+    /**
+     * 定时转旷工
+     * @author HuangBing
+     * @date 2023-07-14
+     * @return 结果
+     */
+    @Log(title = "定时转旷工", businessType = BusinessType.UPDATE)
+    @Operation(summary = "定时转旷工")
+    @GetMapping("/absenteeism")
+    public AjaxResult absenteeism(){
+        return success(iAttendanceAbnormalService.absenteeism());
+    }
 }

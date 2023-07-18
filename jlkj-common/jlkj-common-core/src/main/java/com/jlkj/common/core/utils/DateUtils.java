@@ -532,4 +532,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dateformat.format(new Date());
 
     }
+    /**
+     * 获取当前月的上一个月
+     * @return
+     */
+    public static String getLastMonth() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        // 设置为当前时间
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH,-1);
+        date = calendar.getTime();
+        String accDate = format.format(date);
+        return accDate;
+    }
 }

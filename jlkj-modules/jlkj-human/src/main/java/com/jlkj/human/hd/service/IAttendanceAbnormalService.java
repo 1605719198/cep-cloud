@@ -21,4 +21,12 @@ public interface IAttendanceAbnormalService extends IService<AttendanceAbnormal>
      * @return 应出勤开始时间与参数时间同月的数据
      */
     List<AttendanceAbnormal> queryAttendanceAbnormal(AttendanceAbnormalDTO attendanceAbnormalDTO);
+
+    /**
+     * 定时转旷工
+     * @author HuangBing
+     * @date 2023-07-14
+     * @return 结果
+     */
+    boolean absenteeism();
 }

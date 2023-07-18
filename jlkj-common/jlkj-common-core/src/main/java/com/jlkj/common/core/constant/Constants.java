@@ -215,6 +215,20 @@ public class Constants {
   */
     public static final String STR_ZERO_FOUR = "04";
     /**
+     * 常量字符串 08
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     */
+    public static final String STR_ZERO_EIGHT = "08";
+    /**
+     * 常量字符串 09
+     *
+     * @author 265675
+     * @Date 下午 15:28:43 2023年6月27日
+     */
+    public static final String STR_ZERO_NINE = "09";
+    /**
      * 常量字符串 11
      *
      * @author 265675

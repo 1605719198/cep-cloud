@@ -27,6 +27,9 @@ public class RemoteHdApiFactory implements FallbackFactory<RemoteHdApiService> {
 
             @Override
             public AjaxResult attendanceSummary(String source) { return AjaxResult.error("操作失败"); }
+
+            @Override
+            public AjaxResult absenteeism(String source) { return AjaxResult.error("操作失败"); }
         };
     }
 }

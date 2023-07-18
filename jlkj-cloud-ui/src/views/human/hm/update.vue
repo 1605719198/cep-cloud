@@ -9,7 +9,7 @@
           <el-col :span="24">
             <el-form-item prop="dicNo"
                           label="资料代号">
-              <el-input v-model="form.dicNo" :maxlength="50"></el-input>
+              <el-input v-model="form.dicNo" :maxlength="50" show-word-limit></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -17,7 +17,7 @@
           <el-col :span="24">
             <el-form-item prop="dicName"
                           label="资料名称">
-              <el-input v-model="form.dicName" :maxlength="50"></el-input>
+              <el-input v-model="form.dicName" :maxlength="50" show-word-limit></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -86,7 +86,8 @@ export default {
         ],
         dicName: [
           { required: true, message: '资料名称不能为空', trigger: 'blur' },
-          { max: 50, message: '资料名称长度不能超过50', trigger: 'blur' }
+          { max: 50, message: '资料名称长度不能超过50', trigger: 'blur' },
+          { required: true, pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/, message: '名称不支持特殊字符', trigger: 'blur' }
         ],
         status: [{ required: true, message: '资料状态不能为空', trigger: 'blur' }]
       },

@@ -1,6 +1,8 @@
 package com.jlkj.human.hd.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.constant.Constants;
+import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.human.hd.domain.AttendanceAbnormal;
 import com.jlkj.human.hd.dto.AttendanceAbnormalDTO;
 import com.jlkj.human.hd.mapper.AttendanceAbnormalMapper;
@@ -32,6 +34,24 @@ public class AttendanceAbnormalServiceImpl extends ServiceImpl<AttendanceAbnorma
                 .eq(AttendanceAbnormal::getEmpNo, attendanceAbnormalDTO.getEmpNo())
                 .like(AttendanceAbnormal::getNorOndutyBegin, attendanceAbnormalDTO.getIncomingTime()).list();
         return list;
+    }
+
+    /**
+     * 定时转旷工
+     * @author HuangBing
+     * @date 2023-07-14
+     * @return 结果
+     */
+    @Override
+    public boolean absenteeism(){
+        List<AttendanceAbnormal> attendanceAbnormalList = lambdaQuery()
+                .and(i -> i.eq(AttendanceAbnormal::getDisposeId, Constants.STR_ZERO_NINE).or().eq(AttendanceAbnormal::getDisposeId, Constants.STR_ZERO_EIGHT))
+                .like(AttendanceAbnormal::getNorOndutyBegin, DateUtils.getLastMonth())
+                .list();
+        for (AttendanceAbnormal item : attendanceAbnormalList) {
+            item.setUndutyType(Constants.STR_THREE);
+        }
+        return updateBatchById(attendanceAbnormalList);
     }
 }
 

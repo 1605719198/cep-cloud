@@ -46,4 +46,14 @@ public interface RemoteHdApiService {
      **/
     @GetMapping("/attendanceGather/summary")
     public AjaxResult attendanceSummary(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 定时转旷工
+     * @author HuangBing
+     * @Date 2023/7/14
+     * @param source 请求来源
+     * @return 结果
+     **/
+    @GetMapping("/attendanceAbnormal/absenteeism")
+    AjaxResult absenteeism(@RequestHeader(SecurityConstants.FROM_SOURCE) String source);
 }
