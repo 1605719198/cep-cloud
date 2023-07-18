@@ -121,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectLoanApply"  parameterType="String" resultType="map">
         select 	a.loanId, a.companyId,a.billNo, a.loanBy,a.loanName,a.itemNo,a.totalAmt, ifnull( sum( t3.amt ), 0 ) + ifnull( sum( t4.amt ), 0 ) reimbAmt, a.totalAmt-(ifnull( sum( t3.amt ), 0 ) + ifnull( sum( t4.amt ), 0 )) unreimbAmt
-        FROM (SELECT t1.id loanId, t1.company_id companyId,t1.bill_no billNo, t1.apply_by loanBy,t1.apply_name loanName,t1.item_no itemNo,sum(t2.total_amt) totalAmt FROM finance_ao_loan t1 INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id  WHERE t1.company_id = #{companyId} GROUP BY t1.bill_no) a
+        FROM (SELECT t1.id loanId, t1.company_id companyId,t1.bill_no billNo, t1.apply_by loanBy,t1.apply_name loanName,t1.item_no itemNo,sum(t2.total_amt) totalAmt FROM finance_ao_loan t1 INNER JOIN finance_ao_loan_detail t2 ON t1.id = t2.parent_id  WHERE t1.company_id = #{companyId} and t1.apply_by = #{userName} GROUP BY t1.bill_no) a
         LEFT JOIN finance_ao_reimbursement_loan t3 ON a.loanId = t3.loan_id
         LEFT JOIN finance_ao_repayment t4 ON a.loanId = t4.loan_id
         GROUP BY a.billNo  HAVING unreimbAmt > 0
@@ -174,5 +174,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
 
+    <select id="selectcostCenterList"  parameterType="String" resultType="map">
+        SELECT a.cost_center costCenter, a.cost_center_desc costCenterDesc, a.fiscal_year fiscalYear, a.cc_type ccType, a.stus_code stusCode, b.attri_value factory
+        FROM finance_ac_cost_costcenter a LEFT JOIN  finance_ac_cost_costcenter_attri b on a.id=b.parent_id and b.attri_name='CC_FACTORY'
+        <where>
+            <if test="companyId != null  and companyId != ''"> and a.comp_id = #{companyId}</if>
+            <if test="costCenter != null  and costCenter != ''"> and a.cost_center like concat('%', #{costCenter},'%' )</if>
+            <if test="costCenterDesc != null  and costCenterDesc != ''"> and a.cost_center_desc like concat('%', #{costCenterDesc},'%' )</if>
+            <if test="factory != null  and factory != ''"> and b.attri_value = #{factory}</if>
+            <if test="fiscalYear != null  and fiscalYear != ''"> and a.fiscal_year = #{fiscalYear}</if>
+        </where>
+        order by b.attri_value,a.cost_center
+    </select>
 
 </mapper>
