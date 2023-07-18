@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.constant.CommonConstant;
 import com.jlkj.common.core.utils.uuid.UUID;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.common.core.constant.CommonConstant;
+import com.jlkj.energy.ee.domain.EnergyInOutLimit;
 import com.jlkj.energy.ee.dto.energyinoutlimit.DeleteEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.InsertEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.PageEnergyInOutLimitDTO;
 import com.jlkj.energy.ee.dto.energyinoutlimit.UpdateEnergyInOutLimitDTO;
-import com.jlkj.energy.ee.domain.EnergyInOutLimit;
 import com.jlkj.energy.ee.mapper.EnergyInOutLimitMapper;
 import com.jlkj.energy.ee.service.EnergyInOutLimitService;
 import org.springframework.stereotype.Service;
@@ -23,19 +23,33 @@ import java.util.Map;
 
 /**
 * @author Liukuiyan
-* @description 针对表【t_energy_in_out_limit(能源产耗标准配置表)】的数据库操作Service实现
+* 针对表【t_energy_in_out_limit(能源产耗标准配置表)】的数据库操作Service实现
 * @createDate 2023-02-13 16:39:04
 */
 @Service
 public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMapper, EnergyInOutLimit>
     implements EnergyInOutLimitService{
 
+    /**
+     * 能源信息配置-查询-分页
+     * @author 265800
+     * @date 2023/7/12 13:45
+     * @param pageEnergyInOutLimitDTO PageEnergyInOutLimitDTO
+     * @return java.util.List<com.jlkj.energy.ee.domain.EnergyInOutLimit>
+     */
     @Override
     public IPage<EnergyInOutLimit> getEnergyInformationConfigurationPageData(PageEnergyInOutLimitDTO pageEnergyInOutLimitDTO) {
         Page<Map<String, Object>> page = new Page<>(pageEnergyInOutLimitDTO.getCurrent(), pageEnergyInOutLimitDTO.getSize());
         return getBaseMapper().getEnergyInOutLimitPageData(page, pageEnergyInOutLimitDTO);
     }
 
+    /**
+     * 能源信息配置-新增
+     * @author 265800
+     * @date 2023/7/13 13:38
+     * @param insertEnergyInformationConfigurationDTO InsertEnergyInOutLimitDTO
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object insertEnergyInformationConfigurationData(InsertEnergyInOutLimitDTO insertEnergyInformationConfigurationDTO) {
@@ -61,16 +75,23 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
         energyInOutLimit.setCostCenterName(insertEnergyInformationConfigurationDTO.getCostCenterName());
         energyInOutLimit.setChargeCostCenterNo(insertEnergyInformationConfigurationDTO.getChargeCostCenterNo());
         energyInOutLimit.setChargeCostCenterName(insertEnergyInformationConfigurationDTO.getChargeCostCenterName());
-        energyInOutLimit.setCreateUser(insertEnergyInformationConfigurationDTO.getCreateUser());
+        energyInOutLimit.setCreateBy(insertEnergyInformationConfigurationDTO.getCreateUser());
         energyInOutLimit.setCreateUserName(insertEnergyInformationConfigurationDTO.getCreateUserName());
         energyInOutLimit.setCreateTime(new Date());
-        energyInOutLimit.setUpdateUser(insertEnergyInformationConfigurationDTO.getCreateUser());
+        energyInOutLimit.setUpdateBy(insertEnergyInformationConfigurationDTO.getCreateUser());
         energyInOutLimit.setUpdateUserName(insertEnergyInformationConfigurationDTO.getCreateUserName());
         energyInOutLimit.setUpdateTime(new Date());
         save(energyInOutLimit);
         return AjaxResult.success("能源信息配置增加成功");
     }
 
+    /**
+     * 能源信息配置-修改
+     * @author 265800
+     * @date 2023/7/13 13:39
+     * @param updateEnergyInformationConfigurationDTO UpdateEnergyInOutLimitDTO
+     * @return java.lang.Object
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object updateEnergyInformationConfigurationData(UpdateEnergyInOutLimitDTO updateEnergyInformationConfigurationDTO) {
@@ -97,7 +118,7 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
             energyInOutLimit.setCostCenterName(updateEnergyInformationConfigurationDTO.getCostCenterName());
             energyInOutLimit.setChargeCostCenterNo(updateEnergyInformationConfigurationDTO.getChargeCostCenterNo());
             energyInOutLimit.setChargeCostCenterName(updateEnergyInformationConfigurationDTO.getChargeCostCenterName());
-            energyInOutLimit.setUpdateUser(updateEnergyInformationConfigurationDTO.getUpdateUser());
+            energyInOutLimit.setUpdateBy(updateEnergyInformationConfigurationDTO.getUpdateUser());
             energyInOutLimit.setUpdateUserName(updateEnergyInformationConfigurationDTO.getUpdateUserName());
             energyInOutLimit.setUpdateTime(new Date());
             updateById(energyInOutLimit);
@@ -108,6 +129,13 @@ public class EnergyInOutLimitServiceImpl extends ServiceImpl<EnergyInOutLimitMap
         }
     }
 
+    /**
+     * 能源信息配置-删除
+     * @author 265800
+     * @date 2023/7/13 13:39
+     * @param deleteEnergyInformationConfigurationDTO DeleteEnergyInOutLimitDTO
+     * @return java.lang.Object
+     */
     @Override
     public Object deleteEnergyInformationConfigurationData(DeleteEnergyInOutLimitDTO deleteEnergyInformationConfigurationDTO) {
         EnergyInOutLimit productionInformationConfiguration = getById(deleteEnergyInformationConfigurationDTO.getId());

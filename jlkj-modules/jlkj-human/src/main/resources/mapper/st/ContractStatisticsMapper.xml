@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.st.mapper.ContractStatisticsMapper">
+    
+    <resultMap type="ContractStatistics" id="ContractStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="relStatus"    column="rel_status"    />
+        <result property="signDate"    column="sign_date"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="conPeriId"    column="con_peri_id"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="versionNo"    column="version_no"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="jobNumber"    column="job_number"    />
+        <result property="fullName"    column="full_name"    />
+        <result property="postId"    column="post_id"    />
+        <result property="postName"    column="post_name"    />
+        <result property="sourceOfEmployees"    column="source_of_employees"    />
+        <result property="postTypeId"    column="post_type_id"    />
+        <result property="postSequenceId"    column="post_sequence_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="ancestors"    column="ancestors"    />
+    </resultMap>
+
+    <sql id="selectContractStatisticsVo">
+        SELECT id,comp_id, rel_status, sign_date, start_date, con_peri_id, end_date, version_no, creator_id, create_date, job_number, full_name, post_id, post_name, source_of_employees, post_type_id, post_sequence_id, org_id, ancestors FROM human_hr_contract
+    </sql>
+
+    <select id="selectContractStatisticsList" parameterType="ContractStatistics" resultMap="ContractStatisticsResult">
+        SELECT row_number() over(ORDER BY end_date) AS num,comp_id, rel_status, sign_date, start_date, con_peri_id, end_date, version_no, creator_id, create_date, job_number, full_name, post_id, post_name, source_of_employees, post_type_id, post_sequence_id, org_id, ancestors FROM human_hr_contract
+        <where>  
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="relStatus != null  and relStatus != ''"> AND rel_status = #{relStatus}</if>
+            <if test="date1 != null ">AND end_date &gt;= #{date1} </if>
+            <if test="date2 != null ">AND end_date &lt;= #{date2} </if>
+            <if test="sourceOfEmployees != null  and sourceOfEmployees != ''"> AND source_of_employees = #{sourceOfEmployees}</if>
+            <if test="postTypeId != null  and postTypeId != ''"> AND post_type_id = #{postTypeId}</if>
+            <if test="postSequenceId != null  and postSequenceId != ''"> AND post_sequence_id = #{postSequenceId}</if>
+        </where>
+    </select>
+    
+    <select id="selectContractStatisticsById" parameterType="String" resultMap="ContractStatisticsResult">
+        <include refid="selectContractStatisticsVo"/>
+        WHERE id = #{id}
+    </select>
+        
+    <insert id="insertContractStatistics" parameterType="ContractStatistics">
+        INSERT INTO human_hr_contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="relStatus != null">rel_status,</if>
+            <if test="signDate != null">sign_date,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="conPeriId != null">con_peri_id,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="versionNo != null">version_no,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="jobNumber != null">job_number,</if>
+            <if test="fullName != null">full_name,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="postName != null">post_name,</if>
+            <if test="sourceOfEmployees != null">source_of_employees,</if>
+            <if test="postTypeId != null">post_type_id,</if>
+            <if test="postSequenceId != null">post_sequence_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="relStatus != null">#{relStatus},</if>
+            <if test="signDate != null">#{signDate},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="conPeriId != null">#{conPeriId},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="versionNo != null">#{versionNo},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="jobNumber != null">#{jobNumber},</if>
+            <if test="fullName != null">#{fullName},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="postName != null">#{postName},</if>
+            <if test="sourceOfEmployees != null">#{sourceOfEmployees},</if>
+            <if test="postTypeId != null">#{postTypeId},</if>
+            <if test="postSequenceId != null">#{postSequenceId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+         </trim>
+    </insert>
+
+    <update id="updateContractStatistics" parameterType="ContractStatistics">
+        UPDATE human_hr_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="relStatus != null">rel_status = #{relStatus},</if>
+            <if test="signDate != null">sign_date = #{signDate},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="conPeriId != null">con_peri_id = #{conPeriId},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="versionNo != null">version_no = #{versionNo},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="jobNumber != null">job_number = #{jobNumber},</if>
+            <if test="fullName != null">full_name = #{fullName},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="postName != null">post_name = #{postName},</if>
+            <if test="sourceOfEmployees != null">source_of_employees = #{sourceOfEmployees},</if>
+            <if test="postTypeId != null">post_type_id = #{postTypeId},</if>
+            <if test="postSequenceId != null">post_sequence_id = #{postSequenceId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+</mapper>

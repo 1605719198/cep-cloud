@@ -1,24 +1,18 @@
 package com.jlkj.safety.si.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
-import com.jlkj.safety.si.entity.SafeSiJobHoisting;
-import com.jlkj.safety.si.entity.SafeSiJobHoistingApproval;
-import com.jlkj.safety.si.service.*;
-import com.jlkj.safety.si.utils.ResponseUtil;
+import com.jlkj.safety.si.service.SafeJobHoistingApprovalService;
+import com.jlkj.safety.si.service.SafeJobHoistingPersonsService;
+import com.jlkj.safety.si.service.SafeJobHoistingSafetyMeasuresService;
+import com.jlkj.safety.si.service.SafeJobHoistingService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.jlkj.safety.si.constants.Constant.*;
 
 /**
  * @author su
@@ -29,7 +23,7 @@ import static com.jlkj.safety.si.constants.Constant.*;
 @RequestMapping("/safe/job/hoisting")
 @Slf4j
 @Api(tags = "2.4 吊装安全作业证")
-public class SafeJobHoistingController {
+public class SafeJobHoistingController extends BaseController {
 
     @Resource
     SafeJobHoistingService safeJobHoistingService;
@@ -43,9 +37,13 @@ public class SafeJobHoistingController {
     @Resource
     SafeJobHoistingSafetyMeasuresService safeJobHoistingSafetyMeasuresService;
 
-    @Resource
-    SafeJobHoistingAppendixService safeJobHoistingAppendixService;
-
+    /**
+     * 吊装安全作业证-作业票编号
+     * @author 265800
+     * @date 2023/7/13 14:47
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-作业票编号", notes = "获取最新的作业票编号")
     @ApiResponses(
             @ApiResponse(code = 200, message = "调用成功", response = String.class,
@@ -62,6 +60,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getjobCode(params));
     }
 
+    /**
+     * 吊装安全作业证-详情
+     * @author 265800
+     * @date 2023/7/13 14:47
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-详情", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -105,6 +110,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingInfo(params));
     }
 
+    /**
+     * 吊装安全作业证-作业人员列表
+     * @author 265800
+     * @date 2023/7/13 14:46
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-作业人员列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -133,6 +145,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingPersonsList(params));
     }
 
+    /**
+     * 吊装安全作业证-安全措施列表
+     * @author 265800
+     * @date 2023/7/13 14:46
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-安全措施列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -158,6 +177,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingSafetyMeasuresList(params));
     }
 
+    /**
+     * 吊装安全作业证-审批列表
+     * @author 265800
+     * @date 2023/7/13 14:46
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-审批列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -190,6 +216,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingApprovalList(params));
     }
 
+    /**
+     * 吊装安全作业证-查询列表
+     * @author 265800
+     * @date 2023/7/13 14:45
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-查询列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:current", value = "页码-从1开始", required = false, dataTypeClass = String.class),
@@ -244,6 +277,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingPageList(params));
     }
 
+    /**
+     * 吊装安全作业证-新增
+     * @author 265800
+     * @date 2023/7/13 14:45
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-新增", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:apply_depart_id", value = "申请单位ID", required = false, dataTypeClass = String.class),
@@ -300,89 +340,17 @@ public class SafeJobHoistingController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object insertSafeJobHoisting(@RequestBody Map<String, Object> params) {
-        return insertSafeJobHoistingData(params);
-    }
-    private Object insertSafeJobHoistingData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "吊装安全作业证保存失败";
-        try {
-            SafeSiJobHoisting safeSiJobHoisting = null;
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobHoistingService.insertSafeJobHoisting(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                safeSiJobHoisting = (SafeSiJobHoisting) objectMap.get("data");
-                msg = insertSafeJobHoistingCore(safeSiJobHoisting, params);
-            } else {
-                msg = objectMap.get("msg").toString();
-            }
-            if ("".equals(msg)) {
-                Map<String, Object> outData = new HashMap<>(1);
-                outData.put("id", safeSiJobHoisting.getId());
-                return AjaxResult.success("吊装安全作业证保存成功", outData);
-            } else {
-                return AjaxResult.error(msg, params);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(msg, params);
-        }
-    }
-    private String insertSafeJobHoistingCore(SafeSiJobHoisting safeSiJobHoisting, Map<String, Object> params) {
-        boolean succ = true;
-        String msg = "";
-        if (!"".equals(params.get(PERSON_LIST).toString())) {
-            List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-            for (int i = 0; i < listPerson.size(); i++) {
-                Map<String, Object> param = listPerson.get(i);
-                param.put("job_id", safeSiJobHoisting.getId());
-                if (!safeJobHoistingPersonsService.insertSafeJobHoistingPersons(param)) {
-                    succ = false;
-                    msg = "作业人员添加失败";
-                    break;
-                }
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
-                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
-                for (int i = 0; i < listApproval.size(); i++) {
-                    Map<String, Object> param = listApproval.get(i);
-                    param.put("job_id", safeSiJobHoisting.getId());
-                    if (!safeJobHoistingApprovalService.insertSafeJobHoistingApprovals(param)) {
-                        succ = false;
-                        msg = "审批人员添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(FILE_LIST).toString())) {
-                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-                for (int i = 0; i < listFile.size(); i++) {
-                    Map<String, Object> param = listFile.get(i);
-                    param.put("job_id", safeSiJobHoisting.getId());
-                    if (!safeJobHoistingAppendixService.insertSafeJobHoistingFile(param)) {
-                        succ = false;
-                        msg = "附件添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            Map<String, Object> param = new HashMap<>(1);
-            param.put("id", safeSiJobHoisting.getId());
-            if (!safeJobHoistingService.insertSafeJobHoistingSafetyMeasures(param)) {
-                succ = false;
-                msg = "安全措施初始化失败";
-            }
-        }
-        return msg;
+        return safeJobHoistingService.insertSafeJobHoistingData(params);
     }
 
+    /**
+     * 吊装安全作业证-修改
+     * @author 265800
+     * @date 2023/7/13 14:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-修改", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -434,98 +402,17 @@ public class SafeJobHoistingController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobHoisting(@RequestBody Map<String, Object> params) {
-        return updateSafeJobHoistingData(params);
-    }
-    public Object updateSafeJobHoistingData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "吊装安全作业证保存失败";
-        try {
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobHoistingService.updateSafeJobHoisting(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                msg = updateSafeJobHoistingCore(params);
-            } else {
-                msg = objectMap.get("msg").toString();
-            }
-            if ("".equals(msg)) {
-                return AjaxResult.success("吊装安全作业证保存成功",params);
-            } else {
-                return AjaxResult.error(msg, params);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return AjaxResult.error(msg, params);
-        }
-    }
-    public String updateSafeJobHoistingCore(Map<String, Object> params) {
-        boolean succ = true;
-        String msg = "";
-        Map<String, Object> deleteParam = new HashMap<>(1);
-        deleteParam.put("id", params.get("id").toString());
-        if (!safeJobHoistingService.deleteSafeJobHoistingPersons(deleteParam)) {
-            succ = false;
-            msg = "作业人员删除失败";
-        }
-        if (succ) {
-            if (!"".equals(params.get(PERSON_LIST).toString())) {
-                List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-                for (int i = 0; i < listPerson.size(); i++) {
-                    Map<String, Object> param = listPerson.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobHoistingPersonsService.insertSafeJobHoistingPersons(param)) {
-                        succ = false;
-                        msg = "作业人员保存失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            SafeSiJobHoisting safeSiJobHoisting = safeJobHoistingService.getById(params.get("id").toString());
-            safeJobHoistingApprovalService.remove(new QueryWrapper<SafeSiJobHoistingApproval>().lambda()
-                    .eq(SafeSiJobHoistingApproval::getJobId, safeSiJobHoisting.getId())
-            );
-            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
-                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
-                for (int i = 0; i < listApproval.size(); i++) {
-                    Map<String, Object> param = listApproval.get(i);
-                    param.put("job_id", safeSiJobHoisting.getId());
-                    if (!safeJobHoistingApprovalService.insertSafeJobHoistingApprovals(param)) {
-                        succ = false;
-                        msg = "审批人员添加失败";
-                        break;
-                    }
-                }
-            }
-            if (!succ) {
-                msg = "审批人员添加失败";
-            }
-        }
-        if (succ) {
-            if (!safeJobHoistingService.deleteSafeJobHoistingFiles(deleteParam)) {
-                succ = false;
-                msg = "附件删除失败";
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(FILE_LIST).toString())) {
-                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-                for (int i = 0; i < listFile.size(); i++) {
-                    Map<String, Object> param = listFile.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobHoistingAppendixService.insertSafeJobHoistingFile(param)) {
-                        succ = false;
-                        msg = "附件添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        return msg;
+        return safeJobHoistingService.updateSafeJobHoistingData(params);
     }
 
+    /**
+     * 吊装安全作业证-删除
+     * @author 265800
+     * @date 2023/7/13 14:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-删除", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -545,6 +432,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-设置审批人
+     * @author 265800
+     * @date 2023/7/13 14:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-设置审批人", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -568,6 +462,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-审批
+     * @author 265800
+     * @date 2023/7/13 14:44
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-审批", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -589,6 +490,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-确认
+     * @author 265800
+     * @date 2023/7/13 14:43
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-确认", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class)
@@ -607,6 +515,14 @@ public class SafeJobHoistingController {
             return AjaxResult.error( "确认失败", params);
         }
     }
+
+    /**
+     * 吊装安全作业证-审批退回
+     * @author 265800
+     * @date 2023/7/13 14:43
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-审批退回", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class)
@@ -626,6 +542,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-安全措施确认
+     * @author 265800
+     * @date 2023/7/13 14:42
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-安全措施确认", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -648,6 +571,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-新增作业人员
+     * @author 265800
+     * @date 2023/7/13 14:42
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-新增作业人员", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:job_id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -679,6 +609,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-删除作业人员
+     * @author 265800
+     * @date 2023/7/13 14:48
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-删除作业人员", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -702,6 +639,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-批量保存作业人员
+     * @author 265800
+     * @date 2023/7/13 14:48
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-批量保存作业人员", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -722,41 +666,16 @@ public class SafeJobHoistingController {
     @Transactional(rollbackFor = Exception.class)
     public Object batchSaveSafeJobHoistingPerson(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "作业人员保存失败";
-        try {
-            boolean succ = true;
-            Map<String, Object> deleteParam = new HashMap<>(1);
-            deleteParam.put("id", params.get("id").toString());
-            if (!safeJobHoistingService.deleteSafeJobHoistingPersons(deleteParam)) {
-                succ = false;
-                msg = "作业人员删除失败";
-            }
-            if (succ) {
-                if (!"".equals(params.get(PERSON_LIST).toString())) {
-                    List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-                    for (int i = 0; i < listPerson.size(); i++) {
-                        Map<String, Object> param = listPerson.get(i);
-                        param.put("job_id", params.get("id").toString());
-                        if (!safeJobHoistingPersonsService.insertSafeJobHoistingPersons(param)) {
-                            succ = false;
-                            msg = "作业人员保存失败";
-                            break;
-                        }
-                    }
-                }
-            }
-            if (succ) {
-                return AjaxResult.success("作业人员保存成功");
-            } else {
-                return AjaxResult.error(msg, params);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error(msg, params);
-        }
+        return safeJobHoistingService.batchSaveSafeJobHoistingPerson(params);
     }
 
+    /**
+     * 吊装作业证-安全措施取消
+     * @author 265800
+     * @date 2023/7/13 14:48
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装作业证-安全措施取消", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "行标识", required = false, dataTypeClass = String.class),
@@ -776,6 +695,13 @@ public class SafeJobHoistingController {
         }
     }
 
+    /**
+     * 吊装安全作业证-审批模板列表
+     * @author 265800
+     * @date 2023/7/13 14:49
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-审批模板列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:job_level", value = "作业级别[一级,二级,三级]", required = false, dataTypeClass = String.class),
@@ -797,6 +723,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingApprovalTemplateList(params));
     }
 
+    /**
+     * 吊装安全作业证-附件列表
+     * @author 265800
+     * @date 2023/7/13 14:49
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-附件列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -817,6 +750,13 @@ public class SafeJobHoistingController {
         return AjaxResult.success(safeJobHoistingService.getSafeJobHoistingFileList(params));
     }
 
+    /**
+     * 吊装安全作业证-修改作业证编号
+     * @author 265800
+     * @date 2023/7/13 14:50
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "吊装安全作业证-修改作业证编号", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:uuid", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -829,6 +769,6 @@ public class SafeJobHoistingController {
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobHoistingJobCode(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        return AjaxResult.success( safeJobHoistingService.updateSafeJobHoistingJobCode(params));
+        return AjaxResult.success(safeJobHoistingService.updateSafeJobHoistingJobCode(params));
     }
 }

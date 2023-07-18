@@ -8,6 +8,7 @@
               <div class="el-form-item__content">
                 <el-date-picker v-model="query.dateRange"
                                 type="daterange"
+                                size="small"
                                 range-separator="至"
                                 start-placeholder="开始时间"
                                 end-placeholder="结束时间"
@@ -19,6 +20,7 @@
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
                            :popper-append-to-body="false"
+                           size="small"
                            v-model="query.status"
                            placeholder="选择作业票状态"
                            clearable>
@@ -35,6 +37,7 @@
               <label class="el-form-item__label">申请人姓名</label>
               <div class="el-form-item__content">
                 <el-input v-model="query.apply_person_name"
+                          size="small"
                           ref="person"
                           placeholder="申请人姓名"
                           @focus="$refs.person.blur(),personSelectDialog.selectDialogVisibility=true"
@@ -47,6 +50,7 @@
               <label class="el-form-item__label">作业区域</label>
               <div class="el-form-item__content">
                 <el-select class="customSelectStyle"
+                           size="small"
                            filterable
                            :popper-append-to-body="false"
                            v-model="query.safe_area_name"
@@ -68,6 +72,7 @@
                 <el-select class="customSelectStyle"
                            :popper-append-to-body="false"
                            v-model="query.job_level"
+                           size="small"
                            placeholder="作业级别"
                            clearable
                            style="width: 100%">
@@ -124,38 +129,35 @@
           </template>
           <el-table-column fixed="right"
                            label="操作"
-                           width="380px">
+                           width="280px">
             <template slot-scope="scope">
               <el-button
                          size="mini"
-                         plain
-                         type="primary"
+                         type="text"
                          @click="handleDetail(scope.$index, scope.row)"
                          icon="el-icon-edit">查看/确定
               </el-button>
               <el-button v-if="scope.row.status === 0"
                          size="mini"
-                         plain
                          type="text"
                          @click="deleteItem(scope.$index, tableData)"
                          icon="el-icon-delete">删除
               </el-button>
               <el-button v-else
                          size="mini"
-                         plain
                          type="text"
                          disabled
                          icon="el-icon-delete">删除
               </el-button>
              <el-button
-               size="mini" plain type="info"
+               size="mini" type="text"
                         @click="handleCopy(scope.$index, scope.row)"
                         icon="el-icon-document-copy">复制
              </el-button>
-              <el-button size="mini" plain icon="el-icon-printer" type="info"
+              <el-button size="mini" icon="el-icon-printer" type="text"
                          v-if="scope.row.status === 3" @click="handlePrint(scope.row)">打印
               </el-button>
-              <el-button size="mini" plain icon="el-icon-printer" type="info"
+              <el-button size="mini" icon="el-icon-printer" type="text"
                          v-else disabled>打印
               </el-button>
             </template>
@@ -167,7 +169,7 @@
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
                          :current-page="page.currentPage"
-                         :page-sizes="[20, 50, 100, 200]"
+                         :page-sizes="[10, 20, 30, 50]"
                          :page-size="page.pageSize"
                          layout="total, sizes, prev, pager, next, jumper"
                          :total="page.total">
@@ -199,6 +201,7 @@
 </template>
 
 <script>
+import '@/assets/styles/dialogStyle.scss';
 import {getHoistingList, getSafetyArea, hoistingDelete} from '@/api/security/si/WorkTicketApi'
 import EditorContainer from "@/views/security/si/operation/EditorContainer";
 export default {
@@ -224,7 +227,7 @@ export default {
         selectPersonType: ''
       },
       page: {
-        pageSize: 20,
+        pageSize: 10,
         currentPage: 1,
         total: 1,
         order: "job_code",
@@ -262,7 +265,7 @@ export default {
         { label: '作业区域', prop: "safe_area_name", sortable: true, minWidth: '150px' },
         { label: '作业地点', prop: "place", sortable: true, minWidth: '150px' },
         { label: '申请单位', prop: "apply_depart_name", sortable: true, minWidth: '180px' },
-        { label: '申请人', prop: "apply_person_name", sortable: true, minWidth: '80px' },
+        { label: '申请人', prop: "apply_person_name", sortable: true, minWidth: '100px' },
       ],
       tableData: [],
       workAreaOptions: [],
@@ -460,21 +463,21 @@ element.style {
 .el-form-item__content {
   //width: 68px;
 }
-//.el-dialog__wrapper {
-//  ::v-deep.el-dialog {
-//    .el-dialog__header {
-//      background-color: whitesmoke;
-//      border-radius: 10px 10px 0 0;
-//      padding: 10px 20px 10px;
-//    }
-//  }
-//}
-//
-//.el-dialog__wrapper {
-//  ::v-deep.el-dialog {
-//    border-radius: 10px;
-//  }
-//}
+.el-dialog__wrapper {
+  ::v-deep.el-dialog {
+    .el-dialog__header {
+      background-color: whitesmoke;
+      border-radius: 10px 10px 0 0;
+      padding: 10px 20px 10px;
+    }
+  }
+}
+
+.el-dialog__wrapper {
+  ::v-deep.el-dialog {
+    border-radius: 10px;
+  }
+}
 
 .el-dialog__wrapper {
   ::v-deep.el-dialog {

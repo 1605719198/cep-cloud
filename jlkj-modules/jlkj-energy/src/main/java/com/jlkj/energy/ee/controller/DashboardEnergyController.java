@@ -17,7 +17,6 @@ import java.util.Map;
 
 /**
  * @author liukuiyan
- * @Description
  * @create 2023-02-16 14:31
  */
 @Tag(name = "能源看板统计")
@@ -30,11 +29,11 @@ public class DashboardEnergyController {
     EnergyBoardView1Service energyBoardService;
 
     /**
-     * Description 能源看板数据查询
-     * @param dto
-     * @return Object
-     * @author 111191
-     * @Date 上午 11:01:45 2023年6月29日, 0029
+     * 能源看板数据查询
+     * @author 265800
+     * @date 2023/7/12 10:48
+     * @param dto 能源看板查询参数
+     * @return java.lang.Object
      */
     @Log(title = "能源看板", businessType = BusinessType.OTHER)
     @Transactional(readOnly = true)

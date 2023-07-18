@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-crud">
+  <div class="avue-crud" style="min-height: 400px;margin-bottom: 20px;">
     <el-form :model="form" ref="form" label-position="left" label-width="80px">
       <el-table size="small" :data="tableData" stripe>
         <el-table-column prop="sort" label="序号" width="50"/>

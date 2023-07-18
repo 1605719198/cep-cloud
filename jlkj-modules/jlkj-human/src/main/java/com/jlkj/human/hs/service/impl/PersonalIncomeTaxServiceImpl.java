@@ -111,7 +111,7 @@ public class PersonalIncomeTaxServiceImpl implements IPersonalIncomeTaxService
                     personalIncomeTaxMapper.insertPersonalIncomeTax(personalIncomeTax);
                 }
             }
-        }//@Param("versionNo" String versionNo
+        }
         //统一更新版本生效日期update（versionNo，type） 计划生效日期inEffectDate 更新
         return personalIncomeTaxMapper.updatePersonalIncomeTaxById(type,versionNo.toString(),DateUtils.parseDateToStr("yyyy-MM-dd",inEffectDate));
     }

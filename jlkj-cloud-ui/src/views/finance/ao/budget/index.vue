@@ -242,27 +242,27 @@
           </el-col>
           <el-col :span="6">
             <span v-if="JanuaryJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.januaryJanBudget }}</span>
-            <el-input v-model="form.januaryJanBudget" placeholder="请输入1月预算值" style="width: 145px" v-if="JanuaryJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.januaryJanBudget" placeholder="请输入1月预算值"
+                      style="width: 145px" v-if="JanuaryJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="FebruaryJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.februaryJanBudget }}</span>
-            <el-input v-model="form.februaryJanBudget" placeholder="请输入2月预算值" style="width: 145px" v-if="FebruaryJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.februaryJanBudget" placeholder="请输入2月预算值"
+                      style="width: 145px" v-if="FebruaryJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="MarchJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.marchJanBudget }}</span>
-            <el-input v-model="form.marchJanBudget" placeholder="请输入3月预算值" style="width: 145px" v-if="MarchJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.marchJanBudget" placeholder="请输入3月预算值"
+                      style="width: 145px" v-if="MarchJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="AprilJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.aprilJanBudget }}</span>
-            <el-input v-model="form.aprilJanBudget" placeholder="请输入4月预算值" style="width: 145px" v-if="AprilJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.aprilJanBudget" placeholder="请输入4月预算值"
+                      style="width: 145px" v-if="AprilJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <el-form-item label="5月" prop="mayJanBudget"/>
@@ -278,27 +278,27 @@
           </el-col>
           <el-col :span="6">
             <span v-if="MayJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.mayJanBudget}}</span>
-            <el-input v-model="form.mayJanBudget" placeholder="请输入5月预算值" style="width: 145px" v-if="MayJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.mayJanBudget" placeholder="请输入5月预算值"
+                      style="width: 145px" v-if="MayJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="JuneJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.juneJanBudget}}</span>
-            <el-input v-model="form.juneJanBudget" placeholder="请输入6月预算值" style="width: 145px" v-if="JuneJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.juneJanBudget" placeholder="请输入6月预算值"
+                      style="width: 145px" v-if="JuneJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="JulyJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.julyJanBudget }}</span>
-            <el-input v-model="form.julyJanBudget" placeholder="请输入7月预算值" style="width: 145px" v-if="JulyJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.julyJanBudget" placeholder="请输入7月预算值"
+                      style="width: 145px" v-if="JulyJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="AugustJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.augustJanBudget }}</span>
-            <el-input v-model="form.augustJanBudget" placeholder="请输入8月预算值" style="width: 145px" v-if="AugustJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.augustJanBudget" placeholder="请输入8月预算值"
+                      style="width: 145px" v-if="AugustJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <el-form-item label="9月" prop="septemberJanBudget"/>
@@ -314,27 +314,31 @@
           </el-col>
           <el-col :span="6">
             <span v-if="SeptemberJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.septemberJanBudget }}</span>
-            <el-input v-model="form.septemberJanBudget" placeholder="请输入9月预算值" style="width: 145px" v-if="SeptemberJanBudgetIF">
-
-            </el-input>
+            <el-input v-model="form.septemberJanBudget" placeholder="请输入9月预算值"
+                      style="width: 145px" v-if="SeptemberJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="OctoberJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.octoberJanBudget }}</span>
-            <el-input v-model="form.octoberJanBudget" placeholder="请输入10月预算值" style="width: 145px" v-if="OctoberJanBudgetIF">
 
-            </el-input>
+            <el-input v-model="form.octoberJanBudget" placeholder="请输入10月预算值"
+                      style="width: 145px" v-if="OctoberJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
           </el-col>
           <el-col :span="6">
             <span v-if="NovemberJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.novemberJanBudget }}</span>
             <el-input v-model="form.novemberJanBudget" placeholder="请输入11月预算值" style="width: 145px" v-if="NovemberJanBudgetIF">
-
+              <el-input v-model="form.novemberJanBudget" placeholder="请输入11月预算值"
+                        style="width: 145px" v-if="NovemberJanBudgetIF"
+                        oninput="if(value<0)value=0" type="number"/>
             </el-input>
           </el-col>
           <el-col :span="6">
             <span v-if="DecemberJanBudgetSpanIF" style="text-align: center;display:block;width: 121px">{{ form.decemberJanBudget }}</span>
-            <el-input v-model="form.decemberJanBudget" placeholder="请输入12月预算值" style="width: 145px" v-if="DecemberJanBudgetIF">
+            <el-input v-model="form.decemberJanBudget" placeholder="请输入12月预算值"
+                      style="width: 145px" v-if="DecemberJanBudgetIF"
+                      oninput="if(value<0)value=0" type="number"/>
 
-            </el-input>
           </el-col>
         </el-row>
       </el-form>
@@ -393,6 +397,19 @@ export default {
   components: {selectOrgPerson, budgetTag},
   dicts: ['ao_budget_type'],
   data() {
+    // 额度验证，保存小数点后两位
+    const validateAmt = (rule, value, callback) => {
+      const pattern = /^[0-9-]+(\.[0-9]{1,2})?$/
+      if (value) {
+        if (!pattern.test(value)) {
+          callback(new Error("请输入小数点≤2位的数据"))
+        }
+      }
+      if (value > 100000000) {
+        callback(new Error("数据限额最大值为1亿，请联系管理员修改！"))
+      }
+      callback()
+    }
     return {
 
       // 遮罩层
@@ -470,7 +487,43 @@ export default {
         ],
         budgetType: [
           {required: true, message: '请输入预算类别', trigger: 'blur'}
-        ]
+        ],
+     januaryJanBudget: [
+       { validator: validateAmt, trigger: 'blur' }
+     ],
+       februaryJanBudget: [
+         { validator: validateAmt, trigger: 'blur' }
+       ],
+      marchJanBudget: [
+        { validator: validateAmt, trigger: 'blur' }
+      ],
+        aprilJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+    mayJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        juneJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        julyJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        augustJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        septemberJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        octoberJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        novemberJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
+        decemberJanBudget: [
+          { validator: validateAmt, trigger: 'blur' }
+        ],
 
       },
       // 会计公司下拉选单

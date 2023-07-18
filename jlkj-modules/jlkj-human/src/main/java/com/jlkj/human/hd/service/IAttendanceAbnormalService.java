@@ -2,6 +2,9 @@ package com.jlkj.human.hd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jlkj.human.hd.domain.AttendanceAbnormal;
+import com.jlkj.human.hd.dto.AttendanceAbnormalDTO;
+
+import java.util.List;
 
 /**
 * @author HuangBing
@@ -10,4 +13,12 @@ import com.jlkj.human.hd.domain.AttendanceAbnormal;
 */
 public interface IAttendanceAbnormalService extends IService<AttendanceAbnormal> {
 
+    /**
+     * 查询出勤异常表接口
+     * @author HuangBing
+     * @date 2023-07-15
+     * @param attendanceAbnormalDTO 查询参数集
+     * @return 应出勤开始时间与参数时间同月的数据
+     */
+    List<AttendanceAbnormal> queryAttendanceAbnormal(AttendanceAbnormalDTO attendanceAbnormalDTO);
 }

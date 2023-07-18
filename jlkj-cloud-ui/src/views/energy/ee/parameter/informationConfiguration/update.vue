@@ -50,9 +50,9 @@
                        placeholder="请选择能源代码"
                        style="width:100%;">
               <el-option v-for="(item,index) in optionsEngyIdStart"
-                         :key="index"
-                         :label="item.EngyName"
-                         :value="item.EngyId">
+                         :key="index.key"
+                         :label="item.label"
+                         :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>

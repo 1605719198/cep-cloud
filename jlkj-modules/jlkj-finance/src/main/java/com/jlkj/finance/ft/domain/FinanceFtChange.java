@@ -1,12 +1,14 @@
 package com.jlkj.finance.ft.domain;
 
-import java.util.List;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 资产变动单主档对象 finance_ft_change
@@ -19,6 +21,7 @@ public class FinanceFtChange extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId
     private String uuid;
 
     /** 公司别 */

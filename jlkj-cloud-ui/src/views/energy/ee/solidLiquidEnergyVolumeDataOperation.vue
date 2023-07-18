@@ -31,6 +31,7 @@
                    type="primary"
                    size="mini"
                    icon="el-icon-search" @click="handleQuery('queryForm')">搜索</el-button>
+        <el-button size="mini" icon="el-icon-refresh-left" type="default" @click="handleEmpty">重置</el-button>
         <el-button v-hasPermi="['solid:liquid:query']"
                    size="mini"
                    type="default"
@@ -93,15 +94,7 @@
 
 
 
-    <pagination background
-                :total="total"
-                :current-page="queryParams.pageNum"
-                :page-sizes="[20, 50, 100, 200]"
-                :page-size="queryParams.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange">
-    </pagination>
+    <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
 
     <!-- 能源计量月份对话框 -->
     <el-dialog :title="title"
@@ -148,12 +141,14 @@
         <el-form-item label="能源计量日期"
                       prop="engyDateStart">
           <el-date-picker v-model="formPlus.engyDateStart"
+                          style="width: 200px"
                           type="date"
                           placeholder="选择日期">
           </el-date-picker>
 
           ~
           <el-date-picker v-model="formPlus.engyDateEnd"
+                          style="width: 200px"
                           type="date"
                           placeholder="选择日期">
           </el-date-picker>
@@ -217,8 +212,8 @@
 
 <script>
 // import {autoSendInfo, queryInfo, refreshInfo, queryDropDownInfo} from "@/api/energy/ee/solidLiquidEnergyVolumeDataOperation";
-import { queryInfo, queryDropDownInfo } from "@/api/energy/ee/solidLiquidEnergyVolumeDataOperation";
-import { mapGetters } from "vuex";
+import {queryDropDownInfo, queryInfo} from "@/api/energy/ee/solidLiquidEnergyVolumeDataOperation";
+
 export default {
   name: "solidLiquidEnergyVolumeDataOperation",
   data () {
@@ -290,7 +285,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         engyId: undefined,
         dateYM: undefined,
         engyIdStart: undefined,
@@ -310,6 +305,22 @@ export default {
     this.getDropDownMenu();
   },
   methods: {
+    // 清空
+    handleEmpty() {
+      this.queryParams= {
+        pageNum: 1,
+        pageSize: 10,
+        engyId: undefined,
+        dateYM: undefined,
+        engyIdStart: undefined,
+        engyIdEnd: undefined,
+        costCenterStart: undefined,
+        engyDateStart: undefined,
+        costCenterEnd: undefined,
+        engyDateEnd: undefined,
+      },
+      this.getList();
+    },
     // 分页数据
     handleSizeChange (newSize) {
       this.queryParams.pageSize = newSize
@@ -322,8 +333,8 @@ export default {
     //获取数据刷新页面
     getList () {
       queryInfo(this.queryParams).then(response => {
-        this.tableData = response.data.list
-        this.total = response.data.total
+        this.tableData = response.rows
+        this.total = response.total
         this.loading = false
       })
     },
@@ -368,8 +379,8 @@ export default {
         if (valid) {
           this.loading = true
           queryInfo(this.queryParams).then(response => {
-            this.tableData = response.data.list
-            this.total = response.data.total
+            this.tableData = response.rows
+            this.total = response.total
             this.loading = false
           })
         } else {
@@ -426,8 +437,8 @@ export default {
           this.openPlus = false;
           this.loading = true
           queryInfo(this.queryParams).then(response => {
-            this.tableData = response.data.list
-            this.total = response.data.total
+            this.tableData = response.rows
+            this.total = response.total
             this.loading = false
           })
         } else {

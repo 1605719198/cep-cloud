@@ -37,3 +37,7 @@
 .el-dialog__body {
   padding: 15px 40px;
 }
+
+.el-select-dropdown .el-scrollbar .el-scrollbar__wrap{
+  overflow: scroll;
+}

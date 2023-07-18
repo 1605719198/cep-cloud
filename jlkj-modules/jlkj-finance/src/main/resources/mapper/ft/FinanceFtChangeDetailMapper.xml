@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.finance.ft.mapper.FinanceFtChangeDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.jlkj.finance.ft.domain.FinanceFtChangeDetail">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="companyId" column="company_id" jdbcType="VARCHAR"/>
+            <result property="changeId" column="change_id" jdbcType="VARCHAR"/>
+            <result property="changeNo" column="change_no" jdbcType="VARCHAR"/>
+            <result property="period" column="period" jdbcType="DATE"/>
+            <result property="changePrice" column="change_price" jdbcType="DECIMAL"/>
+            <result property="assetId" column="asset_id" jdbcType="VARCHAR"/>
+            <result property="assetNo" column="asset_no" jdbcType="VARCHAR"/>
+            <result property="assetGroup" column="asset_group" jdbcType="VARCHAR"/>
+            <result property="newAssetGroup" column="new_asset_group" jdbcType="VARCHAR"/>
+            <result property="assetName" column="asset_name" jdbcType="VARCHAR"/>
+            <result property="newAssetName" column="new_asset_name" jdbcType="VARCHAR"/>
+            <result property="assetDesc" column="asset_desc" jdbcType="VARCHAR"/>
+            <result property="assetType" column="asset_type" jdbcType="VARCHAR"/>
+            <result property="orgValue" column="org_value" jdbcType="DECIMAL"/>
+            <result property="getValue" column="get_value" jdbcType="DECIMAL"/>
+            <result property="accuDepr" column="accu_depr" jdbcType="DECIMAL"/>
+            <result property="deprCount" column="depr_count" jdbcType="INTEGER"/>
+            <result property="newDeprCount" column="new_depr_count" jdbcType="INTEGER"/>
+            <result property="deptNo" column="dept_no" jdbcType="VARCHAR"/>
+            <result property="newDeptNo" column="new_dept_no" jdbcType="VARCHAR"/>
+            <result property="assetUser" column="asset_user" jdbcType="VARCHAR"/>
+            <result property="newAssetUser" column="new_asset_user" jdbcType="VARCHAR"/>
+            <result property="userDept" column="user_dept" jdbcType="VARCHAR"/>
+            <result property="newUserDept" column="new_user_dept" jdbcType="VARCHAR"/>
+            <result property="costCenter" column="cost_center" jdbcType="VARCHAR"/>
+            <result property="newCostCenter" column="new_cost_center" jdbcType="VARCHAR"/>
+            <result property="qty" column="qty" jdbcType="INTEGER"/>
+            <result property="newQty" column="new_qty" jdbcType="INTEGER"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="newUnit" column="new_unit" jdbcType="VARCHAR"/>
+            <result property="assetStatus" column="asset_status" jdbcType="VARCHAR"/>
+            <result property="newAssetStatus" column="new_asset_status" jdbcType="VARCHAR"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="newLocation" column="new_location" jdbcType="VARCHAR"/>
+            <result property="assetSpec" column="asset_spec" jdbcType="VARCHAR"/>
+            <result property="newAssetSpec" column="new_asset_spec" jdbcType="VARCHAR"/>
+            <result property="contractNo" column="contract_no" jdbcType="VARCHAR"/>
+            <result property="budgetNo" column="budget_no" jdbcType="VARCHAR"/>
+            <result property="supplyerNo" column="supplyer_no" jdbcType="VARCHAR"/>
+            <result property="newSupplyerNo" column="new_supplyer_no" jdbcType="VARCHAR"/>
+            <result property="manufacturer" column="manufacturer" jdbcType="VARCHAR"/>
+            <result property="newManufacturer" column="new_manufacturer" jdbcType="VARCHAR"/>
+            <result property="weight" column="weight" jdbcType="DECIMAL"/>
+            <result property="newWeight" column="new_weight" jdbcType="DECIMAL"/>
+            <result property="capacity" column="capacity" jdbcType="DECIMAL"/>
+            <result property="newCapacity" column="new_capacity" jdbcType="DECIMAL"/>
+            <result property="length" column="length" jdbcType="DECIMAL"/>
+            <result property="newLength" column="new_length" jdbcType="DECIMAL"/>
+            <result property="buildingArea" column="building_area" jdbcType="DECIMAL"/>
+            <result property="newBuildingArea" column="new_building_area" jdbcType="DECIMAL"/>
+            <result property="floorArea" column="floor_area" jdbcType="DECIMAL"/>
+            <result property="newFloorArea" column="new_floor_area" jdbcType="DECIMAL"/>
+            <result property="layerNum" column="layer_num" jdbcType="INTEGER"/>
+            <result property="newLayerNum" column="new_layer_num" jdbcType="INTEGER"/>
+            <result property="economyPurpose" column="economy_purpose" jdbcType="VARCHAR"/>
+            <result property="source" column="source" jdbcType="VARCHAR"/>
+            <result property="newSource" column="new_source" jdbcType="VARCHAR"/>
+            <result property="assetCharacter" column="asset_character" jdbcType="VARCHAR"/>
+            <result property="newAssetCharacter" column="new_asset_character" jdbcType="VARCHAR"/>
+            <result property="levels" column="levels" jdbcType="VARCHAR"/>
+            <result property="newLevels" column="new_levels" jdbcType="VARCHAR"/>
+            <result property="materialNo" column="material_no" jdbcType="VARCHAR"/>
+            <result property="locationNo" column="location_no" jdbcType="VARCHAR"/>
+            <result property="tradeNo" column="trade_no" jdbcType="VARCHAR"/>
+            <result property="cardModel" column="card_model" jdbcType="VARCHAR"/>
+            <result property="newCardModel" column="new_card_model" jdbcType="VARCHAR"/>
+            <result property="splitType" column="split_type" jdbcType="VARCHAR"/>
+            <result property="splitCount" column="split_count" jdbcType="INTEGER"/>
+            <result property="sourceId" column="source_id" jdbcType="VARCHAR"/>
+            <result property="pgrmId" column="pgrm_id" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createName" column="create_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateName" column="update_name" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,company_id,change_id,
+        change_no,period,change_price,
+        asset_id,asset_no,asset_group,
+        new_asset_group,asset_name,new_asset_name,
+        asset_desc,asset_type,org_value,
+        get_value,accu_depr,depr_count,
+        new_depr_count,dept_no,new_dept_no,
+        asset_user,new_asset_user,user_dept,
+        new_user_dept,cost_center,new_cost_center,
+        qty,new_qty,unit,
+        new_unit,asset_status,new_asset_status,
+        location,new_location,asset_spec,
+        new_asset_spec,contract_no,budget_no,
+        supplyer_no,new_supplyer_no,manufacturer,
+        new_manufacturer,weight,new_weight,
+        capacity,new_capacity,length,
+        new_length,building_area,new_building_area,
+        floor_area,new_floor_area,layer_num,
+        new_layer_num,economy_purpose,source,
+        new_source,asset_character,new_asset_character,
+        levels,new_levels,material_no,
+        location_no,trade_no,card_model,
+        new_card_model,split_type,split_count,
+        source_id,pgrm_id,create_by,
+        create_name,create_time,update_by,
+        update_name,update_time
+    </sql>
+</mapper>

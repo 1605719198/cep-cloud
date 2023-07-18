@@ -4,6 +4,7 @@ import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
+import com.jlkj.common.security.annotation.RequiresPermissions;
 import com.jlkj.human.ex.domain.ExamTaskGroup;
 import com.jlkj.human.ex.service.IExamTaskGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.List;
  * @date 2023-02-10
  */
 @RestController
-@RequestMapping("/exam/taskgroup")
+@RequestMapping("/taskgroup")
 public class ExamTaskGroupController extends BaseController
 {
     @Autowired
@@ -29,6 +30,7 @@ public class ExamTaskGroupController extends BaseController
      * 查询任务分组列表
      */
     @GetMapping("/list")
+    @RequiresPermissions("human:taskgroup:list")
     public TableDataInfo list(ExamTaskGroup examTaskGroup)
     {
         startPage();
@@ -40,6 +42,7 @@ public class ExamTaskGroupController extends BaseController
      * 导出任务分组列表
      */
     @GetMapping("/export")
+    @RequiresPermissions("human:taskgroup:export")
     public void export(HttpServletResponse response, ExamTaskGroup examTaskGroup)throws Exception
     {
         List<ExamTaskGroup> list = examTaskGroupService.selectExamTaskGroupList(examTaskGroup);
@@ -60,6 +63,7 @@ public class ExamTaskGroupController extends BaseController
      * 新增任务分组
      */
     @PostMapping
+    @RequiresPermissions("human:taskgroup:add")
     public AjaxResult add(@RequestBody ExamTaskGroup examTaskGroup)
     {
         return toAjax(examTaskGroupService.insertExamTaskGroup(examTaskGroup));
@@ -69,6 +73,7 @@ public class ExamTaskGroupController extends BaseController
      * 修改任务分组
      */
     @PostMapping("/update")
+    @RequiresPermissions("human:taskgroup:edit")
     public AjaxResult edit(@RequestBody ExamTaskGroup examTaskGroup)
     {
         return toAjax(examTaskGroupService.updateExamTaskGroup(examTaskGroup));
@@ -91,6 +96,7 @@ public class ExamTaskGroupController extends BaseController
      * 删除任务分组
      */
     @GetMapping("/delete/{examCodes}")
+    @RequiresPermissions("human:taskgroup:remove")
     public AjaxResult remove(@PathVariable String[] examCodes)
     {
         return toAjax(examTaskGroupService.deleteExamTaskGroupByIds(examCodes));
