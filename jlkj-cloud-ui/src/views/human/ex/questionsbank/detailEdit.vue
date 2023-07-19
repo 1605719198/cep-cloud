@@ -40,8 +40,8 @@
               </el-col>
             </el-row>
             <el-form-item label="标题图片">
-              <el-upload class="avatar-uploader" :action="url" :data="upLoadData"
-                         :show-file-list="false" :before-upload="beforeAvatarUpload">
+              <el-upload class="avatar-uploader" :action="url" :data="upLoadData" :show-file-list="false"
+                         :before-upload="beforeAvatarUpload">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
@@ -76,8 +76,7 @@
           </el-form>
           <!-- 剪裁组件弹窗 -->
           <el-dialog title="裁切题库封面" :visible.sync="cropperModel" width="950px" center>
-            <cropper-image :Name="cropperName" @uploadImgSuccess="handleUploadSuccess" ref="child">
-            </cropper-image>
+            <cropper-image :Name="cropperName" @uploadImgSuccess="handleUploadSuccess" ref="child"></cropper-image>
           </el-dialog>
         </div>
       </div>
@@ -128,7 +127,6 @@ export default {
       cropperModel: false,
       cropperName: '',
       newCode: null,
-      hosturl: '/api/user/upload'
     }
   },
   created() {
@@ -179,8 +177,7 @@ export default {
     },
     // 图片上传成功后
     handleUploadSuccess(data) {
-      console.log(data.url)
-      this.imageUrl = this.hosturl + data.url;
+      this.imageUrl = data.url;
       this.dataForm.pictureUrl = data.url;
       this.cropperModel = false;
     },
