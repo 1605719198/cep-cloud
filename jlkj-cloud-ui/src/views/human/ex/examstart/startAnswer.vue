@@ -90,8 +90,8 @@
 
 
 <script>
-import legendCase from './legendCase'
-import questionNumber from './questionNumber'
+import legendCase from "@/views/human/ex/examstart/legendCase";
+import questionNumber from "@/views/human/ex/examstart/questionNumber";
 import { getContent, getQuestionsData } from "@/api/human/ex/onlineexamdata";
 import { getQuestionsList } from "@/api/human/ex/questionslist"
 import { addTaskanswer, deleteExamtask } from "@/api/human/ex/taskanswer"
@@ -168,9 +168,10 @@ export default {
     },
     /** 查询题目列表 */
     getList () {
+      debugger
       const queryPara = {
         examCode: this.examCode,
-        userCode: this.$store.state.user.userCode
+        userCode: this.$store.state.user.name
       }
       getQuestionsList(queryPara).then(response => {
         this.questionsList = response.data
@@ -409,7 +410,7 @@ export default {
 
     },
     doEnd () {
-      this.msgSuccess("考试结束");
+      //this.msgSuccess("考试结束");
     }
   }
 };
