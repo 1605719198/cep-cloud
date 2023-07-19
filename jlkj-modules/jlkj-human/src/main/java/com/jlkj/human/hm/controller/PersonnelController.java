@@ -84,7 +84,12 @@ public class PersonnelController extends BaseController {
     @Operation(summary = "获取人员基本信息查询列表")
     @GetMapping("/list")
     public Object getPersonnelBasicInfoList(Personnel personnel) {
-        return personnelService.getPersonnelBasicInfoList(personnel);
+        List<Personnel> personnelBasicInfoList = personnelService.getPersonnelBasicInfoList(personnel);
+        if (personnelBasicInfoList.isEmpty()){
+            return AjaxResult.error("查无资料!!!");
+        } else {
+            return AjaxResult.success(personnelBasicInfoList);
+        }
     }
 
     /**
