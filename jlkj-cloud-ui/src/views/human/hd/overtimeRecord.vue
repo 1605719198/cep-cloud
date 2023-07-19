@@ -202,7 +202,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="辅助说明" prop="description">
-                      <el-input v-model="form.description" autosize type="textarea" placeholder="请输入辅助说明" />
+                      <el-input v-model="form.description" autosize type="textarea" placeholder="请输入辅助说明" :maxlength="500" show-word-limit/>
                     </el-form-item>
                   </el-col>
                 </el-row>
