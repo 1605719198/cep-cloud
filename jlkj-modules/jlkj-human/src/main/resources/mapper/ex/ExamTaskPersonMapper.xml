@@ -14,12 +14,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamTaskPersonVo">
-        select exam_code, user_code, task_code, start_time, end_time, status from human_ex_task_person
+        select id, exam_code, user_code, task_code, start_time, end_time, status
+        from human_ex_task_person
     </sql>
 
     <select id="selectExamTaskPersonList" parameterType="ExamTaskPerson" resultMap="ExamTaskPersonResult">
         <include refid="selectExamTaskPersonVo"/>
-
         <where>
             <if test="examCode != null  and examCode != ''">   exam_code  = #{examCode}</if>
         </where>
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectExamTaskPersonById" parameterType="String" resultMap="ExamTaskPersonResult">
         <include refid="selectExamTaskPersonVo"/>
-        where exam_code = #{examCode}
+        where id = #{id}
     </select>
 
         
