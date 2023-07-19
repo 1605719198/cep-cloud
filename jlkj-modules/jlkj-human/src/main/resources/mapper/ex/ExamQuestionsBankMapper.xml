@@ -27,37 +27,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamQuestionsBankVo">
-		select a.bank_id, a.bank_code, a.bank_name, a.bank_describe, a.bank_version, a.exam_type,
-               b.type_name,a.online_date, a.picture_url, ifnull(c.judge_number,0) as judge_number,ifnull(d.radio_number,0)
-                   as radio_number,ifnull(e.choice_number,0) as choice_number,a.radio_score, a.choice_score,
-               a.judge_score, a.status, a.create_by, a.create_dept, a.create_time from human_ex_questions_bank a
-		left join human_ex_type b on b.type_id = a.exam_type
-		left join
-		(
-		select bank_code,count(questions_type) as judge_number from human_ex_questions_property where questions_type = 1 group by bank_code
-		) c on c.bank_code = a.bank_code
-		left join
-		(
-		select bank_code,count(questions_type) as radio_number from human_ex_questions_property where questions_type = 2 group by bank_code
-		) d on d.bank_code = a.bank_code
-		left join
-		(
-		select bank_code,count(questions_type) as choice_number from human_ex_questions_property where questions_type = 3 group by bank_code
-		) e on e.bank_code = a.bank_code    
+        SELECT a.bank_id,
+               a.bank_code,
+               a.bank_name,
+               a.bank_describe,
+               a.bank_version,
+               a.exam_type,
+               b.type_name,
+               a.online_date,
+               a.picture_url,
+               ifnull(c.judge_number, 0)  as judge_number,
+               ifnull(d.radio_number, 0)
+                                          as radio_number,
+               ifnull(e.choice_number, 0) as choice_number,
+               a.radio_score,
+               a.choice_score,
+               a.judge_score,
+               a.status,
+               a.create_by,
+               a.create_dept,
+               a.create_time
+        FROM human_ex_questions_bank a
+                 LEFT JOIN human_ex_type b on b.type_id = a.exam_type
+                 LEFT JOIN
+             (SELECT bank_code, count(questions_type) as judge_number
+              FROM human_ex_questions_property
+              WHERE questions_type = 1
+              GROUP BY bank_code) c ON c.bank_code = a.bank_code
+                 LEFT JOIN
+             (SELECT bank_code, count(questions_type) as radio_number
+              FROM human_ex_questions_property
+              WHERE questions_type = 2
+              GROUP BY bank_code) d ON d.bank_code = a.bank_code
+                 LEFT JOIN
+             (SELECT bank_code, count(questions_type) as choice_number
+              FROM human_ex_questions_property
+              WHERE questions_type = 3
+              GROUP BY bank_code) e ON e.bank_code = a.bank_code
     </sql>
 
     <select id="selectExamQuestionsBankList" parameterType="ExamQuestionsBank" resultMap="ExamQuestionsBankResult">
         <include refid="selectExamQuestionsBankVo"/>
-        <where>  
-            <if test="bankName != null  and bankName != ''"> and bank_name like '%' || #{bankName} || '%'</if>
-            <if test="examType != null  and examType != ''"> and exam_type = #{examType} </if>
+        <where>
+            <if test="bankName != null  and bankName != ''">AND bank_name LIKE CONCAT ('%',#{bankName} , '%')</if>
+            <if test="examType != null  and examType != ''">AND exam_type = #{examType}</if>
         </where>
-        order by a.bank_id desc
+        ORDER BY a.bank_id DESC
     </select>
     
     <select id="selectExamQuestionsBankListByCode" parameterType="String" resultMap="ExamQuestionsBankResult">
         <include refid="selectExamQuestionsBankVo"/>
-        where a.bank_code in 
+        WHERE a.bank_code IN
         <foreach item="bankCode" collection="array" open="(" separator="," close=")">
             #{bankCode}
         </foreach>  
@@ -65,11 +85,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectExamQuestionsBankById" parameterType="String" resultMap="ExamQuestionsBankResult">
         <include refid="selectExamQuestionsBankVo"/>
-        where a.bank_code = #{bankCode}
+        WHERE a.bank_code = #{bankCode}
     </select>
         
     <insert id="insertExamQuestionsBank" parameterType="ExamQuestionsBank" >
-        insert into human_ex_questions_bank
+        INSERT INTO human_ex_questions_bank
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bankCode != null">bank_code,</if>
             <if test="bankName != null and bankName != ''">bank_name,</if>
@@ -105,7 +125,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateExamQuestionsBank" parameterType="ExamQuestionsBank">
-        update human_ex_questions_bank
+        UPDATE human_ex_questions_bank
         <trim prefix="SET" suffixOverrides=",">
             <if test="bankId != null">bank_id = #{bankId},</if>
             <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
@@ -122,15 +142,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDept != null">create_dept = #{createDept},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
         </trim>
-        where bank_code = #{bankCode}
+        WHERE bank_code = #{bankCode}
     </update>
 
     <delete id="deleteExamQuestionsBankById" parameterType="String">
-        delete from human_ex_questions_bank where bank_code = #{bankCode}
+        DELETE
+        FROM human_ex_questions_bank
+        WHERE bank_code = #{bankCode}
     </delete>
 
     <delete id="deleteExamQuestionsBankByIds" parameterType="String">
-        delete from human_ex_questions_bank where bank_code in
+        DELETE FROM human_ex_questions_bank WHERE bank_code IN
         <foreach item="bankCode" collection="array" open="(" separator="," close=")">
             #{bankCode}
         </foreach>
