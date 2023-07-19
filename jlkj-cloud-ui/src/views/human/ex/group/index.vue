@@ -26,7 +26,8 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['human:group:add']"
-          >新增</el-button>
+          >新增
+          </el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -37,7 +38,8 @@
             :disabled="single"
             @click="handleUpdate"
             v-hasPermi="['human:group:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -48,7 +50,8 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['human:group:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -56,44 +59,50 @@
             plain
             icon="el-icon-download"
             size="mini"
-        :loading="exportLoading"
+            :loading="exportLoading"
             @click="handleExport"
             v-hasPermi="['human:group:export']"
-          >导出</el-button>
+          >导出
+          </el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
       <el-table v-loading="loading" :data="groupList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
-        <!-- <el-table-column label="分组序号" align="center" prop="groupId" /> -->
-        <!-- <el-table-column label="分组代码" align="center" prop="groupCode"  /> -->
-        <el-table-column label="分组名称" align="center" prop="groupName"  />
-        <el-table-column label="分组描述" align="center" prop="groupDescribe"  />
-        <el-table-column label="人数" align="center" prop="personNumber"  />
-        <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat" />
+        <el-table-column type="selection" width="55" align="center"/>
+        <el-table-column label="分组名称" align="center" prop="groupName"/>
+        <el-table-column label="分组描述" align="center" prop="groupDescribe"/>
+        <el-table-column label="人数" align="center" prop="personNumber"/>
+        <el-table-column label="状态" align="center" prop="status">
+          <template v-slot="scope">
+            <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-button
               size="mini"
               type="text"
               icon="el-icon-user"
               @click="handleGroup(scope.row)"
-            >选人</el-button>
+            >选人
+            </el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['human:taskgroup:edit']"
-            >修改</el-button>
+            >修改
+            </el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['human:taskgroup:remove']"
-            >删除</el-button>
+            >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,18 +119,19 @@
       <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="分组名称" prop="groupName">
-            <el-input v-model="form.groupName" placeholder="请输入分组名称" />
+            <el-input v-model="form.groupName" placeholder="请输入分组名称"/>
           </el-form-item>
           <el-form-item label="分组描述" prop="groupDescribe">
-            <el-input v-model="form.groupDescribe" placeholder="请输入分组描述" />
+            <el-input v-model="form.groupDescribe" placeholder="请输入分组描述"/>
           </el-form-item>
           <el-form-item label="状态">
             <el-radio-group v-model="form.status">
               <el-radio
-                v-for="dict in statusOptions"
-                :key="dict.dictValue"
-                :label="dict.dictValue"
-              >{{dict.dictLabel}}</el-radio>
+                v-for="dict in dict.type.sys_normal_disable"
+                :key="dict.value"
+                :label="dict.value"
+              >{{ dict.label }}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -132,20 +142,22 @@
       </el-dialog>
     </div>
     <div v-else>
-      <choice-user  ref="choiceRef" @refreshChoiceData="choiceDoneHandle"></choice-user>
+      <choice-user ref="choiceRef" @refreshChoiceData="choiceDoneHandle"></choice-user>
     </div>
   </div>
 
 </template>
 
 <script>
-import { listUserchoice } from "@/api/human/ex/userchoice";
-import { listGroup, getGroup, delGroup, addGroup, updateGroup, exportGroup } from "@/api/human/ex/group";
-import { delGroupperson, addGroupperson } from "@/api/human/ex/groupperson";
+import {listUserchoice} from "@/api/human/ex/userchoice";
+import {addGroup, delGroup, exportGroup, getGroup, listGroup, updateGroup} from "@/api/human/ex/group";
+import {addGroupperson, delGroupperson} from "@/api/human/ex/groupperson";
 import choiceUser from "@/components/ChoiceUser/index";
+
 export default {
   name: "Group",
-  components: { choiceUser },
+  components: {choiceUser},
+  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -198,16 +210,13 @@ export default {
       // 表单校验
       rules: {
         groupName: [
-          { required: true, message: "分组名称不能为空", trigger: "blur" }
+          {required: true, message: "分组名称不能为空", trigger: "blur"}
         ],
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("sys_normal_disable").then(response => {
-      this.statusOptions = response.data;
-    });
   },
   methods: {
     /** 查询人员分组列表 */
@@ -218,10 +227,6 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
-    },
-    // 状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 取消按钮
     cancel() {
@@ -253,8 +258,8 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.groupCode)
-      this.single = selection.length!==1
+      this.ids = selection.map(item => item.groupId)
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -266,10 +271,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      debugger
-      const groupCode = row.groupCode || this.ids
-
-      getGroup(groupCode).then(response => {
+      const groupId = row.groupId || this.ids
+      getGroup(groupId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改人员分组";
@@ -279,12 +282,13 @@ export default {
       this.getChoiceList(row.groupCode)
     },
     getChoiceList(choicecode) {
+      console.log(choicecode)
       this.choiceCode = choicecode
       const sysUser = {
         choiceCode: choicecode
       }
       listUserchoice(sysUser).then(response => {
-        this.userList= response.rows;
+        this.userList = response.rows;
         if (this.userList !== null && this.userList.length > 0) {
           this.count = this.userList.length
         }
@@ -300,10 +304,10 @@ export default {
     },
     choiceDoneHandle(selectData) {
       this.choiceVisible = true
-      if (selectData !== null && selectData.length >0) {
+      if (selectData !== null && selectData.length > 0) {
         this.userList = selectData
         let personList = []
-        for (let i = 0; i < selectData.length; i ++) {
+        for (let i = 0; i < selectData.length; i++) {
           personList.push({
             groupCode: this.choiceCode,
             personCode: selectData[i].userCode
@@ -322,8 +326,7 @@ export default {
         });
       }
     },
-    doSave () {
-
+    doSave() {
     },
     /** 提交按钮 */
     submitForm() {
@@ -331,13 +334,13 @@ export default {
         if (valid) {
           if (this.form.groupId != null) {
             updateGroup(this.form).then(response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addGroup(this.form).then(response => {
-              this.msgSuccess("新增成功");
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -349,30 +352,32 @@ export default {
     handleDelete(row) {
       const groupIds = row.groupId || this.ids;
       this.$confirm('是否确认删除人员分组编号为"' + groupIds + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delGroup(groupIds);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delGroup(groupIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有人员分组数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportGroup(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportGroup(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
     }
   }
 };
