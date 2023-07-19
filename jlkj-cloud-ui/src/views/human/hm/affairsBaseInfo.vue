@@ -1016,6 +1016,20 @@ export default {
             trigger: "blur"
           }
         ],
+        homeTelephone: [
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的联系电话",
+            trigger: "blur"
+          }
+        ],
+        nowAddressTelephone: [
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的联系电话",
+            trigger: "blur"
+          }
+        ],
         officeTelephone: [
           {
             pattern: /^[+]?(0|([1-9]\d*))?$/,

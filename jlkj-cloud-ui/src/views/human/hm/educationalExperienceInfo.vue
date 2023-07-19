@@ -39,7 +39,7 @@
             <el-table-column label="学校" align="center" key="school" prop="school">
               <template v-slot="scope">
                 <el-form-item :prop="'educationalExperienceList.'+scope.$index+'.school'" class="all">
-                  <el-input v-model="scope.row.school" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.school`)"></el-input>
+                  <el-input v-model="scope.row.school" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`educationalExperienceList.${scope.$index}.school`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>

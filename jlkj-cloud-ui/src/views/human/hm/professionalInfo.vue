@@ -81,7 +81,7 @@
             <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
               <template v-slot="scope">
                 <el-form-item :prop="'professionalList.'+scope.$index+'.cerComp'">
-                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerComp`)"></el-input>
+                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerComp`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
