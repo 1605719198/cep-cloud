@@ -319,12 +319,7 @@ export default {
       if(row){
         this.index = row.index;
       }
-      var queryParams={
-        compID:this.queryParams.compId,
-        pageNum: 1,
-        pageSize: 10,
-      }
-      this.$refs.select.show(queryParams);
+      this.$refs.select.show();
     },
     /** 获取工号 */
     getJobNumber(userNo, userName,compId,userId) {

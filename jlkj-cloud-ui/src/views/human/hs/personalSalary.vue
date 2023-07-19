@@ -349,7 +349,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="工资支付账号" prop="salBankNo">
-              <el-input v-model="form.salBankNo" placeholder="请输入"/>
+              <el-input v-model="form.salBankNo" placeholder="请输入" maxlength="19"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -374,7 +374,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="奖金支付账号" prop="bonBankNo">
-              <el-input v-model="form.bonBankNo" placeholder="请输入"/>
+              <el-input v-model="form.bonBankNo" placeholder="请输入" maxlength="19"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -749,6 +749,12 @@ export default {
         ],
         effectDate: [
           { required: true, message: '生效日期不能为空', trigger: 'change' }
+        ],
+        salBankNo:[
+          { required:false, min:16, max:19, message:'请输入长度为16-19的账号', trigger:'blur' }
+        ],
+        bonBankNo:[
+          { required:false, min:16, max:19, message:'请输入长度为16-19的账号', trigger:'blur' }
         ]
       },
       //止薪表单校验
@@ -935,12 +941,7 @@ export default {
     },
     /** 人员选单事件 */
     inputClick() {
-      var queryParams = {
-        compID: this.queryParams.compId,
-        pageNum: 1,
-        pageSize: 10
-      }
-      this.$refs.select.show(queryParams)
+      this.$refs.select.show()
     },
     /** 获取工号 */
     getJobNumber(empNo, empName, compId, id) {

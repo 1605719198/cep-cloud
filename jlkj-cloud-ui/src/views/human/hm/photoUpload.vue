@@ -1,7 +1,6 @@
 <template>
   <div class="component-upload-image">
     <el-upload
-      multiple
       :action="uploadImgUrl"
       list-type="picture-card"
       :on-success="handleUploadSuccess"

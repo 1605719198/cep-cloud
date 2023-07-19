@@ -509,7 +509,7 @@ export default {
       this.refresh = false;
       this.refresh = true;
     },
-    /** 人员选单事件 */
+    /** 地点选单事件 */
     inputClick() {
       this.$refs.select.show(this.queryParams.compId,this.form.nation,null);
     },

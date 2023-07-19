@@ -8,10 +8,10 @@
         <div class="form-area">
           <el-form ref="dataForm" :model="dataForm" :rules="rules" label-width="80px">
             <el-form-item label="题库名称" prop="bankName">
-              <el-input v-model="dataForm.bankName" placeholder="请输入题库名称"/>
+              <el-input v-model="dataForm.bankName" placeholder="请输入题库名称" maxlength="60"/>
             </el-form-item>
             <el-form-item label="题库描述" prop="bankDescribe">
-              <el-input v-model="dataForm.bankDescribe" placeholder="请输入题库描述"/>
+              <el-input v-model="dataForm.bankDescribe" placeholder="请输入题库描述" maxlength="150"/>
             </el-form-item>
             <el-row :gutter="20">
               <el-col :span="12" :xs="24">
@@ -20,11 +20,20 @@
                               placeholder="请选择题库分类"/>
                 </el-form-item>
               </el-col>
+              <el-col :span="12" :xs="24">
+                <el-form-item label="状态">
+                  <el-radio-group v-model="dataForm.status">
+                    <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value*1">
+                      {{ dict.label }}
+                    </el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12" :xs="24">
                 <el-form-item label="题库版本" prop="bankVersion">
-                  <el-input v-model="dataForm.bankVersion" placeholder="请输入题库版本"/>
+                  <el-input v-model="dataForm.bankVersion" placeholder="请输入题库版本" maxlength="60"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12" :xs="24">
@@ -39,13 +48,6 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="标题图片">
-              <el-upload class="avatar-uploader" :action="url" :data="upLoadData" :show-file-list="false"
-                         :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
             <el-row :gutter="20">
               <el-col :span="8" :xs="24">
                 <el-form-item label="单选分数" prop="radioScore">
@@ -66,12 +68,12 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="状态">
-              <el-radio-group v-model="dataForm.status">
-                <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value*1">
-                  {{ dict.label }}
-                </el-radio>
-              </el-radio-group>
+            <el-form-item label="标题图片">
+              <el-upload class="avatar-uploader" :action="url" :data="upLoadData" :show-file-list="false"
+                         :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </el-form-item>
           </el-form>
           <!-- 剪裁组件弹窗 -->

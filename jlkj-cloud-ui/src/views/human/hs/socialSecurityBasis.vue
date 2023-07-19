@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px" :rules="rules3" >
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px"
+             :rules="rules3"
+    >
       <el-form-item label="公司别" prop="compId">
         <el-select v-model="queryParams.compId" placeholder="请选择公司别">
           <el-option
@@ -157,7 +159,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="社保编号" prop="insureNo">
-              <el-input v-model="form.insureNo" placeholder="请输入社保编号"/>
+              <el-input v-model="form.insureNo" placeholder="请输入社保编号" maxlength="100"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -180,7 +182,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="医保编号" prop="medicalInsuranceNo">
-              <el-input v-model="form.medicalInsuranceNo" placeholder="请输入医保编号"/>
+              <el-input v-model="form.medicalInsuranceNo" placeholder="请输入医保编号" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -203,7 +205,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="公司保险手册编号" prop="compInsureBookNo" label-width="125px">
-              <el-input v-model="form.compInsureBookNo" placeholder="请输入编号"/>
+              <el-input v-model="form.compInsureBookNo" placeholder="请输入编号" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -226,7 +228,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="住房公积金账号" prop="houseAccount" label-width="125px">
-              <el-input v-model="form.houseAccount" placeholder="请输入账号"/>
+              <el-input v-model="form.houseAccount" placeholder="请输入账号" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -311,7 +313,7 @@
               {{ items.fourTitle }}
             </div>
             <div>
-              <el-input v-model="items.fivSta" class="inputWidth" maxlength="100" type="number"></el-input>
+              <el-input v-model="items.fivSta" class="inputWidth" maxlength="100"></el-input>
             </div>
             <div>
               {{ items.sixTitle }}
@@ -596,7 +598,6 @@ import selectUser from '@/views/components/human/selectUser/selectUser'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
 import { socialSecurity } from '@/api/human/hs/socialSecurity'
 import { queryImportNote } from '@/api/human/hs/importNote'
-
 export default {
   name: 'SocialSecurityBasis',
   components: { selectUser, DictTagHuman },
@@ -680,16 +681,16 @@ export default {
           { required: true, message: '生效日期不能为空', trigger: 'change' }
         ],
         insureNo: [
-          { min: 3, max: 100, message: '长度在3到100个字符', trigger: 'blur' }
+          { min: 10, max: 100, message: '长度在10到100个字符', trigger: 'blur' }
         ],
         medicalInsuranceNo: [
-          { min: 3, max: 50, message: '长度在3到50个字符', trigger: 'blur' }
+          { min: 10, max: 50, message: '长度在10到50个字符', trigger: 'blur' }
         ],
         compInsureBookNo: [
-          { min: 3, max: 50, message: '长度在3到50个字符', trigger: 'blur' }
+          { min: 10, max: 50, message: '长度在10到50个字符', trigger: 'blur' }
         ],
         houseAccount: [
-          { min: 3, max: 50, message: '长度在3到50个字符', trigger: 'blur' }
+          { min: 10, max: 50, message: '长度在10到50个字符', trigger: 'blur' }
         ]
       },
       //查询表单校验
@@ -705,9 +706,7 @@ export default {
     this.getCompanyList()
     this.getDisc()
   },
-  watch: {
-
-  },
+  watch: {},
   methods: {
     //查询薪资选单
     getDisc() {
@@ -748,16 +747,25 @@ export default {
     judge() {
       let errorMsg = null
       let stop = false
-      this.socialSecurityDetail.forEach((value) => {
+      this.socialSecurityDetail.forEach((value,index) => {
         if (value.thrIdSta === '1') {
-          if (value.fivSta && stop !== true) {
-            if (stop !== true && (parseInt(value.fivSta) > parseInt(value.eleSta) || parseInt(value.fivSta) < parseInt(value.ninSta))) {
-              errorMsg = value.payProName + '基数大小不符合要求'
+          if(!stop){
+            if (!value.fivSta) {
+              errorMsg = value.payProName + '基数不可为空'
               stop = true
+            } else if (value.fivSta) {
+              if (stop !== true && (parseInt(value.fivSta) > parseInt(value.eleSta) || parseInt(value.fivSta) < parseInt(value.ninSta))) {
+                errorMsg = value.payProName + '基数大小不符合要求'
+                stop = true
+              }else {
+                let re = /^[0-9]*[1-9][0-9]*$/;
+                let rsCheck = re.test(value.fivSta);
+                if (!rsCheck){
+                  errorMsg = value.payProName + '基数需要为正整数'
+                  stop = true
+                }
+              }
             }
-          } else if (!value.fivSta && stop !== true) {
-            errorMsg = value.payProName + '基数不可为空'
-            stop = true
           }
         }
       })
@@ -770,9 +778,9 @@ export default {
     },
     //获取社保公积金项目
     getSocialSecurityList(e) {
-      if(e===1){
+      if (e === 1) {
         this.setSocialSecurityDetail(1)
-      }else{
+      } else {
         socialSecurity(this.queryParams.compId).then(response => {
           this.socialSecurityList = response.data
           this.setSocialSecurityDetail()
@@ -780,7 +788,7 @@ export default {
       }
     },
     setSocialSecurityDetail(e) {
-      if(!e){
+      if (!e) {
         this.socialSecurityList.forEach((value) => {
           let detail = {
             id: null,
@@ -818,7 +826,7 @@ export default {
         })
       }
       if (e === 1) {
-        this.socialSecurityDetail= this.form.detailList;
+        this.socialSecurityDetail = this.form.detailList
       }
     },
     /** 查询社保公积金标准核定列表 */
@@ -895,8 +903,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
-      this.socialSecurityBasisList = [];
-      this.total = 0;
+      this.socialSecurityBasisList = []
+      this.total = 0
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -929,10 +937,10 @@ export default {
     },
     /** 提交按钮 */
     submitForm(e) {
-      let judge = this.judge()
-      if (judge) {
-        this.$refs['form'].validate(valid => {
+      this.$refs['form'].validate(valid => {
           if (valid) {
+            let judge = this.judge()
+            if (judge) {
             this.form.isCheck = e
             this.setForm()
             this.form.detailList = this.socialSecurityDetail
@@ -953,17 +961,12 @@ export default {
               })
             }
           }
-        })
-      }
+        }
+      })
     },
     /** 人员选单事件 */
     inputClick() {
-      var queryParams = {
-        compID: this.queryParams.compId,
-        pageNum: 1,
-        pageSize: 10
-      }
-      this.$refs.select.show(queryParams)
+      this.$refs.select.show()
     },
     /** 获取工号 */
     getJobNumber(empNo, empName, compId, id) {

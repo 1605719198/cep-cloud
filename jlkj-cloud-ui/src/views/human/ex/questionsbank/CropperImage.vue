@@ -187,7 +187,7 @@ export default {
           const formData = new FormData()
           formData.append('file', data, _this.filename)
           uploadPhoto(_this.newCode, formData).then(response => {
-            this.$modal.msgSuccess("新增成功");
+            this.$modal.msgSuccess("上传成功");
             this.open = false;
             _this.$emit('uploadImgSuccess', response.data)
           })

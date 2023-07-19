@@ -22,9 +22,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
     <sql id="selectUserVo">
-        select a.user_id,a.user_name,a.nick_name,a.dept_id,dept_name,a.email,a.phonenumber,a.sex,a.avatar,a.status,a.remark from sys_user a
-        left join sys_dept b on b.dept_id = a.dept_id
-    </sql>
+		select a.user_id,
+			   a.user_name,
+			   a.nick_name,
+			   a.dept_id,
+			   dept_name,
+			   a.email,
+			   a.phonenumber,
+			   a.sex,
+			   a.avatar,
+			   a.status,
+			   a.remark
+		from sys_user a
+				 left join sys_dept b on b.dept_id = a.dept_id
+	</sql>
 
     <select id="selectUserList" parameterType="ExamUserData" resultMap="ExamUserDataResult">
         <include refid="selectUserVo"/>

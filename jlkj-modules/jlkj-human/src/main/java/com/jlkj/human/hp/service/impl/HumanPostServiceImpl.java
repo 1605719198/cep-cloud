@@ -173,7 +173,7 @@ public class HumanPostServiceImpl implements IHumanPostService
     public int updateSysPostNowCapacity(Long postId){
         try{
             HumanPost humanPost = humanPostMapper.selectSysPostByPostId(postId);
-            Long number = humanPost.getNowCapacity()+1;
+            long number = humanPost.getNowCapacity()+1;
             humanPost.setNowCapacity(number);
             humanPostMapper.updateSysPost(humanPost);
             return Math.toIntExact(number);

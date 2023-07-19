@@ -26,26 +26,13 @@
 
       <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-plus"
-            size="mini"
-            @click="handleAdd"
-            v-hasPermi="['human:examtask:add']"
-          >新增
+          <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+                     v-hasPermi="['human:examtask:add']">新增
           </el-button>
         </el-col>
         <el-col :span="1.5">
-          <el-button
-            type="warning"
-            plain
-            icon="el-icon-download"
-            size="mini"
-            :loading="exportLoading"
-            @click="handleExport"
-            v-hasPermi="['human:examtask:export']"
-          >导出
+          <el-button type="warning" plain icon="el-icon-download" size="mini" :loading="exportLoading"
+                     @click="handleExport" v-hasPermi="['human:examtask:export']">导出
           </el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -57,7 +44,7 @@
               <el-col :span="12">
                 <div class="bank-panel">
                   <div class="photo-area">
-                    <img class="title-photo" :src="hosturl + item.pictureUrl"/>
+                    <img class="title-photo" :src="item.pictureUrl"/>
                   </div>
                   <div class="describe-area">
                     <div class="title-area">
@@ -108,7 +95,7 @@
               <el-col :span="12" v-if="index + 1 < examtaskList.length">
                 <div class="bank-panel">
                   <div class="photo-area">
-                    <img class="title-photo" :src="hosturl + examtaskList[index + 1].pictureUrl"/>
+                    <img class="title-photo" :src="examtaskList[index + 1].pictureUrl"/>
                   </div>
                   <div class="describe-area">
                     <div class="title-area">
@@ -184,13 +171,13 @@
 </template>
 
 <script>
-import {listExamtask, delExamtask, addExamtask, updateExamtask, exportExamtask} from
-    "@/api/human/ex/examtask";
+import {addExamtask, delExamtask, exportExamtask, listExamtask, updateExamtask} from "@/api/human/ex/examtask";
 import Edit from "@/views/human/ex/examtask/edit";
 import examSelect from '@/components/ExamSelect/index'
 import selectQuestions from "@/views/human/ex/examtask/selectQuestions";
 import contentEdit from "@/views/human/ex/examtask/contentEdit";
 import choiceUser from "@/views/human/ex/examtask/choiceUser";
+
 export default {
   name: "Examtask",
   components: {
@@ -219,39 +206,9 @@ export default {
       // 创建考试表格数据
       examtaskList: [],
       // 弹出层标题
-      // title: "",
+      title: "",
       // 是否显示弹出层
-      // open: false,
-      // 考试序号字典
-      examIdOptions: [],
-      // 考试代码字典
-      examCodeOptions: [],
-      // 考试名称字典
-      examNameOptions: [],
-      // 考试说明字典
-      examDescribeOptions: [],
-      // 组卷方式字典
-      buildTypeOptions: [],
-      // 强制抽卷字典
-      forceDoneOptions: [],
-      // 考试题库字典
-      examBankOptions: [],
-      // 图片链接字典
-      pictureUrlOptions: [],
-      // 开始时间字典
-      startTimeOptions: [],
-      // 结束时间字典
-      endTimeOptions: [],
-      // 考试时长字典
-      examDurationOptions: [],
-      // 状态字典
-      statusOptions: [],
-      // 创建者字典
-      createByOptions: [],
-      // 创建部门字典
-      createDeptOptions: [],
-      // 创建时间字典
-      createTimeOptions: [],
+      open: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -275,7 +232,7 @@ export default {
           {required: true, message: "组卷方式不能为空", trigger: "change"}
         ],
       },
-      hosturl: '',
+      // 组卷方式字典
       buildTypeOptions: [
         {dictValue: 1, dictLabel: "人工组卷"},
         {dictValue: 2, dictLabel: "随机抽题"},
@@ -288,7 +245,6 @@ export default {
     };
   },
   created() {
-    this.hosturl = process.env.VUE_APP_BASE_API;
     this.getList();
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;

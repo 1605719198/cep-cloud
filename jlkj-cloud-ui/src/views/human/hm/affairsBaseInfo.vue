@@ -27,8 +27,8 @@
         </el-form-item>
       </el-col>
       <el-col :span="6">
-        <el-form-item prop="photoAddress">
-          <photoUpload v-model="form.photoAddress" style="position: absolute"/>
+        <el-form-item prop="photoAddress" style="position: absolute; z-index: 999">
+          <photoUpload v-model="form.photoAddress"/>
         </el-form-item>
       </el-col>
     </el-row>
@@ -871,7 +871,7 @@ export default {
           { required: true, validator: checkRealName, trigger: "blur" }
         ],
         nameUsedBefore: [
-          { required: true, validator: checkRealName, trigger: "blur" }
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         firstRecordGraduateSchool: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
@@ -1080,6 +1080,7 @@ export default {
             }
           }
         }
+        this.$modal.msgSuccess("查询成功!!!");
       })
     },
     handleSave() {

@@ -5,7 +5,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jlkj.human.ex.mapper.ExamGroupMapper">
     
     <resultMap type="ExamGroup" id="ExamGroupResult">
-        <result property="groupId"    column="group_id"    />
         <result property="groupCode"    column="group_code"    />
         <result property="groupName"    column="group_name"    />
         <result property="groupDescribe"    column="group_describe"    />
@@ -13,12 +12,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="personNumber"    column="person_number"    />
-       
     </resultMap>
 
     <sql id="selectExamGroupVo">
-		select  a.group_code, a.group_name, b.person_number,a.group_describe, a.status, a.create_by, a.create_time from human_ex_group a
-		<if test="status != null">left join</if>
+        select a.group_code, a.group_name, b.person_number,a.group_describe, a.status, a.create_by, a.create_time from
+        human_ex_group a
+        <if test="status != null">left join</if>
 		<if test="status == null">inner join</if>		
 		(
 		select group_code,count(group_code) as person_number from human_ex_group_person group by group_code
@@ -35,16 +34,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectChoiceExamGroupList" parameterType="String" resultMap="ExamGroupResult">
         <include refid="selectExamGroupVo"/>
-         where a.group_code in
-	    (
-	     select group_code from human_ex_task_group where exam_code = #{examCode}
-	    )
-	    order by a.group_code
+        where a.group_code in
+        (
+        select group_code from human_ex_task_group where exam_code = #{examCode}
+        )
+        order by a.group_code
     </select>
     
-    <select id="selectExamGroupById" parameterType="String" resultMap="ExamGroupResult">
+    <select id="selectExamGroupById" parameterType="Long" resultMap="ExamGroupResult">
         <include refid="selectExamGroupVo"/>
-        where a.group_code = #{groupCode}
+        where group_code = #{groupCode}
     </select>
         
     <insert id="insertExamGroup" parameterType="ExamGroup" >
@@ -77,16 +76,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
         </trim>
-        where group_id = #{groupId}
+        where group_code = #{groupCode}
     </update>
 
     <delete id="deleteExamGroupById" parameterType="Long">
-        delete from human_ex_group where group_code = #{groupCode}
+        delete
+        from human_ex_group
+        where group_code = #{groupCode}
     </delete>
 
     <delete id="deleteExamGroupByIds" parameterType="String">
         delete from human_ex_group where group_code in
-        <foreach item="groupCode" collection="array" open="(" separator="," close=")">
+        <foreach item="groupId" collection="array" open="(" separator="," close=")">
             #{groupCode}
         </foreach>
     </delete>

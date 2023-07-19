@@ -15,9 +15,6 @@ public class ExamGroup extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 分组序号 */
-    private Long groupId;
-
     /** 分组代码 */
     @Excel(name = "分组代码")
     private String groupCode;
@@ -44,17 +41,7 @@ public class ExamGroup extends BaseEntity
     @Excel(name = "状态")
     private String status;
 
-    public void setGroupId(Long groupId) 
-    {
-        this.groupId = groupId;
-    }
-
-    public Long getGroupId() 
-    {
-        return groupId;
-    }
-    public void setGroupCode(String groupCode) 
-    {
+    public void setGroupCode(String groupCode) {
         this.groupCode = groupCode;
     }
 
@@ -93,7 +80,6 @@ public class ExamGroup extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("groupId", getGroupId())
             .append("groupCode", getGroupCode())
             .append("groupName", getGroupName())
             .append("personNumber",getPersonNumber())

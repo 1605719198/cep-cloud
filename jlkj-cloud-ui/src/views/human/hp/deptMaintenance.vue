@@ -596,7 +596,7 @@ import {queryAllUser} from "@/api/system/user"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import DictTagHuman from '@/views/components/human/dictTag/humanBaseInfo'
-
+import { checkSpecialKey } from '@/utils/jlkj'
 export default {
   name: 'Deptmaintenance',
   dicts: ['sys_normal_disable'],
@@ -713,10 +713,12 @@ export default {
       // 表单校验
       rules: {
         deptCode: [
-          { required: true, message: '请输入机构编码', trigger: 'blur' }
+          { required: true, message: '请输入机构编码', trigger: 'blur' },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
         deptName: [
-          { required: true, message: '请输入机构名称', trigger: 'blur' }
+          { required: true, message: '请输入机构名称', trigger: 'blur' },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
         parentId: [
           { required: true, message: '请选择该机构上级', trigger: 'change' },

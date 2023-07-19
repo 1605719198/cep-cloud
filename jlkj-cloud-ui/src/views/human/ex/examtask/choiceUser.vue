@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import { listGroup, listChoiceGroup } from "@/api/human/ex/group";
-import { batchUpdateTaskgroup } from "@/api/human/ex/taskgroup";
+import {listChoiceGroup, listGroup} from "@/api/human/ex/group";
+import {batchUpdateTaskgroup} from "@/api/human/ex/taskgroup";
 
 export default {
-  data () {
+  data() {
     return {
       // 遮罩层
       loading: true,
@@ -99,16 +99,16 @@ export default {
   },
   methods: {
     init_data (contentdata, selectdata) {
-      this.bankData = contentdata
-      this.saveList = selectdata
+      this.bankData = contentdata;
+      this.saveList = selectdata;
 
-      this.getList()
+      this.getList();
     },
     update_data (row) {
-      this.isUpdate = true
-      this.examData = row
-      this.getList()
-      this.getChoiceList()
+      this.isUpdate = true;
+      this.examData = row;
+      this.getList();
+      this.getChoiceList();
     },
     getList() {
       this.loading = true;
@@ -116,7 +116,7 @@ export default {
         this.groupList = response.rows;
         this.total = response.total;
         this.loading = false;
-        this.setChoice()
+        this.setChoice();
       });
     },
     getChoiceList() {
@@ -128,21 +128,21 @@ export default {
     },
      // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.groupId)
-      this.choiceGroups = selection
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.groupId);
+      this.choiceGroups = selection;
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     handleCurrentChange(val) {
       this.queryParams.pageNum = val;
-      this.getSelect()
+      this.getSelect();
       this.$nextTick(() => {
         this.getList();
       })
     },
     handleSizeChange(val) {
       this.queryParams.pageSize = val
-      this.getSelect()
+      this.getSelect();
       this.$nextTick(() => {
         this.getList();
       })
@@ -151,22 +151,22 @@ export default {
       this.$emit('refreshGroup')
     },
     onSaveOrBack () {
-      this.saveData()
-      this.$emit('refreshGroup')
+      this.saveData();
+      this.$emit('refreshGroup');
     },
     onSave () {
-      this.saveData()
+      this.saveData();
     },
     saveData () {
-      this.getSelect()
+      this.getSelect();
       this.$nextTick(() => {
         if (this.saveList === null || this.saveList.length === 0) {
-          this.$message.error('需要先选中题目')
-          return
+          this.$message.error('需要先选中题目');
+          return;
         }
 
         let groupSaveList = []
-        for (let i = 0; i < this.saveList.length; i ++) {
+        for (let i = 0; i < this.saveList.length; i++) {
           groupSaveList.push(
             {
               examCode: this.examData.examCode,
@@ -175,78 +175,78 @@ export default {
           )
         }
         batchUpdateTaskgroup(groupSaveList).then(response => {
-          this.$message.success('保存成功!')
+          this.$message.success('保存成功!');
         });
       })
     },
     getSelect() {
       if (this.groupList === null || this.groupList.length == 0) {
-         return
+        return;
       }
       // 第一遍循环置状态
       let is_find = false
       for (let i = 0; i < this.groupList.length; i ++) {
-        is_find = false
+        is_find = false;
         if (this.choiceGroups !== null || this.choiceGroups.length > 0) {
           for (let j = 0; j < this.choiceGroups.length; j ++) {
             if (this.groupList[i].groupId === this.choiceGroups[j].groupId) {
-              is_find = true
+              is_find = true;
             }
           }
         }
 
         if (is_find) {
-          this.groupList[i].remark = 'T'
+          this.groupList[i].remark = 'T';
         } else {
-          this.groupList[i].remark = 'F'
+          this.groupList[i].remark = 'F';
         }
       }
 
       // 第二遍循环操作缓存列表数据
       if (this.saveList === null) {
-        this.saveList = []
+        this.saveList = [];
       }
 
       for (let i = 0; i < this.groupList.length; i ++) {
-        is_find = false
-        let order_id = -1
+        is_find = false;
+        let order_id = -1;
 
-        for (let j = 0; j < this.saveList.length; j ++) {
-            if (this.groupList[i].groupId === this.saveList[j].groupId) {
-              is_find = true
-              order_id = j
-            }
+        for (let j = 0; j < this.saveList.length; j++) {
+          if (this.groupList[i].groupId === this.saveList[j].groupId) {
+            is_find = true;
+            order_id = j;
+          }
         }
 
         if (this.groupList[i].remark === 'T' && !is_find) {
-          this.saveList.push(this.groupList[i])
+          this.saveList.push(this.groupList[i]);
         } else if (this.groupList[i].remark === 'F' && is_find) {
-          this.saveList.splice(order_id,1)
+          this.saveList.splice(order_id, 1);
         }
       }
     },
     setChoice () {
       if (this.saveList === null || this.saveList.length === 0) {
-        return
+        return;
       }
 
       if (this.groupList === null || this.groupList === 0) {
-        return
+        return;
       }
       for (let i = 0; i < this.groupList.length; i ++ ) {
         for (let j = 0; j < this.saveList.length; j ++ ) {
           if (this.groupList[i].groupId === this.saveList[j].groupId) {
             this.$nextTick(() => {
-              this.$refs.multipleTable.toggleRowSelection(this.groupList[i], true)
+              this.$refs.multipleTable.toggleRowSelection(this.groupList[i], true);
             })
-            break
+            break;
           }
         }
       }
     },
     getData() {
-      this.getSelect()
-      return this.saveList
+      this.getSelect();
+      return this.saveList;
     }
   }
 };

@@ -1,7 +1,9 @@
 package com.jlkj.human.ex.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.jlkj.human.ex.domain.ExamTaskManager;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,15 +33,26 @@ public interface IExamTaskManagerService
 
     /**
      * 新增创建考试
-     * 
+     *
      * @param examTaskManager 创建考试
      * @return 结果
      */
     public int insertExamTaskManager(ExamTaskManager examTaskManager);
 
     /**
+     * 新增题库图片
+     *
+     * @param examCodes 试题代码
+     * @param file      试题图片
+     * @return JSONObject 结果（图片URL）
+     * @Author: 111191
+     * @Date: 2023年7月14日, 0014 上午 11:07:07
+     */
+    JSONObject insertExamBankPicture(String examCodes, MultipartFile file);
+
+    /**
      * 修改创建考试
-     * 
+     *
      * @param examTaskManager 创建考试
      * @return 结果
      */

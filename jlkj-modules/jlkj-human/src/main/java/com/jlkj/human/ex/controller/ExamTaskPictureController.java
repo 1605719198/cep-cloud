@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2023-01-18
  */
 @RestController
-@RequestMapping("/exam/exampicture")
+@RequestMapping("/exampicture")
 public class ExamTaskPictureController extends BaseController
 {
     @Autowired
@@ -31,7 +31,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 查询考试任务图片管理列表
      */
-    @RequiresPermissions("exam:exampicture:list")
+    @RequiresPermissions("human:exampicture:list")
     @GetMapping("/list")
     public TableDataInfo list(ExamTaskPicture examTaskPicture)
     {
@@ -43,7 +43,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 导出考试任务图片管理列表
      */
-    @RequiresPermissions("exam:exampicture:export")
+    @RequiresPermissions("human:exampicture:export")
     @Log(title = "考试任务图片管理", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(HttpServletResponse response,ExamTaskPicture examTaskPicture)
@@ -56,7 +56,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 获取考试任务图片管理详细信息
      */
-    @RequiresPermissions("exam:exampicture:query")
+    @RequiresPermissions("human:exampicture:query")
     @GetMapping(value = "/{photoCode}")
     public AjaxResult getInfo(@PathVariable("photoCode") String photoCode)
     {
@@ -66,7 +66,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 新增考试任务图片管理
      */
-    @RequiresPermissions("exam:exampicture:add")
+    @RequiresPermissions("human:exampicture:add")
     @Log(title = "考试任务图片管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamTaskPicture examTaskPicture)
@@ -77,7 +77,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 修改考试任务图片管理
      */
-    @RequiresPermissions("exam:exampicture:edit")
+    @RequiresPermissions("human:exampicture:edit")
     @Log(title = "考试任务图片管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamTaskPicture examTaskPicture)
@@ -88,7 +88,7 @@ public class ExamTaskPictureController extends BaseController
     /**
      * 删除考试任务图片管理
      */
-    @RequiresPermissions("exam:exampicture:remove")
+    @RequiresPermissions("human:exampicture:remove")
     @Log(title = "考试任务图片管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{photoCodes}")
     public AjaxResult remove(@PathVariable String[] photoCodes)
