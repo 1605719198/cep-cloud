@@ -1,13 +1,14 @@
 <template>
-<div>
-  <div   v-if="editVisible">
-    <div style ="margin-left: 15px">
+<div class="app-container">
+  <div v-if="editVisible">
+    <div style="margin-left: 15px">
       <el-button
         @click="onClose"
         plain
         icon="el-icon-s-home"
         size="mini"
-      >返回</el-button>
+      >返回
+      </el-button>
     </div>
 
     <div class="form-panel">
@@ -71,7 +72,7 @@
 
         <el-table-column label="分数" width = "60" align="center" prop="questionsScore" />
         <el-table-column label="复杂度" width = "150" align="center" >
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-rate
               v-model="scope.row.rateNumber"
               disabled
@@ -80,14 +81,15 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width = "100" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-button
               size="mini"
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['human:examquestions:edit']"
-            >修改</el-button>
+            >修改
+            </el-button>
             <el-button
               size="mini"
               type="text"
@@ -116,8 +118,13 @@
 </template>
 
 <script>
-import { listQuestionsproperty,} from "@/api/human/ex/questionsproperty";
-import {  delExamquestions, addExamquestions, updateExamquestions, exportExamquestions } from "@/api/human/ex/examquestions";
+import {listQuestionsproperty,} from "@/api/human/ex/questionsproperty";
+import {
+  addExamquestions,
+  delExamquestions,
+  exportExamquestions,
+  updateExamquestions
+} from "@/api/human/ex/examquestions";
 import ExamQuestions from "@/views/human/ex/examquestions/examQuestions";
 
 export default {
