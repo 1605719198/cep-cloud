@@ -28,7 +28,11 @@
       <el-table-column label="类别代码" align="center" prop="typeCode"/>
       <el-table-column label="类别名称" align="center" prop="typeName"/>
       <el-table-column label="顺序Id" align="center" prop="orderId"/>
-      <el-table-column label="状态" align="center" prop="status"/>
+      <el-table-column label="状态" align="center" prop="status">
+        <template v-slot="scope">
+          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -52,13 +56,13 @@
                       placeholder="请选择上级类别ID"/>
         </el-form-item>
         <el-form-item label="类别代码" prop="typeCode" label-width="85px">
-          <el-input v-model="form.typeCode" placeholder="请输入类别代码"/>
+          <el-input v-model="form.typeCode" placeholder="请输入类别代码" maxlength="50"/>
         </el-form-item>
         <el-form-item label="类别名称" prop="typeName" label-width="85px">
-          <el-input v-model="form.typeName" placeholder="请输入类别名称"/>
+          <el-input v-model="form.typeName" placeholder="请输入类别名称" maxlength="30"/>
         </el-form-item>
         <el-form-item label="顺序Id" prop="orderId" label-width="85px">
-          <el-input v-model="form.orderId" placeholder="请输入顺序Id"/>
+          <el-input-number v-model="form.orderId" placeholder="请输入顺序Id" min="0" max="9999"/>
         </el-form-item>
         <el-form-item label="状态" label-width="85px">
           <el-radio-group v-model="form.status">
@@ -77,14 +81,7 @@
 </template>
 
 <script>
-import {
-  listExamType,
-  getExamtype,
-  delExamtype,
-  addExamtype,
-  updateExamtype,
-  typeTreeSelect
-} from "@/api/human/ex/examType";
+import {addExamtype, delExamtype, getExamtype, listExamType, updateExamtype} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
