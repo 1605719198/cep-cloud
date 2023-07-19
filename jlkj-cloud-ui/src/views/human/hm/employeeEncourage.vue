@@ -147,7 +147,7 @@
               </el-col>
               <el-col :span="16">
                 <el-form-item label="奖惩依据" prop="encourageAccording">
-                  <el-input v-model="form.encourageAccording" placeholder="请输入奖惩依据" />
+                  <el-input v-model="form.encourageAccording" placeholder="请输入奖惩依据" :maxlength="500" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
