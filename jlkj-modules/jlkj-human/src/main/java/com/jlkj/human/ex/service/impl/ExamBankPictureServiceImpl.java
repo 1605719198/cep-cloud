@@ -1,6 +1,7 @@
 package com.jlkj.human.ex.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.StringUtils;
@@ -57,17 +58,17 @@ public class ExamBankPictureServiceImpl implements IExamBankPictureService
 
     /**
      * 新增题库图片
-     * 
+     *
      * @param examBankPicture 题库图片
      * @return 结果
      */
     @Override
-    public int insertExamBankPicture(ExamBankPicture examBankPicture)
-    {
+    public int insertExamBankPicture(ExamBankPicture examBankPicture) {
         return examBankPictureMapper.insertExamBankPicture(examBankPicture);
     }
+
     @Override
-    public int insertExamBankPicture(String bankCode, MultipartFile file){
+    public JSONObject insertExamBankPicture(String bankCode, MultipartFile file) {
         // 取得文件扩展名
         String extension = FileTypeUtils.getExtension(file);
         // 取得原始文件名
@@ -75,7 +76,7 @@ public class ExamBankPictureServiceImpl implements IExamBankPictureService
 
         R<SysFile> fileResult = remoteFileService.upload(file);
         if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData())) {
-           new ServiceException("文件服务异常，请联系管理员");
+            new ServiceException("文件服务异常，请联系管理员");
         }
         ExamBankPicture examBankPicture = new ExamBankPicture();
         examBankPicture.setPhotoCode(bankCode);
@@ -85,11 +86,14 @@ public class ExamBankPictureServiceImpl implements IExamBankPictureService
         examBankPicture.setOriginalName(originalFile);
 
         ExamBankPicture bankPicture = examBankPictureMapper.selectExamBankPictureById(bankCode);
-        if(!ObjectUtil.isEmpty(bankPicture)){
+        if (!ObjectUtil.isEmpty(bankPicture)) {
             examBankPictureMapper.deleteExamBankPictureById(bankCode);
         }
+        examBankPictureMapper.insertExamBankPicture(examBankPicture);
+        JSONObject json = new JSONObject();
+        json.put("url", fileResult.getData().getUrl());
 
-        return examBankPictureMapper.insertExamBankPicture(examBankPicture);
+        return json;
     }
 
     /**
