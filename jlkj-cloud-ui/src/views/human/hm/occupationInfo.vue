@@ -106,7 +106,8 @@ export default {
           {required: true, message: "请输入", trigger: "blur"}
         ],
         name: [
-          {required: true, message: "请输入", trigger: "blur"}
+          {required: true, message: "请输入", trigger: "blur"},
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
       }
     }

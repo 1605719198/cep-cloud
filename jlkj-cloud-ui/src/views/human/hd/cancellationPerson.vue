@@ -161,7 +161,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="注销原因" prop="reason">
-                  <el-input v-model="form.reason" placeholder="请输入注销原因" />
+                  <el-input v-model="form.reason" placeholder="请输入注销原因" :maxlength="200" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>

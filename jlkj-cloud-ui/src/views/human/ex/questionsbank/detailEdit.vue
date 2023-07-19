@@ -146,21 +146,21 @@ export default {
   methods: {
     init_data(row) {
       if (row === undefined) {
-        this.isNew = true
-        this.dataForm.radioScore = 2
-        this.dataForm.choiceScore = 5
-        this.dataForm.judgeScore = 2
-        this.dataForm.onlineDate = new Date()
-        this.dataForm.status = 0
-        this.dataForm.bankCode = newGuid()
-        this.newCode = this.dataForm.bankCode
+        this.isNew = true;
+        this.dataForm.radioScore = 2;
+        this.dataForm.choiceScore = 5;
+        this.dataForm.judgeScore = 2;
+        this.dataForm.onlineDate = new Date();
+        this.dataForm.status = 0;
+        this.dataForm.bankCode = newGuid();
+        this.newCode = this.dataForm.bankCode;
       } else {
-        this.dataForm = row
-        this.newCode = this.dataForm.bankCode
-        this.imageUrl = this.hosturl + this.dataForm.pictureUrl
-        this.isNew = false
+        this.dataForm = row;
+        this.newCode = this.dataForm.bankCode;
+        this.imageUrl = this.dataForm.pictureUrl;
+        this.isNew = false;
       }
-      this.getTypeTreeselect()
+      this.getTypeTreeselect();
     },
     /** 查询部门下拉树结构 */
     getTypeTreeselect() {
@@ -185,7 +185,7 @@ export default {
       this.$emit('refreshDataList');
     },
     onSaveOrBack() {
-      this.submitForm()
+      this.submitForm();
       this.$nextTick(() => {
         this.$emit('refreshDataList');
       })

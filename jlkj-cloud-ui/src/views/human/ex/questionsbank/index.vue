@@ -66,7 +66,7 @@
                     <el-col :span="12">
                       <div class="bank-panel">
                         <div class="photo-area">
-                          <img class="title-photo" :src="hosturl + item.pictureUrl"/>
+                          <img class="title-photo" :src="item.pictureUrl"/>
                         </div>
                         <div class="describe-area">
                           <div class="title-area">
@@ -93,7 +93,7 @@
                     <el-col :span="12" v-if="index + 1 < questionsbankList.length">
                       <div class="bank-panel">
                         <div class="photo-area">
-                          <img class="title-photo" :src="hosturl + questionsbankList[index + 1].pictureUrl"/>
+                          <img class="title-photo" :src="questionsbankList[index + 1].pictureUrl"/>
                         </div>
                         <div class="describe-area">
                           <div class="title-area">
@@ -146,11 +146,11 @@
 
 <script>
 import {
-  listQuestionsbank,
-  delQuestionsbank,
   addQuestionsbank,
-  updateQuestionsbank,
-  exportQuestionsbank
+  delQuestionsbank,
+  exportQuestionsbank,
+  listQuestionsbank,
+  updateQuestionsbank
 } from "@/api/human/ex/questionsbank";
 import {typeTreeSelect} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
@@ -237,7 +237,6 @@ export default {
     };
   },
   created() {
-    this.hosturl = "";
     this.getList();
   },
   watch: {
@@ -321,8 +320,12 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      listQuestionsbank(this.queryParams).then(response => {
+        this.questionsbankList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+        this.getTypeTreeselect()
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
