@@ -129,7 +129,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="合同编号" prop="contractNo">
-                  <el-input v-model="form.contractNo" placeholder="请输入合同编号" style="width: 220px"/>
+                  <el-input v-model="form.contractNo" placeholder="请输入合同编号" style="width: 220px" :maxlength="50" show-word-limit/>
                 </el-form-item>
               </el-col>
               <el-col :span="8">

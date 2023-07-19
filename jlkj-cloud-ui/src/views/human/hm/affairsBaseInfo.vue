@@ -696,12 +696,12 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="与建龙员工亲属姓名" prop="relativeFullName">
-          <el-input v-model="form.relativeFullName" placeholder="请输入与建龙员工亲属姓名" :maxlength="50"/>
+          <el-input v-model="form.relativeFullName" placeholder="请输入与建龙员工亲属姓名" :maxlength="50" show-word-limit/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="亲属关系" prop="relationship">
-          <el-input v-model="form.relationship" placeholder="请输入亲属关系" :maxlength="50"/>
+          <el-input v-model="form.relationship" placeholder="请输入亲属关系" :maxlength="50" show-word-limit/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -876,6 +876,9 @@ export default {
         firstRecordGraduateSchool: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
+        medicalHistoryDescription: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
         lastRecordGraduateSchool: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
@@ -895,6 +898,12 @@ export default {
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         officeAddress: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        relativeFullName: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        relationship: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         registeredPermanentResidencePostalCode: [
@@ -965,6 +974,20 @@ export default {
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的手机号码",
+            trigger: "blur"
+          }
+        ],
+        relationTelephone: [
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的联系电话",
+            trigger: "blur"
+          }
+        ],
+        officeTelephone: [
+          {
+            pattern: /^[+]?(0|([1-9]\d*))?$/,
+            message: "请输入正确的办公电话",
             trigger: "blur"
           }
         ],
