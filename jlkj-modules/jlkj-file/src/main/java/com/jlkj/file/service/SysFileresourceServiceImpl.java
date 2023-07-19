@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.file.entity.SysFileresource;
 import com.jlkj.file.mapper.SysFileresourceMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,13 +20,13 @@ import java.io.File;
 public class SysFileresourceServiceImpl extends ServiceImpl<SysFileresourceMapper, SysFileresource>
         implements SysFileresourceService{
 
-    @Value("${file.target-disk}")
+//    @Value("${file.target-disk}")
     private String targetDisk;
 
-    @Value("${file.save-path}")
+    //    @Value("${file.save-path}")
     private String savePath;
 
-    @Value("${file.max-size}")
+    //    @Value("${file.max-size}")
     private long maxSize;
 
     public Object uploadFiles(MultipartFile file) {
