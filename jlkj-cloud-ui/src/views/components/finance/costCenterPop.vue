@@ -45,18 +45,13 @@
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="baseList" @selection-change="handleSelectionChange" height="360px">
         <el-table-column type="selection" width="55" align="left" ></el-table-column>
-        <el-table-column label="厂别" prop="factory" align="left" />
+        <el-table-column label="厂别" prop="factory" align="left" width="180" />
         <el-table-column label="成本中心" prop="costCenter" :show-overflow-tooltip="true" align="left" />
-        <el-table-column label="中文说明" prop="costCenterDesc" align="left" width="300"/>
+        <el-table-column label="中文说明" prop="costCenterDesc" align="left" width="320"/>
         <el-table-column label="年度" prop="fiscalYear" align="left" width="80" />
         <el-table-column label="属性"prop="ccType" align="left" width="200">
           <template v-slot="scope">
             <dict-tag :options="dict.type.cost_cctype_name" :value="scope.row.ccType"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" prop="stusCode" align="left" >
-          <template v-slot="scope">
-            <dict-tag :options="dict.type.cost_stuscode_name" :value="scope.row.stusCode"/>
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +73,7 @@
 <script>
 import { selectCenterList } from "@/api/finance/ao/repayment";
 export default {
-  dicts: ['cost_cctype_name','cost_stuscode_name'],
+  dicts: ['cost_cctype_name'],
   props: ['companyId'],
   data() {
     return {

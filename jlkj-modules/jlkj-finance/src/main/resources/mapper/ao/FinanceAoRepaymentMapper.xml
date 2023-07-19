@@ -178,7 +178,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT a.cost_center costCenter, a.cost_center_desc costCenterDesc, a.fiscal_year fiscalYear, a.cc_type ccType, a.stus_code stusCode, b.attri_value factory
         FROM finance_ac_cost_costcenter a LEFT JOIN  finance_ac_cost_costcenter_attri b on a.id=b.parent_id and b.attri_name='CC_FACTORY'
         <where>
-            <if test="companyId != null  and companyId != ''"> and a.comp_id = #{companyId}</if>
+            <if test="companyId != null  and companyId != ''"> and a.comp_id = #{companyId}  and a.stus_code !='D' </if>
             <if test="costCenter != null  and costCenter != ''"> and a.cost_center like concat('%', #{costCenter},'%' )</if>
             <if test="costCenterDesc != null  and costCenterDesc != ''"> and a.cost_center_desc like concat('%', #{costCenterDesc},'%' )</if>
             <if test="factory != null  and factory != ''"> and b.attri_value = #{factory}</if>
