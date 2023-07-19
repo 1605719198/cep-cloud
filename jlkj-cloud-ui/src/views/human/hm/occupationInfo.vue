@@ -25,28 +25,28 @@
             <el-table-column label="职业证书编号" align="center" key="vocCerNo" prop="vocCerNo" :render-header="addRedStar">
               <template v-slot="scope">
                 <el-form-item :prop="'occupationList.'+scope.$index+'.vocCerNo'" :rules="rules.vocCerNo">
-                  <el-input v-model="scope.row.vocCerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocCerNo`)"></el-input>
+                  <el-input v-model="scope.row.vocCerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocCerNo`)" :maxlength="30" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="职业类别" align="center" key="vocType" prop="vocType">
               <template v-slot="scope">
                 <el-form-item :prop="'occupationList.'+scope.$index+'.vocType'">
-                  <el-input v-model="scope.row.vocType" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocType`)"></el-input>
+                  <el-input v-model="scope.row.vocType" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.vocType`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="名称" align="center" key="name" prop="name" :render-header="addRedStar">
               <template v-slot="scope">
                 <el-form-item :prop="'occupationList.'+scope.$index+'.name'" :rules="rules.name">
-                  <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.name`)"></el-input>
+                  <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.name`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="证书等级" align="center" key="cerTier" prop="cerTier">
               <template v-slot="scope">
                 <el-form-item :prop="'occupationList.'+scope.$index+'.cerTier'">
-                  <el-input v-model="scope.row.cerTier" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerTier`)"></el-input>
+                  <el-input v-model="scope.row.cerTier" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerTier`)" :maxlength="10" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -60,7 +60,7 @@
             <el-table-column label="发证机关" align="center" key="cerComp" prop="cerComp">
               <template v-slot="scope">
                 <el-form-item :prop="'occupationList.'+scope.$index+'.cerComp'">
-                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerComp`)"></el-input>
+                  <el-input v-model="scope.row.cerComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`occupationList.${scope.$index}.cerComp`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>

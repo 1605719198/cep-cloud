@@ -39,35 +39,35 @@
             <el-table-column label="授课单位" align="center" key="trainComp" prop="trainComp">
               <template v-slot="scope">
                 <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.trainComp'">
-                  <el-input v-model="scope.row.trainComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.trainComp`)"></el-input>
+                  <el-input v-model="scope.row.trainComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.trainComp`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="类别（内容）" align="center" key="content" prop="content">
               <template v-slot="scope">
                 <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.content'">
-                  <el-input v-model="scope.row.content" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.content`)"></el-input>
+                  <el-input v-model="scope.row.content" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.content`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="项目" align="center" key="project" prop="project">
               <template v-slot="scope">
                 <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.project'">
-                  <el-input v-model="scope.row.project" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.project`)"></el-input>
+                  <el-input v-model="scope.row.project" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.project`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="获得资格" align="center" key="qualification" prop="qualification">
               <template v-slot="scope">
                 <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.qualification'">
-                  <el-input v-model="scope.row.qualification" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.qualification`)"></el-input>
+                  <el-input v-model="scope.row.qualification" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.qualification`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="获得证书" align="center" key="certificate" prop="certificate">
               <template v-slot="scope">
                 <el-form-item :prop="'cultivateExperienceList.'+scope.$index+'.certificate'">
-                  <el-input v-model="scope.row.certificate" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.certificate`)"></el-input>
+                  <el-input v-model="scope.row.certificate" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`cultivateExperienceList.${scope.$index}.certificate`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
