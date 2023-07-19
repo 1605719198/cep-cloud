@@ -1,105 +1,105 @@
 <template>
-<div>
-  <div v-if= "showUi === 1">
-    <div class="welcome-panel" >
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <div v-if = "isRun">
-            <div  class="questions-panel">
-              <div class= "content_col">
-                <div class = "title_panel">
-                  <div class = "photo-area">
-                    <img class ="title-photo" :src="hosturl + examTitle.pictureUrl"/>
-                  </div>
-                  <div class = "describe-area">
-                    <div class = "title-name">{{examTitle.examName}}</div>
-                    <div class = "title-describe">
-                      <div class = "describe-text">{{examTitle.examDescribe}}</div>
-                      <div class="create-time">{{ dateFormat(examTitle.createTime) }}</div>
+  <div>
+    <div v-if= "showUi === 1">
+      <div class="welcome-panel" >
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div v-if = "isRun">
+              <div  class="questions-panel">
+                <div class= "content_col">
+                  <div class = "title_panel">
+                    <div class = "photo-area">
+                      <img class ="title-photo" :src="hosturl + examTitle.pictureUrl"/>
+                    </div>
+                    <div class = "describe-area">
+                      <div class = "title-name">{{examTitle.examName}}</div>
+                      <div class = "title-describe">
+                        <div class = "describe-text">{{examTitle.examDescribe}}</div>
+                        <div class="create-time">{{ dateFormat(examTitle.createTime) }}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="date-panel">
-                  <div>
-                    <el-statistic title="考试开始时间">
-                      <template slot="prefix">
-                        <i class="el-icon-date" style="color: blue"></i>
-                      </template>
-                      <template slot="formatter"> {{startTimeText}} </template>
-                    </el-statistic>
+                  <div class="date-panel">
+                    <div>
+                      <el-statistic title="考试开始时间">
+                        <template slot="prefix">
+                          <i class="el-icon-date" style="color: blue"></i>
+                        </template>
+                        <template slot="formatter"> {{startTimeText}} </template>
+                      </el-statistic>
+                    </div>
+                    <div>
+                      <el-statistic title="考试结束时间">
+                        <template slot="prefix">
+                          <i class="el-icon-date" style="color: green"></i>
+                        </template>
+                        <template slot="formatter"> {{endTimeText}} </template>
+                      </el-statistic>
+                    </div>
+                    <div>
+                      <el-statistic title="考试时长">
+                        <template slot="prefix">
+                          <i class="el-icon-timer" style="color: red"></i>
+                        </template>
+                        <template slot="formatter"> {{examTitle.examDuration}} </template>
+                      </el-statistic>
+                    </div>
                   </div>
-                  <div>
-                    <el-statistic title="考试结束时间">
-                      <template slot="prefix">
-                        <i class="el-icon-date" style="color: green"></i>
-                      </template>
-                      <template slot="formatter"> {{endTimeText}} </template>
-                    </el-statistic>
-                  </div>
-                  <div>
-                    <el-statistic title="考试时长">
-                      <template slot="prefix">
-                        <i class="el-icon-timer" style="color: red"></i>
-                      </template>
-                      <template slot="formatter"> {{examTitle.examDuration}} </template>
-                    </el-statistic>
-                  </div>
-                </div>
-                <div class="score-panel">
-                  <div>
-                    <el-statistic title="总分数">
-                      <template slot="prefix">
-                        <i class="el-icon-monitor" style="color: blue"></i>
-                      </template>
-                      <template slot="formatter"> {{examTitle.questionsScore}} </template>
-                    </el-statistic>
-                  </div>
-                  <div>
-                    <el-statistic title="判断题数">
-                      <template slot="prefix">
-                        <i class="el-icon-document-checked" style="color: blue"></i>
-                      </template>
-                      <template slot="formatter"> {{examTitle.judgeNumber}} </template>
-                    </el-statistic>
-                  </div>
-                  <div>
-                    <el-statistic title="单选题数">
-                      <template slot="prefix">
-                        <i class="el-icon-folder-checked" style="color: blue"></i>
-                      </template>
-                      <template slot="formatter"> {{examTitle.radioNumber}} </template>
-                    </el-statistic>
-                  </div>
-                  <div>
-                    <el-statistic title="多选题数">
-                      <template slot="prefix">
-                        <i class="el-icon-folder-checked" style="color: blue"></i>
-                      </template>
-                      <template slot="formatter"> {{examTitle.choiceNumber}} </template>
-                    </el-statistic>
+                  <div class="score-panel">
+                    <div>
+                      <el-statistic title="总分数">
+                        <template slot="prefix">
+                          <i class="el-icon-monitor" style="color: blue"></i>
+                        </template>
+                        <template slot="formatter"> {{examTitle.questionsScore}} </template>
+                      </el-statistic>
+                    </div>
+                    <div>
+                      <el-statistic title="判断题数">
+                        <template slot="prefix">
+                          <i class="el-icon-document-checked" style="color: blue"></i>
+                        </template>
+                        <template slot="formatter"> {{examTitle.judgeNumber}} </template>
+                      </el-statistic>
+                    </div>
+                    <div>
+                      <el-statistic title="单选题数">
+                        <template slot="prefix">
+                          <i class="el-icon-folder-checked" style="color: blue"></i>
+                        </template>
+                        <template slot="formatter"> {{examTitle.radioNumber}} </template>
+                      </el-statistic>
+                    </div>
+                    <div>
+                      <el-statistic title="多选题数">
+                        <template slot="prefix">
+                          <i class="el-icon-folder-checked" style="color: blue"></i>
+                        </template>
+                        <template slot="formatter"> {{examTitle.choiceNumber}} </template>
+                      </el-statistic>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-else class = "show-msg">当前无考试</div>
-        </el-col>
-        <el-col :span="12">
-          <div class = "readme-panel">
-            <div class = "readme-title">
-              <p>在线考试说明:</p>
+            <div v-else class = "show-msg">当前无考试</div>
+          </el-col>
+          <el-col :span="12">
+            <div class = "readme-panel">
+              <div class = "readme-title">
+                <p>在线考试说明:</p>
+              </div>
+              <div class="readme-content" v-for="item of contentItem" :key="item.id">
+                <span class = "text-id">{{item.id}}.</span>
+                <span class = "readme-text">{{item.value}}</span>
+              </div>
             </div>
-            <div class="readme-content" v-for="item of contentItem" :key="item.id">
-              <span class = "text-id">{{item.id}}.</span>
-              <span class = "readme-text">{{item.value}}</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-divider></el-divider>
-      <div v-if = "isRun">
-        <div v-if = "!isStart">
-          <el-statistic
+          </el-col>
+        </el-row>
+        <el-divider></el-divider>
+        <div v-if = "isRun">
+          <div v-if = "!isStart">
+            <el-statistic
               ref="statistic"
               @finish="runStart"
               format="HH:mm:ss"
@@ -108,27 +108,26 @@
               :value-style="statisticStyle"
               time-indices
             >
-          </el-statistic>
-        </div>
-        <div v-else class = "button-area">
-          <span class="tips-text">考试已经开始，点击按钮进入</span>
-          <el-button type="success" class = "into-button" @click = "doEnter">进入考试</el-button>
+            </el-statistic>
+          </div>
+          <div v-else class = "button-area">
+            <span class="tips-text">考试已经开始，点击按钮进入</span>
+            <el-button type="success" class = "into-button" @click = "doEnter">进入考试</el-button>
+          </div>
         </div>
       </div>
     </div>
+    <div v-else-if = "showUi === 2">
+      <start-answer ref="answerRef" @refreshAnswer ="answertDoneHandle"></start-answer>
+    </div>
   </div>
-  <div v-else-if = "showUi === 2">
-    <start-answer ref="answerRef" @refreshAnswer ="answertDoneHandle"></start-answer>
-  </div>
-</div>
 </template>
 
 
 <script>
 import { getTitle } from "@/api/human/ex/examtitle";
-import { dateTextToDateString,  dateTextToDatetimeString } from
-    "@/utils/date";
-import startAnswer from './startAnswer'
+import { dateToString , dateTextToDateString, dateRemoveSeconds, dateTextToDatetimeString } from "@/utils/date";
+import startAnswer from "@/views/human/ex/examstart/startAnswer";
 export default {
   name: "examStart",
   components: {
@@ -143,8 +142,8 @@ export default {
       isRun:false,
       showUi: 1,
       statisticStyle: {
-       fontSize: "2.5rem",
-       color: "#27da70"
+        fontSize: "2.5rem",
+        color: "#27da70"
       },
       hosturl: '',
       startTimeText: null,
@@ -160,14 +159,15 @@ export default {
   created() {
   },
   mounted () {
-    this.hosturl = baseApiUrl
+    this.hosturl = "";
     this.getData()
   },
   methods: {
     /** 查询题目列表 */
     getData () {
-      getTitle(this.$store.state.user.userCode).then(response => {
+      getTitle(this.$store.state.user.name).then(response => {
         if (response.data !== undefined && response.data !== null) {
+          debugger
           this.examTitle = response.data
           this.isRun = true
           this.setShow()
@@ -206,7 +206,7 @@ export default {
     handleEnter () {
       this.showUi = 2
       this.$nextTick(() => {
-       this.$refs.answerRef.init_data(this.examTitle)
+        this.$refs.answerRef.init_data(this.examTitle)
       })
     },
     answertDoneHandle () {
