@@ -1,6 +1,5 @@
 package com.jlkj.human.ex.controller;
 
-import com.jlkj.common.core.domain.R;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.StringUtils;
 import com.jlkj.common.core.utils.file.FileTypeUtils;
@@ -12,14 +11,8 @@ import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.ex.domain.ExamTaskManager;
-import com.jlkj.human.ex.domain.ExamTaskPicture;
 import com.jlkj.human.ex.service.IExamTaskManagerService;
-import com.jlkj.human.ex.service.IExamTaskPictureService;
-import com.jlkj.system.api.RemoteFileService;
-import com.jlkj.system.api.domain.SysFile;
-import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,10 +32,6 @@ import java.util.List;
 public class ExamTaskManagerController extends BaseController {
     @Autowired
     private IExamTaskManagerService examTaskManagerService;
-    @Autowired
-    private IExamTaskPictureService examTaskPictureService;
-    @Autowired
-    private RemoteFileService remoteFileService;
 
     /**
      * 查询创建考试列表
@@ -125,22 +114,6 @@ public class ExamTaskManagerController extends BaseController {
         if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
             return error("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
         }
-        // 取得当前登录人员信息
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        R<SysFile> fileResult = remoteFileService.upload(file);
-        if (StringUtils.isNull(fileResult) || StringUtils.isNull(fileResult.getData())) {
-            return error("文件服务异常，请联系管理员");
-        }
-        String url = fileResult.getData().getUrl();
-        ExamTaskPicture examTaskPicture =
-                new ExamTaskPicture(examCodes, "", url, fileResult.getData().getName(),
-                        "", loginUser.getUserName());
-        try {
-            examTaskPictureService.deleteExamTaskPictureById(examCodes);
-            examTaskPictureService.insertExamTaskPicture(examTaskPicture);
-        } catch (Exception e) {
-            return AjaxResult.error(e.getMessage());
-        }
-        return AjaxResult.success(examTaskPicture);
+        return AjaxResult.success(examTaskManagerService.insertExamBankPicture(examCodes, file));
     }
 }

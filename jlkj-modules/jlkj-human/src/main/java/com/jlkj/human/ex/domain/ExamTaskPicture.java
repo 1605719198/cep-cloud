@@ -1,5 +1,7 @@
 package com.jlkj.human.ex.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.jlkj.common.core.annotation.Excel;
 import com.jlkj.common.core.web.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,6 +18,7 @@ public class ExamTaskPicture extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 图片序号 */
+    @TableId(type = IdType.AUTO)
     private Long photoId;
 
     /** 图片代码 */
@@ -104,19 +107,6 @@ public class ExamTaskPicture extends BaseEntity
     {
         return status;
     }
-
-    
-    
-
-	public ExamTaskPicture(String photoCode, String photoPath, String photoUrl, String fileName, String originalName,
-			String createBy) {
-		super();
-		this.photoCode = photoCode;
-		this.photoPath = photoPath;
-		this.photoUrl = photoUrl;
-		this.fileName = fileName;
-		this.originalName = originalName;
-	}
 
 	@Override
     public String toString() {

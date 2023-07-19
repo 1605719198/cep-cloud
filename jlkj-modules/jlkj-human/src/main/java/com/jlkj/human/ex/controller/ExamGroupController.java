@@ -1,18 +1,14 @@
 package com.jlkj.human.ex.controller;
 
-import com.jlkj.common.core.utils.ServletUtils;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
-import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.core.web.controller.BaseController;
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.common.core.web.page.TableDataInfo;
 import com.jlkj.common.log.annotation.Log;
 import com.jlkj.common.log.enums.BusinessType;
 import com.jlkj.common.security.annotation.RequiresPermissions;
-import com.jlkj.common.security.service.TokenService;
 import com.jlkj.human.ex.domain.ExamGroup;
 import com.jlkj.human.ex.service.IExamGroupService;
-import com.jlkj.system.api.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +28,7 @@ public class ExamGroupController extends BaseController
 {
     @Autowired
     private IExamGroupService examGroupService;
-    @Autowired
-    private TokenService tokenService;
+
     /**
      * 查询人员分组列表
      */
@@ -84,10 +79,6 @@ public class ExamGroupController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody ExamGroup sysGroup)
     {
-    	sysGroup.setGroupCode(IdUtils.simpleUUID());
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-    	sysGroup.setCreateBy(loginUser.getUserName());
-
         return toAjax(examGroupService.insertSysGroup(sysGroup));
     }
 

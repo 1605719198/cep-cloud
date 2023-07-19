@@ -1,33 +1,38 @@
 package com.jlkj.human.ex.service.impl;
+
 import com.jlkj.common.core.utils.DateUtils;
+import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.common.security.service.TokenService;
+import com.jlkj.common.security.utils.SecurityUtils;
 import com.jlkj.human.ex.domain.ExamGroup;
 import com.jlkj.human.ex.mapper.ExamGroupMapper;
 import com.jlkj.human.ex.service.IExamGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
  * 人员分组Service业务层处理
- * 
+ *
  * @author qnsdt
  * @date 2023-01-28
  */
 @Service
-public class ExamGroupServiceImpl implements IExamGroupService
-{
+public class ExamGroupServiceImpl implements IExamGroupService {
     @Autowired
     private ExamGroupMapper sysGroupMapper;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询人员分组
-     * 
+     *
      * @param groupId 人员分组ID
      * @return 人员分组
      */
     @Override
-    public ExamGroup selectSysGroupById(Long groupId)
-    {
+    public ExamGroup selectSysGroupById(Long groupId) {
         return sysGroupMapper.selectExamGroupById(groupId);
     }
 
@@ -52,6 +57,8 @@ public class ExamGroupServiceImpl implements IExamGroupService
     @Override
     public int insertSysGroup(ExamGroup sysGroup)
     {
+        sysGroup.setGroupCode(IdUtils.simpleUUID());
+        sysGroup.setCreateBy(SecurityUtils.getLoginUser().getUserName());
         sysGroup.setCreateTime(DateUtils.getNowDate());
         return sysGroupMapper.insertExamGroup(sysGroup);
     }

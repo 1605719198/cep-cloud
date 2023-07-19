@@ -2,6 +2,7 @@ package com.jlkj.human.ex.mapper;
 
 
 import com.jlkj.human.ex.domain.ExamTaskManager;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author qnsdt
  * @date 2023-01-06
  */
+@Repository
 public interface ExamTaskManagerMapper 
 {
     /**
