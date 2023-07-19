@@ -191,38 +191,10 @@ export default {
         children: "children",
         label: "label"
       },
-      // 题库id字典
-      bankIdOptions: [],
-      // 题库代码字典
-      bankCodeOptions: [],
-      // 题库名称字典
-      bankNameOptions: [],
-      // 题库描述字典
-      bankDescribeOptions: [],
-      // 题库版本字典
-      bankVersionOptions: [],
       // 考试类型字典
       examTypeOptions: [],
-      // 上线日期字典
-      onlineDateOptions: [],
-      // 图片链接字典
-      pictureUrlOptions: [],
-      // 单选分数字典
-      radioScoreOptions: [],
-      // 多选分数字典
-      choiceScoreOptions: [],
-      // 判断分数字典
-      judgeScoreOptions: [],
-      // 状态字典
-      statusOptions: [],
       // 考试分类表格数据
       examtypeList: [],
-      // 创建者字典
-      createByOptions: [],
-      // 创建部门字典
-      createDeptOptions: [],
-      // 创建时间字典
-      createTimeOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
