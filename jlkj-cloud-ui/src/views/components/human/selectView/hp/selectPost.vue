@@ -73,7 +73,7 @@
 <script>
 import '@/assets/styles/humanStyles.scss';
 import {selectCompany, treeselect} from "@/api/human/hp/deptMaintenance";
-import { listPostMaintenance, getPostMaintenance, delPostMaintenance, addPostMaintenance, updatePostMaintenance } from "@/api/human/hp/postMaintenance";
+import { listPostMaintenance } from "@/api/human/hp/postMaintenance";
 import DictTagHuman from "@/views/components/human/dictTag/humanBaseInfo"
 export default {
   components: {DictTagHuman},
@@ -85,6 +85,8 @@ export default {
       postId: [],
       postName: [],
       postCode: [],
+      //选中数据列表
+      selectionList: [],
       // 总条数
       total: 0,
       // 未授权用户数据
@@ -162,6 +164,7 @@ export default {
       this.postId = selection.map(item => item.postId);
       this.postCode= selection.map(item => item.postCode);
       this.postName=  selection.map(item => item.postName);
+      this.selectionList = selection;
     },
     // 查询表数据
     getList() {
@@ -179,7 +182,7 @@ export default {
     resetQuery(e) {
       this.queryParams.postName = null;
       this.queryParams.orgId = null;
-      if(e==1){
+      if(e===1){
         this.getList();
       }
     },
@@ -189,19 +192,15 @@ export default {
       const postName = this.postName.join(",");
       const postCode = this.postCode.join(",");
       if (postId == "") {
-        this.$modal.msgError("请选择要分配的用户");
+        this.$modal.msgError("请选择岗位");
         return;
       }
-      if (this.postId.length > 1) {
+      if (this.selectionList.length > 1) {
         this.$modal.msgError("只能选择一笔数据");
         return;
       }
       this.visible = false;
-      var postData={
-        postId:postId,
-        postName:postName,
-        postCode:postCode,
-      }
+      var postData= this.selectionList[0];
       this.$emit("ok", postData);
     },
     /** 查询部门下拉树结构 */

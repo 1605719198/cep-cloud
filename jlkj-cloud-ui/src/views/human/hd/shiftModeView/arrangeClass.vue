@@ -56,7 +56,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="周期设定" prop="cycleSetString">
-          <el-input v-model="cycleSetData.cycleString" placeholder="请输入周期设定(逗号分隔)" />
+          <el-input v-model="cycleSetData.cycleString" placeholder="请输入周期设定(逗号分隔)" maxlength="100" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-tickets" size="mini" @click="setCycleData">排班</el-button>

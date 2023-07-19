@@ -613,7 +613,6 @@ export default {
     this.initData()
     this.getCompanyList()
     this.getDisc()
-    this.getList()
   },
   methods: {
     //销假流程
@@ -1423,12 +1422,23 @@ export default {
     },
     /** 查询员工销假列表 */
     getList() {
-      this.loading = true
-      listCancelHoliday(this.queryParams).then(response => {
-        this.cancelHolidayList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+      if (typeof this.queryParams.empNo === 'string' && this.queryParams.empNo.length > 0) {
+        this.loading = true
+        listCancelHoliday(this.queryParams).then(response => {
+          this.cancelHolidayList = response.rows
+          this.total = response.total
+          this.loading = false
+        })
+      }
+    },
+    /** 查询条件判定 */
+    judgeQuery() {
+      if (typeof this.queryParams.empNo === 'string' && this.queryParams.empNo.length > 0) {
+        return true
+      } else {
+        this.$modal.msgError('请输入工号')
+        return false
+      }
     },
     // 取消按钮
     cancel() {
@@ -1476,14 +1486,19 @@ export default {
       this.resetForm('form')
     },
     /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+    handleQuery(e) {
+      if (e === 0 || this.judgeQuery()) {
+        this.queryParams.pageNum = 1
+        this.getList()
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
-      this.handleQuery()
+      this.queryParams.startDate = null
+      this.queryParams.endDate = null
+      this.cancelHolidayList = []
+      this.total = 0
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

@@ -75,10 +75,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSysPostList" parameterType="HumanPost" resultMap="HumanPostResult">
         <include refid="selectHumanPostVo"/>
-        <where>  
+        <where>
+
             <if test="status != null  and status != ''"> and status &lt;= #{status}</if>
             <if test="orgId != null "> and org_id = #{orgId}</if>
             <if test="compId != null  and compId != ''"> and comp_id = #{compId}</if>
+            <if test="postId != null  and postId != ''"> and post_id = #{postId}</if>
             <if test="postCode != null  and postCode != ''"> and post_code = #{postCode}</if>
             <if test="postName != null  and postName != ''"> and post_name like concat('%', #{postName}, '%')</if>
         </where>

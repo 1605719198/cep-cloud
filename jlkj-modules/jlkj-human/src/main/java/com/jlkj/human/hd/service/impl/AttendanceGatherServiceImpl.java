@@ -9,12 +9,15 @@ import com.jlkj.common.core.utils.bean.BeanUtils;
 import com.jlkj.common.core.utils.bean.BeanValidators;
 import com.jlkj.common.core.utils.poi.ExcelUtil;
 import com.jlkj.common.core.utils.uuid.IdUtils;
+import com.jlkj.human.hd.domain.AttendanceAbnormal;
 import com.jlkj.human.hd.domain.AttendanceGather;
 import com.jlkj.human.hd.domain.SaveTime;
 import com.jlkj.human.hd.domain.ShiftCode;
+import com.jlkj.human.hd.dto.AttendanceAbnormalDTO;
 import com.jlkj.human.hd.dto.AttendanceGatherDTO;
 import com.jlkj.human.hd.dto.PersonShiftCodeDTO;
 import com.jlkj.human.hd.mapper.AttendanceGatherMapper;
+import com.jlkj.human.hd.service.IAttendanceAbnormalService;
 import com.jlkj.human.hd.service.IAttendanceGatherService;
 import com.jlkj.human.hd.service.ISaveTimeService;
 import com.jlkj.human.hd.service.IShiftCodeService;
@@ -31,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validator;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -56,6 +60,9 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
 
     @Resource
     private ISaveTimeService saveTimeService;
+
+    @Resource
+    private IAttendanceAbnormalService attendanceAbnormalService;
 
 //    @Resource
 //    OverTimeServiceImpl overTimeService;
@@ -568,6 +575,9 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
         double dueAttDuty = 0, dueAttHou = 0;
         //大夜班小夜班数
         long bigNig = 0, smaNig = 0;
+        // 缺勤班次数，缺勤天数，缺勤小时数
+        BigDecimal shoAttDuty = new BigDecimal("0.0"), shoAttDay = new BigDecimal("0.0"), shoAttHou = new BigDecimal("0.0");
+
         // 月内入企前班次数，小时数，月内离职后班次数，小时数
         double befEntDuty = 0, befEntHou = 0, aftEntDuty = 0, aftEntHou = 0;
         String bigNigStr = "1", smaNigStr = "2";
@@ -592,6 +602,8 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
                 smaNig++;
             }
         }
+        shoAttDuty = shoAttDuty.add(BigDecimal.valueOf(befEntDuty)).add(BigDecimal.valueOf(aftEntDuty));
+        shoAttHou = shoAttHou.add(BigDecimal.valueOf(befEntHou)).add(BigDecimal.valueOf(aftEntHou));
         // 存班小时数，待补休小时数，实际补休小时数
         double savHou = 0, dueResHou = 0, resHou = 0;
         SaveTime saveTimeParam = new SaveTime();
@@ -604,13 +616,45 @@ public class AttendanceGatherServiceImpl extends ServiceImpl<AttendanceGatherMap
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        // 迟到次数，早退次数，旷职班次数，旷职天数，旷职小时数
+        BigDecimal lateNum = new BigDecimal("0.0"), leaNum = new BigDecimal("0.0"), truDuty=new BigDecimal("0.0"), truDay = new BigDecimal("0.0"), truHou = new BigDecimal("0.0");
+        AttendanceAbnormalDTO attendanceAbnormalDTO = new AttendanceAbnormalDTO();
+        BeanCopyUtils.copy(attendanceGather,attendanceAbnormalDTO);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.YYYY_MM);
+        String dateYearMonth = sdf.format(date);
+        attendanceAbnormalDTO.setIncomingTime(dateYearMonth);
+        List<AttendanceAbnormal> abnormalList = attendanceAbnormalService.queryAttendanceAbnormal(attendanceAbnormalDTO);
+        System.out.println(abnormalList);
+        for(AttendanceAbnormal abnormal : abnormalList){
+            // 1-迟到，2-早退，3-旷工
+            String type1 = "1", type2 = "2", type3 = "3";
+            if(type1.equals(abnormal.getUndutyType())){
+                lateNum = lateNum.add(BigDecimal.valueOf(1));
+            }else if(type2.equals(abnormal.getUndutyType())){
+                leaNum = leaNum.add(BigDecimal.valueOf(1));
+            }else if(type3.equals(abnormal.getUndutyType())){
+                truDuty = truDuty.add(BigDecimal.valueOf(1));
+                truHou = truHou.add(abnormal.getTruHou());
+            }
+        }
+        shoAttDuty = shoAttDuty.add(truDuty);
+        shoAttHou = shoAttHou.add(truHou);
+        attendanceGather.setDueAttDuty(BigDecimal.valueOf(dueAttDuty));
+        attendanceGather.setDueAttHou(BigDecimal.valueOf(dueAttHou));
+        attendanceGather.setShoAttDuty(shoAttDuty);
+        attendanceGather.setShoAttHou(shoAttHou);
+        attendanceGather.setActAttDuty(BigDecimal.valueOf(dueAttDuty).subtract(shoAttDuty));
+        attendanceGather.setActAttHou(BigDecimal.valueOf(dueAttHou).subtract(shoAttHou));
+        attendanceGather.setLateNum(lateNum);
+        attendanceGather.setLeaNum(leaNum);
+        attendanceGather.setTruDuty(truDuty);
+        attendanceGather.setTruDay(truDay);
+        attendanceGather.setTruHou(truHou);
         attendanceGather.setSavHou(BigDecimal.valueOf(savHou));
         attendanceGather.setDueResHou(BigDecimal.valueOf(dueResHou));
         attendanceGather.setResHou(BigDecimal.valueOf(resHou));
         attendanceGather.setBigNig(bigNig);
         attendanceGather.setSmaNig(smaNig);
-        attendanceGather.setDueAttDuty(BigDecimal.valueOf(dueAttDuty));
-        attendanceGather.setDueAttHou(BigDecimal.valueOf(dueAttHou));
         attendanceGather.setBefEntDuty(BigDecimal.valueOf(befEntDuty));
         attendanceGather.setBefEntHou(BigDecimal.valueOf(befEntHou));
         attendanceGather.setAftEntDuty(BigDecimal.valueOf(aftEntDuty));

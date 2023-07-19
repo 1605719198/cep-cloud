@@ -103,14 +103,14 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="职称中文说明" prop="jobTitleName">
-              <el-input v-model="form.jobTitleName" placeholder="请输入中文职称说明" maxlength="50"/>
+              <el-input v-model="form.jobTitleName" placeholder="请输入中文职称说明" maxlength="50" type="textarea" show-word-limit />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="职称英文说明" prop="jobTitleNameEng">
-              <el-input v-model="form.jobTitleNameEng" placeholder="请输入职称英文说明" maxlength="100" />
+              <el-input v-model="form.jobTitleNameEng" placeholder="请输入职称英文说明" maxlength="100"  type="textarea" show-word-limit />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -195,6 +195,7 @@ import '@/assets/styles/humanStyles.scss';
 import { getDateTime } from "@/api/human/hd/ahumanUtils"
 import DictTagHumanBase from "@/views/components/human/dictTag/humanBaseInfo"
 import { getBaseInfo } from "@/api/human/hm/baseInfo"
+import { checkSpecialKey } from '@/utils/jlkj'
 import { listJobTitle, getJobTitle, delJobTitle, addJobTitle, updateJobTitle } from "@/api/human/hp/jobTitle";
 import { getAvatorByUserName} from "@/api/system/user";
 import Treeselect from '@riophae/vue-treeselect'
@@ -248,6 +249,7 @@ export default {
       rules: {
         jobTitleNo: [
           { required: true, message: '请输入职称代码', trigger: 'blur' },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
         jobTitleName: [
           { required: true, message: '请输入职称中文说明', trigger: 'blur' },

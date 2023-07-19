@@ -67,6 +67,7 @@ public class ProjectPayServiceImpl implements IProjectPayService
     @Override
     public int insertProjectPay(List<ProjectPay> projectPayList)
     {
+        System.out.println(SecurityUtils.getUsername());
         int result = 0;
         //状态启动停用
         String status1 = "0",status2 = "1";
