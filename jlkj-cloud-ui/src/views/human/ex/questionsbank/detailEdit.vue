@@ -179,21 +179,22 @@ export default {
     },
     // 图片上传成功后
     handleUploadSuccess(data) {
-      this.imageUrl = this.hosturl + data.photoUrl
-      this.dataForm.pictureUrl = data.photoUrl
-      this.cropperModel = false
+      console.log(data.url)
+      this.imageUrl = this.hosturl + data.url;
+      this.dataForm.pictureUrl = data.url;
+      this.cropperModel = false;
     },
     onClose() {
-      this.$emit('refreshDataList')
+      this.$emit('refreshDataList');
     },
     onSaveOrBack() {
       this.submitForm()
       this.$nextTick(() => {
-        this.$emit('refreshDataList')
+        this.$emit('refreshDataList');
       })
     },
     onSave() {
-      this.submitForm()
+      this.submitForm();
     },
     /** 提交按钮 */
     submitForm() {
