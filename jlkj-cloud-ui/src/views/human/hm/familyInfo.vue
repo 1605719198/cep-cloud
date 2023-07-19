@@ -25,7 +25,7 @@
             <el-table-column label="姓名" align="center" key="name" prop="name">
               <template v-slot="scope">
                 <el-form-item :prop="'familyList.'+scope.$index+'.name'" :rules="rules.name">
-                  <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.name`)"></el-input>
+                  <el-input v-model="scope.row.name" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.name`)" :maxlength="10"></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
