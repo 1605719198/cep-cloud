@@ -1,6 +1,7 @@
 package com.jlkj.finance.ao.mapper;
 
 import com.jlkj.finance.ao.domain.FinanceAoExpenseBills;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -59,4 +60,12 @@ public interface FinanceAoExpenseBillsMapper
      * @return 结果
      */
     public int deleteFinanceAoExpenseBillsByIds(String[] ids);
+
+    /**
+     * 检核数据唯一性
+     * @param billName
+     * @param companyId
+     * @return
+     */
+    public int updateCheckUnique(@Param("billName") String billName, @Param("companyId")String companyId);
 }

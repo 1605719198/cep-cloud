@@ -1,5 +1,6 @@
 package com.jlkj.finance.ao.service.impl;
 
+import com.jlkj.common.core.exception.ServiceException;
 import com.jlkj.common.core.utils.DateUtils;
 import com.jlkj.common.core.utils.uuid.IdUtils;
 import com.jlkj.common.security.utils.SecurityUtils;
@@ -61,8 +62,11 @@ public class FinanceAoExpenseBillsServiceImpl implements IFinanceAoExpenseBillsS
      * @return 结果
      */
     @Override
-    public int insertFinanceAoExpenseBills(FinanceAoExpenseBills financeAoExpenseBills)
-    {
+    public int insertFinanceAoExpenseBills(FinanceAoExpenseBills financeAoExpenseBills) {
+        int count = financeAoExpenseBillsMapper.updateCheckUnique(financeAoExpenseBills.getBillName(), financeAoExpenseBills.getCompanyId());
+        if (count != 0) {
+            throw new ServiceException("发票号码：" + financeAoExpenseBills.getBillName() + "已经存在，不可重复新增！");
+        }
         financeAoExpenseBills.setId(IdUtils.simpleUUID());
         // 0-未报销 1-已报销
         financeAoExpenseBills.setStatus("0");
@@ -81,8 +85,14 @@ public class FinanceAoExpenseBillsServiceImpl implements IFinanceAoExpenseBillsS
      * @return 结果
      */
     @Override
-    public int updateFinanceAoExpenseBills(FinanceAoExpenseBills financeAoExpenseBills)
-    {
+    public int updateFinanceAoExpenseBills(FinanceAoExpenseBills financeAoExpenseBills) {
+        FinanceAoExpenseBills dbExpenseBills = financeAoExpenseBillsMapper.selectFinanceAoExpenseBillsById(financeAoExpenseBills.getId());
+        if (!dbExpenseBills.getBillName().equals(financeAoExpenseBills.getBillName())) {
+            int count = financeAoExpenseBillsMapper.updateCheckUnique(financeAoExpenseBills.getBillName(), financeAoExpenseBills.getCompanyId());
+            if (count != 0) {
+                throw new ServiceException("发票号码：" + financeAoExpenseBills.getBillName() + "已经存在，不可修改！");
+            }
+        }
         return financeAoExpenseBillsMapper.updateFinanceAoExpenseBills(financeAoExpenseBills);
     }
 
