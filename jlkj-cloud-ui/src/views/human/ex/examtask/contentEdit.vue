@@ -338,8 +338,8 @@ export default {
       }
 
       if (this.form.pictureUrl === undefined || this.form.pictureUrl === null) {
-        this.$message.error('需要先加入标题图片')
-        return false
+      //  this.$message.error('需要先加入标题图片')
+      //  return false
       }
 
       if (this.startDate === undefined || this.startDate === null) {

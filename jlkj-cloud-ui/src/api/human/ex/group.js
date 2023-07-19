@@ -18,9 +18,9 @@ export function listChoiceGroup(examCode) {
 }
 
 // 查询人员分组详细
-export function getGroup(groupId) {
+export function getGroup(groupCode) {
   return request({
-    url: '/human/group/' + groupId,
+    url: '/human/group/' + groupCode,
     method: 'get'
   })
 }

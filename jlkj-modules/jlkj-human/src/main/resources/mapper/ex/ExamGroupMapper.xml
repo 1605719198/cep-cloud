@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamGroupVo">
-		select a.group_id, a.group_code, a.group_name, b.person_number,a.group_describe, a.status, a.create_by, a.create_time from human_ex_group a
+		select  a.group_code, a.group_name, b.person_number,a.group_describe, a.status, a.create_by, a.create_time from human_ex_group a
 		<if test="status != null">left join</if>
 		<if test="status == null">inner join</if>		
 		(
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="groupName != null  and groupName != ''"> and a.group_name like '%'|| #{groupName} ||'%'</if>
         </where>
-        order by a.group_id
+        order by a.group_code
     </select>
     
     <select id="selectChoiceExamGroupList" parameterType="String" resultMap="ExamGroupResult">
@@ -39,12 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    (
 	     select group_code from human_ex_task_group where exam_code = #{examCode}
 	    )
-	    order by a.group_id
+	    order by a.group_code
     </select>
     
-    <select id="selectExamGroupById" parameterType="Long" resultMap="ExamGroupResult">
+    <select id="selectExamGroupById" parameterType="String" resultMap="ExamGroupResult">
         <include refid="selectExamGroupVo"/>
-        where group_id = #{groupId}
+        where a.group_code = #{groupCode}
     </select>
         
     <insert id="insertExamGroup" parameterType="ExamGroup" >
@@ -81,13 +81,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamGroupById" parameterType="Long">
-        delete from human_ex_group where group_id = #{groupId}
+        delete from human_ex_group where group_code = #{groupCode}
     </delete>
 
     <delete id="deleteExamGroupByIds" parameterType="String">
-        delete from human_ex_group where group_id in 
-        <foreach item="groupId" collection="array" open="(" separator="," close=")">
-            #{groupId}
+        delete from human_ex_group where group_code in
+        <foreach item="groupCode" collection="array" open="(" separator="," close=")">
+            #{groupCode}
         </foreach>
     </delete>
 </mapper>

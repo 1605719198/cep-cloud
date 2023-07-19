@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="groupCode != null and groupCode != ''">#{groupCode},</if>
             <if test="personCode != null and personCode != ''">#{personCode},</if>
-            (select nvl(max(order_id),0) + 1 from human_ex_group_person where group_code = #{groupCode}),
+            (select ifnull(max(order_id),0) + 1 from human_ex_group_person where group_code = #{groupCode}),
          </trim>
     </insert>
 

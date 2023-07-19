@@ -66,7 +66,7 @@
 
       <el-table v-loading="loading" :data="groupList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="分组序号" align="center" prop="groupId" />
+        <!-- <el-table-column label="分组序号" align="center" prop="groupId" /> -->
         <!-- <el-table-column label="分组代码" align="center" prop="groupCode"  /> -->
         <el-table-column label="分组名称" align="center" prop="groupName"  />
         <el-table-column label="分组描述" align="center" prop="groupDescribe"  />
@@ -142,7 +142,7 @@
 import { listUserchoice } from "@/api/human/ex/userchoice";
 import { listGroup, getGroup, delGroup, addGroup, updateGroup, exportGroup } from "@/api/human/ex/group";
 import { delGroupperson, addGroupperson } from "@/api/human/ex/groupperson";
-import { choiceUser } from "@/components/ChoiceUser/index";
+import choiceUser from "@/components/ChoiceUser/index";
 export default {
   name: "Group",
   components: { choiceUser },
@@ -253,7 +253,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.groupId)
+      this.ids = selection.map(item => item.groupCode)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -266,8 +266,10 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const groupId = row.groupId || this.ids
-      getGroup(groupId).then(response => {
+      debugger
+      const groupCode = row.groupCode || this.ids
+
+      getGroup(groupCode).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改人员分组";
@@ -297,7 +299,6 @@ export default {
       })
     },
     choiceDoneHandle(selectData) {
-      debugger
       this.choiceVisible = true
       if (selectData !== null && selectData.length >0) {
         this.userList = selectData

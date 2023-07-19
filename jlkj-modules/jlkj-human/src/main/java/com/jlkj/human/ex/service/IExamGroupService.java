@@ -19,7 +19,7 @@ public interface IExamGroupService
      * @param groupId 人员分组ID
      * @return 人员分组
      */
-    public ExamGroup selectSysGroupById(Long groupId);
+    public ExamGroup selectSysGroupById(String groupCode);
 
     /**
      * 查询人员分组列表

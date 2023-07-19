@@ -19,7 +19,7 @@ public interface ExamGroupMapper
      * @param groupId 人员分组ID
      * @return 人员分组
      */
-    public ExamGroup selectExamGroupById(Long groupId);
+    public ExamGroup selectExamGroupById(String groupCode);
 
     /**
      * 查询人员分组列表

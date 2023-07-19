@@ -26,9 +26,9 @@ public class ExamGroupServiceImpl implements IExamGroupService
      * @return 人员分组
      */
     @Override
-    public ExamGroup selectSysGroupById(Long groupId)
+    public ExamGroup selectSysGroupById(String groupCode)
     {
-        return sysGroupMapper.selectExamGroupById(groupId);
+        return sysGroupMapper.selectExamGroupById(groupCode);
     }
 
     /**

@@ -70,10 +70,10 @@ public class ExamGroupController extends BaseController
      * 获取人员分组详细信息
      */
     @RequiresPermissions("@ss.hasPermi('human:group:query')")
-    @GetMapping(value = "/{groupId}")
-    public AjaxResult getInfo(@PathVariable("groupId") Long groupId)
+    @GetMapping(value = "/{groupCode}")
+    public AjaxResult getInfo(@PathVariable("groupCode") String groupCode)
     {
-        return AjaxResult.success(examGroupService.selectSysGroupById(groupId));
+        return AjaxResult.success(examGroupService.selectSysGroupById(groupCode));
     }
 
     /**
