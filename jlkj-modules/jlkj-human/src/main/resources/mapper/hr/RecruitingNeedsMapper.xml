@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlkj.human.hr.mapper.RecruitingNeedsMapper">
+    
+    <resultMap type="RecruitingNeeds" id="RecruitingNeedsResult">
+        <result property="uuid"    column="uuid"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="hiringId"    column="hiring_id"    />
+        <result property="hireDeptNo"    column="hire_dept_no"    />
+        <result property="upperposiId"    column="upperposi_id"    />
+        <result property="upperposiNo"    column="upperposi_no"    />
+        <result property="upperposiName"    column="upperposi_name"    />
+        <result property="hireReason"    column="hire_reason"    />
+        <result property="hireCount"    column="hire_count"    />
+        <result property="workplace"    column="workplace"    />
+        <result property="attendid"    column="attendid"    />
+        <result property="hiretype"    column="hiretype"    />
+        <result property="wishdate"    column="wishdate"    />
+        <result property="applyDate"    column="apply_date"    />
+        <result property="applyNo"    column="apply_no"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateNo"    column="update_no"    />
+        <result property="minage"    column="minage"    />
+        <result property="maxage"    column="maxage"    />
+        <result property="mingradute"    column="mingradute"    />
+        <result property="miliduty"    column="miliduty"    />
+        <result property="miliduty2"    column="miliduty2"    />
+        <result property="remark"    column="remark"    />
+        <result property="firstDegree"    column="first_degree"    />
+        <result property="workexperience"    column="workexperience"    />
+        <result property="status"    column="status"    />
+        <result property="mertyear"    column="mertyear"    />
+    </resultMap>
+
+    <sql id="selectRecruitingNeedsVo">
+        SELECT uuid, comp_id, hiring_id, hire_dept_no, upperposi_no, upperposi_name, hire_reason, hire_count, workplace, attendid, hiretype, wishdate, apply_date, apply_no, update_date, update_no, minage, maxage, mingradute, miliduty, miliduty2, remark, first_degree, workexperience, status, mertyear FROM human_hr_recruiting_needs
+    </sql>
+
+    <select id="selectRecruitingNeedsList" parameterType="RecruitingNeeds" resultMap="RecruitingNeedsResult">
+        <include refid="selectRecruitingNeedsVo"/>
+        <where>
+            <if test="upperposiId != null  and upperposiId != ''"> AND upperposi_id = #{upperposiId}</if>
+            <if test="applyDate != null  and applyDate != ''"> AND apply_date = #{applyDate}</if>
+            <if test="compId != null  and compId != ''"> AND comp_id = #{compId}</if>
+            <if test="hiringId != null  and hiringId != ''"> AND hiring_id = #{hiringId}</if>
+        </where>
+        ORDER BY hiring_id DESC
+    </select>
+    
+    <select id="selectRecruitingNeedsByUuid" parameterType="String" resultMap="RecruitingNeedsResult">
+        <include refid="selectRecruitingNeedsVo"/>
+        WHERE uuid = #{uuid}
+    </select>
+        
+    <insert id="insertRecruitingNeeds" parameterType="RecruitingNeeds">
+        INSERT INTO human_hr_recruiting_needs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="compId != null">comp_id,</if>
+            <if test="hiringId != null">hiring_id,</if>
+            <if test="hireDeptNo != null">hire_dept_no,</if>
+            <if test="upperposiId != null and upperposiId != ''">upperposi_id,</if>
+            <if test="upperposiNo != null and upperposiNo != ''">upperposi_no,</if>
+            <if test="upperposiName != null">upperposi_name,</if>
+            <if test="hireReason != null">hire_reason,</if>
+            <if test="hireCount != null">hire_count,</if>
+            <if test="workplace != null">workplace,</if>
+            <if test="attendid != null">attendid,</if>
+            <if test="hiretype != null">hiretype,</if>
+            <if test="wishdate != null">wishdate,</if>
+            <if test="applyDate != null">apply_date,</if>
+            <if test="applyNo != null">apply_no,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="updateNo != null">update_no,</if>
+            <if test="minage != null">minage,</if>
+            <if test="maxage != null">maxage,</if>
+            <if test="mingradute != null">mingradute,</if>
+            <if test="miliduty != null">miliduty,</if>
+            <if test="miliduty2 != null">miliduty2,</if>
+            <if test="remark != null">remark,</if>
+            <if test="firstDegree != null">first_degree,</if>
+            <if test="workexperience != null">workexperience,</if>
+            <if test="status != null">status,</if>
+            <if test="mertyear != null">mertyear,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="compId != null">#{compId},</if>
+            <if test="hiringId != null">#{hiringId},</if>
+            <if test="hireDeptNo != null">#{hireDeptNo},</if>
+            <if test="upperposiId != null and upperposiId != ''">#{upperposiId},</if>
+            <if test="upperposiNo != null and upperposiNo != ''">#{upperposiNo},</if>
+            <if test="upperposiName != null">#{upperposiName},</if>
+            <if test="hireReason != null">#{hireReason},</if>
+            <if test="hireCount != null">#{hireCount},</if>
+            <if test="workplace != null">#{workplace},</if>
+            <if test="attendid != null">#{attendid},</if>
+            <if test="hiretype != null">#{hiretype},</if>
+            <if test="wishdate != null">#{wishdate},</if>
+            <if test="applyDate != null">#{applyDate},</if>
+            <if test="applyNo != null">#{applyNo},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateNo != null">#{updateNo},</if>
+            <if test="minage != null">#{minage},</if>
+            <if test="maxage != null">#{maxage},</if>
+            <if test="mingradute != null">#{mingradute},</if>
+            <if test="miliduty != null">#{miliduty},</if>
+            <if test="miliduty2 != null">#{miliduty2},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="firstDegree != null">#{firstDegree},</if>
+            <if test="workexperience != null">#{workexperience},</if>
+            <if test="status != null">#{status},</if>
+            <if test="mertyear != null">#{mertyear},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRecruitingNeeds" parameterType="RecruitingNeeds">
+        UPDATE human_hr_recruiting_needs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="hiringId != null">hiring_id = #{hiringId},</if>
+            <if test="hireDeptNo != null">hire_dept_no = #{hireDeptNo},</if>
+            <if test="upperposiId != null and upperposiId != ''">upperposi_id = #{upperposiId},</if>
+            <if test="upperposiNo != null and upperposiNo != ''">upperposi_no = #{upperposiNo},</if>
+            <if test="upperposiName != null">upperposi_name = #{upperposiName},</if>
+            <if test="hireReason != null">hire_reason = #{hireReason},</if>
+            <if test="hireCount != null">hire_count = #{hireCount},</if>
+            <if test="workplace != null">workplace = #{workplace},</if>
+            <if test="attendid != null">attendid = #{attendid},</if>
+            <if test="hiretype != null">hiretype = #{hiretype},</if>
+            <if test="wishdate != null">wishdate = #{wishdate},</if>
+            <if test="applyDate != null">apply_date = #{applyDate},</if>
+            <if test="applyNo != null">apply_no = #{applyNo},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="updateNo != null">update_no = #{updateNo},</if>
+            <if test="minage != null">minage = #{minage},</if>
+            <if test="maxage != null">maxage = #{maxage},</if>
+            <if test="mingradute != null">mingradute = #{mingradute},</if>
+            <if test="miliduty != null">miliduty = #{miliduty},</if>
+            <if test="miliduty2 != null">miliduty2 = #{miliduty2},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="firstDegree != null">first_degree = #{firstDegree},</if>
+            <if test="workexperience != null">workexperience = #{workexperience},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="mertyear != null">mertyear = #{mertyear},</if>
+        </trim>
+        WHERE uuid = #{uuid}
+    </update>
+
+    <delete id="deleteRecruitingNeedsByUuid" parameterType="String">
+        DELETE FROM human_hr_recruiting_needs WHERE uuid = #{uuid}
+    </delete>
+
+    <delete id="deleteRecruitingNeedsByUuids" parameterType="String">
+        DELETE FROM human_hr_recruiting_needs WHERE uuid IN
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+</mapper>

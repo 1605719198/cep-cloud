@@ -743,3 +743,21 @@ export function postalCode(rule, value, callback) {
     callback();
   }
 }
+
+//不含符号字符校验
+export function checkSpecialKey(rule,value,callback) {
+  let judge = true;
+  let specialKey =
+    "[`+-*/@~!#$^&*()=|{}':;'\\[\\].<>/?~！#￥……&*（）——|{}【】‘；：”“'。，、？]‘'";
+  for (let i = 0; i < value.length; i++) {
+    if (specialKey.indexOf(value.substr(i, 1)) !== -1) {
+      judge = false
+    }
+  }
+  if(!judge){
+    callback(new Error("请勿输入符号字符"));
+  }else{
+    callback();
+  }
+}
+

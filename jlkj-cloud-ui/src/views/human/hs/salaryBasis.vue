@@ -139,10 +139,10 @@
         <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="资料编码" prop="infoCode">
-              <el-input v-model="form.infoCode" placeholder="请输入资料编码" />
+              <el-input v-model="form.infoCode" placeholder="请输入资料编码" maxlength="30" />
             </el-form-item>
             <el-form-item label="资料名称" prop="infoName">
-              <el-input v-model="form.infoName" placeholder="请输入资料名称" />
+              <el-input v-model="form.infoName" placeholder="请输入资料名称" maxlength="200" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -157,6 +157,7 @@
 
 <script>
 import '@/assets/styles/humanStyles.scss';
+import { checkSpecialKey } from '@/utils/jlkj'
 import { selectCompany } from '@/api/human/hp/deptMaintenance'
 import { getDateTime } from '@/api/human/hd/ahumanUtils'
 import { listSalaryBasis, getSalaryBasis, delSalaryBasis, addSalaryBasis, updateSalaryBasis, listSalaryBasisTree, getSalaryOptions, getSalaryDeepOptions } from "@/api/human/hs/salaryBasis";
@@ -218,10 +219,12 @@ export default {
       // 表单校验
       rules: {
         infoCode: [
-          { required: true, message: "资料编码不能为空", trigger: "blur" }
+          { required: true, message: "资料编码不能为空", trigger: "blur" },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
         infoName: [
-          { required: true, message: "资料名称不能为空", trigger: "blur" }
+          { required: true, message: "资料名称不能为空", trigger: "blur" },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
       }
     }

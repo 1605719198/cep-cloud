@@ -78,7 +78,7 @@
                   </el-table-column>
                   <el-table-column label="是否下拉选单" align="center" prop="isLov" width="80">
                     <template v-slot="scope">
-                      <el-checkbox v-model="scope.row.isLov" true-label="1" false-label="0" :disabled="scope.row.status==='1'"></el-checkbox>
+                      <el-checkbox v-model="scope.row.isLov" true-label="1" false-label="0" :disabled="scope.row.status==='1'" @change="isLovChange($event,scope.row)" ></el-checkbox>
                     </template>
                   </el-table-column>
                   <el-table-column label="下拉选单的内容" align="center" prop="lovConId">
@@ -204,6 +204,10 @@ export default {
     this.getDisc();
   },
   methods: {
+    //是否下拉选单多选框处理
+    isLovChange(val,row){
+      this.tableData[row.index].lovConId = null;
+    },
     //初始化数据
     initData() {
       this.user.empNo = this.$store.state.user.userInfo.userName;

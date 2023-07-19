@@ -458,7 +458,6 @@ export default {
             if (res.data === 2) {
               const compData = {type: res.data, formData: this.procData.formData,his: this.historyProcNodeList}
               this.completeEmit(compData)
-
             }
             this.$modal.msgSuccess(response.msg);
             this.goBack();

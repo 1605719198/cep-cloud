@@ -241,7 +241,9 @@
             <el-row :gutter="20">
               <el-col :span="(this.form.id!=null)? 12:24">
                 <el-form-item label="辅助说明" prop="description">
-                  <el-input v-model="form.description" type="textarea" placeholder="请输入内容"/>
+                  <el-input v-model="form.description" placeholder="请输入辅助说明" type="textarea" show-word-limit
+                            maxlength="500"
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="12" v-if="this.form.id!=null">
@@ -284,10 +286,7 @@
             <el-row :gutter="20">
               <el-col :span="24">
                 <el-form-item label="工号" prop="empNo">
-                  <el-input v-model="form.empNo" placeholder="请输入工号" :disabled="true" class="inputInner">
-                    <el-button slot="append" icon="el-icon-search" @click="inputClick" clearable></el-button>
-                  </el-input>
-                  {{ form.empName }}:{{ form.postname }}
+                  {{ form.empNo }}-{{ form.empName }}:{{ form.postname }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -306,7 +305,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="请假类别" prop="leaTypeId">
-                  {{ form.leaTypeId }}
+                  <dict-tag-human-basis :options="attendenceOptions.HD001" :value="form.leaTypeId"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -354,7 +353,7 @@
               </el-col>
               <el-col :span="12" v-if="this.form.id!=null">
                 <el-form-item label="审批状态" prop="status">
-                  {{ form.status }}
+                  <dict-tag-human-basis :options="attendenceOptions.FlowStatus" :value="form.status"/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -414,6 +413,8 @@ export default {
   components: { DictTagHumanBasis, selectUser, flowDetail, selectDeploy },
   data() {
     return {
+      countTime: 0,
+      timeId: undefined,
       //出勤选单类型查询
       attendenceOptionType: {
         id: '',
@@ -518,7 +519,18 @@ export default {
       selectionList: []
     }
   },
-  watch: {},
+  watch: {
+    // $route: {
+    //   handler() {
+    //     if (this.$route.query.timeId != undefined && this.timeId != this.$route.query.timeId) {
+    //       this.timeId = this.$route.query.timeId
+    //       this.initTaskParam()
+    //       console.log(this.$route.query.timeId,this.countTime)
+    //     }
+    //   },
+    //   deep: true,
+    // },
+  },
   computed: {
     commentType() {
       return val => {
@@ -796,6 +808,7 @@ export default {
             if (this.compareTime(personHour2, personMin2, startData.startHour, startData.startMin) < 0) {
               startMinute = 0
               this.errorData.ifError = true
+              this.errorData.errorMsg = ('请假时长为0')
             } else {
               if (this.compareTime(personHour1, personMin1, startData.startHour, startData.startMin) < 0) {
                 personHour1 = startData.startHour
@@ -921,7 +934,11 @@ export default {
         }
       }
       if (!this.ifPreData) {
-        if (this.errorData.ifError === false && personMinute !== 0) {
+        if (personMinute === 0) {
+          this.errorData.ifError = true
+          this.errorData.errorMsg = '请假总时长为0'
+        }
+        if (this.errorData.ifError === false) {
           this.form.leaveShifts = conDay
           this.form.leaveHours = personMinute / 60
           //提交前假别数据处理
@@ -1361,20 +1378,22 @@ export default {
     },
     /** 查询员工请假记录列表 */
     getList() {
-      this.loading = true
-      listPersonHoliday(this.queryParams).then(response => {
-        this.personHolidayList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+      if (typeof this.queryParams.empNo === 'string' && this.queryParams.empNo.length > 0) {
+        this.loading = true
+        listPersonHoliday(this.queryParams).then(response => {
+          this.personHolidayList = response.rows
+          this.total = response.total
+          this.loading = false
+        })
+      }
     },
     /** 查询条件判定 */
     judgeQuery() {
-      if (this.queryParams.empNo === null || this.queryParams.empNo === '') {
+      if (typeof this.queryParams.empNo === 'string' && this.queryParams.empNo.length > 0) {
+        return true
+      } else {
         this.$modal.msgError('请输入工号')
         return false
-      } else {
-        return true
       }
     },
     // 取消按钮
@@ -1508,13 +1527,6 @@ export default {
       this.loading = true
       const id = row.id || this.ids
       this.handleDeleteData(id)
-      // this.$modal.confirm('是否确认删除该数据项？').then(function() {
-      //   return this.handleDeleteData(ids)
-      // }).then(() => {
-      //   this.getList()
-      //   this.$modal.msgSuccess('删除成功')
-      // }).catch(() => {
-      // })
     },
     /** 作废数据处理 */
     handleDeleteData(id) {
@@ -1609,6 +1621,7 @@ export default {
     initTaskParam() {
       // taskFlag === 'skip' 赋值
       if (this.$route.query.taskFlag === 'skip') {
+        // this.timeId = this.$route.query.timeId
         // 是否通过跳转进入页面
         this.taskFlag = this.$route.query && this.$route.query.taskFlag
         // 流程部署id
@@ -1637,6 +1650,7 @@ export default {
       this.form = val.formData
       // 任务被拒绝后更改状态为 2 => 审批通过且流程结束
       this.form.status = val.type
+      this.form.his[0].createDate
       updatePersonHoliday(this.form).then(res1 => {
         this.getList()
       })

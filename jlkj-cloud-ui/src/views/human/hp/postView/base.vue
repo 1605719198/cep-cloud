@@ -213,7 +213,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="成本中心" prop="costCenterId">
-                  <el-input v-model="form.costCenterId" placeholder="请输入成本中心" maxlength="500"/>
+                  <el-input v-model="form.costCenterId" placeholder="请输入成本中心" maxlength="100"/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -223,7 +223,7 @@
               <el-col :span="24">
                 <el-form-item label="变更原因" prop="changeReason">
                   <el-input v-model="form.changeReason" type="textarea" show-word-limit placeholder="请输入内容"
-                            maxlength="1000"
+                            maxlength="500"
                   />
                 </el-form-item>
               </el-col>
@@ -369,6 +369,7 @@ import qualification from './qualification'
 import { listPostVersion, addPostMaintenance, updatePostMaintenance } from '@/api/human/hp/postMaintenance'
 import { getBaseInfo, getDegreeMajorSpecialization } from '@/api/human/hm/baseInfo'
 import selectPost from '@/views/components/human/selectView/hp/selectPost'
+import { checkSpecialKey } from '@/utils/jlkj'
 
 export default {
   name: 'AddOrUpdate',
@@ -442,7 +443,8 @@ export default {
           { required: true, message: '公司不能为空', trigger: 'change' }
         ],
         overseasLocations: [
-          { required: true, message: '驻外地点不能为空', trigger: 'blur' }
+          { required: true, message: '驻外地点不能为空', trigger: 'blur' },
+          { required: true, validator: checkSpecialKey, trigger: 'blur' }
         ],
         planCapacity: [
           { required: true, message: '定员不能为空', trigger: 'blur' },

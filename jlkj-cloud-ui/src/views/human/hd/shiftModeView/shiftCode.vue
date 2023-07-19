@@ -107,7 +107,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="班次编码" prop="shiftCode">
-              <el-input v-model="form.shiftCode" placeholder="请输入" />
+              <el-input v-model="form.shiftCode" placeholder="请输入" maxlength="20" />
             </el-form-item>
           </el-col>
           <el-col :span="6">

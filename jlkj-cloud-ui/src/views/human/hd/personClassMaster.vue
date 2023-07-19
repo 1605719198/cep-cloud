@@ -518,12 +518,7 @@ export default {
     },
     /** 人员选单事件 */
     inputClick() {
-      var queryParams={
-        compID:this.queryParams.compId,
-        pageNum: 1,
-        pageSize: 10,
-      }
-      this.$refs.select.show(queryParams);
+      this.$refs.select.show();
     },
     /** 获取工号 */
     getJobNumber(val, userName,compId) {

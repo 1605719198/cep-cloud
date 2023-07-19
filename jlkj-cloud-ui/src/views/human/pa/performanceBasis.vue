@@ -147,10 +147,10 @@
         <el-dialog :title="title" :visible.sync="opencreate" width="400px" append-to-body class="customDialogStyle">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="资料编码" prop="code">
-              <el-input v-model="form.code" placeholder="请输入资料编码" />
+              <el-input v-model="form.code" placeholder="请输入资料编码" maxlength="30" />
             </el-form-item>
             <el-form-item label="资料名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入资料名称" />
+              <el-input v-model="form.name" placeholder="请输入资料名称" maxlength="200" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">

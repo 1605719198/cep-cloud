@@ -86,19 +86,19 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="班别编码" prop="classMode">
-              <el-input v-model="form.classMode" placeholder="请输入班别编码" />
+              <el-input v-model="form.classMode" placeholder="请输入班别编码" maxlength="20"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="班别名称" prop="className">
-              <el-input v-model="form.className" placeholder="请输入班别名称" />
+              <el-input v-model="form.className" placeholder="请输入班别名称" maxlength="100"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="说明" prop="description">
-              <el-input v-model="form.description" placeholder="请输入说明" />
+              <el-input v-model="form.description" placeholder="请输入说明" maxlength="200"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">

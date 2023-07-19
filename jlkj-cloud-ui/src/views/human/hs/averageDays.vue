@@ -115,7 +115,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="备注" prop="comm">
-              <el-input v-model="form.comm" type="textarea" placeholder="请输入备注" />
+              <el-input v-model="form.comm" type="textarea" placeholder="请输入备注" maxlength="100" show-word-limit />
             </el-form-item>
           </el-col>
         </el-row>
@@ -185,6 +185,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
+
       },
       //登录人信息
       user: {},

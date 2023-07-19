@@ -24,9 +24,9 @@
             <div class="page3_div_right">
               <div class="page3_div_right_child" style="height: 16%;">
                   <label style="margin-left:112px; ">年龄</label>
-                  <el-input v-model="form.minAge" placeholder="" style="width: 80px;margin-left: 20px;margin-right: 10px;" type="number" maxlength="3" @blur="watchAge"/>
+                  <el-input v-model="form.minAge" placeholder="" style="width: 80px;margin-left: 20px;margin-right: 10px;" type="number"  @blur="watchAge"/>
                   ——
-                  <el-input v-model="form.maxAge" placeholder="" style="width: 80px;margin-left: 10px;"  type="number" maxlength="3" @blur="watchAge"/>
+                  <el-input v-model="form.maxAge" placeholder="" style="width: 80px;margin-left: 10px;"  type="number"  @blur="watchAge"/>
 
                   <label prop="gender" style="margin-left: 50px;">性别</label>
                   <el-radio-group v-model="form.gender" style="margin-left: 20px;">
@@ -44,34 +44,34 @@
                 <div class="div_rightes">
                   <div class="divdiv" >
                     <label class="labellabel">最低学历</label>
-                    <el-input v-model="form.recordId" placeholder="请输入最低学历" style="width: 500px;" maxlength="32" />
+                    <el-input v-model="form.recordId" placeholder="请输入最低学历" style="width: 500px;" maxlength="32" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }" />
                   </div>
                   <div class="divdiv">
                     <label class="labellabel">专业要求</label>
-                    <el-input v-model="form.speClaim"  placeholder="请输入内容" style="width: 500px;" maxlength="500" />
+                    <el-input v-model="form.speClaim"  placeholder="请输入内容" style="width: 500px;" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }" />
                   </div>
                   <div class="divdiv">
                     <label class="labellabel">职业资格</label>
-                    <el-input v-model="form.proQua"  placeholder="请输入内容" style="width: 500px;" maxlength="500"/>
+                    <el-input v-model="form.proQua"  placeholder="请输入内容" style="width: 500px;" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }"/>
                   </div>
                   <div class="divdiv">
                     <label class="labellabel">工作经验</label>
-                    <el-input v-model="form.workExp"  placeholder="请输入内容" style="width: 500px;" maxlength="500"/>
+                    <el-input v-model="form.workExp"  placeholder="请输入内容" style="width: 500px;" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }" />
                   </div>
                   <div class="divdiv">
                     <label class="labellabel">其他要求</label>
-                    <el-input v-model="form.otherClaim"  placeholder="请输入内容" style="width: 500px;" maxlength="500"/>
+                    <el-input v-model="form.otherClaim"  placeholder="请输入内容" style="width: 500px;" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }"/>
                   </div>
                 </div>
               </div>
               <div class="page3_div_right_child" style="height: 30%;flex-direction: column; width: 100%;align-items: center;">
                 <div style="display: flex;flex-direction: row;width: 100%; align-items: center;justify-content: flex-end;height: 50px;">
                   <label prop="knowTec" style="width: 100px;margin-right: 40px;">知识与技能</label>
-                  <el-input v-model="form.knowTec"  placeholder="请输入内容" style="width: 500px;margin-right: 15px" maxlength="500"/>
+                  <el-input v-model="form.knowTec"  placeholder="请输入内容" style="width: 500px;margin-right: 15px" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }"/>
                 </div>
                 <div style="display: flex;flex-direction: row;width: 100%; align-items: center;justify-content: flex-end;height: 50px;">
                   <label prop="proAct" style="width: 100px;margin-right: 40px;">职业化行为</label>
-                  <el-input v-model="form.proAct"  placeholder="请输入内容" style="width: 500px;margin-right: 15px" maxlength="500" />
+                  <el-input v-model="form.proAct"  placeholder="请输入内容" style="width: 500px;margin-right: 15px" maxlength="500" type="textarea" show-word-limit  :autosize="{ minRows: 1, maxRows: 1 }" />
                 </div>
               </div>
 
@@ -104,6 +104,7 @@ export default {
     }
   },
   methods:{
+    //年龄监听
     watchAge(){
       if(this.form.maxAge!==null&&this.form.minAge!==null){
         if(this.form.minAge>=this.form.maxAge){
@@ -122,7 +123,7 @@ export default {
         this.form.maxAge=99
       }
       if(this.form.maxAge<1){
-        this.form.maxAge=1
+        this.form.maxAge=99
       }
     },
     init(form) {
