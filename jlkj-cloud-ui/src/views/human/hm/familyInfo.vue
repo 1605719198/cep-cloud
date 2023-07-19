@@ -103,7 +103,17 @@ export default {
             required: true,
             message: "请输入姓名",
             trigger: "blur"
-          }
+          },
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        homeAddress: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        registerAddress: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        workComp: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
       }
     }

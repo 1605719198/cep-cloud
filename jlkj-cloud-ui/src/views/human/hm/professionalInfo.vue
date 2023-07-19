@@ -67,7 +67,7 @@
             <el-table-column label="证书编号" align="center" key="cerNo" prop="cerNo" :render-header="addRedStar">
               <template v-slot="scope">
                 <el-form-item :prop="'professionalList.'+scope.$index+'.cerNo'" :rules="rules.cerNo">
-                  <el-input v-model="scope.row.cerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerNo`)"></el-input>
+                  <el-input v-model="scope.row.cerNo" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`professionalList.${scope.$index}.cerNo`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -126,7 +126,8 @@ export default {
       },
       rules: {
         cerNo: [
-          {required: true, message: "请输入", trigger: "blur"}
+          {required: true, message: "请输入", trigger: "blur"},
+          { pattern: /^[+]?(0|([1-9]\d*))?$/, message: "请输入数字", trigger: "blur"},
         ]
       }
     }
