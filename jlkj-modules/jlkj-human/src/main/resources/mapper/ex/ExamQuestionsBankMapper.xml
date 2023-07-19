@@ -37,8 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                a.online_date,
                a.picture_url,
                ifnull(c.judge_number, 0)  as judge_number,
-               ifnull(d.radio_number, 0)
-                                          as radio_number,
+               ifnull(d.radio_number, 0)  as radio_number,
                ifnull(e.choice_number, 0) as choice_number,
                a.radio_score,
                a.choice_score,
