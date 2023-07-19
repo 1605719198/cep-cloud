@@ -85,6 +85,7 @@ export default {
         roleId: 1,
         companyId: null,
         billType: null,
+        createBy: this.$store.getters.name
       }
     };
   },

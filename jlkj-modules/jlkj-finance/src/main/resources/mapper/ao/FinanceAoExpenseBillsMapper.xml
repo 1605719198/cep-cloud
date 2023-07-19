@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null "> AND status = #{status}</if>
             <if test="params.beginDate != null and params.beginDate != ''"> and bill_date BETWEEN #{params.beginDate} AND #{params.endDate} </if>
             <if test="saleName != null  and saleName != ''"> AND sale_name = #{saleName}</if>
+            <if test="createBy != null  and createBy != ''"> AND create_by = #{createBy}</if>
         </where>
     </select>
     
@@ -156,4 +157,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <update id="updateCheckUnique" parameterType="String">
+        update finance_ao_bills set bill_name=bill_name  where bill_name = #{billName} and company_id = #{companyId}
+    </update>
 </mapper>

@@ -635,7 +635,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="本人手机" prop="myMobilePhone">
-          <el-input v-model="form.myMobilePhone" placeholder="请输入本人手机" :maxlength="30"/>
+          <el-input v-model="form.myMobilePhone" placeholder="请输入本人手机" :maxlength="20"/>
         </el-form-item>
       </el-col>
       <el-col :span="6">
@@ -903,7 +903,25 @@ export default {
         relativeFullName: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
+        recommenderName: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        recommenderRelationship: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        emergencyContactPerson: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        emergencyContactPersonRelationship: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        recommenderDepartment: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
         relationship: [
+          { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
+        ],
+        relationDepartment: [
           { pattern: /^[\u0391-\uFFE5A-Za-z]+$/, message: "请输入中文", trigger: "change" }
         ],
         registeredPermanentResidencePostalCode: [
@@ -978,6 +996,20 @@ export default {
           }
         ],
         relationTelephone: [
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的联系电话",
+            trigger: "blur"
+          }
+        ],
+        recommenderTelephone: [
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的联系电话",
+            trigger: "blur"
+          }
+        ],
+        emergencyContactPersonTelephone: [
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的联系电话",
