@@ -39,28 +39,28 @@
             <el-table-column label="现居住地" align="center" key="homeAddress" prop="homeAddress">
               <template v-slot="scope">
                 <el-form-item :prop="'familyList.'+scope.$index+'.homeAddress'">
-                  <el-input v-model="scope.row.homeAddress" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.homeAddress`)"></el-input>
+                  <el-input v-model="scope.row.homeAddress" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.homeAddress`)" :maxlength="30"></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="户口所在地" align="center" key="registerAddress" prop="registerAddress">
               <template v-slot="scope">
                 <el-form-item :prop="'familyList.'+scope.$index+'.registerAddress'">
-                  <el-input v-model="scope.row.registerAddress" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.registerAddress`)"></el-input>
+                  <el-input v-model="scope.row.registerAddress" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.registerAddress`)" :maxlength="20"></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="工作单位" align="center" key="workComp" prop="workComp">
               <template v-slot="scope">
                 <el-form-item :prop="'familyList.'+scope.$index+'.workComp'">
-                  <el-input v-model="scope.row.workComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.workComp`)"></el-input>
+                  <el-input v-model="scope.row.workComp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.workComp`)" :maxlength="20"></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="联系电话" align="center" key="tele" prop="tele">
               <template v-slot="scope">
                 <el-form-item :prop="'familyList.'+scope.$index+'.tele'">
-                  <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.tele`)"></el-input>
+                  <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`familyList.${scope.$index}.tele`)" :maxlength="20" show-word-limit></el-input>
                 </el-form-item>
               </template>
             </el-table-column>

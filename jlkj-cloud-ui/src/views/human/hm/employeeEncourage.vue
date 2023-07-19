@@ -154,19 +154,19 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="奖惩原因" prop="encourageReason">
-                  <el-input v-model="form.encourageReason" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.encourageReason" type="textarea" placeholder="请输入内容" :maxlength="500" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="公文文号" prop="docNo">
-                  <el-input v-model="form.docNo" type="textarea" placeholder="请输入公文文号" />
+                  <el-input v-model="form.docNo" type="textarea" placeholder="请输入公文文号"  :maxlength="200" show-word-limit/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="备注" prop="remark">
-                  <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+                  <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" :maxlength="500" show-word-limit/>
                 </el-form-item>
               </el-col>
             </el-row>

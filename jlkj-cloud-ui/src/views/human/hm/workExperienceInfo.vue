@@ -33,35 +33,35 @@
               <el-table-column label="工作单位" align="center" key="comp" prop="comp">
                 <template v-slot="scope">
                   <el-form-item :prop="'workExperienceList.'+scope.$index+'.comp'">
-                    <el-input v-model="scope.row.comp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.comp`)"></el-input>
+                    <el-input v-model="scope.row.comp" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.comp`)" :maxlength="20"></el-input>
                   </el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="职务（岗位）" align="center" key="post" prop="post">
                 <template v-slot="scope">
                   <el-form-item :prop="'workExperienceList.'+scope.$index+'.post'">
-                    <el-input v-model="scope.row.post" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.post`)"></el-input>
+                    <el-input v-model="scope.row.post" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.post`)" :maxlength="20"></el-input>
                   </el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="证明人" align="center" key="prover" prop="prover">
                 <template v-slot="scope">
                   <el-form-item :prop="'workExperienceList.'+scope.$index+'.prover'">
-                    <el-input v-model="scope.row.prover" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.prover`)"></el-input>
+                    <el-input v-model="scope.row.prover" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.prover`)" :maxlength="10"></el-input>
                   </el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="证明人联系方式" align="center" key="tele" prop="tele">
                 <template v-slot="scope">
                   <el-form-item :prop="'workExperienceList.'+scope.$index+'.tele'">
-                    <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.tele`)"></el-input>
+                    <el-input v-model="scope.row.tele" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.tele`)" :maxlength="20" show-word-limit></el-input>
                   </el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="离职原因" align="center" key="changeReasonId" prop="changeReasonId">
                 <template v-slot="scope">
                   <el-form-item :prop="'workExperienceList.'+scope.$index+'.changeReasonId'">
-                    <el-input v-model="scope.row.changeReasonId" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.changeReasonId`)"></el-input>
+                    <el-input v-model="scope.row.changeReasonId" placeholder="请输入" clearable @focus="$refs.baseForm.clearValidate(`workExperienceList.${scope.$index}.changeReasonId`)" :maxlength="100" show-word-limit></el-input>
                   </el-form-item>
                 </template>
               </el-table-column>
