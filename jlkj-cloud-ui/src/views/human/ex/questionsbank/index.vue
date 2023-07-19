@@ -146,11 +146,11 @@
 
 <script>
 import {
-  listQuestionsbank,
-  delQuestionsbank,
   addQuestionsbank,
-  updateQuestionsbank,
-  exportQuestionsbank
+  delQuestionsbank,
+  exportQuestionsbank,
+  listQuestionsbank,
+  updateQuestionsbank
 } from "@/api/human/ex/questionsbank";
 import {typeTreeSelect} from "@/api/human/ex/examType";
 import Treeselect from "@riophae/vue-treeselect";
@@ -321,8 +321,12 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      listQuestionsbank(this.queryParams).then(response => {
+        this.questionsbankList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+        this.getTypeTreeselect()
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
