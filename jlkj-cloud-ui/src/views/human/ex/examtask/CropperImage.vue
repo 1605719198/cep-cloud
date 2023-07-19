@@ -85,15 +85,16 @@
 </template>
 
 <script>
-import { VueCropper } from 'vue-cropper'
-import { uploadPhoto } from "@/api/human/ex/examtask";
+import {VueCropper} from 'vue-cropper'
+import {uploadPhoto} from "@/api/human/ex/examtask";
+
 export default {
   name: 'CropperImage',
   components: {
     VueCropper
   },
   props: ['Name'],
-  data () {
+  data() {
     return {
       name: this.Name,
       previews: {},
@@ -123,69 +124,66 @@ export default {
       },
       rowdata: {},
       newCode:null,
-      filename: null,
       fileurl: ''
     }
-  },
-  mounted () {
   },
   methods: {
     // 初始化函数
     doinit (file) {
-      this.selectImg(file)
+      this.selectImg(file);
     },
     imgLoad (msg) {
     },
     // 图片缩放
     changeScale (num) {
-      num = num || 1
-      this.$refs.cropper.changeScale(num)
+      num = num || 1;
+      this.$refs.cropper.changeScale(num);
     },
     // 向左旋转
     rotateLeft () {
-      this.$refs.cropper.rotateLeft()
+      this.$refs.cropper.rotateLeft();
     },
     // 向右旋转
     rotateRight () {
-      this.$refs.cropper.rotateRight()
+      this.$refs.cropper.rotateRight();
     },
     // 实时预览函数
     realTime (data) {
-      this.previews = data
+      this.previews = data;
     },
     // 选择图片
     selectImg (code, file) {
-      this.newCode = code
-      this.filename = file.name
+      this.newCode = code;
+      this.filename = file.name;
       if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(this.filename)) {
         this.$message({
           message: '图片类型要求：jpeg、jpg、png',
           type: 'error'
         })
-        return false
+        return false;
       }
       // 转化为blob
       const reader = new FileReader()
       reader.onload = e => {
-        let data
-        data = window.URL.createObjectURL(file)
-        this.option.img = data
+        let data;
+        data = window.URL.createObjectURL(file);
+        this.option.img = data;
       }
       // 转化为base64
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(file);
     },
     // 上传图片
     uploadImg (type) {
-      const _this = this
+      const _this = this;
       if (type === 'blob') {
         // 获取截图的blob数据
         this.$refs.cropper.getCropBlob(async data => {
-          const formData = new FormData()
-          formData.append('file', data, _this.filename)
-          uploadPhoto( _this.newCode, formData).then(response => {
-              this.msgSuccess("新增成功");
-              this.open = false;
-              _this.$emit('uploadImgSuccess', response.data)
+          const formData = new FormData();
+          formData.append('file', data, _this.filename);
+          uploadPhoto(_this.newCode, formData).then(response => {
+            this.$modal.msgSuccess("上传成功");
+            this.open = false;
+            _this.$emit('uploadImgSuccess', response.data);
           })
         })
       }
