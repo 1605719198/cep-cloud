@@ -941,25 +941,25 @@ export default {
           if (valid) {
             let judge = this.judge()
             if (judge) {
-            // this.form.isCheck = e
-            // this.setForm()
-            // this.form.detailList = this.socialSecurityDetail
-            // if (this.form.id != null) {
-            //   updateSocialSecurityBasis(this.form).then(response => {
-            //     this.$modal.msgSuccess('修改成功')
-            //     this.open = false
-            //     this.getList()
-            //   }, error => {
-            //
-            //   })
-            // } else {
-            //   this.setForm(0)
-            //   addSocialSecurityBasis(this.form).then(response => {
-            //     this.$modal.msgSuccess('新增成功')
-            //     this.open = false
-            //     this.getList()
-            //   })
-            // }
+            this.form.isCheck = e
+            this.setForm()
+            this.form.detailList = this.socialSecurityDetail
+            if (this.form.id != null) {
+              updateSocialSecurityBasis(this.form).then(response => {
+                this.$modal.msgSuccess('修改成功')
+                this.open = false
+                this.getList()
+              }, error => {
+
+              })
+            } else {
+              this.setForm(0)
+              addSocialSecurityBasis(this.form).then(response => {
+                this.$modal.msgSuccess('新增成功')
+                this.open = false
+                this.getList()
+              })
+            }
           }
         }
       })
