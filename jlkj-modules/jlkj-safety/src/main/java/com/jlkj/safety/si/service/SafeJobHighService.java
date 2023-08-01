@@ -146,4 +146,22 @@ public interface SafeJobHighService extends IService<SafeJobHigh> {
      * @return 结果
      */
     Object updateSafeJobHighJobCode(Map<String, Object> params);
+
+    /**
+     * 高处安全作业证-新增
+     * @author 265800
+     * @date 2023/8/1 8:42
+     * @param params
+     * @return java.lang.Object
+     */
+    Object insertSafeJobHighData(Map<String, Object> params);
+
+    /**
+     * 高处安全作业证
+     * @author 265800
+     * @date 2023/8/1 8:42
+     * @param params
+     * @return java.lang.Object
+     */
+    Object updateSafeJobHighData(Map<String, Object> params);
 }

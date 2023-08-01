@@ -3,17 +3,17 @@
     <div class="avue-crud__search">
       <el-form :inline="true">
             <el-form-item label="计划日期" prop="planDate">
-              <el-date-picker v-model="planDate" type="daterange"
+              <el-date-picker v-model="planDate" type="daterange" size="small"
                               start-placeholder="计划开始日期" range-separator="-" end-placeholder="计划结束日期"/>
             </el-form-item>
             <el-form-item label="状态" prop="status">
-              <el-select v-model="query.status" placeholder="状态" :popper-append-to-body="false" clearable>
+              <el-select size="small" v-model="query.status" placeholder="状态" :popper-append-to-body="false" clearable>
                 <el-option v-for="item in selectJobTicketStatus" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
             </el-form-item>
             <el-form-item label="作业等级" prop="job_level">
-              <el-select v-model="query.job_level" placeholder="请选择作业等级" :popper-append-to-body="false" clearable>
+              <el-select size="small" v-model="query.job_level" placeholder="请选择作业等级" :popper-append-to-body="false" clearable>
                 <el-option label="一级" value="一级"/>
                 <el-option label="二级" value="二级"/>
                 <el-option label="三级" value="三级"/>
@@ -24,12 +24,12 @@
             <!--              <el-input v-model="query.safe_area_name" placeholder="请输入区域名称" clearable/>-->
             <!--            </el-form-item>-->
             <el-form-item label="区域名称" prop="safe_area_id">
-              <el-select v-model="query.safe_area_id" placeholder="请选择区域名称" :popper-append-to-body="false" filterable clearable>
+              <el-select size="small" v-model="query.safe_area_id" placeholder="请选择区域名称" :popper-append-to-body="false" filterable clearable>
                 <el-option v-for="item in safeAreaOptions" :key="item.id" :label="item.name" :value="item.id"/>
               </el-select>
             </el-form-item>
             <el-form-item label="申请人姓名" prop="apply_person_name">
-              <el-input v-model="query.apply_person_name" @focus="$refs.person.blur(),treeOpen=true" placeholder="请选择申请人姓名" ref="person"
+              <el-input size="small" v-model="query.apply_person_name" @focus="$refs.person.blur(),treeOpen=true" placeholder="请选择申请人姓名" ref="person"
                         clearable @clear="query.apply_person_name = '',query.apply_person_id=''"/>
             </el-form-item>
 
@@ -75,24 +75,24 @@
                              :sortable="column.sortable"
                              :formatter="column.formatter"/>
           </template>
-          <el-table-column label="操作" width="380px" fixed="right">
+          <el-table-column label="操作" width="280px" fixed="right">
             <template slot-scope="scope">
-              <el-button v-hasPermi="['high_list']" size="mini" plain icon="el-icon-edit" type="primary"
+              <el-button v-hasPermi="['high_list']" size="mini" icon="el-icon-edit" type="text"
                          @click="handleOpenWindow('edit',scope.$index, scope.row)"> 查看/确定
               </el-button>
-              <el-button v-hasPermi="['high_list']" size="mini" plain icon="el-icon-delete" type="text"
+              <el-button v-hasPermi="['high_list']" size="mini" icon="el-icon-delete" type="text"
                          @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.status !== 0">删除
               </el-button>
-              <el-button v-hasPermi="['high_list']" size="mini" plain icon="el-icon-document-copy" type="primary"
+              <el-button v-hasPermi="['high_list']" size="mini" icon="el-icon-document-copy" type="text"
                          @click="handleOpenWindow('copy',scope.$index, scope.row)">复制
               </el-button>
-              <el-button v-hasPermi="['high_list']" size="mini" plain icon="el-icon-printer" type="info"
+              <el-button v-hasPermi="['high_list']" size="mini" icon="el-icon-printer" type="text"
                          v-if="scope.row.status === 3" @click="handlePrint(scope.row)">打印
               </el-button>
-              <el-button v-hasPermi="['high_list']" size="mini" plain icon="el-icon-printer" type="info"
+              <el-button v-hasPermi="['high_list']" size="mini" icon="el-icon-printer" type="text"
                          v-else disabled>打印
               </el-button>
-              <!--              <el-button size="mini" plain icon="el-icon-printer" type="info"-->
+              <!--              <el-button size="mini" icon="el-icon-printer" type="info"-->
               <!--                         @click="handlePrint(scope.$index, scope.row)">打印-->
               <!--              </el-button>-->
             </template>
@@ -104,7 +104,7 @@
                          @current-change="handleCurrentChange"
                          layout="total, sizes, prev, pager, next, jumper"
                          :current-page="page.current"
-                         :page-sizes="[20, 50, 100, 200]"
+                         :page-sizes="[10, 20, 30, 50]"
                          :page-size="page.size"
                          :total="page.total">
           </el-pagination>
@@ -138,6 +138,7 @@
 </template>
 
 <script>
+  import '@/assets/styles/dialogStyle.scss';
   import {req} from "@/api/security/si/common";
   import {getSafetyArea, heightInfoApi} from "@/api/security/si/WorkTicketApi";
   import heightInfo from "./heightInfo";
@@ -151,7 +152,7 @@
       return {
         openDialog: {open: false, type: '', title: '', width: '500px', data: {},},
         treeData: [], treeOpen: false, treeOpenType: '',
-        page: {size: 20, current: 1, total: 1, order: "job_code", orderby: "desc",},
+        page: {size: 10, current: 1, total: 1, order: "job_code", orderby: "desc",},
         query: {
           start_time: '',
           end_time: '',
@@ -358,9 +359,9 @@
   .el-form--label-top .el-form-item__label {
     padding: 0px;
   }
-  ::v-deep .el-form-item__content {
-    line-height: unset !important;
-  }
+  //::v-deep .el-form-item__content {
+  //  line-height: unset !important;
+  //}
 </style>
 
 <style>

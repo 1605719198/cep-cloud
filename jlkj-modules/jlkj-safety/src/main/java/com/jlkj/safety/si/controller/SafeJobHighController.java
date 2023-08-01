@@ -2,12 +2,10 @@ package com.jlkj.safety.si.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-
 import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.SafeJobHigh;
 import com.jlkj.safety.si.entity.SafeSiJobHighApproval;
 import com.jlkj.safety.si.service.*;
-import com.jlkj.safety.si.utils.ResponseUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +45,13 @@ public class SafeJobHighController {
     @Resource
     SafeJobHighAppendixService safeJobHighAppendixService;
 
+    /**
+     * 高处安全作业证-作业票编号
+     * @author 265800
+     * @date 2023/7/19 11:25
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-作业票编号", notes = "获取最新的作业票编号")
     @ApiResponses(
             @ApiResponse(code = 200, message = "调用成功", response = String.class,
@@ -63,6 +68,13 @@ public class SafeJobHighController {
         return AjaxResult.success(safeJobHighService.getjobCode(params));
     }
 
+    /**
+     * 高处安全作业证-详情
+     * @author 265800
+     * @date 2023/7/19 11:26
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-详情", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -106,6 +118,13 @@ public class SafeJobHighController {
         return safeJobHighService.getSafeJobHighInfo(params);
     }
 
+    /**
+     * 高处安全作业证-作业人员列表
+     * @author 265800
+     * @date 2023/7/19 11:26
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-作业人员列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -132,6 +151,13 @@ public class SafeJobHighController {
         return AjaxResult.success(safeJobHighService.getSafeJobHighPersonsList(params));
     }
 
+    /**
+     * 高处安全作业证-安全措施列表
+     * @author 265800
+     * @date 2023/7/19 11:26
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-安全措施列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -157,6 +183,13 @@ public class SafeJobHighController {
         return AjaxResult.success(safeJobHighService.getSafeJobHighSafetyMeasuresList(params));
     }
 
+    /**
+     * 高处安全作业证-审批列表
+     * @author 265800
+     * @date 2023/7/19 11:27
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-审批列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -189,6 +222,13 @@ public class SafeJobHighController {
         return AjaxResult.success(safeJobHighService.getSafeJobHighApprovalList(params));
     }
 
+    /**
+     * 高处安全作业证-查询列表
+     * @author 265800
+     * @date 2023/7/19 11:27
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-查询列表", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:current", value = "页码-从1开始", required = false, dataTypeClass = String.class),
@@ -238,12 +278,18 @@ public class SafeJobHighController {
             )
     )
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-
     public Object getSafeJobHighPageList(@RequestParam Map<String, Object> params) {
         log.info("RequestParam => {}", params);
         return AjaxResult.success(safeJobHighService.getSafeJobHighPageList(params));
     }
 
+    /**
+     * 高处安全作业证-新增
+     * @author 265800
+     * @date 2023/7/19 11:27
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-新增", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:apply_depart_id", value = "申请单位ID", required = false, dataTypeClass = String.class),
@@ -301,92 +347,17 @@ public class SafeJobHighController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object insertSafeJobHigh(@RequestBody Map<String, Object> params) {
-        return insertSafeJobHighData(params);
-    }
-    private Object insertSafeJobHighData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "高处安全作业证保存失败";
-        try {
-            boolean succ = true;
-            SafeJobHigh safeJobHigh = null;
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobHighService.insertSafeJobHigh(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                safeJobHigh = (SafeJobHigh) objectMap.get("data");
-                msg = insertSafeJobHighCore(safeJobHigh, params);
-            } else {
-                msg = objectMap.get("msg").toString();
-                succ = false;
-            }
-            if ("".equals(msg)) {
-                Map<String, Object> outData = new HashMap<>(1);
-                outData.put("id", safeJobHigh.getId());
-                return AjaxResult.success(ResponseUtil.toResult(params, "高处安全作业证保存成功", outData));
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseUtil.toError(params, msg);
-        }
+        return safeJobHighService.insertSafeJobHighData(params);
     }
 
-    private String insertSafeJobHighCore(SafeJobHigh safeJobHigh, Map<String, Object> params) {
-        boolean succ = true;
-        String msg = "";
-        if (!"".equals(params.get(PERSON_LIST).toString())) {
-            List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-            for (int i = 0; i < listPerson.size(); i++) {
-                Map<String, Object> param = listPerson.get(i);
-                param.put("job_id", safeJobHigh.getId());
-                if (!safeJobHighPersonsService.insertSafeJobHighPersons(param)) {
-                    succ = false;
-                    msg = "作业人员添加失败";
-                    break;
-                }
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
-                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
-                for (int i = 0; i < listApproval.size(); i++) {
-                    Map<String, Object> param = listApproval.get(i);
-                    param.put("job_id", safeJobHigh.getId());
-                    if (!safeJobHighApprovalService.insertSafeJobHighApprovals(param)) {
-                        succ = false;
-                        msg = "审批人员添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(FILE_LIST).toString())) {
-                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-                for (int i = 0; i < listFile.size(); i++) {
-                    Map<String, Object> param = listFile.get(i);
-                    param.put("job_id", safeJobHigh.getId());
-                    if (!safeJobHighAppendixService.insertSafeJobHighFile(param)) {
-                        succ = false;
-                        msg = "附件添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            Map<String, Object> param = new HashMap<>(1);
-            param.put("id", safeJobHigh.getId());
-            if (!safeJobHighService.insertSafeJobHighSafetyMeasures(param)) {
-                succ = false;
-                msg = "安全措施初始化失败";
-            }
-        }
-        return msg;
-    }
-
+    /**
+     * 高处安全作业证
+     * @author 265800
+     * @date 2023/7/19 11:27
+     * @param params
+     * @return java.lang.Object
+     */
     @ApiOperation(value = "高处安全作业证-修改", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param:id", value = "作业证ID", required = false, dataTypeClass = String.class),
@@ -439,100 +410,8 @@ public class SafeJobHighController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobHigh(@RequestBody Map<String, Object> params) {
-        return updateSafeJobHighData(params);
-    }
-
-    private Object updateSafeJobHighData(Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        String msg = "高处安全作业证保存失败";
-        try {
-            boolean succ = true;
-            Map<String, Object> objectMap = (Map<String, Object>) safeJobHighService.updateSafeJobHigh(params);
-            int code = Integer.parseInt(objectMap.get("code").toString());
-            if (code == 0) {
-                msg = updateSafeJobHighCore(params);
-            } else {
-                msg = objectMap.get("msg").toString();
-                succ = false;
-            }
-            if ("".equals(msg)) {
-                return AjaxResult.success(ResponseUtil.toResult(params, "高处安全作业证保存成功"));
-            } else {
-                return ResponseUtil.toError(params, msg);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseUtil.toError(params, msg);
-        }
-    }
-
-    private String updateSafeJobHighCore(Map<String, Object> params) {
-        boolean succ = true;
-        String msg = "";
-        Map<String, Object> deleteParam = new HashMap<>(1);
-        deleteParam.put("id", params.get("id").toString());
-        if (!safeJobHighService.deleteSafeJobHighPersons(deleteParam)) {
-            succ = false;
-            msg = "作业人员删除失败";
-        }
-        if (succ) {
-            if (!"".equals(params.get(PERSON_LIST).toString())) {
-                List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
-                for (int i = 0; i < listPerson.size(); i++) {
-                    Map<String, Object> param = listPerson.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobHighPersonsService.insertSafeJobHighPersons(param)) {
-                        succ = false;
-                        msg = "作业人员保存失败";
-                        break;
-                    }
-                }
-            }
-        }
-        if (succ) {
-            SafeJobHigh safeJobHigh = safeJobHighService.getById(params.get("id").toString());
-            safeJobHighApprovalService.remove(new QueryWrapper<SafeSiJobHighApproval>().lambda()
-                    .eq(SafeSiJobHighApproval::getJobId, safeJobHigh.getId())
-            );
-            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
-                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
-                for (int i = 0; i < listApproval.size(); i++) {
-                    Map<String, Object> param = listApproval.get(i);
-                    param.put("job_id", safeJobHigh.getId());
-                    if (!safeJobHighApprovalService.insertSafeJobHighApprovals(param)) {
-                        succ = false;
-                        msg = "审批人员添加失败";
-                        break;
-                    }
-                }
-            }
-            if (!succ) {
-                msg = "审批人员添加失败";
-            }
-        }
-        if (succ) {
-            if (!safeJobHighService.deleteSafeJobHighFiles(deleteParam)) {
-                succ = false;
-                msg = "附件删除失败";
-            }
-        }
-        if (succ) {
-            if (!"".equals(params.get(FILE_LIST).toString())) {
-                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
-                for (int i = 0; i < listFile.size(); i++) {
-                    Map<String, Object> param = listFile.get(i);
-                    param.put("job_id", params.get("id").toString());
-                    if (!safeJobHighAppendixService.insertSafeJobHighFile(param)) {
-                        succ = false;
-                        msg = "附件添加失败";
-                        break;
-                    }
-                }
-            }
-        }
-        return msg;
+        return safeJobHighService.updateSafeJobHighData(params);
     }
 
     @ApiOperation(value = "高处安全作业证-删除", notes = "")
@@ -550,7 +429,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "高处安全作业证删除失败");
+            return AjaxResult.error("高处安全作业证删除失败", params);
         }
     }
 
@@ -573,7 +452,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "设置审批人失败");
+            return AjaxResult.error("设置审批人失败", params);
         }
     }
 
@@ -594,7 +473,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "审批失败");
+            return AjaxResult.error("审批失败", params);
         }
     }
 
@@ -613,7 +492,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "确认失败");
+            return AjaxResult.error("确认失败", params);
         }
     }
 
@@ -632,7 +511,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "确认失败");
+            return AjaxResult.error("确认失败", params);
         }
     }
 
@@ -654,7 +533,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "安全措施确认失败");
+            return AjaxResult.error("安全措施确认失败", params);
         }
     }
 
@@ -677,14 +556,14 @@ public class SafeJobHighController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobHighPersonsService.insertSafeJobHighPersons(params)) {
-                return ResponseUtil.toResult(params, "作业人员保存成功");
+                return AjaxResult.success("作业人员保存成功");
             } else {
-                return ResponseUtil.toError(params, "作业人员保存失败");
+                return AjaxResult.error("作业人员保存失败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "作业人员保存失败");
+            return AjaxResult.error("作业人员保存失败", params);
         }
     }
 
@@ -700,14 +579,14 @@ public class SafeJobHighController {
         log.info("RequestParam => {}", params);
         try {
             if (safeJobHighPersonsService.deleteSafeJobHighPersons(params)) {
-                return ResponseUtil.toResult(params, "作业人员删除成功");
+                return AjaxResult.success("作业人员删除成功");
             } else {
-                return ResponseUtil.toError(params, "作业人员删除失败");
+                return AjaxResult.error("作业人员删除失败", params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "作业人员删除失败");
+            return AjaxResult.error("作业人员删除失败", params);
         }
     }
 
@@ -754,14 +633,14 @@ public class SafeJobHighController {
                 }
             }
             if (succ) {
-                return ResponseUtil.toResult(params, "作业人员保存成功");
+                return AjaxResult.success("作业人员保存成功");
             } else {
-                return ResponseUtil.toError(params, msg);
+                return AjaxResult.error(msg, params);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, msg);
+            return AjaxResult.error(msg, params);
         }
     }
     @ApiOperation(value = "高处作业证-安全措施取消", notes = "")
@@ -779,7 +658,7 @@ public class SafeJobHighController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.toError(params, "安全措施取消失败");
+            return AjaxResult.error("安全措施取消失败", params);
         }
     }
 
@@ -836,6 +715,6 @@ public class SafeJobHighController {
     @Transactional(rollbackFor = Exception.class)
     public Object updateSafeJobHighJobCode(@RequestBody Map<String, Object> params) {
         log.info("RequestParam => {}", params);
-        return  safeJobHighService.updateSafeJobHighJobCode(params);
+        return safeJobHighService.updateSafeJobHighJobCode(params);
     }
 }

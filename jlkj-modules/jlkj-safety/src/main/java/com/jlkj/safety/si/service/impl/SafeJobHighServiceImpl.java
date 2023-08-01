@@ -8,9 +8,13 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jlkj.common.core.web.domain.AjaxResult;
 import com.jlkj.safety.si.entity.*;
 import com.jlkj.safety.si.mapper.*;
+import com.jlkj.safety.si.service.SafeJobHighAppendixService;
+import com.jlkj.safety.si.service.SafeJobHighApprovalService;
 import com.jlkj.safety.si.service.SafeJobHighSafetyMeasuresService;
 import com.jlkj.safety.si.service.SafeJobHighService;
 import com.jlkj.safety.si.utils.ResponseUtil;
@@ -18,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -61,6 +67,14 @@ public class SafeJobHighServiceImpl extends ServiceImpl<SafeJobHighMapper, SafeJ
 
     @Resource
     HumanresourceOrganizationMapper humanresourceOrganizationMapper;
+
+    @Lazy
+    @Resource
+    SafeJobHighApprovalService safeJobHighApprovalService;
+
+    @Lazy
+    @Resource
+    SafeJobHighAppendixService safeJobHighAppendixService;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -665,6 +679,214 @@ public class SafeJobHighServiceImpl extends ServiceImpl<SafeJobHighMapper, SafeJ
         else {
             return ResponseUtil.toError(params, "高处作业证记录不存在");
         }
+    }
+
+    /**
+     * 高处安全作业
+     * @author 265800
+     * @date 2023/8/1 8:44
+     * @param params
+     * @return java.lang.Object
+     */
+    @Override
+    public Object insertSafeJobHighData(Map<String, Object> params) {
+        log.info("RequestParam => {}", params);
+        String msg = "高处安全作业证保存失败";
+        try {
+            boolean succ = true;
+            SafeJobHigh safeJobHigh = null;
+            Map<String, Object> objectMap = (Map<String, Object>) insertSafeJobHigh(params);
+            int code = Integer.parseInt(objectMap.get("code").toString());
+            if (code == 0) {
+                safeJobHigh = (SafeJobHigh) objectMap.get("data");
+                msg = insertSafeJobHighCore(safeJobHigh, params);
+            } else {
+                msg = objectMap.get("msg").toString();
+                succ = false;
+            }
+            if ("".equals(msg)) {
+                Map<String, Object> outData = new HashMap<>(1);
+                outData.put("id", safeJobHigh.getId());
+                return AjaxResult.success("高处安全作业证保存成功");
+            } else {
+                return AjaxResult.error(msg, params);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return AjaxResult.error(msg, params);
+        }
+    }
+
+    /**
+     * 高处安全作业
+     * @author 265800
+     * @date 2023/8/1 8:44
+     * @param params
+     * @return java.lang.Object
+     */
+    @Override
+    public Object updateSafeJobHighData(Map<String, Object> params) {
+        log.info("RequestParam => {}", params);
+        String msg = "高处安全作业证保存失败";
+        try {
+            boolean succ = true;
+            Map<String, Object> objectMap = (Map<String, Object>) updateSafeJobHigh(params);
+            int code = Integer.parseInt(objectMap.get("code").toString());
+            if (code == 0) {
+                msg = updateSafeJobHighCore(params);
+            } else {
+                msg = objectMap.get("msg").toString();
+                succ = false;
+            }
+            if ("".equals(msg)) {
+                return AjaxResult.success("高处安全作业证保存成功");
+            } else {
+                return AjaxResult.error(msg, params);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return AjaxResult.error(msg, params);
+        }
+    }
+
+    /**
+     * 高处安全作业
+     * @author 265800
+     * @date 2023/8/1 8:44
+     * @param params
+     * @return java.lang.Object
+     */
+    private String updateSafeJobHighCore(Map<String, Object> params) {
+        boolean succ = true;
+        String msg = "";
+        Map<String, Object> deleteParam = new HashMap<>(1);
+        deleteParam.put("id", params.get("id").toString());
+        if (!deleteSafeJobHighPersons(deleteParam)) {
+            succ = false;
+            msg = "作业人员删除失败";
+        }
+        if (succ) {
+            if (!"".equals(params.get(PERSON_LIST).toString())) {
+                List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
+                for (int i = 0; i < listPerson.size(); i++) {
+                    Map<String, Object> param = listPerson.get(i);
+                    param.put("job_id", params.get("id").toString());
+                    if (!insertSafeJobHighPersons(param)) {
+                        succ = false;
+                        msg = "作业人员保存失败";
+                        break;
+                    }
+                }
+            }
+        }
+        if (succ) {
+            SafeJobHigh safeJobHigh = getById(params.get("id").toString());
+            safeJobHighApprovalService.remove(new QueryWrapper<SafeSiJobHighApproval>().lambda()
+                    .eq(SafeSiJobHighApproval::getJobId, safeJobHigh.getId())
+            );
+            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
+                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
+                for (int i = 0; i < listApproval.size(); i++) {
+                    Map<String, Object> param = listApproval.get(i);
+                    param.put("job_id", safeJobHigh.getId());
+                    if (!safeJobHighApprovalService.insertSafeJobHighApprovals(param)) {
+                        succ = false;
+                        msg = "审批人员添加失败";
+                        break;
+                    }
+                }
+            }
+            if (!succ) {
+                msg = "审批人员添加失败";
+            }
+        }
+        if (succ) {
+            if (!deleteSafeJobHighFiles(deleteParam)) {
+                succ = false;
+                msg = "附件删除失败";
+            }
+        }
+        if (succ) {
+            if (!"".equals(params.get(FILE_LIST).toString())) {
+                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
+                for (int i = 0; i < listFile.size(); i++) {
+                    Map<String, Object> param = listFile.get(i);
+                    param.put("job_id", params.get("id").toString());
+                    if (!safeJobHighAppendixService.insertSafeJobHighFile(param)) {
+                        succ = false;
+                        msg = "附件添加失败";
+                        break;
+                    }
+                }
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * 高处安全作业
+     * @author 265800
+     * @date 2023/8/1 8:57
+     * @param safeJobHigh
+     * @param params
+     * @return java.lang.String
+     */
+    private String insertSafeJobHighCore(SafeJobHigh safeJobHigh, Map<String, Object> params) {
+        boolean succ = true;
+        String msg = "";
+        if (!"".equals(params.get(PERSON_LIST).toString())) {
+            List<Map> listPerson = JSONObject.parseArray(JSONObject.toJSON(params.get(PERSON_LIST)).toString(), Map.class);
+            for (int i = 0; i < listPerson.size(); i++) {
+                Map<String, Object> param = listPerson.get(i);
+                param.put("job_id", safeJobHigh.getId());
+                if (!insertSafeJobHighPersons(param)) {
+                    succ = false;
+                    msg = "作业人员添加失败";
+                    break;
+                }
+            }
+        }
+        if (succ) {
+            if (!"".equals(params.get(APPROVAL_LIST).toString())) {
+                List<Map> listApproval = JSONObject.parseArray(JSONObject.toJSON(params.get(APPROVAL_LIST)).toString(), Map.class);
+                for (int i = 0; i < listApproval.size(); i++) {
+                    Map<String, Object> param = listApproval.get(i);
+                    param.put("job_id", safeJobHigh.getId());
+                    if (!safeJobHighApprovalService.insertSafeJobHighApprovals(param)) {
+                        succ = false;
+                        msg = "审批人员添加失败";
+                        break;
+                    }
+                }
+            }
+        }
+        if (succ) {
+            if (!"".equals(params.get(FILE_LIST).toString())) {
+                List<Map> listFile = JSONObject.parseArray(JSONObject.toJSON(params.get(FILE_LIST)).toString(), Map.class);
+                for (int i = 0; i < listFile.size(); i++) {
+                    Map<String, Object> param = listFile.get(i);
+                    param.put("job_id", safeJobHigh.getId());
+                    if (!safeJobHighAppendixService.insertSafeJobHighFile(param)) {
+                        succ = false;
+                        msg = "附件添加失败";
+                        break;
+                    }
+                }
+            }
+        }
+        if (succ) {
+            Map<String, Object> param = new HashMap<>(1);
+            param.put("id", safeJobHigh.getId());
+            if (!insertSafeJobHighSafetyMeasures(param)) {
+                succ = false;
+                msg = "安全措施初始化失败";
+            }
+        }
+        return msg;
     }
 
     /**

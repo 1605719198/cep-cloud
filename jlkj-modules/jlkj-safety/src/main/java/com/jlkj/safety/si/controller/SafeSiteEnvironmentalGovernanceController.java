@@ -272,7 +272,5 @@ public class SafeSiteEnvironmentalGovernanceController {
         List list = safeSiteEnvironmentalGovernanceProportionService.list(queryWrapper);
         return AjaxResult.success(list);
     }
-
-
 }
 

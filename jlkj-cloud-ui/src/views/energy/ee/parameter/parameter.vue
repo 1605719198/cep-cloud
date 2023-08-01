@@ -13,11 +13,17 @@
           <i class="el-icon-menu" />
           <span slot="title">指标项维护</span>
         </el-menu-item>
+        <el-menu-item index="2"
+                      @click="handleChange('ZD')">
+          <i class="el-icon-menu" />
+          <span slot="title">字典维护</span>
+        </el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="20">
       <div class="rightClass">
         <parameterItem v-if="tabPosition==='ZBX' " />
+        <dataTableItem v-if="tabPosition==='ZD' " />
         <div v-else></div>
       </div>
     </el-col>
@@ -27,12 +33,14 @@
 <script>
 import { mapGetters } from "vuex";
 import parameterItem from "./informationConfiguration/index";
+import dataTableItem from "@/views/energy/ee/parameter/dictConfiguration/dataTable";
 
 
 export default {
   name: "parameter",
   components: {
     parameterItem,
+    dataTableItem,
   },
   data () {
     return {
